@@ -1,0 +1,1000 @@
+{
+ "title": "Flow maps||Sơ đồ luồng",
+ "intro": "Drawn from a walkthrough of the prototype on 12 Nov 2026: every arrow is a transition that was performed and seen, at desktop width unless the map says phone. Solid boxes are full views; dashed boxes are menus, modals and side panels; the accent outline marks where a flow starts. The maps show the prototype as it is, so they include features of later phases (marked with their phase) and behaviour the product will change; the written flows below are the product's intended behaviour.||Vẽ từ một lượt chạy thử prototype ngày 12 Nov 2026: mỗi mũi tên là một bước chuyển đã được thực hiện và quan sát, ở khung rộng trừ khi sơ đồ ghi là điện thoại. Khung nét liền là màn hình đầy đủ; khung nét đứt là menu, modal và panel phụ; viền màu nhấn đánh dấu nơi luồng bắt đầu. Các sơ đồ thể hiện prototype đúng như nó đang chạy, nên có cả tính năng của các phase sau (ghi kèm phase) và hành vi mà sản phẩm sẽ đổi; các luồng viết bên dưới mới là hành vi dự định của sản phẩm.",
+ "maps": [
+  {
+   "title": "1 · The whole app: where navigation leads and what brings you back to a conversation||1 · Toàn bộ app: điều hướng dẫn tới đâu và cái gì đưa bạn về lại hội thoại",
+   "caption": "The sidebar reaches all eleven sections (thin lines). Five sections exist mainly to send you back into a conversation at one exact message; three lead into a Meet. Admin and Preferences lead nowhere else.||Thanh bên tới được cả mười một section (đường mảnh). Năm section tồn tại chủ yếu để đưa bạn về lại hội thoại, tới đúng một tin nhắn; ba section dẫn vào Meet. Admin và Preferences không dẫn đi đâu khác.",
+   "colWidth": 250,
+   "rowHeight": 66,
+   "nodes": [
+    {
+     "id": "open",
+     "label": "Open the app||Mở app",
+     "col": 0,
+     "row": 0,
+     "kind": "entry"
+    },
+    {
+     "id": "nav",
+     "label": "Sidebar||Thanh bên",
+     "sub": "phone: bottom tabs + More · Ctrl K||điện thoại: tab đáy + More · Ctrl K",
+     "col": 0,
+     "row": 5,
+     "w": 200
+    },
+    {
+     "id": "home",
+     "label": "Home",
+     "sub": "conversation list||danh sách hội thoại",
+     "col": 1.25,
+     "row": 0
+    },
+    {
+     "id": "activity",
+     "label": "Activity",
+     "col": 1.25,
+     "row": 1
+    },
+    {
+     "id": "later",
+     "label": "Later",
+     "col": 1.25,
+     "row": 2
+    },
+    {
+     "id": "files",
+     "label": "Files",
+     "col": 1.25,
+     "row": 3
+    },
+    {
+     "id": "mail",
+     "label": "Mail",
+     "sub": "phase 7",
+     "col": 1.25,
+     "row": 4
+    },
+    {
+     "id": "tasks",
+     "label": "Tasks",
+     "sub": "phase 2",
+     "col": 1.25,
+     "row": 5
+    },
+    {
+     "id": "calendar",
+     "label": "Calendar",
+     "sub": "phase 4",
+     "col": 1.25,
+     "row": 6
+    },
+    {
+     "id": "meet",
+     "label": "Meet",
+     "sub": "lobby · phase 4||sảnh · phase 4",
+     "col": 1.25,
+     "row": 7
+    },
+    {
+     "id": "people",
+     "label": "People",
+     "col": 1.25,
+     "row": 8
+    },
+    {
+     "id": "admin",
+     "label": "Admin",
+     "sub": "analytics · automations",
+     "col": 1.25,
+     "row": 9
+    },
+    {
+     "id": "prefs",
+     "label": "Preferences",
+     "col": 1.25,
+     "row": 10
+    },
+    {
+     "id": "conv",
+     "label": "Conversation||Hội thoại",
+     "sub": "at the exact message||tới đúng tin nhắn",
+     "col": 3.05,
+     "row": 2
+    },
+    {
+     "id": "call",
+     "label": "In a Meet||Trong cuộc gọi",
+     "sub": "phase 4",
+     "col": 3.05,
+     "row": 7
+    }
+   ],
+   "edges": [
+    {
+     "from": "open",
+     "to": "home",
+     "label": "lands here||vào đây"
+    },
+    {
+     "from": "nav",
+     "to": "home",
+     "hub": true
+    },
+    {
+     "from": "nav",
+     "to": "activity",
+     "hub": true
+    },
+    {
+     "from": "nav",
+     "to": "later",
+     "hub": true
+    },
+    {
+     "from": "nav",
+     "to": "files",
+     "hub": true
+    },
+    {
+     "from": "nav",
+     "to": "mail",
+     "hub": true
+    },
+    {
+     "from": "nav",
+     "to": "tasks",
+     "hub": true
+    },
+    {
+     "from": "nav",
+     "to": "calendar",
+     "hub": true
+    },
+    {
+     "from": "nav",
+     "to": "meet",
+     "hub": true
+    },
+    {
+     "from": "nav",
+     "to": "people",
+     "hub": true
+    },
+    {
+     "from": "nav",
+     "to": "admin",
+     "hub": true
+    },
+    {
+     "from": "nav",
+     "to": "prefs",
+     "hub": true
+    },
+    {
+     "from": "home",
+     "to": "conv",
+     "label": "open a row||mở một dòng",
+     "t": 0.3
+    },
+    {
+     "from": "activity",
+     "to": "conv",
+     "label": "open an item||mở một mục",
+     "t": 0.3
+    },
+    {
+     "from": "later",
+     "to": "conv",
+     "label": "open a saved message||mở tin đã lưu",
+     "t": 0.38
+    },
+    {
+     "from": "files",
+     "to": "conv",
+     "label": "file → Open in conversation",
+     "t": 0.3
+    },
+    {
+     "from": "mail",
+     "to": "conv",
+     "label": "Discuss in channel",
+     "t": 0.38
+    },
+    {
+     "from": "tasks",
+     "to": "conv",
+     "label": "task → Open in conversation",
+     "t": 0.5
+    },
+    {
+     "from": "calendar",
+     "to": "call",
+     "label": "Join",
+     "t": 0.5
+    },
+    {
+     "from": "meet",
+     "to": "call",
+     "label": "Join · Start a Meet",
+     "t": 0.42
+    },
+    {
+     "from": "people",
+     "to": "call",
+     "label": "profile → Start a Meet",
+     "t": 0.42
+    }
+   ]
+  },
+  {
+   "title": "2 · Inside a conversation||2 · Bên trong một hội thoại",
+   "caption": "Everything reachable from an open conversation. Search in conversation opens in place and is not drawn. The More menu also holds Copy, Pin, Edit and Delete, which act in place.||Mọi thứ tới được từ một hội thoại đang mở. Tìm trong hội thoại mở ngay tại chỗ nên không vẽ. Menu More còn có Copy, Pin, Edit và Delete, là các thao tác tại chỗ.",
+   "colWidth": 232,
+   "rowHeight": 84,
+   "nodes": [
+    {
+     "id": "conv",
+     "label": "Conversation||Hội thoại",
+     "sub": "Messages tab||tab Messages",
+     "col": 1.1,
+     "row": 2,
+     "kind": "entry"
+    },
+    {
+     "id": "files",
+     "label": "Files & links",
+     "sub": "tab",
+     "col": 0,
+     "row": 0
+    },
+    {
+     "id": "pinned",
+     "label": "Pinned",
+     "sub": "tab",
+     "col": 0,
+     "row": 1
+    },
+    {
+     "id": "notes",
+     "label": "Notes",
+     "sub": "tab · phase 2",
+     "col": 0,
+     "row": 2
+    },
+    {
+     "id": "addtab",
+     "label": "Add a tab",
+     "sub": "menu · phase 2",
+     "col": 0,
+     "row": 3,
+     "kind": "overlay"
+    },
+    {
+     "id": "thread",
+     "label": "Thread",
+     "sub": "side panel||panel phụ",
+     "col": 2.2,
+     "row": 0,
+     "kind": "overlay"
+    },
+    {
+     "id": "details",
+     "label": "Details",
+     "sub": "side panel||panel phụ",
+     "col": 2.2,
+     "row": 1,
+     "kind": "overlay"
+    },
+    {
+     "id": "profile",
+     "label": "Profile",
+     "sub": "side panel||panel phụ",
+     "col": 2.2,
+     "row": 2,
+     "kind": "overlay"
+    },
+    {
+     "id": "invite",
+     "label": "Invite a client",
+     "sub": "modal · phase 5",
+     "col": 3.3,
+     "row": 1,
+     "kind": "overlay"
+    },
+    {
+     "id": "dm",
+     "label": "DM with that person||DM với người đó",
+     "col": 3.3,
+     "row": 2
+    },
+    {
+     "id": "call",
+     "label": "In a Meet||Trong cuộc gọi",
+     "sub": "phase 4",
+     "col": 3.3,
+     "row": 3.15
+    },
+    {
+     "id": "more",
+     "label": "More menu||Menu More",
+     "sub": "on a message||trên một tin",
+     "col": 0,
+     "row": 4.3,
+     "kind": "overlay"
+    },
+    {
+     "id": "task",
+     "label": "New task",
+     "sub": "modal · phase 2",
+     "col": 0,
+     "row": 5.4,
+     "kind": "overlay"
+    },
+    {
+     "id": "remind",
+     "label": "Remind me",
+     "sub": "menu",
+     "col": 1.1,
+     "row": 5.4,
+     "kind": "overlay"
+    },
+    {
+     "id": "emoji",
+     "label": "Reaction picker||Bảng reaction",
+     "sub": "8 emoji",
+     "col": 1.1,
+     "row": 4.3,
+     "kind": "overlay"
+    },
+    {
+     "id": "plus",
+     "label": "+ menu||Menu +",
+     "sub": "poll · voice · approval · phase 2",
+     "col": 2.2,
+     "row": 4.3,
+     "kind": "overlay",
+     "w": 190
+    },
+    {
+     "id": "sendm",
+     "label": "Send later",
+     "sub": "menu · phase 2",
+     "col": 3.3,
+     "row": 4.3,
+     "kind": "overlay"
+    }
+   ],
+   "edges": [
+    {
+     "from": "conv",
+     "to": "files",
+     "label": "tab"
+    },
+    {
+     "from": "files",
+     "to": "conv",
+     "label": "file → Open in conversation",
+     "t": 0.2
+    },
+    {
+     "from": "conv",
+     "to": "pinned",
+     "label": "tab"
+    },
+    {
+     "from": "conv",
+     "to": "notes",
+     "label": "tab"
+    },
+    {
+     "from": "conv",
+     "to": "addtab",
+     "label": "Add a tab"
+    },
+    {
+     "from": "conv",
+     "to": "thread",
+     "label": "N replies · Reply in thread",
+     "t": 0.55
+    },
+    {
+     "from": "conv",
+     "to": "details",
+     "label": "members button||nút thành viên"
+    },
+    {
+     "from": "conv",
+     "to": "profile",
+     "label": "name or avatar||tên hoặc avatar"
+    },
+    {
+     "from": "details",
+     "to": "profile",
+     "label": "a member||một thành viên"
+    },
+    {
+     "from": "details",
+     "to": "invite",
+     "label": "Invite a client"
+    },
+    {
+     "from": "profile",
+     "to": "dm",
+     "label": "Message"
+    },
+    {
+     "from": "profile",
+     "to": "call",
+     "label": "Start a Meet"
+    },
+    {
+     "from": "conv",
+     "to": "call",
+     "label": "Join / Meet in the header||Join / Meet ở header",
+     "t": 0.5
+    },
+    {
+     "from": "conv",
+     "to": "more",
+     "label": "… on a message||… trên một tin"
+    },
+    {
+     "from": "more",
+     "to": "task",
+     "label": "Turn into task"
+    },
+    {
+     "from": "more",
+     "to": "remind",
+     "label": "Remind me about this",
+     "t": 0.55
+    },
+    {
+     "from": "conv",
+     "to": "emoji",
+     "label": "smile on a message||mặt cười trên tin"
+    },
+    {
+     "from": "conv",
+     "to": "plus",
+     "label": "+ in the composer||+ ở ô soạn"
+    },
+    {
+     "from": "conv",
+     "to": "sendm",
+     "label": "arrow beside Send||mũi tên cạnh Send",
+     "t": 0.62
+    }
+   ]
+  },
+  {
+   "title": "3 · A Meet from start to finish (phase 4)||3 · Một cuộc Meet từ đầu tới cuối (phase 4)",
+   "caption": "Four ways in, one way out. Leaving the Meet screen without leaving the call keeps it alive in a mini bar. The end card offers Rejoin or Back to Toki.||Bốn đường vào, một đường ra. Rời màn hình Meet mà chưa rời cuộc gọi thì cuộc gọi vẫn sống trong thanh mini. Thẻ kết thúc cho chọn Rejoin hoặc Back to Toki.",
+   "colWidth": 225,
+   "rowHeight": 86,
+   "nodes": [
+    {
+     "id": "convh",
+     "label": "Conversation header||Header hội thoại",
+     "col": 0,
+     "row": 0
+    },
+    {
+     "id": "cal",
+     "label": "Calendar event||Sự kiện Calendar",
+     "col": 0,
+     "row": 1
+    },
+    {
+     "id": "lobby",
+     "label": "Meet lobby||Sảnh Meet",
+     "col": 0,
+     "row": 2,
+     "kind": "entry"
+    },
+    {
+     "id": "pick",
+     "label": "Start a Meet",
+     "sub": "pick a channel or person||chọn kênh hoặc người",
+     "col": 0,
+     "row": 3.25,
+     "kind": "overlay"
+    },
+    {
+     "id": "prof",
+     "label": "Profile panel||Panel Profile",
+     "col": 0,
+     "row": 4.5,
+     "kind": "overlay"
+    },
+    {
+     "id": "ring",
+     "label": "Ringing||Đang đổ chuông",
+     "col": 1.2,
+     "row": 4.5
+    },
+    {
+     "id": "call",
+     "label": "In a Meet||Trong cuộc gọi",
+     "sub": "mic · camera · share · hand · captions",
+     "col": 1.75,
+     "row": 1,
+     "w": 210
+    },
+    {
+     "id": "chat",
+     "label": "Chat",
+     "sub": "kept as a thread||lưu thành thread",
+     "col": 3.2,
+     "row": 0,
+     "kind": "overlay"
+    },
+    {
+     "id": "ppl",
+     "label": "People",
+     "sub": "panel",
+     "col": 3.2,
+     "row": 1,
+     "kind": "overlay"
+    },
+    {
+     "id": "mini",
+     "label": "Mini bar||Thanh mini",
+     "sub": "elsewhere in the app||ở chỗ khác trong app",
+     "col": 3.2,
+     "row": 2.1
+    },
+    {
+     "id": "ended",
+     "label": "You left||Đã rời",
+     "sub": "end card||thẻ kết thúc",
+     "col": 1.85,
+     "row": 3
+    },
+    {
+     "id": "back",
+     "label": "Back in Toki||Về lại Toki",
+     "col": 3.2,
+     "row": 3.2
+    }
+   ],
+   "edges": [
+    {
+     "from": "convh",
+     "to": "call",
+     "label": "Join / Meet"
+    },
+    {
+     "from": "cal",
+     "to": "call",
+     "label": "Join (opens 5 min before)||Join (mở trước 5 phút)",
+     "t": 0.45
+    },
+    {
+     "from": "lobby",
+     "to": "call",
+     "label": "Join the live Meet||Join cuộc đang diễn ra",
+     "t": 0.45
+    },
+    {
+     "from": "lobby",
+     "to": "pick",
+     "label": "Start a Meet"
+    },
+    {
+     "from": "pick",
+     "to": "ring",
+     "label": "pick a person||chọn một người"
+    },
+    {
+     "from": "prof",
+     "to": "ring",
+     "label": "Start a Meet"
+    },
+    {
+     "from": "ring",
+     "to": "call",
+     "label": "connects after about 2 s||nối sau khoảng 2 giây",
+     "t": 0.3
+    },
+    {
+     "from": "call",
+     "to": "chat",
+     "label": "Chat"
+    },
+    {
+     "from": "call",
+     "to": "ppl",
+     "label": "People"
+    },
+    {
+     "from": "call",
+     "to": "mini",
+     "label": "go to another section||sang section khác",
+     "t": 0.32
+    },
+    {
+     "from": "mini",
+     "to": "call",
+     "label": "Return",
+     "t": 0.3
+    },
+    {
+     "from": "call",
+     "to": "ended",
+     "label": "Leave",
+     "t": 0.4
+    },
+    {
+     "from": "ended",
+     "to": "call",
+     "label": "Rejoin",
+     "t": 0.4
+    },
+    {
+     "from": "ended",
+     "to": "back",
+     "label": "Back to Toki"
+    }
+   ]
+  },
+  {
+   "title": "4 · Account menu and Ctrl K||4 · Menu tài khoản và Ctrl K",
+   "caption": "The account card is the only way to status, Pause and Focus time; on a phone the prototype hides it, with no replacement (GAP-08). Ctrl K reaches conversations, people and messages, and repeats the same actions.||Thẻ tài khoản là đường duy nhất tới status, Pause và Focus time; trên điện thoại prototype ẩn nó đi mà không có gì thay thế (GAP-08). Ctrl K tới được hội thoại, người và tin nhắn, và lặp lại các lệnh trên.",
+   "colWidth": 240,
+   "rowHeight": 80,
+   "nodes": [
+    {
+     "id": "card",
+     "label": "Account card||Thẻ tài khoản",
+     "sub": "bottom of the sidebar||cuối thanh bên",
+     "col": 0,
+     "row": 1,
+     "kind": "entry"
+    },
+    {
+     "id": "menu",
+     "label": "Account menu||Menu tài khoản",
+     "col": 1.05,
+     "row": 1,
+     "kind": "overlay"
+    },
+    {
+     "id": "status",
+     "label": "Set your status",
+     "sub": "modal",
+     "col": 2.2,
+     "row": 0,
+     "kind": "overlay"
+    },
+    {
+     "id": "pause",
+     "label": "Notifications paused||Thông báo tạm dừng",
+     "sub": "strip with a countdown||dải đếm ngược",
+     "col": 2.2,
+     "row": 1,
+     "w": 190
+    },
+    {
+     "id": "focus",
+     "label": "Focus time",
+     "sub": "paused + Do not disturb + status",
+     "col": 2.2,
+     "row": 2,
+     "w": 190
+    },
+    {
+     "id": "prefs",
+     "label": "Preferences",
+     "col": 2.2,
+     "row": 3
+    },
+    {
+     "id": "pal",
+     "label": "Ctrl K",
+     "sub": "command palette",
+     "col": 0,
+     "row": 3.2,
+     "kind": "entry"
+    },
+    {
+     "id": "res",
+     "label": "Conversation · profile · message||Hội thoại · hồ sơ · tin nhắn",
+     "col": 1.05,
+     "row": 4.3,
+     "w": 210
+    }
+   ],
+   "edges": [
+    {
+     "from": "card",
+     "to": "menu",
+     "label": "click"
+    },
+    {
+     "from": "menu",
+     "to": "status",
+     "label": "Set status"
+    },
+    {
+     "from": "menu",
+     "to": "pause",
+     "label": "Pause notifications"
+    },
+    {
+     "from": "menu",
+     "to": "focus",
+     "label": "Focus time"
+    },
+    {
+     "from": "menu",
+     "to": "prefs",
+     "label": "Preferences",
+     "t": 0.72
+    },
+    {
+     "from": "pal",
+     "to": "res",
+     "label": "choose a result||chọn một kết quả"
+    },
+    {
+     "from": "pal",
+     "to": "focus",
+     "label": "action: Start Focus time",
+     "t": 0.42
+    },
+    {
+     "from": "pal",
+     "to": "prefs",
+     "label": "action: Go to Preferences",
+     "t": 0.5
+    }
+   ]
+  },
+  {
+   "title": "5 · Guest: from invitation to the guest portal (phase 5)||5 · Guest: từ lời mời tới cổng khách (phase 5)",
+   "caption": "The top row is the member's side, the rest is the guest's. Inside the portal there is no sidebar: only the one channel with three tabs. In the prototype a guest can still reach a member's private DM through a profile (GAP-01); the product removes that path.||Hàng trên là phía thành viên, phần còn lại là phía khách. Trong cổng khách không có thanh bên: chỉ có một kênh với ba tab. Trong prototype khách vẫn tới được DM riêng của thành viên qua hồ sơ (GAP-01); sản phẩm bỏ đường đó.",
+   "colWidth": 232,
+   "rowHeight": 88,
+   "nodes": [
+    {
+     "id": "det",
+     "label": "Channel Details||Details của kênh",
+     "sub": "a member||một thành viên",
+     "col": 0,
+     "row": 0
+    },
+    {
+     "id": "inv",
+     "label": "Invite a client",
+     "sub": "email + expiry date||email + ngày hết hạn",
+     "col": 1.45,
+     "row": 0,
+     "kind": "overlay"
+    },
+    {
+     "id": "mailg",
+     "label": "Invitation email||Thư mời",
+     "col": 2.9,
+     "row": 0
+    },
+    {
+     "id": "gs",
+     "label": "Guest sign-in||Đăng nhập khách",
+     "sub": "enter email||nhập email",
+     "col": 0,
+     "row": 1.5,
+     "kind": "entry"
+    },
+    {
+     "id": "code",
+     "label": "Check your email",
+     "sub": "6-digit code||mã 6 số",
+     "col": 1.45,
+     "row": 1.5
+    },
+    {
+     "id": "gm",
+     "label": "Guest channel||Kênh của khách",
+     "sub": "Messages tab",
+     "col": 2.9,
+     "row": 1.5
+    },
+    {
+     "id": "gf",
+     "label": "Files",
+     "sub": "tab",
+     "col": 4.05,
+     "row": 0.9
+    },
+    {
+     "id": "gmeet",
+     "label": "Meet",
+     "sub": "tab",
+     "col": 4.05,
+     "row": 2.1
+    },
+    {
+     "id": "gcall",
+     "label": "In a Meet||Trong cuộc gọi",
+     "col": 4.05,
+     "row": 3.3
+    }
+   ],
+   "edges": [
+    {
+     "from": "det",
+     "to": "inv",
+     "label": "Invite a client"
+    },
+    {
+     "from": "inv",
+     "to": "mailg",
+     "label": "Send invitation"
+    },
+    {
+     "from": "mailg",
+     "to": "gs",
+     "label": "the guest opens the link||khách mở link",
+     "t": 0.5
+    },
+    {
+     "from": "gs",
+     "to": "code",
+     "label": "Email me a code"
+    },
+    {
+     "from": "code",
+     "to": "gs",
+     "label": "Use a different email"
+    },
+    {
+     "from": "code",
+     "to": "gm",
+     "label": "Sign in"
+    },
+    {
+     "from": "gm",
+     "to": "gf",
+     "label": "Files"
+    },
+    {
+     "from": "gm",
+     "to": "gmeet",
+     "label": "Meet"
+    },
+    {
+     "from": "gmeet",
+     "to": "gcall",
+     "label": "Join",
+     "t": 0.3
+    },
+    {
+     "from": "gcall",
+     "to": "gmeet",
+     "label": "Leave",
+     "t": 0.3
+    }
+   ]
+  },
+  {
+   "title": "6 · On a phone (under 720px)||6 · Trên điện thoại (dưới 720px)",
+   "caption": "One view at a time. The tab bar hides while a conversation is open. Observed in the prototype: the bottom tabs are Home, Activity, Meet, Mail and More (the phase 1 product uses Home, Activity, Later, Files, More), and the More sheet stays open over the destination after a choice is made (GAP-39).||Mỗi lúc một màn hình. Thanh tab ẩn đi khi đang mở hội thoại. Quan sát được trong prototype: các tab đáy là Home, Activity, Meet, Mail và More (sản phẩm phase 1 dùng Home, Activity, Later, Files, More), và sheet More vẫn mở đè lên màn hình đích sau khi đã chọn (GAP-39).",
+   "colWidth": 250,
+   "rowHeight": 90,
+   "nodes": [
+    {
+     "id": "list",
+     "label": "Conversation list||Danh sách hội thoại",
+     "sub": "Home tab · tab bar shown||tab Home · hiện thanh tab",
+     "col": 0,
+     "row": 1,
+     "kind": "entry",
+     "w": 190
+    },
+    {
+     "id": "conv",
+     "label": "Conversation||Hội thoại",
+     "sub": "tab bar hidden||ẩn thanh tab",
+     "col": 1.2,
+     "row": 1
+    },
+    {
+     "id": "act",
+     "label": "Action bar||Thanh hành động",
+     "sub": "under the tapped message||dưới tin vừa chạm",
+     "col": 1.2,
+     "row": 0,
+     "kind": "overlay",
+     "w": 190
+    },
+    {
+     "id": "panel",
+     "label": "Thread · Details · Profile",
+     "sub": "full screen||toàn màn hình",
+     "col": 2.4,
+     "row": 1,
+     "w": 190
+    },
+    {
+     "id": "tabs",
+     "label": "Bottom tabs||Tab đáy",
+     "sub": "Home · Activity · Meet · Mail · More",
+     "col": 0,
+     "row": 2.7,
+     "w": 210
+    },
+    {
+     "id": "sec",
+     "label": "Activity · Meet · Mail",
+     "col": 1.2,
+     "row": 2.2
+    },
+    {
+     "id": "more",
+     "label": "More",
+     "sub": "sheet",
+     "col": 1.2,
+     "row": 3.4,
+     "kind": "overlay"
+    },
+    {
+     "id": "dest",
+     "label": "Later · Files · Calendar · Tasks",
+     "sub": "People · Admin · Preferences",
+     "col": 2.4,
+     "row": 3.4,
+     "w": 220
+    }
+   ],
+   "edges": [
+    {
+     "from": "list",
+     "to": "conv",
+     "label": "tap a row||chạm một dòng"
+    },
+    {
+     "from": "conv",
+     "to": "list",
+     "label": "Back"
+    },
+    {
+     "from": "conv",
+     "to": "act",
+     "label": "tap a message||chạm một tin"
+    },
+    {
+     "from": "conv",
+     "to": "panel",
+     "label": "open||mở"
+    },
+    {
+     "from": "panel",
+     "to": "conv",
+     "label": "Back"
+    },
+    {
+     "from": "tabs",
+     "to": "list",
+     "label": "Home"
+    },
+    {
+     "from": "tabs",
+     "to": "sec",
+     "label": "tap a tab||chạm một tab"
+    },
+    {
+     "from": "tabs",
+     "to": "more",
+     "label": "More"
+    },
+    {
+     "from": "more",
+     "to": "dest",
+     "label": "pick one||chọn một mục"
+    }
+   ]
+  }
+ ]
+}

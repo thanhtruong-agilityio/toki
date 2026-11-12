@@ -1,0 +1,44 @@
+# Toki Blueprint sources
+
+The Toki Blueprint is one page that holds the prototype, the requirements, user flows, questions and gaps, the technical design, milestones and the phase 1 plan, in English and Vietnamese.
+
+Published at: https://claude.ai/code/artifact/e6b79d7f-ff70-41b2-99d6-d2cb61c33b35
+
+## Files
+
+| File | What it is |
+|---|---|
+| `blueprint.en.json` | The Blueprint's content in English. Source of truth. |
+| `blueprint.vi.json` | The same content in Vietnamese. Same ids as the English file. |
+| `flowmaps.json` | The nine journey charts on the Flows tab: nodes, edges and labels, as `English||Tiếng Việt`. |
+| `flowmaps.prototype.json` | Six screen maps drawn from a walkthrough of the prototype. Not shown on the page; kept for reference. |
+| `prototype/index.html` | A snapshot of the Toki prototype, embedded in the Prototype tab. |
+| `blueprint.html` | The built page. Not committed; rebuild it. |
+
+## Changing the Blueprint
+
+Edit the JSON, never the built HTML. Change both language files in the same edit so they keep the same ids.
+
+The build scripts belong to the `prototype-blueprint` skill (`~/.claude/skills/prototype-blueprint/scripts/`).
+
+```bash
+SKILL=~/.claude/skills/prototype-blueprint/scripts
+cd docs/blueprint
+
+# after editing flowmaps.json: redraw the charts into both data files
+python3 $SKILL/flowmap.py --spec flowmaps.json --data en=blueprint.en.json --data vi=blueprint.vi.json
+
+# check each file, and that the two languages list the same things
+python3 $SKILL/check.py --data blueprint.en.json --lang en --compare blueprint.vi.json
+python3 $SKILL/check.py --data blueprint.vi.json
+
+# build the page
+python3 $SKILL/build.py --data en=blueprint.en.json --data vi=blueprint.vi.json \
+        --prototype prototype/index.html --out blueprint.html
+```
+
+Then publish `blueprint.html` to the artifact URL above.
+
+## If these files are ever lost
+
+The published page embeds both data files as JSON in `<script id="bp-data">`, and the English data carries the chart spec at `flowsTab.spec`. Everything here except the prototype snapshot can be extracted from the page.

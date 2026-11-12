@@ -1,0 +1,1327 @@
+{
+ "title": "User flows||User flow",
+ "intro": "Each chart follows one person through one situation and branches at every question the system asks: is there a session, is the link still valid, what is the role. A diamond is a question; the arrows leaving it carry the answers. The accent outline is where a flow starts, a filled pill is where it ends well, and a red outline is a refusal or a dead end. These charts show the product's decided behaviour. The prototype has no sign-in for members, so charts 1 to 5 come from the decisions recorded in this Blueprint rather than from the prototype.||Mỗi sơ đồ đi theo một người qua một tình huống và rẽ nhánh ở mỗi câu hỏi mà hệ thống đặt ra: có phiên không, link còn hiệu lực không, vai trò là gì. Hình thoi là một câu hỏi; các mũi tên rời khỏi nó mang câu trả lời. Viền màu nhấn là nơi luồng bắt đầu, hình viên thuốc tô màu là nơi luồng kết thúc tốt, và viền đỏ là một lời từ chối hoặc ngõ cụt. Các sơ đồ này thể hiện hành vi đã chốt của sản phẩm. Prototype không có màn hình đăng nhập cho thành viên, nên sơ đồ 1 tới 5 lấy từ các quyết định ghi trong Blueprint này chứ không lấy từ prototype.",
+ "maps": [
+  {
+   "title": "1 · Opening Toki: signed in, or signing in||1 · Mở Toki: đã đăng nhập, hoặc đăng nhập",
+   "caption": "Everyone signs in the same way: Member, Admin and Owner alike. There is no password. A person who is not a member sees exactly the same screen as one who is, and simply never receives an email, so the page cannot be used to find out who belongs to the workspace.||Mọi người đăng nhập cùng một cách: Member, Admin và Owner như nhau. Không có mật khẩu. Người không phải thành viên thấy đúng màn hình như thành viên và chỉ đơn giản là không bao giờ nhận được thư, nên không ai dùng trang này để dò xem ai thuộc workspace được.",
+   "colWidth": 262,
+   "rowHeight": 80,
+   "nodes": [
+    {
+     "id": "open",
+     "label": "Open Toki||Mở Toki",
+     "col": 0,
+     "row": 0,
+     "kind": "entry"
+    },
+    {
+     "id": "sess",
+     "label": "Valid session here?||Còn phiên ở máy này?",
+     "col": 0,
+     "row": 1.1,
+     "kind": "decision"
+    },
+    {
+     "id": "home",
+     "label": "Home",
+     "col": 0,
+     "row": 7.7,
+     "kind": "end",
+     "sub": "last conversation viewed||hội thoại xem lần cuối"
+    },
+    {
+     "id": "login",
+     "label": "Sign-in page||Trang đăng nhập",
+     "col": 1.15,
+     "row": 1.18,
+     "kind": "step",
+     "sub": "enter email, press Send code||nhập email, bấm Gửi mã",
+     "w": 200
+    },
+    {
+     "id": "many",
+     "label": "'Too many codes requested'",
+     "col": 2.4,
+     "row": 0.2,
+     "kind": "error",
+     "sub": "over 5 in 15 minutes: wait||quá 5 lần trong 15 phút: chờ",
+     "w": 230
+    },
+    {
+     "id": "member",
+     "label": "Email is a member?||Email là thành viên?",
+     "col": 1.17,
+     "row": 2.3,
+     "kind": "decision"
+    },
+    {
+     "id": "nomail",
+     "label": "No email is sent||Không gửi thư nào",
+     "col": 2.4,
+     "row": 2.38,
+     "kind": "error",
+     "sub": "the screen looks the same||màn hình vẫn như thường",
+     "w": 230
+    },
+    {
+     "id": "check",
+     "label": "'Check your email'",
+     "col": 1.15,
+     "row": 3.5,
+     "kind": "step",
+     "sub": "6-digit code, valid 10 minutes||mã 6 số, hiệu lực 10 phút",
+     "w": 200
+    },
+    {
+     "id": "enter",
+     "label": "Type the code||Nhập mã",
+     "col": 1.15,
+     "row": 4.5,
+     "kind": "step",
+     "sub": "or press the button in the email||hoặc bấm nút trong thư",
+     "w": 200
+    },
+    {
+     "id": "d1",
+     "label": "Code correct?||Mã đúng?",
+     "col": 1.17,
+     "row": 5.5,
+     "kind": "decision"
+    },
+    {
+     "id": "wrong",
+     "label": "'That code is not right'",
+     "col": 2.4,
+     "row": 5.0,
+     "kind": "error",
+     "sub": "4 tries left; the 5th locks the code||còn 4 lần; lần thứ 5 khóa mã",
+     "w": 240
+    },
+    {
+     "id": "d2",
+     "label": "Within 10 minutes?||Trong 10 phút?",
+     "col": 1.17,
+     "row": 6.6,
+     "kind": "decision"
+    },
+    {
+     "id": "expired",
+     "label": "'This code has expired'",
+     "col": 2.4,
+     "row": 6.68,
+     "kind": "error",
+     "sub": "Send a new code",
+     "w": 240
+    },
+    {
+     "id": "d3",
+     "label": "Account active?||Tài khoản hoạt động?",
+     "col": 1.17,
+     "row": 7.62,
+     "kind": "decision"
+    },
+    {
+     "id": "deact",
+     "label": "'This account has been deactivated'",
+     "col": 2.4,
+     "row": 7.7,
+     "kind": "error",
+     "sub": "contact an admin||liên hệ admin",
+     "w": 250
+    }
+   ],
+   "edges": [
+    {
+     "from": "open",
+     "to": "sess"
+    },
+    {
+     "from": "sess",
+     "to": "home",
+     "label": "yes||có",
+     "t": 0.12
+    },
+    {
+     "from": "sess",
+     "to": "login",
+     "label": "no||không"
+    },
+    {
+     "from": "login",
+     "to": "many",
+     "label": "asks too often||xin quá nhiều lần",
+     "t": 0.5
+    },
+    {
+     "from": "login",
+     "to": "member",
+     "label": "Send code"
+    },
+    {
+     "from": "member",
+     "to": "nomail",
+     "label": "no||không"
+    },
+    {
+     "from": "member",
+     "to": "check",
+     "label": "yes||có"
+    },
+    {
+     "from": "check",
+     "to": "enter",
+     "label": "email arrives||thư tới"
+    },
+    {
+     "from": "enter",
+     "to": "d1"
+    },
+    {
+     "from": "d1",
+     "to": "wrong",
+     "label": "no||không"
+    },
+    {
+     "from": "wrong",
+     "to": "enter",
+     "label": "try again||thử lại",
+     "t": 0.22
+    },
+    {
+     "from": "d1",
+     "to": "d2",
+     "label": "yes||có"
+    },
+    {
+     "from": "d2",
+     "to": "expired",
+     "label": "no||không"
+    },
+    {
+     "from": "expired",
+     "to": "check",
+     "label": "new code||mã mới",
+     "t": 0.14
+    },
+    {
+     "from": "d2",
+     "to": "d3",
+     "label": "yes||có"
+    },
+    {
+     "from": "d3",
+     "to": "deact",
+     "label": "no||không"
+    },
+    {
+     "from": "d3",
+     "to": "home",
+     "label": "yes||có"
+    }
+   ]
+  },
+  {
+   "title": "2 · Opening an invitation link||2 · Mở link trong thư mời",
+   "caption": "The link in an invitation proves control of the email address, so it signs the person in without a code, once. Used, expired and revoked links each say plainly what happened.||Link trong thư mời đã chứng minh quyền dùng địa chỉ email, nên nó đăng nhập thẳng không cần mã, một lần duy nhất. Link đã dùng, hết hạn hay bị thu hồi đều nói rõ chuyện gì đã xảy ra.",
+   "colWidth": 268,
+   "rowHeight": 82,
+   "nodes": [
+    {
+     "id": "inv",
+     "label": "An admin invites an email||Admin mời một email",
+     "col": 0,
+     "row": 0,
+     "kind": "entry",
+     "sub": "Admin page, Invite members||trang Admin, Invite members",
+     "w": 210
+    },
+    {
+     "id": "mail",
+     "label": "Invitation email||Thư mời",
+     "col": 0,
+     "row": 1.05,
+     "kind": "step",
+     "sub": "Join button, valid 7 days||nút Join, hiệu lực 7 ngày",
+     "w": 210
+    },
+    {
+     "id": "click",
+     "label": "The person presses Join||Người được mời bấm Join",
+     "col": 0,
+     "row": 2.1,
+     "kind": "step",
+     "w": 210
+    },
+    {
+     "id": "d",
+     "label": "State of the link?||Trạng thái của link?",
+     "col": 0.04,
+     "row": 3.15,
+     "kind": "decision"
+    },
+    {
+     "id": "signed",
+     "label": "Signed in directly||Đăng nhập thẳng",
+     "col": 0,
+     "row": 4.4,
+     "kind": "step",
+     "sub": "no code needed||không cần mã",
+     "w": 210
+    },
+    {
+     "id": "welcome",
+     "label": "Welcome screen, once||Màn hình chào, một lần",
+     "col": 0,
+     "row": 5.45,
+     "kind": "step",
+     "sub": "name, job title, time zone||tên, chức danh, múi giờ",
+     "w": 210
+    },
+    {
+     "id": "homeg",
+     "label": "Home, already in #general||Home, đã ở trong #general",
+     "col": 0,
+     "row": 6.5,
+     "kind": "end",
+     "sub": "then a card: turn on notifications?||rồi một thẻ: bật thông báo?",
+     "w": 230
+    },
+    {
+     "id": "used",
+     "label": "Normal sign-in page||Trang đăng nhập thường",
+     "col": 1.25,
+     "row": 2.2,
+     "kind": "step",
+     "sub": "email filled in; continue with flow 1||email điền sẵn; tiếp theo luồng 1",
+     "w": 250
+    },
+    {
+     "id": "exp",
+     "label": "'This invitation has expired'",
+     "col": 1.25,
+     "row": 3.23,
+     "kind": "error",
+     "sub": "ask the person who invited you||hỏi người đã mời bạn",
+     "w": 250
+    },
+    {
+     "id": "rev",
+     "label": "'This invitation was withdrawn'",
+     "col": 1.25,
+     "row": 4.3,
+     "kind": "error",
+     "sub": "ask the person who invited you||hỏi người đã mời bạn",
+     "w": 250
+    },
+    {
+     "id": "resend",
+     "label": "The admin presses Resend||Admin bấm Resend",
+     "col": 2.45,
+     "row": 1.05,
+     "kind": "step",
+     "sub": "the row shows Expired||dòng hiện Expired",
+     "w": 210
+    }
+   ],
+   "edges": [
+    {
+     "from": "inv",
+     "to": "mail",
+     "label": "Send invitations"
+    },
+    {
+     "from": "mail",
+     "to": "click"
+    },
+    {
+     "from": "click",
+     "to": "d"
+    },
+    {
+     "from": "d",
+     "to": "signed",
+     "label": "valid||còn hiệu lực"
+    },
+    {
+     "from": "signed",
+     "to": "welcome"
+    },
+    {
+     "from": "welcome",
+     "to": "homeg",
+     "label": "Enter Toki"
+    },
+    {
+     "from": "d",
+     "to": "used",
+     "label": "already used||đã dùng rồi",
+     "t": 0.55
+    },
+    {
+     "from": "d",
+     "to": "exp",
+     "label": "older than 7 days||quá 7 ngày"
+    },
+    {
+     "from": "d",
+     "to": "rev",
+     "label": "revoked||bị thu hồi",
+     "t": 0.55
+    },
+    {
+     "from": "exp",
+     "to": "resend",
+     "label": "the admin sees it||admin thấy",
+     "t": 0.5
+    },
+    {
+     "from": "resend",
+     "to": "mail",
+     "label": "a new email||thư mới",
+     "t": 0.5
+    }
+   ]
+  },
+  {
+   "title": "3 · The first Owner, and getting in when email fails||3 · Owner đầu tiên, và cách vào khi email hỏng",
+   "caption": "Nobody registers. The first Owner exists because the server created it from its configuration, and then signs in like everyone else. If email cannot be delivered, someone with access to the server issues a one-time link.||Không ai tự đăng ký. Owner đầu tiên tồn tại vì server tạo ra nó từ cấu hình, rồi đăng nhập như mọi người khác. Nếu thư không gửi được, người có quyền truy cập server cấp một link dùng một lần.",
+   "colWidth": 270,
+   "rowHeight": 82,
+   "nodes": [
+    {
+     "id": "start",
+     "label": "The server starts||Server khởi động",
+     "col": 0,
+     "row": 0,
+     "kind": "entry"
+    },
+    {
+     "id": "d1",
+     "label": "Any account yet?||Đã có tài khoản nào?",
+     "col": 0,
+     "row": 1.05,
+     "kind": "decision"
+    },
+    {
+     "id": "skip",
+     "label": "Setup variables are ignored||Bỏ qua các biến khởi tạo",
+     "col": 1.25,
+     "row": 1.13,
+     "kind": "step",
+     "sub": "nothing is created or changed||không tạo hay sửa gì",
+     "w": 240
+    },
+    {
+     "id": "d0",
+     "label": "Variables complete?||Đủ biến môi trường?",
+     "col": 0,
+     "row": 2.2,
+     "kind": "decision"
+    },
+    {
+     "id": "fail",
+     "label": "The server does not start||Server không khởi động",
+     "col": 1.25,
+     "row": 2.28,
+     "kind": "error",
+     "sub": "prints the missing variable||in ra tên biến bị thiếu",
+     "w": 240
+    },
+    {
+     "id": "create",
+     "label": "Creates workspace, Owner, #general||Tạo workspace, Owner, #general",
+     "col": 0,
+     "row": 3.4,
+     "kind": "step",
+     "w": 240
+    },
+    {
+     "id": "signin",
+     "label": "The Owner signs in with a code||Owner đăng nhập bằng mã",
+     "col": 0,
+     "row": 4.4,
+     "kind": "step",
+     "sub": "same as everyone: flow 1||như mọi người: luồng 1",
+     "w": 240
+    },
+    {
+     "id": "d2",
+     "label": "Does the email arrive?||Thư có tới không?",
+     "col": 0.1,
+     "row": 5.4,
+     "kind": "decision"
+    },
+    {
+     "id": "homeo",
+     "label": "Home, empty #general||Home, #general trống",
+     "col": 0,
+     "row": 6.65,
+     "kind": "end",
+     "sub": "invite, create a channel, set status||mời, tạo kênh, đặt status",
+     "w": 240
+    },
+    {
+     "id": "cmd",
+     "label": "Run the admin command on the server||Chạy lệnh quản trị trên server",
+     "col": 1.25,
+     "row": 5.48,
+     "kind": "step",
+     "sub": "with that member's email||kèm email của thành viên đó",
+     "w": 260
+    },
+    {
+     "id": "refuse",
+     "label": "Refused||Bị từ chối",
+     "col": 2.85,
+     "row": 4.4,
+     "kind": "error",
+     "sub": "not a member, or deactivated||không phải thành viên, hoặc đã vô hiệu hóa",
+     "w": 240
+    },
+    {
+     "id": "link",
+     "label": "One-time link||Link dùng một lần",
+     "col": 2.85,
+     "row": 5.48,
+     "kind": "step",
+     "sub": "expires after 10 minutes; logged||hết hạn sau 10 phút; có ghi log",
+     "w": 240
+    }
+   ],
+   "edges": [
+    {
+     "from": "start",
+     "to": "d1"
+    },
+    {
+     "from": "d1",
+     "to": "skip",
+     "label": "yes||có"
+    },
+    {
+     "from": "d1",
+     "to": "d0",
+     "label": "no||không"
+    },
+    {
+     "from": "d0",
+     "to": "fail",
+     "label": "no||không"
+    },
+    {
+     "from": "d0",
+     "to": "create",
+     "label": "yes||có"
+    },
+    {
+     "from": "create",
+     "to": "signin"
+    },
+    {
+     "from": "signin",
+     "to": "d2"
+    },
+    {
+     "from": "d2",
+     "to": "homeo",
+     "label": "yes||có"
+    },
+    {
+     "from": "d2",
+     "to": "cmd",
+     "label": "no||không"
+    },
+    {
+     "from": "cmd",
+     "to": "link",
+     "label": "member and active||là thành viên, đang hoạt động"
+    },
+    {
+     "from": "cmd",
+     "to": "refuse",
+     "label": "otherwise||nếu không",
+     "t": 0.55
+    },
+    {
+     "from": "link",
+     "to": "homeo",
+     "label": "open the link||mở link",
+     "t": 0.4
+    }
+   ]
+  },
+  {
+   "title": "4 · After signing in: what a Member, an Admin and an Owner each reach||4 · Sau khi đăng nhập: Member, Admin và Owner mỗi người tới được đâu",
+   "caption": "An admin signs in exactly like a member; the only difference is what appears afterwards. A role adds management, never access: no role opens a private channel or a DM the person is not in.||Admin đăng nhập y hệt member; khác biệt duy nhất là những gì hiện ra sau đó. Vai trò chỉ thêm quyền quản lý, không thêm quyền xem: không vai trò nào mở được kênh riêng tư hay DM mà người đó không tham gia.",
+   "colWidth": 250,
+   "rowHeight": 86,
+   "nodes": [
+    {
+     "id": "in",
+     "label": "Signed in||Đã đăng nhập",
+     "col": 0,
+     "row": 1.5,
+     "kind": "entry",
+     "sub": "flow 1||luồng 1",
+     "w": 150
+    },
+    {
+     "id": "all",
+     "label": "Home, the same for everyone||Home, giống nhau với mọi người",
+     "col": 0,
+     "row": 3.0,
+     "kind": "step",
+     "sub": "only the conversations they belong to||chỉ các hội thoại mình tham gia",
+     "w": 250
+    },
+    {
+     "id": "role",
+     "label": "Role?||Vai trò?",
+     "col": 0.82,
+     "row": 1.4,
+     "kind": "decision",
+     "w": 150
+    },
+    {
+     "id": "mem",
+     "label": "Member",
+     "col": 1.75,
+     "row": 0,
+     "kind": "step",
+     "sub": "no Admin item in navigation||không có mục Admin trong điều hướng",
+     "w": 230
+    },
+    {
+     "id": "adm",
+     "label": "Admin",
+     "col": 1.75,
+     "row": 1.5,
+     "kind": "step",
+     "sub": "the Admin item appears||mục Admin hiện ra",
+     "w": 230
+    },
+    {
+     "id": "own",
+     "label": "Owner",
+     "col": 1.75,
+     "row": 3.0,
+     "kind": "step",
+     "sub": "the Admin item appears||mục Admin hiện ra",
+     "w": 230
+    },
+    {
+     "id": "memtry",
+     "label": "'You do not have access to this page'",
+     "col": 3.25,
+     "row": 0,
+     "kind": "error",
+     "sub": "on typing /admin directly||khi gõ thẳng /admin",
+     "w": 270
+    },
+    {
+     "id": "admdo",
+     "label": "Member table||Bảng thành viên",
+     "col": 3.25,
+     "row": 1.5,
+     "kind": "step",
+     "sub": "invite as Member; deactivate Members||mời vai trò Member; vô hiệu hóa Member",
+     "w": 270
+    },
+    {
+     "id": "owndo",
+     "label": "Member table||Bảng thành viên",
+     "col": 3.25,
+     "row": 3.0,
+     "kind": "step",
+     "sub": "also: change roles, invite any role||thêm: đổi vai trò, mời mọi vai trò",
+     "w": 270
+    },
+    {
+     "id": "last",
+     "label": "The last Owner is protected||Owner cuối cùng được bảo vệ",
+     "col": 3.25,
+     "row": 4.1,
+     "kind": "error",
+     "sub": "cannot be demoted or deactivated||không hạ vai trò hay vô hiệu hóa được",
+     "w": 270
+    }
+   ],
+   "edges": [
+    {
+     "from": "in",
+     "to": "role"
+    },
+    {
+     "from": "in",
+     "to": "all",
+     "label": "always||luôn luôn"
+    },
+    {
+     "from": "role",
+     "to": "mem",
+     "label": "Member"
+    },
+    {
+     "from": "role",
+     "to": "adm",
+     "label": "Admin"
+    },
+    {
+     "from": "role",
+     "to": "own",
+     "label": "Owner"
+    },
+    {
+     "from": "mem",
+     "to": "memtry",
+     "label": "opens /admin||mở /admin"
+    },
+    {
+     "from": "adm",
+     "to": "admdo",
+     "label": "opens Admin||mở Admin"
+    },
+    {
+     "from": "own",
+     "to": "owndo",
+     "label": "opens Admin||mở Admin"
+    },
+    {
+     "from": "owndo",
+     "to": "last",
+     "label": "acting on the last Owner||thao tác trên Owner cuối"
+    }
+   ]
+  },
+  {
+   "title": "5 · The session ends while Toki is in use||5 · Phiên kết thúc khi đang dùng Toki",
+   "caption": "Nothing typed is lost when a session simply expires. A deactivated account gets no way back in.||Không mất gì đã gõ khi phiên chỉ đơn giản hết hạn. Tài khoản bị vô hiệu hóa thì không có đường vào lại.",
+   "colWidth": 262,
+   "rowHeight": 84,
+   "nodes": [
+    {
+     "id": "use",
+     "label": "Using Toki||Đang dùng Toki",
+     "col": 0,
+     "row": 0.75,
+     "kind": "entry",
+     "w": 150
+    },
+    {
+     "id": "why",
+     "label": "Why was it refused?||Vì sao bị từ chối?",
+     "col": 0.86,
+     "row": 0.65,
+     "kind": "decision"
+    },
+    {
+     "id": "exp",
+     "label": "Session expired, or signed out from another device||Phiên hết hạn, hoặc bị đăng xuất từ thiết bị khác",
+     "col": 1.6,
+     "row": 1.5,
+     "kind": "step",
+     "w": 330
+    },
+    {
+     "id": "deact",
+     "label": "The account was deactivated||Tài khoản bị vô hiệu hóa",
+     "col": 1.6,
+     "row": 0,
+     "kind": "step",
+     "w": 330
+    },
+    {
+     "id": "scr1",
+     "label": "'Your session has ended'",
+     "col": 3.0,
+     "row": 1.5,
+     "kind": "step",
+     "sub": "Sign in again",
+     "w": 210
+    },
+    {
+     "id": "scr2",
+     "label": "'This account has been deactivated'",
+     "col": 3.0,
+     "row": 0,
+     "kind": "error",
+     "sub": "no sign-in button||không có nút đăng nhập",
+     "w": 250
+    },
+    {
+     "id": "ret",
+     "label": "The same conversation, draft still there||Đúng hội thoại cũ, nháp vẫn còn",
+     "col": 3.0,
+     "row": 2.8,
+     "kind": "end",
+     "sub": "after signing in: flow 1||sau khi đăng nhập: luồng 1",
+     "w": 290
+    }
+   ],
+   "edges": [
+    {
+     "from": "use",
+     "to": "why",
+     "label": "next request||request kế tiếp"
+    },
+    {
+     "from": "why",
+     "to": "exp"
+    },
+    {
+     "from": "why",
+     "to": "deact"
+    },
+    {
+     "from": "exp",
+     "to": "scr1"
+    },
+    {
+     "from": "deact",
+     "to": "scr2"
+    },
+    {
+     "from": "scr1",
+     "to": "ret",
+     "label": "Sign in again",
+     "t": 0.5
+    }
+   ]
+  },
+  {
+   "title": "6 · Opening a link to a conversation or a message||6 · Mở link tới một hội thoại hoặc một tin nhắn",
+   "caption": "What a signed-in person gets depends only on membership. A private channel never reveals even its name to someone outside it.||Người đã đăng nhập nhận được gì chỉ phụ thuộc vào việc có là thành viên không. Kênh riêng tư không bao giờ lộ ra cả tên của nó cho người ngoài.",
+   "colWidth": 258,
+   "rowHeight": 84,
+   "nodes": [
+    {
+     "id": "link",
+     "label": "Open a link||Mở một link",
+     "col": 0,
+     "row": 1.3,
+     "kind": "entry",
+     "sub": "signed in||đã đăng nhập",
+     "w": 150
+    },
+    {
+     "id": "d1",
+     "label": "A member of it?||Là thành viên?",
+     "col": 0.75,
+     "row": 1.2,
+     "kind": "decision"
+    },
+    {
+     "id": "arch",
+     "label": "Archived channel||Kênh đã lưu trữ",
+     "col": 1.75,
+     "row": 0,
+     "kind": "step",
+     "sub": "readable; the composer is locked||đọc được; ô soạn bị khóa",
+     "w": 250
+    },
+    {
+     "id": "conv",
+     "label": "The conversation, at that message||Hội thoại, tới đúng tin đó",
+     "col": 1.75,
+     "row": 1.3,
+     "kind": "end",
+     "sub": "it flashes for 2 seconds||nháy sáng 2 giây",
+     "w": 250
+    },
+    {
+     "id": "d2",
+     "label": "A public channel?||Kênh công khai?",
+     "col": 0.75,
+     "row": 2.7,
+     "kind": "decision"
+    },
+    {
+     "id": "prev",
+     "label": "Read-only preview||Xem trước chỉ đọc",
+     "col": 1.75,
+     "row": 2.78,
+     "kind": "step",
+     "sub": "with a Join button||kèm nút Join",
+     "w": 250
+    },
+    {
+     "id": "join",
+     "label": "Joined, with the full history||Đã tham gia, đủ lịch sử",
+     "col": 2.95,
+     "row": 2.78,
+     "kind": "end",
+     "w": 230
+    },
+    {
+     "id": "noacc",
+     "label": "'You do not have access to this conversation'",
+     "col": 1.75,
+     "row": 4.0,
+     "kind": "error",
+     "sub": "the channel name is not shown||không hiện tên kênh",
+     "w": 320
+    }
+   ],
+   "edges": [
+    {
+     "from": "link",
+     "to": "d1"
+    },
+    {
+     "from": "d1",
+     "to": "conv",
+     "label": "yes||có"
+    },
+    {
+     "from": "d1",
+     "to": "arch",
+     "label": "yes, archived||có, đã lưu trữ",
+     "t": 0.55
+    },
+    {
+     "from": "d1",
+     "to": "d2",
+     "label": "no||không"
+    },
+    {
+     "from": "d2",
+     "to": "prev",
+     "label": "yes||có"
+    },
+    {
+     "from": "prev",
+     "to": "join",
+     "label": "Join"
+    },
+    {
+     "from": "d2",
+     "to": "noacc",
+     "label": "no: private, or a DM||không: riêng tư, hoặc DM",
+     "t": 0.6
+    }
+   ]
+  },
+  {
+   "title": "7 · Sending a message||7 · Gửi một tin nhắn",
+   "caption": "The message is on screen before the server answers. If the server never answers, the message stays with a way to retry; it is never silently dropped.||Tin đã hiện trên màn hình trước khi server trả lời. Nếu server không trả lời, tin vẫn ở đó kèm cách thử lại; không bao giờ lặng lẽ biến mất.",
+   "colWidth": 262,
+   "rowHeight": 80,
+   "nodes": [
+    {
+     "id": "type",
+     "label": "Type, then press Enter||Gõ, rồi nhấn Enter",
+     "col": 0,
+     "row": 0,
+     "kind": "entry",
+     "w": 190
+    },
+    {
+     "id": "d0",
+     "label": "Anything to send?||Có gì để gửi?",
+     "col": 0,
+     "row": 1.05,
+     "kind": "decision"
+    },
+    {
+     "id": "nothing",
+     "label": "Nothing happens||Không có gì xảy ra",
+     "col": 1.2,
+     "row": 1.13,
+     "kind": "step",
+     "sub": "empty, or only spaces||trống, hoặc chỉ khoảng trắng",
+     "w": 230
+    },
+    {
+     "id": "d1",
+     "label": "Under 10,000 characters?||Dưới 10.000 ký tự?",
+     "col": -0.03,
+     "row": 2.2,
+     "kind": "decision",
+     "w": 206
+    },
+    {
+     "id": "lock",
+     "label": "Send is locked||Nút gửi bị khóa",
+     "col": 1.2,
+     "row": 2.28,
+     "kind": "error",
+     "sub": "a counter shows the excess||bộ đếm hiện phần vượt",
+     "w": 230
+    },
+    {
+     "id": "shown",
+     "label": "It appears at once, faded||Hiện ngay, hơi mờ",
+     "col": 0,
+     "row": 3.4,
+     "kind": "step",
+     "sub": "the composer empties||ô soạn trống lại",
+     "w": 190
+    },
+    {
+     "id": "d2",
+     "label": "Server confirms?||Server xác nhận?",
+     "col": 0,
+     "row": 4.4,
+     "kind": "decision"
+    },
+    {
+     "id": "ok",
+     "label": "Solid; others see it at once||Rõ lại; người khác thấy ngay",
+     "col": 0,
+     "row": 5.65,
+     "kind": "end",
+     "w": 230
+    },
+    {
+     "id": "fail",
+     "label": "'Not sent'",
+     "col": 1.2,
+     "row": 4.48,
+     "kind": "error",
+     "sub": "Retry, or Delete||Thử lại, hoặc Xóa",
+     "w": 230
+    },
+    {
+     "id": "auto",
+     "label": "The connection returns||Có mạng lại",
+     "col": 1.2,
+     "row": 5.65,
+     "kind": "step",
+     "sub": "one automatic retry||tự thử lại một lần",
+     "w": 230
+    }
+   ],
+   "edges": [
+    {
+     "from": "type",
+     "to": "d0"
+    },
+    {
+     "from": "d0",
+     "to": "nothing",
+     "label": "no||không"
+    },
+    {
+     "from": "d0",
+     "to": "d1",
+     "label": "yes||có"
+    },
+    {
+     "from": "d1",
+     "to": "lock",
+     "label": "no||không"
+    },
+    {
+     "from": "d1",
+     "to": "shown",
+     "label": "yes||có"
+    },
+    {
+     "from": "shown",
+     "to": "d2"
+    },
+    {
+     "from": "d2",
+     "to": "ok",
+     "label": "yes||có"
+    },
+    {
+     "from": "d2",
+     "to": "fail",
+     "label": "no: network||không: mạng"
+    },
+    {
+     "from": "fail",
+     "to": "auto"
+    },
+    {
+     "from": "auto",
+     "to": "ok",
+     "label": "sent||gửi được"
+    }
+   ]
+  },
+  {
+   "title": "8 · You are mentioned: what reaches you||8 · Bạn được nhắc: cái gì tới được bạn",
+   "caption": "Four questions, asked in this order, decide how loudly a mention arrives. In every case the message has a yellow background when read and an item is added to Activity.||Bốn câu hỏi, hỏi theo đúng thứ tự này, quyết định một mention tới ồn ào cỡ nào. Trong mọi trường hợp, tin có nền vàng khi được đọc và một mục được thêm vào Activity.",
+   "colWidth": 270,
+   "rowHeight": 84,
+   "nodes": [
+    {
+     "id": "m",
+     "label": "Someone posts @you||Ai đó gửi tin có @bạn",
+     "col": 0,
+     "row": 0.08,
+     "kind": "entry",
+     "w": 190
+    },
+    {
+     "id": "d1",
+     "label": "In Pause or Focus?||Đang Pause hay Focus?",
+     "col": 1.0,
+     "row": 0,
+     "kind": "decision",
+     "w": 200
+    },
+    {
+     "id": "quiet",
+     "label": "Silent: badges and Activity only||Im lặng: chỉ badge và Activity",
+     "col": 2.1,
+     "row": 0.08,
+     "kind": "step",
+     "sub": "one summary when it ends||một tổng kết khi kết thúc",
+     "w": 270
+    },
+    {
+     "id": "d2",
+     "label": "Muted, or level Nothing?||Tắt tiếng, hay mức Nothing?",
+     "col": 0.96,
+     "row": 1.2,
+     "kind": "decision",
+     "w": 222
+    },
+    {
+     "id": "dot",
+     "label": "An @ dot and the Activity item only||Chỉ chấm @ và mục Activity",
+     "col": 2.1,
+     "row": 1.28,
+     "kind": "step",
+     "sub": "unless 'even in muted channels' is on||trừ khi bật 'cả ở kênh đã tắt tiếng'",
+     "w": 270
+    },
+    {
+     "id": "d3",
+     "label": "Viewing that channel?||Đang xem kênh đó?",
+     "col": 1.0,
+     "row": 2.4,
+     "kind": "decision",
+     "w": 200
+    },
+    {
+     "id": "inplace",
+     "label": "The message simply appears||Tin chỉ đơn giản hiện ra",
+     "col": 2.1,
+     "row": 2.48,
+     "kind": "step",
+     "sub": "no toast, no push||không toast, không push",
+     "w": 270
+    },
+    {
+     "id": "d4",
+     "label": "Is the app open?||App đang mở?",
+     "col": 1.0,
+     "row": 3.6,
+     "kind": "decision",
+     "w": 200
+    },
+    {
+     "id": "toast",
+     "label": "Toast, badges, sound if on||Toast, badge, âm thanh nếu bật",
+     "col": 2.1,
+     "row": 3.68,
+     "kind": "step",
+     "sub": "plus a push if the tab is hidden||thêm push nếu tab bị ẩn",
+     "w": 270
+    },
+    {
+     "id": "push",
+     "label": "Push to every device||Push tới mọi thiết bị",
+     "col": 1.04,
+     "row": 4.85,
+     "kind": "end",
+     "sub": "badges wait for the next open||badge chờ lần mở kế tiếp",
+     "w": 190
+    }
+   ],
+   "edges": [
+    {
+     "from": "m",
+     "to": "d1"
+    },
+    {
+     "from": "d1",
+     "to": "quiet",
+     "label": "yes||có"
+    },
+    {
+     "from": "d1",
+     "to": "d2",
+     "label": "no||không"
+    },
+    {
+     "from": "d2",
+     "to": "dot",
+     "label": "yes||có"
+    },
+    {
+     "from": "d2",
+     "to": "d3",
+     "label": "no||không"
+    },
+    {
+     "from": "d3",
+     "to": "inplace",
+     "label": "yes||có"
+    },
+    {
+     "from": "d3",
+     "to": "d4",
+     "label": "no||không"
+    },
+    {
+     "from": "d4",
+     "to": "toast",
+     "label": "yes||có"
+    },
+    {
+     "from": "d4",
+     "to": "push",
+     "label": "no||không"
+    }
+   ]
+  },
+  {
+   "title": "9 · A guest's access, from invitation to expiry (phase 5)||9 · Quyền của khách, từ lời mời tới lúc hết hạn (phase 5)",
+   "caption": "A guest never gets an account: only a dated pass to one channel. When the date passes the guest is signed out everywhere, and a member can extend it.||Khách không bao giờ có tài khoản: chỉ có một tấm vé có hạn vào một kênh. Khi quá hạn, khách bị đăng xuất ở mọi nơi, và một thành viên có thể gia hạn.",
+   "colWidth": 268,
+   "rowHeight": 82,
+   "nodes": [
+    {
+     "id": "inv",
+     "label": "A member invites a client||Thành viên mời một khách",
+     "col": 0,
+     "row": 0,
+     "kind": "entry",
+     "sub": "email and an expiry date||email và ngày hết hạn",
+     "w": 220
+    },
+    {
+     "id": "d0",
+     "label": "Date in the future?||Ngày ở tương lai?",
+     "col": 0.06,
+     "row": 1.05,
+     "kind": "decision"
+    },
+    {
+     "id": "rej",
+     "label": "Rejected||Bị từ chối",
+     "col": 1.25,
+     "row": 1.13,
+     "kind": "error",
+     "sub": "a past date is not accepted||không nhận ngày quá khứ",
+     "w": 230
+    },
+    {
+     "id": "gmail",
+     "label": "Invitation email||Thư mời",
+     "col": 0,
+     "row": 2.25,
+     "kind": "step",
+     "w": 220
+    },
+    {
+     "id": "reinv",
+     "label": "The same email invited again||Mời lại cùng email",
+     "col": 1.25,
+     "row": 2.25,
+     "kind": "step",
+     "sub": "updates the date; no second guest||cập nhật hạn; không tạo khách thứ hai",
+     "w": 260
+    },
+    {
+     "id": "gsign",
+     "label": "The guest enters email, then the code||Khách nhập email, rồi nhập mã",
+     "col": 0,
+     "row": 3.3,
+     "kind": "step",
+     "w": 250
+    },
+    {
+     "id": "d1",
+     "label": "Access still valid?||Còn hạn truy cập?",
+     "col": 0.06,
+     "row": 4.3,
+     "kind": "decision"
+    },
+    {
+     "id": "portal",
+     "label": "Guest portal||Cổng khách",
+     "col": 0,
+     "row": 5.55,
+     "kind": "end",
+     "sub": "one channel: Messages, Files, Meet||một kênh: Messages, Files, Meet",
+     "w": 250
+    },
+    {
+     "id": "expd",
+     "label": "'Your access has expired'",
+     "col": 1.25,
+     "row": 4.38,
+     "kind": "error",
+     "sub": "contact the person who invited you||liên hệ người đã mời bạn",
+     "w": 260
+    },
+    {
+     "id": "ext",
+     "label": "A member extends access||Một thành viên gia hạn",
+     "col": 2.5,
+     "row": 4.38,
+     "kind": "step",
+     "sub": "from the channel's Details||từ Details của kênh",
+     "w": 220
+    }
+   ],
+   "edges": [
+    {
+     "from": "inv",
+     "to": "d0"
+    },
+    {
+     "from": "d0",
+     "to": "rej",
+     "label": "no||không"
+    },
+    {
+     "from": "d0",
+     "to": "gmail",
+     "label": "yes||có"
+    },
+    {
+     "from": "gmail",
+     "to": "reinv",
+     "label": "later||về sau"
+    },
+    {
+     "from": "gmail",
+     "to": "gsign",
+     "label": "the guest opens the link||khách mở link"
+    },
+    {
+     "from": "gsign",
+     "to": "d1"
+    },
+    {
+     "from": "d1",
+     "to": "portal",
+     "label": "yes||có"
+    },
+    {
+     "from": "d1",
+     "to": "expd",
+     "label": "no||không"
+    },
+    {
+     "from": "expd",
+     "to": "ext"
+    },
+    {
+     "from": "ext",
+     "to": "gsign",
+     "label": "can sign in again||đăng nhập lại được",
+     "t": 0.45
+    }
+   ]
+  }
+ ]
+}
