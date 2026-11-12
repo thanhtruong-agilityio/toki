@@ -8,7 +8,7 @@ Ticket: TOKI-006
 The builder needs a running web app in `apps/web` that later screens are added to. It must have one place for pages and navigation, one place for loading data from the server, and a development connection to the server. Without it, the test harness (TOKI-008) and every later web screen have nothing to build on.
 
 ## Scope
-- In: the Vite + React app in `apps/web`; TanStack Router with a root route, one empty index page and a not-found view; one TanStack Query client and its provider; the dev proxy for `/api/v1`; the `dev`, `build` and `typecheck` scripts of `apps/web`.
+- In: the Vite + React app in `apps/web`; TanStack Router with a root route, one index page that shows only the product name and a not-found view; one TanStack Query client and its provider; the dev proxy for `/api/v1`; the `dev`, `build` and `typecheck` scripts of `apps/web`.
 - Out (not now):
   - Monorepo, package folders, shared TypeScript config and the root `pnpm dev` script: TOKI-001. This ticket does not edit the root script.
   - ESLint, Prettier and the boundary lint rules: TOKI-002.
@@ -24,12 +24,12 @@ The builder needs a running web app in `apps/web` that later screens are added t
 
 ## Requirements
 - R1. `pnpm --filter ./apps/web dev` starts the Vite dev server and prints a local URL.
-- R2. Opening that URL at `/` returns HTTP 200 and renders the empty index page, with no error in the browser console.
+- R2. Opening that URL at `/` returns HTTP 200 and the page shows the text "Toki" in the element with `data-testid="app-root"`. No script error from the app appears in the browser console (a missing favicon does not count; icons come with TOKI-011).
 - R3. All routes are declared under `apps/web/src/routes/`; the router is created in one file, `apps/web/src/router.tsx`, and no other file creates a router.
 - R4. Opening an unknown path (for example `/no-such-page`) shows the not-found view with the text "Page not found", not a blank page or an uncaught error.
 - R5. One Query client is created in `apps/web/src/query-client.ts` and provided to the whole app; a search for `new QueryClient(` in `apps/web/src` finds exactly one match.
 - R6. In development, a request to `<web dev URL>/api/v1/<path>` is forwarded to the server with the path unchanged; with a server listening on the proxy target, `curl <web dev URL>/api/v1/<path>` shows that server's response.
-- R7. The proxy target is read from one environment variable, whose name is the one given in the TOKI-096 inventory, with a default for local development; changing the variable and restarting the dev server sends the same `curl` to the new target.
+- R7. The proxy target is read from one environment variable, whose name is the one given in the TOKI-096 inventory, with a default for local development. `vite.config.ts` reads it from the `.env` file at the repository root, the same file the server uses. Check: set the variable in the root `.env`, with no such variable in the shell, restart the dev server, and the same `curl` goes to the new target.
 - R8. When no server listens on the proxy target, the same `curl` returns a 5xx status and the dev server keeps running.
 - R9. `pnpm --filter ./apps/web build` exits 0 and writes `apps/web/dist/index.html`.
 - R10. The JavaScript loaded by `apps/web/dist/index.html` on first page load (the entry chunks; lazy-loaded chunks do not count) is under 200 KB measured with gzip, on the build output.
@@ -38,7 +38,7 @@ The builder needs a running web app in `apps/web` that later screens are added t
 
 ## Design
 ### Screens
-1. Index page (`/`): empty. It renders the root layout with no content. No text, no styling beyond the browser default.
+1. Index page (`/`): the product name "Toki" as plain text in one element marked `data-testid="app-root"`, and nothing else. No styling beyond the browser default. Assumption: the Blueprint says "an empty page"; the one word is added so that a rendered page can be told from a blank or broken one, and so the sample Playwright test of TOKI-008 has a text to check.
 2. Not-found view (any unknown path): the text "Page not found". Plain text; the designed version comes with the base components.
 
 The root layout renders the current page only. AppShell replaces it in TOKI-015.
@@ -52,7 +52,7 @@ The root layout renders the current page only. AppShell replaces it in TOKI-015.
 ```
 apps/web/
 ├─ index.html           one root element, loads src/main.tsx
-├─ vite.config.ts       React plugin, dev proxy for /api/v1
+├─ vite.config.ts       React plugin, dev proxy for /api/v1; loads the repository-root .env
 ├─ package.json         scripts: dev, build, typecheck
 └─ src/
    ├─ main.tsx          mounts the app: Query provider, then router
@@ -60,7 +60,7 @@ apps/web/
    ├─ query-client.ts   creates the one Query client
    └─ routes/
       ├─ __root.tsx     root layout and not-found view
-      └─ index.tsx      the empty page
+      └─ index.tsx      the index page: the text "Toki"
 ```
 - Assumption: file names follow TanStack Router's file-based convention. The choice between file-based and code-based routes is concern 3.
 - Assumption: the dev server uses Vite's default port. The Blueprint states no port.
@@ -72,7 +72,7 @@ apps/web/
 - TOKI-008 owns the test harness, so this ticket adds no test framework. Each requirement is checked by the command or search it names.
 - R6, R7 and R8 are checked with a small local stub server that answers one fixed response under `/api/v1`. This works before TOKI-004 exists. Fake data only.
 - R10 is checked by compressing with gzip the JavaScript files that `dist/index.html` loads on first page load (the entry chunks, not lazy-loaded chunks) and adding their sizes.
-- R2 and R4 are checked by hand in the browser now. Assumption: the Playwright sample test in TOKI-008 takes over R2.
+- R2 and R4 are checked by hand in the browser now. The Playwright sample test in TOKI-008 takes over R2: it asserts the text "Toki" in `data-testid="app-root"`.
 
 ## How each constraint in the intent is met
 | Constraint | Met by |
