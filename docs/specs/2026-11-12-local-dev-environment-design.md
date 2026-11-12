@@ -35,7 +35,7 @@ Later foundation work, starting with TOKI-005, relies on these services being av
 - R7. `pnpm dev:reset:mail` leaves the Mailpit inbox with zero messages. The database and stored files are unchanged.
 - R8. `pnpm dev:reset` runs the three resets in one command. Check: afterwards the checks of R5, R6 and R7 all pass.
 - R9. `pnpm dev:reset` exits non-zero and names the failed step when any of the three resets fails.
-- R10. Each of the four reset scripts refuses to run in production. Check: with the production signal set (concern 2), the script exits non-zero, prints a refusal message and changes no data.
+- R10. Each of the four reset scripts runs only when the environment name variable (the row named in the TOKI-096 inventory, allowed values `development` and `production`) is set to `development`. With the variable set to `production`, set to any other value, or not set at all, the script exits non-zero, prints a refusal message that names the variable and changes no data. Check: run each of the four scripts three times, with the variable set to `production`, set to an unknown value and unset; each run exits non-zero and the checks of R5, R6 and R7 show the data unchanged.
 - R11. No reset changes `.env`. Check: the checksum of `.env` is the same before and after `pnpm dev:reset`.
 - R12. No reset touches the test database. Check: a marker row written to the test database is still there after `pnpm dev:reset`. The test database is a second database, under another name, on the same development Postgres server; TOKI-008 creates it (concern 3).
 - R13. Mail sent to the Mailpit SMTP port is caught and readable on the development machine. Check: send one mail to an outside address; it appears in the Mailpit web inbox.
@@ -49,7 +49,7 @@ Later foundation work, starting with TOKI-005, relies on these services being av
 - Docker is not running or not installed -> the script exits non-zero and says so.
 - A value the compose file needs is missing from `.env` -> `dev:up` exits non-zero and prints the name of the missing variable.
 - A reset is run while the service it needs is stopped -> the script exits non-zero, says to run `pnpm dev:up` first and changes nothing.
-- A reset is run in production -> refusal, as in R10. The guard runs before any other step.
+- A reset is run while the environment name is not `development` (production, any other value, or unset) -> refusal, as in R10. The guard runs before any other step and fails closed.
 - One step of `dev:reset` fails -> the remaining steps still run, then the script exits non-zero (R9). Assumption: run all, report at the end.
 
 ### Layout
@@ -64,7 +64,7 @@ toki/
 - `dev:reset:db` drops and recreates only the development database by name. It never removes the Postgres server or its volume, so the test database, which is a second database under another name on the same server, survives. It runs no migration; TOKI-005 adds that step.
 - `dev:reset:files` deletes every object in the development bucket and keeps the bucket.
 - `dev:reset:mail` deletes all messages through Mailpit; it does not restart the container.
-- One shared guard is called first by every reset script; `dev:reset` calls the three scripts, it does not copy them.
+- One shared guard is called first by every reset script. It reads the environment name variable from the TOKI-096 inventory and lets the script continue only on the value `development` (R10); `dev:reset` calls the three scripts, it does not copy them.
 - Assumption: the folder name `infra/dev/` and the script language. The Blueprint fixes only the compose path and the script names.
 - Variable names for the database, the bucket, credentials and ports are the ones in the TOKI-096 inventory (R17).
 - Assumption: `dev:up` creates the development bucket when it is missing, so `dev:reset:files` always has a bucket to empty.
@@ -107,7 +107,7 @@ toki/
 
 ## Areas of concern
 1. `dev:reset:db` must re-run migrations, but the migration workflow arrives in TOKI-005, which needs this ticket. Options: ship the wipe only and let TOKI-005 add the migration step, or call a migration script that is skipped while it is missing. Decided: TOKI-003 ships `dev:reset:db` as a wipe only. TOKI-005 adds the "re-run migrations" step to `dev:reset:db`. Decided by Thanh Truong (lead, as product owner) on 2026-11-12. Owner: Thanh Truong.
-2. The Blueprint does not say how a reset knows it is in production (which variable, which value), or whether it should also refuse when the signal is missing. R10 cannot be built without this. Owner: Thanh Truong.
+2. The Blueprint does not say how a reset knows it is in production (which variable, which value), or whether it should also refuse when the signal is missing. Decided: a reset runs only when the environment name variable is `development`; with `production`, any other value or no value it refuses (R10). The variable is the environment name row of the TOKI-096 inventory, which that spec now lists as read by TOKI-003. Decided by Thanh Truong (lead, as product owner) on 2026-11-12. Owner: Thanh Truong.
 3. The Blueprint does not say where the test database lives (same Postgres server under another name, or a separate one); TOKI-008 owns it and comes later. R12 can only be fully checked then. Decided: the test database is a second database, under another name, on the same development Postgres server. `dev:reset:db` wipes only the development database; it never drops the server, the volume or the test database. TOKI-008 still owns creating the test database. Decided by Thanh Truong (lead, as product owner) on 2026-11-12. Owner: Thanh Truong.
 4. The compose file needs variable names for the database, the bucket, credentials and ports. TOKI-096 owns the inventory and `.env.example` but is not listed as a need of TOKI-003. Either TOKI-096 goes first, or this ticket picks names that TOKI-096 then adopts. Decided: TOKI-096 is done first and names every phase 1 variable. TOKI-003 uses exactly the names in the TOKI-096 inventory and invents none. Plan change: TOKI-003 now also needs TOKI-096. Decided by Thanh Truong (lead, as product owner) on 2026-11-12. Owner: Thanh Truong.
 5. The Blueprint names Postgres 17 but gives no version for MinIO or Mailpit, and no host ports. Unpinned images can change under the builder. Owner: Thanh Truong.
