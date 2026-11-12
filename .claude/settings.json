@@ -1,0 +1,18 @@
+{
+  "extraKnownMarketplaces": {
+    "cl": {
+      "source": {
+        "source": "github",
+        "repo": "thanhtruong-agilityio/claude-config"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "cl-core@cl": true,
+    "cl-dev@cl": true,
+    "cl-ba-qa@cl": true,
+    "cl-lead@cl": true
+  },
+  "model": "claude-sonnet-5-5",
+  "advisorModel": "opus"
+}
