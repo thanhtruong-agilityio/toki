@@ -1,0 +1,42 @@
+tracker: github            # github | jira
+git_host: github           # github | gitlab (written by /cl-core:setup)
+ticket_updates: update     # update | no-update; unset means "ask once"
+no_update_reason: ""       # filled when a refused write switched the setting
+
+statuses:                  # logical key: name on the tracker
+  intent: Backlog
+  blocked: Blocked
+  spec-review: Spec Review
+  accepted: Ready for Dev
+  in-dev: In Progress
+  in-review: In Review
+  in-qa: In QA
+  done: Done
+
+labels:                    # group: [names]
+  pipeline: [plan:committed, claimed, needs-human]
+  qa: [reopened, risk:high]
+
+thresholds:                # used by triage-tickets and stuck detection
+  spec_review_days: 2
+  blocked_working_days: 5
+  in_progress_no_commit_days: 3
+  loop_held_hours: 2
+
+lead:
+  max_per_run: 5           # tickets a scheduled run may take
+  ultra_paths: [auth/, payments/, migrations/]
+  ultra_lines: 800         # diff size that suggests code-review ultra
+  blocked_owner:
+    product: thanhtruong-agilityio     # open product question
+    technical: thanhtruong-agilityio   # open technical question
+  needs_human_due_days: 5
+  backup_lead: ""          # none: one-person project
+
+qa:                        # read by cl-ba-qa; setup writes these defaults
+  high_risk_label: risk:high   # tickets with this label get the Opus second read of the QA spec check
+  reopen_notify_count: 2       # reopen_count at which Morning triage tells the Lead
+
+dev:
+  max_per_run: 3             # tickets a scheduled draft run may take (also the cap for parallel builds)
+  ci_interval_seconds: 30    # how often Watch CI asks the host for the checks
