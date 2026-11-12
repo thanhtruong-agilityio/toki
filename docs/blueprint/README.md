@@ -10,7 +10,8 @@ Published at: https://claude.ai/code/artifact/e6b79d7f-ff70-41b2-99d6-d2cb61c33b
 |---|---|
 | `blueprint.en.json` | The Blueprint's content in English. Source of truth. |
 | `blueprint.vi.json` | The same content in Vietnamese. Same ids as the English file. |
-| `flowmaps.json` | The nine journey charts on the Flows tab: nodes, edges and labels, as `English||Tiếng Việt`. |
+| `gen_flowmaps.py` | The source of the charts and tables at the top of the Flows tab: 2 high-level charts, 13 detailed swimlane charts (user, frontend, backend), 3 error charts, the business rules, the assumptions and the open questions. Every string is `English||Tiếng Việt`. Edit this file. |
+| `flowmaps.json` | Written by `gen_flowmaps.py`. Do not edit by hand. |
 | `flowmaps.prototype.json` | Six screen maps drawn from a walkthrough of the prototype. Not shown on the page; kept for reference. |
 | `prototype/index.html` | A snapshot of the Toki prototype, embedded in the Prototype tab. |
 | `blueprint.html` | The built page. Not committed; rebuild it. |
@@ -25,7 +26,9 @@ The build scripts belong to the `prototype-blueprint` skill (`~/.claude/skills/p
 SKILL=~/.claude/skills/prototype-blueprint/scripts
 cd docs/blueprint
 
-# after editing flowmaps.json: redraw the charts into both data files
+# after editing gen_flowmaps.py: write the spec, validate it, and redraw the charts into both data files
+# (flowmap.py stops if a decision has one branch, a step is unreachable, or a step is a dead end)
+python3 gen_flowmaps.py
 python3 $SKILL/flowmap.py --spec flowmaps.json --data en=blueprint.en.json --data vi=blueprint.vi.json
 
 # check each file, and that the two languages list the same things
