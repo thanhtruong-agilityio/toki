@@ -54,13 +54,13 @@ h1 = Chart("1.1 The whole app on one page: ways in, the gate, and what a signed-
             "**Role check:** Admin is the only section gated by role. Everything else is gated by membership of the conversation, checked on the server for every request.||**Kiểm tra vai trò:** Admin là mục duy nhất chặn theo vai trò. Mọi thứ khác chặn theo tư cách thành viên của cuộc trò chuyện, kiểm tra ở server cho mọi request."],
            lanes=False, colWidth=236, rowHeight=86)
 h1.n("inv", 0, 0, "Invitation mail: Join||Mail mời: nút Join", "first time only||chỉ lần đầu", "st")
-h1.n("d_inv", 1, 0, "Invitation valid?||Lời mời hợp lệ?", "unused, under 7 days||chưa dùng, dưới 7 ngày", "d")
-h1.n("welcome", 2, 0, "Welcome step||Màn hình chào", "name, job title, time zone||tên, chức danh, múi giờ")
-h1.n("x_inv", 1, 1, "Refusal page with reason||Trang từ chối kèm lý do", "expired / revoked → ask the inviter||hết hạn / thu hồi → hỏi người mời", "x", terminal=True)
+h1.n("d_inv", 1, 0, "Invitation valid?||Lời mời hợp lệ?", "unused, under 7 days (G4)||chưa dùng, dưới 7 ngày (G4)", "d")
+h1.n("welcome", 2, 0, "Welcome step||Màn hình chào", "not in the prototype · FQ-15||không có trong prototype · FQ-15")
+h1.n("x_inv", 1, 1, "Refusal page with reason||Trang từ chối kèm lý do", "expired / revoked · wording: FQ-13||hết hạn / thu hồi · câu chữ: FQ-13", "x", terminal=True)
 h1.n("url", 0, 2, "Opens the Toki address||Mở địa chỉ Toki", None, "st")
 h1.n("link", 0, 3, "Opens a link||Mở một link", "notification, mail, shared||thông báo, mail, được gửi", "st")
 h1.n("pwa", 0, 4, "Installed app icon||Icon ứng dụng đã cài", None, "st")
-h1.n("d_sess", 1, 3, "Valid session?||Phiên còn hiệu lực?", "30 days, renewed on use||30 ngày, gia hạn khi dùng", "d")
+h1.n("d_sess", 1, 3, "Valid session?||Phiên còn hiệu lực?", "30 days (Q11)||30 ngày (Q11)", "d")
 h1.n("email", 1, 5, "Sign-in: email||Đăng nhập: email", "flow 2.1||flow 2.1")
 h1.n("code", 2, 5, "Enter the 6-digit code||Nhập mã 6 số", "or press the button in the mail||hoặc bấm nút trong mail")
 h1.n("d_code", 3, 5, "Code accepted?||Mã được chấp nhận?", None, "d")
@@ -68,7 +68,7 @@ h1.n("x_code", 3, 6, "Error under the field||Lỗi ngay dưới ô nhập", "wro
 h1.n("home", 4, 3, "Home||Home", "last conversation, or the link's||cuộc trò chuyện gần nhất / theo link")
 for i, (nid, lab, sub) in enumerate([
         ("conv", "Conversation||Cuộc trò chuyện", "read, send, thread, files · 2.4–2.7||đọc, gửi, thread, file · 2.4–2.7"),
-        ("chan", "Channels and DMs||Kênh và DM", "create, join, leave · 2.8–2.9||tạo, tham gia, rời · 2.8–2.9"),
+        ("chan", "Channels and DMs||Kênh và DM", "create, join, leave · 2.8, 2.9, 2.14||tạo, tham gia, rời · 2.8, 2.9, 2.14"),
         ("act", "Activity||Activity", "mentions, threads, reactions||mention, thread, reaction"),
         ("later", "Later||Later", "saved items, reminders · 2.11||mục đã lưu, nhắc việc · 2.11"),
         ("files", "Files · People · Ctrl+K||Files · People · Ctrl+K", "find and open||tìm và mở"),
@@ -90,7 +90,7 @@ h2 = Chart("1.2 Exit points: every way a person stops being in the app||1.2 Lố
             "Losing the connection is not an exit: the person stays on the same screen, read-only, until it returns (flow 3.1).||Mất kết nối không phải là lối ra: người dùng ở nguyên màn hình, chỉ đọc, cho tới khi có lại mạng (flow 3.1)."],
            lanes=False, colWidth=250, rowHeight=78)
 h2.n("any", 0, 2, "Signed in, on any screen||Đã đăng nhập, ở bất kỳ đâu", None, "st")
-rows = [("so", "Avatar menu → Sign out||Menu avatar → Sign out", "this device only||chỉ thiết bị này", "Session deleted on the server||Xoá phiên trên server", None, "Sign-in page||Trang đăng nhập", None),
+rows = [("so", "Account menu → Sign out||Menu tài khoản → Sign out", "not in the prototype (N-04)||không có trong prototype (N-04)", "Session deleted on the server||Xoá phiên trên server", None, "Sign-in page||Trang đăng nhập", None),
         ("cl", "Closes the tab or the app||Đóng tab hoặc ứng dụng", None, "Session kept for 30 days||Phiên giữ 30 ngày", None, "Next open goes straight in||Lần mở sau vào thẳng", None),
         ("ex", "Session expires or is revoked||Phiên hết hạn hoặc bị thu hồi", "signed out from another device||bị đăng xuất từ thiết bị khác", "Next request is refused||Request kế tiếp bị từ chối", "flow 3.2||flow 3.2", "'Session ended' → sign in||'Session ended' → đăng nhập", "then back to the same place||rồi quay lại đúng chỗ cũ"),
         ("de", "An admin deactivates them||Bị admin vô hiệu hoá", None, "All sessions end at once||Mọi phiên kết thúc ngay", None, "'Account deactivated' page||Trang 'Account deactivated'", "no sign-in button||không có nút đăng nhập"),
@@ -106,7 +106,7 @@ c = Chart("2.1 Sign in with an emailed code||2.1 Đăng nhập bằng mã gửi 
           "Happy path runs down the middle; every refusal returns to a screen where the person can act.||Luồng chính chạy dọc ở giữa; mọi lần bị từ chối đều quay về một màn hình mà người dùng làm tiếp được.",
           ["**Before:** the address belongs to an active member; this device has no valid session.||**Trước:** địa chỉ thuộc về một thành viên đang hoạt động; thiết bị này chưa có phiên hợp lệ.",
            "**After:** a 30-day session on this device only; the code can never be used again; the app opens where the person was heading.||**Sau:** một phiên 30 ngày chỉ trên thiết bị này; mã không dùng lại được; ứng dụng mở đúng nơi người dùng định tới.",
-           "**Validation:** email must look like an address before the button enables. Code: exactly 6 digits, valid 10 minutes, one use, cancelled after 5 wrong tries. At most 5 code requests per address in 15 minutes.||**Kiểm tra:** email phải đúng dạng thì nút mới bật. Mã: đúng 6 số, hiệu lực 10 phút, dùng một lần, huỷ sau 5 lần sai. Tối đa 5 lần xin mã cho một địa chỉ trong 15 phút.",
+           "**Validation:** email must look like an address before the button enables. Code: exactly 6 digits, one use. Valid 10 minutes and cancelled after 5 wrong tries are assumptions (FA-13, FA-14). At most 5 code requests per address in 15 minutes (G5).||**Kiểm tra:** email phải đúng dạng thì nút mới bật. Mã: đúng 6 số, dùng một lần. Hiệu lực 10 phút và huỷ sau 5 lần sai là giả định (FA-13, FA-14). Tối đa 5 lần xin mã cho một địa chỉ trong 15 phút (G5).",
            "**Back / cancel / retry:** 'Use a different email' returns to the email field. 'Resend code' enables after 60 seconds. A network failure re-enables the button with 'Could not connect'.||**Quay lại / huỷ / thử lại:** 'Use a different email' quay về ô email. 'Resend code' bật sau 60 giây. Lỗi mạng thì nút bấm lại được, kèm 'Could not connect'.",
            "**Alternative:** the mail also has a sign-in button. Pressing it signs in the device where it is pressed and skips typing the code.||**Nhánh khác:** mail còn có nút đăng nhập. Bấm nút thì thiết bị bấm được đăng nhập, không cần gõ mã.",
            "**Security rule:** the answer to a code request is identical for members and strangers, so the page never reveals who is a member.||**Quy tắc bảo mật:** câu trả lời cho yêu cầu xin mã giống hệt nhau với thành viên và người lạ, nên trang không bao giờ lộ ai là thành viên."])
@@ -121,11 +121,11 @@ c.n("d_member", B, 3, "Active member?||Thành viên đang hoạt động?", None
 c.n("b_mail", B, 4, "Store hashed code, queue the mail||Lưu mã đã băm, xếp hàng gửi mail", "code + sign-in button, 10 minutes||mã + nút đăng nhập, 10 phút")
 c.n("f_code", F, 4, "'Check your email': 6-digit field||'Check your email': ô 6 số", "Resend disabled for 60 s||Resend tắt trong 60 giây")
 c.n("d_got", U, 5, "Mail arrived?||Mail đã tới?", None, "d")
-c.n("f_resend", F, 5, "Waits 60 s, presses Resend code||Đợi 60 giây, bấm Resend code", None, "s")
+c.n("f_resend", F, 5, "Waits 60 s, presses Resend code||Đợi 60 giây, bấm Resend code", "not in the prototype · FQ-14||không có trong prototype · FQ-14", "s")
 c.n("u_code", U, 6, "Types or pastes the 6 digits||Gõ hoặc dán 6 số", "submits itself on the 6th digit||tự gửi khi đủ số thứ 6")
 c.n("f_lock", F, 6, "Field locked, spinner||Ô bị khoá, đang quay", None, "s")
 c.n("b_sess", B, 6, "POST /auth/sessions {email, code}||POST /auth/sessions {email, code}")
-c.n("d_code", B, 7, "Right code, under 10 min?||Mã đúng, dưới 10 phút?", None, "d")
+c.n("d_code", B, 7, "Right code, under 10 min?||Mã đúng, dưới 10 phút?", "10 min: FA-13||10 phút: FA-13", "d")
 c.n("x_code", F, 7, "'Not right. N tries left' / 'Expired'||'Not right. N tries left' / 'Expired'", "5th wrong try locks the code||sai lần 5 thì mã bị khoá", "x")
 c.n("d_active", B, 8, "Account still active?||Tài khoản còn hoạt động?", None, "d")
 c.n("x_deact", F, 8, "'This account has been deactivated'||'This account has been deactivated'", "contact an admin · no further step||liên hệ admin · không có bước tiếp", "x", terminal=True)
@@ -146,7 +146,7 @@ c = Chart("2.2 Accept an invitation (first time in)||2.2 Nhận lời mời (l�
           "The link proves control of the mailbox, so no code is asked.||Link đã chứng minh người dùng có quyền với hộp thư, nên không hỏi mã.",
           ["**Before:** an Admin or Owner sent an invitation to this address (flow 2.12).||**Trước:** một Admin hoặc Owner đã gửi lời mời tới địa chỉ này (flow 2.12).",
            "**After:** the member is Active, in #general with its full history, signed in on this device; the link no longer works; #general shows 'X joined'.||**Sau:** thành viên ở trạng thái Active, đã ở trong #general với đầy đủ lịch sử, đã đăng nhập trên thiết bị này; link hết tác dụng; #general hiện 'X joined'.",
-           "**Validation:** display name 1 to 80 characters. Time zone and language come from the device and can be changed.||**Kiểm tra:** tên hiển thị từ 1 đến 80 ký tự. Múi giờ và ngôn ngữ lấy từ thiết bị và đổi được.",
+           "**Validation:** display name 1 to 80 characters (your answer, Q31). Time zone and language come from the device and can be changed.||**Kiểm tra:** tên hiển thị từ 1 đến 80 ký tự (bạn trả lời, Q31). Múi giờ và ngôn ngữ lấy từ thiết bị và đổi được.",
            "**Skip:** the welcome step can be skipped; the name becomes the part of the address before @.||**Bỏ qua:** bước chào có thể bỏ qua; tên sẽ là phần trước @ của địa chỉ.",
            "**Next:** a small card asks whether to turn on notifications.||**Tiếp theo:** một thẻ nhỏ hỏi có bật thông báo không."])
 c.n("s", U, 0, "Presses Join in the invitation mail||Bấm Join trong mail mời", None, "st")
@@ -155,11 +155,11 @@ c.n("b_acc", B, 0, "POST /auth/invitations/accept||POST /auth/invitations/accept
 c.n("d_used", B, 1, "Link already used?||Link đã dùng rồi?", None, "d")
 c.n("f_used", F, 1, "Sign-in page, email filled in||Trang đăng nhập, điền sẵn email", "continues in flow 2.1||tiếp ở flow 2.1", "s", terminal=True)
 c.n("d_valid", B, 2, "Expired or revoked?||Hết hạn hoặc bị thu hồi?", "7 days||7 ngày", "d")
-c.n("x_exp", F, 2, "Page says why; 'contact the inviter'||Trang nêu lý do; 'liên hệ người mời'", "no further step for this person||người này không có bước tiếp", "x", terminal=True)
+c.n("x_exp", F, 2, "Page says why; 'contact the inviter'||Trang nêu lý do; 'liên hệ người mời'", "wording: FQ-13 · no further step||câu chữ: FQ-13 · không có bước tiếp", "x", terminal=True)
 c.n("b_act", B, 3, "Member Active; session created||Thành viên Active; tạo phiên", "added to #general; link used up||thêm vào #general; link hết hiệu lực")
-c.n("f_wel", F, 3, "Welcome: name, job title, time zone||Chào: tên, chức danh, múi giờ", "'Enter Toki' · 'Skip'||'Enter Toki' · 'Skip'")
+c.n("f_wel", F, 3, "Welcome: name, job title, time zone||Chào: tên, chức danh, múi giờ", "not in the prototype · FQ-15||không có trong prototype · FQ-15")
 c.n("u_name", U, 4, "Fills in, presses Enter Toki||Điền, bấm Enter Toki", "or Skip||hoặc Skip")
-c.n("d_name", F, 4, "Name 1–80 characters?||Tên 1–80 ký tự?", "Skip: always passes||Skip: luôn qua", "d")
+c.n("d_name", F, 4, "Name 1–80 characters?||Tên 1–80 ký tự?", "Q31 · Skip always passes||Q31 · Skip luôn qua", "d")
 c.n("x_name", F, 5, "Message under the name field||Thông báo dưới ô tên", None, "x")
 c.n("b_me", B, 4, "PATCH /me {name, title, timeZone}||PATCH /me {name, title, timeZone}")
 c.n("f_boot", F, 6, "Load the app (flow 2.3)||Tải ứng dụng (flow 2.3)")
@@ -244,7 +244,7 @@ c.n("d_on", F, 2, "Online?||Đang có mạng?", None, "d")
 c.n("b_post", B, 2, "POST /conversations/:id/messages||POST /conversations/:id/messages", "{id, text, fileIds}||{id, text, fileIds}")
 c.n("f_wait", F, 3, "'Waiting to send'||'Waiting to send'", "sends itself on reconnect (flow 3.1)||tự gửi khi có lại mạng (flow 3.1)", "s")
 c.n("d_mem", B, 3, "Member, not archived?||Thành viên, chưa lưu trữ?", None, "d")
-c.n("x_fail", F, 4, "'Not sent' · Retry · Delete||'Not sent' · Retry · Delete", "Delete removes it from the list||Delete xoá nó khỏi danh sách", "x")
+c.n("x_fail", F, 4, "'Not sent' · Retry · Delete||'Not sent' · Retry · Delete", "not in the prototype · FQ-21||không có trong prototype · FQ-21", "x")
 c.n("d_dup", B, 4, "This ID already stored?||ID này đã lưu rồi?", None, "d")
 c.n("x_mem", F, 5, "'Not sent' with the reason; no Retry||'Not sent' kèm lý do; không có Retry", "composer becomes Join / archived note||ô soạn thành Join / ghi chú đã lưu trữ", "x", terminal=True)
 c.n("b_save", B, 5, "Save; read mentions; write events||Lưu; đọc mention; ghi event", "unread, Activity items, push jobs||chưa đọc, mục Activity, job push")
@@ -266,7 +266,7 @@ c = Chart("2.6 Attach files to a message||2.6 Đính kèm file vào tin nhắn",
            "**Cancel:** × on a card stops that upload and removes the card. Deleting the whole draft removes every card.||**Huỷ:** × trên thẻ dừng việc tải file đó và bỏ thẻ. Xoá cả bản nháp thì bỏ mọi thẻ.",
            "**Loading:** a thumbnail that is not ready shows a placeholder of the right proportions, so the list does not jump.||**Đang tải:** thumbnail chưa sẵn sàng thì hiện ô giữ chỗ đúng tỉ lệ, để danh sách không bị giật."])
 c.n("s", U, 0, "Picks, drops or pastes files||Chọn, thả hoặc dán file", None, "st")
-c.n("d_lim", F, 0, "≤ 10 files, each ≤ 100 MB?||≤ 10 file, mỗi ≤ 100 MB?", None, "d")
+c.n("d_lim", F, 0, "≤ 10 files, each ≤ 100 MB?||≤ 10 file, mỗi ≤ 100 MB?", "10: G9 · 100 MB: Q14||10: G9 · 100 MB: Q14", "d")
 c.n("x_lim", F, 1, "Card turns red: 'Over 100 MB'||Thẻ chuyển đỏ: 'Over 100 MB'", "11th file: 'Up to 10 files'; rest go on||file thứ 11: 'Up to 10 files'; còn lại đi tiếp", "x")
 c.n("f_card", F, 2, "A card per file with a progress bar||Mỗi file một thẻ có thanh tiến độ", "Send disabled until all finish||Send tắt cho tới khi tải xong hết", "s")
 c.n("b_url", B, 2, "POST /files → signed upload address||POST /files → địa chỉ tải lên có chữ ký", "short-lived, for this file only||tồn tại ngắn, chỉ cho file này")
@@ -318,16 +318,16 @@ c.e("u_click", "f_jump"); c.e("f_jump", "b_done"); c.e("b_done", "f_drop", t=.4)
 D.append(c)
 
 c = Chart("2.8 Create a channel||2.8 Tạo một kênh",
-          "A form with content never closes by accident.||Form đã có nội dung không bao giờ tự đóng do lỡ tay.",
+          "The prototype has no way to create a channel; this chart follows written flow F20.||Prototype không có cách nào tạo kênh; sơ đồ này vẽ theo flow viết F20.",
           ["**Before:** signed in as Member, Admin or Owner.||**Trước:** đã đăng nhập với vai trò Member, Admin hoặc Owner.",
            "**After:** the channel exists, the creator is its only member, it is open on screen and listed in the sidebar.||**Sau:** kênh tồn tại, người tạo là thành viên duy nhất, kênh đang mở và có trong sidebar.",
            "**Validation:** lowercase letters, digits and hyphens, up to 80 characters, unique among all channels including archived ones. Public or private is chosen here and cannot be changed later.||**Kiểm tra:** chữ thường, số và gạch nối, tối đa 80 ký tự, không trùng với mọi kênh kể cả kênh đã lưu trữ. Công khai hay riêng tư chọn tại đây và sau này không đổi được.",
            "**Cancel:** Cancel, Esc or the × asks 'Discard this channel?' if anything was typed; an outside click does nothing.||**Huỷ:** Cancel, Esc hoặc × sẽ hỏi 'Discard this channel?' nếu đã gõ gì đó; bấm ra ngoài thì không có gì xảy ra.",
            "**Rule:** after creating, the screen shows the new thing.||**Quy tắc:** sau khi tạo, màn hình phải hiện thứ vừa tạo."])
-c.n("s", U, 0, "Presses + beside Channels||Bấm + cạnh Channels", None, "st")
-c.n("f_dlg", F, 0, "Dialog: name, private switch, topic||Hộp thoại: tên, riêng tư, chủ đề", "Create disabled until name is valid||Create tắt cho tới khi tên hợp lệ")
+c.n("s", U, 0, "Browse channels → Create channel||Browse channels → Create channel", "button not in the prototype · FQ-17||nút không có trong prototype · FQ-17", "st")
+c.n("f_dlg", F, 0, "Dialog: name, private switch, topic||Hộp thoại: tên, riêng tư, chủ đề", "fields: FQ-18 · Create off until valid||các ô: FQ-18 · Create tắt tới khi hợp lệ")
 c.n("u_name", U, 1, "Types a name||Gõ tên")
-c.n("d_fmt", F, 1, "a–z, 0–9, hyphens, ≤ 80?||a–z, 0–9, gạch nối, ≤ 80?", None, "d")
+c.n("d_fmt", F, 1, "a–z, 0–9, hyphens, ≤ 80?||a–z, 0–9, gạch nối, ≤ 80?", "G7||G7", "d")
 c.n("x_fmt", F, 2, "Message under the field as they type||Thông báo dưới ô ngay khi gõ", "spaces become hyphens on their own||khoảng trắng tự thành gạch nối", "x")
 c.n("u_go", U, 3, "Presses Create||Bấm Create")
 c.n("f_load", F, 3, "Button loading; dialog locked||Nút đang tải; hộp thoại bị khoá", None, "s")
@@ -498,6 +498,30 @@ c.e("d_rank", "x_rank", N); c.e("d_rank", "d_last", Y); c.e("d_last", "x_last", 
 c.e("d_kind", "f_live", N); c.e("d_kind", "b_end", Y); c.e("b_end", "f_out"); c.e("f_live", "f_row", loop="left"); c.e("f_out", "f_row"); c.e("f_row", "end")
 D.append(c)
 
+c = Chart("2.14 Start a direct message or a group||2.14 Bắt đầu một tin nhắn trực tiếp hoặc một nhóm",
+          "The prototype opens a DM with one person; choosing several people is not drawn.||Prototype mở được DM với một người; chọn nhiều người thì chưa được vẽ.",
+          ["**Before:** signed in as Member, Admin or Owner. Guests cannot start DMs.||**Trước:** đã đăng nhập với vai trò Member, Admin hoặc Owner. Guest không mở được DM.",
+           "**After:** the conversation is open. The other people see it in their list only once the first message is sent.||**Sau:** cuộc trò chuyện đang mở. Những người kia chỉ thấy nó trong danh sách khi tin đầu tiên được gửi.",
+           "**Limit:** a group holds at most 8 people, counting the person who starts it. Nobody can be added or removed later; a different set of people is a new group.||**Giới hạn:** một nhóm tối đa 8 người, tính cả người tạo. Về sau không thêm hay bớt người được; một tập người khác là một nhóm mới.",
+           "**Same people, same conversation:** choosing a set of people that already has a conversation reopens it with its history.||**Cùng người, cùng cuộc trò chuyện:** chọn một tập người đã có cuộc trò chuyện thì mở lại nó kèm lịch sử.",
+           "**Deactivated person:** not listed in the picker; an existing DM with them stays readable, without a composer.||**Người đã bị vô hiệu hoá:** không có trong danh sách chọn; DM đã có với họ vẫn đọc được, không có ô soạn tin."])
+c.n("s", U, 0, "Presses New message||Bấm New message", "pencil icon above the list||icon bút phía trên danh sách", "st")
+c.n("f_dlg", F, 0, "Dialog: search people and channels||Hộp thoại: tìm người và kênh", "several people as chips: FQ-20||nhiều người dạng chip: FQ-20")
+c.n("u_pick", U, 1, "Picks one or more people||Chọn một hoặc nhiều người")
+c.n("d_cnt", F, 1, "1 to 7 other people?||Từ 1 tới 7 người khác?", "8 with you (Q17)||8 tính cả bạn (Q17)", "d")
+c.n("x_cnt", F, 2, "'Up to 8 people, counting you'||'Up to 8 people, counting you'", "the 8th pick is refused||lượt chọn thứ 8 bị từ chối", "x")
+c.n("u_go", U, 2, "Presses Start||Bấm Start", "one person: opens on the pick||một người: mở ngay khi chọn")
+c.n("f_load", F, 3, "Start button loading||Nút Start đang tải", None, "s")
+c.n("b_post", B, 3, "POST /conversations||POST /conversations", "{kind: dm, memberIds}||{kind: dm, memberIds}")
+c.n("d_same", B, 4, "This set of people exists?||Tập người này đã có?", None, "d")
+c.n("b_make", B, 5, "Create the DM or group||Tạo DM hoặc nhóm", "hidden from the others until a message||ẩn với người kia tới khi có tin")
+c.n("f_open", F, 5, "Conversation opens; composer focused||Cuộc trò chuyện mở; focus ô soạn tin")
+c.n("end", U, 6, "Writes the first message (flow 2.5)||Viết tin đầu tiên (flow 2.5)", None, "en")
+c.e("s", "f_dlg"); c.e("f_dlg", "u_pick"); c.e("u_pick", "d_cnt"); c.e("d_cnt", "x_cnt", N); c.e("x_cnt", "f_dlg", "remove someone||bỏ bớt một người", loop="right")
+c.e("d_cnt", "u_go", Y, t=.35); c.e("u_go", "f_load"); c.e("f_load", "b_post"); c.e("b_post", "d_same"); c.e("d_same", "f_open", "yes: reopen it||có: mở lại", t=.6); c.e("d_same", "b_make", N)
+c.e("b_make", "f_open"); c.e("f_open", "end")
+D.append(c)
+
 # ───────────────────────── 3 · Errors and edge cases ─────────────────────────
 E = []
 
@@ -509,12 +533,12 @@ c = Chart("3.1 The connection drops and returns||3.1 Mất kết nối rồi có
            "**Banner:** it never covers the composer or the navigation.||**Banner:** không bao giờ che ô soạn tin hay thanh điều hướng."])
 c.n("s", U, 0, "Using Toki; the network drops||Đang dùng Toki; mạng rớt", None, "st")
 c.n("f_det", F, 0, "Connection closes or goes silent||Kết nối đóng hoặc im lặng")
-c.n("f_ban", F, 1, "Banner 'Reconnecting…'||Banner 'Reconnecting…'", "content stays readable||nội dung vẫn đọc được", "s")
+c.n("f_ban", F, 1, "'Offline: showing saved messages'||'Offline: showing saved messages'", "the prototype's banner · still readable||banner của prototype · vẫn đọc được", "s")
 c.n("u_msg", U, 2, "Sends a message||Gửi một tin nhắn")
 c.n("f_q", F, 2, "Shown as 'Waiting to send'||Hiện là 'Waiting to send'", None, "s")
 c.n("u_oth", U, 3, "Tries anything else||Thử bất kỳ việc gì khác", "react, upload, join, save, edit||reaction, tải lên, tham gia, lưu, sửa")
 c.n("x_blk", F, 3, "'You're offline' · action not done||'You're offline' · không thực hiện", "can be repeated once online||làm lại được khi có mạng", "x", terminal=True)
-c.n("f_retry", F, 4, "Retries: 1 s, 2 s, 5 s … up to 30 s||Thử lại: 1 giây, 2, 5 … tối đa 30 giây")
+c.n("f_retry", F, 4, "Retries: 1 s, 2 s, 5 s … up to 30 s||Thử lại: 1 giây, 2, 5 … tối đa 30 giây", "'Reconnecting…' wording: FQ-22||câu chữ 'Reconnecting…': FQ-22")
 c.n("b_ws", B, 4, "WS /events?after=N||WS /events?after=N")
 c.n("d_sess", B, 5, "Session still valid?||Phiên còn hợp lệ?", None, "d")
 c.n("f_signin", F, 5, "'Session ended' (flow 3.2)||'Session ended' (flow 3.2)", "waiting messages are kept||tin đang chờ được giữ lại", "s", terminal=True)
@@ -582,23 +606,72 @@ c.n("end", U, 7, "Sees the result of the action||Thấy kết quả của hành 
 c.e("s", "f_wait"); c.e("f_wait", "b_any"); c.e("d_srv", "f_ok", N, t=.4); c.e("f_ok", "end")
 E.append(c)
 
+# ───────────────────────── Evidence under every chart ─────────────────────────
+# number: (what the prototype has for this flow, where each condition in the chart comes from)
+SRC = {
+    "1.1": ("It opens straight into Home as Lan, an Owner. There is no sign-in, invitation, welcome or refusal page for members. The only sign-in screens belong to the guest portal (phase 5; demo guide → 'View as guest'): an email step, then a code step that says 'It works for 10 minutes'. Ctrl K exists: the Search box at the top of the left sidebar carries the label 'Ctrl K', and the keys open the command palette. Admin exists in the left navigation but holds only analytics and automations.||Prototype mở thẳng vào Home với tư cách Lan, một Owner. Không có trang đăng nhập, lời mời, màn hình chào hay trang từ chối cho thành viên. Các màn hình đăng nhập duy nhất thuộc cổng guest (phase 5; demo guide → 'View as guest'): bước email, rồi bước nhập mã có ghi 'It works for 10 minutes'. Ctrl K có thật: ô Search ở đầu sidebar trái mang nhãn 'Ctrl K', và tổ hợp phím mở bảng lệnh. Admin có ở thanh điều hướng trái nhưng chỉ chứa thống kê và automation.",
+            "Invitation lasts 7 days, works once, signs in without a code: G4 (assumption you confirmed). The prototype's '10 minutes' is the life of a sign-in **code**, a different thing; for members it is still an assumption (FA-13). Session of 30 days: Q11. Renewal on use: FA-15. Reasons on the refusal page: FQ-13. Welcome step: written flow F03, not drawn (FQ-15). Admin gate: capability table (Q12).||Lời mời có hạn 7 ngày, dùng một lần, đăng nhập không cần mã: G4 (giả định bạn đã xác nhận). '10 minutes' của prototype là thời gian sống của **mã** đăng nhập, là thứ khác; với thành viên nó vẫn là giả định (FA-13). Phiên 30 ngày: Q11. Gia hạn khi dùng: FA-15. Lý do trên trang từ chối: FQ-13. Màn hình chào: flow viết F03, chưa được vẽ (FQ-15). Cửa Admin: bảng quyền (Q12)."),
+    "1.2": ("Sign out is not in the prototype. The account menu holds Set status, Pause notifications, Focus time and Preferences only (finding N-04). There are no sessions, so 'Session ended' and 'Account deactivated' do not exist either. Offline is a demo switch.||Sign out không có trong prototype. Menu tài khoản chỉ có Set status, Pause notifications, Focus time và Preferences (phát hiện N-04). Prototype không có phiên, nên 'Session ended' và 'Account deactivated' cũng không tồn tại. Offline là một công tắc demo.",
+            "Sign out and its place in the account menu: written flow F06. Session of 30 days: Q11. Deactivation ends every session: capability table (Q12) and F41. Offline is not an exit: rule NR13. The wording of each page in quotes is a proposal (FA-16).||Sign out và vị trí của nó trong menu tài khoản: flow viết F06. Phiên 30 ngày: Q11. Vô hiệu hoá kết thúc mọi phiên: bảng quyền (Q12) và F41. Offline không phải lối ra: quy tắc NR13. Câu chữ của từng trang trong dấu nháy là đề xuất (FA-16)."),
+    "2.1": ("No member sign-in. The nearest screens are the guest portal's: 'Sign in as a guest' (email, 'Email me a code') and 'Check your email' (6-digit field, 'Sign in', 'Use a different email', 'It works for 10 minutes'). That screen has **no Resend**, no limit on requests and no wrong-code state (any 6 digits work). Its two errors show in a red line under the card.||Không có đăng nhập cho thành viên. Màn hình gần nhất là của cổng guest: 'Sign in as a guest' (email, 'Email me a code') và 'Check your email' (ô 6 số, 'Sign in', 'Use a different email', 'It works for 10 minutes'). Màn hình đó **không có Resend**, không giới hạn số lần xin mã và không có trạng thái sai mã (6 số nào cũng được). Hai lỗi của nó hiện ở một dòng đỏ dưới thẻ.",
+            "6-digit code, no password, 30-day session: Q11. 5 requests in 15 minutes and Resend after 60 seconds: G5 (confirmed). Code valid 10 minutes: taken from the guest screen, not decided for members (FA-13). Cancelled after 5 wrong tries: FA-14. Same answer for members and strangers: Technical tab. Resend missing from the screen: FQ-14.||Mã 6 số, không mật khẩu, phiên 30 ngày: Q11. 5 lần xin mã trong 15 phút và Resend sau 60 giây: G5 (đã xác nhận). Mã hiệu lực 10 phút: lấy từ màn hình guest, chưa quyết định cho thành viên (FA-13). Huỷ sau 5 lần sai: FA-14. Trả lời như nhau cho thành viên và người lạ: tab Technical. Màn hình thiếu Resend: FQ-14."),
+    "2.2": ("Nothing. The only invitation in the prototype is 'Invite a client' for guests, in a channel's Details panel. There is no welcome step and no refusal page.||Không có gì. Lời mời duy nhất trong prototype là 'Invite a client' dành cho guest, ở panel Details của kênh. Không có màn hình chào và không có trang từ chối.",
+            "Joining only by invitation from an Admin or Owner: Q11, Q26. 7 days, link signs in without a code: G4. Added to #general automatically: G1. Name of 1 to 80 characters: Q31 (your answer, 13 Nov 2026). Welcome step, its fields and Skip: written flow F03, unconfirmed (FQ-15). 'X joined' line: FQ-16. Wording of the refusal page: FQ-13.||Chỉ vào được qua lời mời của Admin hoặc Owner: Q11, Q26. 7 ngày, link đăng nhập không cần mã: G4. Tự động vào #general: G1. Tên 1 tới 80 ký tự: Q31 (bạn trả lời, 13/11/2026). Màn hình chào, các ô và Skip: flow viết F03, chưa xác nhận (FQ-15). Dòng 'X joined': FQ-16. Câu chữ trang từ chối: FQ-13."),
+    "2.3": ("Everything is in memory, so the app appears at once. There are no placeholders, no 'Can't reach Toki', and the address does not change with the screen (findings N-05, N-13).||Mọi thứ nằm sẵn trong bộ nhớ nên ứng dụng hiện ngay. Không có ô giữ chỗ, không có 'Can't reach Toki', và địa chỉ không đổi theo màn hình (phát hiện N-05, N-13).",
+            "Last conversation, or #general the first time: G2. Session: Q11. 'Not found' and 'no access' look the same: Technical tab. 10-second limit: FA-02. Addresses for conversations and messages: open, GQ-06. Placeholders and the 2-second highlight: proposals (FA-16).||Cuộc trò chuyện gần nhất, hoặc #general ở lần đầu: G2. Phiên: Q11. 'Không tồn tại' và 'không có quyền' trông giống nhau: tab Technical. Giới hạn 10 giây: FA-02. Địa chỉ cho cuộc trò chuyện và tin nhắn: còn mở, GQ-06. Ô giữ chỗ và tô sáng 2 giây: đề xuất (FA-16)."),
+    "2.4": ("Home: the conversation list, the message list, unread badges and the 'New' divider exist. There is no loading state and no failure state.||Home: danh sách cuộc trò chuyện, danh sách tin nhắn, huy hiệu chưa đọc và vạch 'New' có trong prototype. Không có trạng thái đang tải và trạng thái lỗi.",
+            "When a conversation counts as read, and how the 'New' divider behaves: OQ3 (confirmed). No 'seen' receipts: G15. Full history for newcomers: Q27. Empty states: NR8. 50 messages per load and the wording in quotes: proposals (FA-16). Previewing a public channel: FQ-10.||Khi nào tính là đã đọc, và vạch 'New' hành xử thế nào: OQ3 (đã xác nhận). Không có 'đã xem': G15. Người mới thấy đầy đủ lịch sử: Q27. Trạng thái trống: NR8. 50 tin mỗi lần tải và câu chữ trong dấu nháy: đề xuất (FA-16). Xem trước kênh công khai: FQ-10."),
+    "2.5": ("The composer and Send exist. With the demo offline switch on, a sent message appears faded with 'Waiting to send'. **'Not sent', Retry and Delete are not in the prototype** (the words do not occur in it), and there is no character counter.||Ô soạn tin và Send có trong prototype. Khi bật công tắc demo offline, tin gửi đi hiện mờ kèm 'Waiting to send'. **'Not sent', Retry và Delete không có trong prototype** (các chữ này không xuất hiện), và không có bộ đếm ký tự.",
+            "10,000 characters: G9. Membership needed to write: NR11. Waiting while offline: NR13. Same ID makes a retry safe: Technical tab. 'Not sent · Retry · Delete': written flow F11, no design (FQ-21); when waiting turns into 'Not sent': FQ-07. 10-second limit: FA-02.||10.000 ký tự: G9. Phải là thành viên mới viết được: NR11. Chờ khi mất mạng: NR13. Cùng ID khiến gửi lại an toàn: tab Technical. 'Not sent · Retry · Delete': flow viết F11, chưa có thiết kế (FQ-21); khi nào đang chờ thành 'Not sent': FQ-07. Giới hạn 10 giây: FA-02."),
+    "2.6": ("The paperclip in the composer adds a finished sample file at once. There is no file picker, progress bar, limit or failure (finding N-07). The numbers 10 and 100 MB appear nowhere in the prototype.||Icon kẹp giấy ở ô soạn tin thêm ngay một file mẫu đã xong. Không có chọn file, thanh tiến độ, giới hạn hay lỗi (phát hiện N-07). Con số 10 và 100 MB không xuất hiện ở đâu trong prototype.",
+            "At most 10 files per message: G9 (assumption you confirmed). 100 MB per file, object storage, image thumbnails: Q14 (recommended answer you accepted). Membership: NR11. Unsent uploads deleted after 24 hours: FA-07. File types: FQ-04. Cards, progress and Retry: written flow F18, no design.||Tối đa 10 file mỗi tin: G9 (giả định bạn đã xác nhận). 100 MB mỗi file, kho lưu trữ object, thumbnail ảnh: Q14 (đề xuất bạn đã chấp nhận). Tư cách thành viên: NR11. File tải lên mà không gửi bị xoá sau 24 giờ: FA-07. Loại file: FQ-04. Thẻ, tiến độ và Retry: flow viết F18, chưa có thiết kế."),
+    "2.7": ("The @ button and the people picker are in the composer; Activity lists mentions; Pause and Focus time are in the account menu; Preferences has 'Notify me for @mentions even in muted channels'. Push and the recipient's side cannot be observed: only one person is simulated.||Nút @ và danh sách chọn người nằm ở ô soạn tin; Activity liệt kê mention; Pause và Focus time nằm trong menu tài khoản; Preferences có 'Notify me for @mentions even in muted channels'. Push và phía người nhận không quan sát được: prototype chỉ mô phỏng một người.",
+            "Own action never notifies: NR5. Pause and Focus: NR6. Default levels: G13. @channel confirmation at 20 people: G8. Push content: G11. Phase 1 notification kinds: Q16. Mention in a muted conversation: open, GQ-01. Person not in the channel: FA-12.||Hành động của mình không tự báo cho mình: NR5. Pause và Focus: NR6. Mức mặc định: G13. Xác nhận @channel từ 20 người: G8. Nội dung push: G11. Các loại thông báo ở phase 1: Q16. Mention trong cuộc trò chuyện đã tắt tiếng: còn mở, GQ-01. Người không ở trong kênh: FA-12."),
+    "2.8": ("**A channel cannot be created in the prototype.** The sidebar has a '#' icon and a '+ Browse channels' row; both open Browse channels, which has a search field and Join or Open per row, and nothing to create a channel (finding N-03).||**Prototype không tạo được kênh.** Sidebar có icon '#' và hàng '+ Browse channels'; cả hai đều mở Browse channels, nơi chỉ có ô tìm và nút Join hoặc Open trên từng hàng, không có gì để tạo kênh (phát hiện N-03).",
+            "Who may create: every Member, Admin and Owner, public and private (capability table, Q12; sign-off GQ-20). Name rule and fixed privacy: G7. Form does not close by accident: NR4. Screen shows the new channel: NR10. Where the Create button lives: written flow F20 says Browse channels and Ctrl+K, not drawn (FQ-17). Dialog fields: FQ-18. Spaces become hyphens: FA-04. Archived names count: FA-05.||Ai được tạo: mọi Member, Admin và Owner, cả công khai lẫn riêng tư (bảng quyền, Q12; cần duyệt GQ-20). Quy tắc tên và loại kênh cố định: G7. Form không tự đóng: NR4. Màn hình hiện kênh mới: NR10. Nút Create nằm ở đâu: flow viết F20 ghi Browse channels và Ctrl+K, chưa được vẽ (FQ-17). Các ô của hộp thoại: FQ-18. Khoảng trắng thành gạch nối: FA-04. Tính cả tên kênh đã lưu trữ: FA-05."),
+    "2.9": ("Browse channels (search, Join, Open) exists. Leaving is in the Details panel: 'Leave channel', then 'Leave #name? You can rejoin from Browse channels.', then a toast with Undo, for public and private alike (finding N-09). Removing someone else from a channel does not exist.||Browse channels (tìm, Join, Open) có trong prototype. Rời kênh nằm ở panel Details: 'Leave channel', rồi 'Leave #name? You can rejoin from Browse channels.', rồi một toast có Undo, giống nhau cho kênh công khai và riêng tư (phát hiện N-09). Gỡ người khác khỏi kênh thì không có.",
+            "#general cannot be left: G1. Undo or confirmation, never both: NR3. A private channel needs a new invitation: OQ2 (confirmed). Full history on joining: Q27. Unread cleared on leaving: FA-10. Removing a member: an Admin or Owner, only in channels they belong to (G14); no chart, see FQ-19.||Không rời được #general: G1. Undo hoặc xác nhận, không bao giờ cả hai: NR3. Kênh riêng tư cần được mời lại: OQ2 (đã xác nhận). Thấy đầy đủ lịch sử khi tham gia: Q27. Xoá chưa đọc khi rời: FA-10. Gỡ một thành viên: Admin hoặc Owner, chỉ trong kênh họ là thành viên (G14); chưa có sơ đồ, xem FQ-19."),
+    "2.10": ("The More menu on your own message has Edit and Delete. Edit turns the text into a field with Save and Cancel and adds '(edited)'. Deleting a message with a thread removes every reply in the prototype.||Menu More trên tin của mình có Edit và Delete. Edit biến nội dung thành ô nhập có Save và Cancel, rồi thêm '(edited)'. Trong prototype, xoá một tin có thread thì xoá luôn mọi trả lời.",
+            "No time limit; a deleted message keeps its thread: Q13 (this overrides the prototype). Files removed with the message: G10. Admins delete only where they are members, and the author is told: G14, G16. Confirmation for an irreversible action: NR3. Reply being written while its message is deleted: FQ-05.||Không giới hạn thời gian; tin đã xoá vẫn giữ thread: Q13 (thắng prototype). File bị gỡ cùng tin: G10. Admin chỉ xoá ở nơi họ là thành viên, và tác giả được báo: G14, G16. Xác nhận cho hành động không hoàn tác được: NR3. Trả lời đang viết dở khi tin bị xoá: FQ-05."),
+    "2.11": ("The bookmark on a message, the Later section, 'Remind me' or 'Change' on each row with a menu of times, and 'Remind me about this' in the message menu all exist.||Bookmark trên tin nhắn, mục Later, 'Remind me' hoặc 'Change' trên từng hàng kèm menu giờ, và 'Remind me about this' trong menu tin nhắn đều có trong prototype.",
+            "Later is in phase 1: Q2. Reminder time must be in the future: NR7. Quiet during Pause and Focus, reminders included: NR6. Counts equal rows; empty state: NR8. A past choice in the menu: FQ-06.||Later thuộc phase 1: Q2. Giờ nhắc phải ở tương lai: NR7. Im lặng trong Pause và Focus, kể cả nhắc việc: NR6. Số đếm bằng số hàng; trạng thái trống: NR8. Lựa chọn đã qua trong menu: FQ-06."),
+    "2.12": ("**Not in the prototype.** Admin (the shield in the left navigation) has two tabs, analytics and automations; there is no members table and no invitation for members (finding N-02). The only invitation dialog is 'Invite a client' for guests.||**Không có trong prototype.** Admin (icon khiên ở thanh điều hướng trái) có hai tab, thống kê và automation; không có bảng thành viên và không có lời mời cho thành viên (phát hiện N-02). Hộp thoại mời duy nhất là 'Invite a client' cho guest.",
+            "Members join by invitation only: Q11. First Owner from server configuration, who then invites: Q26. An Admin invites as Member, an Owner with any role: capability table (Q12). 7 days: G4. Resend and Revoke: written flow F02. 50 addresses per batch: FA-11. Deactivated address: FQ-03. Batch failing halfway: FQ-11.||Thành viên chỉ vào bằng lời mời: Q11. Owner đầu tiên tạo từ cấu hình server, rồi mời người khác: Q26. Admin mời với vai trò Member, Owner mời vai trò nào cũng được: bảng quyền (Q12). 7 ngày: G4. Resend và Revoke: flow viết F02. 50 địa chỉ mỗi lô: FA-11. Địa chỉ đã bị vô hiệu hoá: FQ-03. Lô lỗi giữa chừng: FQ-11."),
+    "2.13": ("**Not in the prototype.** Admin has no members table, so there is no role menu and no Deactivate (finding N-02). People and the profile panel show a role label, read-only.||**Không có trong prototype.** Admin không có bảng thành viên, nên không có menu vai trò và không có Deactivate (phát hiện N-02). People và panel hồ sơ có hiện nhãn vai trò, chỉ đọc.",
+            "Who may change roles and deactivate whom: capability table (Q12). Several Owners; the last one is protected: G6. Effects of deactivation and reactivation: written flows F40, F41. Confirmation naming the target: NR3. The whole table awaits sign-off: GQ-20.||Ai được đổi vai trò và vô hiệu hoá ai: bảng quyền (Q12). Có nhiều Owner; Owner cuối được bảo vệ: G6. Hệ quả của vô hiệu hoá và kích hoạt lại: flow viết F40, F41. Hộp xác nhận nêu rõ đối tượng: NR3. Cả bảng đang chờ duyệt: GQ-20."),
+    "2.14": ("'New message' is the pencil icon above the conversation list. Its dialog has one field, 'Search people and channels'; pressing a row opens that DM or channel at once. **Several people cannot be chosen**, so a group cannot be started. One group exists as sample data only: 'Alex, Thu', three people.||'New message' là icon bút phía trên danh sách cuộc trò chuyện. Hộp thoại có một ô, 'Search people and channels'; bấm một hàng thì mở ngay DM hoặc kênh đó. **Không chọn được nhiều người**, nên không tạo được nhóm. Chỉ có một nhóm trong dữ liệu mẫu: 'Alex, Thu', ba người.",
+            "Group DMs exist, up to 8 people: Q17 (recommended answer you accepted). No adding or removing later: G12. Every member may start DMs and groups, guests may not: capability table (Q12). Same people reopen the same conversation; hidden from the others until the first message: written flow F25. How several people are chosen: FQ-20.||Có group DM, tối đa 8 người: Q17 (đề xuất bạn đã chấp nhận). Không thêm bớt người về sau: G12. Mọi thành viên mở được DM và nhóm, guest thì không: bảng quyền (Q12). Cùng người thì mở lại cùng cuộc trò chuyện; ẩn với người kia tới khi có tin đầu tiên: flow viết F25. Chọn nhiều người bằng cách nào: FQ-20."),
+    "3.1": ("A demo switch turns the network off. The prototype then shows a strip above the chat, 'Offline: showing saved messages · messages you send wait until you are back online', the same words above the conversation list, and 'Waiting to send' on messages. **'Reconnecting…' and 'Reconnected' are not in the prototype**, and other actions are not blocked (GAP-21).||Một công tắc demo tắt mạng. Khi đó prototype hiện một dải phía trên khung chat, 'Offline: showing saved messages · messages you send wait until you are back online', cùng câu đó phía trên danh sách cuộc trò chuyện, và 'Waiting to send' trên tin nhắn. **'Reconnecting…' và 'Reconnected' không có trong prototype**, và các thao tác khác không bị chặn (GAP-21).",
+            "Readable, messages wait, everything else blocked: NR13 (from GAP-21, OQ11). Banner never covers the composer: NR12. 'Reconnecting…' came from written flow F37, not from the prototype; the chart now uses the prototype's words and the rest is FQ-22. Retry intervals: FA-06. Missed events and the 7-day limit: Technical tab. Waiting messages surviving a reload: FA-09.||Vẫn đọc được, tin nhắn chờ, mọi thứ khác bị chặn: NR13 (từ GAP-21, OQ11). Banner không che ô soạn tin: NR12. 'Reconnecting…' lấy từ flow viết F37, không phải từ prototype; sơ đồ giờ dùng câu chữ của prototype, phần còn lại là FQ-22. Khoảng cách các lần thử lại: FA-06. Event bị lỡ và giới hạn 7 ngày: tab Technical. Tin đang chờ còn lại sau khi tải lại trang: FA-09."),
+    "3.2": ("**Not in the prototype.** It has no sign-in and no sessions, so none of these screens exist (finding N-01).||**Không có trong prototype.** Prototype không có đăng nhập và không có phiên, nên không màn hình nào ở đây tồn tại (phát hiện N-01).",
+            "Session of 30 days: Q11. Signing out another device: written flows F06, F07. Deactivation ends every session: F41, capability table (Q12). Session checked on every request: Technical tab. The two covering pages, their wording, and keeping the draft: proposals (FA-16, FA-09). Other tabs: FQ-02.||Phiên 30 ngày: Q11. Đăng xuất thiết bị khác: flow viết F06, F07. Vô hiệu hoá kết thúc mọi phiên: F41, bảng quyền (Q12). Kiểm tra phiên ở mọi request: tab Technical. Hai trang che, câu chữ của chúng, và việc giữ bản nháp: đề xuất (FA-16, FA-09). Các tab khác: FQ-02."),
+    "3.3": ("**Not in the prototype.** There is no server; every action succeeds at once. The words 'error' and 'Retry' do not occur in it (finding N-06). Problems in forms are reported by a toast after pressing the button (finding N-08).||**Không có trong prototype.** Không có server; mọi thao tác thành công tức thì. Chữ 'error' và 'Retry' không xuất hiện (phát hiện N-06). Lỗi trong form được báo bằng toast sau khi bấm nút (phát hiện N-08).",
+            "The whole chart is a proposal awaiting your yes: FA-08 (which answer maps to which screen), FA-02 (10 seconds), FA-16 (wording). Where a form error shows: open, GQ-03. A form with content is never lost: NR4. Double press: GQ-18.||Toàn bộ sơ đồ là đề xuất chờ bạn đồng ý: FA-08 (câu trả lời nào ứng với màn hình nào), FA-02 (10 giây), FA-16 (câu chữ). Lỗi form hiện ở đâu: còn mở, GQ-03. Form đã có nội dung không bao giờ bị mất: NR4. Bấm hai lần: GQ-18."),
+}
+for ch in [h1, h2] + D + E:
+    num = ch.m["title"].split(" ")[0]
+    proto, cond = SRC[num]
+    pe, pv = proto.split("||"); ce, cv = cond.split("||")
+    ch.m["notes"] += [f"**In the prototype:** {pe}||**Trong prototype:** {pv}",
+                      f"**Where the conditions come from:** {ce}||**Điều kiện lấy từ đâu:** {cv}"]
+
 # ───────────────────────── 4 · Business rules and assumptions ─────────────────────────
 def rows(text):
     return [[cell.strip() for cell in line.split("|")] for line in text.strip().split("\n")]
 
 RULES_EN = rows("""
 BR-01 | Nothing in Toki is readable without a session. Sign-in is the only public page. | all | Q11
-BR-02 | Sign-in is by a 6-digit code sent to the member's address: valid 10 minutes, usable once, cancelled after 5 wrong tries. There is no password. | 2.1 | Q11, F05
+BR-02 | Sign-in is by a 6-digit code sent to the member's address. There is no password. How long a code lasts and how many wrong tries it allows are not decided: FA-13, FA-14. | 2.1 | Q11
 BR-03 | At most 5 code requests per address in 15 minutes; Resend enables after 60 seconds. | 2.1 | G5
-BR-04 | A code request gets the same answer whether or not the address is a member. | 2.1 | F05
-BR-05 | A session lasts 30 days on one device and renews on every use. | 1.2, 2.1, 3.2 | Q11
+BR-04 | A code request gets the same answer whether or not the address is a member. | 2.1 | Technical
+BR-05 | A session lasts 30 days on one device. Whether it renews on use is not decided: FA-15. | 1.2, 2.1, 3.2 | Q11
 BR-06 | People join only by invitation from an Admin or Owner. An invitation lasts 7 days, works once, and signs the person in without a code. | 2.2, 2.12 | G4, Q26
 BR-07 | Every member is in #general; it cannot be left or archived. | 2.2, 2.9 | G1
 BR-08 | With no link, the app opens the conversation last viewed on that device; the first time, #general. | 2.3 | G2
 BR-09 | Permission is checked on the server for every request. Private conversations and DMs are visible to members only, including through search, file lists and direct links. | all | Technical
 BR-10 | 'No access' and 'not found' are answered the same way. | 2.3, 3.3 | Technical
 BR-11 | Writing to a conversation requires membership, and the conversation must not be archived. | 2.5, 2.6 | NR11
-BR-12 | A message holds up to 10,000 characters and 10 files; a file up to 100 MB. | 2.5, 2.6 | G9, F18
+BR-12 | A message holds up to 10,000 characters and 10 files; a file up to 100 MB. | 2.5, 2.6 | G9, Q14
 BR-13 | The app creates the message ID; sending the same ID again returns the stored message instead of a second one. | 2.5, 3.1 | Technical
 BR-14 | A conversation is marked read only when its newest message is on screen in a focused tab. There are no 'seen' receipts. | 2.4 | G15
 BR-15 | Your own action never notifies you. An Activity item becomes done on its own once the thing it asks for is done. | 2.7 | NR5
@@ -624,17 +697,17 @@ BR-34 | Every action has an entry point on narrow and touch screens; nothing is 
 """)
 RULES_VI = rows("""
 BR-01 | Không có gì trong Toki đọc được khi chưa có phiên. Đăng nhập là trang công khai duy nhất. | tất cả | Q11
-BR-02 | Đăng nhập bằng mã 6 số gửi tới địa chỉ của thành viên: hiệu lực 10 phút, dùng một lần, huỷ sau 5 lần sai. Không có mật khẩu. | 2.1 | Q11, F05
+BR-02 | Đăng nhập bằng mã 6 số gửi tới địa chỉ của thành viên. Không có mật khẩu. Mã sống bao lâu và cho sai mấy lần thì chưa quyết định: FA-13, FA-14. | 2.1 | Q11
 BR-03 | Tối đa 5 lần xin mã cho một địa chỉ trong 15 phút; Resend bật sau 60 giây. | 2.1 | G5
-BR-04 | Yêu cầu xin mã nhận cùng một câu trả lời dù địa chỉ có là thành viên hay không. | 2.1 | F05
-BR-05 | Một phiên kéo dài 30 ngày trên một thiết bị và gia hạn mỗi lần dùng. | 1.2, 2.1, 3.2 | Q11
+BR-04 | Yêu cầu xin mã nhận cùng một câu trả lời dù địa chỉ có là thành viên hay không. | 2.1 | Technical
+BR-05 | Một phiên kéo dài 30 ngày trên một thiết bị. Có gia hạn khi dùng hay không thì chưa quyết định: FA-15. | 1.2, 2.1, 3.2 | Q11
 BR-06 | Chỉ vào được qua lời mời của Admin hoặc Owner. Lời mời có hạn 7 ngày, dùng một lần, và đăng nhập thẳng không cần mã. | 2.2, 2.12 | G4, Q26
 BR-07 | Mọi thành viên đều ở trong #general; không rời và không lưu trữ được kênh này. | 2.2, 2.9 | G1
 BR-08 | Không có link thì ứng dụng mở cuộc trò chuyện xem gần nhất trên thiết bị đó; lần đầu là #general. | 2.3 | G2
 BR-09 | Quyền được kiểm tra ở server cho mọi request. Cuộc trò chuyện riêng tư và DM chỉ thành viên thấy, kể cả qua tìm kiếm, danh sách file và link trực tiếp. | tất cả | Technical
 BR-10 | 'Không có quyền' và 'không tồn tại' được trả lời giống nhau. | 2.3, 3.3 | Technical
 BR-11 | Viết vào một cuộc trò chuyện cần là thành viên, và cuộc trò chuyện chưa bị lưu trữ. | 2.5, 2.6 | NR11
-BR-12 | Một tin chứa tối đa 10.000 ký tự và 10 file; mỗi file tối đa 100 MB. | 2.5, 2.6 | G9, F18
+BR-12 | Một tin chứa tối đa 10.000 ký tự và 10 file; mỗi file tối đa 100 MB. | 2.5, 2.6 | G9, Q14
 BR-13 | Ứng dụng tạo ID tin nhắn; gửi lại cùng ID thì trả về tin đã lưu chứ không tạo tin thứ hai. | 2.5, 3.1 | Technical
 BR-14 | Chỉ đánh dấu đã đọc khi tin mới nhất nằm trên màn hình ở tab đang focus. Không có 'đã xem'. | 2.4 | G15
 BR-15 | Hành động của chính mình không tạo thông báo cho mình. Mục Activity tự thành xong khi việc nó yêu cầu đã xong. | 2.7 | NR5
@@ -662,7 +735,6 @@ BR-34 | Mọi hành động đều có lối vào trên màn hình hẹp và c�
 ASSUME_EN = rows("""
 FA-01 | Endpoint names and shapes in the charts (`POST /auth/code-requests`, `GET /bootstrap`, `PUT /conversations/:id/read` and the rest) are proposals. All sit under `/api/v1`. | all | Names are fixed in the spec of each ticket
 FA-02 | A request with no answer after 10 seconds counts as failed and shows Retry. | 2.3, 2.5, 3.3 | Any value between 8 and 15 s works
-FA-03 | A display name is 1 to 80 characters. | 2.2 | Same limit as a channel name
 FA-04 | Typing a space in a channel name turns it into a hyphen, and capitals into lowercase, instead of showing an error. | 2.8 | Fewer errors for the same rule
 FA-05 | The uniqueness of a channel name includes archived channels. | 2.8 | Otherwise un-archiving could collide
 FA-06 | Reconnect attempts wait 1, 2, 5, 10 and then 30 seconds, with a little randomness. | 3.1 | Avoids every client retrying at once
@@ -676,7 +748,6 @@ FA-12 | A mention of someone who is not in the channel creates no notification; 
 ASSUME_VI = rows("""
 FA-01 | Tên và dạng endpoint trong các sơ đồ (`POST /auth/code-requests`, `GET /bootstrap`, `PUT /conversations/:id/read` và phần còn lại) là đề xuất. Tất cả nằm dưới `/api/v1`. | tất cả | Tên được chốt trong spec của từng ticket
 FA-02 | Request không có trả lời sau 10 giây được coi là lỗi và hiện Retry. | 2.3, 2.5, 3.3 | Giá trị nào từ 8 đến 15 giây cũng được
-FA-03 | Tên hiển thị dài từ 1 đến 80 ký tự. | 2.2 | Cùng giới hạn với tên kênh
 FA-04 | Gõ khoảng trắng trong tên kênh thì tự thành gạch nối, chữ hoa thành chữ thường, thay vì báo lỗi. | 2.8 | Ít lỗi hơn cho cùng một quy tắc
 FA-05 | Tính không trùng của tên kênh bao gồm cả kênh đã lưu trữ. | 2.8 | Nếu không, bỏ lưu trữ có thể bị trùng tên
 FA-06 | Các lần kết nối lại chờ 1, 2, 5, 10 rồi 30 giây, có thêm chút ngẫu nhiên. | 3.1 | Tránh mọi máy cùng thử lại một lúc
@@ -723,6 +794,79 @@ def both(en, vi):
     return [[f"{a}||{b}" if a != b else a for a, b in zip(r1, r2)] for r1, r2 in zip(en, vi)]
 
 
+# Added in the review of 13 Nov 2026. Each cell is "English||Tiếng Việt".
+NEW_RULES = [
+    ["BR-35", "A display name is 1 to 80 characters.||Tên hiển thị dài từ 1 tới 80 ký tự.", "2.2", "Q31 (your answer, 13 Nov 2026)||Q31 (bạn trả lời, 13/11/2026)"],
+    ["BR-36", "A group DM holds at most 8 people, counting its creator. Nobody is added or removed afterwards.||Một group DM tối đa 8 người, tính cả người tạo. Về sau không thêm hay bớt người.", "2.14", "Q17, G12"],
+    ["BR-37", "Every Member, Admin and Owner may create public and private channels and start DMs and groups. Guests may not.||Mọi Member, Admin và Owner đều tạo được kênh công khai, kênh riêng tư, DM và nhóm. Guest thì không.", "2.8, 2.14", "Q12 (capability table)||Q12 (bảng quyền)"],
+    ["BR-38", "Only an Admin or Owner removes someone from a channel, and only in a channel they belong to themselves.||Chỉ Admin hoặc Owner gỡ được người khỏi kênh, và chỉ trong kênh mà chính họ là thành viên.", "2.9", "G14, Q12"],
+]
+NEW_ASSUME = [
+    ["FA-13", "A member's sign-in code is valid for 10 minutes.||Mã đăng nhập của thành viên có hiệu lực 10 phút.", "2.1", "The prototype's guest code screen says 'It works for 10 minutes'; nothing decides it for members||Màn hình nhập mã của guest trong prototype ghi 'It works for 10 minutes'; chưa có gì quyết định cho thành viên"],
+    ["FA-14", "A code is cancelled after 5 wrong tries; the person asks for a new one.||Mã bị huỷ sau 5 lần sai; người dùng phải xin mã mới.", "2.1", "A 6-digit code must not be guessable; the prototype accepts any 6 digits||Mã 6 số không được để đoán mò; prototype nhận 6 số bất kỳ"],
+    ["FA-15", "A session renews on every use, so 30 days means 30 days without opening Toki.||Phiên được gia hạn mỗi lần dùng, nên 30 ngày nghĩa là 30 ngày không mở Toki.", "1.1, 1.2, 3.2", "Q11 fixes 30 days but not whether it counts from sign-in or from last use||Q11 chốt 30 ngày nhưng chưa nói tính từ lúc đăng nhập hay từ lần dùng cuối"],
+    ["FA-16", "Every screen and every wording in quotes that the prototype does not contain is a proposal: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', loading placeholders, and the rest.||Mọi màn hình và mọi câu chữ trong dấu nháy mà prototype không có đều là đề xuất: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', ô giữ chỗ khi tải, và phần còn lại.", "all||tất cả", "The charts need a name for each state; the design decides the final words||Sơ đồ cần một cái tên cho từng trạng thái; thiết kế sẽ quyết định câu chữ cuối cùng"],
+    ["FA-17", "While offline the banner keeps the prototype's words, 'Offline: showing saved messages'. A separate 'Reconnecting…' state is not assumed.||Khi mất mạng, banner giữ câu chữ của prototype, 'Offline: showing saved messages'. Không giả định có trạng thái 'Reconnecting…' riêng.", "3.1", "The prototype shows only this banner; see FQ-22||Prototype chỉ có banner này; xem FQ-22"],
+]
+NEW_OPEN = [
+    ["FQ-13", "What does the invitation refusal page say, and does it tell the causes apart?||Trang từ chối lời mời ghi gì, và có phân biệt từng nguyên nhân không?", "1.1, 2.2",
+     "Three messages. **Expired:** 'This invitation expired on 12 Nov. Ask Minh to send a new one.' **Revoked:** 'This invitation is no longer valid. Ask an admin of Hugepig Studio for a new one.' **Unknown or damaged link:** 'This link is not valid.', with no workspace name. An invitation already used goes to the sign-in page with the email filled in. No page has a sign-in button for a stranger.||Ba câu. **Hết hạn:** 'This invitation expired on 12 Nov. Ask Minh to send a new one.' **Bị thu hồi:** 'This invitation is no longer valid. Ask an admin of Hugepig Studio for a new one.' **Link lạ hoặc hỏng:** 'This link is not valid.', không nêu tên workspace. Lời mời đã dùng rồi thì tới trang đăng nhập với email điền sẵn. Không trang nào có nút đăng nhập cho người lạ.", "Sign-in tickets||Ticket đăng nhập"],
+    ["FQ-14", "The prototype's code screen has no Resend, only 'Use a different email'. G5 already expects a Resend button after 60 seconds. Is Resend added to the screen, and does a new code cancel the earlier one?||Màn hình nhập mã của prototype không có Resend, chỉ có 'Use a different email'. G5 đã mặc định có nút Resend sau 60 giây. Có thêm Resend vào màn hình không, và mã mới có huỷ mã cũ không?", "1.1, 2.1",
+     "Yes: 'Resend code' under the field, greyed with a countdown for 60 seconds. A new code cancels the earlier one, so only the newest mail works.||Có: 'Resend code' dưới ô nhập, xám kèm đếm ngược 60 giây. Mã mới huỷ mã cũ, nên chỉ mail mới nhất dùng được.", "Sign-in tickets||Ticket đăng nhập"],
+    ["FQ-15", "The welcome step after accepting an invitation is not in the prototype. Is it wanted, and with which fields?||Màn hình chào sau khi nhận lời mời không có trong prototype. Có cần nó không, và gồm những ô nào?", "1.1, 2.2",
+     "One screen: display name (required, 1 to 80, filled from the address), job title (optional), time zone (from the device). 'Enter Toki' and 'Skip'.||Một màn hình: tên hiển thị (bắt buộc, 1 tới 80, điền sẵn từ địa chỉ), chức danh (không bắt buộc), múi giờ (lấy từ thiết bị). 'Enter Toki' và 'Skip'.", "Sign-in tickets||Ticket đăng nhập"],
+    ["FQ-16", "#general exists before anyone is invited and every newcomer is in it (G1). Does #general show a line when someone joins, and does that line notify anyone?||#general có sẵn trước khi mời ai và người mới nào cũng ở trong đó (G1). #general có hiện một dòng khi có người vào không, và dòng đó có báo cho ai không?", "2.2, 2.9",
+     "Yes: a grey system line 'Minh joined', with the date. It raises no unread count and no notification. The prototype has no system lines; its sample shows a person writing 'Welcome Jordan to the team!'.||Có: một dòng hệ thống màu xám 'Minh joined', kèm ngày. Không làm tăng số chưa đọc và không tạo thông báo. Prototype không có dòng hệ thống; dữ liệu mẫu chỉ có một người viết 'Welcome Jordan to the team!'.", "Channel tickets||Ticket kênh"],
+    ["FQ-17", "**Your finding:** the prototype has no '+' for a new channel, only '+ Browse channels', and Browse channels has nothing to create one. Where does 'Create channel' live?||**Bạn phát hiện:** prototype không có '+' để tạo kênh, chỉ có '+ Browse channels', và trong Browse channels không có chỗ nào để tạo. 'Create channel' nằm ở đâu?", "2.8",
+     "(a) A 'Create channel' button at the top of Browse channels, a 'Create channel' command in Ctrl+K, and 'Create #text' when a search finds nothing · (b) A separate '+' beside the Conversations heading. Suggested: (a), as written flow F20 says.||(a) Nút 'Create channel' ở đầu Browse channels, lệnh 'Create channel' trong Ctrl+K, và 'Create #text' khi tìm không ra · (b) Một nút '+' riêng cạnh tiêu đề Conversations. Đề xuất: (a), đúng như flow viết F20.", "Channel tickets||Ticket kênh"],
+    ["FQ-18", "Which fields does the Create channel dialog have, and what are their limits?||Hộp thoại Create channel có những ô nào, và giới hạn của chúng?", "2.8",
+     "Name (rule G7), Private switch (off by default), Topic (optional, up to 250 characters), Add people (optional). Written flow F20 has 'add members'; the chart leaves it out until you confirm.||Tên (quy tắc G7), công tắc Private (mặc định tắt), Topic (không bắt buộc, tối đa 250 ký tự), Add people (không bắt buộc). Flow viết F20 có 'add members'; sơ đồ chưa vẽ cho tới khi bạn xác nhận.", "Channel tickets||Ticket kênh"],
+    ["FQ-19", "Can an Owner or Admin remove a member from any channel? Decided so far (G14): no, only from a channel they belong to, and never from #general. Does that stand, and can the creator of a channel remove people too?||Owner hoặc Admin có gỡ được thành viên khỏi một kênh bất kỳ không? Hiện đã quyết định (G14): không, chỉ trong kênh họ là thành viên, và không bao giờ khỏi #general. Giữ như vậy chứ, và người tạo kênh có được gỡ người không?", "2.9",
+     "Keep G14. The creator has no extra right. The removed person gets an Activity item 'Lan removed you from #name'; the channel shows 'Lan removed Minh'. This flow has no chart yet.||Giữ G14. Người tạo kênh không có quyền gì thêm. Người bị gỡ nhận một mục Activity 'Lan removed you from #name'; kênh hiện 'Lan removed Minh'. Flow này chưa có sơ đồ.", "Channel tickets||Ticket kênh"],
+    ["FQ-20", "How does a person choose several people for a group DM? The prototype's New message dialog opens a conversation on the first press.||Người dùng chọn nhiều người cho một group DM bằng cách nào? Hộp thoại New message của prototype mở cuộc trò chuyện ngay ở lần bấm đầu.", "2.14",
+     "Each press adds the person as a chip in the field; a 'Start' button opens the conversation. One chip plus Enter opens the DM. Channels in the list still open at once. Limit stays 8 with you (Q17).||Mỗi lần bấm thêm người đó thành một chip trong ô; nút 'Start' mở cuộc trò chuyện. Một chip rồi Enter thì mở DM. Kênh trong danh sách vẫn mở ngay. Giới hạn vẫn là 8 tính cả bạn (Q17).", "Messaging tickets||Ticket nhắn tin"],
+    ["FQ-21", "The prototype shows 'Waiting to send' and nothing for a send that failed. Where do 'Not sent', Retry and Delete appear?||Prototype có 'Waiting to send' và không có gì cho trường hợp gửi lỗi. 'Not sent', Retry và Delete hiện ở đâu?", "2.5",
+     "In the same place as 'Waiting to send', beside the time: a red 'Not sent' followed by two text buttons, Retry and Delete. The message stays faded. Delete asks nothing, since nobody else has seen it.||Ở đúng chỗ của 'Waiting to send', cạnh giờ: chữ đỏ 'Not sent' rồi hai nút chữ, Retry và Delete. Tin vẫn mờ. Delete không hỏi lại, vì chưa ai khác thấy tin đó.", "Messaging tickets||Ticket nhắn tin"],
+    ["FQ-22", "The prototype's offline banner reads 'Offline: showing saved messages'. Written flow F37 said 'Reconnecting…' and a 'Reconnected' toast, which the prototype does not have. Which wording, and is there a separate reconnecting state?||Banner offline của prototype ghi 'Offline: showing saved messages'. Flow viết F37 ghi 'Reconnecting…' và toast 'Reconnected', những thứ prototype không có. Dùng câu chữ nào, và có trạng thái đang kết nối lại riêng không?", "3.1",
+     "(a) Keep the prototype's banner the whole time; it disappears when the connection is back, with no toast · (b) Same banner, plus the words 'Reconnecting…' during each try · (c) Replace it by 'Reconnecting…'. Suggested: (a). Until answered the charts use (a) (FA-17).||(a) Giữ banner của prototype suốt thời gian đó; nó biến mất khi có lại kết nối, không có toast · (b) Cùng banner, thêm chữ 'Reconnecting…' trong mỗi lần thử · (c) Thay bằng 'Reconnecting…'. Đề xuất: (a). Cho tới khi có trả lời, sơ đồ dùng (a) (FA-17).", "Messaging tickets||Ticket nhắn tin"],
+]
+EVIDENCE = [
+    ["Invitation valid 7 days, one use||Lời mời hiệu lực 7 ngày, dùng một lần", "G4", "Assumption you confirmed||Giả định bạn đã xác nhận", "No member invitation. 'It works for 10 minutes' is on the guest code screen and is about the code||Không có lời mời cho thành viên. 'It works for 10 minutes' ở màn hình nhập mã của guest và nói về mã"],
+    ["Session valid 30 days||Phiên hiệu lực 30 ngày", "Q11", "Recommended answer you accepted||Đề xuất bạn đã chấp nhận", "No sessions||Không có phiên"],
+    ["6-digit code, no password||Mã 6 số, không mật khẩu", "Q11", "Recommended answer you accepted||Đề xuất bạn đã chấp nhận", "Guest portal only||Chỉ ở cổng guest"],
+    ["Code valid 10 minutes; 5 wrong tries||Mã hiệu lực 10 phút; 5 lần sai", "FA-13, FA-14", "**Not decided**||**Chưa quyết định**", "'It works for 10 minutes' (guest); any 6 digits pass||'It works for 10 minutes' (guest); 6 số nào cũng qua"],
+    ["5 code requests in 15 minutes; Resend after 60 s||5 lần xin mã trong 15 phút; Resend sau 60 giây", "G5", "Assumption you confirmed||Giả định bạn đã xác nhận", "No Resend button (FQ-14)||Không có nút Resend (FQ-14)"],
+    ["Display name 1 to 80 characters||Tên hiển thị 1 tới 80 ký tự", "Q31", "Your answer, 13 Nov 2026||Bạn trả lời, 13/11/2026", "No field for a name||Không có ô nhập tên"],
+    ["#general exists from set-up; everyone is in it||#general có từ lúc thiết lập; ai cũng ở trong đó", "G1", "Assumption you confirmed||Giả định bạn đã xác nhận", "#general is in the sample data||#general có trong dữ liệu mẫu"],
+    ["10 files per message||10 file mỗi tin", "G9", "Assumption you confirmed||Giả định bạn đã xác nhận", "No limit; attach is faked||Không giới hạn; đính kèm là giả lập"],
+    ["100 MB per file||100 MB mỗi file", "Q14", "Recommended answer you accepted||Đề xuất bạn đã chấp nhận", "The number does not appear||Con số không xuất hiện"],
+    ["10,000 characters per message||10.000 ký tự mỗi tin", "G9", "Assumption you confirmed||Giả định bạn đã xác nhận", "No limit, no counter||Không giới hạn, không bộ đếm"],
+    ["Channel name: a–z, 0–9, hyphens, up to 80, unique||Tên kênh: a–z, 0–9, gạch nối, tối đa 80, không trùng", "G7", "Assumption you confirmed||Giả định bạn đã xác nhận", "Channels cannot be created||Không tạo được kênh"],
+    ["Group DM up to 8 people; no adding or removing||Group DM tối đa 8 người; không thêm bớt", "Q17, G12", "Accepted answer; confirmed assumption||Đề xuất đã chấp nhận; giả định đã xác nhận", "One sample group; groups cannot be started||Một nhóm mẫu; không tạo được nhóm"],
+    ["Admins and Owners act only in conversations they belong to||Admin và Owner chỉ thao tác trong cuộc trò chuyện họ là thành viên", "G14", "Assumption you confirmed||Giả định bạn đã xác nhận", "Seen only as an Owner who is in every channel||Chỉ được xem với vai trò Owner có mặt ở mọi kênh"],
+    ["Who may do what (create, invite, deactivate, change roles)||Ai được làm gì (tạo, mời, vô hiệu hoá, đổi vai trò)", "Q12", "Capability table; sign-off pending (GQ-20)||Bảng quyền; đang chờ duyệt (GQ-20)", "No difference between roles is shown||Không thể hiện khác biệt giữa các vai trò"],
+    ["Offline: read, messages wait, the rest blocked||Offline: đọc được, tin nhắn chờ, còn lại bị chặn", "NR13", "Rule from GAP-21, confirmed (OQ11)||Quy tắc từ GAP-21, đã xác nhận (OQ11)", "Banner and 'Waiting to send' exist; nothing is blocked||Có banner và 'Waiting to send'; không có gì bị chặn"],
+    ["Request fails after 10 s; error screens per answer||Request lỗi sau 10 giây; màn hình lỗi theo từng câu trả lời", "FA-02, FA-08", "**Not decided**||**Chưa quyết định**", "No errors at all||Không có lỗi nào"],
+]
+MISSING = [
+    ["Member sign-in: email step and code step||Đăng nhập thành viên: bước email và bước nhập mã", "1.1, 2.1", "Guest version only; no Resend||Chỉ có bản cho guest; không có Resend", "N-01, N-30"],
+    ["Invitation refusal page||Trang từ chối lời mời", "1.1, 2.2", "Absent||Không có", "N-29 · FQ-13"],
+    ["Welcome step (name, job title, time zone)||Màn hình chào (tên, chức danh, múi giờ)", "1.1, 2.2", "Absent||Không có", "N-29 · FQ-15"],
+    ["Sign out in the account menu; signed-in devices||Sign out trong menu tài khoản; danh sách thiết bị", "1.2", "Absent||Không có", "N-04"],
+    ["'Session ended' and 'Account deactivated' pages||Trang 'Session ended' và 'Account deactivated'", "1.2, 2.1, 2.3, 3.2", "Absent||Không có", "N-01"],
+    ["'Not found or no access' page||Trang 'Not found or no access'", "2.3, 2.4, 3.3", "Absent||Không có", "N-06"],
+    ["Loading placeholders for lists and messages||Ô giữ chỗ khi tải danh sách và tin nhắn", "2.3, 2.4, 2.9, 2.12", "Absent||Không có", "N-05"],
+    ["'Not sent' with Retry and Delete on a message||'Not sent' kèm Retry và Delete trên tin nhắn", "2.5", "'Waiting to send' only||Chỉ có 'Waiting to send'", "N-06 · FQ-21"],
+    ["File picker, upload cards, progress, refusal, Retry||Chọn file, thẻ tải lên, tiến độ, từ chối, Retry", "2.6", "Faked: one press adds a sample file||Giả lập: bấm một lần là có file mẫu", "N-07"],
+    ["Create channel: entry point and dialog||Tạo kênh: lối vào và hộp thoại", "2.8", "Absent||Không có", "N-03 · FQ-17, FQ-18"],
+    ["Add people to a channel; remove a member||Thêm người vào kênh; gỡ một thành viên", "2.9", "Absent||Không có", "N-03, N-32 · FQ-19"],
+    ["Choosing several people for a group DM||Chọn nhiều người cho một group DM", "2.14", "One person only||Chỉ chọn được một người", "N-31 · FQ-20"],
+    ["Admin: members table, invite, Resend, Revoke||Admin: bảng thành viên, mời, Resend, Revoke", "2.12", "Absent||Không có", "N-02"],
+    ["Admin: change role, deactivate, reactivate||Admin: đổi vai trò, vô hiệu hoá, kích hoạt lại", "2.13", "Absent||Không có", "N-02"],
+    ["Reconnecting state; blocked action while offline||Trạng thái đang kết nối lại; chặn thao tác khi offline", "3.1", "Offline banner only; nothing blocked||Chỉ có banner offline; không chặn gì", "GAP-21 · FQ-22"],
+    ["Error with Retry; message under a form field||Lỗi kèm Retry; thông báo dưới ô nhập", "3.3", "Absent; forms use toasts||Không có; form dùng toast", "N-06, N-08 · GQ-03"],
+]
+
 all_maps = [h1.m, h2.m] + [c.m for c in D + E]
 n_nodes = sum(len(m["nodes"]) for m in all_maps)
 n_dec = sum(1 for m in all_maps for n in m["nodes"] if n["kind"] == "decision")
@@ -752,14 +896,20 @@ spec = {"groups": [
     {"title": "4 · Business rules and assumptions||4 · Quy tắc nghiệp vụ và giả định",
      "intro": "The rules the charts depend on, each with the flows that use it and where it was decided. Then the assumptions made while drawing: these are **not confirmed** and need a yes or a correction.||Các quy tắc mà sơ đồ dựa vào, kèm flow dùng nó và nơi nó được quyết định. Sau đó là các giả định đặt ra khi vẽ: chúng **chưa được xác nhận** và cần một lời đồng ý hoặc chỉnh sửa.",
      "blocks": [
+         {"type": "h", "text": "Where the conditions in the charts come from||Điều kiện trong các sơ đồ lấy từ đâu"},
+         {"type": "p", "text": "The numbers and limits a reader is most likely to question. **Q** is an answer from the question rounds, **G** an assumption you confirmed, **NR** a rule made from a gap, **FA** an assumption nobody has confirmed. The last column is what the prototype itself shows.||Các con số và giới hạn dễ bị hỏi lại nhất. **Q** là câu trả lời ở các vòng hỏi, **G** là giả định bạn đã xác nhận, **NR** là quy tắc rút ra từ một gap, **FA** là giả định chưa ai xác nhận. Cột cuối là những gì chính prototype thể hiện."},
+         {"type": "table", "head": ["Condition||Điều kiện", "Source||Nguồn", "Standing||Tình trạng", "In the prototype||Trong prototype"], "rows": EVIDENCE},
          {"type": "h", "text": "Business rules (decided)||Quy tắc nghiệp vụ (đã quyết định)"},
-         {"type": "table", "head": ["ID||ID", "Rule||Quy tắc", "Flows||Flow", "Source||Nguồn"], "rows": both(RULES_EN, RULES_VI)},
+         {"type": "table", "head": ["ID||ID", "Rule||Quy tắc", "Flows||Flow", "Source||Nguồn"], "rows": both(RULES_EN, RULES_VI) + NEW_RULES},
          {"type": "h", "text": "Assumptions made while drawing (awaiting confirmation)||Giả định đặt ra khi vẽ (chờ xác nhận)"},
-         {"type": "table", "head": ["ID||ID", "Assumption||Giả định", "Flows||Flow", "Why this value||Vì sao chọn vậy"], "rows": both(ASSUME_EN, ASSUME_VI)}]},
+         {"type": "table", "head": ["ID||ID", "Assumption||Giả định", "Flows||Flow", "Why this value||Vì sao chọn vậy"], "rows": both(ASSUME_EN, ASSUME_VI) + NEW_ASSUME}]},
     {"title": "5 · Open questions and missing requirements||5 · Câu hỏi mở và yêu cầu còn thiếu",
      "intro": "Cases the charts ran into that no decision, rule or written flow covers yet. Each has a suggested answer; none is assumed in the charts unless it says so.||Các trường hợp sơ đồ gặp phải mà chưa có quyết định, quy tắc hay flow viết nào phủ tới. Mỗi câu có đề xuất trả lời; sơ đồ không ngầm dùng câu nào trừ khi có ghi rõ.",
      "blocks": [
-         {"type": "table", "head": ["ID||ID", "Question||Câu hỏi", "Flows||Flow", "Suggested answer||Đề xuất trả lời", "Blocks||Chặn"], "rows": both(OPEN_EN, OPEN_VI)}]},
+         {"type": "table", "head": ["ID||ID", "Question||Câu hỏi", "Flows||Flow", "Suggested answer||Đề xuất trả lời", "Blocks||Chặn"], "rows": both(OPEN_EN, OPEN_VI) + NEW_OPEN},
+         {"type": "h", "text": "Screens the charts use that the prototype does not draw||Màn hình các sơ đồ dùng tới mà prototype chưa vẽ"},
+         {"type": "p", "text": "Each of these needs a design before its tickets start. The finding and the question behind each are in the last column; findings (N, GAP) are on the Gap analysis tab.||Mỗi màn hình dưới đây cần có thiết kế trước khi bắt đầu ticket của nó. Phát hiện và câu hỏi liên quan nằm ở cột cuối; các phát hiện (N, GAP) ở tab Phân tích gap."},
+         {"type": "table", "head": ["Screen or state||Màn hình hoặc trạng thái", "Flows||Flow", "In the prototype||Trong prototype", "Finding · question||Phát hiện · câu hỏi"], "rows": MISSING}]},
 ]}
 
 out = pathlib.Path(__file__).with_name("flowmaps.json")
