@@ -14,6 +14,7 @@ Published at: https://claude.ai/code/artifact/e6b79d7f-ff70-41b2-99d6-d2cb61c33b
 | `flowmaps.json` | Written by `gen_flowmaps.py`. Do not edit by hand. |
 | `gen_analysis.py` | The source of the Gap analysis tab: prototype overview, findings, missing flows, open questions, assumptions and risks. Writes the `analysis` key into both language files. Edit this file. |
 | `gen_validation.py` | The source of the Validation tab: findings backlog, decisions required, flow validation, business rules, requirements (FR, NFR), acceptance criteria, test scenarios, traceability matrix and readiness report. Reads `gen_flowmaps.py` and `gen_analysis.py`; writes the `validation` key into both language files. Run it last. |
+| `test_details.py` | The full text of each test scenario: preconditions, numbered steps and expected result, one entry per test in the order `gen_validation.py` numbers them. The one-line text in `gen_validation.py` is the scenario's name. |
 | `flowmaps.prototype.json` | Six screen maps drawn from a walkthrough of the prototype. Not shown on the page; kept for reference. |
 | `prototype/index.html` | A snapshot of the Toki prototype, embedded in the Prototype tab. |
 | `blueprint.html` | The built page. Not committed; rebuild it. |

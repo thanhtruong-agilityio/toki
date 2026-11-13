@@ -5715,12 +5715,18 @@
       {
        "id": "TS-001",
        "type": "P",
-       "text": "Xin mã, nhập mã, vào ứng dụng."
+       "text": "Xin mã, nhập mã, vào ứng dụng.",
+       "given": "Sam là thành viên đang hoạt động và chưa đăng nhập trên thiết bị này.",
+       "steps": "1. Mở Toki. 2. Nhập email của Sam và xin mã. 3. Đọc mã 6 số trong mail. 4. Nhập mã.",
+       "expect": "Ứng dụng mở ra, đã đăng nhập với tư cách Sam. Không bước nào hỏi mật khẩu."
       },
       {
        "id": "TS-002",
        "type": "N",
-       "text": "Nhập 6 số không phải mã đã gửi: bị từ chối, vẫn ở màn hình mã."
+       "text": "Nhập 6 số không phải mã đã gửi: bị từ chối, vẫn ở màn hình mã.",
+       "given": "Sam đã xin mã và đang ở màn hình nhập mã.",
+       "steps": "1. Nhập 6 số không phải mã trong mail.",
+       "expect": "Đăng nhập bị từ chối kèm thông báo. Sam vẫn ở màn hình nhập mã và không có phiên nào được tạo."
       }
      ]
     },
@@ -5731,12 +5737,18 @@
       {
        "id": "TS-003",
        "type": "B",
-       "text": "5 số và 7 số thì không gửi được."
+       "text": "5 số và 7 số thì không gửi được.",
+       "given": "Sam đang ở màn hình nhập mã.",
+       "steps": "1. Nhập 5 số rồi thử gửi. 2. Thử nhập số thứ 7.",
+       "expect": "5 số thì không gửi được. Ô không nhận số thứ 7."
       },
       {
        "id": "TS-004",
        "type": "N",
-       "text": "Chữ cái trong ô mã bị từ chối."
+       "text": "Chữ cái trong ô mã bị từ chối.",
+       "given": "Sam đang ở màn hình nhập mã.",
+       "steps": "1. Gõ chữ cái và ký hiệu vào ô mã. 2. Dán 'ab12cd'.",
+       "expect": "Chỉ chữ số xuất hiện trong ô; không gửi được thứ gì có chữ cái."
       }
      ]
     }
@@ -5766,12 +5778,18 @@
       {
        "id": "TS-005",
        "type": "B",
-       "text": "Lần 5 thành công, lần 6 bị từ chối."
+       "text": "Lần 5 thành công, lần 6 bị từ chối.",
+       "given": "Trong 15 phút qua chưa có lần xin mã nào cho địa chỉ của Sam.",
+       "steps": "1. Xin mã 5 lần, mỗi lần cách nhau 60 giây. 2. Xin lần thứ 6.",
+       "expect": "Lần 1 tới 5 đều gửi mail. Lần thứ 6 bị từ chối kèm thông báo và không gửi mail."
       },
       {
        "id": "TS-006",
        "type": "P",
-       "text": "Sau 15 phút xin lại được."
+       "text": "Sau 15 phút xin lại được.",
+       "given": "Địa chỉ của Sam vừa bị từ chối ở lần xin thứ 6.",
+       "steps": "1. Đợi tới khi đủ 15 phút kể từ lần xin đầu tiên. 2. Xin mã.",
+       "expect": "Yêu cầu thành công và mail được gửi."
       }
      ]
     },
@@ -5782,7 +5800,10 @@
       {
        "id": "TS-007",
        "type": "B",
-       "text": "Giây 59 chưa được; giây 60 được."
+       "text": "Giây 59 chưa được; giây 60 được.",
+       "given": "Sam vừa xin mã.",
+       "steps": "1. Thử gửi lại mã ở giây thứ 59. 2. Thử lại ở giây thứ 60.",
+       "expect": "Ở giây 59 chưa gửi lại được. Ở giây 60 thì được, và một mail mới được gửi."
       }
      ]
     }
@@ -5813,12 +5834,18 @@
       {
        "id": "TS-008",
        "type": "N",
-       "text": "Mở link cuộc trò chuyện khi chưa đăng nhập: chỉ có trang đăng nhập."
+       "text": "Mở link cuộc trò chuyện khi chưa đăng nhập: chỉ có trang đăng nhập.",
+       "given": "Chưa ai đăng nhập trên trình duyệt này. Có sẵn link tới một tin trong #launch.",
+       "steps": "1. Mở link.",
+       "expect": "Trang đăng nhập hiện ra. Không tên kênh, tin nhắn hay tên thành viên nào xuất hiện trên trang."
       },
       {
        "id": "TS-009",
        "type": "N",
-       "text": "Gọi API không có phiên: bị từ chối."
+       "text": "Gọi API không có phiên: bị từ chối.",
+       "given": "Không có phiên.",
+       "steps": "1. Gửi thẳng tới server một request lấy danh sách cuộc trò chuyện, không kèm phiên.",
+       "expect": "Server từ chối request và không trả về dữ liệu nào của workspace."
       }
      ]
     },
@@ -5829,7 +5856,10 @@
       {
        "id": "TS-010",
        "type": "P",
-       "text": "Đăng nhập ở A; B vẫn hỏi mã."
+       "text": "Đăng nhập ở A; B vẫn hỏi mã.",
+       "given": "Sam chưa đăng nhập trên thiết bị A và B.",
+       "steps": "1. Đăng nhập với tư cách Sam trên thiết bị A. 2. Mở Toki trên thiết bị B.",
+       "expect": "Thiết bị A đã đăng nhập. Thiết bị B vẫn hiện trang đăng nhập và hỏi mã."
       }
      ]
     },
@@ -5840,7 +5870,10 @@
       {
        "id": "TS-011",
        "type": "B",
-       "text": "Ngày 30 được, ngày 31 bị từ chối (chỉnh đồng hồ khi test)."
+       "text": "Ngày 30 được, ngày 31 bị từ chối (chỉnh đồng hồ khi test).",
+       "given": "Sam đã đăng nhập; đồng hồ test chỉnh được.",
+       "steps": "1. Không dùng phiên và chỉnh đồng hồ tới 30 ngày sau; mở Toki. 2. Lặp lại với 31 ngày.",
+       "expect": "Ở 30 ngày Sam vẫn đang đăng nhập. Ở 31 ngày thì hiện trang đăng nhập."
       }
      ]
     }
@@ -5880,12 +5913,18 @@
       {
        "id": "TS-012",
        "type": "P",
-       "text": "Nhận lời mời ngày 1: đã đăng nhập."
+       "text": "Nhận lời mời ngày 1: đã đăng nhập.",
+       "given": "Minh (Admin) vừa mời một địa chỉ mới hôm nay.",
+       "steps": "1. Mở mail mời trên thiết bị chưa có phiên. 2. Bấm link.",
+       "expect": "Người đó được đăng nhập mà không bị hỏi mã."
       },
       {
        "id": "TS-013",
        "type": "B",
-       "text": "Nhận ngay trước 7 ngày: được; ngay sau: bị từ chối."
+       "text": "Nhận ngay trước 7 ngày: được; ngay sau: bị từ chối.",
+       "given": "Có hai lời mời; đồng hồ test chỉnh được.",
+       "steps": "1. Mở link thứ nhất ngay trước khi đủ 7 ngày. 2. Mở link thứ hai ngay sau 7 ngày.",
+       "expect": "Link thứ nhất đăng nhập được. Link thứ hai bị từ chối và không tạo phiên."
       }
      ]
     },
@@ -5896,7 +5935,10 @@
       {
        "id": "TS-014",
        "type": "N",
-       "text": "Mở lại cùng link: không tạo phiên."
+       "text": "Mở lại cùng link: không tạo phiên.",
+       "given": "Một link mời đã được dùng để tham gia.",
+       "steps": "1. Mở lại đúng link đó trên thiết bị chưa có phiên.",
+       "expect": "Link không đăng nhập cho ai, và không tạo tài khoản thứ hai."
       }
      ]
     },
@@ -5907,7 +5949,10 @@
       {
        "id": "TS-015",
        "type": "N",
-       "text": "Xin mã cho địa chỉ lạ: không vào được."
+       "text": "Xin mã cho địa chỉ lạ: không vào được.",
+       "given": "Một địa chỉ chưa từng được mời và không có tài khoản.",
+       "steps": "1. Ở trang đăng nhập, nhập địa chỉ đó và xin mã. 2. Thử 6 số bất kỳ.",
+       "expect": "Địa chỉ đó không vào được workspace bằng bước nào."
       }
      ]
     }
@@ -5937,7 +5982,10 @@
       {
        "id": "TS-016",
        "type": "P",
-       "text": "Danh sách của thành viên mới có #general."
+       "text": "Danh sách của thành viên mới có #general.",
+       "given": "Một người vừa nhận lời mời.",
+       "steps": "1. Xem danh sách cuộc trò chuyện của họ. 2. Mở #general.",
+       "expect": "#general có trong danh sách mà họ không phải làm gì, và họ đọc, viết được trong đó."
       }
      ]
     },
@@ -5948,12 +5996,18 @@
       {
        "id": "TS-017",
        "type": "N",
-       "text": "Leave không dùng được ở #general với Member, Admin, Owner."
+       "text": "Leave không dùng được ở #general với Member, Admin, Owner.",
+       "given": "Ba người đang đăng nhập: một Member, một Admin, một Owner.",
+       "steps": "1. Với từng người, mở #general và tìm cách rời hoặc lưu trữ kênh.",
+       "expect": "Không ai trong ba người có Leave hay Archive dùng được cho #general."
       },
       {
        "id": "TS-018",
        "type": "N",
-       "text": "Request rời kênh gửi thẳng tới server bị từ chối."
+       "text": "Request rời kênh gửi thẳng tới server bị từ chối.",
+       "given": "Sam đang đăng nhập.",
+       "steps": "1. Gửi thẳng tới server một request rời #general.",
+       "expect": "Server từ chối. Sam vẫn là thành viên của #general."
       }
      ]
     }
@@ -5983,17 +6037,26 @@
       {
        "id": "TS-019",
        "type": "B",
-       "text": "1 và 80 ký tự lưu được."
+       "text": "1 và 80 ký tự lưu được.",
+       "given": "Một người đang đặt tên hiển thị.",
+       "steps": "1. Lưu tên 1 ký tự. 2. Lưu tên 80 ký tự.",
+       "expect": "Cả hai đều được lưu và hiện đầy đủ."
       },
       {
        "id": "TS-020",
        "type": "B",
-       "text": "0 và 81 ký tự bị từ chối."
+       "text": "0 và 81 ký tự bị từ chối.",
+       "given": "Một người đang đặt tên hiển thị.",
+       "steps": "1. Thử lưu tên trống. 2. Thử lưu tên 81 ký tự.",
+       "expect": "Cả hai bị từ chối kèm thông báo; tên trước đó không đổi."
       },
       {
        "id": "TS-021",
        "type": "P",
-       "text": "Tên tiếng Việt có dấu được giữ nguyên."
+       "text": "Tên tiếng Việt có dấu được giữ nguyên.",
+       "given": "Một người đang đặt tên hiển thị.",
+       "steps": "1. Lưu tên 'Nguyễn Thị Hồng Ánh'. 2. Tải lại và xem hồ sơ.",
+       "expect": "Tên hiện đúng như đã gõ, đủ mọi dấu."
       }
      ]
     }
@@ -6023,12 +6086,18 @@
       {
        "id": "TS-022",
        "type": "P",
-       "text": "Xem #launch, mở lại: #launch."
+       "text": "Xem #launch, mở lại: #launch.",
+       "given": "Sam đang đăng nhập và là thành viên của #launch.",
+       "steps": "1. Mở #launch. 2. Đóng Toki. 3. Mở lại Toki trên cùng thiết bị, không qua link.",
+       "expect": "#launch hiện ra."
       },
       {
        "id": "TS-023",
        "type": "X",
-       "text": "Cuộc trò chuyện gần nhất đã bị rời hoặc lưu trữ: ứng dụng vẫn mở vào một nơi dùng được."
+       "text": "Cuộc trò chuyện gần nhất đã bị rời hoặc lưu trữ: ứng dụng vẫn mở vào một nơi dùng được.",
+       "given": "Sam xem #launch lần cuối trên thiết bị này, rồi rời #launch từ thiết bị khác.",
+       "steps": "1. Mở Toki trên thiết bị đầu, không qua link.",
+       "expect": "Ứng dụng mở vào một cuộc trò chuyện Sam dùng được. Nó không hiện nội dung của #launch hay một lỗi không có lối đi tiếp."
       }
      ]
     },
@@ -6039,7 +6108,10 @@
       {
        "id": "TS-024",
        "type": "P",
-       "text": "Thiết bị mới: #general."
+       "text": "Thiết bị mới: #general.",
+       "given": "Sam đăng nhập trên một thiết bị chưa từng mở Toki.",
+       "steps": "1. Hoàn tất đăng nhập, không qua link.",
+       "expect": "#general hiện ra."
       }
      ]
     }
@@ -6071,17 +6143,26 @@
       {
        "id": "TS-025",
        "type": "P",
-       "text": "Đọc tới cuối: mất huy hiệu."
+       "text": "Đọc tới cuối: mất huy hiệu.",
+       "given": "#launch có 3 tin chưa đọc với Sam; huy hiệu của nó hiện trong danh sách.",
+       "steps": "1. Mở #launch trong cửa sổ đang dùng. 2. Cuộn tới tin mới nhất.",
+       "expect": "Huy hiệu chưa đọc của #launch biến mất."
       },
       {
        "id": "TS-026",
        "type": "N",
-       "text": "Cửa sổ nền: huy hiệu vẫn còn."
+       "text": "Cửa sổ nền: huy hiệu vẫn còn.",
+       "given": "#launch đang mở ở cuối trong cửa sổ của Sam, nhưng Sam đang dùng ứng dụng khác.",
+       "steps": "1. Có người đăng tin trong #launch.",
+       "expect": "Huy hiệu của #launch xuất hiện và giữ nguyên tới khi Sam quay lại cửa sổ."
       },
       {
        "id": "TS-027",
        "type": "N",
-       "text": "Đang cuộn lên, có tin mới: huy hiệu vẫn còn."
+       "text": "Đang cuộn lên, có tin mới: huy hiệu vẫn còn.",
+       "given": "Sam đang ở #launch, đã cuộn lên các tin cũ.",
+       "steps": "1. Có người đăng tin trong #launch.",
+       "expect": "Tin đó chưa tính là đã đọc: huy hiệu giữ nguyên tới khi Sam xuống tới cuối."
       }
      ]
     },
@@ -6092,7 +6173,10 @@
       {
        "id": "TS-028",
        "type": "P",
-       "text": "3 tin chưa đọc: vạch nằm trên tin đầu; mở lại: không còn vạch."
+       "text": "3 tin chưa đọc: vạch nằm trên tin đầu; mở lại: không còn vạch.",
+       "given": "#launch có 3 tin chưa đọc với Sam.",
+       "steps": "1. Mở #launch. 2. Đọc mà không rời đi. 3. Sang cuộc trò chuyện khác rồi quay lại.",
+       "expect": "Khi mở, 'New' nằm trên tin đầu trong 3 tin và giữ nguyên khi Sam đọc. Khi quay lại thì không còn vạch 'New'."
       }
      ]
     },
@@ -6103,7 +6187,10 @@
       {
        "id": "TS-029",
        "type": "N",
-       "text": "Người gửi không thấy dấu đã đọc sau khi người nhận đọc."
+       "text": "Người gửi không thấy dấu đã đọc sau khi người nhận đọc.",
+       "given": "Lan gửi Sam một tin nhắn trực tiếp.",
+       "steps": "1. Sam mở và đọc tin. 2. Lan xem tin và cuộc trò chuyện.",
+       "expect": "Lan không thấy dấu, nhãn hay thời điểm nào cho biết Sam đã đọc."
       }
      ]
     }
@@ -6139,12 +6226,18 @@
       {
        "id": "TS-030",
        "type": "B",
-       "text": "10.000 gửi được; 10.001 không gửi được."
+       "text": "10.000 gửi được; 10.001 không gửi được.",
+       "given": "Sam là thành viên của #launch.",
+       "steps": "1. Gửi một tin đúng 10.000 ký tự. 2. Thử gửi tin 10.001 ký tự.",
+       "expect": "Tin đầu được gửi và hiện đầy đủ. Tin thứ hai không gửi được."
       },
       {
        "id": "TS-031",
        "type": "N",
-       "text": "Chỉ có khoảng trắng: không gửi gì."
+       "text": "Chỉ có khoảng trắng: không gửi gì.",
+       "given": "Sam ở #launch, ô soạn tin trống.",
+       "steps": "1. Chỉ gõ khoảng trắng và xuống dòng. 2. Bấm Send.",
+       "expect": "Không có gì được gửi và không tin trống nào xuất hiện."
       }
      ]
     },
@@ -6155,12 +6248,18 @@
       {
        "id": "TS-032",
        "type": "N",
-       "text": "Gửi vào kênh chưa tham gia bằng request trực tiếp: bị từ chối."
+       "text": "Gửi vào kênh chưa tham gia bằng request trực tiếp: bị từ chối.",
+       "given": "Sam chưa tham gia kênh công khai #design.",
+       "steps": "1. Gửi thẳng tới server một request đăng tin vào #design. 2. Mở một danh sách chọn cuộc trò chuyện để viết.",
+       "expect": "Server từ chối tin. #design không có trong danh sách chọn."
       },
       {
        "id": "TS-033",
        "type": "P",
-       "text": "Sau khi tham gia thì gửi được."
+       "text": "Sau khi tham gia thì gửi được.",
+       "given": "Sam chưa tham gia #design.",
+       "steps": "1. Tham gia #design. 2. Gửi một tin ở đó.",
+       "expect": "Tin được gửi và các thành viên khác thấy nó."
       }
      ]
     }
@@ -6195,7 +6294,10 @@
       {
        "id": "TS-034",
        "type": "B",
-       "text": "10 file được, file thứ 11 bị từ chối."
+       "text": "10 file được, file thứ 11 bị từ chối.",
+       "given": "Sam đang soạn tin trong #launch.",
+       "steps": "1. Đính kèm 10 file nhỏ. 2. Đính kèm file thứ 11.",
+       "expect": "10 file được nhận. File thứ 11 bị từ chối kèm thông báo và 10 file kia vẫn còn."
       }
      ]
     },
@@ -6206,12 +6308,18 @@
       {
        "id": "TS-035",
        "type": "B",
-       "text": "100 MB được; nhỉnh hơn thì bị từ chối."
+       "text": "100 MB được; nhỉnh hơn thì bị từ chối.",
+       "given": "Sam đang soạn tin. Có sẵn hai file: một file đúng 100 MB, một file nhỉnh hơn.",
+       "steps": "1. Đính kèm file 100 MB. 2. Đính kèm file lớn hơn.",
+       "expect": "File 100 MB tải lên được. File lớn hơn bị từ chối, và tên nó có trong thông báo."
       },
       {
        "id": "TS-036",
        "type": "N",
-       "text": "Tải file quá cỡ thẳng lên kho: bị từ chối."
+       "text": "Tải file quá cỡ thẳng lên kho: bị từ chối.",
+       "given": "Sam có quyền tải lên một file.",
+       "steps": "1. Gửi thẳng lên kho một file lớn hơn 100 MB, bỏ qua kiểm tra của ứng dụng.",
+       "expect": "Việc tải lên bị từ chối, hoặc file bị loại khi tải xong; nó không bao giờ thành file đính kèm."
       }
      ]
     },
@@ -6222,7 +6330,10 @@
       {
        "id": "TS-037",
        "type": "P",
-       "text": "Gửi một PNG: có thumbnail."
+       "text": "Gửi một PNG: có thumbnail.",
+       "given": "Sam ở #launch.",
+       "steps": "1. Đính kèm một ảnh PNG. 2. Gửi tin.",
+       "expect": "Tin hiện thumbnail của ảnh với Sam và với các thành viên khác."
       }
      ]
     },
@@ -6233,7 +6344,10 @@
       {
        "id": "TS-038",
        "type": "N",
-       "text": "Địa chỉ file của kênh riêng tư do người ngoài mở: bị từ chối."
+       "text": "Địa chỉ file của kênh riêng tư do người ngoài mở: bị từ chối.",
+       "given": "Một file được gửi trong kênh riêng tư #leadership. Sam không phải thành viên.",
+       "steps": "1. Với tư cách Sam, mở thẳng địa chỉ của file. 2. Với tư cách Sam, tìm tên file trong Files.",
+       "expect": "File không mở được và không được liệt kê."
       }
      ]
     }
@@ -6261,12 +6375,18 @@
       {
        "id": "TS-039",
        "type": "P",
-       "text": "Sửa một tin từ tháng trước."
+       "text": "Sửa một tin từ tháng trước.",
+       "given": "Sam đã gửi một tin trong #launch hơn một tháng trước.",
+       "steps": "1. Mở menu của tin và chọn Edit. 2. Đổi nội dung và lưu.",
+       "expect": "Nội dung mới thay nội dung cũ với mọi người, kèm '(edited)' cạnh giờ."
       },
       {
        "id": "TS-040",
        "type": "N",
-       "text": "Thành viên khác không có Edit, và request trực tiếp bị từ chối."
+       "text": "Thành viên khác không có Edit, và request trực tiếp bị từ chối.",
+       "given": "Sam đã gửi một tin trong #launch. Mai là thành viên khác.",
+       "steps": "1. Với tư cách Mai, mở menu trên tin của Sam. 2. Với tư cách Mai, gửi thẳng tới server một request sửa tin đó.",
+       "expect": "Menu của Mai không có Edit. Server từ chối request; tin không đổi."
       }
      ]
     }
@@ -6304,12 +6424,18 @@
       {
        "id": "TS-041",
        "type": "P",
-       "text": "Xác nhận: mất với mọi người."
+       "text": "Xác nhận: mất với mọi người.",
+       "given": "Sam đã gửi một tin không có trả lời.",
+       "steps": "1. Chọn Delete trong menu. 2. Xác nhận.",
+       "expect": "Tin biến mất với mọi thành viên. Không có Undo."
       },
       {
        "id": "TS-042",
        "type": "N",
-       "text": "Huỷ: tin giữ nguyên."
+       "text": "Huỷ: tin giữ nguyên.",
+       "given": "Sam đã gửi một tin.",
+       "steps": "1. Chọn Delete trong menu. 2. Huỷ hộp xác nhận.",
+       "expect": "Tin vẫn còn nguyên."
       }
      ]
     },
@@ -6320,7 +6446,10 @@
       {
        "id": "TS-043",
        "type": "P",
-       "text": "Xoá tin gốc có 3 trả lời: 3 trả lời vẫn còn."
+       "text": "Xoá tin gốc có 3 trả lời: 3 trả lời vẫn còn.",
+       "given": "Tin của Sam có 3 trả lời từ người khác.",
+       "steps": "1. Xoá tin của Sam và xác nhận. 2. Mở thread.",
+       "expect": "Một dòng 'Message deleted' thế chỗ tin. 3 trả lời vẫn đọc được."
       }
      ]
     },
@@ -6331,7 +6460,10 @@
       {
        "id": "TS-044",
        "type": "N",
-       "text": "Mở địa chỉ file cũ: không còn."
+       "text": "Mở địa chỉ file cũ: không còn.",
+       "given": "Sam đã gửi một tin kèm PDF và ghi lại địa chỉ của file.",
+       "steps": "1. Xoá tin và xác nhận. 2. Mở địa chỉ của file. 3. Tìm PDF trong Files.",
+       "expect": "File không còn mở được và không có trong Files."
       }
      ]
     }
@@ -6365,7 +6497,10 @@
       {
        "id": "TS-045",
        "type": "P",
-       "text": "Admin xoá: có nhãn, tác giả được báo."
+       "text": "Admin xoá: có nhãn, tác giả được báo.",
+       "given": "Minh (Admin) và Sam (Member) cùng ở trong #launch. Sam đã đăng một tin.",
+       "steps": "1. Với tư cách Minh, xoá tin của Sam và xác nhận.",
+       "expect": "Tin ghi 'Message deleted by an admin' với mọi người. Sam nhận thông báo về việc này."
       }
      ]
     },
@@ -6376,12 +6511,18 @@
       {
        "id": "TS-046",
        "type": "N",
-       "text": "Owner ngoài kênh: không vào được bằng đường nào."
+       "text": "Owner ngoài kênh: không vào được bằng đường nào.",
+       "given": "Lan (Owner) không phải thành viên của kênh riêng tư #salaries.",
+       "steps": "1. Với tư cách Lan, tìm #salaries trong danh sách, Browse channels và Ctrl+K. 2. Mở thẳng địa chỉ của kênh. 3. Gửi tới server một request xoá một tin trong đó.",
+       "expect": "Kênh không xuất hiện ở đâu với Lan, địa chỉ của nó không hiện nội dung, và server từ chối request."
       },
       {
        "id": "TS-047",
        "type": "N",
-       "text": "Member không xoá được tin của Member khác."
+       "text": "Member không xoá được tin của Member khác.",
+       "given": "Sam và Mai là Member trong #launch. Mai đã đăng một tin.",
+       "steps": "1. Với tư cách Sam, mở menu trên tin của Mai. 2. Với tư cách Sam, gửi tới server một request xoá tin đó.",
+       "expect": "Menu của Sam không có Delete. Server từ chối request."
       }
      ]
     }
@@ -6413,7 +6554,10 @@
       {
        "id": "TS-048",
        "type": "P",
-       "text": "Mention một lần: một mục."
+       "text": "Mention một lần: một mục.",
+       "given": "Sam và Lan ở trong #launch. Activity của Lan đang trống.",
+       "steps": "1. Với tư cách Sam, gửi một tin có @Lan. 2. Với tư cách Lan, mở Activity.",
+       "expect": "Activity có đúng một mục cho lần mention đó."
       }
      ]
     },
@@ -6424,7 +6568,10 @@
       {
        "id": "TS-049",
        "type": "N",
-       "text": "Tự mention: Activity không đổi."
+       "text": "Tự mention: Activity không đổi.",
+       "given": "Sam ở trong #launch. Ghi lại số mục Activity của Sam.",
+       "steps": "1. Với tư cách Sam, gửi một tin có @Sam. 2. Với tư cách Sam, reaction vào một tin của chính Sam.",
+       "expect": "Activity của Sam không có mục mới và không có huy hiệu nào xuất hiện với Sam."
       }
      ]
     },
@@ -6435,7 +6582,10 @@
       {
        "id": "TS-050",
        "type": "P",
-       "text": "Mở tin: mục thành xong, số đếm giảm một."
+       "text": "Mở tin: mục thành xong, số đếm giảm một.",
+       "given": "Lan có một mục Activity đang mở cho một mention trong #launch.",
+       "steps": "1. Với tư cách Lan, mở tin đó trong #launch. 2. Mở Activity.",
+       "expect": "Mục tự được đánh dấu xong và số Activity giảm một."
       }
      ]
     }
@@ -6467,12 +6617,18 @@
       {
        "id": "TS-051",
        "type": "P",
-       "text": "Đang pause, được mention: huy hiệu +1, không gì khác."
+       "text": "Đang pause, được mention: huy hiệu +1, không gì khác.",
+       "given": "Lan đã pause thông báo.",
+       "steps": "1. Với tư cách Sam, mention Lan trong #launch.",
+       "expect": "Lan không nhận toast, push hay âm thanh. Huy hiệu của Lan tăng một."
       },
       {
        "id": "TS-052",
        "type": "X",
-       "text": "Nhắc việc tới hạn trong Focus: không có toast."
+       "text": "Nhắc việc tới hạn trong Focus: không có toast.",
+       "given": "Lan đặt một nhắc việc vài phút sau, rồi bật Focus time bao trùm thời điểm đó.",
+       "steps": "1. Đợi tới giờ nhắc.",
+       "expect": "Không có toast, push hay âm thanh cho nhắc việc trong lúc Focus time còn hiệu lực."
       }
      ]
     },
@@ -6483,12 +6639,18 @@
       {
        "id": "TS-053",
        "type": "P",
-       "text": "3 mention trong Focus: một bản tóm tắt ghi 3."
+       "text": "3 mention trong Focus: một bản tóm tắt ghi 3.",
+       "given": "Lan đang ở Focus time.",
+       "steps": "1. Với ba người khác, mỗi người mention Lan một lần. 2. Với tư cách Lan, kết thúc Focus time.",
+       "expect": "Một bản tóm tắt xuất hiện, liệt kê 3 mention."
       },
       {
        "id": "TS-054",
        "type": "B",
-       "text": "Không có gì tới: không có tóm tắt, hoặc tóm tắt trống, nhất quán."
+       "text": "Không có gì tới: không có tóm tắt, hoặc tóm tắt trống, nhất quán.",
+       "given": "Lan đang ở Focus time và không có gì tới.",
+       "steps": "1. Kết thúc Focus time. 2. Lặp lại test với Pause.",
+       "expect": "Ứng dụng hành xử giống nhau ở cả hai lần: hoặc không có tóm tắt, hoặc tóm tắt trống."
       }
      ]
     },
@@ -6499,7 +6661,10 @@
       {
        "id": "TS-055",
        "type": "X",
-       "text": "Bắt đầu hai lần: một khoảng Focus, dài hơn."
+       "text": "Bắt đầu hai lần: một khoảng Focus, dài hơn.",
+       "given": "Lan có trạng thái 'Reviewing' và đã bật Focus time.",
+       "steps": "1. Bật Focus time lần nữa khi nó đang chạy. 2. Kết thúc Focus time.",
+       "expect": "Chỉ có một khoảng Focus, được kéo dài, không phải hai. Sau khi kết thúc, trạng thái của Lan lại là 'Reviewing'."
       }
      ]
     }
@@ -6529,12 +6694,18 @@
       {
        "id": "TS-056",
        "type": "P",
-       "text": "Tham gia kênh: mức ghi 'Mentions only'."
+       "text": "Tham gia kênh: mức ghi 'Mentions only'.",
+       "given": "Sam chưa tham gia #design.",
+       "steps": "1. Tham gia #design. 2. Mở panel Details của kênh.",
+       "expect": "Mức thông báo ghi 'Mentions only'."
       },
       {
        "id": "TS-057",
        "type": "P",
-       "text": "DM mới: mức ghi 'All messages'."
+       "text": "DM mới: mức ghi 'All messages'.",
+       "given": "Sam chưa từng nhắn Mai.",
+       "steps": "1. Mở tin nhắn trực tiếp với Mai. 2. Mở panel Details của nó.",
+       "expect": "Mức thông báo ghi 'All messages'."
       }
      ]
     }
@@ -6566,12 +6737,18 @@
       {
        "id": "TS-058",
        "type": "B",
-       "text": "19 thành viên: gửi ngay. 20 thành viên: hỏi trước."
+       "text": "19 thành viên: gửi ngay. 20 thành viên: hỏi trước.",
+       "given": "Hai kênh: một kênh 19 thành viên, một kênh 20. Sam ở cả hai.",
+       "steps": "1. Ở kênh 19 thành viên, gửi một tin có @channel. 2. Làm tương tự ở kênh 20 thành viên.",
+       "expect": "Với 19 thành viên, tin được gửi ngay. Với 20, có hỏi xác nhận trước."
       },
       {
        "id": "TS-059",
        "type": "N",
-       "text": "Huỷ hộp xác nhận: không gửi gì."
+       "text": "Huỷ hộp xác nhận: không gửi gì.",
+       "given": "Sam ở trong một kênh 20 thành viên.",
+       "steps": "1. Gửi một tin có @channel. 2. Huỷ hộp xác nhận.",
+       "expect": "Không có gì được gửi và không ai được báo. Nội dung vẫn còn trong ô soạn tin."
       }
      ]
     }
@@ -6610,12 +6787,18 @@
       {
        "id": "TS-060",
        "type": "P",
-       "text": "Ứng dụng đóng, có mention: thông báo có đủ ba phần."
+       "text": "Ứng dụng đóng, có mention: thông báo có đủ ba phần.",
+       "given": "Lan đã cho phép thông báo và đã đóng Toki.",
+       "steps": "1. Với tư cách Sam, gửi '@Lan the build is ready' trong #launch.",
+       "expect": "Thiết bị của Lan hiện thông báo hệ thống có tên Sam, #launch, và phần đầu tin nhắn."
       },
       {
        "id": "TS-061",
        "type": "N",
-       "text": "Chưa cho phép push: không có thông báo, huy hiệu vẫn cập nhật."
+       "text": "Chưa cho phép push: không có thông báo, huy hiệu vẫn cập nhật.",
+       "given": "Lan chưa cho phép thông báo và đã đóng Toki.",
+       "steps": "1. Với tư cách Sam, mention Lan. 2. Với tư cách Lan, mở Toki.",
+       "expect": "Không có thông báo hệ thống nào. Khi mở, huy hiệu cho lần mention đã có."
       }
      ]
     },
@@ -6626,7 +6809,10 @@
       {
        "id": "TS-062",
        "type": "P",
-       "text": "Có đề nghị cài và cài được."
+       "text": "Có đề nghị cài và cài được.",
+       "given": "Một trình duyệt được hỗ trợ, chưa cài Toki.",
+       "steps": "1. Mở Toki. 2. Dùng chức năng cài đặt của trình duyệt. 3. Mở ứng dụng đã cài.",
+       "expect": "Toki cài được và mở trong cửa sổ riêng, đã đăng nhập."
       }
      ]
     }
@@ -6665,12 +6851,18 @@
       {
        "id": "TS-063",
        "type": "P",
-       "text": "Member tạo một kênh công khai."
+       "text": "Member tạo một kênh công khai.",
+       "given": "Sam là Member. Chưa có kênh nào tên 'qa-team'.",
+       "steps": "1. Tạo một kênh công khai tên 'qa-team'.",
+       "expect": "Kênh tồn tại, Sam là thành viên, và các thành viên khác tìm thấy nó trong Browse channels."
       },
       {
        "id": "TS-064",
        "type": "P",
-       "text": "Member tạo một kênh riêng tư."
+       "text": "Member tạo một kênh riêng tư.",
+       "given": "Sam là Member. Chưa có kênh nào tên 'qa-private'.",
+       "steps": "1. Tạo một kênh riêng tư tên 'qa-private'. 2. Với tư cách Mai, xem Browse channels.",
+       "expect": "Kênh tồn tại với Sam là thành viên. Mai không thấy nó."
       }
      ]
     },
@@ -6681,17 +6873,26 @@
       {
        "id": "TS-065",
        "type": "B",
-       "text": "80 được, 81 bị từ chối."
+       "text": "80 được, 81 bị từ chối.",
+       "given": "Sam đang tạo kênh.",
+       "steps": "1. Nhập một tên hợp lệ đúng 80 ký tự và tạo. 2. Thử tên 81 ký tự.",
+       "expect": "Tên 80 ký tự được tạo. Tên 81 ký tự bị từ chối."
       },
       {
        "id": "TS-066",
        "type": "N",
-       "text": "Tên đã có bị từ chối."
+       "text": "Tên đã có bị từ chối.",
+       "given": "Đã có kênh tên 'launch'.",
+       "steps": "1. Thử tạo một kênh khác tên 'launch'.",
+       "expect": "Bị từ chối kèm thông báo; không có kênh thứ hai nào được tạo."
       },
       {
        "id": "TS-067",
        "type": "N",
-       "text": "Tên có ký tự ngoài a–z, 0–9, gạch nối thì không được tạo đúng như đã gõ."
+       "text": "Tên có ký tự ngoài a–z, 0–9, gạch nối thì không được tạo đúng như đã gõ.",
+       "given": "Sam đang tạo kênh.",
+       "steps": "1. Nhập 'Q&A Team!' làm tên và thử tạo.",
+       "expect": "Không kênh nào được tạo với đúng tên đó: tên chỉ được có chữ thường, số và gạch nối."
       }
      ]
     },
@@ -6702,7 +6903,10 @@
       {
        "id": "TS-068",
        "type": "N",
-       "text": "Không có điều khiển này; request trực tiếp bị từ chối."
+       "text": "Không có điều khiển này; request trực tiếp bị từ chối.",
+       "given": "Đã có kênh công khai 'qa-team'.",
+       "steps": "1. Tìm trong phần chi tiết cách chuyển kênh thành riêng tư. 2. Gửi thẳng tới server một request đổi kênh thành riêng tư.",
+       "expect": "Không có điều khiển nào như vậy, và server từ chối request."
       }
      ]
     }
@@ -6732,7 +6936,10 @@
       {
        "id": "TS-069",
        "type": "P",
-       "text": "Tham gia, cuộn tới tin đầu tiên."
+       "text": "Tham gia, cuộn tới tin đầu tiên.",
+       "given": "#design có tin từ tháng trước. Sam chưa tham gia.",
+       "steps": "1. Tham gia #design. 2. Cuộn lên tin đầu tiên.",
+       "expect": "Sam đọc được mọi tin, kể cả tin gửi trước khi tham gia."
       }
      ]
     },
@@ -6743,12 +6950,18 @@
       {
        "id": "TS-070",
        "type": "N",
-       "text": "Owner không có điều khiển xoá."
+       "text": "Owner không có điều khiển xoá.",
+       "given": "Lan (Owner) là thành viên của #design.",
+       "steps": "1. Tìm trong phần chi tiết và các menu của #design cách xoá kênh.",
+       "expect": "Không có: kênh chỉ lưu trữ được, không xoá được."
       },
       {
        "id": "TS-071",
        "type": "P",
-       "text": "Kênh đã lưu trữ vẫn đọc được với thành viên."
+       "text": "Kênh đã lưu trữ vẫn đọc được với thành viên.",
+       "given": "#old-project đã được lưu trữ. Sam từng là thành viên.",
+       "steps": "1. Với tư cách Sam, mở #old-project.",
+       "expect": "Các tin trong đó vẫn đọc được."
       }
      ]
     }
@@ -6782,12 +6995,18 @@
       {
        "id": "TS-072",
        "type": "P",
-       "text": "Rời, Undo trong 5 giây: vẫn là thành viên."
+       "text": "Rời, Undo trong 5 giây: vẫn là thành viên.",
+       "given": "Sam là thành viên của kênh công khai #design.",
+       "steps": "1. Chọn Leave channel. 2. Bấm Undo trong vòng 5 giây.",
+       "expect": "Không hỏi xác nhận. Sau Undo, Sam lại là thành viên và #design trở lại danh sách."
       },
       {
        "id": "TS-073",
        "type": "B",
-       "text": "Sau 5 giây không còn Undo."
+       "text": "Sau 5 giây không còn Undo.",
+       "given": "Sam là thành viên của kênh công khai #design.",
+       "steps": "1. Chọn Leave channel. 2. Đợi hơn 5 giây.",
+       "expect": "Không còn Undo. Sam không còn là thành viên."
       }
      ]
     },
@@ -6798,12 +7017,18 @@
       {
        "id": "TS-074",
        "type": "P",
-       "text": "Xác nhận: đã rời; kênh không có trong Browse và Ctrl+K."
+       "text": "Xác nhận: đã rời; kênh không có trong Browse và Ctrl+K.",
+       "given": "Sam là thành viên của kênh riêng tư #leadership.",
+       "steps": "1. Chọn Leave channel. 2. Đọc hộp xác nhận rồi xác nhận. 3. Tìm #leadership trong Browse channels và Ctrl+K.",
+       "expect": "Hộp xác nhận ghi phải được một thành viên mời lại. Không có Undo. Kênh không xuất hiện trong Browse channels hay Ctrl+K."
       },
       {
        "id": "TS-075",
        "type": "N",
-       "text": "Huỷ: vẫn là thành viên."
+       "text": "Huỷ: vẫn là thành viên.",
+       "given": "Sam là thành viên của kênh riêng tư #leadership.",
+       "steps": "1. Chọn Leave channel. 2. Huỷ hộp xác nhận.",
+       "expect": "Sam vẫn là thành viên."
       }
      ]
     },
@@ -6814,7 +7039,10 @@
       {
        "id": "TS-076",
        "type": "X",
-       "text": "Thành viên duy nhất rời: kênh được lưu trữ, không bị xoá."
+       "text": "Thành viên duy nhất rời: kênh được lưu trữ, không bị xoá.",
+       "given": "Sam là thành viên duy nhất của #solo.",
+       "steps": "1. Rời #solo.",
+       "expect": "#solo thành lưu trữ. Nó không bị xoá và các tin được giữ lại."
       }
      ]
     }
@@ -6852,12 +7080,18 @@
       {
        "id": "TS-077",
        "type": "B",
-       "text": "8 người: tạo được. 9: bị từ chối."
+       "text": "8 người: tạo được. 9: bị từ chối.",
+       "given": "Workspace có ít nhất 9 người.",
+       "steps": "1. Tạo nhóm với 7 người khác (tổng 8). 2. Thử tạo nhóm với 8 người khác (tổng 9).",
+       "expect": "Nhóm 8 người được tạo. Nhóm 9 người bị từ chối."
       },
       {
        "id": "TS-078",
        "type": "P",
-       "text": "DM với một người mở được."
+       "text": "DM với một người mở được.",
+       "given": "Sam chưa từng nhắn Mai.",
+       "steps": "1. Mở New message và chọn Mai.",
+       "expect": "Tin nhắn trực tiếp với Mai mở ra và Sam viết được trong đó."
       }
      ]
     },
@@ -6868,7 +7102,10 @@
       {
        "id": "TS-079",
        "type": "N",
-       "text": "Không có điều khiển này; request trực tiếp bị từ chối."
+       "text": "Không có điều khiển này; request trực tiếp bị từ chối.",
+       "given": "Đã có group DM gồm Sam, Mai và Alex.",
+       "steps": "1. Tìm trong phần chi tiết của nhóm cách thêm hoặc bớt người. 2. Gửi tới server một request thêm thành viên cho nhóm.",
+       "expect": "Không có điều khiển nào như vậy, và server từ chối request."
       }
      ]
     },
@@ -6879,7 +7116,10 @@
       {
        "id": "TS-080",
        "type": "N",
-       "text": "Guest không có New message tới thành viên (vai trò của phase 5, kiểm tra quy tắc từ bây giờ)."
+       "text": "Guest không có New message tới thành viên (vai trò của phase 5, kiểm tra quy tắc từ bây giờ).",
+       "given": "Một guest đã đăng nhập vào kênh được chia sẻ duy nhất của họ.",
+       "steps": "1. Tìm New message. 2. Mở hồ sơ một thành viên và tìm Message. 3. Gửi tới server một request mở DM.",
+       "expect": "Guest không có cách nào mở DM, và server từ chối request."
       }
      ]
     }
@@ -6914,12 +7154,18 @@
       {
        "id": "TS-081",
        "type": "P",
-       "text": "Admin trong kênh gỡ một Member."
+       "text": "Admin trong kênh gỡ một Member.",
+       "given": "Minh (Admin) và Sam (Member) ở trong #design.",
+       "steps": "1. Với tư cách Minh, gỡ Sam khỏi #design.",
+       "expect": "Sam không còn là thành viên của #design."
       },
       {
        "id": "TS-082",
        "type": "N",
-       "text": "Member thử: bị từ chối."
+       "text": "Member thử: bị từ chối.",
+       "given": "Sam và Mai là Member trong #design.",
+       "steps": "1. Với tư cách Sam, tìm cách gỡ Mai. 2. Với tư cách Sam, gửi tới server một request gỡ Mai.",
+       "expect": "Sam không có điều khiển nào như vậy, và server từ chối request."
       }
      ]
     },
@@ -6930,7 +7176,10 @@
       {
        "id": "TS-083",
        "type": "N",
-       "text": "Owner ngoài kênh: bị từ chối."
+       "text": "Owner ngoài kênh: bị từ chối.",
+       "given": "Lan (Owner) không phải thành viên của #design. Sam thì có.",
+       "steps": "1. Với tư cách Lan, gửi tới server một request gỡ Sam khỏi #design.",
+       "expect": "Server từ chối. Sam vẫn là thành viên."
       }
      ]
     }
@@ -6964,12 +7213,18 @@
       {
        "id": "TS-084",
        "type": "P",
-       "text": "Lưu: xuất hiện trong Later."
+       "text": "Lưu: xuất hiện trong Later.",
+       "given": "Sam đọc được một tin trong #launch. Later của Sam đang trống.",
+       "steps": "1. Bấm bookmark trên tin. 2. Mở Later.",
+       "expect": "Tin được liệt kê trong Later."
       },
       {
        "id": "TS-085",
        "type": "N",
-       "text": "Later của người khác không có nó."
+       "text": "Later của người khác không có nó.",
+       "given": "Sam đã lưu một tin vào Later.",
+       "steps": "1. Với tư cách Mai, mở Later.",
+       "expect": "Later của Mai không có tin Sam đã lưu."
       }
      ]
     },
@@ -6980,12 +7235,18 @@
       {
        "id": "TS-086",
        "type": "N",
-       "text": "Giờ đã qua bị từ chối."
+       "text": "Giờ đã qua bị từ chối.",
+       "given": "Sam có một mục trong Later.",
+       "steps": "1. Thử đặt nhắc việc vào một thời điểm đã qua.",
+       "expect": "Nhắc việc không được đặt; mục giữ nhắc việc trước đó, hoặc không có."
       },
       {
        "id": "TS-087",
        "type": "B",
-       "text": "Trước một phút thì được."
+       "text": "Trước một phút thì được.",
+       "given": "Sam có một mục trong Later.",
+       "steps": "1. Đặt nhắc việc vào một phút sau.",
+       "expect": "Nhắc việc được nhận và hiện trên mục đó."
       }
      ]
     }
@@ -7023,17 +7284,26 @@
       {
        "id": "TS-088",
        "type": "N",
-       "text": "Member mở địa chỉ Admin: bị từ chối."
+       "text": "Member mở địa chỉ Admin: bị từ chối.",
+       "given": "Sam là Member.",
+       "steps": "1. Tìm Admin trong thanh điều hướng. 2. Mở thẳng địa chỉ Admin.",
+       "expect": "Không có mục Admin, và địa chỉ đó không hiện nội dung quản trị."
       },
       {
        "id": "TS-089",
        "type": "N",
-       "text": "Member gọi thẳng một request quản trị: bị từ chối."
+       "text": "Member gọi thẳng một request quản trị: bị từ chối.",
+       "given": "Sam là Member.",
+       "steps": "1. Với tư cách Sam, gửi tới server một request liệt kê thành viên và một request mời của khu vực quản trị.",
+       "expect": "Server từ chối cả hai."
       },
       {
        "id": "TS-090",
        "type": "P",
-       "text": "Admin và Owner mở được."
+       "text": "Admin và Owner mở được.",
+       "given": "Minh là Admin, Lan là Owner.",
+       "steps": "1. Với tư cách Minh, mở Admin. 2. Với tư cách Lan, mở Admin.",
+       "expect": "Cả hai đều thấy trang Admin."
       }
      ]
     },
@@ -7044,12 +7314,18 @@
       {
        "id": "TS-091",
        "type": "P",
-       "text": "Owner mời một Admin."
+       "text": "Owner mời một Admin.",
+       "given": "Lan là Owner.",
+       "steps": "1. Mời một địa chỉ mới với vai trò Admin. 2. Để người đó nhận lời mời.",
+       "expect": "Người mới tham gia với vai trò Admin."
       },
       {
        "id": "TS-092",
        "type": "N",
-       "text": "Admin thử mời với vai trò Admin: bị từ chối."
+       "text": "Admin thử mời với vai trò Admin: bị từ chối.",
+       "given": "Minh là Admin.",
+       "steps": "1. Thử mời một địa chỉ mới với vai trò Admin, trên trang và bằng request trực tiếp.",
+       "expect": "Minh chỉ mời được với vai trò Member; lời mời với vai trò Admin bị từ chối."
       }
      ]
     }
@@ -7084,12 +7360,18 @@
       {
        "id": "TS-093",
        "type": "P",
-       "text": "Owner đưa một Member lên Admin."
+       "text": "Owner đưa một Member lên Admin.",
+       "given": "Lan là Owner, Sam là Member.",
+       "steps": "1. Với tư cách Lan, đổi vai trò của Sam thành Admin.",
+       "expect": "Sam là Admin."
       },
       {
        "id": "TS-094",
        "type": "N",
-       "text": "Admin thử đổi vai trò: bị từ chối."
+       "text": "Admin thử đổi vai trò: bị từ chối.",
+       "given": "Minh là Admin, Sam là Member.",
+       "steps": "1. Với tư cách Minh, thử đổi vai trò của Sam, trên trang và bằng request trực tiếp.",
+       "expect": "Minh không làm được; server từ chối. Vai trò của Sam không đổi."
       }
      ]
     },
@@ -7100,12 +7382,18 @@
       {
        "id": "TS-095",
        "type": "P",
-       "text": "Admin vô hiệu hoá một Member."
+       "text": "Admin vô hiệu hoá một Member.",
+       "given": "Minh là Admin, Sam là Member đang hoạt động.",
+       "steps": "1. Với tư cách Minh, vô hiệu hoá Sam. 2. Với tư cách Sam, thử đăng nhập.",
+       "expect": "Sam bị vô hiệu hoá và không đăng nhập được."
       },
       {
        "id": "TS-096",
        "type": "N",
-       "text": "Admin thử với Owner: bị từ chối."
+       "text": "Admin thử với Owner: bị từ chối.",
+       "given": "Minh là Admin, Lan là Owner.",
+       "steps": "1. Với tư cách Minh, thử vô hiệu hoá Lan, trên trang và bằng request trực tiếp.",
+       "expect": "Bị từ chối. Lan vẫn đang hoạt động."
       }
      ]
     },
@@ -7116,7 +7404,10 @@
       {
        "id": "TS-097",
        "type": "B",
-       "text": "Một Owner: bị từ chối. Hai Owner: được."
+       "text": "Một Owner: bị từ chối. Hai Owner: được.",
+       "given": "Workspace có đúng một Owner, là Lan.",
+       "steps": "1. Thử hạ vai trò của Lan, rồi thử vô hiệu hoá Lan. 2. Đưa Minh lên làm Owner thứ hai. 3. Hạ vai trò của Lan.",
+       "expect": "Khi chỉ có một Owner, cả hai thao tác bị từ chối. Khi có hai Owner, việc hạ vai trò thành công."
       }
      ]
     }
@@ -7149,7 +7440,10 @@
       {
        "id": "TS-098",
        "type": "P",
-       "text": "Mất mạng: nội dung vẫn còn."
+       "text": "Mất mạng: nội dung vẫn còn.",
+       "given": "Sam đang mở #launch với các tin đã tải.",
+       "steps": "1. Cắt mạng. 2. Cuộn qua các tin đã tải.",
+       "expect": "Các tin vẫn ở trên màn hình, cuộn và đọc được."
       }
      ]
     },
@@ -7160,12 +7454,18 @@
       {
        "id": "TS-099",
        "type": "P",
-       "text": "Gửi khi offline, có lại mạng: tới nơi một lần."
+       "text": "Gửi khi offline, có lại mạng: tới nơi một lần.",
+       "given": "Sam ở #launch; mạng đã bị cắt.",
+       "steps": "1. Gửi một tin. 2. Nối lại mạng. 3. Với tư cách Mai, xem #launch.",
+       "expect": "Khi offline tin hiện là đang chờ. Sau khi có lại mạng nó được gửi đi, và Mai thấy nó đúng một lần."
       },
       {
        "id": "TS-100",
        "type": "X",
-       "text": "Mạng chập chờn nhiều lần: vẫn chỉ một bản."
+       "text": "Mạng chập chờn nhiều lần: vẫn chỉ một bản.",
+       "given": "Sam ở #launch.",
+       "steps": "1. Gửi một tin. 2. Cắt rồi nối lại mạng vài lần trong lúc tin đang được gửi. 3. Với tư cách Mai, xem #launch.",
+       "expect": "Mai thấy đúng một bản của tin."
       }
      ]
     },
@@ -7176,12 +7476,18 @@
       {
        "id": "TS-101",
        "type": "N",
-       "text": "Reaction khi offline: không ghi nhận, có giải thích."
+       "text": "Reaction khi offline: không ghi nhận, có giải thích.",
+       "given": "Sam ở #launch; mạng đã bị cắt.",
+       "steps": "1. Thêm một reaction vào một tin. 2. Nối lại mạng và tải lại.",
+       "expect": "Khi offline, ứng dụng nêu lý do reaction không được thêm và không hiện nó như đã thêm. Sau khi tải lại, reaction không có ở đó."
       },
       {
        "id": "TS-102",
        "type": "N",
-       "text": "Tham gia kênh khi offline: chưa tham gia."
+       "text": "Tham gia kênh khi offline: chưa tham gia.",
+       "given": "Sam chưa tham gia #design; mạng đã bị cắt.",
+       "steps": "1. Bấm Join ở #design. 2. Nối lại mạng và tải lại.",
+       "expect": "Khi offline, ứng dụng nêu lý do Sam chưa được tham gia. Sau khi tải lại, Sam vẫn chưa là thành viên."
       }
      ]
     }
@@ -7211,7 +7517,10 @@
       {
        "id": "TS-103",
        "type": "N",
-       "text": "Bấm ra ngoài: không mất gì."
+       "text": "Bấm ra ngoài: không mất gì.",
+       "given": "Một hộp thoại có ô nhập đang mở và Sam đã gõ vào đó.",
+       "steps": "1. Bấm ra ngoài hộp thoại.",
+       "expect": "Hộp thoại vẫn mở và nội dung đã gõ còn nguyên."
       }
      ]
     },
@@ -7222,12 +7531,18 @@
       {
        "id": "TS-104",
        "type": "P",
-       "text": "Đã gõ, đóng: được hỏi."
+       "text": "Đã gõ, đóng: được hỏi.",
+       "given": "Một hộp thoại có ô nhập đang mở và Sam đã gõ vào đó.",
+       "steps": "1. Bấm nút đóng của hộp thoại.",
+       "expect": "Ứng dụng hỏi có bỏ nội dung đã gõ không. Chọn giữ lại thì quay về hộp thoại với nội dung còn nguyên."
       },
       {
        "id": "TS-105",
        "type": "B",
-       "text": "Form trống: đóng không hỏi."
+       "text": "Form trống: đóng không hỏi.",
+       "given": "Một hộp thoại có ô nhập đang mở và chưa gõ gì.",
+       "steps": "1. Bấm nút đóng.",
+       "expect": "Hộp thoại đóng ngay, không hỏi gì."
       }
      ]
     }
@@ -7255,7 +7570,10 @@
       {
        "id": "TS-106",
        "type": "N",
-       "text": "Rà mọi hành động phá huỷ: chỉ một trong hai."
+       "text": "Rà mọi hành động phá huỷ: chỉ một trong hai.",
+       "given": "Một danh sách mọi hành động xoá hoặc thay đổi thứ gì đó của người dùng hoặc của người khác.",
+       "steps": "1. Thực hiện từng hành động một lần.",
+       "expect": "Mỗi hành động hoặc xảy ra ngay kèm Undo 5 giây, hoặc hỏi xác nhận trước. Không hành động nào làm cả hai."
       }
      ]
     },
@@ -7266,7 +7584,10 @@
       {
        "id": "TS-107",
        "type": "P",
-       "text": "Mỗi hộp xác nhận có tên đối tượng."
+       "text": "Mỗi hộp xác nhận có tên đối tượng.",
+       "given": "Cùng danh sách đó, giới hạn ở các hành động có hỏi xác nhận.",
+       "steps": "1. Mở từng hộp xác nhận và đọc.",
+       "expect": "Hộp xác nhận nào cũng nêu tên thứ nó tác động, ví dụ kênh hoặc người."
       }
      ]
     }
@@ -7298,7 +7619,10 @@
       {
        "id": "TS-108",
        "type": "P",
-       "text": "Tìm không ra ở từng danh sách."
+       "text": "Tìm không ra ở từng danh sách.",
+       "given": "Sam ở từng danh sách tìm hoặc lọc được: Activity, Later, Files, People, Browse channels.",
+       "steps": "1. Ở mỗi danh sách, tìm một chuỗi không khớp gì.",
+       "expect": "Mỗi danh sách hiện một câu viết riêng cho nó, ở giữa vùng nội dung. Không danh sách nào để trống."
       }
      ]
     },
@@ -7309,12 +7633,18 @@
       {
        "id": "TS-109",
        "type": "P",
-       "text": "So số đếm và số hàng ở từng chip."
+       "text": "So số đếm và số hàng ở từng chip.",
+       "given": "Một danh sách có chip lọc hiện số đếm, ví dụ Later.",
+       "steps": "1. Với từng chip, ghi lại con số. 2. Chọn chip và đếm số hàng.",
+       "expect": "Con số trên mỗi chip bằng số hàng được liệt kê."
       },
       {
        "id": "TS-110",
        "type": "X",
-       "text": "Tin của một mục bị xoá: số đếm và số hàng vẫn khớp."
+       "text": "Tin của một mục bị xoá: số đếm và số hàng vẫn khớp.",
+       "given": "Sam đã lưu một tin vào Later; ghi lại số trên chip.",
+       "steps": "1. Tác giả xoá tin đó. 2. Mở Later.",
+       "expect": "Con số trên chip và số hàng đang hiện vẫn khớp nhau."
       }
      ]
     },
@@ -7325,7 +7655,10 @@
       {
        "id": "TS-111",
        "type": "P",
-       "text": "Tạo khi đang lọc theo cách sẽ ẩn nó: bộ lọc tự đổi."
+       "text": "Tạo khi đang lọc theo cách sẽ ẩn nó: bộ lọc tự đổi.",
+       "given": "Sam ở một danh sách đang chọn bộ lọc sẽ ẩn mục vừa tạo.",
+       "steps": "1. Tạo một mục.",
+       "expect": "Mục mới hiện ra ngay; Sam không phải tự đổi bộ lọc."
       }
      ]
     }
@@ -7359,12 +7692,18 @@
       {
        "id": "TS-112",
        "type": "P",
-       "text": "Từ không dấu tìm ra tên và tin có dấu."
+       "text": "Từ không dấu tìm ra tên và tin có dấu.",
+       "given": "Có một thành viên tên 'Nguyễn', và một tin có chữ 'đường dẫn'.",
+       "steps": "1. Mở Ctrl+K. 2. Tìm 'nguyen'. 3. Tìm 'duong dan'.",
+       "expect": "Tìm thấy thành viên và tin nhắn đó."
       },
       {
        "id": "TS-113",
        "type": "P",
-       "text": "Từ có dấu cũng tìm ra."
+       "text": "Từ có dấu cũng tìm ra.",
+       "given": "Cùng dữ liệu đó.",
+       "steps": "1. Mở Ctrl+K. 2. Tìm 'Nguyễn'. 3. Tìm 'đường dẫn'.",
+       "expect": "Tìm thấy đúng thành viên và tin nhắn đó."
       }
      ]
     },
@@ -7375,7 +7714,10 @@
       {
        "id": "TS-114",
        "type": "N",
-       "text": "Người ngoài tìm một từ chỉ dùng trong kênh riêng tư: không có kết quả."
+       "text": "Người ngoài tìm một từ chỉ dùng trong kênh riêng tư: không có kết quả.",
+       "given": "Chữ 'bluebird' chỉ được viết trong kênh riêng tư #leadership. Sam không phải thành viên.",
+       "steps": "1. Với tư cách Sam, tìm 'bluebird' và 'leadership' trong Ctrl+K.",
+       "expect": "Kết quả không có tin nào và kênh nào từ #leadership."
       }
      ]
     }
@@ -7403,12 +7745,18 @@
       {
        "id": "TS-115",
        "type": "B",
-       "text": "Gần 5 phút: active. Đủ 5 phút: Away."
+       "text": "Gần 5 phút: active. Đủ 5 phút: Away.",
+       "given": "Sam đang đăng nhập và Mai thấy được trạng thái hiện diện của Sam.",
+       "steps": "1. Sam ngừng mọi hoạt động. 2. Mai xem ngay trước 5 phút, rồi ở phút thứ 5.",
+       "expect": "Ngay trước 5 phút Sam hiện là active. Ở phút thứ 5 Sam hiện là Away."
       },
       {
        "id": "TS-116",
        "type": "P",
-       "text": "Có hoạt động thì về active."
+       "text": "Có hoạt động thì về active.",
+       "given": "Sam đang hiện là Away với Mai.",
+       "steps": "1. Sam di chuột hoặc gõ trong Toki.",
+       "expect": "Sam lại hiện là active với Mai."
       }
      ]
     }

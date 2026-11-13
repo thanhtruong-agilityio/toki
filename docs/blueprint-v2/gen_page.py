@@ -20,6 +20,8 @@ with contextlib.redirect_stdout(io.StringIO()):
 for l, text in before.items():          # the generators rewrite the data files on import; put them back exactly
     (BP / f"blueprint.{l}.json").write_text(text, encoding="utf-8")
 GA, FM = GV.GA, GV.FM
+from test_details import DETAILS          # preconditions ## steps ## expected result, one entry per test, in order
+assert len(DETAILS) == sum(len(t) for fr in GV.FR for _, t in fr[7]), "test_details.py is out of step with the tests in gen_validation.py"
 P2S = {"P0": "C", "P1": "H", "P2": "M", "P3": "L"}
 
 
@@ -129,7 +131,8 @@ def build(lang):
             ts = []
             for typ, txt in tests:
                 n_ts += 1
-                ts.append(dict(id=f"TS-{n_ts:03d}", type=typ, text=en(txt)))
+                given, steps, expect = [x.strip() for x in en(DETAILS[n_ts - 1]).split("##")]
+                ts.append(dict(id=f"TS-{n_ts:03d}", type=typ, text=en(txt), given=given, steps=steps, expect=expect))
             acs.append(dict(id=f"AC-{n_ac:03d}", text=en(crit), tests=ts))
         frs.append(dict(id=f"FR-{i:02d}", area=en(GV.AREA[fr[0]]), text=en(fr[1]),
                         decided=[dict(ref=NEW[s], a=FM.qa(s, lang)[2]) for s in fr[2].split()],

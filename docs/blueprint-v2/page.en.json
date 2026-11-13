@@ -5715,12 +5715,18 @@
       {
        "id": "TS-001",
        "type": "P",
-       "text": "Request a code, enter it, land in the app."
+       "text": "Request a code, enter it, land in the app.",
+       "given": "Sam is an active member and is signed out on this device.",
+       "steps": "1. Open Toki. 2. Enter Sam's email and ask for a code. 3. Read the 6-digit code from the mail. 4. Enter it.",
+       "expect": "The app opens signed in as Sam. No password was asked at any step."
       },
       {
        "id": "TS-002",
        "type": "N",
-       "text": "Enter 6 digits that were not sent: refused, still on the code screen."
+       "text": "Enter 6 digits that were not sent: refused, still on the code screen.",
+       "given": "Sam asked for a code and is on the code screen.",
+       "steps": "1. Enter 6 digits that are not the code in the mail.",
+       "expect": "Sign-in is refused with a message. Sam stays on the code screen and no session is created."
       }
      ]
     },
@@ -5731,12 +5737,18 @@
       {
        "id": "TS-003",
        "type": "B",
-       "text": "5 digits and 7 digits are not submitted."
+       "text": "5 digits and 7 digits are not submitted.",
+       "given": "Sam is on the code screen.",
+       "steps": "1. Enter 5 digits and try to submit. 2. Try to enter a 7th digit.",
+       "expect": "5 digits cannot be submitted. The field does not take a 7th digit."
       },
       {
        "id": "TS-004",
        "type": "N",
-       "text": "Letters in the code field are rejected."
+       "text": "Letters in the code field are rejected.",
+       "given": "Sam is on the code screen.",
+       "steps": "1. Type letters and symbols into the code field. 2. Paste 'ab12cd'.",
+       "expect": "Only digits appear in the field; nothing with letters can be submitted."
       }
      ]
     }
@@ -5766,12 +5778,18 @@
       {
        "id": "TS-005",
        "type": "B",
-       "text": "5th request succeeds, 6th is refused."
+       "text": "5th request succeeds, 6th is refused.",
+       "given": "No code was requested for Sam's address in the last 15 minutes.",
+       "steps": "1. Ask for a code 5 times, waiting 60 seconds between requests. 2. Ask a 6th time.",
+       "expect": "Requests 1 to 5 each send a mail. The 6th is refused with a message and sends no mail."
       },
       {
        "id": "TS-006",
        "type": "P",
-       "text": "After 15 minutes a request succeeds again."
+       "text": "After 15 minutes a request succeeds again.",
+       "given": "Sam's address has just been refused a 6th request.",
+       "steps": "1. Wait until 15 minutes have passed since the first request. 2. Ask for a code.",
+       "expect": "The request succeeds and a mail is sent."
       }
      ]
     },
@@ -5782,7 +5800,10 @@
       {
        "id": "TS-007",
        "type": "B",
-       "text": "At 59 s unavailable; at 60 s available."
+       "text": "At 59 s unavailable; at 60 s available.",
+       "given": "Sam has just asked for a code.",
+       "steps": "1. Try to send the code again at 59 seconds. 2. Try again at 60 seconds.",
+       "expect": "At 59 seconds sending again is not available. At 60 seconds it is, and a new mail is sent."
       }
      ]
     }
@@ -5813,12 +5834,18 @@
       {
        "id": "TS-008",
        "type": "N",
-       "text": "Open a conversation link signed out: sign-in page only."
+       "text": "Open a conversation link signed out: sign-in page only.",
+       "given": "Nobody is signed in on this browser. A link to a message in #launch is at hand.",
+       "steps": "1. Open the link.",
+       "expect": "The sign-in page is shown. No channel name, message or member name appears anywhere on the page."
       },
       {
        "id": "TS-009",
        "type": "N",
-       "text": "Call the API without a session: refused."
+       "text": "Call the API without a session: refused.",
+       "given": "No session.",
+       "steps": "1. Send a request for the conversation list straight to the server, without a session.",
+       "expect": "The server refuses the request and returns no workspace data."
       }
      ]
     },
@@ -5829,7 +5856,10 @@
       {
        "id": "TS-010",
        "type": "P",
-       "text": "Sign in on A; B still asks for a code."
+       "text": "Sign in on A; B still asks for a code.",
+       "given": "Sam is signed out on devices A and B.",
+       "steps": "1. Sign in as Sam on device A. 2. Open Toki on device B.",
+       "expect": "Device A is signed in. Device B still shows the sign-in page and asks for a code."
       }
      ]
     },
@@ -5840,7 +5870,10 @@
       {
        "id": "TS-011",
        "type": "B",
-       "text": "Day 30 accepted, day 31 refused (clock moved in a test)."
+       "text": "Day 30 accepted, day 31 refused (clock moved in a test).",
+       "given": "Sam is signed in; the test clock can be moved.",
+       "steps": "1. Leave the session unused and move the clock forward 30 days; open Toki. 2. Repeat with 31 days.",
+       "expect": "At 30 days Sam is still signed in. At 31 days the sign-in page is shown."
       }
      ]
     }
@@ -5880,12 +5913,18 @@
       {
        "id": "TS-012",
        "type": "P",
-       "text": "Accept on day 1: signed in."
+       "text": "Accept on day 1: signed in.",
+       "given": "Minh (Admin) has invited a new address today.",
+       "steps": "1. Open the invitation mail on a device with no session. 2. Press the link.",
+       "expect": "The person is signed in without being asked for a code."
       },
       {
        "id": "TS-013",
        "type": "B",
-       "text": "Accept just before 7 days: works; just after: refused."
+       "text": "Accept just before 7 days: works; just after: refused.",
+       "given": "Two invitations exist; the test clock can be moved.",
+       "steps": "1. Open the first link just before 7 days have passed. 2. Open the second just after 7 days.",
+       "expect": "The first signs the person in. The second is refused and no session is created."
       }
      ]
     },
@@ -5896,7 +5935,10 @@
       {
        "id": "TS-014",
        "type": "N",
-       "text": "Open the same link again: no session is created."
+       "text": "Open the same link again: no session is created.",
+       "given": "An invitation link was already used to join.",
+       "steps": "1. Open the same link again on a device with no session.",
+       "expect": "Nobody is signed in by the link, and no second account is created."
       }
      ]
     },
@@ -5907,7 +5949,10 @@
       {
        "id": "TS-015",
        "type": "N",
-       "text": "Request a code for a stranger's address: no access results."
+       "text": "Request a code for a stranger's address: no access results.",
+       "given": "An address that was never invited and has no account.",
+       "steps": "1. On the sign-in page, enter that address and ask for a code. 2. Try any 6 digits.",
+       "expect": "The address cannot get into the workspace by any step."
       }
      ]
     }
@@ -5937,7 +5982,10 @@
       {
        "id": "TS-016",
        "type": "P",
-       "text": "New member's list contains #general."
+       "text": "New member's list contains #general.",
+       "given": "A person has just accepted an invitation.",
+       "steps": "1. Look at their conversation list. 2. Open #general.",
+       "expect": "#general is in the list without any action by them, and they can read and write in it."
       }
      ]
     },
@@ -5948,12 +5996,18 @@
       {
        "id": "TS-017",
        "type": "N",
-       "text": "Leave is unavailable in #general for Member, Admin, Owner."
+       "text": "Leave is unavailable in #general for Member, Admin, Owner.",
+       "given": "Three people are signed in: a Member, an Admin, an Owner.",
+       "steps": "1. As each of them, open #general and look for a way to leave or archive it.",
+       "expect": "None of the three has a usable Leave or Archive for #general."
       },
       {
        "id": "TS-018",
        "type": "N",
-       "text": "A leave request sent directly to the server is refused."
+       "text": "A leave request sent directly to the server is refused.",
+       "given": "Sam is signed in.",
+       "steps": "1. Send a leave request for #general straight to the server.",
+       "expect": "The server refuses. Sam is still a member of #general."
       }
      ]
     }
@@ -5983,17 +6037,26 @@
       {
        "id": "TS-019",
        "type": "B",
-       "text": "1 and 80 characters saved."
+       "text": "1 and 80 characters saved.",
+       "given": "A person is setting their display name.",
+       "steps": "1. Save a name of 1 character. 2. Save a name of 80 characters.",
+       "expect": "Both are saved and shown in full."
       },
       {
        "id": "TS-020",
        "type": "B",
-       "text": "0 and 81 characters refused."
+       "text": "0 and 81 characters refused.",
+       "given": "A person is setting their display name.",
+       "steps": "1. Try to save an empty name. 2. Try to save a name of 81 characters.",
+       "expect": "Both are refused with a message; the earlier name is unchanged."
       },
       {
        "id": "TS-021",
        "type": "P",
-       "text": "A Vietnamese name with diacritics is kept exactly."
+       "text": "A Vietnamese name with diacritics is kept exactly.",
+       "given": "A person is setting their display name.",
+       "steps": "1. Save the name 'Nguyễn Thị Hồng Ánh'. 2. Reload and look at the profile.",
+       "expect": "The name is shown exactly as typed, with every diacritic."
       }
      ]
     }
@@ -6023,12 +6086,18 @@
       {
        "id": "TS-022",
        "type": "P",
-       "text": "View #launch, reopen: #launch."
+       "text": "View #launch, reopen: #launch.",
+       "given": "Sam is signed in and is a member of #launch.",
+       "steps": "1. Open #launch. 2. Close Toki. 3. Open Toki again on the same device, with no link.",
+       "expect": "#launch is shown."
       },
       {
        "id": "TS-023",
        "type": "X",
-       "text": "The last conversation was left or archived meanwhile: the app still opens somewhere usable."
+       "text": "The last conversation was left or archived meanwhile: the app still opens somewhere usable.",
+       "given": "Sam last viewed #launch on this device, then left #launch from another device.",
+       "steps": "1. Open Toki on the first device, with no link.",
+       "expect": "The app opens on a conversation Sam can use. It does not show #launch's content or an error with nowhere to go."
       }
      ]
     },
@@ -6039,7 +6108,10 @@
       {
        "id": "TS-024",
        "type": "P",
-       "text": "New device: #general."
+       "text": "New device: #general.",
+       "given": "Sam signs in on a device where Toki was never opened.",
+       "steps": "1. Complete sign-in, with no link.",
+       "expect": "#general is shown."
       }
      ]
     }
@@ -6071,17 +6143,26 @@
       {
        "id": "TS-025",
        "type": "P",
-       "text": "Read to the bottom: badge gone."
+       "text": "Read to the bottom: badge gone.",
+       "given": "#launch has 3 unread messages for Sam; its badge shows in the list.",
+       "steps": "1. Open #launch in a window in use. 2. Scroll to the newest message.",
+       "expect": "The unread badge of #launch disappears."
       },
       {
        "id": "TS-026",
        "type": "N",
-       "text": "Background window: badge stays."
+       "text": "Background window: badge stays.",
+       "given": "#launch is open at the bottom in Sam's window, but Sam is using another application.",
+       "steps": "1. Someone posts in #launch.",
+       "expect": "The badge of #launch appears and stays until Sam returns to the window."
       },
       {
        "id": "TS-027",
        "type": "N",
-       "text": "Scrolled up, new message arrives: badge stays."
+       "text": "Scrolled up, new message arrives: badge stays.",
+       "given": "Sam is in #launch, scrolled up to older messages.",
+       "steps": "1. Someone posts in #launch.",
+       "expect": "The message is not counted as read: the badge stays until Sam reaches the bottom."
       }
      ]
     },
@@ -6092,7 +6173,10 @@
       {
        "id": "TS-028",
        "type": "P",
-       "text": "3 unread: divider above the first of them; reopen: no divider."
+       "text": "3 unread: divider above the first of them; reopen: no divider.",
+       "given": "#launch has 3 unread messages for Sam.",
+       "steps": "1. Open #launch. 2. Read without leaving. 3. Go to another conversation and come back.",
+       "expect": "On opening, 'New' sits above the first of the 3 and stays while Sam reads. On coming back there is no 'New' divider."
       }
      ]
     },
@@ -6103,7 +6187,10 @@
       {
        "id": "TS-029",
        "type": "N",
-       "text": "Sender sees no read mark after the recipient reads."
+       "text": "Sender sees no read mark after the recipient reads.",
+       "given": "Lan sends Sam a direct message.",
+       "steps": "1. Sam opens and reads it. 2. Lan looks at the message and the conversation.",
+       "expect": "Lan sees no mark, label or time saying Sam has read it."
       }
      ]
     }
@@ -6139,12 +6226,18 @@
       {
        "id": "TS-030",
        "type": "B",
-       "text": "10,000 sent; 10,001 not sent."
+       "text": "10,000 sent; 10,001 not sent.",
+       "given": "Sam is a member of #launch.",
+       "steps": "1. Send a message of exactly 10,000 characters. 2. Try to send one of 10,001.",
+       "expect": "The first is sent and shown in full. The second cannot be sent."
       },
       {
        "id": "TS-031",
        "type": "N",
-       "text": "Only spaces: nothing is sent."
+       "text": "Only spaces: nothing is sent.",
+       "given": "Sam is in #launch with an empty composer.",
+       "steps": "1. Type only spaces and line breaks. 2. Press Send.",
+       "expect": "Nothing is sent and no empty message appears."
       }
      ]
     },
@@ -6155,12 +6248,18 @@
       {
        "id": "TS-032",
        "type": "N",
-       "text": "Send to an unjoined channel by direct request: refused."
+       "text": "Send to an unjoined channel by direct request: refused.",
+       "given": "Sam has not joined the public channel #design.",
+       "steps": "1. Send a post-message request for #design straight to the server. 2. Open any picker that lists conversations to write to.",
+       "expect": "The server refuses the message. #design is not offered in the picker."
       },
       {
        "id": "TS-033",
        "type": "P",
-       "text": "After joining, sending works."
+       "text": "After joining, sending works.",
+       "given": "Sam has not joined #design.",
+       "steps": "1. Join #design. 2. Send a message there.",
+       "expect": "The message is sent and other members see it."
       }
      ]
     }
@@ -6195,7 +6294,10 @@
       {
        "id": "TS-034",
        "type": "B",
-       "text": "10 accepted, 11th refused."
+       "text": "10 accepted, 11th refused.",
+       "given": "Sam is writing a message in #launch.",
+       "steps": "1. Attach 10 small files. 2. Attach an 11th.",
+       "expect": "The 10 files are accepted. The 11th is refused with a message and the 10 stay attached."
       }
      ]
     },
@@ -6206,12 +6308,18 @@
       {
        "id": "TS-035",
        "type": "B",
-       "text": "100 MB accepted; just over refused."
+       "text": "100 MB accepted; just over refused.",
+       "given": "Sam is writing a message. Two files are ready: one of exactly 100 MB, one slightly larger.",
+       "steps": "1. Attach the 100 MB file. 2. Attach the larger one.",
+       "expect": "The 100 MB file uploads. The larger one is refused, and its name is in the message."
       },
       {
        "id": "TS-036",
        "type": "N",
-       "text": "Oversized upload sent straight to storage: refused."
+       "text": "Oversized upload sent straight to storage: refused.",
+       "given": "Sam has permission to upload one file.",
+       "steps": "1. Send a file larger than 100 MB straight to storage, bypassing the app's own check.",
+       "expect": "The upload is refused, or the file is rejected when it completes; it never becomes an attachment."
       }
      ]
     },
@@ -6222,7 +6330,10 @@
       {
        "id": "TS-037",
        "type": "P",
-       "text": "Send a PNG: thumbnail appears."
+       "text": "Send a PNG: thumbnail appears.",
+       "given": "Sam is in #launch.",
+       "steps": "1. Attach a PNG image. 2. Send the message.",
+       "expect": "The message shows a thumbnail of the image for Sam and for other members."
       }
      ]
     },
@@ -6233,7 +6344,10 @@
       {
        "id": "TS-038",
        "type": "N",
-       "text": "A file address from a private channel opened by a non-member: refused."
+       "text": "A file address from a private channel opened by a non-member: refused.",
+       "given": "A file was sent in the private channel #leadership. Sam is not a member.",
+       "steps": "1. As Sam, open the file's address directly. 2. As Sam, search Files for its name.",
+       "expect": "The file does not open and is not listed."
       }
      ]
     }
@@ -6261,12 +6375,18 @@
       {
        "id": "TS-039",
        "type": "P",
-       "text": "Edit a message from last month."
+       "text": "Edit a message from last month.",
+       "given": "Sam sent a message in #launch more than a month ago.",
+       "steps": "1. Open the message's menu and choose Edit. 2. Change the text and save.",
+       "expect": "The new text replaces the old for everyone, with '(edited)' beside the time."
       },
       {
        "id": "TS-040",
        "type": "N",
-       "text": "Another member has no Edit on it, and a direct request is refused."
+       "text": "Another member has no Edit on it, and a direct request is refused.",
+       "given": "Sam sent a message in #launch. Mai is another member.",
+       "steps": "1. As Mai, open the menu of Sam's message. 2. As Mai, send an edit request for it straight to the server.",
+       "expect": "Mai's menu has no Edit. The server refuses the request; the message is unchanged."
       }
      ]
     }
@@ -6304,12 +6424,18 @@
       {
        "id": "TS-041",
        "type": "P",
-       "text": "Confirm: gone for everyone."
+       "text": "Confirm: gone for everyone.",
+       "given": "Sam sent a message with no replies.",
+       "steps": "1. Choose Delete from its menu. 2. Confirm.",
+       "expect": "The message disappears for every member. No Undo is offered."
       },
       {
        "id": "TS-042",
        "type": "N",
-       "text": "Cancel: message unchanged."
+       "text": "Cancel: message unchanged.",
+       "given": "Sam sent a message.",
+       "steps": "1. Choose Delete from its menu. 2. Cancel the confirmation.",
+       "expect": "The message is still there, unchanged."
       }
      ]
     },
@@ -6320,7 +6446,10 @@
       {
        "id": "TS-043",
        "type": "P",
-       "text": "Delete a parent with 3 replies: 3 replies remain."
+       "text": "Delete a parent with 3 replies: 3 replies remain.",
+       "given": "Sam's message has 3 replies from other people.",
+       "steps": "1. Delete Sam's message and confirm. 2. Open the thread.",
+       "expect": "A 'Message deleted' line stands in its place. The 3 replies are still readable."
       }
      ]
     },
@@ -6331,7 +6460,10 @@
       {
        "id": "TS-044",
        "type": "N",
-       "text": "Open the old file address: not available."
+       "text": "Open the old file address: not available.",
+       "given": "Sam sent a message with a PDF and noted the file's address.",
+       "steps": "1. Delete the message and confirm. 2. Open the file's address. 3. Search Files for the PDF.",
+       "expect": "The file can no longer be opened and is not in Files."
       }
      ]
     }
@@ -6365,7 +6497,10 @@
       {
        "id": "TS-045",
        "type": "P",
-       "text": "Admin deletes: label shown, author notified."
+       "text": "Admin deletes: label shown, author notified.",
+       "given": "Minh (Admin) and Sam (Member) are both in #launch. Sam posted a message.",
+       "steps": "1. As Minh, delete Sam's message and confirm.",
+       "expect": "The message reads 'Message deleted by an admin' for everyone. Sam gets a notice saying so."
       }
      ]
     },
@@ -6376,12 +6511,18 @@
       {
        "id": "TS-046",
        "type": "N",
-       "text": "Owner outside the channel: no access by any route."
+       "text": "Owner outside the channel: no access by any route.",
+       "given": "Lan (Owner) is not a member of the private channel #salaries.",
+       "steps": "1. As Lan, look for #salaries in the list, Browse channels and Ctrl+K. 2. Open its address directly. 3. Send a delete request for one of its messages to the server.",
+       "expect": "The channel does not appear anywhere for Lan, its address shows no content, and the server refuses the request."
       },
       {
        "id": "TS-047",
        "type": "N",
-       "text": "A Member cannot delete another Member's message."
+       "text": "A Member cannot delete another Member's message.",
+       "given": "Sam and Mai are Members in #launch. Mai posted a message.",
+       "steps": "1. As Sam, open the menu of Mai's message. 2. As Sam, send a delete request for it to the server.",
+       "expect": "Sam's menu has no Delete. The server refuses the request."
       }
      ]
     }
@@ -6413,7 +6554,10 @@
       {
        "id": "TS-048",
        "type": "P",
-       "text": "Mention once: one item."
+       "text": "Mention once: one item.",
+       "given": "Sam and Lan are in #launch. Lan's Activity is empty.",
+       "steps": "1. As Sam, send a message containing @Lan. 2. As Lan, open Activity.",
+       "expect": "Activity holds exactly one item for that mention."
       }
      ]
     },
@@ -6424,7 +6568,10 @@
       {
        "id": "TS-049",
        "type": "N",
-       "text": "Self-mention: Activity unchanged."
+       "text": "Self-mention: Activity unchanged.",
+       "given": "Sam is in #launch. Sam's Activity count is noted.",
+       "steps": "1. As Sam, send a message containing @Sam. 2. As Sam, react to one of Sam's own messages.",
+       "expect": "Sam's Activity has no new item and no badge appears for Sam."
       }
      ]
     },
@@ -6435,7 +6582,10 @@
       {
        "id": "TS-050",
        "type": "P",
-       "text": "Open the message: item done, count down by one."
+       "text": "Open the message: item done, count down by one.",
+       "given": "Lan has one open Activity item for a mention in #launch.",
+       "steps": "1. As Lan, open that message in #launch. 2. Open Activity.",
+       "expect": "The item is marked done by itself and the Activity count is one lower."
       }
      ]
     }
@@ -6467,12 +6617,18 @@
       {
        "id": "TS-051",
        "type": "P",
-       "text": "Paused, mentioned: badge +1, nothing else."
+       "text": "Paused, mentioned: badge +1, nothing else.",
+       "given": "Lan has paused notifications.",
+       "steps": "1. As Sam, mention Lan in #launch.",
+       "expect": "Lan gets no toast, no push and no sound. Lan's badge rises by one."
       },
       {
        "id": "TS-052",
        "type": "X",
-       "text": "A reminder falls due during Focus: no toast."
+       "text": "A reminder falls due during Focus: no toast.",
+       "given": "Lan set a reminder for a few minutes ahead, then started Focus time that covers that moment.",
+       "steps": "1. Wait until the reminder is due.",
+       "expect": "No toast, push or sound for the reminder while Focus time lasts."
       }
      ]
     },
@@ -6483,12 +6639,18 @@
       {
        "id": "TS-053",
        "type": "P",
-       "text": "3 mentions during Focus: one summary naming 3."
+       "text": "3 mentions during Focus: one summary naming 3.",
+       "given": "Lan is in Focus time.",
+       "steps": "1. As three other people, mention Lan once each. 2. As Lan, end Focus time.",
+       "expect": "One summary appears, listing the 3 mentions."
       },
       {
        "id": "TS-054",
        "type": "B",
-       "text": "Nothing arrived: no summary, or an empty one, consistently."
+       "text": "Nothing arrived: no summary, or an empty one, consistently.",
+       "given": "Lan is in Focus time and nothing arrives.",
+       "steps": "1. End Focus time. 2. Repeat the test with Pause.",
+       "expect": "The app behaves the same way both times: either no summary, or an empty one."
       }
      ]
     },
@@ -6499,7 +6661,10 @@
       {
        "id": "TS-055",
        "type": "X",
-       "text": "Start twice: one Focus period, longer."
+       "text": "Start twice: one Focus period, longer.",
+       "given": "Lan had the status 'Reviewing' and started Focus time.",
+       "steps": "1. Start Focus time again while it is running. 2. End Focus time.",
+       "expect": "There is one Focus period, extended, not two. After ending, Lan's status is 'Reviewing' again."
       }
      ]
     }
@@ -6529,12 +6694,18 @@
       {
        "id": "TS-056",
        "type": "P",
-       "text": "Join a channel: level reads 'Mentions only'."
+       "text": "Join a channel: level reads 'Mentions only'.",
+       "given": "Sam has not joined #design.",
+       "steps": "1. Join #design. 2. Open its Details panel.",
+       "expect": "The notification level reads 'Mentions only'."
       },
       {
        "id": "TS-057",
        "type": "P",
-       "text": "New DM: level reads 'All messages'."
+       "text": "New DM: level reads 'All messages'.",
+       "given": "Sam has never messaged Mai.",
+       "steps": "1. Start a direct message with Mai. 2. Open its Details panel.",
+       "expect": "The notification level reads 'All messages'."
       }
      ]
     }
@@ -6566,12 +6737,18 @@
       {
        "id": "TS-058",
        "type": "B",
-       "text": "19 members: sent at once. 20 members: asked first."
+       "text": "19 members: sent at once. 20 members: asked first.",
+       "given": "Two channels: one with 19 members, one with 20. Sam is in both.",
+       "steps": "1. In the 19-member channel, send a message with @channel. 2. Do the same in the 20-member channel.",
+       "expect": "With 19 members the message is sent at once. With 20, a confirmation is asked first."
       },
       {
        "id": "TS-059",
        "type": "N",
-       "text": "Cancel the confirmation: nothing is sent."
+       "text": "Cancel the confirmation: nothing is sent.",
+       "given": "Sam is in a channel of 20 members.",
+       "steps": "1. Send a message with @channel. 2. Cancel the confirmation.",
+       "expect": "Nothing is sent and nobody is notified. The text is still in the composer."
       }
      ]
     }
@@ -6610,12 +6787,18 @@
       {
        "id": "TS-060",
        "type": "P",
-       "text": "App closed, mention: notification with the three parts."
+       "text": "App closed, mention: notification with the three parts.",
+       "given": "Lan allowed notifications and has closed Toki.",
+       "steps": "1. As Sam, send '@Lan the build is ready' in #launch.",
+       "expect": "Lan's device shows a system notification with Sam's name, #launch, and the start of the message."
       },
       {
        "id": "TS-061",
        "type": "N",
-       "text": "Push not allowed: no notification, badge still updates."
+       "text": "Push not allowed: no notification, badge still updates.",
+       "given": "Lan has not allowed notifications and has closed Toki.",
+       "steps": "1. As Sam, mention Lan. 2. As Lan, open Toki.",
+       "expect": "No system notification was shown. On opening, the badge for the mention is there."
       }
      ]
     },
@@ -6626,7 +6809,10 @@
       {
        "id": "TS-062",
        "type": "P",
-       "text": "Install offered and works."
+       "text": "Install offered and works.",
+       "given": "A supported browser, Toki not installed.",
+       "steps": "1. Open Toki. 2. Use the browser's install action. 3. Open the installed app.",
+       "expect": "Toki installs and opens in its own window, signed in."
       }
      ]
     }
@@ -6665,12 +6851,18 @@
       {
        "id": "TS-063",
        "type": "P",
-       "text": "Member creates a public channel."
+       "text": "Member creates a public channel.",
+       "given": "Sam is a Member. No channel is named 'qa-team'.",
+       "steps": "1. Create a public channel named 'qa-team'.",
+       "expect": "The channel exists, Sam is its member, and other members can find it in Browse channels."
       },
       {
        "id": "TS-064",
        "type": "P",
-       "text": "Member creates a private channel."
+       "text": "Member creates a private channel.",
+       "given": "Sam is a Member. No channel is named 'qa-private'.",
+       "steps": "1. Create a private channel named 'qa-private'. 2. As Mai, look in Browse channels.",
+       "expect": "The channel exists with Sam as member. Mai does not see it."
       }
      ]
     },
@@ -6681,17 +6873,26 @@
       {
        "id": "TS-065",
        "type": "B",
-       "text": "80 accepted, 81 refused."
+       "text": "80 accepted, 81 refused.",
+       "given": "Sam is creating a channel.",
+       "steps": "1. Enter a valid name of exactly 80 characters and create. 2. Try a name of 81 characters.",
+       "expect": "The 80-character name is created. The 81-character name is refused."
       },
       {
        "id": "TS-066",
        "type": "N",
-       "text": "Existing name refused."
+       "text": "Existing name refused.",
+       "given": "A channel named 'launch' exists.",
+       "steps": "1. Try to create another channel named 'launch'.",
+       "expect": "It is refused with a message; no second channel is created."
       },
       {
        "id": "TS-067",
        "type": "N",
-       "text": "A name with a character outside a–z, 0–9, hyphen is not created as typed."
+       "text": "A name with a character outside a–z, 0–9, hyphen is not created as typed.",
+       "given": "Sam is creating a channel.",
+       "steps": "1. Enter 'Q&A Team!' as the name and try to create.",
+       "expect": "No channel is created with that exact name: only lowercase letters, digits and hyphens are allowed in a name."
       }
      ]
     },
@@ -6702,7 +6903,10 @@
       {
        "id": "TS-068",
        "type": "N",
-       "text": "No such control; a direct request is refused."
+       "text": "No such control; a direct request is refused.",
+       "given": "A public channel 'qa-team' exists.",
+       "steps": "1. Look in its details for a way to make it private. 2. Send a request to change it to private straight to the server.",
+       "expect": "There is no such control, and the server refuses the request."
       }
      ]
     }
@@ -6732,7 +6936,10 @@
       {
        "id": "TS-069",
        "type": "P",
-       "text": "Join, scroll to the first message."
+       "text": "Join, scroll to the first message.",
+       "given": "#design has messages from last month. Sam has not joined.",
+       "steps": "1. Join #design. 2. Scroll up to the first message.",
+       "expect": "Sam can read every message, including those sent before joining."
       }
      ]
     },
@@ -6743,12 +6950,18 @@
       {
        "id": "TS-070",
        "type": "N",
-       "text": "No delete control for Owner."
+       "text": "No delete control for Owner.",
+       "given": "Lan (Owner) is a member of #design.",
+       "steps": "1. Look through #design's details and menus for a way to delete the channel.",
+       "expect": "There is none: a channel can be archived, not deleted."
       },
       {
        "id": "TS-071",
        "type": "P",
-       "text": "Archived channel still readable by its members."
+       "text": "Archived channel still readable by its members.",
+       "given": "#old-project was archived. Sam was a member.",
+       "steps": "1. As Sam, open #old-project.",
+       "expect": "Its messages are still readable."
       }
      ]
     }
@@ -6782,12 +6995,18 @@
       {
        "id": "TS-072",
        "type": "P",
-       "text": "Leave, Undo within 5 s: still a member."
+       "text": "Leave, Undo within 5 s: still a member.",
+       "given": "Sam is a member of the public channel #design.",
+       "steps": "1. Choose Leave channel. 2. Press Undo within 5 seconds.",
+       "expect": "No confirmation is asked. After Undo, Sam is a member again and #design is back in the list."
       },
       {
        "id": "TS-073",
        "type": "B",
-       "text": "After 5 s Undo is gone."
+       "text": "After 5 s Undo is gone.",
+       "given": "Sam is a member of the public channel #design.",
+       "steps": "1. Choose Leave channel. 2. Wait more than 5 seconds.",
+       "expect": "Undo is no longer offered. Sam is not a member."
       }
      ]
     },
@@ -6798,12 +7017,18 @@
       {
        "id": "TS-074",
        "type": "P",
-       "text": "Confirm: left; the channel is absent from Browse and Ctrl+K."
+       "text": "Confirm: left; the channel is absent from Browse and Ctrl+K.",
+       "given": "Sam is a member of the private channel #leadership.",
+       "steps": "1. Choose Leave channel. 2. Read the confirmation and confirm. 3. Look for #leadership in Browse channels and Ctrl+K.",
+       "expect": "The confirmation says a member must invite Sam back. There is no Undo. The channel does not appear in Browse channels or Ctrl+K."
       },
       {
        "id": "TS-075",
        "type": "N",
-       "text": "Cancel: still a member."
+       "text": "Cancel: still a member.",
+       "given": "Sam is a member of the private channel #leadership.",
+       "steps": "1. Choose Leave channel. 2. Cancel the confirmation.",
+       "expect": "Sam is still a member."
       }
      ]
     },
@@ -6814,7 +7039,10 @@
       {
        "id": "TS-076",
        "type": "X",
-       "text": "Sole member leaves: channel archived, not deleted."
+       "text": "Sole member leaves: channel archived, not deleted.",
+       "given": "Sam is the only member of #solo.",
+       "steps": "1. Leave #solo.",
+       "expect": "#solo becomes archived. It is not deleted and its messages are kept."
       }
      ]
     }
@@ -6852,12 +7080,18 @@
       {
        "id": "TS-077",
        "type": "B",
-       "text": "8 people: created. 9: refused."
+       "text": "8 people: created. 9: refused.",
+       "given": "The workspace has at least 9 people.",
+       "steps": "1. Start a group with 7 other people (8 in all). 2. Try to start one with 8 other people (9 in all).",
+       "expect": "The group of 8 is created. The group of 9 is refused."
       },
       {
        "id": "TS-078",
        "type": "P",
-       "text": "DM with one person opens."
+       "text": "DM with one person opens.",
+       "given": "Sam has never messaged Mai.",
+       "steps": "1. Open New message and choose Mai.",
+       "expect": "A direct message with Mai opens and Sam can write in it."
       }
      ]
     },
@@ -6868,7 +7102,10 @@
       {
        "id": "TS-079",
        "type": "N",
-       "text": "No such control; a direct request is refused."
+       "text": "No such control; a direct request is refused.",
+       "given": "A group DM of Sam, Mai and Alex exists.",
+       "steps": "1. Look in the group's details for a way to add or remove a person. 2. Send an add-member request for the group to the server.",
+       "expect": "There is no such control, and the server refuses the request."
       }
      ]
     },
@@ -6879,7 +7116,10 @@
       {
        "id": "TS-080",
        "type": "N",
-       "text": "Guest has no New message to members (phase 5 role, rule checked now)."
+       "text": "Guest has no New message to members (phase 5 role, rule checked now).",
+       "given": "A guest is signed in to their one shared channel.",
+       "steps": "1. Look for New message. 2. Open a member's profile and look for Message. 3. Send a start-DM request to the server.",
+       "expect": "The guest has no way to start a DM, and the server refuses the request."
       }
      ]
     }
@@ -6914,12 +7154,18 @@
       {
        "id": "TS-081",
        "type": "P",
-       "text": "Admin in the channel removes a Member."
+       "text": "Admin in the channel removes a Member.",
+       "given": "Minh (Admin) and Sam (Member) are in #design.",
+       "steps": "1. As Minh, remove Sam from #design.",
+       "expect": "Sam is no longer a member of #design."
       },
       {
        "id": "TS-082",
        "type": "N",
-       "text": "Member tries: refused."
+       "text": "Member tries: refused.",
+       "given": "Sam and Mai are Members in #design.",
+       "steps": "1. As Sam, look for a way to remove Mai. 2. As Sam, send a remove-member request for Mai to the server.",
+       "expect": "Sam has no such control, and the server refuses the request."
       }
      ]
     },
@@ -6930,7 +7176,10 @@
       {
        "id": "TS-083",
        "type": "N",
-       "text": "Owner outside the channel: refused."
+       "text": "Owner outside the channel: refused.",
+       "given": "Lan (Owner) is not a member of #design. Sam is.",
+       "steps": "1. As Lan, send a remove-member request for Sam in #design to the server.",
+       "expect": "The server refuses. Sam is still a member."
       }
      ]
     }
@@ -6964,12 +7213,18 @@
       {
        "id": "TS-084",
        "type": "P",
-       "text": "Save: appears in Later."
+       "text": "Save: appears in Later.",
+       "given": "Sam can read a message in #launch. Sam's Later is empty.",
+       "steps": "1. Press the bookmark on the message. 2. Open Later.",
+       "expect": "The message is listed in Later."
       },
       {
        "id": "TS-085",
        "type": "N",
-       "text": "Another person's Later does not show it."
+       "text": "Another person's Later does not show it.",
+       "given": "Sam saved a message to Later.",
+       "steps": "1. As Mai, open Later.",
+       "expect": "Mai's Later does not contain Sam's saved message."
       }
      ]
     },
@@ -6980,12 +7235,18 @@
       {
        "id": "TS-086",
        "type": "N",
-       "text": "Past time refused."
+       "text": "Past time refused.",
+       "given": "Sam has an item in Later.",
+       "steps": "1. Try to set its reminder to a time that has already passed.",
+       "expect": "The reminder is not set; the item keeps its earlier reminder, or none."
       },
       {
        "id": "TS-087",
        "type": "B",
-       "text": "One minute ahead accepted."
+       "text": "One minute ahead accepted.",
+       "given": "Sam has an item in Later.",
+       "steps": "1. Set its reminder to one minute from now.",
+       "expect": "The reminder is accepted and shown on the item."
       }
      ]
     }
@@ -7023,17 +7284,26 @@
       {
        "id": "TS-088",
        "type": "N",
-       "text": "Member opens the Admin address: refused."
+       "text": "Member opens the Admin address: refused.",
+       "given": "Sam is a Member.",
+       "steps": "1. Look for Admin in the navigation. 2. Open the Admin address directly.",
+       "expect": "There is no Admin entry, and the address shows no admin content."
       },
       {
        "id": "TS-089",
        "type": "N",
-       "text": "Member calls an admin request directly: refused."
+       "text": "Member calls an admin request directly: refused.",
+       "given": "Sam is a Member.",
+       "steps": "1. As Sam, send a list-members request and an invite request for the admin area to the server.",
+       "expect": "The server refuses both."
       },
       {
        "id": "TS-090",
        "type": "P",
-       "text": "Admin and Owner open it."
+       "text": "Admin and Owner open it.",
+       "given": "Minh is an Admin, Lan an Owner.",
+       "steps": "1. As Minh, open Admin. 2. As Lan, open Admin.",
+       "expect": "Both see the Admin page."
       }
      ]
     },
@@ -7044,12 +7314,18 @@
       {
        "id": "TS-091",
        "type": "P",
-       "text": "Owner invites an Admin."
+       "text": "Owner invites an Admin.",
+       "given": "Lan is an Owner.",
+       "steps": "1. Invite a new address with the role Admin. 2. Have that person accept.",
+       "expect": "The new person joins as an Admin."
       },
       {
        "id": "TS-092",
        "type": "N",
-       "text": "Admin tries to invite as Admin: refused."
+       "text": "Admin tries to invite as Admin: refused.",
+       "given": "Minh is an Admin.",
+       "steps": "1. Try to invite a new address with the role Admin, in the page and by a direct request.",
+       "expect": "Minh can invite only as Member; an invitation as Admin is refused."
       }
      ]
     }
@@ -7084,12 +7360,18 @@
       {
        "id": "TS-093",
        "type": "P",
-       "text": "Owner makes a Member an Admin."
+       "text": "Owner makes a Member an Admin.",
+       "given": "Lan is an Owner, Sam a Member.",
+       "steps": "1. As Lan, change Sam's role to Admin.",
+       "expect": "Sam is an Admin."
       },
       {
        "id": "TS-094",
        "type": "N",
-       "text": "Admin tries to change a role: refused."
+       "text": "Admin tries to change a role: refused.",
+       "given": "Minh is an Admin, Sam a Member.",
+       "steps": "1. As Minh, try to change Sam's role, in the page and by a direct request.",
+       "expect": "Minh cannot; the server refuses. Sam's role is unchanged."
       }
      ]
     },
@@ -7100,12 +7382,18 @@
       {
        "id": "TS-095",
        "type": "P",
-       "text": "Admin deactivates a Member."
+       "text": "Admin deactivates a Member.",
+       "given": "Minh is an Admin, Sam an active Member.",
+       "steps": "1. As Minh, deactivate Sam. 2. As Sam, try to sign in.",
+       "expect": "Sam is deactivated and cannot sign in."
       },
       {
        "id": "TS-096",
        "type": "N",
-       "text": "Admin tries on an Owner: refused."
+       "text": "Admin tries on an Owner: refused.",
+       "given": "Minh is an Admin, Lan an Owner.",
+       "steps": "1. As Minh, try to deactivate Lan, in the page and by a direct request.",
+       "expect": "It is refused. Lan is still active."
       }
      ]
     },
@@ -7116,7 +7404,10 @@
       {
        "id": "TS-097",
        "type": "B",
-       "text": "One Owner: refused. Two Owners: allowed."
+       "text": "One Owner: refused. Two Owners: allowed.",
+       "given": "The workspace has exactly one Owner, Lan.",
+       "steps": "1. Try to demote Lan, then to deactivate Lan. 2. Make Minh a second Owner. 3. Demote Lan.",
+       "expect": "With one Owner both actions are refused. With two Owners the demotion succeeds."
       }
      ]
     }
@@ -7149,7 +7440,10 @@
       {
        "id": "TS-098",
        "type": "P",
-       "text": "Go offline: content stays."
+       "text": "Go offline: content stays.",
+       "given": "Sam has #launch open with messages loaded.",
+       "steps": "1. Cut the network. 2. Scroll through the loaded messages.",
+       "expect": "The messages stay on screen and can be scrolled and read."
       }
      ]
     },
@@ -7160,12 +7454,18 @@
       {
        "id": "TS-099",
        "type": "P",
-       "text": "Send offline, reconnect: delivered once."
+       "text": "Send offline, reconnect: delivered once.",
+       "given": "Sam is in #launch; the network is cut.",
+       "steps": "1. Send a message. 2. Restore the network. 3. As Mai, look at #launch.",
+       "expect": "While offline the message shows as waiting. After reconnecting it is delivered, and Mai sees it exactly once."
       },
       {
        "id": "TS-100",
        "type": "X",
-       "text": "Connection flaps several times: still one copy."
+       "text": "Connection flaps several times: still one copy.",
+       "given": "Sam is in #launch.",
+       "steps": "1. Send a message. 2. Cut and restore the network several times while it is being sent. 3. As Mai, look at #launch.",
+       "expect": "Mai sees exactly one copy of the message."
       }
      ]
     },
@@ -7176,12 +7476,18 @@
       {
        "id": "TS-101",
        "type": "N",
-       "text": "React offline: no reaction recorded, explanation shown."
+       "text": "React offline: no reaction recorded, explanation shown.",
+       "given": "Sam is in #launch; the network is cut.",
+       "steps": "1. Add a reaction to a message. 2. Restore the network and reload.",
+       "expect": "Offline, the app says why the reaction was not added and does not show it as added. After reload the reaction is not there."
       },
       {
        "id": "TS-102",
        "type": "N",
-       "text": "Join a channel offline: not joined."
+       "text": "Join a channel offline: not joined.",
+       "given": "Sam has not joined #design; the network is cut.",
+       "steps": "1. Press Join on #design. 2. Restore the network and reload.",
+       "expect": "Offline, the app says why Sam was not joined. After reload Sam is still not a member."
       }
      ]
     }
@@ -7211,7 +7517,10 @@
       {
        "id": "TS-103",
        "type": "N",
-       "text": "Click outside: nothing lost."
+       "text": "Click outside: nothing lost.",
+       "given": "A dialog with fields is open and Sam has typed in it.",
+       "steps": "1. Click outside the dialog.",
+       "expect": "The dialog stays open and the typed text is still there."
       }
      ]
     },
@@ -7222,12 +7531,18 @@
       {
        "id": "TS-104",
        "type": "P",
-       "text": "Typed, close: asked."
+       "text": "Typed, close: asked.",
+       "given": "A dialog with fields is open and Sam has typed in it.",
+       "steps": "1. Press the dialog's close button.",
+       "expect": "The app asks whether to discard what was typed. Choosing to keep returns to the dialog with the text intact."
       },
       {
        "id": "TS-105",
        "type": "B",
-       "text": "Empty form: closes without asking."
+       "text": "Empty form: closes without asking.",
+       "given": "A dialog with fields is open and nothing has been typed.",
+       "steps": "1. Press the close button.",
+       "expect": "The dialog closes at once, with no question."
       }
      ]
     }
@@ -7255,7 +7570,10 @@
       {
        "id": "TS-106",
        "type": "N",
-       "text": "Review every destructive action: one or the other."
+       "text": "Review every destructive action: one or the other.",
+       "given": "A list of every action that removes or changes something for the user or for others.",
+       "steps": "1. Perform each action once.",
+       "expect": "Each either happens at once with Undo for 5 seconds, or asks for confirmation first. None does both."
       }
      ]
     },
@@ -7266,7 +7584,10 @@
       {
        "id": "TS-107",
        "type": "P",
-       "text": "Each confirmation contains the target's name."
+       "text": "Each confirmation contains the target's name.",
+       "given": "The same list, limited to the actions that ask for confirmation.",
+       "steps": "1. Open each confirmation and read it.",
+       "expect": "Every confirmation names the thing it acts on, such as the channel or the person."
       }
      ]
     }
@@ -7298,7 +7619,10 @@
       {
        "id": "TS-108",
        "type": "P",
-       "text": "No-result search in each list."
+       "text": "No-result search in each list.",
+       "given": "Sam is on each list that can be searched or filtered: Activity, Later, Files, People, Browse channels.",
+       "steps": "1. In each, search for a string that matches nothing.",
+       "expect": "Each shows a message written for that list, in the middle of the content area. None shows a blank area."
       }
      ]
     },
@@ -7309,12 +7633,18 @@
       {
        "id": "TS-109",
        "type": "P",
-       "text": "Compare count and rows for each chip."
+       "text": "Compare count and rows for each chip.",
+       "given": "A list with filter chips that show counts, for example Later.",
+       "steps": "1. For each chip, note its number. 2. Select it and count the rows.",
+       "expect": "The number on each chip equals the rows listed."
       },
       {
        "id": "TS-110",
        "type": "X",
-       "text": "A listed item's message is deleted: count and rows still agree."
+       "text": "A listed item's message is deleted: count and rows still agree.",
+       "given": "Sam saved a message to Later; its chip count is noted.",
+       "steps": "1. The author deletes the message. 2. Open Later.",
+       "expect": "The chip's number and the rows shown still agree."
       }
      ]
     },
@@ -7325,7 +7655,10 @@
       {
        "id": "TS-111",
        "type": "P",
-       "text": "Create under a filter that would hide it: the filter changes."
+       "text": "Create under a filter that would hide it: the filter changes.",
+       "given": "Sam is on a list with a filter selected that would hide a newly created item.",
+       "steps": "1. Create an item.",
+       "expect": "The new item is visible straight away; Sam does not have to change the filter by hand."
       }
      ]
     }
@@ -7359,12 +7692,18 @@
       {
        "id": "TS-112",
        "type": "P",
-       "text": "Unaccented query finds accented name and message."
+       "text": "Unaccented query finds accented name and message.",
+       "given": "A member is named 'Nguyễn', and a message contains 'đường dẫn'.",
+       "steps": "1. Open Ctrl+K. 2. Search 'nguyen'. 3. Search 'duong dan'.",
+       "expect": "The member and the message are found."
       },
       {
        "id": "TS-113",
        "type": "P",
-       "text": "Accented query also finds it."
+       "text": "Accented query also finds it.",
+       "given": "The same data.",
+       "steps": "1. Open Ctrl+K. 2. Search 'Nguyễn'. 3. Search 'đường dẫn'.",
+       "expect": "The same member and message are found."
       }
      ]
     },
@@ -7375,7 +7714,10 @@
       {
        "id": "TS-114",
        "type": "N",
-       "text": "Non-member searches a word used only in a private channel: no result."
+       "text": "Non-member searches a word used only in a private channel: no result.",
+       "given": "The word 'bluebird' was written only in the private channel #leadership. Sam is not a member.",
+       "steps": "1. As Sam, search 'bluebird' and 'leadership' in Ctrl+K.",
+       "expect": "No message and no channel from #leadership is in the results."
       }
      ]
     }
@@ -7403,12 +7745,18 @@
       {
        "id": "TS-115",
        "type": "B",
-       "text": "Just under 5 minutes: active. At 5 minutes: Away."
+       "text": "Just under 5 minutes: active. At 5 minutes: Away.",
+       "given": "Sam is signed in and Mai can see Sam's presence.",
+       "steps": "1. Sam stops all activity. 2. Mai looks just before 5 minutes, then at 5 minutes.",
+       "expect": "Just before 5 minutes Sam shows as active. At 5 minutes Sam shows as Away."
       },
       {
        "id": "TS-116",
        "type": "P",
-       "text": "Any activity returns them to active."
+       "text": "Any activity returns them to active.",
+       "given": "Sam shows as Away to Mai.",
+       "steps": "1. Sam moves the pointer or types in Toki.",
+       "expect": "Sam shows as active to Mai again."
       }
      ]
     }
