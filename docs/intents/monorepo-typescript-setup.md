@@ -2,7 +2,7 @@
 Author: Thanh Truong
 
 ## Problem
-Nothing has been committed to the Toki repository yet. There is no shared place for the server, the web app and the shared packages to live. Every other Repository foundation ticket needs this base before it can start. Without it, later work has no agreed structure to build on.
+The Toki repository holds only the TOKI-095 workflow files (`CLAUDE.md`, `.claude/`, the PR template and two `docs/` files). There is no shared place for the server, the web app and the shared packages to live. Every other Repository foundation ticket needs this base before it can start. Without it, later work has no agreed structure to build on.
 
 ## Proposed outcome
 The repository holds the agreed structure: the two apps and six packages that phase 1 needs exist, empty, and they share one TypeScript configuration. The builder can start the next foundation tickets without deciding again where code goes.
