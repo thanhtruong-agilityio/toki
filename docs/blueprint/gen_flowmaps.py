@@ -933,41 +933,36 @@ def qa(sid, lang):
     return "proposal", "", ("Written flow: " if lang == "en" else "Flow viết: ") + _by(lang, "flows")[sid]["title"]
 
 
-def cite_note(sid):
-    out = []
-    for lang in ("en", "vi"):
-        en = lang == "en"
-        kind, q, a = qa(sid, lang)
-        if sid in TECH:
-            t = f"**{'Technical design' if en else 'Thiết kế kỹ thuật'}:** {a}"
-        elif kind == "decided":
-            if sid.startswith("OQ"):
-                lab = "Answer" if en else "Trả lời"
-            elif sid.startswith("G"):
-                lab = "You confirmed" if en else "Bạn đã xác nhận"
-            elif _by(lang, "decisions")[sid].get("source") == "user":
-                lab = "Your answer" if en else "Bạn trả lời"
-            else:
-                lab = "You chose the recommended option" if en else "Bạn chọn phương án được đề xuất"
-            t = f"**{'Question' if en else 'Câu hỏi'} ({sid}):** {q} **{lab}:** {a}"
-        elif kind == "rule":
-            t = f"**{'Rule' if en else 'Quy tắc'} {sid}** ({'made from' if en else 'rút ra từ'} {q}): {a}"
-        elif kind == "open":
-            t = f"**{'Still open' if en else 'Còn mở'} ({sid}):** {q}"
-        elif sid.startswith("FA-"):
-            t = f"**{'Assumed, not confirmed' if en else 'Giả định, chưa xác nhận'} ({sid}):** {a}"
-        else:
-            t = f"**{'Proposal, not confirmed' if en else 'Đề xuất, chưa xác nhận'} ({sid}):** {a}"
-        out.append(t)
-    return "||".join(out)
+def cite_item(sid):
+    """One bullet of a chart's Sources: [question, answer] when something was asked and answered, else a line.
+    Open questions and written-flow proposals are left out: they are in sections 4 and 5, not sources."""
+    kind, q_en, a_en = qa(sid, "en")
+    _, q_vi, a_vi = qa(sid, "vi")
+    if kind == "open" or (kind == "proposal" and not sid.startswith("FA-")):
+        return None
+    if sid in TECH:
+        return f"**Technical design:** {a_en}||**Thiết kế kỹ thuật:** {a_vi}"
+    if kind == "rule":
+        return f"**Rule {sid}** (made from {q_en}): {a_en}||**Quy tắc {sid}** (rút ra từ {q_vi}): {a_vi}"
+    if kind == "proposal":
+        return f"**Assumed, not confirmed ({sid}):** {a_en}||**Giả định, chưa xác nhận ({sid}):** {a_vi}"
+    if sid.startswith("OQ"):
+        lab = "Answer||Trả lời"
+    elif sid.startswith("G"):
+        lab = "You confirmed||Bạn đã xác nhận"
+    elif _by("en", "decisions")[sid].get("source") == "user":
+        lab = "Your answer||Bạn trả lời"
+    else:
+        lab = "You chose the recommended option||Bạn chọn phương án được đề xuất"
+    le, lv = lab.split("||")
+    return [f"{q_en} ({sid})||{q_vi} ({sid})", f"{le}: {a_en}||{lv}: {a_vi}"]
 
 
 for ch in [h1, h2] + D + E:
     num = ch.m["title"].split(" ")[0]
     pe, pv = SRC[num].split("||")
-    ch.m["notes"] += [f"**In the prototype:** {pe}||**Trong prototype:** {pv}",
-                      "**Why the chart is drawn this way.** Each line below is a question that was asked and the answer chosen, then what is still assumed or open.||**Vì sao sơ đồ được vẽ như vậy.** Mỗi dòng dưới đây là một câu hỏi đã được hỏi và câu trả lời đã chọn, sau đó là những gì còn giả định hoặc còn mở."]
-    ch.m["notes"] += [cite_note(sid) for sid in CITE[num].split()]
+    ch.m["notes"] += [f"**In the prototype:** {pe}||**Trong prototype:** {pv}"]
+    ch.m["sources"] = {"title": "Sources||Nguồn", "items": [x for x in map(cite_item, CITE[num].split()) if x]}
 
 
 def evidence_rows():

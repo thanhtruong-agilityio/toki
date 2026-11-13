@@ -4519,16 +4519,27 @@
        "**Entry points (4):** the Toki address, a link to a conversation or message (from a notification, a mail or a colleague), the installed app icon, and the invitation mail.",
        "**One gate:** every way in passes the session check. Nothing in Toki is readable without a session; there is no public page besides sign-in.",
        "**Role check:** Admin is the only section gated by role. Everything else is gated by membership of the conversation, checked on the server for every request.",
-       "**In the prototype:** It opens straight into Home as Lan, an Owner. There is no sign-in, invitation, welcome or refusal page for members. The only sign-in screens belong to the guest portal (phase 5; demo guide → 'View as guest'): an email step, then a code step that says 'It works for 10 minutes'. Ctrl K exists: the Search box at the top of the left sidebar carries the label 'Ctrl K', and the keys open the command palette. Admin exists in the left navigation but holds only analytics and automations.",
-       "**Why the chart is drawn this way.** Each line below is a question that was asked and the answer chosen, then what is still assumed or open.",
-       "**Question (G4):** How long does an invitation last, and does its link need a sign-in code? **You confirmed:** An invitation expires after 7 days. The link in the invitation signs the person in directly, without a code.",
-       "**Question (Q11):** The prototype has no sign-in screen for members, only the guest one. How do members sign in, and how are accounts created? **You chose the recommended option:** (b) 6-digit emailed code, no password, admin invitation only, 30-day session",
-       "**Question (Q12):** The prototype shows Owner, Admin and ordinary members but no difference between them. Who is allowed to do what? **You chose the recommended option:** As in the capability table under Roles & States",
+       "**In the prototype:** It opens straight into Home as Lan, an Owner. There is no sign-in, invitation, welcome or refusal page for members. The only sign-in screens belong to the guest portal (phase 5; demo guide → 'View as guest'): an email step, then a code step that says 'It works for 10 minutes'. Ctrl K exists: the Search box at the top of the left sidebar carries the label 'Ctrl K', and the keys open the command palette. Admin exists in the left navigation but holds only analytics and automations."
+      ]
+     },
+     {
+      "type": "fold",
+      "title": "Sources",
+      "items": [
+       [
+        "How long does an invitation last, and does its link need a sign-in code? (G4)",
+        "You confirmed: An invitation expires after 7 days. The link in the invitation signs the person in directly, without a code."
+       ],
+       [
+        "The prototype has no sign-in screen for members, only the guest one. How do members sign in, and how are accounts created? (Q11)",
+        "You chose the recommended option: (b) 6-digit emailed code, no password, admin invitation only, 30-day session"
+       ],
+       [
+        "The prototype shows Owner, Admin and ordinary members but no difference between them. Who is allowed to do what? (Q12)",
+        "You chose the recommended option: As in the capability table under Roles & States"
+       ],
        "**Assumed, not confirmed (FA-13):** A member's sign-in code is valid for 10 minutes.",
-       "**Assumed, not confirmed (FA-15):** A session renews on every use, so 30 days means 30 days without opening Toki.",
-       "**Proposal, not confirmed (F03):** Written flow: Accept an invitation and enter for the first time",
-       "**Still open (FQ-13):** What does the invitation refusal page say, and does it tell the causes apart?",
-       "**Still open (FQ-15):** The welcome step after accepting an invitation is not in the prototype. Is it wanted, and with which fields?"
+       "**Assumed, not confirmed (FA-15):** A session renews on every use, so 30 days means 30 days without opening Toki."
       ]
      },
      {
@@ -4545,13 +4556,22 @@
       "items": [
        "Only **Sign out** and **deactivation** end the session on purpose. Closing the tab never does.",
        "Losing the connection is not an exit: the person stays on the same screen, read-only, until it returns (flow 3.1).",
-       "**In the prototype:** Sign out is not in the prototype. The account menu holds Set status, Pause notifications, Focus time and Preferences only (finding N-04). There are no sessions, so 'Session ended' and 'Account deactivated' do not exist either. Offline is a demo switch.",
-       "**Why the chart is drawn this way.** Each line below is a question that was asked and the answer chosen, then what is still assumed or open.",
-       "**Question (Q11):** The prototype has no sign-in screen for members, only the guest one. How do members sign in, and how are accounts created? **You chose the recommended option:** (b) 6-digit emailed code, no password, admin invitation only, 30-day session",
-       "**Question (Q12):** The prototype shows Owner, Admin and ordinary members but no difference between them. Who is allowed to do what? **You chose the recommended option:** As in the capability table under Roles & States",
+       "**In the prototype:** Sign out is not in the prototype. The account menu holds Set status, Pause notifications, Focus time and Preferences only (finding N-04). There are no sessions, so 'Session ended' and 'Account deactivated' do not exist either. Offline is a demo switch."
+      ]
+     },
+     {
+      "type": "fold",
+      "title": "Sources",
+      "items": [
+       [
+        "The prototype has no sign-in screen for members, only the guest one. How do members sign in, and how are accounts created? (Q11)",
+        "You chose the recommended option: (b) 6-digit emailed code, no password, admin invitation only, 30-day session"
+       ],
+       [
+        "The prototype shows Owner, Admin and ordinary members but no difference between them. Who is allowed to do what? (Q12)",
+        "You chose the recommended option: As in the capability table under Roles & States"
+       ],
        "**Rule NR13** (made from GAP-21 · OQ11): When the connection drops: loaded content stays readable; messages being sent wait and send themselves when the connection returns; every other action is blocked with an explanation, never a false success.",
-       "**Proposal, not confirmed (F06):** Written flow: Sign out and manage sessions",
-       "**Proposal, not confirmed (F41):** Written flow: Deactivate and reactivate",
        "**Assumed, not confirmed (FA-16):** Every screen and every wording in quotes that the prototype does not contain is a proposal: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', loading placeholders, and the rest."
       ]
      }
@@ -4579,14 +4599,24 @@
        "**Back / cancel / retry:** 'Use a different email' returns to the email field. 'Resend code' enables after 60 seconds. A network failure re-enables the button with 'Could not connect'.",
        "**Alternative:** the mail also has a sign-in button. Pressing it signs in the device where it is pressed and skips typing the code.",
        "**Security rule:** the answer to a code request is identical for members and strangers, so the page never reveals who is a member.",
-       "**In the prototype:** No member sign-in. The nearest screens are the guest portal's: 'Sign in as a guest' (email, 'Email me a code') and 'Check your email' (6-digit field, 'Sign in', 'Use a different email', 'It works for 10 minutes'). That screen has **no Resend**, no limit on requests and no wrong-code state (any 6 digits work). Its two errors show in a red line under the card.",
-       "**Why the chart is drawn this way.** Each line below is a question that was asked and the answer chosen, then what is still assumed or open.",
-       "**Question (Q11):** The prototype has no sign-in screen for members, only the guest one. How do members sign in, and how are accounts created? **You chose the recommended option:** (b) 6-digit emailed code, no password, admin invitation only, 30-day session",
-       "**Question (G5):** How often may a sign-in code be requested, and when can it be sent again? **You confirmed:** At most 5 code requests per email in 15 minutes; the resend button enables after 60 seconds.",
+       "**In the prototype:** No member sign-in. The nearest screens are the guest portal's: 'Sign in as a guest' (email, 'Email me a code') and 'Check your email' (6-digit field, 'Sign in', 'Use a different email', 'It works for 10 minutes'). That screen has **no Resend**, no limit on requests and no wrong-code state (any 6 digits work). Its two errors show in a red line under the card."
+      ]
+     },
+     {
+      "type": "fold",
+      "title": "Sources",
+      "items": [
+       [
+        "The prototype has no sign-in screen for members, only the guest one. How do members sign in, and how are accounts created? (Q11)",
+        "You chose the recommended option: (b) 6-digit emailed code, no password, admin invitation only, 30-day session"
+       ],
+       [
+        "How often may a sign-in code be requested, and when can it be sent again? (G5)",
+        "You confirmed: At most 5 code requests per email in 15 minutes; the resend button enables after 60 seconds."
+       ],
        "**Technical design:** A code request is answered the same way for members and strangers, so the page never reveals who is a member.",
        "**Assumed, not confirmed (FA-13):** A member's sign-in code is valid for 10 minutes.",
-       "**Assumed, not confirmed (FA-14):** A code is cancelled after 5 wrong tries; the person asks for a new one.",
-       "**Still open (FQ-14):** The prototype's code screen has no Resend, only 'Use a different email'. G5 already expects a Resend button after 60 seconds. Is Resend added to the screen, and does a new code cancel the earlier one?"
+       "**Assumed, not confirmed (FA-14):** A code is cancelled after 5 wrong tries; the person asks for a new one."
       ]
      },
      {
@@ -4606,17 +4636,33 @@
        "**Validation:** display name 1 to 80 characters (your answer, Q31). Time zone and language come from the device and can be changed.",
        "**Skip:** the welcome step can be skipped; the name becomes the part of the address before @.",
        "**Next:** a small card asks whether to turn on notifications.",
-       "**In the prototype:** Nothing. The only invitation in the prototype is 'Invite a client' for guests, in a channel's Details panel. There is no welcome step and no refusal page.",
-       "**Why the chart is drawn this way.** Each line below is a question that was asked and the answer chosen, then what is still assumed or open.",
-       "**Question (Q11):** The prototype has no sign-in screen for members, only the guest one. How do members sign in, and how are accounts created? **You chose the recommended option:** (b) 6-digit emailed code, no password, admin invitation only, 30-day session",
-       "**Question (Q26):** A fresh installation has no accounts. How does the first Owner come to exist? **Your answer:** Created from environment variables or seed; that admin invites members",
-       "**Question (G4):** How long does an invitation last, and does its link need a sign-in code? **You confirmed:** An invitation expires after 7 days. The link in the invitation signs the person in directly, without a code.",
-       "**Question (G1):** Which channel does everyone start in, and can it be left? **You confirmed:** Every workspace has a #general channel created at setup; every member is in it automatically; it cannot be left or archived.",
-       "**Question (Q31):** How long may a display name be? The flow for accepting an invitation checked '1 to 80 characters' without a decision behind it. **Your answer:** 1 to 80 characters",
-       "**Proposal, not confirmed (F03):** Written flow: Accept an invitation and enter for the first time",
-       "**Still open (FQ-13):** What does the invitation refusal page say, and does it tell the causes apart?",
-       "**Still open (FQ-15):** The welcome step after accepting an invitation is not in the prototype. Is it wanted, and with which fields?",
-       "**Still open (FQ-16):** #general exists before anyone is invited and every newcomer is in it (G1). Does #general show a line when someone joins, and does that line notify anyone?"
+       "**In the prototype:** Nothing. The only invitation in the prototype is 'Invite a client' for guests, in a channel's Details panel. There is no welcome step and no refusal page."
+      ]
+     },
+     {
+      "type": "fold",
+      "title": "Sources",
+      "items": [
+       [
+        "The prototype has no sign-in screen for members, only the guest one. How do members sign in, and how are accounts created? (Q11)",
+        "You chose the recommended option: (b) 6-digit emailed code, no password, admin invitation only, 30-day session"
+       ],
+       [
+        "A fresh installation has no accounts. How does the first Owner come to exist? (Q26)",
+        "Your answer: Created from environment variables or seed; that admin invites members"
+       ],
+       [
+        "How long does an invitation last, and does its link need a sign-in code? (G4)",
+        "You confirmed: An invitation expires after 7 days. The link in the invitation signs the person in directly, without a code."
+       ],
+       [
+        "Which channel does everyone start in, and can it be left? (G1)",
+        "You confirmed: Every workspace has a #general channel created at setup; every member is in it automatically; it cannot be left or archived."
+       ],
+       [
+        "How long may a display name be? The flow for accepting an invitation checked '1 to 80 characters' without a decision behind it. (Q31)",
+        "Your answer: 1 to 80 characters"
+       ]
       ]
      },
      {
@@ -4636,14 +4682,24 @@
        "**Loading:** the app frame appears at once with grey placeholders for the lists; real content replaces them.",
        "**Rule:** a link to something the person may not see answers exactly like a link to something that does not exist.",
        "**Rule:** with no link, the app opens the conversation last viewed on this device; the very first time, #general.",
-       "**In the prototype:** Everything is in memory, so the app appears at once. There are no placeholders, no 'Can't reach Toki', and the address does not change with the screen (findings N-05, N-13).",
-       "**Why the chart is drawn this way.** Each line below is a question that was asked and the answer chosen, then what is still assumed or open.",
-       "**Question (G2):** Which conversation does the app open on? **You confirmed:** The app opens on the conversation last viewed on that device; the first time, on #general.",
-       "**Question (Q11):** The prototype has no sign-in screen for members, only the guest one. How do members sign in, and how are accounts created? **You chose the recommended option:** (b) 6-digit emailed code, no password, admin invitation only, 30-day session",
+       "**In the prototype:** Everything is in memory, so the app appears at once. There are no placeholders, no 'Can't reach Toki', and the address does not change with the screen (findings N-05, N-13)."
+      ]
+     },
+     {
+      "type": "fold",
+      "title": "Sources",
+      "items": [
+       [
+        "Which conversation does the app open on? (G2)",
+        "You confirmed: The app opens on the conversation last viewed on that device; the first time, on #general."
+       ],
+       [
+        "The prototype has no sign-in screen for members, only the guest one. How do members sign in, and how are accounts created? (Q11)",
+        "You chose the recommended option: (b) 6-digit emailed code, no password, admin invitation only, 30-day session"
+       ],
        "**Technical design:** 'Not found' and 'no access' get the same answer, so the app never confirms that a private thing exists.",
        "**Assumed, not confirmed (FA-02):** A request with no answer after 10 seconds counts as failed and shows Retry.",
-       "**Assumed, not confirmed (FA-16):** Every screen and every wording in quotes that the prototype does not contain is a proposal: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', loading placeholders, and the rest.",
-       "**Still open (GQ-06):** Does every conversation, thread and section have its own address, and what does browser Back do?"
+       "**Assumed, not confirmed (FA-16):** Every screen and every wording in quotes that the prototype does not contain is a proposal: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', loading placeholders, and the rest."
       ]
      },
      {
@@ -4664,14 +4720,27 @@
        "**Older messages:** scrolling up loads 50 more with a spinner at the top and keeps the scroll position; at the start a 'Beginning of #name' marker shows.",
        "**Load failure:** the message area shows 'Couldn't load messages' with Retry; the sidebar keeps working (flow 3.3).",
        "**Preview:** a public channel the person has not joined is readable; the composer is replaced by a Join button.",
-       "**In the prototype:** Home: the conversation list, the message list, unread badges and the 'New' divider exist. There is no loading state and no failure state.",
-       "**Why the chart is drawn this way.** Each line below is a question that was asked and the answer chosen, then what is still assumed or open.",
-       "**Question (OQ3):** What marks a channel as read on Web and Phone, and when does the New divider clear? **Answer:** Read state never depends on AI. A conversation is read when it is open, the window is in use, and the person is at the bottom of the list. The New divider anchors to the first unread message at the time of opening (by ID, so it does not drift), stays while viewing, and is gone the next time the conversation opens. Opening the app or a conversation with unread messages scrolls to the divider.",
-       "**Question (G15):** Does a sender see who has read a message? **You confirmed:** Toki has no 'seen' receipts; a sender does not know who has read a message.",
-       "**Question (Q27):** What do people who join a channel later see of its history, and what happens to a channel that is no longer used? **You chose the recommended option:** Full history; channels are archived, never deleted",
+       "**In the prototype:** Home: the conversation list, the message list, unread badges and the 'New' divider exist. There is no loading state and no failure state."
+      ]
+     },
+     {
+      "type": "fold",
+      "title": "Sources",
+      "items": [
+       [
+        "What marks a channel as read on Web and Phone, and when does the New divider clear? (OQ3)",
+        "Answer: Read state never depends on AI. A conversation is read when it is open, the window is in use, and the person is at the bottom of the list. The New divider anchors to the first unread message at the time of opening (by ID, so it does not drift), stays while viewing, and is gone the next time the conversation opens. Opening the app or a conversation with unread messages scrolls to the divider."
+       ],
+       [
+        "Does a sender see who has read a message? (G15)",
+        "You confirmed: Toki has no 'seen' receipts; a sender does not know who has read a message."
+       ],
+       [
+        "What do people who join a channel later see of its history, and what happens to a channel that is no longer used? (Q27)",
+        "You chose the recommended option: Full history; channels are archived, never deleted"
+       ],
        "**Rule NR8** (made from GAP-29, 31, 33): Every searchable or filterable list has an empty state centred in the content area and written for that context. A count on a chip always equals the rows shown.",
-       "**Assumed, not confirmed (FA-16):** Every screen and every wording in quotes that the prototype does not contain is a proposal: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', loading placeholders, and the rest.",
-       "**Still open (FQ-10):** Does previewing a public channel without joining count for its unread or Activity?"
+       "**Assumed, not confirmed (FA-16):** Every screen and every wording in quotes that the prototype does not contain is a proposal: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', loading placeholders, and the rest."
       ]
      },
      {
@@ -4692,16 +4761,21 @@
        "**Keys:** Enter sends, Shift+Enter makes a new line; while composing a Vietnamese word, Enter finishes the word and does not send.",
        "**Retry:** 'Not sent' offers Retry and Delete. Retry resends the same ID, so a message that did arrive is never doubled.",
        "**Leaving mid-way:** switching conversation before sending keeps the text as a draft, synced to other devices.",
-       "**In the prototype:** The composer and Send exist. With the demo offline switch on, a sent message appears faded with 'Waiting to send'. **'Not sent', Retry and Delete are not in the prototype** (the words do not occur in it), and there is no character counter.",
-       "**Why the chart is drawn this way.** Each line below is a question that was asked and the answer chosen, then what is still assumed or open.",
-       "**Question (G9):** How long may a message be, and how many files may it carry? **You confirmed:** A message holds up to 10,000 characters and 10 files.",
+       "**In the prototype:** The composer and Send exist. With the demo offline switch on, a sent message appears faded with 'Waiting to send'. **'Not sent', Retry and Delete are not in the prototype** (the words do not occur in it), and there is no character counter."
+      ]
+     },
+     {
+      "type": "fold",
+      "title": "Sources",
+      "items": [
+       [
+        "How long may a message be, and how many files may it carry? (G9)",
+        "You confirmed: A message holds up to 10,000 characters and 10 files."
+       ],
        "**Rule NR11** (made from GAP-17 · OQ8): Writing to a conversation (sending, starting a Meet, scheduling) requires membership. Pickers list only conversations you have joined.",
        "**Rule NR13** (made from GAP-21 · OQ11): When the connection drops: loaded content stays readable; messages being sent wait and send themselves when the connection returns; every other action is blocked with an explanation, never a false success.",
        "**Technical design:** The app creates the message ID, so sending the same message again cannot create a second one.",
-       "**Proposal, not confirmed (F11):** Written flow: Send a message",
-       "**Assumed, not confirmed (FA-02):** A request with no answer after 10 seconds counts as failed and shows Retry.",
-       "**Still open (FQ-07):** How long does a 'Waiting to send' message keep trying before it becomes 'Not sent'?",
-       "**Still open (FQ-21):** The prototype shows 'Waiting to send' and nothing for a send that failed. Where do 'Not sent', Retry and Delete appear?"
+       "**Assumed, not confirmed (FA-02):** A request with no answer after 10 seconds counts as failed and shows Retry."
       ]
      },
      {
@@ -4721,14 +4795,23 @@
        "**Validation:** at most 10 files per message, 100 MB each. A refused file is named in the message; the others continue.",
        "**Cancel:** × on a card stops that upload and removes the card. Deleting the whole draft removes every card.",
        "**Loading:** a thumbnail that is not ready shows a placeholder of the right proportions, so the list does not jump.",
-       "**In the prototype:** The paperclip in the composer adds a finished sample file at once. There is no file picker, progress bar, limit or failure (finding N-07). The numbers 10 and 100 MB appear nowhere in the prototype.",
-       "**Why the chart is drawn this way.** Each line below is a question that was asked and the answer chosen, then what is still assumed or open.",
-       "**Question (G9):** How long may a message be, and how many files may it carry? **You confirmed:** A message holds up to 10,000 characters and 10 files.",
-       "**Question (Q14):** Where are files stored, what is the size limit, and which previews are built: image thumbnails, PDFs, link previews? **You chose the recommended option:** (b) MinIO, 100 MB, image thumbnails, link previews",
+       "**In the prototype:** The paperclip in the composer adds a finished sample file at once. There is no file picker, progress bar, limit or failure (finding N-07). The numbers 10 and 100 MB appear nowhere in the prototype."
+      ]
+     },
+     {
+      "type": "fold",
+      "title": "Sources",
+      "items": [
+       [
+        "How long may a message be, and how many files may it carry? (G9)",
+        "You confirmed: A message holds up to 10,000 characters and 10 files."
+       ],
+       [
+        "Where are files stored, what is the size limit, and which previews are built: image thumbnails, PDFs, link previews? (Q14)",
+        "You chose the recommended option: (b) MinIO, 100 MB, image thumbnails, link previews"
+       ],
        "**Rule NR11** (made from GAP-17 · OQ8): Writing to a conversation (sending, starting a Meet, scheduling) requires membership. Pickers list only conversations you have joined.",
-       "**Proposal, not confirmed (F18):** Written flow: Send files, images and links",
-       "**Assumed, not confirmed (FA-07):** A file uploaded but never sent is deleted from storage after 24 hours.",
-       "**Still open (FQ-04):** Are any file types refused (for example programs), or is every type accepted up to 100 MB?"
+       "**Assumed, not confirmed (FA-07):** A file uploaded but never sent is deleted from storage after 24 hours."
       ]
      },
      {
@@ -4750,16 +4833,32 @@
        "**Open:** a mention always gets through the 'Mentions only' level. Whether it gets through Mute is not decided (question GQ-01 on the Gap analysis tab); the chart shows the muted case as badge only until it is.",
        "**Rule:** @channel in a channel of 20 or more people asks the sender to confirm first.",
        "**Edit:** adding a mention by editing notifies the new person; removing one removes the earlier notification.",
-       "**In the prototype:** The @ button and the people picker are in the composer; Activity lists mentions; Pause and Focus time are in the account menu; Preferences has 'Notify me for @mentions even in muted channels'. Push and the recipient's side cannot be observed: only one person is simulated.",
-       "**Why the chart is drawn this way.** Each line below is a question that was asked and the answer chosen, then what is still assumed or open.",
-       "**Question (Q16):** The prototype has desktop notifications, sound, missed-mention email, per-channel levels, mute, Pause and Focus time. Which of these are in phase 1? **You chose the recommended option:** Badges, Web Push, sound, per-channel level, mute, Pause, Focus time. Missed-mention email later",
+       "**In the prototype:** The @ button and the people picker are in the composer; Activity lists mentions; Pause and Focus time are in the account menu; Preferences has 'Notify me for @mentions even in muted channels'. Push and the recipient's side cannot be observed: only one person is simulated."
+      ]
+     },
+     {
+      "type": "fold",
+      "title": "Sources",
+      "items": [
+       [
+        "The prototype has desktop notifications, sound, missed-mention email, per-channel levels, mute, Pause and Focus time. Which of these are in phase 1? (Q16)",
+        "You chose the recommended option: Badges, Web Push, sound, per-channel level, mute, Pause, Focus time. Missed-mention email later"
+       ],
        "**Rule NR5** (made from GAP-20, 26 · OQ10): Your own action never notifies you. An Activity item becomes done on its own once the thing it asks for is done. Activity is newest first and has a filter chip for every kind of item.",
        "**Rule NR6** (made from GAP-25, 38 · OQ14): During Pause or Focus time there is no toast, push or sound, including reminders you set yourself. Badges still update. When it ends, one summary lists what arrived. Starting Focus during Focus extends it rather than nesting; ending restores the earlier status.",
-       "**Question (G13):** What is the default notification level? **You confirmed:** Default notification level: 'Mentions only' for channels, 'All messages' for DMs.",
-       "**Question (G8):** Who may edit a channel's topic and use @channel? **You confirmed:** Any channel member can edit the topic and use @channel; in a channel of 20 or more people, @channel asks for confirmation first.",
-       "**Question (G11):** What does a push notification show? **You confirmed:** A push notification shows the sender, the conversation and the start of the message.",
-       "**Assumed, not confirmed (FA-12):** A mention of someone who is not in the channel creates no notification; the sender is offered 'Add them'.",
-       "**Still open (GQ-01):** Does a mention notify the person when the conversation is muted?"
+       [
+        "What is the default notification level? (G13)",
+        "You confirmed: Default notification level: 'Mentions only' for channels, 'All messages' for DMs."
+       ],
+       [
+        "Who may edit a channel's topic and use @channel? (G8)",
+        "You confirmed: Any channel member can edit the topic and use @channel; in a channel of 20 or more people, @channel asks for confirmation first."
+       ],
+       [
+        "What does a push notification show? (G11)",
+        "You confirmed: A push notification shows the sender, the conversation and the start of the message."
+       ],
+       "**Assumed, not confirmed (FA-12):** A mention of someone who is not in the channel creates no notification; the sender is offered 'Add them'."
       ]
      },
      {
@@ -4779,18 +4878,25 @@
        "**Validation:** lowercase letters, digits and hyphens, up to 80 characters, unique among all channels including archived ones. Public or private is chosen here and cannot be changed later.",
        "**Cancel:** Cancel, Esc or the × asks 'Discard this channel?' if anything was typed; an outside click does nothing.",
        "**Rule:** after creating, the screen shows the new thing.",
-       "**In the prototype:** **A channel cannot be created in the prototype.** The sidebar has a '#' icon and a '+ Browse channels' row; both open Browse channels, which has a search field and Join or Open per row, and nothing to create a channel (finding N-03).",
-       "**Why the chart is drawn this way.** Each line below is a question that was asked and the answer chosen, then what is still assumed or open.",
-       "**Question (Q12):** The prototype shows Owner, Admin and ordinary members but no difference between them. Who is allowed to do what? **You chose the recommended option:** As in the capability table under Roles & States",
-       "**Question (G7):** What may a channel name contain, and can a channel switch between public and private? **You confirmed:** Channel names: lowercase letters, digits, hyphens, up to 80 characters, unique. Public cannot become private after creation, or the reverse.",
+       "**In the prototype:** **A channel cannot be created in the prototype.** The sidebar has a '#' icon and a '+ Browse channels' row; both open Browse channels, which has a search field and Join or Open per row, and nothing to create a channel (finding N-03)."
+      ]
+     },
+     {
+      "type": "fold",
+      "title": "Sources",
+      "items": [
+       [
+        "The prototype shows Owner, Admin and ordinary members but no difference between them. Who is allowed to do what? (Q12)",
+        "You chose the recommended option: As in the capability table under Roles & States"
+       ],
+       [
+        "What may a channel name contain, and can a channel switch between public and private? (G7)",
+        "You confirmed: Channel names: lowercase letters, digits, hyphens, up to 80 characters, unique. Public cannot become private after creation, or the reverse."
+       ],
        "**Rule NR4** (made from GAP-22 · OQ12): A form that has content does not close on an outside click; closing it by button asks whether to discard.",
        "**Rule NR10** (made from GAP-13, 14, 38): After something is created, the screen shows it; if a filter would hide it, the filter changes.",
-       "**Proposal, not confirmed (F20):** Written flow: Create a channel",
        "**Assumed, not confirmed (FA-04):** Typing a space in a channel name turns it into a hyphen, and capitals into lowercase, instead of showing an error.",
-       "**Assumed, not confirmed (FA-05):** The uniqueness of a channel name includes archived channels.",
-       "**Still open (FQ-17):** **Your finding:** the prototype has no '+' for a new channel, only '+ Browse channels', and Browse channels has nothing to create one. Where does 'Create channel' live?",
-       "**Still open (FQ-18):** Which fields does the Create channel dialog have, and what are their limits?",
-       "**Still open (GQ-20):** Is the capability matrix on the Roles & States tab the agreed authority for what Members and Admins see?"
+       "**Assumed, not confirmed (FA-05):** The uniqueness of a channel name includes archived channels."
       ]
      },
      {
@@ -4810,15 +4916,31 @@
        "**After (leave):** the channel leaves the sidebar; its unread and Activity items are cleared; 'X left' line in the channel.",
        "**Rule:** #general cannot be left. A reversible action shows Undo for 5 seconds; an irreversible one asks for confirmation; never both.",
        "**Empty and archived:** no match shows 'No channels match' and a Create button carrying the search text; archived channels are listed with a View button only.",
-       "**In the prototype:** Browse channels (search, Join, Open) exists. Leaving is in the Details panel: 'Leave channel', then 'Leave #name? You can rejoin from Browse channels.', then a toast with Undo, for public and private alike (finding N-09). Removing someone else from a channel does not exist.",
-       "**Why the chart is drawn this way.** Each line below is a question that was asked and the answer chosen, then what is still assumed or open.",
-       "**Question (G1):** Which channel does everyone start in, and can it be left? **You confirmed:** Every workspace has a #general channel created at setup; every member is in it automatically; it cannot be left or archived.",
+       "**In the prototype:** Browse channels (search, Join, Open) exists. Leaving is in the Details panel: 'Leave channel', then 'Leave #name? You can rejoin from Browse channels.', then a toast with Undo, for public and private alike (finding N-09). Removing someone else from a channel does not exist."
+      ]
+     },
+     {
+      "type": "fold",
+      "title": "Sources",
+      "items": [
+       [
+        "Which channel does everyone start in, and can it be left? (G1)",
+        "You confirmed: Every workspace has a #general channel created at setup; every member is in it automatically; it cannot be left or archived."
+       ],
        "**Rule NR3** (made from GAP-24 · OQ12): A reversible action happens at once and shows a toast with Undo for 5 seconds. An irreversible action, or one that affects other people, asks for confirmation and names its target. Never both for one action.",
-       "**Question (OQ2):** After leaving a private channel, can a member rejoin alone or do they need an invitation? **Answer:** A member must invite them back. The leave confirmation says so; Undo is still offered for 5 seconds. Private channels never appear in Browse or Ctrl+K for outsiders. If the last member leaves, the channel is archived.",
-       "**Question (Q27):** What do people who join a channel later see of its history, and what happens to a channel that is no longer used? **You chose the recommended option:** Full history; channels are archived, never deleted",
-       "**Question (G14):** Do Admins and Owners see and manage every conversation? **You confirmed:** Admins and Owners do not automatically see private channels or DMs; deleting messages, removing people and archiving apply only where they are members.",
-       "**Assumed, not confirmed (FA-10):** Leaving a channel clears its unread count and its open Activity items for that person.",
-       "**Still open (FQ-19):** Can an Owner or Admin remove a member from any channel? Decided so far (G14): no, only from a channel they belong to, and never from #general. Does that stand, and can the creator of a channel remove people too?"
+       [
+        "After leaving a private channel, can a member rejoin alone or do they need an invitation? (OQ2)",
+        "Answer: A member must invite them back. The leave confirmation says so; Undo is still offered for 5 seconds. Private channels never appear in Browse or Ctrl+K for outsiders. If the last member leaves, the channel is archived."
+       ],
+       [
+        "What do people who join a channel later see of its history, and what happens to a channel that is no longer used? (Q27)",
+        "You chose the recommended option: Full history; channels are archived, never deleted"
+       ],
+       [
+        "Do Admins and Owners see and manage every conversation? (G14)",
+        "You confirmed: Admins and Owners do not automatically see private channels or DMs; deleting messages, removing people and archiving apply only where they are members."
+       ],
+       "**Assumed, not confirmed (FA-10):** Leaving a channel clears its unread count and its open Activity items for that person."
       ]
      },
      {
@@ -4838,14 +4960,30 @@
        "**After (delete):** gone for everyone; attached files are removed from storage and from Files. A message with replies leaves a 'Message deleted' line and keeps its thread.",
        "**Cancel:** Esc or Cancel leaves the message untouched. Save is disabled while the text is unchanged; saving an empty text offers Delete instead.",
        "**Others:** Admins and Owners can delete other people's messages only in conversations they belong to; the author is told.",
-       "**In the prototype:** The More menu on your own message has Edit and Delete. Edit turns the text into a field with Save and Cancel and adds '(edited)'. Deleting a message with a thread removes every reply in the prototype.",
-       "**Why the chart is drawn this way.** Each line below is a question that was asked and the answer chosen, then what is still assumed or open.",
-       "**Question (Q13):** Is there a time limit on editing a message, and what happens when a message that has a thread is deleted? The prototype deletes every reply too. **You chose the recommended option:** Edit without limit; soft delete that keeps the thread",
-       "**Question (G10):** What happens to the files of a deleted message? **You confirmed:** Deleting a message also removes its attached files from storage.",
-       "**Question (G14):** Do Admins and Owners see and manage every conversation? **You confirmed:** Admins and Owners do not automatically see private channels or DMs; deleting messages, removing people and archiving apply only where they are members.",
-       "**Question (G16):** What is shown when an admin deletes someone's message? **You confirmed:** A message deleted by an admin shows as 'Message deleted by an admin' and its author is told.",
-       "**Rule NR3** (made from GAP-24 · OQ12): A reversible action happens at once and shows a toast with Undo for 5 seconds. An irreversible action, or one that affects other people, asks for confirmation and names its target. Never both for one action.",
-       "**Still open (FQ-05):** A message is deleted while someone else is writing a reply in its thread. Is the reply still sent?"
+       "**In the prototype:** The More menu on your own message has Edit and Delete. Edit turns the text into a field with Save and Cancel and adds '(edited)'. Deleting a message with a thread removes every reply in the prototype."
+      ]
+     },
+     {
+      "type": "fold",
+      "title": "Sources",
+      "items": [
+       [
+        "Is there a time limit on editing a message, and what happens when a message that has a thread is deleted? The prototype deletes every reply too. (Q13)",
+        "You chose the recommended option: Edit without limit; soft delete that keeps the thread"
+       ],
+       [
+        "What happens to the files of a deleted message? (G10)",
+        "You confirmed: Deleting a message also removes its attached files from storage."
+       ],
+       [
+        "Do Admins and Owners see and manage every conversation? (G14)",
+        "You confirmed: Admins and Owners do not automatically see private channels or DMs; deleting messages, removing people and archiving apply only where they are members."
+       ],
+       [
+        "What is shown when an admin deletes someone's message? (G16)",
+        "You confirmed: A message deleted by an admin shows as 'Message deleted by an admin' and its author is told."
+       ],
+       "**Rule NR3** (made from GAP-24 · OQ12): A reversible action happens at once and shows a toast with Undo for 5 seconds. An irreversible action, or one that affects other people, asks for confirmation and names its target. Never both for one action."
       ]
      },
      {
@@ -4866,13 +5004,20 @@
        "**Undo:** saving and un-saving are instant and reversible from the same bookmark; the toast 'Saved for Later' has a View button.",
        "**Rule:** a count on a chip always equals the rows shown, including rows whose message was deleted.",
        "**Empty:** with nothing saved, Later shows a centred note on how to save a message.",
-       "**In the prototype:** The bookmark on a message, the Later section, 'Remind me' or 'Change' on each row with a menu of times, and 'Remind me about this' in the message menu all exist.",
-       "**Why the chart is drawn this way.** Each line below is a question that was asked and the answer chosen, then what is still assumed or open.",
-       "**Question (Q2):** The prototype holds 14 feature groups. Which of them must be in the first release? **You chose the recommended option:** Core chat, Activity, Later, Files, People, Preferences, command palette",
+       "**In the prototype:** The bookmark on a message, the Later section, 'Remind me' or 'Change' on each row with a menu of times, and 'Remind me about this' in the message menu all exist."
+      ]
+     },
+     {
+      "type": "fold",
+      "title": "Sources",
+      "items": [
+       [
+        "The prototype holds 14 feature groups. Which of them must be in the first release? (Q2)",
+        "You chose the recommended option: Core chat, Activity, Later, Files, People, Preferences, command palette"
+       ],
        "**Rule NR7** (made from GAP-12, 13, 16, 38): Dates and times: required fields cannot be left empty; where a future time is needed the past is rejected; the year is shown whenever it is not the current year; one format across the app; 'Invalid Date' never appears.",
        "**Rule NR6** (made from GAP-25, 38 · OQ14): During Pause or Focus time there is no toast, push or sound, including reminders you set yourself. Badges still update. When it ends, one summary lists what arrived. Starting Focus during Focus extends it rather than nesting; ending restores the earlier status.",
-       "**Rule NR8** (made from GAP-29, 31, 33): Every searchable or filterable list has an empty state centred in the content area and written for that context. A count on a chip always equals the rows shown.",
-       "**Still open (FQ-06):** 'Today 15:00' in the reminder menu after 15:00: hidden, or replaced by another choice?"
+       "**Rule NR8** (made from GAP-29, 31, 33): Every searchable or filterable list has an empty state centred in the content area and written for that context. A count on a chip always equals the rows shown."
       ]
      },
      {
@@ -4893,16 +5038,30 @@
        "**Authorization:** checked on the server for every admin request; hiding the menu item is not the check.",
        "**Row actions:** Resend sends a fresh link and restarts the 7 days; Revoke asks for confirmation and kills the old link at once.",
        "**Mail down:** the row says 'Mail not sent' and the server command for emergency access still works.",
-       "**In the prototype:** **Not in the prototype.** Admin (the shield in the left navigation) has two tabs, analytics and automations; there is no members table and no invitation for members (finding N-02). The only invitation dialog is 'Invite a client' for guests.",
-       "**Why the chart is drawn this way.** Each line below is a question that was asked and the answer chosen, then what is still assumed or open.",
-       "**Question (Q11):** The prototype has no sign-in screen for members, only the guest one. How do members sign in, and how are accounts created? **You chose the recommended option:** (b) 6-digit emailed code, no password, admin invitation only, 30-day session",
-       "**Question (Q26):** A fresh installation has no accounts. How does the first Owner come to exist? **Your answer:** Created from environment variables or seed; that admin invites members",
-       "**Question (Q12):** The prototype shows Owner, Admin and ordinary members but no difference between them. Who is allowed to do what? **You chose the recommended option:** As in the capability table under Roles & States",
-       "**Question (G4):** How long does an invitation last, and does its link need a sign-in code? **You confirmed:** An invitation expires after 7 days. The link in the invitation signs the person in directly, without a code.",
-       "**Proposal, not confirmed (F02):** Written flow: Invite members",
-       "**Assumed, not confirmed (FA-11):** Batches of invitations are limited to 50 addresses.",
-       "**Still open (FQ-03):** An Admin invites the address of a deactivated member. Refuse, or offer Reactivate?",
-       "**Still open (FQ-11):** A batch of invitations fails halfway (the mail server goes down after 3 of 10). Keep the 3, or undo all?"
+       "**In the prototype:** **Not in the prototype.** Admin (the shield in the left navigation) has two tabs, analytics and automations; there is no members table and no invitation for members (finding N-02). The only invitation dialog is 'Invite a client' for guests."
+      ]
+     },
+     {
+      "type": "fold",
+      "title": "Sources",
+      "items": [
+       [
+        "The prototype has no sign-in screen for members, only the guest one. How do members sign in, and how are accounts created? (Q11)",
+        "You chose the recommended option: (b) 6-digit emailed code, no password, admin invitation only, 30-day session"
+       ],
+       [
+        "A fresh installation has no accounts. How does the first Owner come to exist? (Q26)",
+        "Your answer: Created from environment variables or seed; that admin invites members"
+       ],
+       [
+        "The prototype shows Owner, Admin and ordinary members but no difference between them. Who is allowed to do what? (Q12)",
+        "You chose the recommended option: As in the capability table under Roles & States"
+       ],
+       [
+        "How long does an invitation last, and does its link need a sign-in code? (G4)",
+        "You confirmed: An invitation expires after 7 days. The link in the invitation signs the person in directly, without a code."
+       ],
+       "**Assumed, not confirmed (FA-11):** Batches of invitations are limited to 50 addresses."
       ]
      },
      {
@@ -4923,14 +5082,22 @@
        "**After (role):** the label updates on Admin, People and the profile; the person gets an Activity item and sees the Admin entry appear or disappear.",
        "**After (deactivate):** every session ends; old messages stay with a 'Deactivated' label; the person leaves People, mention lists and add-people lists; DMs with them become read-only. Reactivate restores access to the same channels.",
        "**Cancel:** closing the confirmation changes nothing.",
-       "**In the prototype:** **Not in the prototype.** Admin has no members table, so there is no role menu and no Deactivate (finding N-02). People and the profile panel show a role label, read-only.",
-       "**Why the chart is drawn this way.** Each line below is a question that was asked and the answer chosen, then what is still assumed or open.",
-       "**Question (Q12):** The prototype shows Owner, Admin and ordinary members but no difference between them. Who is allowed to do what? **You chose the recommended option:** As in the capability table under Roles & States",
-       "**Question (G6):** Can there be several Owners, and what protects the last one? **You confirmed:** There can be several Owners. The last Owner cannot be demoted or deactivated.",
-       "**Rule NR3** (made from GAP-24 · OQ12): A reversible action happens at once and shows a toast with Undo for 5 seconds. An irreversible action, or one that affects other people, asks for confirmation and names its target. Never both for one action.",
-       "**Proposal, not confirmed (F40):** Written flow: Change a role",
-       "**Proposal, not confirmed (F41):** Written flow: Deactivate and reactivate",
-       "**Still open (GQ-20):** Is the capability matrix on the Roles & States tab the agreed authority for what Members and Admins see?"
+       "**In the prototype:** **Not in the prototype.** Admin has no members table, so there is no role menu and no Deactivate (finding N-02). People and the profile panel show a role label, read-only."
+      ]
+     },
+     {
+      "type": "fold",
+      "title": "Sources",
+      "items": [
+       [
+        "The prototype shows Owner, Admin and ordinary members but no difference between them. Who is allowed to do what? (Q12)",
+        "You chose the recommended option: As in the capability table under Roles & States"
+       ],
+       [
+        "Can there be several Owners, and what protects the last one? (G6)",
+        "You confirmed: There can be several Owners. The last Owner cannot be demoted or deactivated."
+       ],
+       "**Rule NR3** (made from GAP-24 · OQ12): A reversible action happens at once and shows a toast with Undo for 5 seconds. An irreversible action, or one that affects other people, asks for confirmation and names its target. Never both for one action."
       ]
      },
      {
@@ -4950,13 +5117,25 @@
        "**Limit:** a group holds at most 8 people, counting the person who starts it. Nobody can be added or removed later; a different set of people is a new group.",
        "**Same people, same conversation:** choosing a set of people that already has a conversation reopens it with its history.",
        "**Deactivated person:** not listed in the picker; an existing DM with them stays readable, without a composer.",
-       "**In the prototype:** 'New message' is the pencil icon above the conversation list. Its dialog has one field, 'Search people and channels'; pressing a row opens that DM or channel at once. **Several people cannot be chosen**, so a group cannot be started. One group exists as sample data only: 'Alex, Thu', three people.",
-       "**Why the chart is drawn this way.** Each line below is a question that was asked and the answer chosen, then what is still assumed or open.",
-       "**Question (Q17):** Which message features are in phase 1 and which wait? And what about three things the prototype does not have: @channel, a full emoji picker, and group DMs with several people? **You chose the recommended option:** As recommended; add @channel, group DMs up to 8, keep 8 fixed emoji",
-       "**Question (G12):** Can people be added to or removed from a group DM? **You confirmed:** People cannot be added to or removed from a group DM.",
-       "**Question (Q12):** The prototype shows Owner, Admin and ordinary members but no difference between them. Who is allowed to do what? **You chose the recommended option:** As in the capability table under Roles & States",
-       "**Proposal, not confirmed (F25):** Written flow: Direct messages and groups",
-       "**Still open (FQ-20):** How does a person choose several people for a group DM? The prototype's New message dialog opens a conversation on the first press."
+       "**In the prototype:** 'New message' is the pencil icon above the conversation list. Its dialog has one field, 'Search people and channels'; pressing a row opens that DM or channel at once. **Several people cannot be chosen**, so a group cannot be started. One group exists as sample data only: 'Alex, Thu', three people."
+      ]
+     },
+     {
+      "type": "fold",
+      "title": "Sources",
+      "items": [
+       [
+        "Which message features are in phase 1 and which wait? And what about three things the prototype does not have: @channel, a full emoji picker, and group DMs with several people? (Q17)",
+        "You chose the recommended option: As recommended; add @channel, group DMs up to 8, keep 8 fixed emoji"
+       ],
+       [
+        "Can people be added to or removed from a group DM? (G12)",
+        "You confirmed: People cannot be added to or removed from a group DM."
+       ],
+       [
+        "The prototype shows Owner, Admin and ordinary members but no difference between them. Who is allowed to do what? (Q12)",
+        "You chose the recommended option: As in the capability table under Roles & States"
+       ]
       ]
      }
     ]
@@ -4981,16 +5160,19 @@
        "**Catch-up:** the app remembers the number of the last event it saw and asks for everything after it. After more than 7 days away it reloads everything instead.",
        "**No duplicates:** a waiting message is resent with its original ID.",
        "**Banner:** it never covers the composer or the navigation.",
-       "**In the prototype:** A demo switch turns the network off. The prototype then shows a strip above the chat, 'Offline: showing saved messages · messages you send wait until you are back online', the same words above the conversation list, and 'Waiting to send' on messages. **'Reconnecting…' and 'Reconnected' are not in the prototype**, and other actions are not blocked (GAP-21).",
-       "**Why the chart is drawn this way.** Each line below is a question that was asked and the answer chosen, then what is still assumed or open.",
+       "**In the prototype:** A demo switch turns the network off. The prototype then shows a strip above the chat, 'Offline: showing saved messages · messages you send wait until you are back online', the same words above the conversation list, and 'Waiting to send' on messages. **'Reconnecting…' and 'Reconnected' are not in the prototype**, and other actions are not blocked (GAP-21)."
+      ]
+     },
+     {
+      "type": "fold",
+      "title": "Sources",
+      "items": [
        "**Rule NR13** (made from GAP-21 · OQ11): When the connection drops: loaded content stays readable; messages being sent wait and send themselves when the connection returns; every other action is blocked with an explanation, never a false success.",
        "**Rule NR12** (made from GAP-03, 11): Toasts and floating bars never cover the composer or navigation.",
        "**Technical design:** Every change is a numbered event. After reconnecting, the app asks for everything after the last number it saw; after more than 7 days away it reloads.",
-       "**Proposal, not confirmed (F37):** Written flow: Losing and regaining the connection",
        "**Assumed, not confirmed (FA-06):** Reconnect attempts wait 1, 2, 5, 10 and then 30 seconds, with a little randomness.",
        "**Assumed, not confirmed (FA-09):** A 'Waiting to send' message survives a page reload, kept in the browser, and is dropped if someone else signs in on that browser.",
-       "**Assumed, not confirmed (FA-17):** While offline the banner keeps the prototype's words, 'Offline: showing saved messages'. A separate 'Reconnecting…' state is not assumed.",
-       "**Still open (FQ-22):** The prototype's offline banner reads 'Offline: showing saved messages'. Written flow F37 said 'Reconnecting…' and a 'Reconnected' toast, which the prototype does not have. Which wording, and is there a separate reconnecting state?"
+       "**Assumed, not confirmed (FA-17):** While offline the banner keeps the prototype's words, 'Offline: showing saved messages'. A separate 'Reconnecting…' state is not assumed."
       ]
      },
      {
@@ -5009,17 +5191,24 @@
        "**After:** nothing of the workspace stays readable on screen; after signing in again the person is back in the same conversation with the draft still in the composer.",
        "**Rule:** the server checks the session on every request and closes the realtime connection the moment a session ends.",
        "**Rule:** a deactivated account gets no sign-in button, and its locally kept drafts are cleared.",
-       "**In the prototype:** **Not in the prototype.** It has no sign-in and no sessions, so none of these screens exist (finding N-01).",
-       "**Why the chart is drawn this way.** Each line below is a question that was asked and the answer chosen, then what is still assumed or open.",
-       "**Question (Q11):** The prototype has no sign-in screen for members, only the guest one. How do members sign in, and how are accounts created? **You chose the recommended option:** (b) 6-digit emailed code, no password, admin invitation only, 30-day session",
-       "**Question (Q12):** The prototype shows Owner, Admin and ordinary members but no difference between them. Who is allowed to do what? **You chose the recommended option:** As in the capability table under Roles & States",
+       "**In the prototype:** **Not in the prototype.** It has no sign-in and no sessions, so none of these screens exist (finding N-01)."
+      ]
+     },
+     {
+      "type": "fold",
+      "title": "Sources",
+      "items": [
+       [
+        "The prototype has no sign-in screen for members, only the guest one. How do members sign in, and how are accounts created? (Q11)",
+        "You chose the recommended option: (b) 6-digit emailed code, no password, admin invitation only, 30-day session"
+       ],
+       [
+        "The prototype shows Owner, Admin and ordinary members but no difference between them. Who is allowed to do what? (Q12)",
+        "You chose the recommended option: As in the capability table under Roles & States"
+       ],
        "**Technical design:** The server checks the session on every request and closes the live connection the moment a session ends.",
-       "**Proposal, not confirmed (F06):** Written flow: Sign out and manage sessions",
-       "**Proposal, not confirmed (F07):** Written flow: Session expires or is revoked while in use",
-       "**Proposal, not confirmed (F41):** Written flow: Deactivate and reactivate",
        "**Assumed, not confirmed (FA-09):** A 'Waiting to send' message survives a page reload, kept in the browser, and is dropped if someone else signs in on that browser.",
-       "**Assumed, not confirmed (FA-16):** Every screen and every wording in quotes that the prototype does not contain is a proposal: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', loading placeholders, and the rest.",
-       "**Still open (FQ-02):** Sign out in one tab: do the other tabs of the same browser leave at once?"
+       "**Assumed, not confirmed (FA-16):** Every screen and every wording in quotes that the prototype does not contain is a proposal: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', loading placeholders, and the rest."
       ]
      },
      {
@@ -5039,14 +5228,17 @@
        "**No access and not found look the same**, so the app never confirms that a private thing exists.",
        "**Error ID:** a server error shows a short ID the person can pass on; the same ID is in the server log.",
        "**401** is handled by flow 3.2 for every request.",
-       "**In the prototype:** **Not in the prototype.** There is no server; every action succeeds at once. The words 'error' and 'Retry' do not occur in it (finding N-06). Problems in forms are reported by a toast after pressing the button (finding N-08).",
-       "**Why the chart is drawn this way.** Each line below is a question that was asked and the answer chosen, then what is still assumed or open.",
+       "**In the prototype:** **Not in the prototype.** There is no server; every action succeeds at once. The words 'error' and 'Retry' do not occur in it (finding N-06). Problems in forms are reported by a toast after pressing the button (finding N-08)."
+      ]
+     },
+     {
+      "type": "fold",
+      "title": "Sources",
+      "items": [
        "**Rule NR4** (made from GAP-22 · OQ12): A form that has content does not close on an outside click; closing it by button asks whether to discard.",
        "**Assumed, not confirmed (FA-02):** A request with no answer after 10 seconds counts as failed and shows Retry.",
        "**Assumed, not confirmed (FA-08):** Server status codes map to screens as in flow 3.3: 400 field message, 403 and 404 one shared page, 409 and 410 fresh copy, 429 wait, 5xx Retry with an error ID.",
-       "**Assumed, not confirmed (FA-16):** Every screen and every wording in quotes that the prototype does not contain is a proposal: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', loading placeholders, and the rest.",
-       "**Still open (GQ-03):** Where do form errors appear: under the field with the button disabled, or in a toast after pressing?",
-       "**Still open (GQ-18):** How is a double press prevented for creating a channel, sending invitations and setting a reminder?"
+       "**Assumed, not confirmed (FA-16):** Every screen and every wording in quotes that the prototype does not contain is a proposal: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', loading placeholders, and the rest."
       ]
      }
     ]
@@ -5862,16 +6054,7 @@
         "**Entry points (4):** the Toki address, a link to a conversation or message (from a notification, a mail or a colleague), the installed app icon, and the invitation mail.||**Lối vào (4):** địa chỉ Toki, link tới một cuộc trò chuyện hoặc tin nhắn (từ thông báo, mail hoặc đồng nghiệp), icon ứng dụng đã cài, và mail mời.",
         "**One gate:** every way in passes the session check. Nothing in Toki is readable without a session; there is no public page besides sign-in.||**Một cửa kiểm tra:** mọi lối vào đều qua bước kiểm tra phiên. Không có gì trong Toki đọc được khi chưa có phiên; ngoài trang đăng nhập không có trang công khai nào.",
         "**Role check:** Admin is the only section gated by role. Everything else is gated by membership of the conversation, checked on the server for every request.||**Kiểm tra vai trò:** Admin là mục duy nhất chặn theo vai trò. Mọi thứ khác chặn theo tư cách thành viên của cuộc trò chuyện, kiểm tra ở server cho mọi request.",
-        "**In the prototype:** It opens straight into Home as Lan, an Owner. There is no sign-in, invitation, welcome or refusal page for members. The only sign-in screens belong to the guest portal (phase 5; demo guide → 'View as guest'): an email step, then a code step that says 'It works for 10 minutes'. Ctrl K exists: the Search box at the top of the left sidebar carries the label 'Ctrl K', and the keys open the command palette. Admin exists in the left navigation but holds only analytics and automations.||**Trong prototype:** Prototype mở thẳng vào Home với tư cách Lan, một Owner. Không có trang đăng nhập, lời mời, màn hình chào hay trang từ chối cho thành viên. Các màn hình đăng nhập duy nhất thuộc cổng guest (phase 5; demo guide → 'View as guest'): bước email, rồi bước nhập mã có ghi 'It works for 10 minutes'. Ctrl K có thật: ô Search ở đầu sidebar trái mang nhãn 'Ctrl K', và tổ hợp phím mở bảng lệnh. Admin có ở thanh điều hướng trái nhưng chỉ chứa thống kê và automation.",
-        "**Why the chart is drawn this way.** Each line below is a question that was asked and the answer chosen, then what is still assumed or open.||**Vì sao sơ đồ được vẽ như vậy.** Mỗi dòng dưới đây là một câu hỏi đã được hỏi và câu trả lời đã chọn, sau đó là những gì còn giả định hoặc còn mở.",
-        "**Question (G4):** How long does an invitation last, and does its link need a sign-in code? **You confirmed:** An invitation expires after 7 days. The link in the invitation signs the person in directly, without a code.||**Câu hỏi (G4):** Lời mời có hạn bao lâu, và link trong đó có cần mã đăng nhập không? **Bạn đã xác nhận:** Lời mời hết hạn sau 7 ngày. Link trong thư mời đăng nhập thẳng, không cần mã.",
-        "**Question (Q11):** The prototype has no sign-in screen for members, only the guest one. How do members sign in, and how are accounts created? **You chose the recommended option:** (b) 6-digit emailed code, no password, admin invitation only, 30-day session||**Câu hỏi (Q11):** Prototype không có màn hình đăng nhập cho thành viên, chỉ có của guest. Thành viên đăng nhập thế nào, và tài khoản được tạo ra sao? **Bạn chọn phương án được đề xuất:** (b) Mã 6 số qua email, không mật khẩu, chỉ admin mời, phiên 30 ngày",
-        "**Question (Q12):** The prototype shows Owner, Admin and ordinary members but no difference between them. Who is allowed to do what? **You chose the recommended option:** As in the capability table under Roles & States||**Câu hỏi (Q12):** Prototype có Owner, Admin và thành viên thường nhưng không thể hiện khác biệt. Ai được làm gì? **Bạn chọn phương án được đề xuất:** Như bảng quyền ở mục Phạm vi",
-        "**Assumed, not confirmed (FA-13):** A member's sign-in code is valid for 10 minutes.||**Giả định, chưa xác nhận (FA-13):** Mã đăng nhập của thành viên có hiệu lực 10 phút.",
-        "**Assumed, not confirmed (FA-15):** A session renews on every use, so 30 days means 30 days without opening Toki.||**Giả định, chưa xác nhận (FA-15):** Phiên được gia hạn mỗi lần dùng, nên 30 ngày nghĩa là 30 ngày không mở Toki.",
-        "**Proposal, not confirmed (F03):** Written flow: Accept an invitation and enter for the first time||**Đề xuất, chưa xác nhận (F03):** Flow viết: Nhận lời mời và vào lần đầu",
-        "**Still open (FQ-13):** What does the invitation refusal page say, and does it tell the causes apart?||**Còn mở (FQ-13):** Trang từ chối lời mời ghi gì, và có phân biệt từng nguyên nhân không?",
-        "**Still open (FQ-15):** The welcome step after accepting an invitation is not in the prototype. Is it wanted, and with which fields?||**Còn mở (FQ-15):** Màn hình chào sau khi nhận lời mời không có trong prototype. Có cần nó không, và gồm những ô nào?"
+        "**In the prototype:** It opens straight into Home as Lan, an Owner. There is no sign-in, invitation, welcome or refusal page for members. The only sign-in screens belong to the guest portal (phase 5; demo guide → 'View as guest'): an email step, then a code step that says 'It works for 10 minutes'. Ctrl K exists: the Search box at the top of the left sidebar carries the label 'Ctrl K', and the keys open the command palette. Admin exists in the left navigation but holds only analytics and automations.||**Trong prototype:** Prototype mở thẳng vào Home với tư cách Lan, một Owner. Không có trang đăng nhập, lời mời, màn hình chào hay trang từ chối cho thành viên. Các màn hình đăng nhập duy nhất thuộc cổng guest (phase 5; demo guide → 'View as guest'): bước email, rồi bước nhập mã có ghi 'It works for 10 minutes'. Ctrl K có thật: ô Search ở đầu sidebar trái mang nhãn 'Ctrl K', và tổ hợp phím mở bảng lệnh. Admin có ở thanh điều hướng trái nhưng chỉ chứa thống kê và automation."
        ],
        "nodes": [
         {
@@ -6187,7 +6370,26 @@
         }
        ],
        "colWidth": 236,
-       "rowHeight": 86
+       "rowHeight": 86,
+       "sources": {
+        "title": "Sources||Nguồn",
+        "items": [
+         [
+          "How long does an invitation last, and does its link need a sign-in code? (G4)||Lời mời có hạn bao lâu, và link trong đó có cần mã đăng nhập không? (G4)",
+          "You confirmed: An invitation expires after 7 days. The link in the invitation signs the person in directly, without a code.||Bạn đã xác nhận: Lời mời hết hạn sau 7 ngày. Link trong thư mời đăng nhập thẳng, không cần mã."
+         ],
+         [
+          "The prototype has no sign-in screen for members, only the guest one. How do members sign in, and how are accounts created? (Q11)||Prototype không có màn hình đăng nhập cho thành viên, chỉ có của guest. Thành viên đăng nhập thế nào, và tài khoản được tạo ra sao? (Q11)",
+          "You chose the recommended option: (b) 6-digit emailed code, no password, admin invitation only, 30-day session||Bạn chọn phương án được đề xuất: (b) Mã 6 số qua email, không mật khẩu, chỉ admin mời, phiên 30 ngày"
+         ],
+         [
+          "The prototype shows Owner, Admin and ordinary members but no difference between them. Who is allowed to do what? (Q12)||Prototype có Owner, Admin và thành viên thường nhưng không thể hiện khác biệt. Ai được làm gì? (Q12)",
+          "You chose the recommended option: As in the capability table under Roles & States||Bạn chọn phương án được đề xuất: Như bảng quyền ở mục Phạm vi"
+         ],
+         "**Assumed, not confirmed (FA-13):** A member's sign-in code is valid for 10 minutes.||**Giả định, chưa xác nhận (FA-13):** Mã đăng nhập của thành viên có hiệu lực 10 phút.",
+         "**Assumed, not confirmed (FA-15):** A session renews on every use, so 30 days means 30 days without opening Toki.||**Giả định, chưa xác nhận (FA-15):** Phiên được gia hạn mỗi lần dùng, nên 30 ngày nghĩa là 30 ngày không mở Toki."
+        ]
+       }
       },
       {
        "title": "1.2 Exit points: every way a person stops being in the app||1.2 Lối ra: mọi cách một người rời khỏi ứng dụng",
@@ -6195,14 +6397,7 @@
        "notes": [
         "Only **Sign out** and **deactivation** end the session on purpose. Closing the tab never does.||Chỉ **Sign out** và **vô hiệu hoá** là chủ động kết thúc phiên. Đóng tab thì không bao giờ.",
         "Losing the connection is not an exit: the person stays on the same screen, read-only, until it returns (flow 3.1).||Mất kết nối không phải là lối ra: người dùng ở nguyên màn hình, chỉ đọc, cho tới khi có lại mạng (flow 3.1).",
-        "**In the prototype:** Sign out is not in the prototype. The account menu holds Set status, Pause notifications, Focus time and Preferences only (finding N-04). There are no sessions, so 'Session ended' and 'Account deactivated' do not exist either. Offline is a demo switch.||**Trong prototype:** Sign out không có trong prototype. Menu tài khoản chỉ có Set status, Pause notifications, Focus time và Preferences (phát hiện N-04). Prototype không có phiên, nên 'Session ended' và 'Account deactivated' cũng không tồn tại. Offline là một công tắc demo.",
-        "**Why the chart is drawn this way.** Each line below is a question that was asked and the answer chosen, then what is still assumed or open.||**Vì sao sơ đồ được vẽ như vậy.** Mỗi dòng dưới đây là một câu hỏi đã được hỏi và câu trả lời đã chọn, sau đó là những gì còn giả định hoặc còn mở.",
-        "**Question (Q11):** The prototype has no sign-in screen for members, only the guest one. How do members sign in, and how are accounts created? **You chose the recommended option:** (b) 6-digit emailed code, no password, admin invitation only, 30-day session||**Câu hỏi (Q11):** Prototype không có màn hình đăng nhập cho thành viên, chỉ có của guest. Thành viên đăng nhập thế nào, và tài khoản được tạo ra sao? **Bạn chọn phương án được đề xuất:** (b) Mã 6 số qua email, không mật khẩu, chỉ admin mời, phiên 30 ngày",
-        "**Question (Q12):** The prototype shows Owner, Admin and ordinary members but no difference between them. Who is allowed to do what? **You chose the recommended option:** As in the capability table under Roles & States||**Câu hỏi (Q12):** Prototype có Owner, Admin và thành viên thường nhưng không thể hiện khác biệt. Ai được làm gì? **Bạn chọn phương án được đề xuất:** Như bảng quyền ở mục Phạm vi",
-        "**Rule NR13** (made from GAP-21 · OQ11): When the connection drops: loaded content stays readable; messages being sent wait and send themselves when the connection returns; every other action is blocked with an explanation, never a false success.||**Quy tắc NR13** (rút ra từ GAP-21 · OQ11): Khi mất kết nối: nội dung đã tải vẫn đọc được; tin đang gửi chuyển sang chờ và tự gửi lại khi có mạng; mọi thao tác khác bị chặn kèm lời giải thích, không báo thành công giả.",
-        "**Proposal, not confirmed (F06):** Written flow: Sign out and manage sessions||**Đề xuất, chưa xác nhận (F06):** Flow viết: Đăng xuất và quản lý phiên",
-        "**Proposal, not confirmed (F41):** Written flow: Deactivate and reactivate||**Đề xuất, chưa xác nhận (F41):** Flow viết: Vô hiệu hóa và kích hoạt lại",
-        "**Assumed, not confirmed (FA-16):** Every screen and every wording in quotes that the prototype does not contain is a proposal: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', loading placeholders, and the rest.||**Giả định, chưa xác nhận (FA-16):** Mọi màn hình và mọi câu chữ trong dấu nháy mà prototype không có đều là đề xuất: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', ô giữ chỗ khi tải, và phần còn lại."
+        "**In the prototype:** Sign out is not in the prototype. The account menu holds Set status, Pause notifications, Focus time and Preferences only (finding N-04). There are no sessions, so 'Session ended' and 'Account deactivated' do not exist either. Offline is a demo switch.||**Trong prototype:** Sign out không có trong prototype. Menu tài khoản chỉ có Set status, Pause notifications, Focus time và Preferences (phát hiện N-04). Prototype không có phiên, nên 'Session ended' và 'Account deactivated' cũng không tồn tại. Offline là một công tắc demo."
        ],
        "nodes": [
         {
@@ -6404,7 +6599,22 @@
         }
        ],
        "colWidth": 250,
-       "rowHeight": 78
+       "rowHeight": 78,
+       "sources": {
+        "title": "Sources||Nguồn",
+        "items": [
+         [
+          "The prototype has no sign-in screen for members, only the guest one. How do members sign in, and how are accounts created? (Q11)||Prototype không có màn hình đăng nhập cho thành viên, chỉ có của guest. Thành viên đăng nhập thế nào, và tài khoản được tạo ra sao? (Q11)",
+          "You chose the recommended option: (b) 6-digit emailed code, no password, admin invitation only, 30-day session||Bạn chọn phương án được đề xuất: (b) Mã 6 số qua email, không mật khẩu, chỉ admin mời, phiên 30 ngày"
+         ],
+         [
+          "The prototype shows Owner, Admin and ordinary members but no difference between them. Who is allowed to do what? (Q12)||Prototype có Owner, Admin và thành viên thường nhưng không thể hiện khác biệt. Ai được làm gì? (Q12)",
+          "You chose the recommended option: As in the capability table under Roles & States||Bạn chọn phương án được đề xuất: Như bảng quyền ở mục Phạm vi"
+         ],
+         "**Rule NR13** (made from GAP-21 · OQ11): When the connection drops: loaded content stays readable; messages being sent wait and send themselves when the connection returns; every other action is blocked with an explanation, never a false success.||**Quy tắc NR13** (rút ra từ GAP-21 · OQ11): Khi mất kết nối: nội dung đã tải vẫn đọc được; tin đang gửi chuyển sang chờ và tự gửi lại khi có mạng; mọi thao tác khác bị chặn kèm lời giải thích, không báo thành công giả.",
+         "**Assumed, not confirmed (FA-16):** Every screen and every wording in quotes that the prototype does not contain is a proposal: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', loading placeholders, and the rest.||**Giả định, chưa xác nhận (FA-16):** Mọi màn hình và mọi câu chữ trong dấu nháy mà prototype không có đều là đề xuất: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', ô giữ chỗ khi tải, và phần còn lại."
+        ]
+       }
       }
      ]
     },
@@ -6422,14 +6632,7 @@
         "**Back / cancel / retry:** 'Use a different email' returns to the email field. 'Resend code' enables after 60 seconds. A network failure re-enables the button with 'Could not connect'.||**Quay lại / huỷ / thử lại:** 'Use a different email' quay về ô email. 'Resend code' bật sau 60 giây. Lỗi mạng thì nút bấm lại được, kèm 'Could not connect'.",
         "**Alternative:** the mail also has a sign-in button. Pressing it signs in the device where it is pressed and skips typing the code.||**Nhánh khác:** mail còn có nút đăng nhập. Bấm nút thì thiết bị bấm được đăng nhập, không cần gõ mã.",
         "**Security rule:** the answer to a code request is identical for members and strangers, so the page never reveals who is a member.||**Quy tắc bảo mật:** câu trả lời cho yêu cầu xin mã giống hệt nhau với thành viên và người lạ, nên trang không bao giờ lộ ai là thành viên.",
-        "**In the prototype:** No member sign-in. The nearest screens are the guest portal's: 'Sign in as a guest' (email, 'Email me a code') and 'Check your email' (6-digit field, 'Sign in', 'Use a different email', 'It works for 10 minutes'). That screen has **no Resend**, no limit on requests and no wrong-code state (any 6 digits work). Its two errors show in a red line under the card.||**Trong prototype:** Không có đăng nhập cho thành viên. Màn hình gần nhất là của cổng guest: 'Sign in as a guest' (email, 'Email me a code') và 'Check your email' (ô 6 số, 'Sign in', 'Use a different email', 'It works for 10 minutes'). Màn hình đó **không có Resend**, không giới hạn số lần xin mã và không có trạng thái sai mã (6 số nào cũng được). Hai lỗi của nó hiện ở một dòng đỏ dưới thẻ.",
-        "**Why the chart is drawn this way.** Each line below is a question that was asked and the answer chosen, then what is still assumed or open.||**Vì sao sơ đồ được vẽ như vậy.** Mỗi dòng dưới đây là một câu hỏi đã được hỏi và câu trả lời đã chọn, sau đó là những gì còn giả định hoặc còn mở.",
-        "**Question (Q11):** The prototype has no sign-in screen for members, only the guest one. How do members sign in, and how are accounts created? **You chose the recommended option:** (b) 6-digit emailed code, no password, admin invitation only, 30-day session||**Câu hỏi (Q11):** Prototype không có màn hình đăng nhập cho thành viên, chỉ có của guest. Thành viên đăng nhập thế nào, và tài khoản được tạo ra sao? **Bạn chọn phương án được đề xuất:** (b) Mã 6 số qua email, không mật khẩu, chỉ admin mời, phiên 30 ngày",
-        "**Question (G5):** How often may a sign-in code be requested, and when can it be sent again? **You confirmed:** At most 5 code requests per email in 15 minutes; the resend button enables after 60 seconds.||**Câu hỏi (G5):** Được xin mã đăng nhập bao nhiêu lần, và khi nào gửi lại được? **Bạn đã xác nhận:** Xin mã tối đa 5 lần trong 15 phút cho mỗi email; nút gửi lại bật sau 60 giây.",
-        "**Technical design:** A code request is answered the same way for members and strangers, so the page never reveals who is a member.||**Thiết kế kỹ thuật:** Yêu cầu xin mã được trả lời như nhau với thành viên và người lạ, nên trang không bao giờ lộ ai là thành viên.",
-        "**Assumed, not confirmed (FA-13):** A member's sign-in code is valid for 10 minutes.||**Giả định, chưa xác nhận (FA-13):** Mã đăng nhập của thành viên có hiệu lực 10 phút.",
-        "**Assumed, not confirmed (FA-14):** A code is cancelled after 5 wrong tries; the person asks for a new one.||**Giả định, chưa xác nhận (FA-14):** Mã bị huỷ sau 5 lần sai; người dùng phải xin mã mới.",
-        "**Still open (FQ-14):** The prototype's code screen has no Resend, only 'Use a different email'. G5 already expects a Resend button after 60 seconds. Is Resend added to the screen, and does a new code cancel the earlier one?||**Còn mở (FQ-14):** Màn hình nhập mã của prototype không có Resend, chỉ có 'Use a different email'. G5 đã mặc định có nút Resend sau 60 giây. Có thêm Resend vào màn hình không, và mã mới có huỷ mã cũ không?"
+        "**In the prototype:** No member sign-in. The nearest screens are the guest portal's: 'Sign in as a guest' (email, 'Email me a code') and 'Check your email' (6-digit field, 'Sign in', 'Use a different email', 'It works for 10 minutes'). That screen has **no Resend**, no limit on requests and no wrong-code state (any 6 digits work). Its two errors show in a red line under the card.||**Trong prototype:** Không có đăng nhập cho thành viên. Màn hình gần nhất là của cổng guest: 'Sign in as a guest' (email, 'Email me a code') và 'Check your email' (ô 6 số, 'Sign in', 'Use a different email', 'It works for 10 minutes'). Màn hình đó **không có Resend**, không giới hạn số lần xin mã và không có trạng thái sai mã (6 số nào cũng được). Hai lỗi của nó hiện ở một dòng đỏ dưới thẻ."
        ],
        "nodes": [
         {
@@ -6745,7 +6948,23 @@
         "Frontend (web app)||Frontend (ứng dụng web)",
         "Backend (API, jobs, storage)||Backend (API, job, lưu trữ)"
        ],
-       "rowHeight": 100
+       "rowHeight": 100,
+       "sources": {
+        "title": "Sources||Nguồn",
+        "items": [
+         [
+          "The prototype has no sign-in screen for members, only the guest one. How do members sign in, and how are accounts created? (Q11)||Prototype không có màn hình đăng nhập cho thành viên, chỉ có của guest. Thành viên đăng nhập thế nào, và tài khoản được tạo ra sao? (Q11)",
+          "You chose the recommended option: (b) 6-digit emailed code, no password, admin invitation only, 30-day session||Bạn chọn phương án được đề xuất: (b) Mã 6 số qua email, không mật khẩu, chỉ admin mời, phiên 30 ngày"
+         ],
+         [
+          "How often may a sign-in code be requested, and when can it be sent again? (G5)||Được xin mã đăng nhập bao nhiêu lần, và khi nào gửi lại được? (G5)",
+          "You confirmed: At most 5 code requests per email in 15 minutes; the resend button enables after 60 seconds.||Bạn đã xác nhận: Xin mã tối đa 5 lần trong 15 phút cho mỗi email; nút gửi lại bật sau 60 giây."
+         ],
+         "**Technical design:** A code request is answered the same way for members and strangers, so the page never reveals who is a member.||**Thiết kế kỹ thuật:** Yêu cầu xin mã được trả lời như nhau với thành viên và người lạ, nên trang không bao giờ lộ ai là thành viên.",
+         "**Assumed, not confirmed (FA-13):** A member's sign-in code is valid for 10 minutes.||**Giả định, chưa xác nhận (FA-13):** Mã đăng nhập của thành viên có hiệu lực 10 phút.",
+         "**Assumed, not confirmed (FA-14):** A code is cancelled after 5 wrong tries; the person asks for a new one.||**Giả định, chưa xác nhận (FA-14):** Mã bị huỷ sau 5 lần sai; người dùng phải xin mã mới."
+        ]
+       }
       },
       {
        "title": "2.2 Accept an invitation (first time in)||2.2 Nhận lời mời (lần đầu vào)",
@@ -6756,17 +6975,7 @@
         "**Validation:** display name 1 to 80 characters (your answer, Q31). Time zone and language come from the device and can be changed.||**Kiểm tra:** tên hiển thị từ 1 đến 80 ký tự (bạn trả lời, Q31). Múi giờ và ngôn ngữ lấy từ thiết bị và đổi được.",
         "**Skip:** the welcome step can be skipped; the name becomes the part of the address before @.||**Bỏ qua:** bước chào có thể bỏ qua; tên sẽ là phần trước @ của địa chỉ.",
         "**Next:** a small card asks whether to turn on notifications.||**Tiếp theo:** một thẻ nhỏ hỏi có bật thông báo không.",
-        "**In the prototype:** Nothing. The only invitation in the prototype is 'Invite a client' for guests, in a channel's Details panel. There is no welcome step and no refusal page.||**Trong prototype:** Không có gì. Lời mời duy nhất trong prototype là 'Invite a client' dành cho guest, ở panel Details của kênh. Không có màn hình chào và không có trang từ chối.",
-        "**Why the chart is drawn this way.** Each line below is a question that was asked and the answer chosen, then what is still assumed or open.||**Vì sao sơ đồ được vẽ như vậy.** Mỗi dòng dưới đây là một câu hỏi đã được hỏi và câu trả lời đã chọn, sau đó là những gì còn giả định hoặc còn mở.",
-        "**Question (Q11):** The prototype has no sign-in screen for members, only the guest one. How do members sign in, and how are accounts created? **You chose the recommended option:** (b) 6-digit emailed code, no password, admin invitation only, 30-day session||**Câu hỏi (Q11):** Prototype không có màn hình đăng nhập cho thành viên, chỉ có của guest. Thành viên đăng nhập thế nào, và tài khoản được tạo ra sao? **Bạn chọn phương án được đề xuất:** (b) Mã 6 số qua email, không mật khẩu, chỉ admin mời, phiên 30 ngày",
-        "**Question (Q26):** A fresh installation has no accounts. How does the first Owner come to exist? **Your answer:** Created from environment variables or seed; that admin invites members||**Câu hỏi (Q26):** Bản cài mới chưa có tài khoản nào. Owner đầu tiên được tạo thế nào? **Bạn trả lời:** Tạo từ biến môi trường hoặc seed; admin mời thành viên",
-        "**Question (G4):** How long does an invitation last, and does its link need a sign-in code? **You confirmed:** An invitation expires after 7 days. The link in the invitation signs the person in directly, without a code.||**Câu hỏi (G4):** Lời mời có hạn bao lâu, và link trong đó có cần mã đăng nhập không? **Bạn đã xác nhận:** Lời mời hết hạn sau 7 ngày. Link trong thư mời đăng nhập thẳng, không cần mã.",
-        "**Question (G1):** Which channel does everyone start in, and can it be left? **You confirmed:** Every workspace has a #general channel created at setup; every member is in it automatically; it cannot be left or archived.||**Câu hỏi (G1):** Mọi người bắt đầu ở kênh nào, và có rời kênh đó được không? **Bạn đã xác nhận:** Mỗi workspace có kênh #general tạo sẵn; mọi thành viên tự động ở trong đó; không rời và không lưu trữ được.",
-        "**Question (Q31):** How long may a display name be? The flow for accepting an invitation checked '1 to 80 characters' without a decision behind it. **Your answer:** 1 to 80 characters||**Câu hỏi (Q31):** Tên hiển thị được dài bao nhiêu? Flow nhận lời mời đã kiểm tra '1 tới 80 ký tự' mà chưa có quyết định nào đứng sau. **Bạn trả lời:** 1 tới 80 ký tự",
-        "**Proposal, not confirmed (F03):** Written flow: Accept an invitation and enter for the first time||**Đề xuất, chưa xác nhận (F03):** Flow viết: Nhận lời mời và vào lần đầu",
-        "**Still open (FQ-13):** What does the invitation refusal page say, and does it tell the causes apart?||**Còn mở (FQ-13):** Trang từ chối lời mời ghi gì, và có phân biệt từng nguyên nhân không?",
-        "**Still open (FQ-15):** The welcome step after accepting an invitation is not in the prototype. Is it wanted, and with which fields?||**Còn mở (FQ-15):** Màn hình chào sau khi nhận lời mời không có trong prototype. Có cần nó không, và gồm những ô nào?",
-        "**Still open (FQ-16):** #general exists before anyone is invited and every newcomer is in it (G1). Does #general show a line when someone joins, and does that line notify anyone?||**Còn mở (FQ-16):** #general có sẵn trước khi mời ai và người mới nào cũng ở trong đó (G1). #general có hiện một dòng khi có người vào không, và dòng đó có báo cho ai không?"
+        "**In the prototype:** Nothing. The only invitation in the prototype is 'Invite a client' for guests, in a channel's Details panel. There is no welcome step and no refusal page.||**Trong prototype:** Không có gì. Lời mời duy nhất trong prototype là 'Invite a client' dành cho guest, ở panel Details của kênh. Không có màn hình chào và không có trang từ chối."
        ],
        "nodes": [
         {
@@ -6967,7 +7176,32 @@
         "Frontend (web app)||Frontend (ứng dụng web)",
         "Backend (API, jobs, storage)||Backend (API, job, lưu trữ)"
        ],
-       "rowHeight": 100
+       "rowHeight": 100,
+       "sources": {
+        "title": "Sources||Nguồn",
+        "items": [
+         [
+          "The prototype has no sign-in screen for members, only the guest one. How do members sign in, and how are accounts created? (Q11)||Prototype không có màn hình đăng nhập cho thành viên, chỉ có của guest. Thành viên đăng nhập thế nào, và tài khoản được tạo ra sao? (Q11)",
+          "You chose the recommended option: (b) 6-digit emailed code, no password, admin invitation only, 30-day session||Bạn chọn phương án được đề xuất: (b) Mã 6 số qua email, không mật khẩu, chỉ admin mời, phiên 30 ngày"
+         ],
+         [
+          "A fresh installation has no accounts. How does the first Owner come to exist? (Q26)||Bản cài mới chưa có tài khoản nào. Owner đầu tiên được tạo thế nào? (Q26)",
+          "Your answer: Created from environment variables or seed; that admin invites members||Bạn trả lời: Tạo từ biến môi trường hoặc seed; admin mời thành viên"
+         ],
+         [
+          "How long does an invitation last, and does its link need a sign-in code? (G4)||Lời mời có hạn bao lâu, và link trong đó có cần mã đăng nhập không? (G4)",
+          "You confirmed: An invitation expires after 7 days. The link in the invitation signs the person in directly, without a code.||Bạn đã xác nhận: Lời mời hết hạn sau 7 ngày. Link trong thư mời đăng nhập thẳng, không cần mã."
+         ],
+         [
+          "Which channel does everyone start in, and can it be left? (G1)||Mọi người bắt đầu ở kênh nào, và có rời kênh đó được không? (G1)",
+          "You confirmed: Every workspace has a #general channel created at setup; every member is in it automatically; it cannot be left or archived.||Bạn đã xác nhận: Mỗi workspace có kênh #general tạo sẵn; mọi thành viên tự động ở trong đó; không rời và không lưu trữ được."
+         ],
+         [
+          "How long may a display name be? The flow for accepting an invitation checked '1 to 80 characters' without a decision behind it. (Q31)||Tên hiển thị được dài bao nhiêu? Flow nhận lời mời đã kiểm tra '1 tới 80 ký tự' mà chưa có quyết định nào đứng sau. (Q31)",
+          "Your answer: 1 to 80 characters||Bạn trả lời: 1 tới 80 ký tự"
+         ]
+        ]
+       }
       },
       {
        "title": "2.3 Open the app: session check and first load||2.3 Mở ứng dụng: kiểm tra phiên và lần tải đầu",
@@ -6978,14 +7212,7 @@
         "**Loading:** the app frame appears at once with grey placeholders for the lists; real content replaces them.||**Đang tải:** khung ứng dụng hiện ngay với ô xám giữ chỗ cho các danh sách; nội dung thật thay vào sau.",
         "**Rule:** a link to something the person may not see answers exactly like a link to something that does not exist.||**Quy tắc:** link tới thứ người dùng không được xem trả lời y hệt link tới thứ không tồn tại.",
         "**Rule:** with no link, the app opens the conversation last viewed on this device; the very first time, #general.||**Quy tắc:** không có link thì mở cuộc trò chuyện xem gần nhất trên thiết bị này; lần đầu tiên là #general.",
-        "**In the prototype:** Everything is in memory, so the app appears at once. There are no placeholders, no 'Can't reach Toki', and the address does not change with the screen (findings N-05, N-13).||**Trong prototype:** Mọi thứ nằm sẵn trong bộ nhớ nên ứng dụng hiện ngay. Không có ô giữ chỗ, không có 'Can't reach Toki', và địa chỉ không đổi theo màn hình (phát hiện N-05, N-13).",
-        "**Why the chart is drawn this way.** Each line below is a question that was asked and the answer chosen, then what is still assumed or open.||**Vì sao sơ đồ được vẽ như vậy.** Mỗi dòng dưới đây là một câu hỏi đã được hỏi và câu trả lời đã chọn, sau đó là những gì còn giả định hoặc còn mở.",
-        "**Question (G2):** Which conversation does the app open on? **You confirmed:** The app opens on the conversation last viewed on that device; the first time, on #general.||**Câu hỏi (G2):** Ứng dụng mở vào cuộc trò chuyện nào? **Bạn đã xác nhận:** Mở app thì vào hội thoại đã xem lần cuối trên thiết bị đó; lần đầu thì vào #general.",
-        "**Question (Q11):** The prototype has no sign-in screen for members, only the guest one. How do members sign in, and how are accounts created? **You chose the recommended option:** (b) 6-digit emailed code, no password, admin invitation only, 30-day session||**Câu hỏi (Q11):** Prototype không có màn hình đăng nhập cho thành viên, chỉ có của guest. Thành viên đăng nhập thế nào, và tài khoản được tạo ra sao? **Bạn chọn phương án được đề xuất:** (b) Mã 6 số qua email, không mật khẩu, chỉ admin mời, phiên 30 ngày",
-        "**Technical design:** 'Not found' and 'no access' get the same answer, so the app never confirms that a private thing exists.||**Thiết kế kỹ thuật:** 'Không tồn tại' và 'không có quyền' nhận cùng một câu trả lời, nên ứng dụng không bao giờ xác nhận một thứ riêng tư có tồn tại.",
-        "**Assumed, not confirmed (FA-02):** A request with no answer after 10 seconds counts as failed and shows Retry.||**Giả định, chưa xác nhận (FA-02):** Request không có trả lời sau 10 giây được coi là lỗi và hiện Retry.",
-        "**Assumed, not confirmed (FA-16):** Every screen and every wording in quotes that the prototype does not contain is a proposal: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', loading placeholders, and the rest.||**Giả định, chưa xác nhận (FA-16):** Mọi màn hình và mọi câu chữ trong dấu nháy mà prototype không có đều là đề xuất: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', ô giữ chỗ khi tải, và phần còn lại.",
-        "**Still open (GQ-06):** Does every conversation, thread and section have its own address, and what does browser Back do?||**Còn mở (GQ-06):** Mỗi cuộc trò chuyện, thread và mục có địa chỉ riêng không, và Back của trình duyệt làm gì?"
+        "**In the prototype:** Everything is in memory, so the app appears at once. There are no placeholders, no 'Can't reach Toki', and the address does not change with the screen (findings N-05, N-13).||**Trong prototype:** Mọi thứ nằm sẵn trong bộ nhớ nên ứng dụng hiện ngay. Không có ô giữ chỗ, không có 'Can't reach Toki', và địa chỉ không đổi theo màn hình (phát hiện N-05, N-13)."
        ],
        "nodes": [
         {
@@ -7226,7 +7453,23 @@
         "Frontend (web app)||Frontend (ứng dụng web)",
         "Backend (API, jobs, storage)||Backend (API, job, lưu trữ)"
        ],
-       "rowHeight": 100
+       "rowHeight": 100,
+       "sources": {
+        "title": "Sources||Nguồn",
+        "items": [
+         [
+          "Which conversation does the app open on? (G2)||Ứng dụng mở vào cuộc trò chuyện nào? (G2)",
+          "You confirmed: The app opens on the conversation last viewed on that device; the first time, on #general.||Bạn đã xác nhận: Mở app thì vào hội thoại đã xem lần cuối trên thiết bị đó; lần đầu thì vào #general."
+         ],
+         [
+          "The prototype has no sign-in screen for members, only the guest one. How do members sign in, and how are accounts created? (Q11)||Prototype không có màn hình đăng nhập cho thành viên, chỉ có của guest. Thành viên đăng nhập thế nào, và tài khoản được tạo ra sao? (Q11)",
+          "You chose the recommended option: (b) 6-digit emailed code, no password, admin invitation only, 30-day session||Bạn chọn phương án được đề xuất: (b) Mã 6 số qua email, không mật khẩu, chỉ admin mời, phiên 30 ngày"
+         ],
+         "**Technical design:** 'Not found' and 'no access' get the same answer, so the app never confirms that a private thing exists.||**Thiết kế kỹ thuật:** 'Không tồn tại' và 'không có quyền' nhận cùng một câu trả lời, nên ứng dụng không bao giờ xác nhận một thứ riêng tư có tồn tại.",
+         "**Assumed, not confirmed (FA-02):** A request with no answer after 10 seconds counts as failed and shows Retry.||**Giả định, chưa xác nhận (FA-02):** Request không có trả lời sau 10 giây được coi là lỗi và hiện Retry.",
+         "**Assumed, not confirmed (FA-16):** Every screen and every wording in quotes that the prototype does not contain is a proposal: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', loading placeholders, and the rest.||**Giả định, chưa xác nhận (FA-16):** Mọi màn hình và mọi câu chữ trong dấu nháy mà prototype không có đều là đề xuất: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', ô giữ chỗ khi tải, và phần còn lại."
+        ]
+       }
       },
       {
        "title": "2.4 Open and read a conversation||2.4 Mở và đọc một cuộc trò chuyện",
@@ -7238,14 +7481,7 @@
         "**Older messages:** scrolling up loads 50 more with a spinner at the top and keeps the scroll position; at the start a 'Beginning of #name' marker shows.||**Tin cũ hơn:** cuộn lên thì tải thêm 50 tin, có vòng quay ở trên và giữ nguyên vị trí cuộn; tới đầu thì hiện mốc 'Beginning of #name'.",
         "**Load failure:** the message area shows 'Couldn't load messages' with Retry; the sidebar keeps working (flow 3.3).||**Tải lỗi:** vùng tin nhắn hiện 'Couldn't load messages' kèm Retry; sidebar vẫn dùng được (flow 3.3).",
         "**Preview:** a public channel the person has not joined is readable; the composer is replaced by a Join button.||**Xem trước:** kênh công khai chưa tham gia vẫn đọc được; ô soạn tin được thay bằng nút Join.",
-        "**In the prototype:** Home: the conversation list, the message list, unread badges and the 'New' divider exist. There is no loading state and no failure state.||**Trong prototype:** Home: danh sách cuộc trò chuyện, danh sách tin nhắn, huy hiệu chưa đọc và vạch 'New' có trong prototype. Không có trạng thái đang tải và trạng thái lỗi.",
-        "**Why the chart is drawn this way.** Each line below is a question that was asked and the answer chosen, then what is still assumed or open.||**Vì sao sơ đồ được vẽ như vậy.** Mỗi dòng dưới đây là một câu hỏi đã được hỏi và câu trả lời đã chọn, sau đó là những gì còn giả định hoặc còn mở.",
-        "**Question (OQ3):** What marks a channel as read on Web and Phone, and when does the New divider clear? **Answer:** Read state never depends on AI. A conversation is read when it is open, the window is in use, and the person is at the bottom of the list. The New divider anchors to the first unread message at the time of opening (by ID, so it does not drift), stays while viewing, and is gone the next time the conversation opens. Opening the app or a conversation with unread messages scrolls to the divider.||**Câu hỏi (OQ3):** Điều gì đánh dấu channel đã đọc trên Web và Phone, và vạch New biến mất khi nào? **Trả lời:** Đã đọc không phụ thuộc AI. Hội thoại được đánh dấu đã đọc khi nó đang mở, cửa sổ đang được dùng, và người dùng đã ở cuối danh sách tin. Vạch New neo vào tin chưa đọc đầu tiên tại lúc mở (theo ID, không trôi khi có tin mới), giữ nguyên trong lúc đang xem, và biến mất ở lần mở kế tiếp. Mở app hoặc mở hội thoại có tin chưa đọc thì cuộn tới vạch New.",
-        "**Question (G15):** Does a sender see who has read a message? **You confirmed:** Toki has no 'seen' receipts; a sender does not know who has read a message.||**Câu hỏi (G15):** Người gửi có biết ai đã đọc tin không? **Bạn đã xác nhận:** Toki không có dấu “đã xem” cho tin nhắn; người gửi không biết ai đã đọc.",
-        "**Question (Q27):** What do people who join a channel later see of its history, and what happens to a channel that is no longer used? **You chose the recommended option:** Full history; channels are archived, never deleted||**Câu hỏi (Q27):** Người vào kênh sau thấy được gì trong lịch sử, và kênh không dùng nữa thì xử lý ra sao? **Bạn chọn phương án được đề xuất:** Thấy toàn bộ lịch sử; lưu trữ được, không xóa hẳn",
-        "**Rule NR8** (made from GAP-29, 31, 33): Every searchable or filterable list has an empty state centred in the content area and written for that context. A count on a chip always equals the rows shown.||**Quy tắc NR8** (rút ra từ GAP-29, 31, 33): Mọi danh sách có tìm hoặc lọc đều có trạng thái trống đặt giữa vùng nội dung, viết riêng cho ngữ cảnh đó. Số đếm trên chip luôn khớp với số dòng hiển thị.",
-        "**Assumed, not confirmed (FA-16):** Every screen and every wording in quotes that the prototype does not contain is a proposal: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', loading placeholders, and the rest.||**Giả định, chưa xác nhận (FA-16):** Mọi màn hình và mọi câu chữ trong dấu nháy mà prototype không có đều là đề xuất: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', ô giữ chỗ khi tải, và phần còn lại.",
-        "**Still open (FQ-10):** Does previewing a public channel without joining count for its unread or Activity?||**Còn mở (FQ-10):** Xem trước một kênh công khai mà không tham gia có tính vào chưa đọc hay Activity không?"
+        "**In the prototype:** Home: the conversation list, the message list, unread badges and the 'New' divider exist. There is no loading state and no failure state.||**Trong prototype:** Home: danh sách cuộc trò chuyện, danh sách tin nhắn, huy hiệu chưa đọc và vạch 'New' có trong prototype. Không có trạng thái đang tải và trạng thái lỗi."
        ],
        "nodes": [
         {
@@ -7441,7 +7677,26 @@
         "Frontend (web app)||Frontend (ứng dụng web)",
         "Backend (API, jobs, storage)||Backend (API, job, lưu trữ)"
        ],
-       "rowHeight": 100
+       "rowHeight": 100,
+       "sources": {
+        "title": "Sources||Nguồn",
+        "items": [
+         [
+          "What marks a channel as read on Web and Phone, and when does the New divider clear? (OQ3)||Điều gì đánh dấu channel đã đọc trên Web và Phone, và vạch New biến mất khi nào? (OQ3)",
+          "Answer: Read state never depends on AI. A conversation is read when it is open, the window is in use, and the person is at the bottom of the list. The New divider anchors to the first unread message at the time of opening (by ID, so it does not drift), stays while viewing, and is gone the next time the conversation opens. Opening the app or a conversation with unread messages scrolls to the divider.||Trả lời: Đã đọc không phụ thuộc AI. Hội thoại được đánh dấu đã đọc khi nó đang mở, cửa sổ đang được dùng, và người dùng đã ở cuối danh sách tin. Vạch New neo vào tin chưa đọc đầu tiên tại lúc mở (theo ID, không trôi khi có tin mới), giữ nguyên trong lúc đang xem, và biến mất ở lần mở kế tiếp. Mở app hoặc mở hội thoại có tin chưa đọc thì cuộn tới vạch New."
+         ],
+         [
+          "Does a sender see who has read a message? (G15)||Người gửi có biết ai đã đọc tin không? (G15)",
+          "You confirmed: Toki has no 'seen' receipts; a sender does not know who has read a message.||Bạn đã xác nhận: Toki không có dấu “đã xem” cho tin nhắn; người gửi không biết ai đã đọc."
+         ],
+         [
+          "What do people who join a channel later see of its history, and what happens to a channel that is no longer used? (Q27)||Người vào kênh sau thấy được gì trong lịch sử, và kênh không dùng nữa thì xử lý ra sao? (Q27)",
+          "You chose the recommended option: Full history; channels are archived, never deleted||Bạn chọn phương án được đề xuất: Thấy toàn bộ lịch sử; lưu trữ được, không xóa hẳn"
+         ],
+         "**Rule NR8** (made from GAP-29, 31, 33): Every searchable or filterable list has an empty state centred in the content area and written for that context. A count on a chip always equals the rows shown.||**Quy tắc NR8** (rút ra từ GAP-29, 31, 33): Mọi danh sách có tìm hoặc lọc đều có trạng thái trống đặt giữa vùng nội dung, viết riêng cho ngữ cảnh đó. Số đếm trên chip luôn khớp với số dòng hiển thị.",
+         "**Assumed, not confirmed (FA-16):** Every screen and every wording in quotes that the prototype does not contain is a proposal: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', loading placeholders, and the rest.||**Giả định, chưa xác nhận (FA-16):** Mọi màn hình và mọi câu chữ trong dấu nháy mà prototype không có đều là đề xuất: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', ô giữ chỗ khi tải, và phần còn lại."
+        ]
+       }
       },
       {
        "title": "2.5 Send a message||2.5 Gửi một tin nhắn",
@@ -7453,16 +7708,7 @@
         "**Keys:** Enter sends, Shift+Enter makes a new line; while composing a Vietnamese word, Enter finishes the word and does not send.||**Phím:** Enter gửi, Shift+Enter xuống dòng; khi đang gõ dở một từ tiếng Việt, Enter kết thúc từ chứ không gửi.",
         "**Retry:** 'Not sent' offers Retry and Delete. Retry resends the same ID, so a message that did arrive is never doubled.||**Thử lại:** 'Not sent' có Retry và Delete. Retry gửi lại cùng ID, nên tin đã tới nơi không bao giờ bị nhân đôi.",
         "**Leaving mid-way:** switching conversation before sending keeps the text as a draft, synced to other devices.||**Rời giữa chừng:** chuyển cuộc trò chuyện trước khi gửi thì nội dung thành bản nháp, đồng bộ sang thiết bị khác.",
-        "**In the prototype:** The composer and Send exist. With the demo offline switch on, a sent message appears faded with 'Waiting to send'. **'Not sent', Retry and Delete are not in the prototype** (the words do not occur in it), and there is no character counter.||**Trong prototype:** Ô soạn tin và Send có trong prototype. Khi bật công tắc demo offline, tin gửi đi hiện mờ kèm 'Waiting to send'. **'Not sent', Retry và Delete không có trong prototype** (các chữ này không xuất hiện), và không có bộ đếm ký tự.",
-        "**Why the chart is drawn this way.** Each line below is a question that was asked and the answer chosen, then what is still assumed or open.||**Vì sao sơ đồ được vẽ như vậy.** Mỗi dòng dưới đây là một câu hỏi đã được hỏi và câu trả lời đã chọn, sau đó là những gì còn giả định hoặc còn mở.",
-        "**Question (G9):** How long may a message be, and how many files may it carry? **You confirmed:** A message holds up to 10,000 characters and 10 files.||**Câu hỏi (G9):** Một tin nhắn dài tối đa bao nhiêu, và kèm được bao nhiêu file? **Bạn đã xác nhận:** Một tin tối đa 10.000 ký tự và 10 file.",
-        "**Rule NR11** (made from GAP-17 · OQ8): Writing to a conversation (sending, starting a Meet, scheduling) requires membership. Pickers list only conversations you have joined.||**Quy tắc NR11** (rút ra từ GAP-17 · OQ8): Muốn ghi vào một hội thoại (gửi tin, bắt đầu Meet, đặt lịch) phải là thành viên của nó. Danh sách chọn chỉ gồm hội thoại mình đã tham gia.",
-        "**Rule NR13** (made from GAP-21 · OQ11): When the connection drops: loaded content stays readable; messages being sent wait and send themselves when the connection returns; every other action is blocked with an explanation, never a false success.||**Quy tắc NR13** (rút ra từ GAP-21 · OQ11): Khi mất kết nối: nội dung đã tải vẫn đọc được; tin đang gửi chuyển sang chờ và tự gửi lại khi có mạng; mọi thao tác khác bị chặn kèm lời giải thích, không báo thành công giả.",
-        "**Technical design:** The app creates the message ID, so sending the same message again cannot create a second one.||**Thiết kế kỹ thuật:** Ứng dụng tự tạo ID tin nhắn, nên gửi lại cùng một tin không thể tạo ra tin thứ hai.",
-        "**Proposal, not confirmed (F11):** Written flow: Send a message||**Đề xuất, chưa xác nhận (F11):** Flow viết: Gửi tin nhắn",
-        "**Assumed, not confirmed (FA-02):** A request with no answer after 10 seconds counts as failed and shows Retry.||**Giả định, chưa xác nhận (FA-02):** Request không có trả lời sau 10 giây được coi là lỗi và hiện Retry.",
-        "**Still open (FQ-07):** How long does a 'Waiting to send' message keep trying before it becomes 'Not sent'?||**Còn mở (FQ-07):** Tin 'Waiting to send' thử bao lâu rồi mới thành 'Not sent'?",
-        "**Still open (FQ-21):** The prototype shows 'Waiting to send' and nothing for a send that failed. Where do 'Not sent', Retry and Delete appear?||**Còn mở (FQ-21):** Prototype có 'Waiting to send' và không có gì cho trường hợp gửi lỗi. 'Not sent', Retry và Delete hiện ở đâu?"
+        "**In the prototype:** The composer and Send exist. With the demo offline switch on, a sent message appears faded with 'Waiting to send'. **'Not sent', Retry and Delete are not in the prototype** (the words do not occur in it), and there is no character counter.||**Trong prototype:** Ô soạn tin và Send có trong prototype. Khi bật công tắc demo offline, tin gửi đi hiện mờ kèm 'Waiting to send'. **'Not sent', Retry và Delete không có trong prototype** (các chữ này không xuất hiện), và không có bộ đếm ký tự."
        ],
        "nodes": [
         {
@@ -7688,7 +7934,20 @@
         "Frontend (web app)||Frontend (ứng dụng web)",
         "Backend (API, jobs, storage)||Backend (API, job, lưu trữ)"
        ],
-       "rowHeight": 100
+       "rowHeight": 100,
+       "sources": {
+        "title": "Sources||Nguồn",
+        "items": [
+         [
+          "How long may a message be, and how many files may it carry? (G9)||Một tin nhắn dài tối đa bao nhiêu, và kèm được bao nhiêu file? (G9)",
+          "You confirmed: A message holds up to 10,000 characters and 10 files.||Bạn đã xác nhận: Một tin tối đa 10.000 ký tự và 10 file."
+         ],
+         "**Rule NR11** (made from GAP-17 · OQ8): Writing to a conversation (sending, starting a Meet, scheduling) requires membership. Pickers list only conversations you have joined.||**Quy tắc NR11** (rút ra từ GAP-17 · OQ8): Muốn ghi vào một hội thoại (gửi tin, bắt đầu Meet, đặt lịch) phải là thành viên của nó. Danh sách chọn chỉ gồm hội thoại mình đã tham gia.",
+         "**Rule NR13** (made from GAP-21 · OQ11): When the connection drops: loaded content stays readable; messages being sent wait and send themselves when the connection returns; every other action is blocked with an explanation, never a false success.||**Quy tắc NR13** (rút ra từ GAP-21 · OQ11): Khi mất kết nối: nội dung đã tải vẫn đọc được; tin đang gửi chuyển sang chờ và tự gửi lại khi có mạng; mọi thao tác khác bị chặn kèm lời giải thích, không báo thành công giả.",
+         "**Technical design:** The app creates the message ID, so sending the same message again cannot create a second one.||**Thiết kế kỹ thuật:** Ứng dụng tự tạo ID tin nhắn, nên gửi lại cùng một tin không thể tạo ra tin thứ hai.",
+         "**Assumed, not confirmed (FA-02):** A request with no answer after 10 seconds counts as failed and shows Retry.||**Giả định, chưa xác nhận (FA-02):** Request không có trả lời sau 10 giây được coi là lỗi và hiện Retry."
+        ]
+       }
       },
       {
        "title": "2.6 Attach files to a message||2.6 Đính kèm file vào tin nhắn",
@@ -7699,14 +7958,7 @@
         "**Validation:** at most 10 files per message, 100 MB each. A refused file is named in the message; the others continue.||**Kiểm tra:** tối đa 10 file mỗi tin, mỗi file 100 MB. File bị từ chối được nêu tên trong thông báo; các file khác vẫn tiếp tục.",
         "**Cancel:** × on a card stops that upload and removes the card. Deleting the whole draft removes every card.||**Huỷ:** × trên thẻ dừng việc tải file đó và bỏ thẻ. Xoá cả bản nháp thì bỏ mọi thẻ.",
         "**Loading:** a thumbnail that is not ready shows a placeholder of the right proportions, so the list does not jump.||**Đang tải:** thumbnail chưa sẵn sàng thì hiện ô giữ chỗ đúng tỉ lệ, để danh sách không bị giật.",
-        "**In the prototype:** The paperclip in the composer adds a finished sample file at once. There is no file picker, progress bar, limit or failure (finding N-07). The numbers 10 and 100 MB appear nowhere in the prototype.||**Trong prototype:** Icon kẹp giấy ở ô soạn tin thêm ngay một file mẫu đã xong. Không có chọn file, thanh tiến độ, giới hạn hay lỗi (phát hiện N-07). Con số 10 và 100 MB không xuất hiện ở đâu trong prototype.",
-        "**Why the chart is drawn this way.** Each line below is a question that was asked and the answer chosen, then what is still assumed or open.||**Vì sao sơ đồ được vẽ như vậy.** Mỗi dòng dưới đây là một câu hỏi đã được hỏi và câu trả lời đã chọn, sau đó là những gì còn giả định hoặc còn mở.",
-        "**Question (G9):** How long may a message be, and how many files may it carry? **You confirmed:** A message holds up to 10,000 characters and 10 files.||**Câu hỏi (G9):** Một tin nhắn dài tối đa bao nhiêu, và kèm được bao nhiêu file? **Bạn đã xác nhận:** Một tin tối đa 10.000 ký tự và 10 file.",
-        "**Question (Q14):** Where are files stored, what is the size limit, and which previews are built: image thumbnails, PDFs, link previews? **You chose the recommended option:** (b) MinIO, 100 MB, image thumbnails, link previews||**Câu hỏi (Q14):** File lưu ở đâu, giới hạn dung lượng bao nhiêu, và làm những loại xem trước nào: thumbnail ảnh, PDF, link preview? **Bạn chọn phương án được đề xuất:** (b) MinIO, 100 MB, thumbnail ảnh, link preview",
-        "**Rule NR11** (made from GAP-17 · OQ8): Writing to a conversation (sending, starting a Meet, scheduling) requires membership. Pickers list only conversations you have joined.||**Quy tắc NR11** (rút ra từ GAP-17 · OQ8): Muốn ghi vào một hội thoại (gửi tin, bắt đầu Meet, đặt lịch) phải là thành viên của nó. Danh sách chọn chỉ gồm hội thoại mình đã tham gia.",
-        "**Proposal, not confirmed (F18):** Written flow: Send files, images and links||**Đề xuất, chưa xác nhận (F18):** Flow viết: Gửi file, ảnh, link",
-        "**Assumed, not confirmed (FA-07):** A file uploaded but never sent is deleted from storage after 24 hours.||**Giả định, chưa xác nhận (FA-07):** File đã tải lên nhưng không bao giờ được gửi sẽ bị xoá khỏi kho sau 24 giờ.",
-        "**Still open (FQ-04):** Are any file types refused (for example programs), or is every type accepted up to 100 MB?||**Còn mở (FQ-04):** Có loại file nào bị từ chối không (ví dụ chương trình), hay nhận mọi loại tới 100 MB?"
+        "**In the prototype:** The paperclip in the composer adds a finished sample file at once. There is no file picker, progress bar, limit or failure (finding N-07). The numbers 10 and 100 MB appear nowhere in the prototype.||**Trong prototype:** Icon kẹp giấy ở ô soạn tin thêm ngay một file mẫu đã xong. Không có chọn file, thanh tiến độ, giới hạn hay lỗi (phát hiện N-07). Con số 10 và 100 MB không xuất hiện ở đâu trong prototype."
        ],
        "nodes": [
         {
@@ -7885,7 +8137,22 @@
         "Frontend (web app)||Frontend (ứng dụng web)",
         "Backend (API, jobs, storage)||Backend (API, job, lưu trữ)"
        ],
-       "rowHeight": 100
+       "rowHeight": 100,
+       "sources": {
+        "title": "Sources||Nguồn",
+        "items": [
+         [
+          "How long may a message be, and how many files may it carry? (G9)||Một tin nhắn dài tối đa bao nhiêu, và kèm được bao nhiêu file? (G9)",
+          "You confirmed: A message holds up to 10,000 characters and 10 files.||Bạn đã xác nhận: Một tin tối đa 10.000 ký tự và 10 file."
+         ],
+         [
+          "Where are files stored, what is the size limit, and which previews are built: image thumbnails, PDFs, link previews? (Q14)||File lưu ở đâu, giới hạn dung lượng bao nhiêu, và làm những loại xem trước nào: thumbnail ảnh, PDF, link preview? (Q14)",
+          "You chose the recommended option: (b) MinIO, 100 MB, image thumbnails, link previews||Bạn chọn phương án được đề xuất: (b) MinIO, 100 MB, thumbnail ảnh, link preview"
+         ],
+         "**Rule NR11** (made from GAP-17 · OQ8): Writing to a conversation (sending, starting a Meet, scheduling) requires membership. Pickers list only conversations you have joined.||**Quy tắc NR11** (rút ra từ GAP-17 · OQ8): Muốn ghi vào một hội thoại (gửi tin, bắt đầu Meet, đặt lịch) phải là thành viên của nó. Danh sách chọn chỉ gồm hội thoại mình đã tham gia.",
+         "**Assumed, not confirmed (FA-07):** A file uploaded but never sent is deleted from storage after 24 hours.||**Giả định, chưa xác nhận (FA-07):** File đã tải lên nhưng không bao giờ được gửi sẽ bị xoá khỏi kho sau 24 giờ."
+        ]
+       }
       },
       {
        "title": "2.7 Being mentioned: from the sender's @ to the recipient reading it||2.7 Được mention: từ dấu @ của người gửi tới lúc người nhận đọc",
@@ -7898,16 +8165,7 @@
         "**Open:** a mention always gets through the 'Mentions only' level. Whether it gets through Mute is not decided (question GQ-01 on the Gap analysis tab); the chart shows the muted case as badge only until it is.||**Còn mở:** mention luôn vượt qua mức 'Mentions only'. Nó có vượt qua Mute hay không thì chưa quyết định (câu hỏi GQ-01 ở tab Phân tích gap); cho tới lúc đó sơ đồ thể hiện trường hợp tắt tiếng là chỉ có huy hiệu.",
         "**Rule:** @channel in a channel of 20 or more people asks the sender to confirm first.||**Quy tắc:** @channel trong kênh từ 20 người trở lên hỏi người gửi xác nhận trước.",
         "**Edit:** adding a mention by editing notifies the new person; removing one removes the earlier notification.||**Sửa:** thêm mention khi sửa tin thì báo cho người mới; bỏ mention thì gỡ thông báo trước đó.",
-        "**In the prototype:** The @ button and the people picker are in the composer; Activity lists mentions; Pause and Focus time are in the account menu; Preferences has 'Notify me for @mentions even in muted channels'. Push and the recipient's side cannot be observed: only one person is simulated.||**Trong prototype:** Nút @ và danh sách chọn người nằm ở ô soạn tin; Activity liệt kê mention; Pause và Focus time nằm trong menu tài khoản; Preferences có 'Notify me for @mentions even in muted channels'. Push và phía người nhận không quan sát được: prototype chỉ mô phỏng một người.",
-        "**Why the chart is drawn this way.** Each line below is a question that was asked and the answer chosen, then what is still assumed or open.||**Vì sao sơ đồ được vẽ như vậy.** Mỗi dòng dưới đây là một câu hỏi đã được hỏi và câu trả lời đã chọn, sau đó là những gì còn giả định hoặc còn mở.",
-        "**Question (Q16):** The prototype has desktop notifications, sound, missed-mention email, per-channel levels, mute, Pause and Focus time. Which of these are in phase 1? **You chose the recommended option:** Badges, Web Push, sound, per-channel level, mute, Pause, Focus time. Missed-mention email later||**Câu hỏi (Q16):** Prototype có thông báo desktop, âm thanh, email khi lỡ mention, mức theo kênh, tắt tiếng, Pause và Focus time. Những gì có trong phase 1? **Bạn chọn phương án được đề xuất:** Badge, Web Push, âm thanh, mức theo channel, mute, Pause, Focus time. Thư báo lỡ mention để sau",
-        "**Rule NR5** (made from GAP-20, 26 · OQ10): Your own action never notifies you. An Activity item becomes done on its own once the thing it asks for is done. Activity is newest first and has a filter chip for every kind of item.||**Quy tắc NR5** (rút ra từ GAP-20, 26 · OQ10): Hành động của chính mình không tạo thông báo cho mình. Mục Activity tự chuyển thành đã xong khi việc nó nhắc tới đã được làm. Activity xếp mới nhất trước và có chip lọc cho mọi loại mục.",
-        "**Rule NR6** (made from GAP-25, 38 · OQ14): During Pause or Focus time there is no toast, push or sound, including reminders you set yourself. Badges still update. When it ends, one summary lists what arrived. Starting Focus during Focus extends it rather than nesting; ending restores the earlier status.||**Quy tắc NR6** (rút ra từ GAP-25, 38 · OQ14): Trong lúc Pause hoặc Focus time, không có toast, push hay âm thanh nào, kể cả reminder do mình đặt. Badge vẫn cập nhật. Khi kết thúc, hiện một tổng kết những gì đã đến. Bật Focus khi đang Focus thì gia hạn, không lồng; kết thúc thì trả lại status trước đó.",
-        "**Question (G13):** What is the default notification level? **You confirmed:** Default notification level: 'Mentions only' for channels, 'All messages' for DMs.||**Câu hỏi (G13):** Mức thông báo mặc định là gì? **Bạn đã xác nhận:** Mặc định mức thông báo: kênh là “Chỉ khi được nhắc”, DM là “Mọi tin nhắn”.",
-        "**Question (G8):** Who may edit a channel's topic and use @channel? **You confirmed:** Any channel member can edit the topic and use @channel; in a channel of 20 or more people, @channel asks for confirmation first.||**Câu hỏi (G8):** Ai được sửa chủ đề kênh và dùng @channel? **Bạn đã xác nhận:** Mọi thành viên của kênh sửa được topic và dùng được @channel; kênh từ 20 người thì hỏi xác nhận trước khi gửi @channel.",
-        "**Question (G11):** What does a push notification show? **You confirmed:** A push notification shows the sender, the conversation and the start of the message.||**Câu hỏi (G11):** Thông báo push hiện những gì? **Bạn đã xác nhận:** Thông báo đẩy hiện tên người gửi, tên hội thoại và đoạn đầu của tin.",
-        "**Assumed, not confirmed (FA-12):** A mention of someone who is not in the channel creates no notification; the sender is offered 'Add them'.||**Giả định, chưa xác nhận (FA-12):** Mention một người không ở trong kênh thì không tạo thông báo; người gửi được đề nghị 'Add them'.",
-        "**Still open (GQ-01):** Does a mention notify the person when the conversation is muted?||**Còn mở (GQ-01):** Mention có báo cho người đó khi cuộc trò chuyện đã bị tắt tiếng không?"
+        "**In the prototype:** The @ button and the people picker are in the composer; Activity lists mentions; Pause and Focus time are in the account menu; Preferences has 'Notify me for @mentions even in muted channels'. Push and the recipient's side cannot be observed: only one person is simulated.||**Trong prototype:** Nút @ và danh sách chọn người nằm ở ô soạn tin; Activity liệt kê mention; Pause và Focus time nằm trong menu tài khoản; Preferences có 'Notify me for @mentions even in muted channels'. Push và phía người nhận không quan sát được: prototype chỉ mô phỏng một người."
        ],
        "nodes": [
         {
@@ -8154,7 +8412,31 @@
         "Frontend (web app)||Frontend (ứng dụng web)",
         "Backend (API, jobs, storage)||Backend (API, job, lưu trữ)"
        ],
-       "rowHeight": 100
+       "rowHeight": 100,
+       "sources": {
+        "title": "Sources||Nguồn",
+        "items": [
+         [
+          "The prototype has desktop notifications, sound, missed-mention email, per-channel levels, mute, Pause and Focus time. Which of these are in phase 1? (Q16)||Prototype có thông báo desktop, âm thanh, email khi lỡ mention, mức theo kênh, tắt tiếng, Pause và Focus time. Những gì có trong phase 1? (Q16)",
+          "You chose the recommended option: Badges, Web Push, sound, per-channel level, mute, Pause, Focus time. Missed-mention email later||Bạn chọn phương án được đề xuất: Badge, Web Push, âm thanh, mức theo channel, mute, Pause, Focus time. Thư báo lỡ mention để sau"
+         ],
+         "**Rule NR5** (made from GAP-20, 26 · OQ10): Your own action never notifies you. An Activity item becomes done on its own once the thing it asks for is done. Activity is newest first and has a filter chip for every kind of item.||**Quy tắc NR5** (rút ra từ GAP-20, 26 · OQ10): Hành động của chính mình không tạo thông báo cho mình. Mục Activity tự chuyển thành đã xong khi việc nó nhắc tới đã được làm. Activity xếp mới nhất trước và có chip lọc cho mọi loại mục.",
+         "**Rule NR6** (made from GAP-25, 38 · OQ14): During Pause or Focus time there is no toast, push or sound, including reminders you set yourself. Badges still update. When it ends, one summary lists what arrived. Starting Focus during Focus extends it rather than nesting; ending restores the earlier status.||**Quy tắc NR6** (rút ra từ GAP-25, 38 · OQ14): Trong lúc Pause hoặc Focus time, không có toast, push hay âm thanh nào, kể cả reminder do mình đặt. Badge vẫn cập nhật. Khi kết thúc, hiện một tổng kết những gì đã đến. Bật Focus khi đang Focus thì gia hạn, không lồng; kết thúc thì trả lại status trước đó.",
+         [
+          "What is the default notification level? (G13)||Mức thông báo mặc định là gì? (G13)",
+          "You confirmed: Default notification level: 'Mentions only' for channels, 'All messages' for DMs.||Bạn đã xác nhận: Mặc định mức thông báo: kênh là “Chỉ khi được nhắc”, DM là “Mọi tin nhắn”."
+         ],
+         [
+          "Who may edit a channel's topic and use @channel? (G8)||Ai được sửa chủ đề kênh và dùng @channel? (G8)",
+          "You confirmed: Any channel member can edit the topic and use @channel; in a channel of 20 or more people, @channel asks for confirmation first.||Bạn đã xác nhận: Mọi thành viên của kênh sửa được topic và dùng được @channel; kênh từ 20 người thì hỏi xác nhận trước khi gửi @channel."
+         ],
+         [
+          "What does a push notification show? (G11)||Thông báo push hiện những gì? (G11)",
+          "You confirmed: A push notification shows the sender, the conversation and the start of the message.||Bạn đã xác nhận: Thông báo đẩy hiện tên người gửi, tên hội thoại và đoạn đầu của tin."
+         ],
+         "**Assumed, not confirmed (FA-12):** A mention of someone who is not in the channel creates no notification; the sender is offered 'Add them'.||**Giả định, chưa xác nhận (FA-12):** Mention một người không ở trong kênh thì không tạo thông báo; người gửi được đề nghị 'Add them'."
+        ]
+       }
       },
       {
        "title": "2.8 Create a channel||2.8 Tạo một kênh",
@@ -8165,18 +8447,7 @@
         "**Validation:** lowercase letters, digits and hyphens, up to 80 characters, unique among all channels including archived ones. Public or private is chosen here and cannot be changed later.||**Kiểm tra:** chữ thường, số và gạch nối, tối đa 80 ký tự, không trùng với mọi kênh kể cả kênh đã lưu trữ. Công khai hay riêng tư chọn tại đây và sau này không đổi được.",
         "**Cancel:** Cancel, Esc or the × asks 'Discard this channel?' if anything was typed; an outside click does nothing.||**Huỷ:** Cancel, Esc hoặc × sẽ hỏi 'Discard this channel?' nếu đã gõ gì đó; bấm ra ngoài thì không có gì xảy ra.",
         "**Rule:** after creating, the screen shows the new thing.||**Quy tắc:** sau khi tạo, màn hình phải hiện thứ vừa tạo.",
-        "**In the prototype:** **A channel cannot be created in the prototype.** The sidebar has a '#' icon and a '+ Browse channels' row; both open Browse channels, which has a search field and Join or Open per row, and nothing to create a channel (finding N-03).||**Trong prototype:** **Prototype không tạo được kênh.** Sidebar có icon '#' và hàng '+ Browse channels'; cả hai đều mở Browse channels, nơi chỉ có ô tìm và nút Join hoặc Open trên từng hàng, không có gì để tạo kênh (phát hiện N-03).",
-        "**Why the chart is drawn this way.** Each line below is a question that was asked and the answer chosen, then what is still assumed or open.||**Vì sao sơ đồ được vẽ như vậy.** Mỗi dòng dưới đây là một câu hỏi đã được hỏi và câu trả lời đã chọn, sau đó là những gì còn giả định hoặc còn mở.",
-        "**Question (Q12):** The prototype shows Owner, Admin and ordinary members but no difference between them. Who is allowed to do what? **You chose the recommended option:** As in the capability table under Roles & States||**Câu hỏi (Q12):** Prototype có Owner, Admin và thành viên thường nhưng không thể hiện khác biệt. Ai được làm gì? **Bạn chọn phương án được đề xuất:** Như bảng quyền ở mục Phạm vi",
-        "**Question (G7):** What may a channel name contain, and can a channel switch between public and private? **You confirmed:** Channel names: lowercase letters, digits, hyphens, up to 80 characters, unique. Public cannot become private after creation, or the reverse.||**Câu hỏi (G7):** Tên kênh gồm những gì, và kênh có đổi qua lại giữa công khai và riêng tư được không? **Bạn đã xác nhận:** Tên kênh: chữ thường, số, gạch nối, tối đa 80 ký tự, không trùng. Không đổi công khai thành riêng tư sau khi tạo.",
-        "**Rule NR4** (made from GAP-22 · OQ12): A form that has content does not close on an outside click; closing it by button asks whether to discard.||**Quy tắc NR4** (rút ra từ GAP-22 · OQ12): Form đã có nội dung không đóng khi bấm ra ngoài; đóng bằng nút thì hỏi có bỏ nội dung không.",
-        "**Rule NR10** (made from GAP-13, 14, 38): After something is created, the screen shows it; if a filter would hide it, the filter changes.||**Quy tắc NR10** (rút ra từ GAP-13, 14, 38): Sau khi tạo một thứ, màn hình phải hiện ra thứ vừa tạo; nếu bộ lọc đang ẩn nó thì đổi bộ lọc.",
-        "**Proposal, not confirmed (F20):** Written flow: Create a channel||**Đề xuất, chưa xác nhận (F20):** Flow viết: Tạo kênh",
-        "**Assumed, not confirmed (FA-04):** Typing a space in a channel name turns it into a hyphen, and capitals into lowercase, instead of showing an error.||**Giả định, chưa xác nhận (FA-04):** Gõ khoảng trắng trong tên kênh thì tự thành gạch nối, chữ hoa thành chữ thường, thay vì báo lỗi.",
-        "**Assumed, not confirmed (FA-05):** The uniqueness of a channel name includes archived channels.||**Giả định, chưa xác nhận (FA-05):** Tính không trùng của tên kênh bao gồm cả kênh đã lưu trữ.",
-        "**Still open (FQ-17):** **Your finding:** the prototype has no '+' for a new channel, only '+ Browse channels', and Browse channels has nothing to create one. Where does 'Create channel' live?||**Còn mở (FQ-17):** **Bạn phát hiện:** prototype không có '+' để tạo kênh, chỉ có '+ Browse channels', và trong Browse channels không có chỗ nào để tạo. 'Create channel' nằm ở đâu?",
-        "**Still open (FQ-18):** Which fields does the Create channel dialog have, and what are their limits?||**Còn mở (FQ-18):** Hộp thoại Create channel có những ô nào, và giới hạn của chúng?",
-        "**Still open (GQ-20):** Is the capability matrix on the Roles & States tab the agreed authority for what Members and Admins see?||**Còn mở (GQ-20):** Bảng quyền ở tab Roles & States có phải là căn cứ đã thống nhất cho những gì Member và Admin thấy không?"
+        "**In the prototype:** **A channel cannot be created in the prototype.** The sidebar has a '#' icon and a '+ Browse channels' row; both open Browse channels, which has a search field and Join or Open per row, and nothing to create a channel (finding N-03).||**Trong prototype:** **Prototype không tạo được kênh.** Sidebar có icon '#' và hàng '+ Browse channels'; cả hai đều mở Browse channels, nơi chỉ có ô tìm và nút Join hoặc Open trên từng hàng, không có gì để tạo kênh (phát hiện N-03)."
        ],
        "nodes": [
         {
@@ -8354,7 +8625,24 @@
         "Frontend (web app)||Frontend (ứng dụng web)",
         "Backend (API, jobs, storage)||Backend (API, job, lưu trữ)"
        ],
-       "rowHeight": 100
+       "rowHeight": 100,
+       "sources": {
+        "title": "Sources||Nguồn",
+        "items": [
+         [
+          "The prototype shows Owner, Admin and ordinary members but no difference between them. Who is allowed to do what? (Q12)||Prototype có Owner, Admin và thành viên thường nhưng không thể hiện khác biệt. Ai được làm gì? (Q12)",
+          "You chose the recommended option: As in the capability table under Roles & States||Bạn chọn phương án được đề xuất: Như bảng quyền ở mục Phạm vi"
+         ],
+         [
+          "What may a channel name contain, and can a channel switch between public and private? (G7)||Tên kênh gồm những gì, và kênh có đổi qua lại giữa công khai và riêng tư được không? (G7)",
+          "You confirmed: Channel names: lowercase letters, digits, hyphens, up to 80 characters, unique. Public cannot become private after creation, or the reverse.||Bạn đã xác nhận: Tên kênh: chữ thường, số, gạch nối, tối đa 80 ký tự, không trùng. Không đổi công khai thành riêng tư sau khi tạo."
+         ],
+         "**Rule NR4** (made from GAP-22 · OQ12): A form that has content does not close on an outside click; closing it by button asks whether to discard.||**Quy tắc NR4** (rút ra từ GAP-22 · OQ12): Form đã có nội dung không đóng khi bấm ra ngoài; đóng bằng nút thì hỏi có bỏ nội dung không.",
+         "**Rule NR10** (made from GAP-13, 14, 38): After something is created, the screen shows it; if a filter would hide it, the filter changes.||**Quy tắc NR10** (rút ra từ GAP-13, 14, 38): Sau khi tạo một thứ, màn hình phải hiện ra thứ vừa tạo; nếu bộ lọc đang ẩn nó thì đổi bộ lọc.",
+         "**Assumed, not confirmed (FA-04):** Typing a space in a channel name turns it into a hyphen, and capitals into lowercase, instead of showing an error.||**Giả định, chưa xác nhận (FA-04):** Gõ khoảng trắng trong tên kênh thì tự thành gạch nối, chữ hoa thành chữ thường, thay vì báo lỗi.",
+         "**Assumed, not confirmed (FA-05):** The uniqueness of a channel name includes archived channels.||**Giả định, chưa xác nhận (FA-05):** Tính không trùng của tên kênh bao gồm cả kênh đã lưu trữ."
+        ]
+       }
       },
       {
        "title": "2.9 Join a public channel, and leave a channel||2.9 Tham gia kênh công khai, và rời một kênh",
@@ -8365,15 +8653,7 @@
         "**After (leave):** the channel leaves the sidebar; its unread and Activity items are cleared; 'X left' line in the channel.||**Sau (rời):** kênh rời sidebar; số chưa đọc và mục Activity của nó được xoá; dòng 'X left' trong kênh.",
         "**Rule:** #general cannot be left. A reversible action shows Undo for 5 seconds; an irreversible one asks for confirmation; never both.||**Quy tắc:** không rời được #general. Hành động hoàn tác được thì hiện Undo 5 giây; không hoàn tác được thì hỏi xác nhận; không bao giờ cả hai.",
         "**Empty and archived:** no match shows 'No channels match' and a Create button carrying the search text; archived channels are listed with a View button only.||**Trống và lưu trữ:** không có kết quả thì hiện 'No channels match' và nút Create mang sẵn từ đã tìm; kênh đã lưu trữ chỉ có nút View.",
-        "**In the prototype:** Browse channels (search, Join, Open) exists. Leaving is in the Details panel: 'Leave channel', then 'Leave #name? You can rejoin from Browse channels.', then a toast with Undo, for public and private alike (finding N-09). Removing someone else from a channel does not exist.||**Trong prototype:** Browse channels (tìm, Join, Open) có trong prototype. Rời kênh nằm ở panel Details: 'Leave channel', rồi 'Leave #name? You can rejoin from Browse channels.', rồi một toast có Undo, giống nhau cho kênh công khai và riêng tư (phát hiện N-09). Gỡ người khác khỏi kênh thì không có.",
-        "**Why the chart is drawn this way.** Each line below is a question that was asked and the answer chosen, then what is still assumed or open.||**Vì sao sơ đồ được vẽ như vậy.** Mỗi dòng dưới đây là một câu hỏi đã được hỏi và câu trả lời đã chọn, sau đó là những gì còn giả định hoặc còn mở.",
-        "**Question (G1):** Which channel does everyone start in, and can it be left? **You confirmed:** Every workspace has a #general channel created at setup; every member is in it automatically; it cannot be left or archived.||**Câu hỏi (G1):** Mọi người bắt đầu ở kênh nào, và có rời kênh đó được không? **Bạn đã xác nhận:** Mỗi workspace có kênh #general tạo sẵn; mọi thành viên tự động ở trong đó; không rời và không lưu trữ được.",
-        "**Rule NR3** (made from GAP-24 · OQ12): A reversible action happens at once and shows a toast with Undo for 5 seconds. An irreversible action, or one that affects other people, asks for confirmation and names its target. Never both for one action.||**Quy tắc NR3** (rút ra từ GAP-24 · OQ12): Hành động hoàn tác được thì làm ngay và hiện toast có nút Hoàn tác trong 5 giây. Hành động không hoàn tác được hoặc ảnh hưởng người khác thì hỏi xác nhận, nêu rõ đối tượng. Không dùng cả hai cho một hành động.",
-        "**Question (OQ2):** After leaving a private channel, can a member rejoin alone or do they need an invitation? **Answer:** A member must invite them back. The leave confirmation says so; Undo is still offered for 5 seconds. Private channels never appear in Browse or Ctrl+K for outsiders. If the last member leaves, the channel is archived.||**Câu hỏi (OQ2):** Rời channel riêng tư rồi thì tự vào lại hay cần lời mời mới? **Trả lời:** Cần một thành viên mời lại. Lời xác nhận khi rời nói rõ điều đó; vẫn có Hoàn tác trong 5 giây. Channel riêng tư không xuất hiện trong Browse hay Ctrl+K với người ngoài. Nếu người cuối cùng rời đi, channel được lưu trữ.",
-        "**Question (Q27):** What do people who join a channel later see of its history, and what happens to a channel that is no longer used? **You chose the recommended option:** Full history; channels are archived, never deleted||**Câu hỏi (Q27):** Người vào kênh sau thấy được gì trong lịch sử, và kênh không dùng nữa thì xử lý ra sao? **Bạn chọn phương án được đề xuất:** Thấy toàn bộ lịch sử; lưu trữ được, không xóa hẳn",
-        "**Question (G14):** Do Admins and Owners see and manage every conversation? **You confirmed:** Admins and Owners do not automatically see private channels or DMs; deleting messages, removing people and archiving apply only where they are members.||**Câu hỏi (G14):** Admin và Owner có thấy và quản lý mọi cuộc trò chuyện không? **Bạn đã xác nhận:** Admin và Owner không tự động thấy kênh riêng tư hay DM; quyền xóa tin, gỡ người, lưu trữ chỉ áp dụng ở nơi họ là thành viên.",
-        "**Assumed, not confirmed (FA-10):** Leaving a channel clears its unread count and its open Activity items for that person.||**Giả định, chưa xác nhận (FA-10):** Rời một kênh thì xoá số chưa đọc và các mục Activity còn mở của kênh đó với người rời.",
-        "**Still open (FQ-19):** Can an Owner or Admin remove a member from any channel? Decided so far (G14): no, only from a channel they belong to, and never from #general. Does that stand, and can the creator of a channel remove people too?||**Còn mở (FQ-19):** Owner hoặc Admin có gỡ được thành viên khỏi một kênh bất kỳ không? Hiện đã quyết định (G14): không, chỉ trong kênh họ là thành viên, và không bao giờ khỏi #general. Giữ như vậy chứ, và người tạo kênh có được gỡ người không?"
+        "**In the prototype:** Browse channels (search, Join, Open) exists. Leaving is in the Details panel: 'Leave channel', then 'Leave #name? You can rejoin from Browse channels.', then a toast with Undo, for public and private alike (finding N-09). Removing someone else from a channel does not exist.||**Trong prototype:** Browse channels (tìm, Join, Open) có trong prototype. Rời kênh nằm ở panel Details: 'Leave channel', rồi 'Leave #name? You can rejoin from Browse channels.', rồi một toast có Undo, giống nhau cho kênh công khai và riêng tư (phát hiện N-09). Gỡ người khác khỏi kênh thì không có."
        ],
        "nodes": [
         {
@@ -8626,7 +8906,30 @@
         "Frontend (web app)||Frontend (ứng dụng web)",
         "Backend (API, jobs, storage)||Backend (API, job, lưu trữ)"
        ],
-       "rowHeight": 100
+       "rowHeight": 100,
+       "sources": {
+        "title": "Sources||Nguồn",
+        "items": [
+         [
+          "Which channel does everyone start in, and can it be left? (G1)||Mọi người bắt đầu ở kênh nào, và có rời kênh đó được không? (G1)",
+          "You confirmed: Every workspace has a #general channel created at setup; every member is in it automatically; it cannot be left or archived.||Bạn đã xác nhận: Mỗi workspace có kênh #general tạo sẵn; mọi thành viên tự động ở trong đó; không rời và không lưu trữ được."
+         ],
+         "**Rule NR3** (made from GAP-24 · OQ12): A reversible action happens at once and shows a toast with Undo for 5 seconds. An irreversible action, or one that affects other people, asks for confirmation and names its target. Never both for one action.||**Quy tắc NR3** (rút ra từ GAP-24 · OQ12): Hành động hoàn tác được thì làm ngay và hiện toast có nút Hoàn tác trong 5 giây. Hành động không hoàn tác được hoặc ảnh hưởng người khác thì hỏi xác nhận, nêu rõ đối tượng. Không dùng cả hai cho một hành động.",
+         [
+          "After leaving a private channel, can a member rejoin alone or do they need an invitation? (OQ2)||Rời channel riêng tư rồi thì tự vào lại hay cần lời mời mới? (OQ2)",
+          "Answer: A member must invite them back. The leave confirmation says so; Undo is still offered for 5 seconds. Private channels never appear in Browse or Ctrl+K for outsiders. If the last member leaves, the channel is archived.||Trả lời: Cần một thành viên mời lại. Lời xác nhận khi rời nói rõ điều đó; vẫn có Hoàn tác trong 5 giây. Channel riêng tư không xuất hiện trong Browse hay Ctrl+K với người ngoài. Nếu người cuối cùng rời đi, channel được lưu trữ."
+         ],
+         [
+          "What do people who join a channel later see of its history, and what happens to a channel that is no longer used? (Q27)||Người vào kênh sau thấy được gì trong lịch sử, và kênh không dùng nữa thì xử lý ra sao? (Q27)",
+          "You chose the recommended option: Full history; channels are archived, never deleted||Bạn chọn phương án được đề xuất: Thấy toàn bộ lịch sử; lưu trữ được, không xóa hẳn"
+         ],
+         [
+          "Do Admins and Owners see and manage every conversation? (G14)||Admin và Owner có thấy và quản lý mọi cuộc trò chuyện không? (G14)",
+          "You confirmed: Admins and Owners do not automatically see private channels or DMs; deleting messages, removing people and archiving apply only where they are members.||Bạn đã xác nhận: Admin và Owner không tự động thấy kênh riêng tư hay DM; quyền xóa tin, gỡ người, lưu trữ chỉ áp dụng ở nơi họ là thành viên."
+         ],
+         "**Assumed, not confirmed (FA-10):** Leaving a channel clears its unread count and its open Activity items for that person.||**Giả định, chưa xác nhận (FA-10):** Rời một kênh thì xoá số chưa đọc và các mục Activity còn mở của kênh đó với người rời."
+        ]
+       }
       },
       {
        "title": "2.10 Edit or delete your own message||2.10 Sửa hoặc xoá tin nhắn của mình",
@@ -8637,14 +8940,7 @@
         "**After (delete):** gone for everyone; attached files are removed from storage and from Files. A message with replies leaves a 'Message deleted' line and keeps its thread.||**Sau (xoá):** biến mất với mọi người; file đính kèm bị gỡ khỏi kho và khỏi Files. Tin có trả lời để lại dòng 'Message deleted' và giữ thread.",
         "**Cancel:** Esc or Cancel leaves the message untouched. Save is disabled while the text is unchanged; saving an empty text offers Delete instead.||**Huỷ:** Esc hoặc Cancel giữ nguyên tin. Save tắt khi nội dung chưa đổi; lưu nội dung trống thì chuyển sang đề nghị Delete.",
         "**Others:** Admins and Owners can delete other people's messages only in conversations they belong to; the author is told.||**Người khác:** Admin và Owner chỉ xoá được tin của người khác trong cuộc trò chuyện mà họ là thành viên; tác giả được báo.",
-        "**In the prototype:** The More menu on your own message has Edit and Delete. Edit turns the text into a field with Save and Cancel and adds '(edited)'. Deleting a message with a thread removes every reply in the prototype.||**Trong prototype:** Menu More trên tin của mình có Edit và Delete. Edit biến nội dung thành ô nhập có Save và Cancel, rồi thêm '(edited)'. Trong prototype, xoá một tin có thread thì xoá luôn mọi trả lời.",
-        "**Why the chart is drawn this way.** Each line below is a question that was asked and the answer chosen, then what is still assumed or open.||**Vì sao sơ đồ được vẽ như vậy.** Mỗi dòng dưới đây là một câu hỏi đã được hỏi và câu trả lời đã chọn, sau đó là những gì còn giả định hoặc còn mở.",
-        "**Question (Q13):** Is there a time limit on editing a message, and what happens when a message that has a thread is deleted? The prototype deletes every reply too. **You chose the recommended option:** Edit without limit; soft delete that keeps the thread||**Câu hỏi (Q13):** Có giới hạn thời gian sửa tin không, và khi xóa một tin có thread thì sao? Prototype xóa luôn mọi reply. **Bạn chọn phương án được đề xuất:** Sửa không giới hạn; xóa mềm, giữ thread",
-        "**Question (G10):** What happens to the files of a deleted message? **You confirmed:** Deleting a message also removes its attached files from storage.||**Câu hỏi (G10):** File của tin nhắn bị xoá thì ra sao? **Bạn đã xác nhận:** Xóa tin thì file đính kèm cũng bị gỡ khỏi kho.",
-        "**Question (G14):** Do Admins and Owners see and manage every conversation? **You confirmed:** Admins and Owners do not automatically see private channels or DMs; deleting messages, removing people and archiving apply only where they are members.||**Câu hỏi (G14):** Admin và Owner có thấy và quản lý mọi cuộc trò chuyện không? **Bạn đã xác nhận:** Admin và Owner không tự động thấy kênh riêng tư hay DM; quyền xóa tin, gỡ người, lưu trữ chỉ áp dụng ở nơi họ là thành viên.",
-        "**Question (G16):** What is shown when an admin deletes someone's message? **You confirmed:** A message deleted by an admin shows as 'Message deleted by an admin' and its author is told.||**Câu hỏi (G16):** Khi admin xoá tin của người khác thì hiện gì? **Bạn đã xác nhận:** Tin bị Admin xóa hiện là “Tin nhắn đã bị quản trị viên xóa” và tác giả được báo.",
-        "**Rule NR3** (made from GAP-24 · OQ12): A reversible action happens at once and shows a toast with Undo for 5 seconds. An irreversible action, or one that affects other people, asks for confirmation and names its target. Never both for one action.||**Quy tắc NR3** (rút ra từ GAP-24 · OQ12): Hành động hoàn tác được thì làm ngay và hiện toast có nút Hoàn tác trong 5 giây. Hành động không hoàn tác được hoặc ảnh hưởng người khác thì hỏi xác nhận, nêu rõ đối tượng. Không dùng cả hai cho một hành động.",
-        "**Still open (FQ-05):** A message is deleted while someone else is writing a reply in its thread. Is the reply still sent?||**Còn mở (FQ-05):** Một tin bị xoá trong lúc người khác đang viết trả lời trong thread của nó. Trả lời đó có được gửi không?"
+        "**In the prototype:** The More menu on your own message has Edit and Delete. Edit turns the text into a field with Save and Cancel and adds '(edited)'. Deleting a message with a thread removes every reply in the prototype.||**Trong prototype:** Menu More trên tin của mình có Edit và Delete. Edit biến nội dung thành ô nhập có Save và Cancel, rồi thêm '(edited)'. Trong prototype, xoá một tin có thread thì xoá luôn mọi trả lời."
        ],
        "nodes": [
         {
@@ -8895,7 +9191,29 @@
         "Frontend (web app)||Frontend (ứng dụng web)",
         "Backend (API, jobs, storage)||Backend (API, job, lưu trữ)"
        ],
-       "rowHeight": 100
+       "rowHeight": 100,
+       "sources": {
+        "title": "Sources||Nguồn",
+        "items": [
+         [
+          "Is there a time limit on editing a message, and what happens when a message that has a thread is deleted? The prototype deletes every reply too. (Q13)||Có giới hạn thời gian sửa tin không, và khi xóa một tin có thread thì sao? Prototype xóa luôn mọi reply. (Q13)",
+          "You chose the recommended option: Edit without limit; soft delete that keeps the thread||Bạn chọn phương án được đề xuất: Sửa không giới hạn; xóa mềm, giữ thread"
+         ],
+         [
+          "What happens to the files of a deleted message? (G10)||File của tin nhắn bị xoá thì ra sao? (G10)",
+          "You confirmed: Deleting a message also removes its attached files from storage.||Bạn đã xác nhận: Xóa tin thì file đính kèm cũng bị gỡ khỏi kho."
+         ],
+         [
+          "Do Admins and Owners see and manage every conversation? (G14)||Admin và Owner có thấy và quản lý mọi cuộc trò chuyện không? (G14)",
+          "You confirmed: Admins and Owners do not automatically see private channels or DMs; deleting messages, removing people and archiving apply only where they are members.||Bạn đã xác nhận: Admin và Owner không tự động thấy kênh riêng tư hay DM; quyền xóa tin, gỡ người, lưu trữ chỉ áp dụng ở nơi họ là thành viên."
+         ],
+         [
+          "What is shown when an admin deletes someone's message? (G16)||Khi admin xoá tin của người khác thì hiện gì? (G16)",
+          "You confirmed: A message deleted by an admin shows as 'Message deleted by an admin' and its author is told.||Bạn đã xác nhận: Tin bị Admin xóa hiện là “Tin nhắn đã bị quản trị viên xóa” và tác giả được báo."
+         ],
+         "**Rule NR3** (made from GAP-24 · OQ12): A reversible action happens at once and shows a toast with Undo for 5 seconds. An irreversible action, or one that affects other people, asks for confirmation and names its target. Never both for one action.||**Quy tắc NR3** (rút ra từ GAP-24 · OQ12): Hành động hoàn tác được thì làm ngay và hiện toast có nút Hoàn tác trong 5 giây. Hành động không hoàn tác được hoặc ảnh hưởng người khác thì hỏi xác nhận, nêu rõ đối tượng. Không dùng cả hai cho một hành động."
+        ]
+       }
       },
       {
        "title": "2.11 Save for Later and set a reminder||2.11 Lưu vào Later và đặt nhắc việc",
@@ -8907,13 +9225,7 @@
         "**Undo:** saving and un-saving are instant and reversible from the same bookmark; the toast 'Saved for Later' has a View button.||**Hoàn tác:** lưu và bỏ lưu đều tức thì và đảo lại được bằng chính nút bookmark; toast 'Saved for Later' có nút View.",
         "**Rule:** a count on a chip always equals the rows shown, including rows whose message was deleted.||**Quy tắc:** số trên chip luôn bằng số hàng đang hiện, kể cả hàng có tin đã bị xoá.",
         "**Empty:** with nothing saved, Later shows a centred note on how to save a message.||**Trống:** khi chưa lưu gì, Later hiện ghi chú ở giữa về cách lưu một tin.",
-        "**In the prototype:** The bookmark on a message, the Later section, 'Remind me' or 'Change' on each row with a menu of times, and 'Remind me about this' in the message menu all exist.||**Trong prototype:** Bookmark trên tin nhắn, mục Later, 'Remind me' hoặc 'Change' trên từng hàng kèm menu giờ, và 'Remind me about this' trong menu tin nhắn đều có trong prototype.",
-        "**Why the chart is drawn this way.** Each line below is a question that was asked and the answer chosen, then what is still assumed or open.||**Vì sao sơ đồ được vẽ như vậy.** Mỗi dòng dưới đây là một câu hỏi đã được hỏi và câu trả lời đã chọn, sau đó là những gì còn giả định hoặc còn mở.",
-        "**Question (Q2):** The prototype holds 14 feature groups. Which of them must be in the first release? **You chose the recommended option:** Core chat, Activity, Later, Files, People, Preferences, command palette||**Câu hỏi (Q2):** Prototype có 14 nhóm tính năng. Những nhóm nào bắt buộc có trong bản đầu tiên? **Bạn chọn phương án được đề xuất:** Chat lõi, Activity, Later, Files, People, Preferences, command palette",
-        "**Rule NR7** (made from GAP-12, 13, 16, 38): Dates and times: required fields cannot be left empty; where a future time is needed the past is rejected; the year is shown whenever it is not the current year; one format across the app; 'Invalid Date' never appears.||**Quy tắc NR7** (rút ra từ GAP-12, 13, 16, 38): Ngày giờ: trường bắt buộc thì không cho bỏ trống; nơi cần thời điểm tương lai thì từ chối quá khứ; luôn hiện năm khi khác năm hiện tại; một định dạng thống nhất toàn app; không bao giờ hiện \"Invalid Date\".",
-        "**Rule NR6** (made from GAP-25, 38 · OQ14): During Pause or Focus time there is no toast, push or sound, including reminders you set yourself. Badges still update. When it ends, one summary lists what arrived. Starting Focus during Focus extends it rather than nesting; ending restores the earlier status.||**Quy tắc NR6** (rút ra từ GAP-25, 38 · OQ14): Trong lúc Pause hoặc Focus time, không có toast, push hay âm thanh nào, kể cả reminder do mình đặt. Badge vẫn cập nhật. Khi kết thúc, hiện một tổng kết những gì đã đến. Bật Focus khi đang Focus thì gia hạn, không lồng; kết thúc thì trả lại status trước đó.",
-        "**Rule NR8** (made from GAP-29, 31, 33): Every searchable or filterable list has an empty state centred in the content area and written for that context. A count on a chip always equals the rows shown.||**Quy tắc NR8** (rút ra từ GAP-29, 31, 33): Mọi danh sách có tìm hoặc lọc đều có trạng thái trống đặt giữa vùng nội dung, viết riêng cho ngữ cảnh đó. Số đếm trên chip luôn khớp với số dòng hiển thị.",
-        "**Still open (FQ-06):** 'Today 15:00' in the reminder menu after 15:00: hidden, or replaced by another choice?||**Còn mở (FQ-06):** 'Today 15:00' trong menu nhắc việc khi đã quá 15:00: ẩn đi, hay thay bằng lựa chọn khác?"
+        "**In the prototype:** The bookmark on a message, the Later section, 'Remind me' or 'Change' on each row with a menu of times, and 'Remind me about this' in the message menu all exist.||**Trong prototype:** Bookmark trên tin nhắn, mục Later, 'Remind me' hoặc 'Change' trên từng hàng kèm menu giờ, và 'Remind me about this' trong menu tin nhắn đều có trong prototype."
        ],
        "nodes": [
         {
@@ -9142,7 +9454,19 @@
         "Frontend (web app)||Frontend (ứng dụng web)",
         "Backend (API, jobs, storage)||Backend (API, job, lưu trữ)"
        ],
-       "rowHeight": 100
+       "rowHeight": 100,
+       "sources": {
+        "title": "Sources||Nguồn",
+        "items": [
+         [
+          "The prototype holds 14 feature groups. Which of them must be in the first release? (Q2)||Prototype có 14 nhóm tính năng. Những nhóm nào bắt buộc có trong bản đầu tiên? (Q2)",
+          "You chose the recommended option: Core chat, Activity, Later, Files, People, Preferences, command palette||Bạn chọn phương án được đề xuất: Chat lõi, Activity, Later, Files, People, Preferences, command palette"
+         ],
+         "**Rule NR7** (made from GAP-12, 13, 16, 38): Dates and times: required fields cannot be left empty; where a future time is needed the past is rejected; the year is shown whenever it is not the current year; one format across the app; 'Invalid Date' never appears.||**Quy tắc NR7** (rút ra từ GAP-12, 13, 16, 38): Ngày giờ: trường bắt buộc thì không cho bỏ trống; nơi cần thời điểm tương lai thì từ chối quá khứ; luôn hiện năm khi khác năm hiện tại; một định dạng thống nhất toàn app; không bao giờ hiện \"Invalid Date\".",
+         "**Rule NR6** (made from GAP-25, 38 · OQ14): During Pause or Focus time there is no toast, push or sound, including reminders you set yourself. Badges still update. When it ends, one summary lists what arrived. Starting Focus during Focus extends it rather than nesting; ending restores the earlier status.||**Quy tắc NR6** (rút ra từ GAP-25, 38 · OQ14): Trong lúc Pause hoặc Focus time, không có toast, push hay âm thanh nào, kể cả reminder do mình đặt. Badge vẫn cập nhật. Khi kết thúc, hiện một tổng kết những gì đã đến. Bật Focus khi đang Focus thì gia hạn, không lồng; kết thúc thì trả lại status trước đó.",
+         "**Rule NR8** (made from GAP-29, 31, 33): Every searchable or filterable list has an empty state centred in the content area and written for that context. A count on a chip always equals the rows shown.||**Quy tắc NR8** (rút ra từ GAP-29, 31, 33): Mọi danh sách có tìm hoặc lọc đều có trạng thái trống đặt giữa vùng nội dung, viết riêng cho ngữ cảnh đó. Số đếm trên chip luôn khớp với số dòng hiển thị."
+        ]
+       }
       },
       {
        "title": "2.12 Admin: invite members||2.12 Admin: mời thành viên",
@@ -9154,16 +9478,7 @@
         "**Authorization:** checked on the server for every admin request; hiding the menu item is not the check.||**Phân quyền:** kiểm tra ở server cho mọi request admin; việc ẩn mục menu không phải là kiểm tra.",
         "**Row actions:** Resend sends a fresh link and restarts the 7 days; Revoke asks for confirmation and kills the old link at once.||**Thao tác trên hàng:** Resend gửi link mới và tính lại 7 ngày; Revoke hỏi xác nhận và vô hiệu link cũ ngay.",
         "**Mail down:** the row says 'Mail not sent' and the server command for emergency access still works.||**Mail hỏng:** hàng ghi 'Mail not sent' và lệnh server cho truy cập khẩn cấp vẫn dùng được.",
-        "**In the prototype:** **Not in the prototype.** Admin (the shield in the left navigation) has two tabs, analytics and automations; there is no members table and no invitation for members (finding N-02). The only invitation dialog is 'Invite a client' for guests.||**Trong prototype:** **Không có trong prototype.** Admin (icon khiên ở thanh điều hướng trái) có hai tab, thống kê và automation; không có bảng thành viên và không có lời mời cho thành viên (phát hiện N-02). Hộp thoại mời duy nhất là 'Invite a client' cho guest.",
-        "**Why the chart is drawn this way.** Each line below is a question that was asked and the answer chosen, then what is still assumed or open.||**Vì sao sơ đồ được vẽ như vậy.** Mỗi dòng dưới đây là một câu hỏi đã được hỏi và câu trả lời đã chọn, sau đó là những gì còn giả định hoặc còn mở.",
-        "**Question (Q11):** The prototype has no sign-in screen for members, only the guest one. How do members sign in, and how are accounts created? **You chose the recommended option:** (b) 6-digit emailed code, no password, admin invitation only, 30-day session||**Câu hỏi (Q11):** Prototype không có màn hình đăng nhập cho thành viên, chỉ có của guest. Thành viên đăng nhập thế nào, và tài khoản được tạo ra sao? **Bạn chọn phương án được đề xuất:** (b) Mã 6 số qua email, không mật khẩu, chỉ admin mời, phiên 30 ngày",
-        "**Question (Q26):** A fresh installation has no accounts. How does the first Owner come to exist? **Your answer:** Created from environment variables or seed; that admin invites members||**Câu hỏi (Q26):** Bản cài mới chưa có tài khoản nào. Owner đầu tiên được tạo thế nào? **Bạn trả lời:** Tạo từ biến môi trường hoặc seed; admin mời thành viên",
-        "**Question (Q12):** The prototype shows Owner, Admin and ordinary members but no difference between them. Who is allowed to do what? **You chose the recommended option:** As in the capability table under Roles & States||**Câu hỏi (Q12):** Prototype có Owner, Admin và thành viên thường nhưng không thể hiện khác biệt. Ai được làm gì? **Bạn chọn phương án được đề xuất:** Như bảng quyền ở mục Phạm vi",
-        "**Question (G4):** How long does an invitation last, and does its link need a sign-in code? **You confirmed:** An invitation expires after 7 days. The link in the invitation signs the person in directly, without a code.||**Câu hỏi (G4):** Lời mời có hạn bao lâu, và link trong đó có cần mã đăng nhập không? **Bạn đã xác nhận:** Lời mời hết hạn sau 7 ngày. Link trong thư mời đăng nhập thẳng, không cần mã.",
-        "**Proposal, not confirmed (F02):** Written flow: Invite members||**Đề xuất, chưa xác nhận (F02):** Flow viết: Mời thành viên",
-        "**Assumed, not confirmed (FA-11):** Batches of invitations are limited to 50 addresses.||**Giả định, chưa xác nhận (FA-11):** Một lô lời mời giới hạn 50 địa chỉ.",
-        "**Still open (FQ-03):** An Admin invites the address of a deactivated member. Refuse, or offer Reactivate?||**Còn mở (FQ-03):** Admin mời địa chỉ của một thành viên đã bị vô hiệu hoá. Từ chối, hay đề nghị Reactivate?",
-        "**Still open (FQ-11):** A batch of invitations fails halfway (the mail server goes down after 3 of 10). Keep the 3, or undo all?||**Còn mở (FQ-11):** Một lô lời mời lỗi giữa chừng (máy chủ mail hỏng sau 3 trên 10). Giữ 3 cái đã xong, hay huỷ hết?"
+        "**In the prototype:** **Not in the prototype.** Admin (the shield in the left navigation) has two tabs, analytics and automations; there is no members table and no invitation for members (finding N-02). The only invitation dialog is 'Invite a client' for guests.||**Trong prototype:** **Không có trong prototype.** Admin (icon khiên ở thanh điều hướng trái) có hai tab, thống kê và automation; không có bảng thành viên và không có lời mời cho thành viên (phát hiện N-02). Hộp thoại mời duy nhất là 'Invite a client' cho guest."
        ],
        "nodes": [
         {
@@ -9399,7 +9714,29 @@
         "Frontend (web app)||Frontend (ứng dụng web)",
         "Backend (API, jobs, storage)||Backend (API, job, lưu trữ)"
        ],
-       "rowHeight": 100
+       "rowHeight": 100,
+       "sources": {
+        "title": "Sources||Nguồn",
+        "items": [
+         [
+          "The prototype has no sign-in screen for members, only the guest one. How do members sign in, and how are accounts created? (Q11)||Prototype không có màn hình đăng nhập cho thành viên, chỉ có của guest. Thành viên đăng nhập thế nào, và tài khoản được tạo ra sao? (Q11)",
+          "You chose the recommended option: (b) 6-digit emailed code, no password, admin invitation only, 30-day session||Bạn chọn phương án được đề xuất: (b) Mã 6 số qua email, không mật khẩu, chỉ admin mời, phiên 30 ngày"
+         ],
+         [
+          "A fresh installation has no accounts. How does the first Owner come to exist? (Q26)||Bản cài mới chưa có tài khoản nào. Owner đầu tiên được tạo thế nào? (Q26)",
+          "Your answer: Created from environment variables or seed; that admin invites members||Bạn trả lời: Tạo từ biến môi trường hoặc seed; admin mời thành viên"
+         ],
+         [
+          "The prototype shows Owner, Admin and ordinary members but no difference between them. Who is allowed to do what? (Q12)||Prototype có Owner, Admin và thành viên thường nhưng không thể hiện khác biệt. Ai được làm gì? (Q12)",
+          "You chose the recommended option: As in the capability table under Roles & States||Bạn chọn phương án được đề xuất: Như bảng quyền ở mục Phạm vi"
+         ],
+         [
+          "How long does an invitation last, and does its link need a sign-in code? (G4)||Lời mời có hạn bao lâu, và link trong đó có cần mã đăng nhập không? (G4)",
+          "You confirmed: An invitation expires after 7 days. The link in the invitation signs the person in directly, without a code.||Bạn đã xác nhận: Lời mời hết hạn sau 7 ngày. Link trong thư mời đăng nhập thẳng, không cần mã."
+         ],
+         "**Assumed, not confirmed (FA-11):** Batches of invitations are limited to 50 addresses.||**Giả định, chưa xác nhận (FA-11):** Một lô lời mời giới hạn 50 địa chỉ."
+        ]
+       }
       },
       {
        "title": "2.13 Admin: change a role, deactivate a member||2.13 Admin: đổi vai trò, vô hiệu hoá thành viên",
@@ -9411,14 +9748,7 @@
         "**After (role):** the label updates on Admin, People and the profile; the person gets an Activity item and sees the Admin entry appear or disappear.||**Sau (vai trò):** nhãn cập nhật ở Admin, People và hồ sơ; người đó nhận một mục Activity và thấy mục Admin xuất hiện hoặc biến mất.",
         "**After (deactivate):** every session ends; old messages stay with a 'Deactivated' label; the person leaves People, mention lists and add-people lists; DMs with them become read-only. Reactivate restores access to the same channels.||**Sau (vô hiệu hoá):** mọi phiên kết thúc; tin cũ vẫn còn kèm nhãn 'Deactivated'; người đó rời People, danh sách mention và danh sách thêm người; DM với họ thành chỉ đọc. Reactivate trả lại quyền vào đúng các kênh cũ.",
         "**Cancel:** closing the confirmation changes nothing.||**Huỷ:** đóng hộp xác nhận thì không có gì thay đổi.",
-        "**In the prototype:** **Not in the prototype.** Admin has no members table, so there is no role menu and no Deactivate (finding N-02). People and the profile panel show a role label, read-only.||**Trong prototype:** **Không có trong prototype.** Admin không có bảng thành viên, nên không có menu vai trò và không có Deactivate (phát hiện N-02). People và panel hồ sơ có hiện nhãn vai trò, chỉ đọc.",
-        "**Why the chart is drawn this way.** Each line below is a question that was asked and the answer chosen, then what is still assumed or open.||**Vì sao sơ đồ được vẽ như vậy.** Mỗi dòng dưới đây là một câu hỏi đã được hỏi và câu trả lời đã chọn, sau đó là những gì còn giả định hoặc còn mở.",
-        "**Question (Q12):** The prototype shows Owner, Admin and ordinary members but no difference between them. Who is allowed to do what? **You chose the recommended option:** As in the capability table under Roles & States||**Câu hỏi (Q12):** Prototype có Owner, Admin và thành viên thường nhưng không thể hiện khác biệt. Ai được làm gì? **Bạn chọn phương án được đề xuất:** Như bảng quyền ở mục Phạm vi",
-        "**Question (G6):** Can there be several Owners, and what protects the last one? **You confirmed:** There can be several Owners. The last Owner cannot be demoted or deactivated.||**Câu hỏi (G6):** Có thể có nhiều Owner không, và Owner cuối cùng được bảo vệ thế nào? **Bạn đã xác nhận:** Có thể có nhiều Owner. Owner cuối cùng không bị hạ vai trò hay vô hiệu hóa được.",
-        "**Rule NR3** (made from GAP-24 · OQ12): A reversible action happens at once and shows a toast with Undo for 5 seconds. An irreversible action, or one that affects other people, asks for confirmation and names its target. Never both for one action.||**Quy tắc NR3** (rút ra từ GAP-24 · OQ12): Hành động hoàn tác được thì làm ngay và hiện toast có nút Hoàn tác trong 5 giây. Hành động không hoàn tác được hoặc ảnh hưởng người khác thì hỏi xác nhận, nêu rõ đối tượng. Không dùng cả hai cho một hành động.",
-        "**Proposal, not confirmed (F40):** Written flow: Change a role||**Đề xuất, chưa xác nhận (F40):** Flow viết: Đổi vai trò",
-        "**Proposal, not confirmed (F41):** Written flow: Deactivate and reactivate||**Đề xuất, chưa xác nhận (F41):** Flow viết: Vô hiệu hóa và kích hoạt lại",
-        "**Still open (GQ-20):** Is the capability matrix on the Roles & States tab the agreed authority for what Members and Admins see?||**Còn mở (GQ-20):** Bảng quyền ở tab Roles & States có phải là căn cứ đã thống nhất cho những gì Member và Admin thấy không?"
+        "**In the prototype:** **Not in the prototype.** Admin has no members table, so there is no role menu and no Deactivate (finding N-02). People and the profile panel show a role label, read-only.||**Trong prototype:** **Không có trong prototype.** Admin không có bảng thành viên, nên không có menu vai trò và không có Deactivate (phát hiện N-02). People và panel hồ sơ có hiện nhãn vai trò, chỉ đọc."
        ],
        "nodes": [
         {
@@ -9637,7 +9967,21 @@
         "Frontend (web app)||Frontend (ứng dụng web)",
         "Backend (API, jobs, storage)||Backend (API, job, lưu trữ)"
        ],
-       "rowHeight": 100
+       "rowHeight": 100,
+       "sources": {
+        "title": "Sources||Nguồn",
+        "items": [
+         [
+          "The prototype shows Owner, Admin and ordinary members but no difference between them. Who is allowed to do what? (Q12)||Prototype có Owner, Admin và thành viên thường nhưng không thể hiện khác biệt. Ai được làm gì? (Q12)",
+          "You chose the recommended option: As in the capability table under Roles & States||Bạn chọn phương án được đề xuất: Như bảng quyền ở mục Phạm vi"
+         ],
+         [
+          "Can there be several Owners, and what protects the last one? (G6)||Có thể có nhiều Owner không, và Owner cuối cùng được bảo vệ thế nào? (G6)",
+          "You confirmed: There can be several Owners. The last Owner cannot be demoted or deactivated.||Bạn đã xác nhận: Có thể có nhiều Owner. Owner cuối cùng không bị hạ vai trò hay vô hiệu hóa được."
+         ],
+         "**Rule NR3** (made from GAP-24 · OQ12): A reversible action happens at once and shows a toast with Undo for 5 seconds. An irreversible action, or one that affects other people, asks for confirmation and names its target. Never both for one action.||**Quy tắc NR3** (rút ra từ GAP-24 · OQ12): Hành động hoàn tác được thì làm ngay và hiện toast có nút Hoàn tác trong 5 giây. Hành động không hoàn tác được hoặc ảnh hưởng người khác thì hỏi xác nhận, nêu rõ đối tượng. Không dùng cả hai cho một hành động."
+        ]
+       }
       },
       {
        "title": "2.14 Start a direct message or a group||2.14 Bắt đầu một tin nhắn trực tiếp hoặc một nhóm",
@@ -9648,13 +9992,7 @@
         "**Limit:** a group holds at most 8 people, counting the person who starts it. Nobody can be added or removed later; a different set of people is a new group.||**Giới hạn:** một nhóm tối đa 8 người, tính cả người tạo. Về sau không thêm hay bớt người được; một tập người khác là một nhóm mới.",
         "**Same people, same conversation:** choosing a set of people that already has a conversation reopens it with its history.||**Cùng người, cùng cuộc trò chuyện:** chọn một tập người đã có cuộc trò chuyện thì mở lại nó kèm lịch sử.",
         "**Deactivated person:** not listed in the picker; an existing DM with them stays readable, without a composer.||**Người đã bị vô hiệu hoá:** không có trong danh sách chọn; DM đã có với họ vẫn đọc được, không có ô soạn tin.",
-        "**In the prototype:** 'New message' is the pencil icon above the conversation list. Its dialog has one field, 'Search people and channels'; pressing a row opens that DM or channel at once. **Several people cannot be chosen**, so a group cannot be started. One group exists as sample data only: 'Alex, Thu', three people.||**Trong prototype:** 'New message' là icon bút phía trên danh sách cuộc trò chuyện. Hộp thoại có một ô, 'Search people and channels'; bấm một hàng thì mở ngay DM hoặc kênh đó. **Không chọn được nhiều người**, nên không tạo được nhóm. Chỉ có một nhóm trong dữ liệu mẫu: 'Alex, Thu', ba người.",
-        "**Why the chart is drawn this way.** Each line below is a question that was asked and the answer chosen, then what is still assumed or open.||**Vì sao sơ đồ được vẽ như vậy.** Mỗi dòng dưới đây là một câu hỏi đã được hỏi và câu trả lời đã chọn, sau đó là những gì còn giả định hoặc còn mở.",
-        "**Question (Q17):** Which message features are in phase 1 and which wait? And what about three things the prototype does not have: @channel, a full emoji picker, and group DMs with several people? **You chose the recommended option:** As recommended; add @channel, group DMs up to 8, keep 8 fixed emoji||**Câu hỏi (Q17):** Tính năng message nào có trong phase 1, cái nào hoãn? Và ba thứ prototype chưa có thì sao: @channel, bộ chọn emoji đầy đủ, group DM nhiều người? **Bạn chọn phương án được đề xuất:** Như đề xuất; thêm @channel, group DM tới 8 người, giữ 8 emoji cố định",
-        "**Question (G12):** Can people be added to or removed from a group DM? **You confirmed:** People cannot be added to or removed from a group DM.||**Câu hỏi (G12):** Có thêm hay bớt người trong group DM được không? **Bạn đã xác nhận:** Group DM không thêm bớt người được.",
-        "**Question (Q12):** The prototype shows Owner, Admin and ordinary members but no difference between them. Who is allowed to do what? **You chose the recommended option:** As in the capability table under Roles & States||**Câu hỏi (Q12):** Prototype có Owner, Admin và thành viên thường nhưng không thể hiện khác biệt. Ai được làm gì? **Bạn chọn phương án được đề xuất:** Như bảng quyền ở mục Phạm vi",
-        "**Proposal, not confirmed (F25):** Written flow: Direct messages and groups||**Đề xuất, chưa xác nhận (F25):** Flow viết: Tin nhắn riêng và nhóm",
-        "**Still open (FQ-20):** How does a person choose several people for a group DM? The prototype's New message dialog opens a conversation on the first press.||**Còn mở (FQ-20):** Người dùng chọn nhiều người cho một group DM bằng cách nào? Hộp thoại New message của prototype mở cuộc trò chuyện ngay ở lần bấm đầu."
+        "**In the prototype:** 'New message' is the pencil icon above the conversation list. Its dialog has one field, 'Search people and channels'; pressing a row opens that DM or channel at once. **Several people cannot be chosen**, so a group cannot be started. One group exists as sample data only: 'Alex, Thu', three people.||**Trong prototype:** 'New message' là icon bút phía trên danh sách cuộc trò chuyện. Hộp thoại có một ô, 'Search people and channels'; bấm một hàng thì mở ngay DM hoặc kênh đó. **Không chọn được nhiều người**, nên không tạo được nhóm. Chỉ có một nhóm trong dữ liệu mẫu: 'Alex, Thu', ba người."
        ],
        "nodes": [
         {
@@ -9820,7 +10158,24 @@
         "Frontend (web app)||Frontend (ứng dụng web)",
         "Backend (API, jobs, storage)||Backend (API, job, lưu trữ)"
        ],
-       "rowHeight": 100
+       "rowHeight": 100,
+       "sources": {
+        "title": "Sources||Nguồn",
+        "items": [
+         [
+          "Which message features are in phase 1 and which wait? And what about three things the prototype does not have: @channel, a full emoji picker, and group DMs with several people? (Q17)||Tính năng message nào có trong phase 1, cái nào hoãn? Và ba thứ prototype chưa có thì sao: @channel, bộ chọn emoji đầy đủ, group DM nhiều người? (Q17)",
+          "You chose the recommended option: As recommended; add @channel, group DMs up to 8, keep 8 fixed emoji||Bạn chọn phương án được đề xuất: Như đề xuất; thêm @channel, group DM tới 8 người, giữ 8 emoji cố định"
+         ],
+         [
+          "Can people be added to or removed from a group DM? (G12)||Có thêm hay bớt người trong group DM được không? (G12)",
+          "You confirmed: People cannot be added to or removed from a group DM.||Bạn đã xác nhận: Group DM không thêm bớt người được."
+         ],
+         [
+          "The prototype shows Owner, Admin and ordinary members but no difference between them. Who is allowed to do what? (Q12)||Prototype có Owner, Admin và thành viên thường nhưng không thể hiện khác biệt. Ai được làm gì? (Q12)",
+          "You chose the recommended option: As in the capability table under Roles & States||Bạn chọn phương án được đề xuất: Như bảng quyền ở mục Phạm vi"
+         ]
+        ]
+       }
       }
      ]
     },
@@ -9836,16 +10191,7 @@
         "**Catch-up:** the app remembers the number of the last event it saw and asks for everything after it. After more than 7 days away it reloads everything instead.||**Bắt kịp:** ứng dụng nhớ số của event cuối cùng đã thấy và xin mọi thứ sau đó. Vắng hơn 7 ngày thì tải lại toàn bộ.",
         "**No duplicates:** a waiting message is resent with its original ID.||**Không trùng:** tin đang chờ được gửi lại với đúng ID ban đầu.",
         "**Banner:** it never covers the composer or the navigation.||**Banner:** không bao giờ che ô soạn tin hay thanh điều hướng.",
-        "**In the prototype:** A demo switch turns the network off. The prototype then shows a strip above the chat, 'Offline: showing saved messages · messages you send wait until you are back online', the same words above the conversation list, and 'Waiting to send' on messages. **'Reconnecting…' and 'Reconnected' are not in the prototype**, and other actions are not blocked (GAP-21).||**Trong prototype:** Một công tắc demo tắt mạng. Khi đó prototype hiện một dải phía trên khung chat, 'Offline: showing saved messages · messages you send wait until you are back online', cùng câu đó phía trên danh sách cuộc trò chuyện, và 'Waiting to send' trên tin nhắn. **'Reconnecting…' và 'Reconnected' không có trong prototype**, và các thao tác khác không bị chặn (GAP-21).",
-        "**Why the chart is drawn this way.** Each line below is a question that was asked and the answer chosen, then what is still assumed or open.||**Vì sao sơ đồ được vẽ như vậy.** Mỗi dòng dưới đây là một câu hỏi đã được hỏi và câu trả lời đã chọn, sau đó là những gì còn giả định hoặc còn mở.",
-        "**Rule NR13** (made from GAP-21 · OQ11): When the connection drops: loaded content stays readable; messages being sent wait and send themselves when the connection returns; every other action is blocked with an explanation, never a false success.||**Quy tắc NR13** (rút ra từ GAP-21 · OQ11): Khi mất kết nối: nội dung đã tải vẫn đọc được; tin đang gửi chuyển sang chờ và tự gửi lại khi có mạng; mọi thao tác khác bị chặn kèm lời giải thích, không báo thành công giả.",
-        "**Rule NR12** (made from GAP-03, 11): Toasts and floating bars never cover the composer or navigation.||**Quy tắc NR12** (rút ra từ GAP-03, 11): Toast và thanh nổi không bao giờ che composer hay nút điều hướng.",
-        "**Technical design:** Every change is a numbered event. After reconnecting, the app asks for everything after the last number it saw; after more than 7 days away it reloads.||**Thiết kế kỹ thuật:** Mọi thay đổi là một event có đánh số. Khi kết nối lại, ứng dụng xin mọi thứ sau số cuối cùng nó đã thấy; vắng hơn 7 ngày thì tải lại toàn bộ.",
-        "**Proposal, not confirmed (F37):** Written flow: Losing and regaining the connection||**Đề xuất, chưa xác nhận (F37):** Flow viết: Mất kết nối và kết nối lại",
-        "**Assumed, not confirmed (FA-06):** Reconnect attempts wait 1, 2, 5, 10 and then 30 seconds, with a little randomness.||**Giả định, chưa xác nhận (FA-06):** Các lần kết nối lại chờ 1, 2, 5, 10 rồi 30 giây, có thêm chút ngẫu nhiên.",
-        "**Assumed, not confirmed (FA-09):** A 'Waiting to send' message survives a page reload, kept in the browser, and is dropped if someone else signs in on that browser.||**Giả định, chưa xác nhận (FA-09):** Tin 'Waiting to send' vẫn còn sau khi tải lại trang, được giữ trong trình duyệt, và bị bỏ nếu người khác đăng nhập trên trình duyệt đó.",
-        "**Assumed, not confirmed (FA-17):** While offline the banner keeps the prototype's words, 'Offline: showing saved messages'. A separate 'Reconnecting…' state is not assumed.||**Giả định, chưa xác nhận (FA-17):** Khi mất mạng, banner giữ câu chữ của prototype, 'Offline: showing saved messages'. Không giả định có trạng thái 'Reconnecting…' riêng.",
-        "**Still open (FQ-22):** The prototype's offline banner reads 'Offline: showing saved messages'. Written flow F37 said 'Reconnecting…' and a 'Reconnected' toast, which the prototype does not have. Which wording, and is there a separate reconnecting state?||**Còn mở (FQ-22):** Banner offline của prototype ghi 'Offline: showing saved messages'. Flow viết F37 ghi 'Reconnecting…' và toast 'Reconnected', những thứ prototype không có. Dùng câu chữ nào, và có trạng thái đang kết nối lại riêng không?"
+        "**In the prototype:** A demo switch turns the network off. The prototype then shows a strip above the chat, 'Offline: showing saved messages · messages you send wait until you are back online', the same words above the conversation list, and 'Waiting to send' on messages. **'Reconnecting…' and 'Reconnected' are not in the prototype**, and other actions are not blocked (GAP-21).||**Trong prototype:** Một công tắc demo tắt mạng. Khi đó prototype hiện một dải phía trên khung chat, 'Offline: showing saved messages · messages you send wait until you are back online', cùng câu đó phía trên danh sách cuộc trò chuyện, và 'Waiting to send' trên tin nhắn. **'Reconnecting…' và 'Reconnected' không có trong prototype**, và các thao tác khác không bị chặn (GAP-21)."
        ],
        "nodes": [
         {
@@ -10068,7 +10414,18 @@
         "Frontend (web app)||Frontend (ứng dụng web)",
         "Backend (API, jobs, storage)||Backend (API, job, lưu trữ)"
        ],
-       "rowHeight": 100
+       "rowHeight": 100,
+       "sources": {
+        "title": "Sources||Nguồn",
+        "items": [
+         "**Rule NR13** (made from GAP-21 · OQ11): When the connection drops: loaded content stays readable; messages being sent wait and send themselves when the connection returns; every other action is blocked with an explanation, never a false success.||**Quy tắc NR13** (rút ra từ GAP-21 · OQ11): Khi mất kết nối: nội dung đã tải vẫn đọc được; tin đang gửi chuyển sang chờ và tự gửi lại khi có mạng; mọi thao tác khác bị chặn kèm lời giải thích, không báo thành công giả.",
+         "**Rule NR12** (made from GAP-03, 11): Toasts and floating bars never cover the composer or navigation.||**Quy tắc NR12** (rút ra từ GAP-03, 11): Toast và thanh nổi không bao giờ che composer hay nút điều hướng.",
+         "**Technical design:** Every change is a numbered event. After reconnecting, the app asks for everything after the last number it saw; after more than 7 days away it reloads.||**Thiết kế kỹ thuật:** Mọi thay đổi là một event có đánh số. Khi kết nối lại, ứng dụng xin mọi thứ sau số cuối cùng nó đã thấy; vắng hơn 7 ngày thì tải lại toàn bộ.",
+         "**Assumed, not confirmed (FA-06):** Reconnect attempts wait 1, 2, 5, 10 and then 30 seconds, with a little randomness.||**Giả định, chưa xác nhận (FA-06):** Các lần kết nối lại chờ 1, 2, 5, 10 rồi 30 giây, có thêm chút ngẫu nhiên.",
+         "**Assumed, not confirmed (FA-09):** A 'Waiting to send' message survives a page reload, kept in the browser, and is dropped if someone else signs in on that browser.||**Giả định, chưa xác nhận (FA-09):** Tin 'Waiting to send' vẫn còn sau khi tải lại trang, được giữ trong trình duyệt, và bị bỏ nếu người khác đăng nhập trên trình duyệt đó.",
+         "**Assumed, not confirmed (FA-17):** While offline the banner keeps the prototype's words, 'Offline: showing saved messages'. A separate 'Reconnecting…' state is not assumed.||**Giả định, chưa xác nhận (FA-17):** Khi mất mạng, banner giữ câu chữ của prototype, 'Offline: showing saved messages'. Không giả định có trạng thái 'Reconnecting…' riêng."
+        ]
+       }
       },
       {
        "title": "3.2 The session ends while the app is in use||3.2 Phiên kết thúc khi đang dùng ứng dụng",
@@ -10078,17 +10435,7 @@
         "**After:** nothing of the workspace stays readable on screen; after signing in again the person is back in the same conversation with the draft still in the composer.||**Sau:** không nội dung nào của workspace còn đọc được trên màn hình; đăng nhập lại thì người dùng về đúng cuộc trò chuyện, bản nháp vẫn trong ô soạn.",
         "**Rule:** the server checks the session on every request and closes the realtime connection the moment a session ends.||**Quy tắc:** server kiểm tra phiên ở mọi request và đóng kết nối realtime ngay khi phiên kết thúc.",
         "**Rule:** a deactivated account gets no sign-in button, and its locally kept drafts are cleared.||**Quy tắc:** tài khoản bị vô hiệu hoá không có nút đăng nhập, và bản nháp lưu trên máy bị xoá.",
-        "**In the prototype:** **Not in the prototype.** It has no sign-in and no sessions, so none of these screens exist (finding N-01).||**Trong prototype:** **Không có trong prototype.** Prototype không có đăng nhập và không có phiên, nên không màn hình nào ở đây tồn tại (phát hiện N-01).",
-        "**Why the chart is drawn this way.** Each line below is a question that was asked and the answer chosen, then what is still assumed or open.||**Vì sao sơ đồ được vẽ như vậy.** Mỗi dòng dưới đây là một câu hỏi đã được hỏi và câu trả lời đã chọn, sau đó là những gì còn giả định hoặc còn mở.",
-        "**Question (Q11):** The prototype has no sign-in screen for members, only the guest one. How do members sign in, and how are accounts created? **You chose the recommended option:** (b) 6-digit emailed code, no password, admin invitation only, 30-day session||**Câu hỏi (Q11):** Prototype không có màn hình đăng nhập cho thành viên, chỉ có của guest. Thành viên đăng nhập thế nào, và tài khoản được tạo ra sao? **Bạn chọn phương án được đề xuất:** (b) Mã 6 số qua email, không mật khẩu, chỉ admin mời, phiên 30 ngày",
-        "**Question (Q12):** The prototype shows Owner, Admin and ordinary members but no difference between them. Who is allowed to do what? **You chose the recommended option:** As in the capability table under Roles & States||**Câu hỏi (Q12):** Prototype có Owner, Admin và thành viên thường nhưng không thể hiện khác biệt. Ai được làm gì? **Bạn chọn phương án được đề xuất:** Như bảng quyền ở mục Phạm vi",
-        "**Technical design:** The server checks the session on every request and closes the live connection the moment a session ends.||**Thiết kế kỹ thuật:** Server kiểm tra phiên ở mọi request và đóng kết nối trực tiếp ngay khi phiên kết thúc.",
-        "**Proposal, not confirmed (F06):** Written flow: Sign out and manage sessions||**Đề xuất, chưa xác nhận (F06):** Flow viết: Đăng xuất và quản lý phiên",
-        "**Proposal, not confirmed (F07):** Written flow: Session expires or is revoked while in use||**Đề xuất, chưa xác nhận (F07):** Flow viết: Phiên hết hạn hoặc bị thu hồi khi đang dùng",
-        "**Proposal, not confirmed (F41):** Written flow: Deactivate and reactivate||**Đề xuất, chưa xác nhận (F41):** Flow viết: Vô hiệu hóa và kích hoạt lại",
-        "**Assumed, not confirmed (FA-09):** A 'Waiting to send' message survives a page reload, kept in the browser, and is dropped if someone else signs in on that browser.||**Giả định, chưa xác nhận (FA-09):** Tin 'Waiting to send' vẫn còn sau khi tải lại trang, được giữ trong trình duyệt, và bị bỏ nếu người khác đăng nhập trên trình duyệt đó.",
-        "**Assumed, not confirmed (FA-16):** Every screen and every wording in quotes that the prototype does not contain is a proposal: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', loading placeholders, and the rest.||**Giả định, chưa xác nhận (FA-16):** Mọi màn hình và mọi câu chữ trong dấu nháy mà prototype không có đều là đề xuất: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', ô giữ chỗ khi tải, và phần còn lại.",
-        "**Still open (FQ-02):** Sign out in one tab: do the other tabs of the same browser leave at once?||**Còn mở (FQ-02):** Sign out ở một tab: các tab khác của cùng trình duyệt có thoát ngay không?"
+        "**In the prototype:** **Not in the prototype.** It has no sign-in and no sessions, so none of these screens exist (finding N-01).||**Trong prototype:** **Không có trong prototype.** Prototype không có đăng nhập và không có phiên, nên không màn hình nào ở đây tồn tại (phát hiện N-01)."
        ],
        "nodes": [
         {
@@ -10271,7 +10618,23 @@
         "Frontend (web app)||Frontend (ứng dụng web)",
         "Backend (API, jobs, storage)||Backend (API, job, lưu trữ)"
        ],
-       "rowHeight": 100
+       "rowHeight": 100,
+       "sources": {
+        "title": "Sources||Nguồn",
+        "items": [
+         [
+          "The prototype has no sign-in screen for members, only the guest one. How do members sign in, and how are accounts created? (Q11)||Prototype không có màn hình đăng nhập cho thành viên, chỉ có của guest. Thành viên đăng nhập thế nào, và tài khoản được tạo ra sao? (Q11)",
+          "You chose the recommended option: (b) 6-digit emailed code, no password, admin invitation only, 30-day session||Bạn chọn phương án được đề xuất: (b) Mã 6 số qua email, không mật khẩu, chỉ admin mời, phiên 30 ngày"
+         ],
+         [
+          "The prototype shows Owner, Admin and ordinary members but no difference between them. Who is allowed to do what? (Q12)||Prototype có Owner, Admin và thành viên thường nhưng không thể hiện khác biệt. Ai được làm gì? (Q12)",
+          "You chose the recommended option: As in the capability table under Roles & States||Bạn chọn phương án được đề xuất: Như bảng quyền ở mục Phạm vi"
+         ],
+         "**Technical design:** The server checks the session on every request and closes the live connection the moment a session ends.||**Thiết kế kỹ thuật:** Server kiểm tra phiên ở mọi request và đóng kết nối trực tiếp ngay khi phiên kết thúc.",
+         "**Assumed, not confirmed (FA-09):** A 'Waiting to send' message survives a page reload, kept in the browser, and is dropped if someone else signs in on that browser.||**Giả định, chưa xác nhận (FA-09):** Tin 'Waiting to send' vẫn còn sau khi tải lại trang, được giữ trong trình duyệt, và bị bỏ nếu người khác đăng nhập trên trình duyệt đó.",
+         "**Assumed, not confirmed (FA-16):** Every screen and every wording in quotes that the prototype does not contain is a proposal: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', loading placeholders, and the rest.||**Giả định, chưa xác nhận (FA-16):** Mọi màn hình và mọi câu chữ trong dấu nháy mà prototype không có đều là đề xuất: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', ô giữ chỗ khi tải, và phần còn lại."
+        ]
+       }
       },
       {
        "title": "3.3 A request is refused or fails: one behaviour for every feature||3.3 Một request bị từ chối hoặc lỗi: một cách xử lý cho mọi tính năng",
@@ -10282,14 +10645,7 @@
         "**No access and not found look the same**, so the app never confirms that a private thing exists.||**Không có quyền và không tồn tại trông giống nhau**, nên ứng dụng không bao giờ xác nhận một thứ riêng tư có tồn tại.",
         "**Error ID:** a server error shows a short ID the person can pass on; the same ID is in the server log.||**Mã lỗi:** lỗi server hiện một mã ngắn để người dùng chuyển lại; cùng mã đó có trong log server.",
         "**401** is handled by flow 3.2 for every request.||**401** được xử lý ở flow 3.2 cho mọi request.",
-        "**In the prototype:** **Not in the prototype.** There is no server; every action succeeds at once. The words 'error' and 'Retry' do not occur in it (finding N-06). Problems in forms are reported by a toast after pressing the button (finding N-08).||**Trong prototype:** **Không có trong prototype.** Không có server; mọi thao tác thành công tức thì. Chữ 'error' và 'Retry' không xuất hiện (phát hiện N-06). Lỗi trong form được báo bằng toast sau khi bấm nút (phát hiện N-08).",
-        "**Why the chart is drawn this way.** Each line below is a question that was asked and the answer chosen, then what is still assumed or open.||**Vì sao sơ đồ được vẽ như vậy.** Mỗi dòng dưới đây là một câu hỏi đã được hỏi và câu trả lời đã chọn, sau đó là những gì còn giả định hoặc còn mở.",
-        "**Rule NR4** (made from GAP-22 · OQ12): A form that has content does not close on an outside click; closing it by button asks whether to discard.||**Quy tắc NR4** (rút ra từ GAP-22 · OQ12): Form đã có nội dung không đóng khi bấm ra ngoài; đóng bằng nút thì hỏi có bỏ nội dung không.",
-        "**Assumed, not confirmed (FA-02):** A request with no answer after 10 seconds counts as failed and shows Retry.||**Giả định, chưa xác nhận (FA-02):** Request không có trả lời sau 10 giây được coi là lỗi và hiện Retry.",
-        "**Assumed, not confirmed (FA-08):** Server status codes map to screens as in flow 3.3: 400 field message, 403 and 404 one shared page, 409 and 410 fresh copy, 429 wait, 5xx Retry with an error ID.||**Giả định, chưa xác nhận (FA-08):** Mã trạng thái của server ứng với màn hình như ở flow 3.3: 400 thông báo dưới ô, 403 và 404 chung một trang, 409 và 410 hiện bản mới, 429 chờ, 5xx Retry kèm mã lỗi.",
-        "**Assumed, not confirmed (FA-16):** Every screen and every wording in quotes that the prototype does not contain is a proposal: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', loading placeholders, and the rest.||**Giả định, chưa xác nhận (FA-16):** Mọi màn hình và mọi câu chữ trong dấu nháy mà prototype không có đều là đề xuất: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', ô giữ chỗ khi tải, và phần còn lại.",
-        "**Still open (GQ-03):** Where do form errors appear: under the field with the button disabled, or in a toast after pressing?||**Còn mở (GQ-03):** Lỗi của form hiện ở đâu: dưới ô nhập kèm nút bị tắt, hay trong toast sau khi bấm?",
-        "**Still open (GQ-18):** How is a double press prevented for creating a channel, sending invitations and setting a reminder?||**Còn mở (GQ-18):** Chống bấm hai lần thế nào khi tạo kênh, gửi lời mời và đặt nhắc việc?"
+        "**In the prototype:** **Not in the prototype.** There is no server; every action succeeds at once. The words 'error' and 'Retry' do not occur in it (finding N-06). Problems in forms are reported by a toast after pressing the button (finding N-08).||**Trong prototype:** **Không có trong prototype.** Không có server; mọi thao tác thành công tức thì. Chữ 'error' và 'Retry' không xuất hiện (phát hiện N-06). Lỗi trong form được báo bằng toast sau khi bấm nút (phát hiện N-08)."
        ],
        "nodes": [
         {
@@ -10551,7 +10907,16 @@
         "Frontend (web app)||Frontend (ứng dụng web)",
         "Backend (API, jobs, storage)||Backend (API, job, lưu trữ)"
        ],
-       "rowHeight": 100
+       "rowHeight": 100,
+       "sources": {
+        "title": "Sources||Nguồn",
+        "items": [
+         "**Rule NR4** (made from GAP-22 · OQ12): A form that has content does not close on an outside click; closing it by button asks whether to discard.||**Quy tắc NR4** (rút ra từ GAP-22 · OQ12): Form đã có nội dung không đóng khi bấm ra ngoài; đóng bằng nút thì hỏi có bỏ nội dung không.",
+         "**Assumed, not confirmed (FA-02):** A request with no answer after 10 seconds counts as failed and shows Retry.||**Giả định, chưa xác nhận (FA-02):** Request không có trả lời sau 10 giây được coi là lỗi và hiện Retry.",
+         "**Assumed, not confirmed (FA-08):** Server status codes map to screens as in flow 3.3: 400 field message, 403 and 404 one shared page, 409 and 410 fresh copy, 429 wait, 5xx Retry with an error ID.||**Giả định, chưa xác nhận (FA-08):** Mã trạng thái của server ứng với màn hình như ở flow 3.3: 400 thông báo dưới ô, 403 và 404 chung một trang, 409 và 410 hiện bản mới, 429 chờ, 5xx Retry kèm mã lỗi.",
+         "**Assumed, not confirmed (FA-16):** Every screen and every wording in quotes that the prototype does not contain is a proposal: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', loading placeholders, and the rest.||**Giả định, chưa xác nhận (FA-16):** Mọi màn hình và mọi câu chữ trong dấu nháy mà prototype không có đều là đề xuất: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', ô giữ chỗ khi tải, và phần còn lại."
+        ]
+       }
       }
      ]
     },

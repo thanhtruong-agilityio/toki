@@ -4632,16 +4632,27 @@
        "**Lối vào (4):** địa chỉ Toki, link tới một cuộc trò chuyện hoặc tin nhắn (từ thông báo, mail hoặc đồng nghiệp), icon ứng dụng đã cài, và mail mời.",
        "**Một cửa kiểm tra:** mọi lối vào đều qua bước kiểm tra phiên. Không có gì trong Toki đọc được khi chưa có phiên; ngoài trang đăng nhập không có trang công khai nào.",
        "**Kiểm tra vai trò:** Admin là mục duy nhất chặn theo vai trò. Mọi thứ khác chặn theo tư cách thành viên của cuộc trò chuyện, kiểm tra ở server cho mọi request.",
-       "**Trong prototype:** Prototype mở thẳng vào Home với tư cách Lan, một Owner. Không có trang đăng nhập, lời mời, màn hình chào hay trang từ chối cho thành viên. Các màn hình đăng nhập duy nhất thuộc cổng guest (phase 5; demo guide → 'View as guest'): bước email, rồi bước nhập mã có ghi 'It works for 10 minutes'. Ctrl K có thật: ô Search ở đầu sidebar trái mang nhãn 'Ctrl K', và tổ hợp phím mở bảng lệnh. Admin có ở thanh điều hướng trái nhưng chỉ chứa thống kê và automation.",
-       "**Vì sao sơ đồ được vẽ như vậy.** Mỗi dòng dưới đây là một câu hỏi đã được hỏi và câu trả lời đã chọn, sau đó là những gì còn giả định hoặc còn mở.",
-       "**Câu hỏi (G4):** Lời mời có hạn bao lâu, và link trong đó có cần mã đăng nhập không? **Bạn đã xác nhận:** Lời mời hết hạn sau 7 ngày. Link trong thư mời đăng nhập thẳng, không cần mã.",
-       "**Câu hỏi (Q11):** Prototype không có màn hình đăng nhập cho thành viên, chỉ có của guest. Thành viên đăng nhập thế nào, và tài khoản được tạo ra sao? **Bạn chọn phương án được đề xuất:** (b) Mã 6 số qua email, không mật khẩu, chỉ admin mời, phiên 30 ngày",
-       "**Câu hỏi (Q12):** Prototype có Owner, Admin và thành viên thường nhưng không thể hiện khác biệt. Ai được làm gì? **Bạn chọn phương án được đề xuất:** Như bảng quyền ở mục Phạm vi",
+       "**Trong prototype:** Prototype mở thẳng vào Home với tư cách Lan, một Owner. Không có trang đăng nhập, lời mời, màn hình chào hay trang từ chối cho thành viên. Các màn hình đăng nhập duy nhất thuộc cổng guest (phase 5; demo guide → 'View as guest'): bước email, rồi bước nhập mã có ghi 'It works for 10 minutes'. Ctrl K có thật: ô Search ở đầu sidebar trái mang nhãn 'Ctrl K', và tổ hợp phím mở bảng lệnh. Admin có ở thanh điều hướng trái nhưng chỉ chứa thống kê và automation."
+      ]
+     },
+     {
+      "type": "fold",
+      "title": "Nguồn",
+      "items": [
+       [
+        "Lời mời có hạn bao lâu, và link trong đó có cần mã đăng nhập không? (G4)",
+        "Bạn đã xác nhận: Lời mời hết hạn sau 7 ngày. Link trong thư mời đăng nhập thẳng, không cần mã."
+       ],
+       [
+        "Prototype không có màn hình đăng nhập cho thành viên, chỉ có của guest. Thành viên đăng nhập thế nào, và tài khoản được tạo ra sao? (Q11)",
+        "Bạn chọn phương án được đề xuất: (b) Mã 6 số qua email, không mật khẩu, chỉ admin mời, phiên 30 ngày"
+       ],
+       [
+        "Prototype có Owner, Admin và thành viên thường nhưng không thể hiện khác biệt. Ai được làm gì? (Q12)",
+        "Bạn chọn phương án được đề xuất: Như bảng quyền ở mục Phạm vi"
+       ],
        "**Giả định, chưa xác nhận (FA-13):** Mã đăng nhập của thành viên có hiệu lực 10 phút.",
-       "**Giả định, chưa xác nhận (FA-15):** Phiên được gia hạn mỗi lần dùng, nên 30 ngày nghĩa là 30 ngày không mở Toki.",
-       "**Đề xuất, chưa xác nhận (F03):** Flow viết: Nhận lời mời và vào lần đầu",
-       "**Còn mở (FQ-13):** Trang từ chối lời mời ghi gì, và có phân biệt từng nguyên nhân không?",
-       "**Còn mở (FQ-15):** Màn hình chào sau khi nhận lời mời không có trong prototype. Có cần nó không, và gồm những ô nào?"
+       "**Giả định, chưa xác nhận (FA-15):** Phiên được gia hạn mỗi lần dùng, nên 30 ngày nghĩa là 30 ngày không mở Toki."
       ]
      },
      {
@@ -4658,13 +4669,22 @@
       "items": [
        "Chỉ **Sign out** và **vô hiệu hoá** là chủ động kết thúc phiên. Đóng tab thì không bao giờ.",
        "Mất kết nối không phải là lối ra: người dùng ở nguyên màn hình, chỉ đọc, cho tới khi có lại mạng (flow 3.1).",
-       "**Trong prototype:** Sign out không có trong prototype. Menu tài khoản chỉ có Set status, Pause notifications, Focus time và Preferences (phát hiện N-04). Prototype không có phiên, nên 'Session ended' và 'Account deactivated' cũng không tồn tại. Offline là một công tắc demo.",
-       "**Vì sao sơ đồ được vẽ như vậy.** Mỗi dòng dưới đây là một câu hỏi đã được hỏi và câu trả lời đã chọn, sau đó là những gì còn giả định hoặc còn mở.",
-       "**Câu hỏi (Q11):** Prototype không có màn hình đăng nhập cho thành viên, chỉ có của guest. Thành viên đăng nhập thế nào, và tài khoản được tạo ra sao? **Bạn chọn phương án được đề xuất:** (b) Mã 6 số qua email, không mật khẩu, chỉ admin mời, phiên 30 ngày",
-       "**Câu hỏi (Q12):** Prototype có Owner, Admin và thành viên thường nhưng không thể hiện khác biệt. Ai được làm gì? **Bạn chọn phương án được đề xuất:** Như bảng quyền ở mục Phạm vi",
+       "**Trong prototype:** Sign out không có trong prototype. Menu tài khoản chỉ có Set status, Pause notifications, Focus time và Preferences (phát hiện N-04). Prototype không có phiên, nên 'Session ended' và 'Account deactivated' cũng không tồn tại. Offline là một công tắc demo."
+      ]
+     },
+     {
+      "type": "fold",
+      "title": "Nguồn",
+      "items": [
+       [
+        "Prototype không có màn hình đăng nhập cho thành viên, chỉ có của guest. Thành viên đăng nhập thế nào, và tài khoản được tạo ra sao? (Q11)",
+        "Bạn chọn phương án được đề xuất: (b) Mã 6 số qua email, không mật khẩu, chỉ admin mời, phiên 30 ngày"
+       ],
+       [
+        "Prototype có Owner, Admin và thành viên thường nhưng không thể hiện khác biệt. Ai được làm gì? (Q12)",
+        "Bạn chọn phương án được đề xuất: Như bảng quyền ở mục Phạm vi"
+       ],
        "**Quy tắc NR13** (rút ra từ GAP-21 · OQ11): Khi mất kết nối: nội dung đã tải vẫn đọc được; tin đang gửi chuyển sang chờ và tự gửi lại khi có mạng; mọi thao tác khác bị chặn kèm lời giải thích, không báo thành công giả.",
-       "**Đề xuất, chưa xác nhận (F06):** Flow viết: Đăng xuất và quản lý phiên",
-       "**Đề xuất, chưa xác nhận (F41):** Flow viết: Vô hiệu hóa và kích hoạt lại",
        "**Giả định, chưa xác nhận (FA-16):** Mọi màn hình và mọi câu chữ trong dấu nháy mà prototype không có đều là đề xuất: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', ô giữ chỗ khi tải, và phần còn lại."
       ]
      }
@@ -4692,14 +4712,24 @@
        "**Quay lại / huỷ / thử lại:** 'Use a different email' quay về ô email. 'Resend code' bật sau 60 giây. Lỗi mạng thì nút bấm lại được, kèm 'Could not connect'.",
        "**Nhánh khác:** mail còn có nút đăng nhập. Bấm nút thì thiết bị bấm được đăng nhập, không cần gõ mã.",
        "**Quy tắc bảo mật:** câu trả lời cho yêu cầu xin mã giống hệt nhau với thành viên và người lạ, nên trang không bao giờ lộ ai là thành viên.",
-       "**Trong prototype:** Không có đăng nhập cho thành viên. Màn hình gần nhất là của cổng guest: 'Sign in as a guest' (email, 'Email me a code') và 'Check your email' (ô 6 số, 'Sign in', 'Use a different email', 'It works for 10 minutes'). Màn hình đó **không có Resend**, không giới hạn số lần xin mã và không có trạng thái sai mã (6 số nào cũng được). Hai lỗi của nó hiện ở một dòng đỏ dưới thẻ.",
-       "**Vì sao sơ đồ được vẽ như vậy.** Mỗi dòng dưới đây là một câu hỏi đã được hỏi và câu trả lời đã chọn, sau đó là những gì còn giả định hoặc còn mở.",
-       "**Câu hỏi (Q11):** Prototype không có màn hình đăng nhập cho thành viên, chỉ có của guest. Thành viên đăng nhập thế nào, và tài khoản được tạo ra sao? **Bạn chọn phương án được đề xuất:** (b) Mã 6 số qua email, không mật khẩu, chỉ admin mời, phiên 30 ngày",
-       "**Câu hỏi (G5):** Được xin mã đăng nhập bao nhiêu lần, và khi nào gửi lại được? **Bạn đã xác nhận:** Xin mã tối đa 5 lần trong 15 phút cho mỗi email; nút gửi lại bật sau 60 giây.",
+       "**Trong prototype:** Không có đăng nhập cho thành viên. Màn hình gần nhất là của cổng guest: 'Sign in as a guest' (email, 'Email me a code') và 'Check your email' (ô 6 số, 'Sign in', 'Use a different email', 'It works for 10 minutes'). Màn hình đó **không có Resend**, không giới hạn số lần xin mã và không có trạng thái sai mã (6 số nào cũng được). Hai lỗi của nó hiện ở một dòng đỏ dưới thẻ."
+      ]
+     },
+     {
+      "type": "fold",
+      "title": "Nguồn",
+      "items": [
+       [
+        "Prototype không có màn hình đăng nhập cho thành viên, chỉ có của guest. Thành viên đăng nhập thế nào, và tài khoản được tạo ra sao? (Q11)",
+        "Bạn chọn phương án được đề xuất: (b) Mã 6 số qua email, không mật khẩu, chỉ admin mời, phiên 30 ngày"
+       ],
+       [
+        "Được xin mã đăng nhập bao nhiêu lần, và khi nào gửi lại được? (G5)",
+        "Bạn đã xác nhận: Xin mã tối đa 5 lần trong 15 phút cho mỗi email; nút gửi lại bật sau 60 giây."
+       ],
        "**Thiết kế kỹ thuật:** Yêu cầu xin mã được trả lời như nhau với thành viên và người lạ, nên trang không bao giờ lộ ai là thành viên.",
        "**Giả định, chưa xác nhận (FA-13):** Mã đăng nhập của thành viên có hiệu lực 10 phút.",
-       "**Giả định, chưa xác nhận (FA-14):** Mã bị huỷ sau 5 lần sai; người dùng phải xin mã mới.",
-       "**Còn mở (FQ-14):** Màn hình nhập mã của prototype không có Resend, chỉ có 'Use a different email'. G5 đã mặc định có nút Resend sau 60 giây. Có thêm Resend vào màn hình không, và mã mới có huỷ mã cũ không?"
+       "**Giả định, chưa xác nhận (FA-14):** Mã bị huỷ sau 5 lần sai; người dùng phải xin mã mới."
       ]
      },
      {
@@ -4719,17 +4749,33 @@
        "**Kiểm tra:** tên hiển thị từ 1 đến 80 ký tự (bạn trả lời, Q31). Múi giờ và ngôn ngữ lấy từ thiết bị và đổi được.",
        "**Bỏ qua:** bước chào có thể bỏ qua; tên sẽ là phần trước @ của địa chỉ.",
        "**Tiếp theo:** một thẻ nhỏ hỏi có bật thông báo không.",
-       "**Trong prototype:** Không có gì. Lời mời duy nhất trong prototype là 'Invite a client' dành cho guest, ở panel Details của kênh. Không có màn hình chào và không có trang từ chối.",
-       "**Vì sao sơ đồ được vẽ như vậy.** Mỗi dòng dưới đây là một câu hỏi đã được hỏi và câu trả lời đã chọn, sau đó là những gì còn giả định hoặc còn mở.",
-       "**Câu hỏi (Q11):** Prototype không có màn hình đăng nhập cho thành viên, chỉ có của guest. Thành viên đăng nhập thế nào, và tài khoản được tạo ra sao? **Bạn chọn phương án được đề xuất:** (b) Mã 6 số qua email, không mật khẩu, chỉ admin mời, phiên 30 ngày",
-       "**Câu hỏi (Q26):** Bản cài mới chưa có tài khoản nào. Owner đầu tiên được tạo thế nào? **Bạn trả lời:** Tạo từ biến môi trường hoặc seed; admin mời thành viên",
-       "**Câu hỏi (G4):** Lời mời có hạn bao lâu, và link trong đó có cần mã đăng nhập không? **Bạn đã xác nhận:** Lời mời hết hạn sau 7 ngày. Link trong thư mời đăng nhập thẳng, không cần mã.",
-       "**Câu hỏi (G1):** Mọi người bắt đầu ở kênh nào, và có rời kênh đó được không? **Bạn đã xác nhận:** Mỗi workspace có kênh #general tạo sẵn; mọi thành viên tự động ở trong đó; không rời và không lưu trữ được.",
-       "**Câu hỏi (Q31):** Tên hiển thị được dài bao nhiêu? Flow nhận lời mời đã kiểm tra '1 tới 80 ký tự' mà chưa có quyết định nào đứng sau. **Bạn trả lời:** 1 tới 80 ký tự",
-       "**Đề xuất, chưa xác nhận (F03):** Flow viết: Nhận lời mời và vào lần đầu",
-       "**Còn mở (FQ-13):** Trang từ chối lời mời ghi gì, và có phân biệt từng nguyên nhân không?",
-       "**Còn mở (FQ-15):** Màn hình chào sau khi nhận lời mời không có trong prototype. Có cần nó không, và gồm những ô nào?",
-       "**Còn mở (FQ-16):** #general có sẵn trước khi mời ai và người mới nào cũng ở trong đó (G1). #general có hiện một dòng khi có người vào không, và dòng đó có báo cho ai không?"
+       "**Trong prototype:** Không có gì. Lời mời duy nhất trong prototype là 'Invite a client' dành cho guest, ở panel Details của kênh. Không có màn hình chào và không có trang từ chối."
+      ]
+     },
+     {
+      "type": "fold",
+      "title": "Nguồn",
+      "items": [
+       [
+        "Prototype không có màn hình đăng nhập cho thành viên, chỉ có của guest. Thành viên đăng nhập thế nào, và tài khoản được tạo ra sao? (Q11)",
+        "Bạn chọn phương án được đề xuất: (b) Mã 6 số qua email, không mật khẩu, chỉ admin mời, phiên 30 ngày"
+       ],
+       [
+        "Bản cài mới chưa có tài khoản nào. Owner đầu tiên được tạo thế nào? (Q26)",
+        "Bạn trả lời: Tạo từ biến môi trường hoặc seed; admin mời thành viên"
+       ],
+       [
+        "Lời mời có hạn bao lâu, và link trong đó có cần mã đăng nhập không? (G4)",
+        "Bạn đã xác nhận: Lời mời hết hạn sau 7 ngày. Link trong thư mời đăng nhập thẳng, không cần mã."
+       ],
+       [
+        "Mọi người bắt đầu ở kênh nào, và có rời kênh đó được không? (G1)",
+        "Bạn đã xác nhận: Mỗi workspace có kênh #general tạo sẵn; mọi thành viên tự động ở trong đó; không rời và không lưu trữ được."
+       ],
+       [
+        "Tên hiển thị được dài bao nhiêu? Flow nhận lời mời đã kiểm tra '1 tới 80 ký tự' mà chưa có quyết định nào đứng sau. (Q31)",
+        "Bạn trả lời: 1 tới 80 ký tự"
+       ]
       ]
      },
      {
@@ -4749,14 +4795,24 @@
        "**Đang tải:** khung ứng dụng hiện ngay với ô xám giữ chỗ cho các danh sách; nội dung thật thay vào sau.",
        "**Quy tắc:** link tới thứ người dùng không được xem trả lời y hệt link tới thứ không tồn tại.",
        "**Quy tắc:** không có link thì mở cuộc trò chuyện xem gần nhất trên thiết bị này; lần đầu tiên là #general.",
-       "**Trong prototype:** Mọi thứ nằm sẵn trong bộ nhớ nên ứng dụng hiện ngay. Không có ô giữ chỗ, không có 'Can't reach Toki', và địa chỉ không đổi theo màn hình (phát hiện N-05, N-13).",
-       "**Vì sao sơ đồ được vẽ như vậy.** Mỗi dòng dưới đây là một câu hỏi đã được hỏi và câu trả lời đã chọn, sau đó là những gì còn giả định hoặc còn mở.",
-       "**Câu hỏi (G2):** Ứng dụng mở vào cuộc trò chuyện nào? **Bạn đã xác nhận:** Mở app thì vào hội thoại đã xem lần cuối trên thiết bị đó; lần đầu thì vào #general.",
-       "**Câu hỏi (Q11):** Prototype không có màn hình đăng nhập cho thành viên, chỉ có của guest. Thành viên đăng nhập thế nào, và tài khoản được tạo ra sao? **Bạn chọn phương án được đề xuất:** (b) Mã 6 số qua email, không mật khẩu, chỉ admin mời, phiên 30 ngày",
+       "**Trong prototype:** Mọi thứ nằm sẵn trong bộ nhớ nên ứng dụng hiện ngay. Không có ô giữ chỗ, không có 'Can't reach Toki', và địa chỉ không đổi theo màn hình (phát hiện N-05, N-13)."
+      ]
+     },
+     {
+      "type": "fold",
+      "title": "Nguồn",
+      "items": [
+       [
+        "Ứng dụng mở vào cuộc trò chuyện nào? (G2)",
+        "Bạn đã xác nhận: Mở app thì vào hội thoại đã xem lần cuối trên thiết bị đó; lần đầu thì vào #general."
+       ],
+       [
+        "Prototype không có màn hình đăng nhập cho thành viên, chỉ có của guest. Thành viên đăng nhập thế nào, và tài khoản được tạo ra sao? (Q11)",
+        "Bạn chọn phương án được đề xuất: (b) Mã 6 số qua email, không mật khẩu, chỉ admin mời, phiên 30 ngày"
+       ],
        "**Thiết kế kỹ thuật:** 'Không tồn tại' và 'không có quyền' nhận cùng một câu trả lời, nên ứng dụng không bao giờ xác nhận một thứ riêng tư có tồn tại.",
        "**Giả định, chưa xác nhận (FA-02):** Request không có trả lời sau 10 giây được coi là lỗi và hiện Retry.",
-       "**Giả định, chưa xác nhận (FA-16):** Mọi màn hình và mọi câu chữ trong dấu nháy mà prototype không có đều là đề xuất: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', ô giữ chỗ khi tải, và phần còn lại.",
-       "**Còn mở (GQ-06):** Mỗi cuộc trò chuyện, thread và mục có địa chỉ riêng không, và Back của trình duyệt làm gì?"
+       "**Giả định, chưa xác nhận (FA-16):** Mọi màn hình và mọi câu chữ trong dấu nháy mà prototype không có đều là đề xuất: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', ô giữ chỗ khi tải, và phần còn lại."
       ]
      },
      {
@@ -4777,14 +4833,27 @@
        "**Tin cũ hơn:** cuộn lên thì tải thêm 50 tin, có vòng quay ở trên và giữ nguyên vị trí cuộn; tới đầu thì hiện mốc 'Beginning of #name'.",
        "**Tải lỗi:** vùng tin nhắn hiện 'Couldn't load messages' kèm Retry; sidebar vẫn dùng được (flow 3.3).",
        "**Xem trước:** kênh công khai chưa tham gia vẫn đọc được; ô soạn tin được thay bằng nút Join.",
-       "**Trong prototype:** Home: danh sách cuộc trò chuyện, danh sách tin nhắn, huy hiệu chưa đọc và vạch 'New' có trong prototype. Không có trạng thái đang tải và trạng thái lỗi.",
-       "**Vì sao sơ đồ được vẽ như vậy.** Mỗi dòng dưới đây là một câu hỏi đã được hỏi và câu trả lời đã chọn, sau đó là những gì còn giả định hoặc còn mở.",
-       "**Câu hỏi (OQ3):** Điều gì đánh dấu channel đã đọc trên Web và Phone, và vạch New biến mất khi nào? **Trả lời:** Đã đọc không phụ thuộc AI. Hội thoại được đánh dấu đã đọc khi nó đang mở, cửa sổ đang được dùng, và người dùng đã ở cuối danh sách tin. Vạch New neo vào tin chưa đọc đầu tiên tại lúc mở (theo ID, không trôi khi có tin mới), giữ nguyên trong lúc đang xem, và biến mất ở lần mở kế tiếp. Mở app hoặc mở hội thoại có tin chưa đọc thì cuộn tới vạch New.",
-       "**Câu hỏi (G15):** Người gửi có biết ai đã đọc tin không? **Bạn đã xác nhận:** Toki không có dấu “đã xem” cho tin nhắn; người gửi không biết ai đã đọc.",
-       "**Câu hỏi (Q27):** Người vào kênh sau thấy được gì trong lịch sử, và kênh không dùng nữa thì xử lý ra sao? **Bạn chọn phương án được đề xuất:** Thấy toàn bộ lịch sử; lưu trữ được, không xóa hẳn",
+       "**Trong prototype:** Home: danh sách cuộc trò chuyện, danh sách tin nhắn, huy hiệu chưa đọc và vạch 'New' có trong prototype. Không có trạng thái đang tải và trạng thái lỗi."
+      ]
+     },
+     {
+      "type": "fold",
+      "title": "Nguồn",
+      "items": [
+       [
+        "Điều gì đánh dấu channel đã đọc trên Web và Phone, và vạch New biến mất khi nào? (OQ3)",
+        "Trả lời: Đã đọc không phụ thuộc AI. Hội thoại được đánh dấu đã đọc khi nó đang mở, cửa sổ đang được dùng, và người dùng đã ở cuối danh sách tin. Vạch New neo vào tin chưa đọc đầu tiên tại lúc mở (theo ID, không trôi khi có tin mới), giữ nguyên trong lúc đang xem, và biến mất ở lần mở kế tiếp. Mở app hoặc mở hội thoại có tin chưa đọc thì cuộn tới vạch New."
+       ],
+       [
+        "Người gửi có biết ai đã đọc tin không? (G15)",
+        "Bạn đã xác nhận: Toki không có dấu “đã xem” cho tin nhắn; người gửi không biết ai đã đọc."
+       ],
+       [
+        "Người vào kênh sau thấy được gì trong lịch sử, và kênh không dùng nữa thì xử lý ra sao? (Q27)",
+        "Bạn chọn phương án được đề xuất: Thấy toàn bộ lịch sử; lưu trữ được, không xóa hẳn"
+       ],
        "**Quy tắc NR8** (rút ra từ GAP-29, 31, 33): Mọi danh sách có tìm hoặc lọc đều có trạng thái trống đặt giữa vùng nội dung, viết riêng cho ngữ cảnh đó. Số đếm trên chip luôn khớp với số dòng hiển thị.",
-       "**Giả định, chưa xác nhận (FA-16):** Mọi màn hình và mọi câu chữ trong dấu nháy mà prototype không có đều là đề xuất: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', ô giữ chỗ khi tải, và phần còn lại.",
-       "**Còn mở (FQ-10):** Xem trước một kênh công khai mà không tham gia có tính vào chưa đọc hay Activity không?"
+       "**Giả định, chưa xác nhận (FA-16):** Mọi màn hình và mọi câu chữ trong dấu nháy mà prototype không có đều là đề xuất: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', ô giữ chỗ khi tải, và phần còn lại."
       ]
      },
      {
@@ -4805,16 +4874,21 @@
        "**Phím:** Enter gửi, Shift+Enter xuống dòng; khi đang gõ dở một từ tiếng Việt, Enter kết thúc từ chứ không gửi.",
        "**Thử lại:** 'Not sent' có Retry và Delete. Retry gửi lại cùng ID, nên tin đã tới nơi không bao giờ bị nhân đôi.",
        "**Rời giữa chừng:** chuyển cuộc trò chuyện trước khi gửi thì nội dung thành bản nháp, đồng bộ sang thiết bị khác.",
-       "**Trong prototype:** Ô soạn tin và Send có trong prototype. Khi bật công tắc demo offline, tin gửi đi hiện mờ kèm 'Waiting to send'. **'Not sent', Retry và Delete không có trong prototype** (các chữ này không xuất hiện), và không có bộ đếm ký tự.",
-       "**Vì sao sơ đồ được vẽ như vậy.** Mỗi dòng dưới đây là một câu hỏi đã được hỏi và câu trả lời đã chọn, sau đó là những gì còn giả định hoặc còn mở.",
-       "**Câu hỏi (G9):** Một tin nhắn dài tối đa bao nhiêu, và kèm được bao nhiêu file? **Bạn đã xác nhận:** Một tin tối đa 10.000 ký tự và 10 file.",
+       "**Trong prototype:** Ô soạn tin và Send có trong prototype. Khi bật công tắc demo offline, tin gửi đi hiện mờ kèm 'Waiting to send'. **'Not sent', Retry và Delete không có trong prototype** (các chữ này không xuất hiện), và không có bộ đếm ký tự."
+      ]
+     },
+     {
+      "type": "fold",
+      "title": "Nguồn",
+      "items": [
+       [
+        "Một tin nhắn dài tối đa bao nhiêu, và kèm được bao nhiêu file? (G9)",
+        "Bạn đã xác nhận: Một tin tối đa 10.000 ký tự và 10 file."
+       ],
        "**Quy tắc NR11** (rút ra từ GAP-17 · OQ8): Muốn ghi vào một hội thoại (gửi tin, bắt đầu Meet, đặt lịch) phải là thành viên của nó. Danh sách chọn chỉ gồm hội thoại mình đã tham gia.",
        "**Quy tắc NR13** (rút ra từ GAP-21 · OQ11): Khi mất kết nối: nội dung đã tải vẫn đọc được; tin đang gửi chuyển sang chờ và tự gửi lại khi có mạng; mọi thao tác khác bị chặn kèm lời giải thích, không báo thành công giả.",
        "**Thiết kế kỹ thuật:** Ứng dụng tự tạo ID tin nhắn, nên gửi lại cùng một tin không thể tạo ra tin thứ hai.",
-       "**Đề xuất, chưa xác nhận (F11):** Flow viết: Gửi tin nhắn",
-       "**Giả định, chưa xác nhận (FA-02):** Request không có trả lời sau 10 giây được coi là lỗi và hiện Retry.",
-       "**Còn mở (FQ-07):** Tin 'Waiting to send' thử bao lâu rồi mới thành 'Not sent'?",
-       "**Còn mở (FQ-21):** Prototype có 'Waiting to send' và không có gì cho trường hợp gửi lỗi. 'Not sent', Retry và Delete hiện ở đâu?"
+       "**Giả định, chưa xác nhận (FA-02):** Request không có trả lời sau 10 giây được coi là lỗi và hiện Retry."
       ]
      },
      {
@@ -4834,14 +4908,23 @@
        "**Kiểm tra:** tối đa 10 file mỗi tin, mỗi file 100 MB. File bị từ chối được nêu tên trong thông báo; các file khác vẫn tiếp tục.",
        "**Huỷ:** × trên thẻ dừng việc tải file đó và bỏ thẻ. Xoá cả bản nháp thì bỏ mọi thẻ.",
        "**Đang tải:** thumbnail chưa sẵn sàng thì hiện ô giữ chỗ đúng tỉ lệ, để danh sách không bị giật.",
-       "**Trong prototype:** Icon kẹp giấy ở ô soạn tin thêm ngay một file mẫu đã xong. Không có chọn file, thanh tiến độ, giới hạn hay lỗi (phát hiện N-07). Con số 10 và 100 MB không xuất hiện ở đâu trong prototype.",
-       "**Vì sao sơ đồ được vẽ như vậy.** Mỗi dòng dưới đây là một câu hỏi đã được hỏi và câu trả lời đã chọn, sau đó là những gì còn giả định hoặc còn mở.",
-       "**Câu hỏi (G9):** Một tin nhắn dài tối đa bao nhiêu, và kèm được bao nhiêu file? **Bạn đã xác nhận:** Một tin tối đa 10.000 ký tự và 10 file.",
-       "**Câu hỏi (Q14):** File lưu ở đâu, giới hạn dung lượng bao nhiêu, và làm những loại xem trước nào: thumbnail ảnh, PDF, link preview? **Bạn chọn phương án được đề xuất:** (b) MinIO, 100 MB, thumbnail ảnh, link preview",
+       "**Trong prototype:** Icon kẹp giấy ở ô soạn tin thêm ngay một file mẫu đã xong. Không có chọn file, thanh tiến độ, giới hạn hay lỗi (phát hiện N-07). Con số 10 và 100 MB không xuất hiện ở đâu trong prototype."
+      ]
+     },
+     {
+      "type": "fold",
+      "title": "Nguồn",
+      "items": [
+       [
+        "Một tin nhắn dài tối đa bao nhiêu, và kèm được bao nhiêu file? (G9)",
+        "Bạn đã xác nhận: Một tin tối đa 10.000 ký tự và 10 file."
+       ],
+       [
+        "File lưu ở đâu, giới hạn dung lượng bao nhiêu, và làm những loại xem trước nào: thumbnail ảnh, PDF, link preview? (Q14)",
+        "Bạn chọn phương án được đề xuất: (b) MinIO, 100 MB, thumbnail ảnh, link preview"
+       ],
        "**Quy tắc NR11** (rút ra từ GAP-17 · OQ8): Muốn ghi vào một hội thoại (gửi tin, bắt đầu Meet, đặt lịch) phải là thành viên của nó. Danh sách chọn chỉ gồm hội thoại mình đã tham gia.",
-       "**Đề xuất, chưa xác nhận (F18):** Flow viết: Gửi file, ảnh, link",
-       "**Giả định, chưa xác nhận (FA-07):** File đã tải lên nhưng không bao giờ được gửi sẽ bị xoá khỏi kho sau 24 giờ.",
-       "**Còn mở (FQ-04):** Có loại file nào bị từ chối không (ví dụ chương trình), hay nhận mọi loại tới 100 MB?"
+       "**Giả định, chưa xác nhận (FA-07):** File đã tải lên nhưng không bao giờ được gửi sẽ bị xoá khỏi kho sau 24 giờ."
       ]
      },
      {
@@ -4863,16 +4946,32 @@
        "**Còn mở:** mention luôn vượt qua mức 'Mentions only'. Nó có vượt qua Mute hay không thì chưa quyết định (câu hỏi GQ-01 ở tab Phân tích gap); cho tới lúc đó sơ đồ thể hiện trường hợp tắt tiếng là chỉ có huy hiệu.",
        "**Quy tắc:** @channel trong kênh từ 20 người trở lên hỏi người gửi xác nhận trước.",
        "**Sửa:** thêm mention khi sửa tin thì báo cho người mới; bỏ mention thì gỡ thông báo trước đó.",
-       "**Trong prototype:** Nút @ và danh sách chọn người nằm ở ô soạn tin; Activity liệt kê mention; Pause và Focus time nằm trong menu tài khoản; Preferences có 'Notify me for @mentions even in muted channels'. Push và phía người nhận không quan sát được: prototype chỉ mô phỏng một người.",
-       "**Vì sao sơ đồ được vẽ như vậy.** Mỗi dòng dưới đây là một câu hỏi đã được hỏi và câu trả lời đã chọn, sau đó là những gì còn giả định hoặc còn mở.",
-       "**Câu hỏi (Q16):** Prototype có thông báo desktop, âm thanh, email khi lỡ mention, mức theo kênh, tắt tiếng, Pause và Focus time. Những gì có trong phase 1? **Bạn chọn phương án được đề xuất:** Badge, Web Push, âm thanh, mức theo channel, mute, Pause, Focus time. Thư báo lỡ mention để sau",
+       "**Trong prototype:** Nút @ và danh sách chọn người nằm ở ô soạn tin; Activity liệt kê mention; Pause và Focus time nằm trong menu tài khoản; Preferences có 'Notify me for @mentions even in muted channels'. Push và phía người nhận không quan sát được: prototype chỉ mô phỏng một người."
+      ]
+     },
+     {
+      "type": "fold",
+      "title": "Nguồn",
+      "items": [
+       [
+        "Prototype có thông báo desktop, âm thanh, email khi lỡ mention, mức theo kênh, tắt tiếng, Pause và Focus time. Những gì có trong phase 1? (Q16)",
+        "Bạn chọn phương án được đề xuất: Badge, Web Push, âm thanh, mức theo channel, mute, Pause, Focus time. Thư báo lỡ mention để sau"
+       ],
        "**Quy tắc NR5** (rút ra từ GAP-20, 26 · OQ10): Hành động của chính mình không tạo thông báo cho mình. Mục Activity tự chuyển thành đã xong khi việc nó nhắc tới đã được làm. Activity xếp mới nhất trước và có chip lọc cho mọi loại mục.",
        "**Quy tắc NR6** (rút ra từ GAP-25, 38 · OQ14): Trong lúc Pause hoặc Focus time, không có toast, push hay âm thanh nào, kể cả reminder do mình đặt. Badge vẫn cập nhật. Khi kết thúc, hiện một tổng kết những gì đã đến. Bật Focus khi đang Focus thì gia hạn, không lồng; kết thúc thì trả lại status trước đó.",
-       "**Câu hỏi (G13):** Mức thông báo mặc định là gì? **Bạn đã xác nhận:** Mặc định mức thông báo: kênh là “Chỉ khi được nhắc”, DM là “Mọi tin nhắn”.",
-       "**Câu hỏi (G8):** Ai được sửa chủ đề kênh và dùng @channel? **Bạn đã xác nhận:** Mọi thành viên của kênh sửa được topic và dùng được @channel; kênh từ 20 người thì hỏi xác nhận trước khi gửi @channel.",
-       "**Câu hỏi (G11):** Thông báo push hiện những gì? **Bạn đã xác nhận:** Thông báo đẩy hiện tên người gửi, tên hội thoại và đoạn đầu của tin.",
-       "**Giả định, chưa xác nhận (FA-12):** Mention một người không ở trong kênh thì không tạo thông báo; người gửi được đề nghị 'Add them'.",
-       "**Còn mở (GQ-01):** Mention có báo cho người đó khi cuộc trò chuyện đã bị tắt tiếng không?"
+       [
+        "Mức thông báo mặc định là gì? (G13)",
+        "Bạn đã xác nhận: Mặc định mức thông báo: kênh là “Chỉ khi được nhắc”, DM là “Mọi tin nhắn”."
+       ],
+       [
+        "Ai được sửa chủ đề kênh và dùng @channel? (G8)",
+        "Bạn đã xác nhận: Mọi thành viên của kênh sửa được topic và dùng được @channel; kênh từ 20 người thì hỏi xác nhận trước khi gửi @channel."
+       ],
+       [
+        "Thông báo push hiện những gì? (G11)",
+        "Bạn đã xác nhận: Thông báo đẩy hiện tên người gửi, tên hội thoại và đoạn đầu của tin."
+       ],
+       "**Giả định, chưa xác nhận (FA-12):** Mention một người không ở trong kênh thì không tạo thông báo; người gửi được đề nghị 'Add them'."
       ]
      },
      {
@@ -4892,18 +4991,25 @@
        "**Kiểm tra:** chữ thường, số và gạch nối, tối đa 80 ký tự, không trùng với mọi kênh kể cả kênh đã lưu trữ. Công khai hay riêng tư chọn tại đây và sau này không đổi được.",
        "**Huỷ:** Cancel, Esc hoặc × sẽ hỏi 'Discard this channel?' nếu đã gõ gì đó; bấm ra ngoài thì không có gì xảy ra.",
        "**Quy tắc:** sau khi tạo, màn hình phải hiện thứ vừa tạo.",
-       "**Trong prototype:** **Prototype không tạo được kênh.** Sidebar có icon '#' và hàng '+ Browse channels'; cả hai đều mở Browse channels, nơi chỉ có ô tìm và nút Join hoặc Open trên từng hàng, không có gì để tạo kênh (phát hiện N-03).",
-       "**Vì sao sơ đồ được vẽ như vậy.** Mỗi dòng dưới đây là một câu hỏi đã được hỏi và câu trả lời đã chọn, sau đó là những gì còn giả định hoặc còn mở.",
-       "**Câu hỏi (Q12):** Prototype có Owner, Admin và thành viên thường nhưng không thể hiện khác biệt. Ai được làm gì? **Bạn chọn phương án được đề xuất:** Như bảng quyền ở mục Phạm vi",
-       "**Câu hỏi (G7):** Tên kênh gồm những gì, và kênh có đổi qua lại giữa công khai và riêng tư được không? **Bạn đã xác nhận:** Tên kênh: chữ thường, số, gạch nối, tối đa 80 ký tự, không trùng. Không đổi công khai thành riêng tư sau khi tạo.",
+       "**Trong prototype:** **Prototype không tạo được kênh.** Sidebar có icon '#' và hàng '+ Browse channels'; cả hai đều mở Browse channels, nơi chỉ có ô tìm và nút Join hoặc Open trên từng hàng, không có gì để tạo kênh (phát hiện N-03)."
+      ]
+     },
+     {
+      "type": "fold",
+      "title": "Nguồn",
+      "items": [
+       [
+        "Prototype có Owner, Admin và thành viên thường nhưng không thể hiện khác biệt. Ai được làm gì? (Q12)",
+        "Bạn chọn phương án được đề xuất: Như bảng quyền ở mục Phạm vi"
+       ],
+       [
+        "Tên kênh gồm những gì, và kênh có đổi qua lại giữa công khai và riêng tư được không? (G7)",
+        "Bạn đã xác nhận: Tên kênh: chữ thường, số, gạch nối, tối đa 80 ký tự, không trùng. Không đổi công khai thành riêng tư sau khi tạo."
+       ],
        "**Quy tắc NR4** (rút ra từ GAP-22 · OQ12): Form đã có nội dung không đóng khi bấm ra ngoài; đóng bằng nút thì hỏi có bỏ nội dung không.",
        "**Quy tắc NR10** (rút ra từ GAP-13, 14, 38): Sau khi tạo một thứ, màn hình phải hiện ra thứ vừa tạo; nếu bộ lọc đang ẩn nó thì đổi bộ lọc.",
-       "**Đề xuất, chưa xác nhận (F20):** Flow viết: Tạo kênh",
        "**Giả định, chưa xác nhận (FA-04):** Gõ khoảng trắng trong tên kênh thì tự thành gạch nối, chữ hoa thành chữ thường, thay vì báo lỗi.",
-       "**Giả định, chưa xác nhận (FA-05):** Tính không trùng của tên kênh bao gồm cả kênh đã lưu trữ.",
-       "**Còn mở (FQ-17):** **Bạn phát hiện:** prototype không có '+' để tạo kênh, chỉ có '+ Browse channels', và trong Browse channels không có chỗ nào để tạo. 'Create channel' nằm ở đâu?",
-       "**Còn mở (FQ-18):** Hộp thoại Create channel có những ô nào, và giới hạn của chúng?",
-       "**Còn mở (GQ-20):** Bảng quyền ở tab Roles & States có phải là căn cứ đã thống nhất cho những gì Member và Admin thấy không?"
+       "**Giả định, chưa xác nhận (FA-05):** Tính không trùng của tên kênh bao gồm cả kênh đã lưu trữ."
       ]
      },
      {
@@ -4923,15 +5029,31 @@
        "**Sau (rời):** kênh rời sidebar; số chưa đọc và mục Activity của nó được xoá; dòng 'X left' trong kênh.",
        "**Quy tắc:** không rời được #general. Hành động hoàn tác được thì hiện Undo 5 giây; không hoàn tác được thì hỏi xác nhận; không bao giờ cả hai.",
        "**Trống và lưu trữ:** không có kết quả thì hiện 'No channels match' và nút Create mang sẵn từ đã tìm; kênh đã lưu trữ chỉ có nút View.",
-       "**Trong prototype:** Browse channels (tìm, Join, Open) có trong prototype. Rời kênh nằm ở panel Details: 'Leave channel', rồi 'Leave #name? You can rejoin from Browse channels.', rồi một toast có Undo, giống nhau cho kênh công khai và riêng tư (phát hiện N-09). Gỡ người khác khỏi kênh thì không có.",
-       "**Vì sao sơ đồ được vẽ như vậy.** Mỗi dòng dưới đây là một câu hỏi đã được hỏi và câu trả lời đã chọn, sau đó là những gì còn giả định hoặc còn mở.",
-       "**Câu hỏi (G1):** Mọi người bắt đầu ở kênh nào, và có rời kênh đó được không? **Bạn đã xác nhận:** Mỗi workspace có kênh #general tạo sẵn; mọi thành viên tự động ở trong đó; không rời và không lưu trữ được.",
+       "**Trong prototype:** Browse channels (tìm, Join, Open) có trong prototype. Rời kênh nằm ở panel Details: 'Leave channel', rồi 'Leave #name? You can rejoin from Browse channels.', rồi một toast có Undo, giống nhau cho kênh công khai và riêng tư (phát hiện N-09). Gỡ người khác khỏi kênh thì không có."
+      ]
+     },
+     {
+      "type": "fold",
+      "title": "Nguồn",
+      "items": [
+       [
+        "Mọi người bắt đầu ở kênh nào, và có rời kênh đó được không? (G1)",
+        "Bạn đã xác nhận: Mỗi workspace có kênh #general tạo sẵn; mọi thành viên tự động ở trong đó; không rời và không lưu trữ được."
+       ],
        "**Quy tắc NR3** (rút ra từ GAP-24 · OQ12): Hành động hoàn tác được thì làm ngay và hiện toast có nút Hoàn tác trong 5 giây. Hành động không hoàn tác được hoặc ảnh hưởng người khác thì hỏi xác nhận, nêu rõ đối tượng. Không dùng cả hai cho một hành động.",
-       "**Câu hỏi (OQ2):** Rời channel riêng tư rồi thì tự vào lại hay cần lời mời mới? **Trả lời:** Cần một thành viên mời lại. Lời xác nhận khi rời nói rõ điều đó; vẫn có Hoàn tác trong 5 giây. Channel riêng tư không xuất hiện trong Browse hay Ctrl+K với người ngoài. Nếu người cuối cùng rời đi, channel được lưu trữ.",
-       "**Câu hỏi (Q27):** Người vào kênh sau thấy được gì trong lịch sử, và kênh không dùng nữa thì xử lý ra sao? **Bạn chọn phương án được đề xuất:** Thấy toàn bộ lịch sử; lưu trữ được, không xóa hẳn",
-       "**Câu hỏi (G14):** Admin và Owner có thấy và quản lý mọi cuộc trò chuyện không? **Bạn đã xác nhận:** Admin và Owner không tự động thấy kênh riêng tư hay DM; quyền xóa tin, gỡ người, lưu trữ chỉ áp dụng ở nơi họ là thành viên.",
-       "**Giả định, chưa xác nhận (FA-10):** Rời một kênh thì xoá số chưa đọc và các mục Activity còn mở của kênh đó với người rời.",
-       "**Còn mở (FQ-19):** Owner hoặc Admin có gỡ được thành viên khỏi một kênh bất kỳ không? Hiện đã quyết định (G14): không, chỉ trong kênh họ là thành viên, và không bao giờ khỏi #general. Giữ như vậy chứ, và người tạo kênh có được gỡ người không?"
+       [
+        "Rời channel riêng tư rồi thì tự vào lại hay cần lời mời mới? (OQ2)",
+        "Trả lời: Cần một thành viên mời lại. Lời xác nhận khi rời nói rõ điều đó; vẫn có Hoàn tác trong 5 giây. Channel riêng tư không xuất hiện trong Browse hay Ctrl+K với người ngoài. Nếu người cuối cùng rời đi, channel được lưu trữ."
+       ],
+       [
+        "Người vào kênh sau thấy được gì trong lịch sử, và kênh không dùng nữa thì xử lý ra sao? (Q27)",
+        "Bạn chọn phương án được đề xuất: Thấy toàn bộ lịch sử; lưu trữ được, không xóa hẳn"
+       ],
+       [
+        "Admin và Owner có thấy và quản lý mọi cuộc trò chuyện không? (G14)",
+        "Bạn đã xác nhận: Admin và Owner không tự động thấy kênh riêng tư hay DM; quyền xóa tin, gỡ người, lưu trữ chỉ áp dụng ở nơi họ là thành viên."
+       ],
+       "**Giả định, chưa xác nhận (FA-10):** Rời một kênh thì xoá số chưa đọc và các mục Activity còn mở của kênh đó với người rời."
       ]
      },
      {
@@ -4951,14 +5073,30 @@
        "**Sau (xoá):** biến mất với mọi người; file đính kèm bị gỡ khỏi kho và khỏi Files. Tin có trả lời để lại dòng 'Message deleted' và giữ thread.",
        "**Huỷ:** Esc hoặc Cancel giữ nguyên tin. Save tắt khi nội dung chưa đổi; lưu nội dung trống thì chuyển sang đề nghị Delete.",
        "**Người khác:** Admin và Owner chỉ xoá được tin của người khác trong cuộc trò chuyện mà họ là thành viên; tác giả được báo.",
-       "**Trong prototype:** Menu More trên tin của mình có Edit và Delete. Edit biến nội dung thành ô nhập có Save và Cancel, rồi thêm '(edited)'. Trong prototype, xoá một tin có thread thì xoá luôn mọi trả lời.",
-       "**Vì sao sơ đồ được vẽ như vậy.** Mỗi dòng dưới đây là một câu hỏi đã được hỏi và câu trả lời đã chọn, sau đó là những gì còn giả định hoặc còn mở.",
-       "**Câu hỏi (Q13):** Có giới hạn thời gian sửa tin không, và khi xóa một tin có thread thì sao? Prototype xóa luôn mọi reply. **Bạn chọn phương án được đề xuất:** Sửa không giới hạn; xóa mềm, giữ thread",
-       "**Câu hỏi (G10):** File của tin nhắn bị xoá thì ra sao? **Bạn đã xác nhận:** Xóa tin thì file đính kèm cũng bị gỡ khỏi kho.",
-       "**Câu hỏi (G14):** Admin và Owner có thấy và quản lý mọi cuộc trò chuyện không? **Bạn đã xác nhận:** Admin và Owner không tự động thấy kênh riêng tư hay DM; quyền xóa tin, gỡ người, lưu trữ chỉ áp dụng ở nơi họ là thành viên.",
-       "**Câu hỏi (G16):** Khi admin xoá tin của người khác thì hiện gì? **Bạn đã xác nhận:** Tin bị Admin xóa hiện là “Tin nhắn đã bị quản trị viên xóa” và tác giả được báo.",
-       "**Quy tắc NR3** (rút ra từ GAP-24 · OQ12): Hành động hoàn tác được thì làm ngay và hiện toast có nút Hoàn tác trong 5 giây. Hành động không hoàn tác được hoặc ảnh hưởng người khác thì hỏi xác nhận, nêu rõ đối tượng. Không dùng cả hai cho một hành động.",
-       "**Còn mở (FQ-05):** Một tin bị xoá trong lúc người khác đang viết trả lời trong thread của nó. Trả lời đó có được gửi không?"
+       "**Trong prototype:** Menu More trên tin của mình có Edit và Delete. Edit biến nội dung thành ô nhập có Save và Cancel, rồi thêm '(edited)'. Trong prototype, xoá một tin có thread thì xoá luôn mọi trả lời."
+      ]
+     },
+     {
+      "type": "fold",
+      "title": "Nguồn",
+      "items": [
+       [
+        "Có giới hạn thời gian sửa tin không, và khi xóa một tin có thread thì sao? Prototype xóa luôn mọi reply. (Q13)",
+        "Bạn chọn phương án được đề xuất: Sửa không giới hạn; xóa mềm, giữ thread"
+       ],
+       [
+        "File của tin nhắn bị xoá thì ra sao? (G10)",
+        "Bạn đã xác nhận: Xóa tin thì file đính kèm cũng bị gỡ khỏi kho."
+       ],
+       [
+        "Admin và Owner có thấy và quản lý mọi cuộc trò chuyện không? (G14)",
+        "Bạn đã xác nhận: Admin và Owner không tự động thấy kênh riêng tư hay DM; quyền xóa tin, gỡ người, lưu trữ chỉ áp dụng ở nơi họ là thành viên."
+       ],
+       [
+        "Khi admin xoá tin của người khác thì hiện gì? (G16)",
+        "Bạn đã xác nhận: Tin bị Admin xóa hiện là “Tin nhắn đã bị quản trị viên xóa” và tác giả được báo."
+       ],
+       "**Quy tắc NR3** (rút ra từ GAP-24 · OQ12): Hành động hoàn tác được thì làm ngay và hiện toast có nút Hoàn tác trong 5 giây. Hành động không hoàn tác được hoặc ảnh hưởng người khác thì hỏi xác nhận, nêu rõ đối tượng. Không dùng cả hai cho một hành động."
       ]
      },
      {
@@ -4979,13 +5117,20 @@
        "**Hoàn tác:** lưu và bỏ lưu đều tức thì và đảo lại được bằng chính nút bookmark; toast 'Saved for Later' có nút View.",
        "**Quy tắc:** số trên chip luôn bằng số hàng đang hiện, kể cả hàng có tin đã bị xoá.",
        "**Trống:** khi chưa lưu gì, Later hiện ghi chú ở giữa về cách lưu một tin.",
-       "**Trong prototype:** Bookmark trên tin nhắn, mục Later, 'Remind me' hoặc 'Change' trên từng hàng kèm menu giờ, và 'Remind me about this' trong menu tin nhắn đều có trong prototype.",
-       "**Vì sao sơ đồ được vẽ như vậy.** Mỗi dòng dưới đây là một câu hỏi đã được hỏi và câu trả lời đã chọn, sau đó là những gì còn giả định hoặc còn mở.",
-       "**Câu hỏi (Q2):** Prototype có 14 nhóm tính năng. Những nhóm nào bắt buộc có trong bản đầu tiên? **Bạn chọn phương án được đề xuất:** Chat lõi, Activity, Later, Files, People, Preferences, command palette",
+       "**Trong prototype:** Bookmark trên tin nhắn, mục Later, 'Remind me' hoặc 'Change' trên từng hàng kèm menu giờ, và 'Remind me about this' trong menu tin nhắn đều có trong prototype."
+      ]
+     },
+     {
+      "type": "fold",
+      "title": "Nguồn",
+      "items": [
+       [
+        "Prototype có 14 nhóm tính năng. Những nhóm nào bắt buộc có trong bản đầu tiên? (Q2)",
+        "Bạn chọn phương án được đề xuất: Chat lõi, Activity, Later, Files, People, Preferences, command palette"
+       ],
        "**Quy tắc NR7** (rút ra từ GAP-12, 13, 16, 38): Ngày giờ: trường bắt buộc thì không cho bỏ trống; nơi cần thời điểm tương lai thì từ chối quá khứ; luôn hiện năm khi khác năm hiện tại; một định dạng thống nhất toàn app; không bao giờ hiện \"Invalid Date\".",
        "**Quy tắc NR6** (rút ra từ GAP-25, 38 · OQ14): Trong lúc Pause hoặc Focus time, không có toast, push hay âm thanh nào, kể cả reminder do mình đặt. Badge vẫn cập nhật. Khi kết thúc, hiện một tổng kết những gì đã đến. Bật Focus khi đang Focus thì gia hạn, không lồng; kết thúc thì trả lại status trước đó.",
-       "**Quy tắc NR8** (rút ra từ GAP-29, 31, 33): Mọi danh sách có tìm hoặc lọc đều có trạng thái trống đặt giữa vùng nội dung, viết riêng cho ngữ cảnh đó. Số đếm trên chip luôn khớp với số dòng hiển thị.",
-       "**Còn mở (FQ-06):** 'Today 15:00' trong menu nhắc việc khi đã quá 15:00: ẩn đi, hay thay bằng lựa chọn khác?"
+       "**Quy tắc NR8** (rút ra từ GAP-29, 31, 33): Mọi danh sách có tìm hoặc lọc đều có trạng thái trống đặt giữa vùng nội dung, viết riêng cho ngữ cảnh đó. Số đếm trên chip luôn khớp với số dòng hiển thị."
       ]
      },
      {
@@ -5006,16 +5151,30 @@
        "**Phân quyền:** kiểm tra ở server cho mọi request admin; việc ẩn mục menu không phải là kiểm tra.",
        "**Thao tác trên hàng:** Resend gửi link mới và tính lại 7 ngày; Revoke hỏi xác nhận và vô hiệu link cũ ngay.",
        "**Mail hỏng:** hàng ghi 'Mail not sent' và lệnh server cho truy cập khẩn cấp vẫn dùng được.",
-       "**Trong prototype:** **Không có trong prototype.** Admin (icon khiên ở thanh điều hướng trái) có hai tab, thống kê và automation; không có bảng thành viên và không có lời mời cho thành viên (phát hiện N-02). Hộp thoại mời duy nhất là 'Invite a client' cho guest.",
-       "**Vì sao sơ đồ được vẽ như vậy.** Mỗi dòng dưới đây là một câu hỏi đã được hỏi và câu trả lời đã chọn, sau đó là những gì còn giả định hoặc còn mở.",
-       "**Câu hỏi (Q11):** Prototype không có màn hình đăng nhập cho thành viên, chỉ có của guest. Thành viên đăng nhập thế nào, và tài khoản được tạo ra sao? **Bạn chọn phương án được đề xuất:** (b) Mã 6 số qua email, không mật khẩu, chỉ admin mời, phiên 30 ngày",
-       "**Câu hỏi (Q26):** Bản cài mới chưa có tài khoản nào. Owner đầu tiên được tạo thế nào? **Bạn trả lời:** Tạo từ biến môi trường hoặc seed; admin mời thành viên",
-       "**Câu hỏi (Q12):** Prototype có Owner, Admin và thành viên thường nhưng không thể hiện khác biệt. Ai được làm gì? **Bạn chọn phương án được đề xuất:** Như bảng quyền ở mục Phạm vi",
-       "**Câu hỏi (G4):** Lời mời có hạn bao lâu, và link trong đó có cần mã đăng nhập không? **Bạn đã xác nhận:** Lời mời hết hạn sau 7 ngày. Link trong thư mời đăng nhập thẳng, không cần mã.",
-       "**Đề xuất, chưa xác nhận (F02):** Flow viết: Mời thành viên",
-       "**Giả định, chưa xác nhận (FA-11):** Một lô lời mời giới hạn 50 địa chỉ.",
-       "**Còn mở (FQ-03):** Admin mời địa chỉ của một thành viên đã bị vô hiệu hoá. Từ chối, hay đề nghị Reactivate?",
-       "**Còn mở (FQ-11):** Một lô lời mời lỗi giữa chừng (máy chủ mail hỏng sau 3 trên 10). Giữ 3 cái đã xong, hay huỷ hết?"
+       "**Trong prototype:** **Không có trong prototype.** Admin (icon khiên ở thanh điều hướng trái) có hai tab, thống kê và automation; không có bảng thành viên và không có lời mời cho thành viên (phát hiện N-02). Hộp thoại mời duy nhất là 'Invite a client' cho guest."
+      ]
+     },
+     {
+      "type": "fold",
+      "title": "Nguồn",
+      "items": [
+       [
+        "Prototype không có màn hình đăng nhập cho thành viên, chỉ có của guest. Thành viên đăng nhập thế nào, và tài khoản được tạo ra sao? (Q11)",
+        "Bạn chọn phương án được đề xuất: (b) Mã 6 số qua email, không mật khẩu, chỉ admin mời, phiên 30 ngày"
+       ],
+       [
+        "Bản cài mới chưa có tài khoản nào. Owner đầu tiên được tạo thế nào? (Q26)",
+        "Bạn trả lời: Tạo từ biến môi trường hoặc seed; admin mời thành viên"
+       ],
+       [
+        "Prototype có Owner, Admin và thành viên thường nhưng không thể hiện khác biệt. Ai được làm gì? (Q12)",
+        "Bạn chọn phương án được đề xuất: Như bảng quyền ở mục Phạm vi"
+       ],
+       [
+        "Lời mời có hạn bao lâu, và link trong đó có cần mã đăng nhập không? (G4)",
+        "Bạn đã xác nhận: Lời mời hết hạn sau 7 ngày. Link trong thư mời đăng nhập thẳng, không cần mã."
+       ],
+       "**Giả định, chưa xác nhận (FA-11):** Một lô lời mời giới hạn 50 địa chỉ."
       ]
      },
      {
@@ -5036,14 +5195,22 @@
        "**Sau (vai trò):** nhãn cập nhật ở Admin, People và hồ sơ; người đó nhận một mục Activity và thấy mục Admin xuất hiện hoặc biến mất.",
        "**Sau (vô hiệu hoá):** mọi phiên kết thúc; tin cũ vẫn còn kèm nhãn 'Deactivated'; người đó rời People, danh sách mention và danh sách thêm người; DM với họ thành chỉ đọc. Reactivate trả lại quyền vào đúng các kênh cũ.",
        "**Huỷ:** đóng hộp xác nhận thì không có gì thay đổi.",
-       "**Trong prototype:** **Không có trong prototype.** Admin không có bảng thành viên, nên không có menu vai trò và không có Deactivate (phát hiện N-02). People và panel hồ sơ có hiện nhãn vai trò, chỉ đọc.",
-       "**Vì sao sơ đồ được vẽ như vậy.** Mỗi dòng dưới đây là một câu hỏi đã được hỏi và câu trả lời đã chọn, sau đó là những gì còn giả định hoặc còn mở.",
-       "**Câu hỏi (Q12):** Prototype có Owner, Admin và thành viên thường nhưng không thể hiện khác biệt. Ai được làm gì? **Bạn chọn phương án được đề xuất:** Như bảng quyền ở mục Phạm vi",
-       "**Câu hỏi (G6):** Có thể có nhiều Owner không, và Owner cuối cùng được bảo vệ thế nào? **Bạn đã xác nhận:** Có thể có nhiều Owner. Owner cuối cùng không bị hạ vai trò hay vô hiệu hóa được.",
-       "**Quy tắc NR3** (rút ra từ GAP-24 · OQ12): Hành động hoàn tác được thì làm ngay và hiện toast có nút Hoàn tác trong 5 giây. Hành động không hoàn tác được hoặc ảnh hưởng người khác thì hỏi xác nhận, nêu rõ đối tượng. Không dùng cả hai cho một hành động.",
-       "**Đề xuất, chưa xác nhận (F40):** Flow viết: Đổi vai trò",
-       "**Đề xuất, chưa xác nhận (F41):** Flow viết: Vô hiệu hóa và kích hoạt lại",
-       "**Còn mở (GQ-20):** Bảng quyền ở tab Roles & States có phải là căn cứ đã thống nhất cho những gì Member và Admin thấy không?"
+       "**Trong prototype:** **Không có trong prototype.** Admin không có bảng thành viên, nên không có menu vai trò và không có Deactivate (phát hiện N-02). People và panel hồ sơ có hiện nhãn vai trò, chỉ đọc."
+      ]
+     },
+     {
+      "type": "fold",
+      "title": "Nguồn",
+      "items": [
+       [
+        "Prototype có Owner, Admin và thành viên thường nhưng không thể hiện khác biệt. Ai được làm gì? (Q12)",
+        "Bạn chọn phương án được đề xuất: Như bảng quyền ở mục Phạm vi"
+       ],
+       [
+        "Có thể có nhiều Owner không, và Owner cuối cùng được bảo vệ thế nào? (G6)",
+        "Bạn đã xác nhận: Có thể có nhiều Owner. Owner cuối cùng không bị hạ vai trò hay vô hiệu hóa được."
+       ],
+       "**Quy tắc NR3** (rút ra từ GAP-24 · OQ12): Hành động hoàn tác được thì làm ngay và hiện toast có nút Hoàn tác trong 5 giây. Hành động không hoàn tác được hoặc ảnh hưởng người khác thì hỏi xác nhận, nêu rõ đối tượng. Không dùng cả hai cho một hành động."
       ]
      },
      {
@@ -5063,13 +5230,25 @@
        "**Giới hạn:** một nhóm tối đa 8 người, tính cả người tạo. Về sau không thêm hay bớt người được; một tập người khác là một nhóm mới.",
        "**Cùng người, cùng cuộc trò chuyện:** chọn một tập người đã có cuộc trò chuyện thì mở lại nó kèm lịch sử.",
        "**Người đã bị vô hiệu hoá:** không có trong danh sách chọn; DM đã có với họ vẫn đọc được, không có ô soạn tin.",
-       "**Trong prototype:** 'New message' là icon bút phía trên danh sách cuộc trò chuyện. Hộp thoại có một ô, 'Search people and channels'; bấm một hàng thì mở ngay DM hoặc kênh đó. **Không chọn được nhiều người**, nên không tạo được nhóm. Chỉ có một nhóm trong dữ liệu mẫu: 'Alex, Thu', ba người.",
-       "**Vì sao sơ đồ được vẽ như vậy.** Mỗi dòng dưới đây là một câu hỏi đã được hỏi và câu trả lời đã chọn, sau đó là những gì còn giả định hoặc còn mở.",
-       "**Câu hỏi (Q17):** Tính năng message nào có trong phase 1, cái nào hoãn? Và ba thứ prototype chưa có thì sao: @channel, bộ chọn emoji đầy đủ, group DM nhiều người? **Bạn chọn phương án được đề xuất:** Như đề xuất; thêm @channel, group DM tới 8 người, giữ 8 emoji cố định",
-       "**Câu hỏi (G12):** Có thêm hay bớt người trong group DM được không? **Bạn đã xác nhận:** Group DM không thêm bớt người được.",
-       "**Câu hỏi (Q12):** Prototype có Owner, Admin và thành viên thường nhưng không thể hiện khác biệt. Ai được làm gì? **Bạn chọn phương án được đề xuất:** Như bảng quyền ở mục Phạm vi",
-       "**Đề xuất, chưa xác nhận (F25):** Flow viết: Tin nhắn riêng và nhóm",
-       "**Còn mở (FQ-20):** Người dùng chọn nhiều người cho một group DM bằng cách nào? Hộp thoại New message của prototype mở cuộc trò chuyện ngay ở lần bấm đầu."
+       "**Trong prototype:** 'New message' là icon bút phía trên danh sách cuộc trò chuyện. Hộp thoại có một ô, 'Search people and channels'; bấm một hàng thì mở ngay DM hoặc kênh đó. **Không chọn được nhiều người**, nên không tạo được nhóm. Chỉ có một nhóm trong dữ liệu mẫu: 'Alex, Thu', ba người."
+      ]
+     },
+     {
+      "type": "fold",
+      "title": "Nguồn",
+      "items": [
+       [
+        "Tính năng message nào có trong phase 1, cái nào hoãn? Và ba thứ prototype chưa có thì sao: @channel, bộ chọn emoji đầy đủ, group DM nhiều người? (Q17)",
+        "Bạn chọn phương án được đề xuất: Như đề xuất; thêm @channel, group DM tới 8 người, giữ 8 emoji cố định"
+       ],
+       [
+        "Có thêm hay bớt người trong group DM được không? (G12)",
+        "Bạn đã xác nhận: Group DM không thêm bớt người được."
+       ],
+       [
+        "Prototype có Owner, Admin và thành viên thường nhưng không thể hiện khác biệt. Ai được làm gì? (Q12)",
+        "Bạn chọn phương án được đề xuất: Như bảng quyền ở mục Phạm vi"
+       ]
       ]
      }
     ]
@@ -5094,16 +5273,19 @@
        "**Bắt kịp:** ứng dụng nhớ số của event cuối cùng đã thấy và xin mọi thứ sau đó. Vắng hơn 7 ngày thì tải lại toàn bộ.",
        "**Không trùng:** tin đang chờ được gửi lại với đúng ID ban đầu.",
        "**Banner:** không bao giờ che ô soạn tin hay thanh điều hướng.",
-       "**Trong prototype:** Một công tắc demo tắt mạng. Khi đó prototype hiện một dải phía trên khung chat, 'Offline: showing saved messages · messages you send wait until you are back online', cùng câu đó phía trên danh sách cuộc trò chuyện, và 'Waiting to send' trên tin nhắn. **'Reconnecting…' và 'Reconnected' không có trong prototype**, và các thao tác khác không bị chặn (GAP-21).",
-       "**Vì sao sơ đồ được vẽ như vậy.** Mỗi dòng dưới đây là một câu hỏi đã được hỏi và câu trả lời đã chọn, sau đó là những gì còn giả định hoặc còn mở.",
+       "**Trong prototype:** Một công tắc demo tắt mạng. Khi đó prototype hiện một dải phía trên khung chat, 'Offline: showing saved messages · messages you send wait until you are back online', cùng câu đó phía trên danh sách cuộc trò chuyện, và 'Waiting to send' trên tin nhắn. **'Reconnecting…' và 'Reconnected' không có trong prototype**, và các thao tác khác không bị chặn (GAP-21)."
+      ]
+     },
+     {
+      "type": "fold",
+      "title": "Nguồn",
+      "items": [
        "**Quy tắc NR13** (rút ra từ GAP-21 · OQ11): Khi mất kết nối: nội dung đã tải vẫn đọc được; tin đang gửi chuyển sang chờ và tự gửi lại khi có mạng; mọi thao tác khác bị chặn kèm lời giải thích, không báo thành công giả.",
        "**Quy tắc NR12** (rút ra từ GAP-03, 11): Toast và thanh nổi không bao giờ che composer hay nút điều hướng.",
        "**Thiết kế kỹ thuật:** Mọi thay đổi là một event có đánh số. Khi kết nối lại, ứng dụng xin mọi thứ sau số cuối cùng nó đã thấy; vắng hơn 7 ngày thì tải lại toàn bộ.",
-       "**Đề xuất, chưa xác nhận (F37):** Flow viết: Mất kết nối và kết nối lại",
        "**Giả định, chưa xác nhận (FA-06):** Các lần kết nối lại chờ 1, 2, 5, 10 rồi 30 giây, có thêm chút ngẫu nhiên.",
        "**Giả định, chưa xác nhận (FA-09):** Tin 'Waiting to send' vẫn còn sau khi tải lại trang, được giữ trong trình duyệt, và bị bỏ nếu người khác đăng nhập trên trình duyệt đó.",
-       "**Giả định, chưa xác nhận (FA-17):** Khi mất mạng, banner giữ câu chữ của prototype, 'Offline: showing saved messages'. Không giả định có trạng thái 'Reconnecting…' riêng.",
-       "**Còn mở (FQ-22):** Banner offline của prototype ghi 'Offline: showing saved messages'. Flow viết F37 ghi 'Reconnecting…' và toast 'Reconnected', những thứ prototype không có. Dùng câu chữ nào, và có trạng thái đang kết nối lại riêng không?"
+       "**Giả định, chưa xác nhận (FA-17):** Khi mất mạng, banner giữ câu chữ của prototype, 'Offline: showing saved messages'. Không giả định có trạng thái 'Reconnecting…' riêng."
       ]
      },
      {
@@ -5122,17 +5304,24 @@
        "**Sau:** không nội dung nào của workspace còn đọc được trên màn hình; đăng nhập lại thì người dùng về đúng cuộc trò chuyện, bản nháp vẫn trong ô soạn.",
        "**Quy tắc:** server kiểm tra phiên ở mọi request và đóng kết nối realtime ngay khi phiên kết thúc.",
        "**Quy tắc:** tài khoản bị vô hiệu hoá không có nút đăng nhập, và bản nháp lưu trên máy bị xoá.",
-       "**Trong prototype:** **Không có trong prototype.** Prototype không có đăng nhập và không có phiên, nên không màn hình nào ở đây tồn tại (phát hiện N-01).",
-       "**Vì sao sơ đồ được vẽ như vậy.** Mỗi dòng dưới đây là một câu hỏi đã được hỏi và câu trả lời đã chọn, sau đó là những gì còn giả định hoặc còn mở.",
-       "**Câu hỏi (Q11):** Prototype không có màn hình đăng nhập cho thành viên, chỉ có của guest. Thành viên đăng nhập thế nào, và tài khoản được tạo ra sao? **Bạn chọn phương án được đề xuất:** (b) Mã 6 số qua email, không mật khẩu, chỉ admin mời, phiên 30 ngày",
-       "**Câu hỏi (Q12):** Prototype có Owner, Admin và thành viên thường nhưng không thể hiện khác biệt. Ai được làm gì? **Bạn chọn phương án được đề xuất:** Như bảng quyền ở mục Phạm vi",
+       "**Trong prototype:** **Không có trong prototype.** Prototype không có đăng nhập và không có phiên, nên không màn hình nào ở đây tồn tại (phát hiện N-01)."
+      ]
+     },
+     {
+      "type": "fold",
+      "title": "Nguồn",
+      "items": [
+       [
+        "Prototype không có màn hình đăng nhập cho thành viên, chỉ có của guest. Thành viên đăng nhập thế nào, và tài khoản được tạo ra sao? (Q11)",
+        "Bạn chọn phương án được đề xuất: (b) Mã 6 số qua email, không mật khẩu, chỉ admin mời, phiên 30 ngày"
+       ],
+       [
+        "Prototype có Owner, Admin và thành viên thường nhưng không thể hiện khác biệt. Ai được làm gì? (Q12)",
+        "Bạn chọn phương án được đề xuất: Như bảng quyền ở mục Phạm vi"
+       ],
        "**Thiết kế kỹ thuật:** Server kiểm tra phiên ở mọi request và đóng kết nối trực tiếp ngay khi phiên kết thúc.",
-       "**Đề xuất, chưa xác nhận (F06):** Flow viết: Đăng xuất và quản lý phiên",
-       "**Đề xuất, chưa xác nhận (F07):** Flow viết: Phiên hết hạn hoặc bị thu hồi khi đang dùng",
-       "**Đề xuất, chưa xác nhận (F41):** Flow viết: Vô hiệu hóa và kích hoạt lại",
        "**Giả định, chưa xác nhận (FA-09):** Tin 'Waiting to send' vẫn còn sau khi tải lại trang, được giữ trong trình duyệt, và bị bỏ nếu người khác đăng nhập trên trình duyệt đó.",
-       "**Giả định, chưa xác nhận (FA-16):** Mọi màn hình và mọi câu chữ trong dấu nháy mà prototype không có đều là đề xuất: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', ô giữ chỗ khi tải, và phần còn lại.",
-       "**Còn mở (FQ-02):** Sign out ở một tab: các tab khác của cùng trình duyệt có thoát ngay không?"
+       "**Giả định, chưa xác nhận (FA-16):** Mọi màn hình và mọi câu chữ trong dấu nháy mà prototype không có đều là đề xuất: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', ô giữ chỗ khi tải, và phần còn lại."
       ]
      },
      {
@@ -5152,14 +5341,17 @@
        "**Không có quyền và không tồn tại trông giống nhau**, nên ứng dụng không bao giờ xác nhận một thứ riêng tư có tồn tại.",
        "**Mã lỗi:** lỗi server hiện một mã ngắn để người dùng chuyển lại; cùng mã đó có trong log server.",
        "**401** được xử lý ở flow 3.2 cho mọi request.",
-       "**Trong prototype:** **Không có trong prototype.** Không có server; mọi thao tác thành công tức thì. Chữ 'error' và 'Retry' không xuất hiện (phát hiện N-06). Lỗi trong form được báo bằng toast sau khi bấm nút (phát hiện N-08).",
-       "**Vì sao sơ đồ được vẽ như vậy.** Mỗi dòng dưới đây là một câu hỏi đã được hỏi và câu trả lời đã chọn, sau đó là những gì còn giả định hoặc còn mở.",
+       "**Trong prototype:** **Không có trong prototype.** Không có server; mọi thao tác thành công tức thì. Chữ 'error' và 'Retry' không xuất hiện (phát hiện N-06). Lỗi trong form được báo bằng toast sau khi bấm nút (phát hiện N-08)."
+      ]
+     },
+     {
+      "type": "fold",
+      "title": "Nguồn",
+      "items": [
        "**Quy tắc NR4** (rút ra từ GAP-22 · OQ12): Form đã có nội dung không đóng khi bấm ra ngoài; đóng bằng nút thì hỏi có bỏ nội dung không.",
        "**Giả định, chưa xác nhận (FA-02):** Request không có trả lời sau 10 giây được coi là lỗi và hiện Retry.",
        "**Giả định, chưa xác nhận (FA-08):** Mã trạng thái của server ứng với màn hình như ở flow 3.3: 400 thông báo dưới ô, 403 và 404 chung một trang, 409 và 410 hiện bản mới, 429 chờ, 5xx Retry kèm mã lỗi.",
-       "**Giả định, chưa xác nhận (FA-16):** Mọi màn hình và mọi câu chữ trong dấu nháy mà prototype không có đều là đề xuất: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', ô giữ chỗ khi tải, và phần còn lại.",
-       "**Còn mở (GQ-03):** Lỗi của form hiện ở đâu: dưới ô nhập kèm nút bị tắt, hay trong toast sau khi bấm?",
-       "**Còn mở (GQ-18):** Chống bấm hai lần thế nào khi tạo kênh, gửi lời mời và đặt nhắc việc?"
+       "**Giả định, chưa xác nhận (FA-16):** Mọi màn hình và mọi câu chữ trong dấu nháy mà prototype không có đều là đề xuất: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', ô giữ chỗ khi tải, và phần còn lại."
       ]
      }
     ]
