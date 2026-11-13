@@ -931,19 +931,21 @@
     "Admin"
    ],
    "phase": 1,
-   "context": "Đang ở trang Admin.",
+   "context": "Ở trang Admin.",
    "steps": [
-    "Bấm “Mời thành viên”. Modal có ô email (nhập được nhiều địa chỉ, cách nhau bằng dấu phẩy hoặc xuống dòng) và ô chọn vai trò, mặc định Member.",
-    "Bấm “Gửi lời mời”. Mỗi địa chỉ hợp lệ thành một dòng trong bảng thành viên với trạng thái “Đã mời”, kèm ngày mời và người mời.",
-    "Toki gửi thư mời tới từng địa chỉ. Toast: “Đã gửi 3 lời mời”.",
-    "Dòng “Đã mời” có hai nút: “Gửi lại” và “Thu hồi”."
+    "Bấm 'Invite members'. Hộp thoại có ô email (nhiều địa chỉ, cách nhau bằng dấu phẩy hoặc xuống dòng) và ô chọn vai trò gồm Member và Admin, mặc định Member.",
+    "Bấm 'Send invitations'. Mỗi địa chỉ hợp lệ thành một dòng trong bảng thành viên với trạng thái 'Invited', ngày mời và người mời.",
+    "Toki gửi mail tới từng địa chỉ. Mail nêu tên workspace và người mời, có nút 'Join' và một mã 6 số.",
+    "Dòng 'Invited' có hai nút: 'Resend' và 'Revoke'."
    ],
    "cases": [
-    "Email sai định dạng: ô báo lỗi ngay bên dưới và không gửi địa chỉ đó; các địa chỉ đúng vẫn được gửi.",
-    "Email đã là thành viên hoặc đã được mời: báo “đã có trong workspace” hoặc “đã được mời ngày …”, không tạo trùng.",
-    "Admin chỉ mời được vai trò Member. Admin mời được cả Admin và Admin.",
-    "Lời mời hết hạn sau 7 ngày: dòng chuyển sang “Hết hạn”, còn nút “Gửi lại”.",
-    "Thu hồi: hỏi xác nhận; link trong thư cũ không còn dùng được."
+    "Email sai dạng: lỗi hiện dưới ô nhập và 'Send invitations' bị tắt cho tới khi mọi địa chỉ hợp lệ.",
+    "Email đã là thành viên đang hoạt động hoặc đã được mời: dòng đó ghi rõ và không tạo trùng.",
+    "Email thuộc về người đã bị vô hiệu hoá: lời mời vẫn được gửi. Khi họ nhận lời, đúng tài khoản cũ được kích hoạt lại cùng lịch sử và các kênh.",
+    "Máy chủ mail lỗi giữa chừng một lô: các lời mời đã gửi được giữ lại; các dòng còn lại ghi 'Mail not sent' kèm 'Resend'.",
+    "Lời mời hết hạn sau 7 ngày: dòng chuyển sang 'Expired' và vẫn có 'Resend'.",
+    "Revoke hỏi xác nhận; sau đó nút Join trong mail cũ dẫn tới trang ghi lời mời không còn hiệu lực.",
+    "Mọi lần mời, gửi lại và thu hồi đều được ghi ở server kèm ai làm và lúc nào."
    ]
   },
   {
@@ -955,19 +957,23 @@
     "Admin"
    ],
    "phase": 1,
-   "context": "Có thư mời trong hộp thư.",
+   "context": "Có một email mời trong hộp thư.",
    "steps": [
-    "Thư ghi tên workspace, tên người mời, và có nút “Tham gia”.",
-    "Bấm nút: trình duyệt mở Toki và đăng nhập thẳng, không cần nhập mã, vì link trong thư đã chứng minh quyền dùng email đó.",
-    "Màn hình chào hiện một lần: nhập tên hiển thị và chức danh; múi giờ và ngôn ngữ lấy theo thiết bị, sửa được.",
-    "Bấm “Vào Toki”. Người mới vào Home, đã ở sẵn trong #general và thấy toàn bộ lịch sử của nó.",
-    "Trong #general xuất hiện dòng hệ thống “Minh đã tham gia”. Trang Admin đổi trạng thái của người này thành “Đang hoạt động”.",
+    "Email nêu tên workspace và người mời, có nút 'Join' và một mã 6 số.",
+    "Bấm Join thì mở Toki ở bước nhập mã với địa chỉ email điền sẵn. Riêng link thì không đăng nhập cho ai.",
+    "Người dùng gõ 6 số trong mail. Mã có hiệu lực 10 phút.",
+    "Nhập đúng mã thì họ được đăng nhập và vào Home, đã ở trong #general với đầy đủ lịch sử. Không có màn hình chào.",
+    "Tên hiển thị của họ là phần trước @ của email; họ sửa được sau.",
+    "#general hiện một dòng hệ thống màu xám, 'Minh joined', không làm tăng số chưa đọc và không tạo thông báo. Trang Admin đổi trạng thái của người đó thành 'Active'.",
     "Một thẻ nhỏ hỏi có bật thông báo không (F36)."
    ],
    "cases": [
-    "Link đã dùng rồi: chuyển sang trang đăng nhập thường, email điền sẵn.",
-    "Link hết hạn hoặc bị thu hồi: trang nói rõ lý do và gợi ý liên hệ người mời.",
-    "Bỏ qua màn hình chào: tên hiển thị lấy từ phần trước dấu @ của email, sửa sau trong Tùy chọn."
+    "Mã trong mail đã hết hạn (mở mail sau hơn 10 phút kể từ lúc gửi): màn hình báo rõ, và 'Resend code' gửi mã mới. Resend dùng được sau 60 giây; mã mới huỷ mã cũ.",
+    "Nhập sai mã: màn hình báo còn mấy lần thử. Sai lần thứ 5 thì mã bị khoá và phải xin mã mới.",
+    "Lời mời đã được dùng: Join dẫn tới trang đăng nhập thường với email điền sẵn.",
+    "Lời mời hết hạn sau 7 ngày: một trang ghi rõ và nhắc nhờ người mời gửi lại. Bị thu hồi: một trang ghi lời mời không còn hiệu lực và nên hỏi admin. Link không nhận ra: 'This link is not valid', không nêu tên workspace.",
+    "Người dùng đang đăng nhập bằng tài khoản khác: trang hỏi 'Bạn đang đăng nhập là A. Đăng xuất để tiếp tục với B?'. Ở lại thì A vẫn đăng nhập và lời mời còn hiệu lực.",
+    "Địa chỉ thuộc về người đã bị vô hiệu hoá: nhập mã xong họ trở lại đúng tài khoản cũ, cùng tin nhắn và các kênh."
    ]
   },
   {
@@ -1350,43 +1356,45 @@
   {
    "id": "F20",
    "group": "Kênh và tin nhắn riêng",
-   "title": "Tạo kênh",
+   "title": "Tạo một kênh",
    "roles": [
-    "Member",
     "Admin"
    ],
    "phase": 1,
-   "context": "Từ “Duyệt kênh” → “Tạo kênh”, hoặc từ Ctrl+K.",
+   "context": "Ở trang Admin, bấm dấu '+' cạnh 'Busiest channels'. Chỉ Admin tạo được kênh.",
    "steps": [
-    "Modal: Tên (tự chuyển thành chữ thường, khoảng trắng thành gạch nối), Topic (không bắt buộc), công tắc “Riêng tư”, ô thêm thành viên.",
-    "Bấm “Tạo”. Kênh mở ra ngay; mình là thành viên đầu tiên; có dòng hệ thống “Lan đã tạo kênh này”.",
-    "Kênh công khai xuất hiện trong “Duyệt kênh” của mọi người. Kênh riêng tư chỉ xuất hiện với thành viên."
+    "Hộp thoại: Tên, công tắc 'Private' (mặc định tắt), Topic (không bắt buộc, tối đa 250 ký tự), và ô thêm người (không bắt buộc).",
+    "Bấm 'Create'. Kênh mở ra ngay; Admin và những người được chọn là thành viên; một dòng hệ thống ghi 'Lan created this channel'.",
+    "Kênh công khai xuất hiện trong 'Browse channels' của mọi người. Kênh riêng tư chỉ xuất hiện với thành viên của nó."
    ],
    "cases": [
-    "Tên đã tồn tại: báo ngay dưới ô, kể cả khi trùng với một kênh đã lưu trữ.",
-    "Tên chỉ gồm chữ thường, số, gạch nối; tối đa 80 ký tự.",
-    "Không đổi được công khai thành riêng tư hay ngược lại sau khi tạo."
+    "Member không có cách nào tạo kênh: không có nút ở sidebar, Browse channels hay Ctrl+K, và server từ chối request.",
+    "Tên chỉ dùng chữ thường, số và gạch nối, tối đa 80 ký tự. Lỗi hiện dưới ô nhập và 'Create' bị tắt cho tới khi tên hợp lệ.",
+    "Tên đã tồn tại: server từ chối và ô nhập báo rõ. Hai Admin gửi cùng một tên cùng lúc thì chỉ có một kênh được tạo.",
+    "Kênh không đổi được giữa công khai và riêng tư sau khi tạo, và phase 1 không đổi tên được.",
+    "Đóng hộp thoại khi đã gõ gì đó thì hỏi có bỏ không; bấm ra ngoài thì không có gì xảy ra."
    ]
   },
   {
    "id": "F21",
    "group": "Kênh và tin nhắn riêng",
-   "title": "Duyệt và tham gia kênh công khai",
+   "title": "Tìm và tham gia một kênh công khai",
    "roles": [
     "Member",
     "Admin"
    ],
    "phase": 1,
-   "context": "Bấm “Duyệt kênh”.",
+   "context": "Bấm '+ Browse channels'. Nơi này để tìm và tham gia kênh; không tạo kênh ở đây.",
    "steps": [
-    "Modal liệt kê mọi kênh công khai và các kênh riêng tư mình đang ở: tên, topic, số thành viên. Có ô tìm.",
-    "Kênh đã tham gia có nút “Mở”; chưa tham gia có nút “Tham gia”.",
-    "Bấm “Tham gia”: kênh mở ra với toàn bộ lịch sử và xuất hiện trong danh sách của mình. Toast “Đã tham gia #tên”.",
-    "Trong kênh hiện dòng hệ thống “Lan đã tham gia”."
+    "Hộp thoại liệt kê mọi kênh công khai và các kênh riêng tư bạn đang ở: tên, chủ đề, số thành viên. Có ô tìm.",
+    "Kênh đã tham gia có nút 'Open'; kênh khác có 'Join'. Kênh chưa tham gia thì không đọc được: không có xem trước.",
+    "Bấm 'Join': kênh mở ra với đầy đủ lịch sử và vào danh sách của bạn. Toast: 'Joined #name'.",
+    "Kênh hiện một dòng hệ thống màu xám, 'Lan joined', không có thông báo."
    ],
    "cases": [
-    "Kênh đã lưu trữ có trong danh sách với nhãn “Đã lưu trữ”, chỉ có nút “Xem”.",
-    "Tìm không ra: “Không có kênh nào khớp” và nút “Tạo kênh” với tên là từ khóa vừa gõ."
+    "Kênh đã lưu trữ được liệt kê kèm nhãn 'Archived'; chỉ thành viên của chúng mở được.",
+    "Không tìm thấy: 'No channels match', ở giữa danh sách. Không có nút tạo kênh.",
+    "Khi có nhiều kênh, danh sách hiện 50 kênh đầu và tải thêm khi cuộn."
    ]
   },
   {
@@ -1459,25 +1467,27 @@
   {
    "id": "F25",
    "group": "Kênh và tin nhắn riêng",
-   "title": "Tin nhắn riêng và nhóm",
+   "title": "Tin nhắn trực tiếp và nhóm",
    "roles": [
     "Member",
     "Admin"
    ],
    "phase": 1,
-   "context": "Bấm “Tin nhắn mới”.",
+   "context": "Bấm dấu '+' ở tiêu đề 'Direct messages'. Nó hiện khi hover trên máy tính và luôn hiện trên màn hình cảm ứng, màn hình hẹp. Nó thay cho icon bút của prototype.",
    "steps": [
-    "Modal có ô tìm người và kênh.",
-    "Chọn một người: mở DM với người đó. Nếu đã từng nhắn thì mở lại hội thoại cũ với đủ lịch sử.",
-    "Chọn từ hai tới bảy người: tạo group DM (tối đa 8 người kể cả mình).",
-    "DM chỉ xuất hiện trong danh sách của người kia khi có tin đầu tiên.",
-    "Header DM hiện avatar, presence, tên, và status hoặc chức danh của người kia."
+    "Hộp thoại có một ô tìm người. Khi có nhiều người, nó hiện 50 người đầu và tải thêm khi cuộn.",
+    "Mỗi người được bấm thành một chip mang tên họ trong ô; chip gỡ được.",
+    "Bấm 'Start'. Một chip: DM với người đó mở ra. Nếu đã từng nhắn, cuộc trò chuyện cũ mở lại cùng lịch sử.",
+    "Hai tới bảy chip: một group DM gồm những người đó được tạo (tối đa 8 người, tính cả bạn).",
+    "DM chỉ xuất hiện trong danh sách của người kia khi tin đầu tiên được gửi.",
+    "Tiêu đề DM hiện avatar, trạng thái hiện diện, tên, và trạng thái hoặc chức danh của người kia."
    ],
    "cases": [
-    "Cùng một nhóm người luôn ra cùng một hội thoại. Group DM không thêm bớt người được; cần nhóm khác thì tạo nhóm mới.",
-    "Người kia bị vô hiệu hóa: lịch sử còn, ô soạn thay bằng “Tài khoản này đã bị vô hiệu hóa”.",
-    "Người kia đang Tạm dừng hoặc Focus: dưới header có dòng “Khoa đang tạm dừng thông báo tới 14:00”. Tin vẫn gửi được.",
-    "Nhắn cho chính mình: không hỗ trợ ở phase 1."
+    "Chip thứ 8 bị từ chối: 'Up to 8 people, counting you'.",
+    "Cùng một tập người luôn dẫn tới cùng một cuộc trò chuyện. Không thêm hay bớt người trong group DM được; muốn tập người khác thì tạo nhóm mới.",
+    "Người đã bị vô hiệu hoá không có trong danh sách. DM đã có với họ vẫn giữ lịch sử, và ô soạn tin được thay bằng 'This account has been deactivated'.",
+    "Người kia đang Pause hoặc Focus: một dòng dưới tiêu đề ghi 'Khoa has paused notifications until 14:00'. Tin vẫn gửi được.",
+    "Phase 1 chưa hỗ trợ nhắn cho chính mình. Guest không mở được DM."
    ]
   },
   {
@@ -1783,54 +1793,60 @@
     "Admin"
    ],
    "phase": 1,
-   "context": "Mục Admin chỉ hiện trong điều hướng của Admin và Admin.",
+   "context": "Mục Admin chỉ xuất hiện trong thanh điều hướng với Admin. Có hai vai trò, Member và Admin; không có Owner.",
    "steps": [
-    "Bảng thành viên: avatar, tên, email, vai trò, trạng thái (Đã mời, Đang hoạt động, Đã vô hiệu hóa), lần hoạt động cuối. Có ô tìm và chip lọc theo trạng thái.",
-    "Đầu trang: tổng số theo từng trạng thái và nút “Mời thành viên” (F02).",
-    "Mỗi dòng có menu hành động; nội dung menu tùy vai trò của người đang xem và của người ở dòng đó."
+    "Bảng thành viên: avatar, tên, email, vai trò, trạng thái (Invited, Active, Deactivated), lần hoạt động cuối. Có ô tìm và chip lọc theo trạng thái; khi có nhiều người thì hiện 50 người đầu và tải thêm khi cuộn.",
+    "Phía trên: tổng số theo từng trạng thái và nút 'Invite members' (F02).",
+    "Mỗi dòng có một menu thao tác: Change role (F40) và Deactivate (F41). Ở dòng của chính Admin đó và dòng của Admin cuối cùng, các mục bị khoá kèm lý do.",
+    "Cạnh 'Busiest channels' có dấu '+' để tạo kênh (F20)."
    ],
    "cases": [
-    "Member gõ thẳng đường dẫn /admin: trang “Bạn không có quyền xem trang này”.",
-    "Trang Admin không có đường nào dẫn tới nội dung tin nhắn. Admin không thấy kênh riêng tư hay DM mình không tham gia."
+    "Member gõ thẳng địa chỉ Admin thì thấy 'You do not have access to this page', và server từ chối mọi request quản trị từ Member.",
+    "Không có gì trên trang Admin dẫn tới nội dung tin nhắn. Admin không thấy kênh riêng tư hay DM mà họ không ở trong.",
+    "Khi đĩa đầy 80%, Admin thấy cảnh báo ở đây; tới 95% thì từ chối tải lên còn nhắn tin vẫn hoạt động.",
+    "Mọi hành động quản trị được ghi ở server; phase 1 chưa có màn hình để xem bản ghi."
    ]
   },
   {
    "id": "F40",
    "group": "Quản trị",
    "title": "Đổi vai trò",
-   "roles": [],
+   "roles": [
+    "Admin"
+   ],
    "phase": 1,
-   "context": "Ở trang Admin, menu trên dòng một thành viên.",
+   "context": "Ở trang Admin, trong menu trên dòng của một thành viên. Admin nào cũng làm được.",
    "steps": [
-    "Chọn “Đổi vai trò”: Member, Admin.",
-    "Hộp xác nhận nêu tên người, vai trò mới, và một dòng mô tả quyền thay đổi.",
-    "Sau khi đổi: nhãn vai trò cập nhật ở Admin, People và hồ sơ. Người đó thấy mục Admin xuất hiện hoặc biến mất ngay, không cần đăng nhập lại.",
-    "Người được đổi nhận một mục Activity: “Lan đã đổi vai trò của bạn thành Admin”."
+    "Chọn 'Change role': Member hoặc Admin.",
+    "Hộp xác nhận nêu tên người và vai trò mới, kèm một dòng về những gì thay đổi.",
+    "Sau đó nhãn vai trò cập nhật ở Admin, People và hồ sơ. Người đó thấy mục Admin xuất hiện hoặc biến mất ngay, không cần đăng nhập lại.",
+    "Người đó nhận một mục Activity: 'Lan changed your role to Admin'."
    ],
    "cases": [
-    "Admin không thấy mục “Đổi vai trò”.",
-    "Admin cuối cùng không tự hạ vai trò của mình được: mục bị khóa kèm lời giải thích."
+    "Member không có 'Change role', và server từ chối request.",
+    "Admin cuối cùng không đổi được thành Member: mục bị khoá kèm 'Make someone else an Admin first'.",
+    "Đóng hộp xác nhận thì không có gì thay đổi."
    ]
   },
   {
    "id": "F41",
    "group": "Quản trị",
-   "title": "Vô hiệu hóa và kích hoạt lại",
+   "title": "Vô hiệu hoá và kích hoạt lại",
    "roles": [
     "Admin"
    ],
    "phase": 1,
-   "context": "Ở trang Admin, menu trên dòng một thành viên.",
+   "context": "Ở trang Admin, trong menu trên dòng của một thành viên. Admin nào cũng vô hiệu hoá được bất kỳ ai, kể cả Admin khác.",
    "steps": [
-    "Chọn “Vô hiệu hóa”. Hộp xác nhận nêu tên và hậu quả: người này bị đăng xuất khỏi mọi thiết bị và không đăng nhập lại được.",
-    "Sau khi xác nhận: mọi phiên bị hủy ngay; người đó thấy màn hình “Tài khoản đã bị vô hiệu hóa”.",
-    "Với mọi người khác: tin cũ của người đó giữ nguyên, tên kèm nhãn “Đã vô hiệu hóa”; họ biến khỏi People, khỏi gợi ý nhắc tên, khỏi danh sách thêm người; DM với họ thành chỉ đọc.",
-    "“Kích hoạt lại” từ cùng menu: người đó đăng nhập lại được và trở lại đúng các kênh cũ."
+    "Chọn 'Deactivate'. Hộp xác nhận nêu tên người và hệ quả: họ bị đăng xuất ở mọi nơi và không đăng nhập lại được.",
+    "Khi xác nhận, mọi phiên kết thúc ngay; người đó thấy 'This account has been deactivated'.",
+    "Với mọi người khác: tin cũ của người đó vẫn còn, tên họ có nhãn 'Deactivated'; họ rời People, gợi ý mention và các danh sách chọn người; DM với họ thành chỉ đọc.",
+    "Để đưa họ trở lại: 'Reactivate' trong cùng menu, hoặc mời lại địa chỉ của họ (F02). Cách nào thì đúng tài khoản cũ cũng trở lại, ở đúng các kênh cũ."
    ],
    "cases": [
-    "Admin vô hiệu hóa được Member. Chỉ Admin vô hiệu hóa được Admin và Admin khác.",
-    "Không ai tự vô hiệu hóa mình. Admin cuối cùng không bị vô hiệu hóa được.",
-    "Không có xóa hẳn tài khoản ở phase 1."
+    "Không ai tự vô hiệu hoá mình được. Admin cuối cùng không thể bị vô hiệu hoá.",
+    "Member không có 'Deactivate', và server từ chối request.",
+    "Phase 1 không có xoá tài khoản vĩnh viễn."
    ]
   },
   {
