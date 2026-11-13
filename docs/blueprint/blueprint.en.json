@@ -2395,6 +2395,177 @@
    "decision": "On hover on a desktop; always visible on touch and narrow screens.",
    "source": "user",
    "note": "Still open: whether the prototype's pencil 'New message' icon stays beside the new '+'. No proposal was given for it."
+  },
+  {
+   "id": "Q52",
+   "topic": "Inviting a deactivated person",
+   "question": "An Admin invites the address of a deactivated member. Refuse, or allow?",
+   "options": "",
+   "decision": "Allowed: a deactivated person can be invited again.",
+   "source": "user",
+   "note": "Raised as D-094 (FQ-03). Your own answer; the proposal was to refuse and offer Reactivate. To confirm: accepting the new invitation reactivates the same account with its history."
+  },
+  {
+   "id": "Q53",
+   "topic": "Sign out in one tab",
+   "question": "Do the other tabs of the same browser leave at once?",
+   "options": "",
+   "decision": "Yes, at once; they share the session.",
+   "source": "recommended",
+   "note": "Raised as D-093 (FQ-02)."
+  },
+  {
+   "id": "Q54",
+   "topic": "Changing a sign-in address",
+   "question": "Can a member change their own sign-in address?",
+   "options": "",
+   "decision": "Nobody in phase 1; later an Admin does it.",
+   "source": "recommended",
+   "note": "Raised as D-098 (FQ-08)."
+  },
+  {
+   "id": "Q55",
+   "topic": "Line when someone joins",
+   "question": "Does #general show a line when someone joins, and does it notify anyone?",
+   "options": "",
+   "decision": "Yes: a grey system line 'Minh joined' with the date. No unread count, no notification.",
+   "source": "recommended",
+   "note": "Raised as D-100 (FQ-16)."
+  },
+  {
+   "id": "Q56",
+   "topic": "Create channel dialog",
+   "question": "Which fields does the Create channel dialog have?",
+   "options": "",
+   "decision": "Name, a Private switch (off by default), Topic (optional, up to 250 characters), Add people (optional). Opened by an Admin from the Admin page (Q41).",
+   "source": "recommended",
+   "note": "Raised as D-101 (FQ-18)."
+  },
+  {
+   "id": "Q57",
+   "topic": "Renaming a channel",
+   "question": "Can a channel be renamed, and who edits its description?",
+   "options": "",
+   "decision": "No rename in phase 1; any member edits topic and description.",
+   "source": "recommended",
+   "note": "Raised as D-105 (GQ-05)."
+  },
+  {
+   "id": "Q58",
+   "topic": "File types",
+   "question": "Are any file types refused?",
+   "options": "",
+   "decision": "Every type is accepted up to 100 MB; files are always downloaded, never run in the browser.",
+   "source": "recommended",
+   "note": "Raised as D-095 (FQ-04)."
+  },
+  {
+   "id": "Q59",
+   "topic": "Reply to a deleted message",
+   "question": "A message is deleted while someone writes a reply in its thread. Is the reply sent?",
+   "options": "",
+   "decision": "Yes; the thread stays under the 'Message deleted' line.",
+   "source": "recommended",
+   "note": "Raised as D-096 (FQ-05)."
+  },
+  {
+   "id": "Q60",
+   "topic": "From waiting to not sent",
+   "question": "How long does a 'Waiting to send' message keep trying?",
+   "options": "",
+   "decision": "It waits while offline; once online, one automatic try, then 'Not sent' with Retry.",
+   "source": "recommended",
+   "note": "Raised as D-097 (FQ-07)."
+  },
+  {
+   "id": "Q61",
+   "topic": "Offline banner",
+   "question": "Which wording, and is there a separate reconnecting state?",
+   "options": "",
+   "decision": "The prototype's banner 'Offline: showing saved messages' the whole time; it disappears when the connection is back, with no toast.",
+   "source": "recommended",
+   "note": "Raised as D-102 (FQ-22)."
+  },
+  {
+   "id": "Q62",
+   "topic": "'Nothing' and Mute",
+   "question": "What is the difference between the level 'Nothing' and Mute?",
+   "options": "",
+   "decision": "The level decides toast, push and sound; Mute also hides the unread badge and bold.",
+   "source": "recommended",
+   "note": "Raised as D-103 (GQ-02)."
+  },
+  {
+   "id": "Q63",
+   "topic": "Form errors",
+   "question": "Where do form errors appear?",
+   "options": "",
+   "decision": "Under the field; the button is disabled until the form is valid.",
+   "source": "recommended",
+   "note": "Raised as D-104 (GQ-03). Differs from the prototype, which uses a toast after pressing."
+  },
+  {
+   "id": "Q64",
+   "topic": "Long lists of people",
+   "question": "How do member lists and people pickers behave at 200 people?",
+   "options": "",
+   "decision": "Search field on top, first 50 shown, more on scroll.",
+   "source": "recommended",
+   "note": "Raised as D-109 (GQ-12)."
+  },
+  {
+   "id": "Q65",
+   "topic": "What search covers",
+   "question": "What does Ctrl+K search, and how much does it return?",
+   "options": "",
+   "decision": "Conversations, people, commands, then messages; 20 results per kind, more on request.",
+   "source": "recommended",
+   "note": "Raised as D-112 (GQ-19)."
+  },
+  {
+   "id": "Q66",
+   "topic": "New version while open",
+   "question": "What does an open app do when a new version is deployed?",
+   "options": "",
+   "decision": "A strip 'Update available · Reload'; forced only when the server says the page is too old.",
+   "source": "recommended",
+   "note": "Raised as D-107 (GQ-10)."
+  },
+  {
+   "id": "Q67",
+   "topic": "Supported browsers",
+   "question": "Which browsers are supported?",
+   "options": "",
+   "decision": "The last two versions of Chrome, Edge, Safari and Firefox; push on iPhone only when installed to the home screen.",
+   "source": "recommended",
+   "note": "Raised as D-108 (GQ-11)."
+  },
+  {
+   "id": "Q68",
+   "topic": "Double press",
+   "question": "How is a double press prevented?",
+   "options": "",
+   "decision": "The button is disabled while the request runs, and the server ignores a repeat of the same request.",
+   "source": "recommended",
+   "note": "Raised as D-111 (GQ-18)."
+  },
+  {
+   "id": "Q69",
+   "topic": "Performance targets",
+   "question": "Are the six performance targets in the phase-1 acceptance criteria the targets?",
+   "options": "",
+   "decision": "Accepted as written, with 200 people online as the load.",
+   "source": "recommended",
+   "note": "Raised as D-113 (VQ-02)."
+  },
+  {
+   "id": "Q70",
+   "topic": "The pencil 'New message' icon",
+   "question": "Does the prototype's pencil icon stay beside the new '+' on Direct messages?",
+   "options": "",
+   "decision": "Removed. The '+' does the same job; a DM with one person also starts from it.",
+   "source": "recommended",
+   "note": "Raised as Q51."
   }
  ],
  "questions": [

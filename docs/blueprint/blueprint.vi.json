@@ -2509,6 +2509,177 @@
    "decision": "Khi hover trên máy tính; luôn hiện trên màn hình cảm ứng và màn hình hẹp.",
    "source": "user",
    "note": "Còn mở: icon bút 'New message' của prototype có giữ cạnh dấu '+' mới không. Chưa có đề xuất cho việc này."
+  },
+  {
+   "id": "Q52",
+   "topic": "Mời lại người đã bị vô hiệu hoá",
+   "question": "Admin mời địa chỉ của một thành viên đã bị vô hiệu hoá. Từ chối, hay cho phép?",
+   "options": "",
+   "decision": "Cho phép: người đã bị vô hiệu hoá vẫn được mời lại.",
+   "source": "user",
+   "note": "Nêu ở D-094 (FQ-03). Bạn tự trả lời; đề xuất ban đầu là từ chối kèm nút Reactivate. Cần xác nhận: nhận lời mời mới thì kích hoạt lại đúng tài khoản cũ cùng lịch sử của nó."
+  },
+  {
+   "id": "Q53",
+   "topic": "Sign out ở một tab",
+   "question": "Các tab khác của cùng trình duyệt có thoát ngay không?",
+   "options": "",
+   "decision": "Có, ngay lập tức; chúng dùng chung phiên.",
+   "source": "recommended",
+   "note": "Nêu ở D-093 (FQ-02)."
+  },
+  {
+   "id": "Q54",
+   "topic": "Đổi địa chỉ đăng nhập",
+   "question": "Thành viên có tự đổi được địa chỉ đăng nhập không?",
+   "options": "",
+   "decision": "Phase 1 không ai đổi; về sau do Admin làm.",
+   "source": "recommended",
+   "note": "Nêu ở D-098 (FQ-08)."
+  },
+  {
+   "id": "Q55",
+   "topic": "Dòng báo khi có người vào",
+   "question": "#general có hiện một dòng khi có người vào không, và có báo cho ai không?",
+   "options": "",
+   "decision": "Có: một dòng hệ thống màu xám 'Minh joined' kèm ngày. Không tăng số chưa đọc, không thông báo.",
+   "source": "recommended",
+   "note": "Nêu ở D-100 (FQ-16)."
+  },
+  {
+   "id": "Q56",
+   "topic": "Hộp thoại tạo kênh",
+   "question": "Hộp thoại tạo kênh có những ô nào?",
+   "options": "",
+   "decision": "Tên, công tắc Private (mặc định tắt), Topic (không bắt buộc, tối đa 250 ký tự), Add people (không bắt buộc). Admin mở từ trang Admin (Q41).",
+   "source": "recommended",
+   "note": "Nêu ở D-101 (FQ-18)."
+  },
+  {
+   "id": "Q57",
+   "topic": "Đổi tên kênh",
+   "question": "Kênh có đổi tên được không, và ai sửa mô tả?",
+   "options": "",
+   "decision": "Phase 1 không đổi tên; thành viên nào cũng sửa được chủ đề và mô tả.",
+   "source": "recommended",
+   "note": "Nêu ở D-105 (GQ-05)."
+  },
+  {
+   "id": "Q58",
+   "topic": "Loại file",
+   "question": "Có loại file nào bị từ chối không?",
+   "options": "",
+   "decision": "Nhận mọi loại tới 100 MB; file luôn được tải về, không bao giờ chạy trong trình duyệt.",
+   "source": "recommended",
+   "note": "Nêu ở D-095 (FQ-04)."
+  },
+  {
+   "id": "Q59",
+   "topic": "Trả lời một tin đã bị xoá",
+   "question": "Một tin bị xoá khi có người đang viết trả lời trong thread của nó. Trả lời có được gửi không?",
+   "options": "",
+   "decision": "Có; thread vẫn nằm dưới dòng 'Message deleted'.",
+   "source": "recommended",
+   "note": "Nêu ở D-096 (FQ-05)."
+  },
+  {
+   "id": "Q60",
+   "topic": "Từ đang chờ sang không gửi được",
+   "question": "Tin 'Waiting to send' thử bao lâu?",
+   "options": "",
+   "decision": "Chờ khi mất mạng; có mạng lại thì tự thử một lần, rồi 'Not sent' kèm Retry.",
+   "source": "recommended",
+   "note": "Nêu ở D-097 (FQ-07)."
+  },
+  {
+   "id": "Q61",
+   "topic": "Banner offline",
+   "question": "Dùng câu chữ nào, và có trạng thái đang kết nối lại riêng không?",
+   "options": "",
+   "decision": "Banner của prototype 'Offline: showing saved messages' suốt thời gian đó; nó biến mất khi có lại kết nối, không có toast.",
+   "source": "recommended",
+   "note": "Nêu ở D-102 (FQ-22)."
+  },
+  {
+   "id": "Q62",
+   "topic": "'Nothing' và Mute",
+   "question": "Mức 'Nothing' và Mute khác nhau thế nào?",
+   "options": "",
+   "decision": "Mức quyết định toast, push và âm thanh; Mute còn ẩn cả huy hiệu chưa đọc và chữ đậm.",
+   "source": "recommended",
+   "note": "Nêu ở D-103 (GQ-02)."
+  },
+  {
+   "id": "Q63",
+   "topic": "Lỗi của form",
+   "question": "Lỗi của form hiện ở đâu?",
+   "options": "",
+   "decision": "Dưới ô nhập; nút bị tắt cho tới khi form hợp lệ.",
+   "source": "recommended",
+   "note": "Nêu ở D-104 (GQ-03). Khác prototype, vốn dùng toast sau khi bấm."
+  },
+  {
+   "id": "Q64",
+   "topic": "Danh sách người dài",
+   "question": "Danh sách thành viên và bộ chọn người hành xử thế nào khi có 200 người?",
+   "options": "",
+   "decision": "Ô tìm ở trên, hiện 50 người đầu, cuộn để tải thêm.",
+   "source": "recommended",
+   "note": "Nêu ở D-109 (GQ-12)."
+  },
+  {
+   "id": "Q65",
+   "topic": "Tìm kiếm phủ những gì",
+   "question": "Ctrl+K tìm những gì, và trả về bao nhiêu?",
+   "options": "",
+   "decision": "Cuộc trò chuyện, người, lệnh, rồi tin nhắn; 20 kết quả mỗi loại, xem thêm khi cần.",
+   "source": "recommended",
+   "note": "Nêu ở D-112 (GQ-19)."
+  },
+  {
+   "id": "Q66",
+   "topic": "Bản mới khi đang mở",
+   "question": "Ứng dụng đang mở làm gì khi có bản mới?",
+   "options": "",
+   "decision": "Một dải 'Update available · Reload'; chỉ bắt buộc khi server báo trang quá cũ.",
+   "source": "recommended",
+   "note": "Nêu ở D-107 (GQ-10)."
+  },
+  {
+   "id": "Q67",
+   "topic": "Trình duyệt hỗ trợ",
+   "question": "Hỗ trợ những trình duyệt nào?",
+   "options": "",
+   "decision": "Hai bản mới nhất của Chrome, Edge, Safari và Firefox; push trên iPhone chỉ khi đã cài ra màn hình chính.",
+   "source": "recommended",
+   "note": "Nêu ở D-108 (GQ-11)."
+  },
+  {
+   "id": "Q68",
+   "topic": "Bấm hai lần",
+   "question": "Chống bấm hai lần thế nào?",
+   "options": "",
+   "decision": "Nút bị tắt khi request đang chạy, và server bỏ qua request lặp lại.",
+   "source": "recommended",
+   "note": "Nêu ở D-111 (GQ-18)."
+  },
+  {
+   "id": "Q69",
+   "topic": "Mục tiêu hiệu năng",
+   "question": "Sáu mục tiêu hiệu năng trong tiêu chí nghiệm thu phase 1 có phải là mục tiêu không?",
+   "options": "",
+   "decision": "Chấp nhận như đã viết, với tải là 200 người online.",
+   "source": "recommended",
+   "note": "Nêu ở D-113 (VQ-02)."
+  },
+  {
+   "id": "Q70",
+   "topic": "Icon bút 'New message'",
+   "question": "Icon bút của prototype có giữ cạnh dấu '+' mới ở Direct messages không?",
+   "options": "",
+   "decision": "Bỏ. Dấu '+' làm đúng việc đó; DM với một người cũng bắt đầu từ nó.",
+   "source": "recommended",
+   "note": "Nêu ở Q51."
   }
  ],
  "questions": [
