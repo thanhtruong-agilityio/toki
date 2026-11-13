@@ -2680,6 +2680,33 @@
    "decision": "Bỏ. Dấu '+' làm đúng việc đó; DM với một người cũng bắt đầu từ nó.",
    "source": "recommended",
    "note": "Nêu ở Q51."
+  },
+  {
+   "id": "Q71",
+   "topic": "Lô lời mời lỗi giữa chừng",
+   "question": "Máy chủ mail lỗi sau 3 trên 10 lời mời. Giữ 3 cái đã gửi, hay huỷ hết?",
+   "options": "",
+   "decision": "Giữ. Mỗi dòng báo kết quả riêng: 'Invited', hoặc 'Mail not sent' kèm Resend.",
+   "source": "recommended",
+   "note": "Nêu ở D-099 (FQ-11)."
+  },
+  {
+   "id": "Q72",
+   "topic": "Ghi lại hành động quản trị",
+   "question": "Các hành động quản trị có được ghi lại không, và có ai xem được không?",
+   "options": "",
+   "decision": "Ghi ở server (ai, làm gì, với ai, lúc nào). Phase 1 chưa có màn hình xem.",
+   "source": "recommended",
+   "note": "Nêu ở D-110 (GQ-16)."
+  },
+  {
+   "id": "Q73",
+   "topic": "Hết dung lượng",
+   "question": "Điều gì xảy ra khi hết dung lượng?",
+   "options": "",
+   "decision": "Không đặt hạn mức. Admin được cảnh báo khi đĩa đầy 80%; từ chối tải lên ở 95%, có nêu lý do, còn nhắn tin vẫn hoạt động.",
+   "source": "recommended",
+   "note": "Nêu ở D-106 (GQ-09)."
   }
  ],
  "questions": [

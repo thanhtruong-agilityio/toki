@@ -2566,6 +2566,33 @@
    "decision": "Removed. The '+' does the same job; a DM with one person also starts from it.",
    "source": "recommended",
    "note": "Raised as Q51."
+  },
+  {
+   "id": "Q71",
+   "topic": "A batch of invitations that fails halfway",
+   "question": "The mail server fails after 3 of 10 invitations. Keep the 3, or undo all?",
+   "options": "",
+   "decision": "Keep them. Each row reports its own result: 'Invited', or 'Mail not sent' with Resend.",
+   "source": "recommended",
+   "note": "Raised as D-099 (FQ-11)."
+  },
+  {
+   "id": "Q72",
+   "topic": "Record of administrative actions",
+   "question": "Are administrative actions recorded, and can anyone see the record?",
+   "options": "",
+   "decision": "Recorded on the server (who, what, to whom, when). No screen in phase 1.",
+   "source": "recommended",
+   "note": "Raised as D-110 (GQ-16)."
+  },
+  {
+   "id": "Q73",
+   "topic": "Storage running out",
+   "question": "What happens when storage runs out?",
+   "options": "",
+   "decision": "No quota. Admins are warned when the disk is 80% full; uploads are refused at 95%, with the reason, while messaging keeps working.",
+   "source": "recommended",
+   "note": "Raised as D-106 (GQ-09)."
   }
  ],
  "questions": [
