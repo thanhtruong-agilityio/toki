@@ -2409,6 +2409,33 @@
    "options": "(a) Từ email · (b) Admin nhập · (c) Cả hai",
    "decision": "(a) Phần trước @ của địa chỉ email. Người dùng sửa được sau (1 tới 80 ký tự, Q31).",
    "source": "user"
+  },
+  {
+   "id": "Q38",
+   "topic": "Ai tạo kênh",
+   "question": "Prototype không có cách tạo kênh. 'Create channel' nằm ở đâu, và ai được dùng?",
+   "options": "Mọi thành viên tạo được kênh (bảng quyền) · Chỉ admin",
+   "decision": "Member không tạo được kênh. Chỉ Admin tạo kênh. '+ Browse channels' giữ đúng như prototype: để tìm và tham gia kênh.",
+   "source": "user",
+   "note": "Nêu ở D-084 (FQ-17). Ngày 13/11/2026 bạn trả lời rằng member không cần nút Create channel. Điều này đổi dòng 'Create public and private channels' của bảng quyền (trước đây Member được). Còn cần xác nhận: Owner có tạo kênh không, và lối vào của Admin nằm ở đâu."
+  },
+  {
+   "id": "Q39",
+   "topic": "Tạo group DM",
+   "question": "Người dùng tạo tin nhắn trực tiếp với nhiều người bằng cách nào? New message của prototype mở cuộc trò chuyện ngay ở người đầu tiên được chọn.",
+   "options": "Chip trong ô New message",
+   "decision": "Một dấu '+' ở tiêu đề Direct messages mở ô tìm người. Mỗi người được bấm thành một chip mang tên họ; bắt đầu chat thì tạo group DM gồm những người đó. Tối đa 8 người (Q17).",
+   "source": "user",
+   "note": "Nêu ở D-084 và D-086 (FQ-17, FQ-20). Lúc đầu bạn mô tả cách này cho Browse channels, rồi đề xuất dấu '+' hiện khi hover vào Direct messages, còn '+ Browse channels' để tìm kênh. Còn cần xác nhận: dấu '+' hiện thế nào trên màn hình cảm ứng (quy tắc NR1 cấm tính năng chỉ dùng được bằng hover), và icon bút 'New message' của prototype có giữ không."
+  },
+  {
+   "id": "Q40",
+   "topic": "Sao lưu và khôi phục",
+   "question": "Sao lưu bao lâu một lần, và được phép mất bao nhiêu dữ liệu?",
+   "options": "Sao lưu hàng đêm giữ 14 ngày · Phase sau",
+   "decision": "Hoãn sang phase sau.",
+   "source": "deferred",
+   "note": "Nêu ở D-092 (VQ-03). Bạn hoãn ngày 13/11/2026."
   }
  ],
  "questions": [

@@ -2295,6 +2295,33 @@
    "options": "(a) From the email · (b) The admin types it · (c) Both",
    "decision": "(a) The part of the email address before @. The person can change it later (1 to 80 characters, Q31).",
    "source": "user"
+  },
+  {
+   "id": "Q38",
+   "topic": "Who creates channels",
+   "question": "The prototype has no way to create a channel. Where does 'Create channel' live, and who may use it?",
+   "options": "Every member creates channels (capability table) · Only admins",
+   "decision": "Members cannot create channels. Only an Admin creates them. '+ Browse channels' stays what it is in the prototype: a way to search and join channels.",
+   "source": "user",
+   "note": "Raised as D-084 (FQ-17). You answered on 13 Nov 2026 that no Create channel button is needed for members. This changes the capability table row 'Create public and private channels' (was yes for Member). Still to confirm: whether an Owner creates channels too, and where the Admin's own entry point is."
+  },
+  {
+   "id": "Q39",
+   "topic": "Starting a group DM",
+   "question": "How does a person start a direct message with several people? The prototype's New message opens a conversation on the first person chosen.",
+   "options": "Chips in the New message field",
+   "decision": "A '+' on the Direct messages heading opens a people search. Each person pressed becomes a chip with their name; starting the chat creates a group DM with those people. Up to 8 people (Q17).",
+   "source": "user",
+   "note": "Raised as D-084 and D-086 (FQ-17, FQ-20). You first described this for Browse channels, then suggested the '+' shown when hovering over Direct messages, keeping '+ Browse channels' for searching channels. Still to confirm: how the '+' appears on touch screens (rule NR1 forbids hover-only), and whether the prototype's pencil 'New message' icon stays."
+  },
+  {
+   "id": "Q40",
+   "topic": "Backup and recovery",
+   "question": "How often is data backed up, and how much may be lost?",
+   "options": "Nightly backup kept 14 days · Later phase",
+   "decision": "Deferred to a later phase.",
+   "source": "deferred",
+   "note": "Raised as D-092 (VQ-03). You deferred it on 13 Nov 2026."
   }
  ],
  "questions": [
