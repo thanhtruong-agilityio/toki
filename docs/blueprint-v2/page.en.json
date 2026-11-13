@@ -1,7 +1,7 @@
 {
  "product": "Toki",
  "prototypeNote": "It simulates one person, always an Owner, with sample data and instant actions.",
- "writtenNote": "Drafted by Claude under D-019. On 13 Nov 2026 eight journeys were rewritten (F02, F03, F20, F21, F25, F39, F40, F41) and the other 35 of phase 1 were read against the decisions; 16 of them were corrected. Four choices found in them are covered by no decision and are still to be confirmed: the sign-in button in the sign-in mail (F04), sign out and the list of signed-in devices (F06), Undo after leaving a private channel (F23), and the emergency sign-in link (F43).",
+ "writtenNote": "Drafted by Claude under D-019 and reviewed against the decisions on 13 Nov 2026: 8 journeys rewritten, 16 corrected, 19 unchanged. The phase-1 journeys are accepted as the baseline (D-091).",
  "changes": {
   "title": "How this page was reorganised on 13 Nov 2026",
   "head": [
@@ -1750,7 +1750,7 @@
    "old": "OQ2",
    "kind": "rev",
    "q": "After leaving a private channel, can a member rejoin alone or do they need an invitation?",
-   "a": "A member must invite them back. The leave confirmation says so; Undo is still offered for 5 seconds. Private channels never appear in Browse or Ctrl+K for outsiders. If the last member leaves, the channel is archived.",
+   "a": "A member must invite them back. The leave confirmation says so, and there is no Undo (D-156). Private channels never appear in Browse or Ctrl+K for outsiders. If the last member leaves, the channel is archived.",
    "owner": "PO",
    "sev": "",
    "status": "Confirmed"
@@ -2180,13 +2180,16 @@
   },
   {
    "id": "D-091",
-   "old": "VQ-01",
-   "kind": "q",
+   "old": "VQ-01 · Q85",
+   "kind": "rev",
    "q": "The 51 written flows were drafted by Claude under decision D-019 ('Claude decides what the prototype does not draw'). Several things in them were never asked one by one: Sign out and the list of signed-in devices (F06), Resend and Revoke of an invitation (F02), what deactivation does to a person's messages and DMs (F41). Are the written flows accepted as the baseline, or reviewed group by group first?",
-   "a": "Review the four phase-1 groups that have no prototype screen (account and sign-in, channels, administration, status); accept the rest as written.",
+   "a": "Reviewed on 13 Nov 2026: 8 rewritten, 16 corrected, 19 unchanged. With the four choices in D-156 to D-159 settled, the phase-1 journeys are accepted as the baseline.",
    "owner": "PO",
-   "sev": "H",
-   "status": "Open"
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "The written journeys",
+   "source": "recommended",
+   "note": ""
   },
   {
    "id": "D-092",
@@ -2983,6 +2986,62 @@
    "options": "",
    "source": "recommended",
    "note": "Raised as D-154."
+  },
+  {
+   "id": "D-156",
+   "old": "Q86",
+   "kind": "rev",
+   "q": "D-051 said a confirmation and then Undo; rule D-069 says never both. Which holds?",
+   "a": "D-069 holds: a confirmation that says a member must invite you back, and no Undo.",
+   "owner": "PO",
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "Leaving a private channel",
+   "options": "",
+   "source": "recommended",
+   "note": "Found while reviewing the written journeys on 13 Nov 2026."
+  },
+  {
+   "id": "D-157",
+   "old": "Q87",
+   "kind": "rev",
+   "q": "Does the sign-in mail carry a button that signs in without typing the code?",
+   "a": "No. The mail carries the 6-digit code only, as with invitations (D-149).",
+   "owner": "PO",
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "Sign-in mail",
+   "options": "",
+   "source": "recommended",
+   "note": "Found while reviewing the written journeys on 13 Nov 2026."
+  },
+  {
+   "id": "D-158",
+   "old": "Q88",
+   "kind": "rev",
+   "q": "The prototype has no sign out. Is the written journey F06 accepted?",
+   "a": "Yes: 'Sign out' in the account menu; Preferences lists signed-in devices and can sign out one device or all others.",
+   "owner": "PO",
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "Sign out and signed-in devices",
+   "options": "",
+   "source": "recommended",
+   "note": "Found while reviewing the written journeys on 13 Nov 2026."
+  },
+  {
+   "id": "D-159",
+   "old": "Q89",
+   "kind": "rev",
+   "q": "When mail cannot be sent, may a person with server access issue a one-time sign-in link?",
+   "a": "Yes: a server command prints a link valid 10 minutes for one member; every use is logged. It is the only sign-in without a code.",
+   "owner": "PO",
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "Emergency sign-in link",
+   "options": "",
+   "source": "recommended",
+   "note": "Found while reviewing the written journeys on 13 Nov 2026."
   }
  ],
  "charts": [
@@ -3073,7 +3132,7 @@
     "**After:** a 30-day session on this device only; the code can never be used again; the app opens where the person was heading.",
     "**Validation:** email must look like an address before the button enables. Code: exactly 6 digits, one use, valid 10 minutes, locked after the 5th wrong try. At most 5 code requests per address in 15 minutes.",
     "**Back / cancel / retry:** 'Use a different email' returns to the email field. 'Resend code' enables after 60 seconds. A network failure re-enables the button with 'Could not connect'.",
-    "**Alternative:** the mail also has a sign-in button. Pressing it signs in the device where it is pressed and skips typing the code.",
+    "**No shortcut:** the mail carries the code only; there is no button that signs in without it.",
     "**Security rule:** the answer to a code request is identical for members and strangers, so the page never reveals who is a member.",
     "**In the prototype:** No member sign-in. The nearest screens are the guest portal's: 'Sign in as a guest' (email, 'Email me a code') and 'Check your email' (6-digit field, 'Sign in', 'Use a different email', 'It works for 10 minutes'). That screen has **no Resend**, no limit on requests and no wrong-code state (any 6 digits work). Its two errors show in a red line under the card."
    ],
@@ -3436,7 +3495,7 @@
     "**Rule D-069** (made from GAP-24 · D-061): A reversible action happens at once and shows a toast with Undo for 5 seconds. An irreversible action, or one that affects other people, asks for confirmation and names its target. Never both for one action.",
     [
      "After leaving a private channel, can a member rejoin alone or do they need an invitation? (D-051)",
-     "Answer: A member must invite them back. The leave confirmation says so; Undo is still offered for 5 seconds. Private channels never appear in Browse or Ctrl+K for outsiders. If the last member leaves, the channel is archived."
+     "Answer: A member must invite them back. The leave confirmation says so, and there is no Undo (D-156). Private channels never appear in Browse or Ctrl+K for outsiders. If the last member leaves, the channel is archived."
     ],
     [
      "What do people who join a channel later see of its history, and what happens to a channel that is no longer used? (D-029)",
@@ -3859,12 +3918,12 @@
    "steps": [
     "Open Toki and see the sign-in card: logo and workspace name, an email field, a 'Send code' button.",
     "Enter the email and press 'Send code'. The screen changes to 'Check your email': it repeats the address, shows a 6-digit field, the line 'The code works for 10 minutes', a 'Use a different email' link, and a 'Resend code' button that enables after 60 seconds.",
-    "The email arrives with a 6-digit code and a sign-in button.",
-    "Type the code (all 6 digits can be pasted; it submits when complete) or press the button in the email.",
+    "The email arrives with a 6-digit code. It has no sign-in button.",
+    "Type the code (all 6 digits can be pasted; it submits when complete).",
     "Home opens. The session lasts 30 days and renews on every use."
    ],
    "cases": [
-    "The email button is pressed on a different device from the one that asked for the code: that device is signed in; the other still waits for the code.",
+    "The code is typed on a different device from the one that asked for it: it does not sign that device in; the code belongs to the request.",
     "A valid session already exists: opening Toki goes straight to Home, with no sign-in page."
    ],
    "phase": 1
@@ -4306,7 +4365,7 @@
    "context": "Details → 'Leave channel'.",
    "steps": [
     "A public channel: you leave at once; the toast 'Left #name' offers Undo for 5 seconds. You can rejoin any time from Browse channels.",
-    "A private channel: a confirmation, 'Leave #name? A member will have to invite you back.' Undo is still offered for 5 seconds afterwards.",
+    "A private channel: a confirmation, 'Leave #name? A member will have to invite you back.' There is no Undo afterwards.",
     "The channel leaves your list; the view moves to #general.",
     "The channel shows a system line, 'Lan left the channel'."
    ],
@@ -7511,7 +7570,7 @@
     },
     {
      "ref": "D-051",
-     "a": "A member must invite them back. The leave confirmation says so; Undo is still offered for 5 seconds. Private channels never appear in Browse or Ctrl+K for outsiders. If the last member leaves, the channel is archived."
+     "a": "A member must invite them back. The leave confirmation says so, and there is no Undo (D-156). Private channels never appear in Browse or Ctrl+K for outsiders. If the last member leaves, the channel is archived."
     }
    ],
    "open": [

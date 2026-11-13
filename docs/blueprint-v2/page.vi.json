@@ -1,7 +1,7 @@
 {
  "product": "Toki",
  "prototypeNote": "Nó mô phỏng một người, luôn là Owner, với dữ liệu mẫu và thao tác tức thì.",
- "writtenNote": "Do Claude soạn theo D-019. Ngày 13/11/2026 tám hành trình đã được viết lại (F02, F03, F20, F21, F25, F39, F40, F41) và 35 hành trình còn lại của phase 1 đã được đọc đối chiếu với các quyết định; 16 trong số đó đã được sửa. Có bốn lựa chọn trong đó chưa quyết định nào phủ tới và còn cần xác nhận: nút đăng nhập trong mail đăng nhập (F04), sign out và danh sách thiết bị đã đăng nhập (F06), Undo sau khi rời kênh riêng tư (F23), và link đăng nhập khẩn cấp (F43).",
+ "writtenNote": "Do Claude soạn theo D-019 và đã được rà đối chiếu với các quyết định ngày 13/11/2026: 8 hành trình viết lại, 16 sửa, 19 giữ nguyên. Các hành trình phase 1 được chấp nhận làm nền (D-091).",
  "changes": {
   "title": "Trang này được sắp xếp lại thế nào ngày 13/11/2026",
   "head": [
@@ -1750,7 +1750,7 @@
    "old": "OQ2",
    "kind": "rev",
    "q": "Rời channel riêng tư rồi thì tự vào lại hay cần lời mời mới?",
-   "a": "Cần một thành viên mời lại. Lời xác nhận khi rời nói rõ điều đó; vẫn có Hoàn tác trong 5 giây. Channel riêng tư không xuất hiện trong Browse hay Ctrl+K với người ngoài. Nếu người cuối cùng rời đi, channel được lưu trữ.",
+   "a": "Phải được một thành viên mời lại. Hộp xác nhận khi rời ghi rõ điều đó, và không có Undo (D-156). Kênh riêng tư không bao giờ xuất hiện trong Browse hay Ctrl+K với người ngoài. Nếu thành viên cuối rời đi, kênh được lưu trữ.",
    "owner": "PO",
    "sev": "",
    "status": "Confirmed"
@@ -2180,13 +2180,16 @@
   },
   {
    "id": "D-091",
-   "old": "VQ-01",
-   "kind": "q",
+   "old": "VQ-01 · Q85",
+   "kind": "rev",
    "q": "51 flow viết do Claude soạn theo quyết định D-019 ('Claude quyết định những gì prototype không vẽ'). Nhiều điều trong đó chưa từng được hỏi riêng: Sign out và danh sách thiết bị đã đăng nhập (F06), Resend và Revoke lời mời (F02), vô hiệu hoá ảnh hưởng thế nào tới tin nhắn và DM của một người (F41). Chấp nhận các flow viết làm nền, hay rà từng nhóm trước?",
-   "a": "Rà bốn nhóm của phase 1 không có màn hình trong prototype (tài khoản và đăng nhập, kênh, quản trị, trạng thái); phần còn lại chấp nhận như đã viết.",
+   "a": "Đã rà ngày 13/11/2026: 8 hành trình viết lại, 16 sửa, 19 giữ nguyên. Khi bốn lựa chọn ở D-156 tới D-159 đã chốt, các hành trình phase 1 được chấp nhận làm nền.",
    "owner": "PO",
-   "sev": "H",
-   "status": "Open"
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "Các hành trình đã viết",
+   "source": "recommended",
+   "note": ""
   },
   {
    "id": "D-092",
@@ -2983,6 +2986,62 @@
    "options": "",
    "source": "recommended",
    "note": "Nêu ở D-154."
+  },
+  {
+   "id": "D-156",
+   "old": "Q86",
+   "kind": "rev",
+   "q": "D-051 ghi có xác nhận rồi vẫn có Undo; quy tắc D-069 ghi không bao giờ cả hai. Theo cái nào?",
+   "a": "Theo D-069: một hộp xác nhận ghi phải được thành viên mời lại, và không có Undo.",
+   "owner": "PO",
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "Rời kênh riêng tư",
+   "options": "",
+   "source": "recommended",
+   "note": "Phát hiện khi rà các hành trình đã viết ngày 13/11/2026."
+  },
+  {
+   "id": "D-157",
+   "old": "Q87",
+   "kind": "rev",
+   "q": "Mail đăng nhập có nút bấm để đăng nhập mà không cần gõ mã không?",
+   "a": "Không. Mail chỉ có mã 6 số, giống lời mời (D-149).",
+   "owner": "PO",
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "Mail đăng nhập",
+   "options": "",
+   "source": "recommended",
+   "note": "Phát hiện khi rà các hành trình đã viết ngày 13/11/2026."
+  },
+  {
+   "id": "D-158",
+   "old": "Q88",
+   "kind": "rev",
+   "q": "Prototype không có sign out. Có chấp nhận hành trình viết F06 không?",
+   "a": "Có: 'Sign out' trong menu tài khoản; Preferences liệt kê các thiết bị đã đăng nhập và đăng xuất được một thiết bị hoặc mọi thiết bị khác.",
+   "owner": "PO",
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "Sign out và thiết bị đã đăng nhập",
+   "options": "",
+   "source": "recommended",
+   "note": "Phát hiện khi rà các hành trình đã viết ngày 13/11/2026."
+  },
+  {
+   "id": "D-159",
+   "old": "Q89",
+   "kind": "rev",
+   "q": "Khi không gửi được mail, người có quyền vào server có được cấp link đăng nhập một lần không?",
+   "a": "Có: một lệnh trên server in ra link có hiệu lực 10 phút cho một thành viên; mỗi lần dùng đều ghi log. Đây là cách đăng nhập duy nhất không cần mã.",
+   "owner": "PO",
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "Link đăng nhập khẩn cấp",
+   "options": "",
+   "source": "recommended",
+   "note": "Phát hiện khi rà các hành trình đã viết ngày 13/11/2026."
   }
  ],
  "charts": [
@@ -3073,7 +3132,7 @@
     "**Sau:** một phiên 30 ngày chỉ trên thiết bị này; mã không dùng lại được; ứng dụng mở đúng nơi người dùng định tới.",
     "**Kiểm tra:** email phải đúng dạng thì nút mới bật. Mã: đúng 6 số, dùng một lần, hiệu lực 10 phút, bị khoá sau lần sai thứ 5. Tối đa 5 lần xin mã cho một địa chỉ trong 15 phút.",
     "**Quay lại / huỷ / thử lại:** 'Use a different email' quay về ô email. 'Resend code' bật sau 60 giây. Lỗi mạng thì nút bấm lại được, kèm 'Could not connect'.",
-    "**Nhánh khác:** mail còn có nút đăng nhập. Bấm nút thì thiết bị bấm được đăng nhập, không cần gõ mã.",
+    "**Không có lối tắt:** mail chỉ có mã; không có nút nào đăng nhập mà không cần mã.",
     "**Quy tắc bảo mật:** câu trả lời cho yêu cầu xin mã giống hệt nhau với thành viên và người lạ, nên trang không bao giờ lộ ai là thành viên.",
     "**Trong prototype:** Không có đăng nhập cho thành viên. Màn hình gần nhất là của cổng guest: 'Sign in as a guest' (email, 'Email me a code') và 'Check your email' (ô 6 số, 'Sign in', 'Use a different email', 'It works for 10 minutes'). Màn hình đó **không có Resend**, không giới hạn số lần xin mã và không có trạng thái sai mã (6 số nào cũng được). Hai lỗi của nó hiện ở một dòng đỏ dưới thẻ."
    ],
@@ -3436,7 +3495,7 @@
     "**Quy tắc D-069** (rút ra từ GAP-24 · D-061): Hành động hoàn tác được thì làm ngay và hiện toast có nút Hoàn tác trong 5 giây. Hành động không hoàn tác được hoặc ảnh hưởng người khác thì hỏi xác nhận, nêu rõ đối tượng. Không dùng cả hai cho một hành động.",
     [
      "Rời channel riêng tư rồi thì tự vào lại hay cần lời mời mới? (D-051)",
-     "Trả lời: Cần một thành viên mời lại. Lời xác nhận khi rời nói rõ điều đó; vẫn có Hoàn tác trong 5 giây. Channel riêng tư không xuất hiện trong Browse hay Ctrl+K với người ngoài. Nếu người cuối cùng rời đi, channel được lưu trữ."
+     "Trả lời: Phải được một thành viên mời lại. Hộp xác nhận khi rời ghi rõ điều đó, và không có Undo (D-156). Kênh riêng tư không bao giờ xuất hiện trong Browse hay Ctrl+K với người ngoài. Nếu thành viên cuối rời đi, kênh được lưu trữ."
     ],
     [
      "Người vào kênh sau thấy được gì trong lịch sử, và kênh không dùng nữa thì xử lý ra sao? (D-029)",
@@ -3859,12 +3918,12 @@
    "steps": [
     "Mở Toki, thấy thẻ đăng nhập: logo và tên workspace, ô email, nút “Gửi mã”.",
     "Nhập email, bấm “Gửi mã”. Màn hình đổi sang “Kiểm tra hộp thư”: nêu lại địa chỉ, ô nhập 6 số, dòng “Mã có hiệu lực 10 phút”, link “Dùng email khác”, và nút “Gửi lại mã” bật sau 60 giây.",
-    "Thư đến có mã 6 số và một nút đăng nhập.",
-    "Nhập mã (dán được cả 6 số, tự gửi khi đủ) hoặc bấm nút trong thư.",
+    "Email tới kèm một mã 6 số. Mail không có nút đăng nhập.",
+    "Gõ mã (dán được cả 6 số; tự gửi khi đủ).",
     "Vào Home. Phiên được giữ 30 ngày và tự gia hạn mỗi lần dùng."
    ],
    "cases": [
-    "Bấm nút trong thư trên một thiết bị khác thiết bị đã xin mã: thiết bị bấm nút được đăng nhập; thiết bị kia vẫn chờ nhập mã.",
+    "Gõ mã trên một thiết bị khác với thiết bị đã xin mã: thiết bị đó không được đăng nhập; mã gắn với lần xin.",
     "Đã có phiên còn hạn: mở Toki là vào thẳng Home, không thấy trang đăng nhập."
    ],
    "phase": 1
@@ -4306,7 +4365,7 @@
    "context": "Details → “Rời kênh”.",
    "steps": [
     "Kênh công khai: rời ngay; toast “Đã rời #tên” có nút Hoàn tác trong 5 giây. Vào lại bất cứ lúc nào qua Duyệt kênh.",
-    "Kênh riêng tư: hộp xác nhận “Rời #tên? Bạn sẽ cần một thành viên mời lại.” Sau khi rời vẫn có Hoàn tác 5 giây.",
+    "Kênh riêng tư: một hộp xác nhận, 'Leave #name? A member will have to invite you back.' Sau đó không có Undo.",
     "Kênh biến khỏi danh sách; màn hình chuyển sang #general.",
     "Trong kênh hiện dòng hệ thống “Lan đã rời kênh”."
    ],
@@ -7511,7 +7570,7 @@
     },
     {
      "ref": "D-051",
-     "a": "Cần một thành viên mời lại. Lời xác nhận khi rời nói rõ điều đó; vẫn có Hoàn tác trong 5 giây. Channel riêng tư không xuất hiện trong Browse hay Ctrl+K với người ngoài. Nếu người cuối cùng rời đi, channel được lưu trữ."
+     "a": "Phải được một thành viên mời lại. Hộp xác nhận khi rời ghi rõ điều đó, và không có Undo (D-156). Kênh riêng tư không bao giờ xuất hiện trong Browse hay Ctrl+K với người ngoài. Nếu thành viên cuối rời đi, kênh được lưu trữ."
     }
    ],
    "open": [
