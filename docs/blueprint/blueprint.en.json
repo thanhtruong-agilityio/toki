@@ -95,7 +95,7 @@
          "Search that matches Vietnamese without diacritics and respects permissions",
          "Web Push, sound, per-channel notification level, mute, Pause, Focus time",
          "Two looks (Calm, Focus), 4 accents, density",
-         "Vietnamese (default) and English, fully translated",
+         "English (default) and Vietnamese, fully translated",
          "Sign-in by emailed code; admins invite members",
          "Admin page: member management"
         ]
@@ -2124,8 +2124,8 @@
    "topic": "Looks and languages",
    "question": "The prototype has two looks that differ in layout as well as colour, and two languages of which only the navigation is translated. Does phase 1 build both looks and both languages, and which language is the default?",
    "options": "One look or two; one language or two",
-   "decision": "Both Calm and Focus; full vi and en, Vietnamese by default",
-   "source": "recommended"
+   "decision": "Both Calm and Focus; full vi and en, English by default",
+   "source": "user"
   },
   {
    "id": "Q19",
@@ -3327,7 +3327,7 @@
       {
        "id": "017",
        "title": "The i18n package",
-       "scope": "Translation framework, Vietnamese by default, automatic check for missing keys",
+       "scope": "Translation framework, English by default, automatic check for missing keys",
        "size": "S",
        "needs": [
         "001"

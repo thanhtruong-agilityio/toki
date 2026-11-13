@@ -208,7 +208,7 @@
          "Tìm kiếm tiếng Việt không dấu, tôn trọng quyền",
          "Web Push, âm thanh, mức thông báo theo kênh, tắt tiếng, Pause, Focus time",
          "Hai look (Calm, Focus), 4 màu nhấn, mật độ",
-         "Tiếng Việt (mặc định) và tiếng Anh, dịch đầy đủ",
+         "Tiếng Anh (mặc định) và tiếng Việt, dịch đầy đủ",
          "Đăng nhập bằng mã qua email; admin mời thành viên",
          "Trang Admin: quản lý thành viên"
         ]
@@ -2237,8 +2237,8 @@
    "topic": "Giao diện và ngôn ngữ",
    "question": "Prototype có hai look khác nhau cả bố cục lẫn màu, và hai ngôn ngữ nhưng mới dịch thanh điều hướng. Phase 1 làm cả hai look và cả hai ngôn ngữ không, ngôn ngữ nào là mặc định?",
    "options": "Một hay hai look; một hay hai ngôn ngữ",
-   "decision": "Cả Calm và Focus; dịch đủ vi và en, mặc định tiếng Việt",
-   "source": "recommended"
+   "decision": "Cả Calm và Focus; dịch đủ vi và en, mặc định tiếng Anh",
+   "source": "user"
   },
   {
    "id": "Q19",
@@ -3440,7 +3440,7 @@
       {
        "id": "017",
        "title": "Package i18n",
-       "scope": "Khung dịch, vi mặc định, kiểm tra tự động khóa thiếu bản dịch",
+       "scope": "Khung dịch, en mặc định, kiểm tra tự động khóa thiếu bản dịch",
        "size": "S",
        "needs": [
         "001"
