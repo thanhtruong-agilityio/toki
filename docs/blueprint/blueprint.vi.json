@@ -2361,6 +2361,54 @@
    "options": "Độ dài tối thiểu và tối đa",
    "decision": "1 tới 80 ký tự",
    "source": "user"
+  },
+  {
+   "id": "Q32",
+   "topic": "Lời mời và mã",
+   "question": "Link trong lời mời đăng nhập thẳng, hay vẫn cần mã 6 số? Câu này thay nửa sau của G4.",
+   "options": "(a) Link đăng nhập thẳng · (b) Cần mã",
+   "decision": "Cần mã. Mail mời có cả nút Join và mã 6 số; Join mở bước nhập mã với email điền sẵn.",
+   "source": "user"
+  },
+  {
+   "id": "Q33",
+   "topic": "Màn hình chào",
+   "question": "Có màn hình chào sau khi người mới đăng nhập lần đầu không?",
+   "options": "(a) Có màn hình chào để nhập tên, chức danh, múi giờ · (b) Không",
+   "decision": "Không. Nhập mã xong, người mới vào thẳng #general.",
+   "source": "user"
+  },
+  {
+   "id": "Q34",
+   "topic": "Thời hạn của mã",
+   "question": "Một mã 6 số có hiệu lực bao lâu, kể cả mã trong mail mời?",
+   "options": "10 phút cho mọi mã · 7 ngày cho mã trong lời mời",
+   "decision": "10 phút cho mọi mã, kể cả mã trong lời mời. Bản thân lời mời vẫn có hạn 7 ngày; khi mã đã hết hạn thì người dùng bấm Resend code.",
+   "source": "user"
+  },
+  {
+   "id": "Q35",
+   "topic": "Resend code",
+   "question": "Màn hình nhập mã có Resend không, và mã mới có huỷ mã cũ không?",
+   "options": "Có hoặc không",
+   "decision": "Có. 'Resend code' ở màn hình nhập mã, dùng được sau 60 giây (G5). Mã mới huỷ mã cũ.",
+   "source": "user"
+  },
+  {
+   "id": "Q36",
+   "topic": "Số lần nhập sai",
+   "question": "Một mã cho nhập sai mấy lần?",
+   "options": "Một con số",
+   "decision": "5. Sau lần sai thứ 5 mã bị khoá và phải xin mã mới.",
+   "source": "user"
+  },
+  {
+   "id": "Q37",
+   "topic": "Tên hiển thị của người mới",
+   "question": "Không có màn hình chào thì tên hiển thị của người mới lấy từ đâu?",
+   "options": "(a) Từ email · (b) Admin nhập · (c) Cả hai",
+   "decision": "(a) Phần trước @ của địa chỉ email. Người dùng sửa được sau (1 tới 80 ký tự, Q31).",
+   "source": "user"
   }
  ],
  "questions": [

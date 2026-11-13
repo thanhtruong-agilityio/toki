@@ -2247,6 +2247,54 @@
    "options": "A minimum and a maximum length",
    "decision": "1 to 80 characters",
    "source": "user"
+  },
+  {
+   "id": "Q32",
+   "topic": "Invitation and code",
+   "question": "Does the link in an invitation sign the person in directly, or is the 6-digit code needed? This replaces the second half of G4.",
+   "options": "(a) Link signs in directly · (b) Code needed",
+   "decision": "The code is needed. The invitation mail carries both the Join button and the 6-digit code; Join opens the code step with the email filled in.",
+   "source": "user"
+  },
+  {
+   "id": "Q33",
+   "topic": "Welcome step",
+   "question": "Is there a welcome step after a newcomer signs in for the first time?",
+   "options": "(a) A welcome step for name, job title, time zone · (b) None",
+   "decision": "None. After the code the newcomer goes straight to #general.",
+   "source": "user"
+  },
+  {
+   "id": "Q34",
+   "topic": "Code lifetime",
+   "question": "How long is a 6-digit code valid, including the one in the invitation mail?",
+   "options": "10 minutes for all · 7 days for the invitation code",
+   "decision": "10 minutes for every code, the invitation's included. The invitation itself still lasts 7 days; when its code has expired the person presses Resend code.",
+   "source": "user"
+  },
+  {
+   "id": "Q35",
+   "topic": "Resend code",
+   "question": "Does the code screen have Resend, and does a new code cancel the earlier one?",
+   "options": "Yes or no",
+   "decision": "Yes. 'Resend code' on the code screen, available after 60 seconds (G5). A new code cancels the earlier one.",
+   "source": "user"
+  },
+  {
+   "id": "Q36",
+   "topic": "Wrong tries",
+   "question": "How many wrong tries does a code allow?",
+   "options": "A number",
+   "decision": "5. After the 5th wrong try the code is locked and a new one must be requested.",
+   "source": "user"
+  },
+  {
+   "id": "Q37",
+   "topic": "Newcomer's display name",
+   "question": "With no welcome step, where does a newcomer's display name come from?",
+   "options": "(a) From the email · (b) The admin types it · (c) Both",
+   "decision": "(a) The part of the email address before @. The person can change it later (1 to 80 characters, Q31).",
+   "source": "user"
   }
  ],
  "questions": [
