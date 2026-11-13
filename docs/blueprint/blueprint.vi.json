@@ -2515,9 +2515,9 @@
    "topic": "Mời lại người đã bị vô hiệu hoá",
    "question": "Admin mời địa chỉ của một thành viên đã bị vô hiệu hoá. Từ chối, hay cho phép?",
    "options": "",
-   "decision": "Cho phép: người đã bị vô hiệu hoá vẫn được mời lại.",
+   "decision": "Cho phép: người đã bị vô hiệu hoá vẫn được mời lại. Nhận lời mời mới thì kích hoạt lại đúng tài khoản cũ cùng lịch sử và các kênh; không tạo tài khoản thứ hai.",
    "source": "user",
-   "note": "Nêu ở D-094 (FQ-03). Bạn tự trả lời; đề xuất ban đầu là từ chối kèm nút Reactivate. Cần xác nhận: nhận lời mời mới thì kích hoạt lại đúng tài khoản cũ cùng lịch sử của nó."
+   "note": "Nêu ở D-094 (FQ-03). Bạn tự trả lời; đề xuất ban đầu là từ chối kèm nút Reactivate. Việc kích hoạt lại đúng tài khoản cũ đã được bạn xác nhận."
   },
   {
    "id": "Q53",
@@ -2707,6 +2707,105 @@
    "decision": "Không đặt hạn mức. Admin được cảnh báo khi đĩa đầy 80%; từ chối tải lên ở 95%, có nêu lý do, còn nhắn tin vẫn hoạt động.",
    "source": "recommended",
    "note": "Nêu ở D-106 (GQ-09)."
+  },
+  {
+   "id": "Q74",
+   "topic": "Xem trước một kênh",
+   "question": "Xem trước một kênh công khai mà chưa tham gia có tính vào chưa đọc hay Activity không?",
+   "options": "",
+   "decision": "Không có xem trước: người dùng không xem được nội dung của kênh mình chưa tham gia.",
+   "source": "user",
+   "note": "Nêu ở D-116 (FQ-10). Bạn tự trả lời; các sơ đồ từng giả định có xem trước đọc được kèm nút Join."
+  },
+  {
+   "id": "Q75",
+   "topic": "Ngừng theo dõi thread",
+   "question": "Có cho ngừng theo dõi một thread không?",
+   "options": "",
+   "decision": "Không có flow này.",
+   "source": "user",
+   "note": "Nêu ở D-119 (GQ-07). Bạn trả lời 'không có flow thread'. Cần xác nhận: ý là chỉ không có Unfollow, hay phase 1 không có thread."
+  },
+  {
+   "id": "Q76",
+   "topic": "Hai kênh trùng tên",
+   "question": "Hai Admin tạo kênh trùng tên cùng một lúc.",
+   "options": "",
+   "decision": "Server kiểm tra tên và không bao giờ tạo hai kênh trùng tên; người thứ hai được báo tên đã tồn tại.",
+   "source": "user",
+   "note": "Nêu ở D-115 (FQ-09)."
+  },
+  {
+   "id": "Q77",
+   "topic": "Đánh dấu chưa đọc",
+   "question": "'Mark as unread' có ở phase 1 không?",
+   "options": "",
+   "decision": "Phase sau.",
+   "source": "recommended",
+   "note": "Nêu ở D-120 (GQ-08)."
+  },
+  {
+   "id": "Q78",
+   "topic": "Hai người cùng sửa một thứ",
+   "question": "Hai người cùng đổi một chủ đề hoặc trạng thái cùng lúc. Ai thắng?",
+   "options": "",
+   "decision": "Lần lưu sau cùng thắng và mọi người thấy ngay.",
+   "source": "recommended",
+   "note": "Nêu ở D-121 (GQ-13)."
+  },
+  {
+   "id": "Q79",
+   "topic": "Ảnh hồ sơ",
+   "question": "Phase 1 có cho tải ảnh hồ sơ lên không?",
+   "options": "",
+   "decision": "Không; phase 1 dùng chữ cái đầu trên nền màu.",
+   "source": "recommended",
+   "note": "Nêu ở D-118 (GQ-04)."
+  },
+  {
+   "id": "Q80",
+   "topic": "Chưa đọc trên tab trình duyệt",
+   "question": "Tab trình duyệt có hiện tin chưa đọc không?",
+   "options": "",
+   "decision": "Có: '(3) Toki' đếm mention và DM; một dấu chấm cho các tin khác.",
+   "source": "recommended",
+   "note": "Nêu ở D-122 (GQ-14)."
+  },
+  {
+   "id": "Q81",
+   "topic": "Định dạng giờ",
+   "question": "Giờ 24 cho mọi người, hay theo ngôn ngữ?",
+   "options": "",
+   "decision": "Giờ 24 ở mọi nơi.",
+   "source": "recommended",
+   "note": "Nêu ở D-123 (GQ-15)."
+  },
+  {
+   "id": "Q82",
+   "topic": "Lựa chọn nhắc việc đã qua",
+   "question": "'Today 15:00' trong menu nhắc việc khi đã quá 15:00?",
+   "options": "",
+   "decision": "Ẩn; 'In 3 hours' thế chỗ.",
+   "source": "recommended",
+   "note": "Nêu ở D-114 (FQ-06)."
+  },
+  {
+   "id": "Q83",
+   "topic": "Kích thước lần tải đầu",
+   "question": "Lần tải đầu có cần giới hạn số cuộc trò chuyện trả về không?",
+   "options": "",
+   "decision": "Phase 1 trả hết; xem lại khi vượt 500 cuộc trò chuyện.",
+   "source": "recommended",
+   "note": "Nêu ở D-117 (FQ-12)."
+  },
+  {
+   "id": "Q84",
+   "topic": "Xuất dữ liệu",
+   "question": "Workspace có xuất được dữ liệu không?",
+   "options": "",
+   "decision": "Phase 1 chưa có; phase sau, cùng với sao lưu (Q40).",
+   "source": "deferred",
+   "note": "Nêu ở D-124 (GQ-17)."
   }
  ],
  "questions": [

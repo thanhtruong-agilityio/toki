@@ -2401,9 +2401,9 @@
    "topic": "Inviting a deactivated person",
    "question": "An Admin invites the address of a deactivated member. Refuse, or allow?",
    "options": "",
-   "decision": "Allowed: a deactivated person can be invited again.",
+   "decision": "Allowed: a deactivated person can be invited again. Accepting the new invitation reactivates the same account with its history and channels; no second account is created.",
    "source": "user",
-   "note": "Raised as D-094 (FQ-03). Your own answer; the proposal was to refuse and offer Reactivate. To confirm: accepting the new invitation reactivates the same account with its history."
+   "note": "Raised as D-094 (FQ-03). Your own answer; the proposal was to refuse and offer Reactivate. The reactivation of the same account was confirmed by you."
   },
   {
    "id": "Q53",
@@ -2593,6 +2593,105 @@
    "decision": "No quota. Admins are warned when the disk is 80% full; uploads are refused at 95%, with the reason, while messaging keeps working.",
    "source": "recommended",
    "note": "Raised as D-106 (GQ-09)."
+  },
+  {
+   "id": "Q74",
+   "topic": "Previewing a channel",
+   "question": "Does previewing a public channel without joining count for unread or Activity?",
+   "options": "",
+   "decision": "There is no preview: a person cannot see the content of a channel they have not joined.",
+   "source": "user",
+   "note": "Raised as D-116 (FQ-10). Your own answer; the charts had assumed a readable preview with a Join button."
+  },
+  {
+   "id": "Q75",
+   "topic": "Unfollowing a thread",
+   "question": "Can a person stop following a thread?",
+   "options": "",
+   "decision": "No such flow.",
+   "source": "user",
+   "note": "Raised as D-119 (GQ-07). You answered 'there is no thread flow'. To confirm: whether this means no Unfollow only, or no threads at all in phase 1."
+  },
+  {
+   "id": "Q76",
+   "topic": "Two channels with one name",
+   "question": "Two Admins create a channel with the same name at the same moment.",
+   "options": "",
+   "decision": "The server validates the name and never creates two channels with the same name; the second person is told the name exists.",
+   "source": "user",
+   "note": "Raised as D-115 (FQ-09)."
+  },
+  {
+   "id": "Q77",
+   "topic": "Mark as unread",
+   "question": "Is 'Mark as unread' in phase 1?",
+   "options": "",
+   "decision": "A later phase.",
+   "source": "recommended",
+   "note": "Raised as D-120 (GQ-08)."
+  },
+  {
+   "id": "Q78",
+   "topic": "Two people editing one thing",
+   "question": "Two people change the same topic or status at the same moment. Who wins?",
+   "options": "",
+   "decision": "The last save wins and everyone sees it at once.",
+   "source": "recommended",
+   "note": "Raised as D-121 (GQ-13)."
+  },
+  {
+   "id": "Q79",
+   "topic": "Profile picture",
+   "question": "Can a person upload a profile picture in phase 1?",
+   "options": "",
+   "decision": "No; initials on a colour in phase 1.",
+   "source": "recommended",
+   "note": "Raised as D-118 (GQ-04)."
+  },
+  {
+   "id": "Q80",
+   "topic": "Unread in the browser tab",
+   "question": "Does the browser tab show unread messages?",
+   "options": "",
+   "decision": "Yes: '(3) Toki' counts mentions and DMs; a dot for anything else.",
+   "source": "recommended",
+   "note": "Raised as D-122 (GQ-14)."
+  },
+  {
+   "id": "Q81",
+   "topic": "Time format",
+   "question": "24-hour time for everyone, or by language?",
+   "options": "",
+   "decision": "24-hour everywhere.",
+   "source": "recommended",
+   "note": "Raised as D-123 (GQ-15)."
+  },
+  {
+   "id": "Q82",
+   "topic": "A past reminder choice",
+   "question": "'Today 15:00' in the reminder menu after 15:00?",
+   "options": "",
+   "decision": "Hidden; 'In 3 hours' takes its place.",
+   "source": "recommended",
+   "note": "Raised as D-114 (FQ-06)."
+  },
+  {
+   "id": "Q83",
+   "topic": "Size of the first load",
+   "question": "Should the first load limit how many conversations it returns?",
+   "options": "",
+   "decision": "All of them in phase 1; revisit past 500 conversations.",
+   "source": "recommended",
+   "note": "Raised as D-117 (FQ-12)."
+  },
+  {
+   "id": "Q84",
+   "topic": "Data export",
+   "question": "Can a workspace export its data?",
+   "options": "",
+   "decision": "Not in phase 1; a later phase, together with backup (Q40).",
+   "source": "deferred",
+   "note": "Raised as D-124 (GQ-17)."
   }
  ],
  "questions": [
