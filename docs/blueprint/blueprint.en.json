@@ -46,7 +46,8 @@
    "Tiếng",
    "Việt",
    "Trần"
-  ]
+  ],
+  "labels": {}
  },
  "overview": {
   "summary": "Toki is an internal team chat for one company: channels, direct messages, threads and files, and later tasks, calendar, video meetings, a guest portal, automations, mail and AI summaries. Each company runs its own copy on its own server.",
@@ -4667,7 +4668,7 @@
        "**After:** the recipient has one Activity item; it becomes done by itself once the message has been opened.",
        "**Rule:** your own action never notifies you.",
        "**Rule:** during Pause or Focus there is no toast, push or sound; badges still update, and one summary lists what arrived when it ends.",
-       "**Rule:** a mention overrides the 'Mentions only' level but not Mute; a muted conversation still gets the badge.",
+       "**Open:** a mention always gets through the 'Mentions only' level. Whether it gets through Mute is not decided (question GQ-01 on the Gap analysis tab); the chart shows the muted case as badge only until it is.",
        "**Rule:** @channel in a channel of 20 or more people asks the sender to confirm first.",
        "**Edit:** adding a mention by editing notifies the new person; removing one removes the earlier notification."
       ]
@@ -7286,7 +7287,7 @@
         "**After:** the recipient has one Activity item; it becomes done by itself once the message has been opened.||**Sau:** người nhận có một mục Activity; mục tự thành xong khi tin đã được mở.",
         "**Rule:** your own action never notifies you.||**Quy tắc:** hành động của chính mình không bao giờ tạo thông báo cho mình.",
         "**Rule:** during Pause or Focus there is no toast, push or sound; badges still update, and one summary lists what arrived when it ends.||**Quy tắc:** trong Pause hoặc Focus không có toast, push hay âm thanh; huy hiệu vẫn cập nhật, và khi kết thúc có một bản tóm tắt những gì đã tới.",
-        "**Rule:** a mention overrides the 'Mentions only' level but not Mute; a muted conversation still gets the badge.||**Quy tắc:** mention vượt qua mức 'Mentions only' nhưng không vượt Mute; cuộc trò chuyện đã tắt tiếng vẫn có huy hiệu.",
+        "**Open:** a mention always gets through the 'Mentions only' level. Whether it gets through Mute is not decided (question GQ-01 on the Gap analysis tab); the chart shows the muted case as badge only until it is.||**Còn mở:** mention luôn vượt qua mức 'Mentions only'. Nó có vượt qua Mute hay không thì chưa quyết định (câu hỏi GQ-01 ở tab Phân tích gap); cho tới lúc đó sơ đồ thể hiện trường hợp tắt tiếng là chỉ có huy hiệu.",
         "**Rule:** @channel in a channel of 20 or more people asks the sender to confirm first.||**Quy tắc:** @channel trong kênh từ 20 người trở lên hỏi người gửi xác nhận trước.",
         "**Edit:** adding a mention by editing notifies the new person; removing one removes the earlier notification.||**Sửa:** thêm mention khi sửa tin thì báo cho người mới; bỏ mention thì gỡ thông báo trước đó."
        ],
@@ -10083,5 +10084,1328 @@
     }
    ]
   }
+ },
+ "analysis": {
+  "sections": [
+   {
+    "title": "How this analysis was done",
+    "intro": "The prototype was read as a product: every screen and every one of its 151 actions, then checked from five angles (UI/UX, user flow, business logic, system behaviour, edge cases). It found **67 gaps**: 39 recorded earlier by walking through the prototype, and 28 new ones from asking what phase 1 needs that the prototype does not contain. **20 questions** are open.",
+    "blocks": [
+     {
+      "type": "table",
+      "head": [
+       "Severity",
+       "Gaps",
+       "Meaning"
+      ],
+      "rows": [
+       [
+        "Critical",
+        "5",
+        "Blocks phase 1, or exposes private content"
+       ],
+       [
+        "High",
+        "32",
+        "A main journey cannot be completed or built as designed"
+       ],
+       [
+        "Medium",
+        "22",
+        "Works, but confusing, inconsistent or unbounded"
+       ],
+       [
+        "Low",
+        "8",
+        "Polish"
+       ]
+      ]
+     },
+     {
+      "type": "note",
+      "text": "**The main finding:** the prototype simulates one person, always an Owner, with sample data and instant actions. It is a faithful picture of chatting, and it contains nothing about getting in (sign-in, invitations, member management), nothing about waiting or failing (no loading, no error, no retry), and nothing about a second person or device. Those are most of what remains to be designed for phase 1."
+     }
+    ]
+   },
+   {
+    "title": "1 · Prototype overview",
+    "intro": "The screens found, what each is for, and the phase it belongs to. The journeys through them are the 51 written flows on the Flows tab.",
+    "blocks": [
+     {
+      "type": "table",
+      "head": [
+       "Screen",
+       "Purpose",
+       "Main actions",
+       "Phase"
+      ],
+      "rows": [
+       [
+        "Home: conversation list and chat",
+        "Read and write in channels, DMs and groups",
+        "Send, react, edit, delete, pin, save, remind, attach, mention, search in conversation",
+        "1"
+       ],
+       [
+        "Thread panel",
+        "Reply under one message",
+        "Reply, also send to channel, summarise",
+        "1 (summary: 6)"
+       ],
+       [
+        "Details panel",
+        "A conversation's facts and personal settings",
+        "Notification level, mute, star, leave, see members, tabs",
+        "1"
+       ],
+       [
+        "Profile panel",
+        "Who a person is",
+        "Message, start a Meet; read-only otherwise",
+        "1"
+       ],
+       [
+        "Browse channels",
+        "Find and join channels",
+        "Search, join, open",
+        "1"
+       ],
+       [
+        "Activity",
+        "What needs attention",
+        "Filter, open, mark done, snooze, mark all read",
+        "1"
+       ],
+       [
+        "Later",
+        "Saved messages and reminders",
+        "Set reminder, complete, remove",
+        "1"
+       ],
+       [
+        "Files",
+        "Every file and link the person can see",
+        "Search, filter, list or grid, open",
+        "1"
+       ],
+       [
+        "People",
+        "The directory",
+        "Search, open a profile",
+        "1"
+       ],
+       [
+        "Preferences",
+        "Personal settings",
+        "Look, accent, density, notifications, pause, status, language",
+        "1"
+       ],
+       [
+        "Ctrl+K palette",
+        "Jump anywhere",
+        "Search conversations, people, commands",
+        "1"
+       ],
+       [
+        "Account menu",
+        "Status and quiet time",
+        "Set status, pause, Focus time, open Preferences",
+        "1"
+       ],
+       [
+        "Admin",
+        "Usage analytics and automations",
+        "Change period, export CSV, edit automations",
+        "5 (members: 1, not in the prototype)"
+       ],
+       [
+        "Tasks, Notes, tabs, polls, approvals, send later",
+        "Light work tools inside a channel",
+        "Create, move, vote, approve, schedule",
+        "2"
+       ],
+       [
+        "Calendar and Meet",
+        "Schedule and hold calls",
+        "Schedule, join, mute, share, leave",
+        "4"
+       ],
+       [
+        "Guest portal",
+        "A client sees one shared channel",
+        "Sign in by code, read, write",
+        "5"
+       ],
+       [
+        "Mail",
+        "Mail inside Toki",
+        "Read, reply, compose, archive, discuss in a channel",
+        "7"
+       ],
+       [
+        "Phone layout",
+        "The same app, one pane at a time",
+        "Bottom navigation, More sheet, Back",
+        "1 (web), 3 (app)"
+       ]
+      ]
+     }
+    ]
+   },
+   {
+    "title": "2 · UI and functional gaps",
+    "intro": "New findings first, each with what in the prototype shows it and where it stands. Then the 39 earlier gaps, classified the same way.",
+    "blocks": [
+     {
+      "type": "h",
+      "text": "New findings (28)"
+     },
+     {
+      "type": "table",
+      "head": [
+       "ID",
+       "Finding",
+       "Evidence in the prototype",
+       "Category",
+       "Type",
+       "Severity",
+       "Impact",
+       "Status"
+      ],
+      "rows": [
+       [
+        "N-01",
+        "No sign-in for members. The only sign-in screens belong to the guest portal. 'Session ended' and 'Account deactivated' screens do not exist either.",
+        "The app opens straight into Home as Lan. Sign-in markup exists only in the guest portal.",
+        "User flow",
+        "Missing",
+        "Critical",
+        "Functionality, Security",
+        "Behaviour decided (F04–F07, flows 2.1, 3.2). Screens not designed."
+       ],
+       [
+        "N-02",
+        "Admin has no member management: no members table, invite, resend, revoke, change role, deactivate.",
+        "Admin has two tabs: analytics and automations.",
+        "UI/UX",
+        "Missing",
+        "Critical",
+        "Functionality, Implementation",
+        "Behaviour decided (F02, F39–F41, flows 2.12, 2.13). Screens not designed."
+       ],
+       [
+        "N-03",
+        "No way to create a channel or add people to one.",
+        "No such action among the prototype's 151; '+' leads to Browse channels only.",
+        "User flow",
+        "Missing",
+        "High",
+        "Functionality, Implementation",
+        "Decided (F20, F22, flow 2.8). Screens not designed; adding people has no chart."
+       ],
+       [
+        "N-04",
+        "No sign out anywhere.",
+        "The account menu holds status, pause, Focus and Preferences.",
+        "User flow",
+        "Missing",
+        "High",
+        "Functionality, Security",
+        "Decided (F06)."
+       ],
+       [
+        "N-05",
+        "No loading state for anything the product will fetch: lists, messages, search, files.",
+        "Everything is in memory; the only 'loading' state is the AI summary card.",
+        "UI/UX",
+        "Missing",
+        "High",
+        "UX, Implementation",
+        "Described in flows 2.3, 2.4 (placeholders). No visual design."
+       ],
+       [
+        "N-06",
+        "No error state and no Retry anywhere: failed load, failed send, failed upload, refused action.",
+        "The words 'error' and 'Retry' do not occur in the prototype.",
+        "UI/UX",
+        "Missing",
+        "High",
+        "UX, Functionality, Data integrity",
+        "One shared behaviour proposed in flow 3.3; needs confirmation (FA-08)."
+       ],
+       [
+        "N-07",
+        "Attaching a file is faked: one press adds a finished sample file. No picker, progress, size refusal, drag and drop, paste, or cancel.",
+        "The attach action takes the next entry from a fixed list of sample files.",
+        "User flow",
+        "Missing",
+        "High",
+        "Functionality, Implementation",
+        "Decided (F18, flow 2.6). Screens not designed."
+       ],
+       [
+        "N-08",
+        "Forms report problems by a toast after pressing the button ('Add a title', 'Enter a valid email'), not beside the field, and buttons are never disabled while a form is invalid.",
+        "Ten validation toasts; exactly one disabled button in the whole prototype (Join, before a Meet starts).",
+        "UI/UX",
+        "Inconsistent",
+        "Medium",
+        "UX",
+        "Open: GQ-03. The flows assume a message under the field."
+       ],
+       [
+        "N-09",
+        "Leaving a channel asks for confirmation and then also offers Undo, for public and private alike.",
+        "'Leave #name? You can rejoin from Browse channels.' followed by the toast 'You left #name · Undo'.",
+        "UI/UX",
+        "Inconsistent",
+        "Medium",
+        "UX",
+        "Decided: rule NR3 (never both); flow 2.9."
+       ],
+       [
+        "N-10",
+        "Preferences has 'Notify me for @mentions even in muted channels', but no decision says what Mute does to a mention. Flow 2.7 stated a rule that was not decided; it now points here.",
+        "A switch in the notification section of Preferences.",
+        "Business logic",
+        "Ambiguous",
+        "High",
+        "Functionality, UX",
+        "Open: GQ-01."
+       ],
+       [
+        "N-11",
+        "A conversation has both a notification level 'Nothing' and a separate Mute switch. Their difference is not stated.",
+        "Details panel: All messages · Mentions only · Nothing, then Mute and Star.",
+        "Business logic",
+        "Ambiguous",
+        "Medium",
+        "UX, Functionality",
+        "Open: GQ-02."
+       ],
+       [
+        "N-12",
+        "Every screen was seen as an Owner. What a Member or an Admin sees is nowhere in the prototype.",
+        "The signed-in person is always Lan, 'Founder & owner'; the only other view is the guest.",
+        "Business logic",
+        "Assumption",
+        "High",
+        "Security",
+        "The capability matrix (Roles & States) is the authority; needs sign-off: GQ-20."
+       ],
+       [
+        "N-13",
+        "The address never changes with the screen, so browser Back, reload and shared links have no defined behaviour.",
+        "Navigation is kept in memory; only the guest portal sets an address.",
+        "User flow",
+        "Missing",
+        "High",
+        "Functionality, UX",
+        "Flow 2.3 assumes addresses exist. Open: GQ-06."
+       ],
+       [
+        "N-14",
+        "The profile is read-only: no way to change name, job title or picture. Pictures are coloured initials.",
+        "Profile panel and Preferences have no such fields.",
+        "UI/UX",
+        "Missing",
+        "Medium",
+        "Functionality",
+        "Name, title, time zone decided (F35). Picture open: GQ-04."
+       ],
+       [
+        "N-15",
+        "No way to edit a channel's topic or description, rename it, or archive it.",
+        "Details shows topic and description as text.",
+        "User flow",
+        "Missing",
+        "Medium",
+        "Functionality",
+        "Topic and archive decided (G8, F26). Rename and description open: GQ-05."
+       ],
+       [
+        "N-16",
+        "A thread cannot be unfollowed, and a conversation cannot be marked unread.",
+        "Neither action exists.",
+        "User flow",
+        "Missing",
+        "Low",
+        "UX",
+        "Open: GQ-07, GQ-08."
+       ],
+       [
+        "N-17",
+        "Admin shows storage used against a quota, but nothing says what happens when the quota is reached.",
+        "Analytics card: files, GB added, GB used of a quota.",
+        "Business logic",
+        "Missing",
+        "Medium",
+        "Functionality, Data integrity",
+        "Open: GQ-09."
+       ],
+       [
+        "N-18",
+        "Nothing shows how a button behaves while its request is running, so a double press is undefined for everything except sending a message.",
+        "Every action completes instantly in the prototype.",
+        "Edge case",
+        "Missing",
+        "Medium",
+        "Data integrity",
+        "Messages: decided (same ID). Others open: GQ-18."
+       ],
+       [
+        "N-19",
+        "Only one person is simulated. Typing indicators, live updates, read state across two devices and a second tab cannot be observed.",
+        "Other people's replies are scripted.",
+        "System behaviour",
+        "Assumption",
+        "High",
+        "Data integrity, Functionality",
+        "Written as decisions and assumptions in the flows; second tab open: FQ-02."
+       ],
+       [
+        "N-20",
+        "No behaviour for a new version being deployed while the app is open.",
+        "Not applicable to a prototype.",
+        "System behaviour",
+        "Missing",
+        "Medium",
+        "Functionality, Implementation",
+        "Open: GQ-10."
+       ],
+       [
+        "N-21",
+        "No statement of supported browsers. Web Push and installing the app differ between them.",
+        "Not applicable to a prototype.",
+        "System behaviour",
+        "Missing",
+        "Medium",
+        "Implementation",
+        "Open: GQ-11."
+       ],
+       [
+        "N-22",
+        "Lists have no upper bound in the design: members in Details, people pickers, Browse channels.",
+        "Sample data has about ten people; Details lists every member.",
+        "Edge case",
+        "Missing",
+        "Medium",
+        "UX, Implementation",
+        "Target is 200 people (Q-decision). Open: GQ-12."
+       ],
+       [
+        "N-23",
+        "Two people changing the same thing at once (a topic, a task, a status) has no stated outcome.",
+        "Cannot occur with one simulated person.",
+        "Edge case",
+        "Missing",
+        "Low",
+        "Data integrity",
+        "Open: GQ-13."
+       ],
+       [
+        "N-24",
+        "The browser tab gives no sign of unread messages.",
+        "The title is fixed.",
+        "UI/UX",
+        "Missing",
+        "Low",
+        "UX",
+        "Open: GQ-14."
+       ],
+       [
+        "N-25",
+        "Times are always shown as 24-hour, with no setting.",
+        "'16:34', 'Tomorrow 09:00' throughout.",
+        "UI/UX",
+        "Ambiguous",
+        "Low",
+        "UX",
+        "Open: GQ-15."
+       ],
+       [
+        "N-26",
+        "No record of administrative actions (who invited, changed a role, deactivated, deleted a message).",
+        "Admin has no such view.",
+        "Business logic",
+        "Missing",
+        "Medium",
+        "Security",
+        "Open: GQ-16."
+       ],
+       [
+        "N-27",
+        "Search has no loading, no error and no stated limits; search inside a conversation shows no 'nothing found' state.",
+        "Ctrl+K, People and Files have empty states; in-conversation search does not.",
+        "UI/UX",
+        "Missing",
+        "Medium",
+        "UX",
+        "Partly decided (NR8, GAP-27). Scope open: GQ-19."
+       ],
+       [
+        "N-28",
+        "The composer shows no character limit or counter.",
+        "No length limit on the message field.",
+        "Edge case",
+        "Missing",
+        "Low",
+        "UX",
+        "Decided: 10,000 with a counter near the limit (G9, F11)."
+       ]
+      ]
+     },
+     {
+      "type": "h",
+      "text": "Earlier gaps, classified (39)"
+     },
+     {
+      "type": "p",
+      "text": "Their required behaviour is on the Questions & Gaps tab."
+     },
+     {
+      "type": "table",
+      "head": [
+       "ID",
+       "Gap",
+       "Category",
+       "Type",
+       "Severity",
+       "Impact",
+       "Handled in"
+      ],
+      "rows": [
+       [
+        "GAP-01",
+        "A guest can open someone's private DM and type in it",
+        "Business logic",
+        "Missing",
+        "Critical",
+        "Security",
+        "Phase 5"
+       ],
+       [
+        "GAP-02",
+        "A private channel cannot be rejoined after leaving, though the warning says it can",
+        "Business logic",
+        "Inconsistent",
+        "Critical",
+        "Functionality",
+        "TOKI-029"
+       ],
+       [
+        "GAP-03",
+        "On a phone the mini-call bar covers the Back button and channel name",
+        "UI/UX",
+        "Inconsistent",
+        "Critical",
+        "UX",
+        "Phase 4"
+       ],
+       [
+        "GAP-04",
+        "The app opens without scrolling to new messages",
+        "User flow",
+        "Missing",
+        "High",
+        "UX",
+        "TOKI-041"
+       ],
+       [
+        "GAP-05",
+        "The New divider drifts down as messages arrive",
+        "System behaviour",
+        "Inconsistent",
+        "High",
+        "UX",
+        "TOKI-054"
+       ],
+       [
+        "GAP-06",
+        "The New divider and Catch-up button never go away",
+        "User flow",
+        "Missing",
+        "High",
+        "UX",
+        "TOKI-053"
+       ],
+       [
+        "GAP-07",
+        "Mark done and Snooze are invisible on touch devices",
+        "UI/UX",
+        "Missing",
+        "High",
+        "Functionality",
+        "TOKI-066"
+       ],
+       [
+        "GAP-08",
+        "The phone has no global search, Focus time or account menu",
+        "User flow",
+        "Missing",
+        "High",
+        "Functionality",
+        "TOKI-092"
+       ],
+       [
+        "GAP-09",
+        "Focus look: the navigation rail is cut off in a short window",
+        "UI/UX",
+        "Inconsistent",
+        "High",
+        "UX",
+        "TOKI-015"
+       ],
+       [
+        "GAP-10",
+        "Calm look: the conversation list shrinks to 1 to 4 rows",
+        "UI/UX",
+        "Inconsistent",
+        "High",
+        "UX",
+        "TOKI-015"
+       ],
+       [
+        "GAP-11",
+        "Toasts cover the composer",
+        "UI/UX",
+        "Inconsistent",
+        "High",
+        "UX",
+        "TOKI-013"
+       ],
+       [
+        "GAP-12",
+        "'Invalid Date' when a date is left empty",
+        "Edge case",
+        "Missing",
+        "High",
+        "Data integrity",
+        "TOKI-094"
+       ],
+       [
+        "GAP-13",
+        "A Meet scheduled in the past is accepted, then vanishes",
+        "Edge case",
+        "Missing",
+        "High",
+        "Data integrity",
+        "Phase 4"
+       ],
+       [
+        "GAP-14",
+        "A Meet more than 7 days ahead is shown nowhere",
+        "Business logic",
+        "Ambiguous",
+        "High",
+        "Functionality",
+        "Phase 4"
+       ],
+       [
+        "GAP-15",
+        "A scheduled Meet cannot be edited or cancelled",
+        "User flow",
+        "Missing",
+        "High",
+        "Functionality",
+        "Phase 4"
+       ],
+       [
+        "GAP-16",
+        "A guest invitation accepts a past expiry date and duplicate emails",
+        "Edge case",
+        "Missing",
+        "High",
+        "Data integrity",
+        "Phase 5"
+       ],
+       [
+        "GAP-17",
+        "A Meet can be started in a channel you have not joined",
+        "Business logic",
+        "Missing",
+        "High",
+        "Security",
+        "Phase 4"
+       ],
+       [
+        "GAP-18",
+        "Send later drops the attached file",
+        "System behaviour",
+        "Inconsistent",
+        "High",
+        "Data integrity",
+        "Phase 2"
+       ],
+       [
+        "GAP-19",
+        "A guest in the channel cannot be mentioned, but outsiders can",
+        "Business logic",
+        "Inconsistent",
+        "High",
+        "Functionality",
+        "TOKI-050"
+       ],
+       [
+        "GAP-20",
+        "Approving a request creates an unread notification for yourself",
+        "Business logic",
+        "Inconsistent",
+        "High",
+        "UX",
+        "TOKI-065"
+       ],
+       [
+        "GAP-21",
+        "While offline, email still sends and Meets still connect",
+        "System behaviour",
+        "Inconsistent",
+        "High",
+        "Data integrity",
+        "TOKI-082, Phase 6"
+       ],
+       [
+        "GAP-22",
+        "Clicking outside a modal discards what was typed",
+        "UI/UX",
+        "Missing",
+        "High",
+        "Data integrity",
+        "TOKI-093"
+       ],
+       [
+        "GAP-23",
+        "A draft in Mail cannot be reopened to edit or send",
+        "User flow",
+        "Missing",
+        "High",
+        "Functionality",
+        "Phase 7"
+       ],
+       [
+        "GAP-24",
+        "Deleting an automation has no confirmation and no Undo",
+        "UI/UX",
+        "Missing",
+        "High",
+        "Data integrity",
+        "TOKI-093, Phase 5"
+       ],
+       [
+        "GAP-25",
+        "Starting Focus twice leaves the status stuck on 'Focusing'",
+        "Edge case",
+        "Inconsistent",
+        "High",
+        "Functionality",
+        "TOKI-076"
+       ],
+       [
+        "GAP-26",
+        "Activity is not sorted by time and lacks an Approvals filter",
+        "UI/UX",
+        "Inconsistent",
+        "Medium",
+        "UX",
+        "TOKI-065, 066"
+       ],
+       [
+        "GAP-27",
+        "Ctrl+K ranks unrelated results first",
+        "Business logic",
+        "Ambiguous",
+        "Medium",
+        "UX",
+        "TOKI-071"
+       ],
+       [
+        "GAP-28",
+        "Two rows share one name in Busiest channels",
+        "UI/UX",
+        "Inconsistent",
+        "Medium",
+        "UX",
+        "Phase 5"
+       ],
+       [
+        "GAP-29",
+        "Mail folder counts mix kinds; the empty state is out of context",
+        "UI/UX",
+        "Inconsistent",
+        "Medium",
+        "UX",
+        "Phase 7"
+       ],
+       [
+        "GAP-30",
+        "Switching email discards the reply in progress",
+        "User flow",
+        "Missing",
+        "Medium",
+        "UX",
+        "Phase 7"
+       ],
+       [
+        "GAP-31",
+        "The Later counter is wrong after the source message is deleted",
+        "System behaviour",
+        "Inconsistent",
+        "Medium",
+        "Data integrity",
+        "TOKI-067"
+       ],
+       [
+        "GAP-32",
+        "Choosing Tiếng Việt translates only the navigation",
+        "UI/UX",
+        "Inconsistent",
+        "Medium",
+        "UX",
+        "TOKI-080"
+       ],
+       [
+        "GAP-33",
+        "Empty states are misplaced or missing",
+        "UI/UX",
+        "Missing",
+        "Medium",
+        "UX",
+        "TOKI-013, 034, 079"
+       ],
+       [
+        "GAP-34",
+        "A real phone still shows the 'Desktop app' title bar",
+        "UI/UX",
+        "Inconsistent",
+        "Medium",
+        "UX",
+        "—"
+       ],
+       [
+        "GAP-35",
+        "Narrow window with a thread open: the chat is squeezed and tabs are cut",
+        "UI/UX",
+        "Inconsistent",
+        "Medium",
+        "UX",
+        "TOKI-015"
+       ],
+       [
+        "GAP-36",
+        "Modals do not trap focus; menus ignore arrow keys",
+        "UI/UX",
+        "Missing",
+        "Low",
+        "UX",
+        "TOKI-014"
+       ],
+       [
+        "GAP-37",
+        "Icon buttons on the phone have no name for screen readers",
+        "UI/UX",
+        "Missing",
+        "Low",
+        "UX",
+        "TOKI-012"
+       ],
+       [
+        "GAP-38",
+        "Small label errors: saving an empty status, time zone shown as a city, due dates in two formats, a new card hidden by a filter, captions covering a tile, a reminder showing during Pause",
+        "UI/UX",
+        "Inconsistent",
+        "Low",
+        "UX",
+        "TOKI-056, 057, 076, 094, Phases 2 and 4"
+       ],
+       [
+        "GAP-39",
+        "On a phone, the More sheet stays open over the screen you chose",
+        "User flow",
+        "Inconsistent",
+        "High",
+        "UX",
+        "TOKI-092"
+       ]
+      ]
+     }
+    ]
+   },
+   {
+    "title": "3 · Missing user flows",
+    "intro": "Scenarios the prototype does not cover, and whether the Blueprint has since written or drawn them.",
+    "blocks": [
+     {
+      "type": "table",
+      "head": [
+       "Scenario",
+       "In the prototype",
+       "In the Blueprint"
+      ],
+      "rows": [
+       [
+        "Member sign-in and its errors",
+        "Absent",
+        "Written F04, F05 · drawn 2.1"
+       ],
+       [
+        "First set-up by the first Owner",
+        "Absent",
+        "Written F01 · no chart"
+       ],
+       [
+        "Invite a member, accept an invitation",
+        "Absent (guest invitation only)",
+        "Written F02, F03 · drawn 2.2, 2.12"
+       ],
+       [
+        "Sign out; session ends; account deactivated",
+        "Absent",
+        "Written F06, F07 · drawn 1.2, 3.2"
+       ],
+       [
+        "Create a channel",
+        "Absent",
+        "Written F20 · drawn 2.8"
+       ],
+       [
+        "Add people to a channel",
+        "Absent",
+        "Written F22 · no chart"
+       ],
+       [
+        "Archive a channel",
+        "Absent",
+        "Written F26 · no chart"
+       ],
+       [
+        "Upload with progress, refusal, failure, cancel",
+        "Faked",
+        "Written F18 · drawn 2.6"
+       ],
+       [
+        "A send that fails, and Retry",
+        "Offline wait only",
+        "Written F11 · drawn 2.5, 3.1"
+       ],
+       [
+        "Change a role; deactivate; reactivate",
+        "Absent",
+        "Written F40, F41 · drawn 2.13"
+       ],
+       [
+        "Any refused or failed request",
+        "Absent",
+        "Drawn 3.3 (proposal)"
+       ],
+       [
+        "Browser Back, reload, opening a shared link",
+        "Absent",
+        "Partly drawn 2.3 · open GQ-06"
+       ],
+       [
+        "The same person on two devices or two tabs",
+        "Cannot be observed",
+        "Not covered · FQ-02"
+       ],
+       [
+        "Edit own profile and picture",
+        "Absent",
+        "Partly written F35 · open GQ-04"
+       ],
+       [
+        "Rename a channel, edit its description",
+        "Absent",
+        "Not covered · GQ-05"
+       ],
+       [
+        "Unfollow a thread; mark a conversation unread",
+        "Absent",
+        "Not covered · GQ-07, GQ-08"
+       ],
+       [
+        "Storage quota reached",
+        "Absent",
+        "Not covered · GQ-09"
+       ],
+       [
+        "A new version arrives while the app is open",
+        "Not applicable",
+        "Not covered · GQ-10"
+       ]
+      ]
+     }
+    ]
+   },
+   {
+    "title": "4 · Open questions",
+    "intro": "One question per unresolved gap. The suggestion is a recommendation, not a decision; nothing here is assumed anywhere else in the Blueprint. The 12 questions raised while drawing the flows (FQ-01 to FQ-12) are on the Flows tab.",
+    "blocks": [
+     {
+      "type": "table",
+      "head": [
+       "ID",
+       "Question",
+       "Why it needs an answer",
+       "Options",
+       "Suggested",
+       "Who answers",
+       "Severity",
+       "From"
+      ],
+      "rows": [
+       [
+        "GQ-01",
+        "Does a mention notify the person when the conversation is muted?",
+        "The prototype has a preference for it; no decision exists; notification tickets cannot be specified without it.",
+        "(a) A personal switch, on by default · (b) Never · (c) Always",
+        "(a), as in the prototype",
+        "PO",
+        "High",
+        "N-10"
+       ],
+       [
+        "GQ-02",
+        "What is the difference between the level 'Nothing' and Mute?",
+        "Two controls that look alike will be built twice or confused.",
+        "(a) Level decides toast, push and sound; Mute also hides the unread badge and bold · (b) Remove 'Nothing', keep Mute · (c) Remove Mute",
+        "(a)",
+        "PO, UX",
+        "Medium",
+        "N-11"
+       ],
+       [
+        "GQ-03",
+        "Where do form errors appear: under the field with the button disabled, or in a toast after pressing?",
+        "The prototype does one, the flows assume the other; every form depends on it.",
+        "(a) Under the field; button disabled until valid · (b) Toast after pressing, as the prototype",
+        "(a)",
+        "UX",
+        "Medium",
+        "N-08"
+       ],
+       [
+        "GQ-04",
+        "Can a person upload a profile picture in phase 1?",
+        "It adds an image upload, cropping and storage path to phase 1.",
+        "(a) Initials only in phase 1 · (b) Upload in phase 1",
+        "(a)",
+        "PO",
+        "Low",
+        "N-14"
+       ],
+       [
+        "GQ-05",
+        "Can a channel be renamed, and who edits its description?",
+        "Renaming touches links, search and the uniqueness rule.",
+        "(a) No rename in phase 1; any member edits topic and description · (b) Admins and the creator rename",
+        "(a)",
+        "PO",
+        "Medium",
+        "N-15"
+       ],
+       [
+        "GQ-06",
+        "Does every conversation, thread and section have its own address, and what does browser Back do?",
+        "Notifications, shared links and reload all need it; it shapes the app shell ticket.",
+        "(a) Each has an address; Back closes the side panel first, then returns to the previous place · (b) One address for the whole app",
+        "(a)",
+        "FE, UX",
+        "High",
+        "N-13"
+       ],
+       [
+        "GQ-07",
+        "Can a person stop following a thread?",
+        "Followers are added automatically; without a way out, busy threads keep notifying.",
+        "(a) 'Unfollow thread' in the thread menu · (b) Not in phase 1",
+        "(a)",
+        "PO",
+        "Low",
+        "N-16"
+       ],
+       [
+        "GQ-08",
+        "Is 'Mark as unread' in phase 1?",
+        "It changes the read-pointer rule (the pointer would move backwards).",
+        "(a) Later phase · (b) Phase 1",
+        "(a); Later covers the need",
+        "PO",
+        "Low",
+        "N-16"
+       ],
+       [
+        "GQ-09",
+        "What happens when storage runs out or reaches a quota?",
+        "Self-hosted on one server: a full disk stops the database too.",
+        "(a) No quota; Owners are warned at 80% of the disk; uploads refused at 95% · (b) A fixed quota per workspace",
+        "(a)",
+        "PO, BE",
+        "Medium",
+        "N-17"
+       ],
+       [
+        "GQ-10",
+        "What does an open app do when a new version is deployed?",
+        "An old page talking to a new server can fail in confusing ways.",
+        "(a) Strip 'Update available · Reload'; forced only when the server says the page is too old · (b) Silent reload when idle",
+        "(a)",
+        "FE, BE",
+        "Medium",
+        "N-20"
+       ],
+       [
+        "GQ-11",
+        "Which browsers are supported?",
+        "It sets the test matrix and whether Web Push works on iPhone.",
+        "(a) The last two versions of Chrome, Edge, Safari, Firefox; iPhone push only when installed to the home screen · (b) Chrome and Edge only",
+        "(a)",
+        "PO, FE",
+        "Medium",
+        "N-21"
+       ],
+       [
+        "GQ-12",
+        "How do member lists and people pickers behave at 200 people?",
+        "The design shows ten; the target is 200.",
+        "(a) Search field on top, first 50 shown, more on scroll · (b) Show all",
+        "(a)",
+        "UX, FE",
+        "Medium",
+        "N-22"
+       ],
+       [
+        "GQ-13",
+        "Two people change the same topic, status or task at the same moment. Who wins?",
+        "Without a rule, each screen shows a different truth.",
+        "(a) The last save wins and everyone sees it live · (b) The second save is refused with 'This changed'",
+        "(a) for short fields; (b) for long text later",
+        "BE",
+        "Low",
+        "N-23"
+       ],
+       [
+        "GQ-14",
+        "Does the browser tab show unread messages?",
+        "Cheap, and often the only signal when notifications are off.",
+        "(a) '(3) Toki' counting mentions and DMs, a dot for anything else · (b) Nothing",
+        "(a)",
+        "UX",
+        "Low",
+        "N-24"
+       ],
+       [
+        "GQ-15",
+        "24-hour time for everyone, or by language?",
+        "Rule NR7 asks for one format; it does not say which.",
+        "(a) 24-hour everywhere · (b) Follows the language · (c) A setting",
+        "(a)",
+        "UX",
+        "Low",
+        "N-25"
+       ],
+       [
+        "GQ-16",
+        "Are administrative actions recorded, and can anyone see the record?",
+        "Deactivation and message deletion by an admin have no trace otherwise.",
+        "(a) Recorded on the server, no screen in phase 1 · (b) A screen for Owners · (c) Not recorded",
+        "(a)",
+        "PO, BE",
+        "Medium",
+        "N-26"
+       ],
+       [
+        "GQ-17",
+        "Can a workspace export its data (messages, files)?",
+        "History is kept forever by decision; nothing says how it leaves.",
+        "(a) Server backup only in phase 1 · (b) An export for Owners",
+        "(a)",
+        "PO",
+        "Low",
+        "N-26"
+       ],
+       [
+        "GQ-18",
+        "How is a double press prevented for creating a channel, sending invitations and setting a reminder?",
+        "Only messages have a duplicate-proof ID today.",
+        "(a) Button disabled while the request runs, and the server ignores a repeat of the same request · (b) Button disabled only",
+        "(a)",
+        "BE, FE",
+        "Medium",
+        "N-18"
+       ],
+       [
+        "GQ-19",
+        "What does search cover, and how much does it return?",
+        "Ctrl+K, in-conversation search, Files and People each search differently in the prototype.",
+        "(a) Ctrl+K: conversations, people, commands, then messages; 20 results per kind, more on request · (b) Messages only in a separate search page",
+        "(a)",
+        "PO, FE",
+        "Medium",
+        "N-27"
+       ],
+       [
+        "GQ-20",
+        "Is the capability matrix on the Roles & States tab the agreed authority for what Members and Admins see?",
+        "No screen was ever seen as a Member or Admin; every permission test will be written from that table.",
+        "(a) Yes, sign it off as is · (b) Review it row by row first",
+        "(b)",
+        "PO, QA",
+        "High",
+        "N-12"
+       ]
+      ]
+     }
+    ]
+   },
+   {
+    "title": "5 · Assumptions",
+    "intro": "Behaviour inferred from the interface that nobody has stated. Each needs a yes or a correction. The 12 assumptions made while drawing the flows (FA-01 to FA-12) are on the Flows tab; the 16 already confirmed (G1 to G16) are on the Requirements tab.",
+    "blocks": [
+     {
+      "type": "table",
+      "head": [
+       "ID",
+       "Assumed behaviour",
+       "Inferred from",
+       "To confirm with"
+      ],
+      "rows": [
+       [
+        "AS-01",
+        "Everything a Member or Admin sees follows the capability matrix; the prototype shows only an Owner.",
+        "Account card: 'Owner'",
+        "GQ-20"
+       ],
+       [
+        "AS-02",
+        "Notification preferences belong to the person and apply on every device; only the browser's permission for push is per device.",
+        "Preferences shows one set of switches",
+        "PO"
+       ],
+       [
+        "AS-03",
+        "Star and Mute are personal: nobody else sees them, and starred conversations sort to the top of that person's list.",
+        "Details panel; starred glyph in the list",
+        "PO"
+       ],
+       [
+        "AS-04",
+        "The local time shown on a profile comes from the time zone the person set, not from where they are now.",
+        "Profile: local time and a city",
+        "PO"
+       ],
+       [
+        "AS-05",
+        "Demo-only controls never ship: the Look / Device / Clock / Guide bar, 'Reset', and every '20 seconds (demo)' choice.",
+        "Marked 'demo' in the prototype",
+        "Confirmed (Requirements: Dropped)"
+       ],
+       [
+        "AS-06",
+        "The pink 'New' pills mark proposed features, not states of the product.",
+        "Switch 'Highlight proposed features'",
+        "PO"
+       ],
+       [
+        "AS-07",
+        "Sample people, channels and messages are illustration only; no seed content ships except #general.",
+        "Sample workspace 'Hugepig Studio'",
+        "PO"
+       ],
+       [
+        "AS-08",
+        "Analytics never names private channels or DMs and hides any group smaller than three.",
+        "Admin: 'Private channels and direct messages', 'fewer than 3'",
+        "PO (phase 5)"
+       ]
+      ]
+     }
+    ]
+   },
+   {
+    "title": "6 · Risk and impact",
+    "intro": "What goes wrong if the gaps above stay open, and what reduces it.",
+    "blocks": [
+     {
+      "type": "table",
+      "head": [
+       "ID",
+       "Risk",
+       "What it causes",
+       "Severity",
+       "Impact",
+       "What reduces it"
+      ],
+      "rows": [
+       [
+        "R-01",
+        "Phase 1 needs screens the prototype never drew: sign-in, session ended, Admin members, create channel, add people, upload, loading and error states.",
+        "Each developer invents them during the build; the result is inconsistent and reworked.",
+        "High",
+        "Implementation, UX",
+        "Design these screens in the prototype before their tickets start (N-01 to N-07)."
+       ],
+       [
+        "R-02",
+        "Permissions were only ever seen as an Owner.",
+        "A Member reaching something they should not, as GAP-01 showed for guests.",
+        "High",
+        "Security",
+        "Sign off the capability matrix (GQ-20); one automated test per row and role."
+       ],
+       [
+        "R-03",
+        "Realtime behaviour between people and devices cannot be observed in the prototype.",
+        "Wrong unread counts, duplicated or lost messages.",
+        "High",
+        "Data integrity",
+        "Already decided: message IDs made by the app, numbered event log. Add tests with two signed-in clients."
+       ],
+       [
+        "R-04",
+        "Notification rules are ambiguous: level, Mute, mentions in muted conversations.",
+        "People miss mentions or are flooded; hard to change after launch.",
+        "High",
+        "Functionality, UX",
+        "Answer GQ-01 and GQ-02 before the notification tickets."
+       ],
+       [
+        "R-05",
+        "No designed behaviour for failure.",
+        "Actions that seem to succeed but did not; lost input.",
+        "High",
+        "Data integrity, UX",
+        "Confirm flow 3.3 and FA-08 as the standard; build it once as shared parts."
+       ],
+       [
+        "R-06",
+        "Addresses and browser Back are undefined.",
+        "Notifications and shared links open the wrong place; reload loses position.",
+        "Medium",
+        "Functionality",
+        "Answer GQ-06 before the app shell ticket."
+       ],
+       [
+        "R-07",
+        "Nothing bounds growth: storage, history kept forever, long lists.",
+        "A full disk stops the whole server; slow screens at 200 people.",
+        "Medium",
+        "Data integrity, Implementation",
+        "Answer GQ-09 and GQ-12; disk alert in the deployment ticket."
+       ],
+       [
+        "R-08",
+        "Many answers are still owed: the questions on this tab, 12 on the Flows tab (FQ) and 12 unconfirmed assumptions (FA).",
+        "Specs written on guesses, then rewritten.",
+        "Medium",
+        "Implementation",
+        "Answer the High ones first; each blocks named tickets."
+       ]
+      ]
+     }
+    ]
+   }
+  ],
+  "open": 20
  }
 }

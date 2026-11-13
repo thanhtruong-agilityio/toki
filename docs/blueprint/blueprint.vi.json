@@ -153,7 +153,8 @@
    "Scope": "Phạm vi",
    "Size": "Cỡ",
    "Needs": "Cần ticket",
-   "Left for the spec": "Còn lại cho spec"
+   "Left for the spec": "Còn lại cho spec",
+   "Gap analysis": "Phân tích gap"
   },
   "allowWords": [
    "Tiếng",
@@ -4780,7 +4781,7 @@
        "**Sau:** người nhận có một mục Activity; mục tự thành xong khi tin đã được mở.",
        "**Quy tắc:** hành động của chính mình không bao giờ tạo thông báo cho mình.",
        "**Quy tắc:** trong Pause hoặc Focus không có toast, push hay âm thanh; huy hiệu vẫn cập nhật, và khi kết thúc có một bản tóm tắt những gì đã tới.",
-       "**Quy tắc:** mention vượt qua mức 'Mentions only' nhưng không vượt Mute; cuộc trò chuyện đã tắt tiếng vẫn có huy hiệu.",
+       "**Còn mở:** mention luôn vượt qua mức 'Mentions only'. Nó có vượt qua Mute hay không thì chưa quyết định (câu hỏi GQ-01 ở tab Phân tích gap); cho tới lúc đó sơ đồ thể hiện trường hợp tắt tiếng là chỉ có huy hiệu.",
        "**Quy tắc:** @channel trong kênh từ 20 người trở lên hỏi người gửi xác nhận trước.",
        "**Sửa:** thêm mention khi sửa tin thì báo cho người mới; bỏ mention thì gỡ thông báo trước đó."
       ]
@@ -5380,5 +5381,1328 @@
     ]
    }
   ]
+ },
+ "analysis": {
+  "sections": [
+   {
+    "title": "Cách thực hiện phân tích này",
+    "intro": "Prototype được đọc như một sản phẩm: mọi màn hình và toàn bộ 151 thao tác của nó, rồi soát theo năm góc nhìn (UI/UX, user flow, logic nghiệp vụ, hành vi hệ thống, trường hợp biên). Kết quả là **67 gap**: 39 gap đã ghi nhận trước đây khi đi qua prototype, và 28 gap mới từ câu hỏi phase 1 cần gì mà prototype không có. Còn **20 câu hỏi** đang mở.",
+    "blocks": [
+     {
+      "type": "table",
+      "head": [
+       "Mức độ",
+       "Số gap",
+       "Ý nghĩa"
+      ],
+      "rows": [
+       [
+        "Nghiêm trọng",
+        "5",
+        "Chặn phase 1, hoặc làm lộ nội dung riêng tư"
+       ],
+       [
+        "Cao",
+        "32",
+        "Một hành trình chính không hoàn thành được hoặc không làm được theo thiết kế"
+       ],
+       [
+        "Trung bình",
+        "22",
+        "Chạy được, nhưng gây nhầm, không nhất quán hoặc không có giới hạn"
+       ],
+       [
+        "Thấp",
+        "8",
+        "Hoàn thiện"
+       ]
+      ]
+     },
+     {
+      "type": "note",
+      "text": "**Phát hiện chính:** prototype mô phỏng một người, luôn là Owner, với dữ liệu mẫu và thao tác tức thì. Nó thể hiện trung thực việc chat, và không có gì về việc vào hệ thống (đăng nhập, lời mời, quản lý thành viên), không có gì về chờ đợi hay thất bại (không loading, không lỗi, không retry), và không có gì về người hoặc thiết bị thứ hai. Đó là phần lớn những gì còn phải thiết kế cho phase 1."
+     }
+    ]
+   },
+   {
+    "title": "1 · Tổng quan prototype",
+    "intro": "Các màn hình tìm thấy, mục đích của từng màn hình, và phase mà nó thuộc về. Các hành trình đi qua chúng là 51 flow viết ở tab Flows.",
+    "blocks": [
+     {
+      "type": "table",
+      "head": [
+       "Màn hình",
+       "Mục đích",
+       "Thao tác chính",
+       "Phase"
+      ],
+      "rows": [
+       [
+        "Home: danh sách và khung chat",
+        "Đọc và viết trong kênh, DM và nhóm",
+        "Gửi, reaction, sửa, xoá, ghim, lưu, nhắc, đính kèm, mention, tìm trong cuộc trò chuyện",
+        "1"
+       ],
+       [
+        "Panel thread",
+        "Trả lời dưới một tin",
+        "Trả lời, gửi kèm vào kênh, tóm tắt",
+        "1 (tóm tắt: 6)"
+       ],
+       [
+        "Panel Details",
+        "Thông tin và cài đặt cá nhân của cuộc trò chuyện",
+        "Mức thông báo, tắt tiếng, đánh sao, rời, xem thành viên, tab",
+        "1"
+       ],
+       [
+        "Panel hồ sơ",
+        "Một người là ai",
+        "Nhắn tin, mở Meet; còn lại chỉ đọc",
+        "1"
+       ],
+       [
+        "Browse channels",
+        "Tìm và tham gia kênh",
+        "Tìm, tham gia, mở",
+        "1"
+       ],
+       [
+        "Activity",
+        "Những gì cần chú ý",
+        "Lọc, mở, đánh dấu xong, hoãn, đánh dấu đã đọc hết",
+        "1"
+       ],
+       [
+        "Later",
+        "Tin đã lưu và nhắc việc",
+        "Đặt nhắc, hoàn thành, gỡ",
+        "1"
+       ],
+       [
+        "Files",
+        "Mọi file và link người dùng xem được",
+        "Tìm, lọc, dạng danh sách hoặc lưới, mở",
+        "1"
+       ],
+       [
+        "People",
+        "Danh bạ",
+        "Tìm, mở hồ sơ",
+        "1"
+       ],
+       [
+        "Preferences",
+        "Cài đặt cá nhân",
+        "Giao diện, màu nhấn, mật độ, thông báo, pause, trạng thái, ngôn ngữ",
+        "1"
+       ],
+       [
+        "Bảng lệnh Ctrl+K",
+        "Nhảy tới bất kỳ đâu",
+        "Tìm cuộc trò chuyện, người, lệnh",
+        "1"
+       ],
+       [
+        "Menu tài khoản",
+        "Trạng thái và giờ yên tĩnh",
+        "Đặt trạng thái, pause, Focus, mở Preferences",
+        "1"
+       ],
+       [
+        "Admin",
+        "Thống kê sử dụng và automation",
+        "Đổi kỳ, xuất CSV, sửa automation",
+        "5 (thành viên: 1, không có trong prototype)"
+       ],
+       [
+        "Tasks, Notes, tab, poll, approval, gửi sau",
+        "Công cụ làm việc nhẹ trong kênh",
+        "Tạo, chuyển, bình chọn, duyệt, hẹn giờ",
+        "2"
+       ],
+       [
+        "Calendar và Meet",
+        "Lên lịch và họp",
+        "Lên lịch, tham gia, tắt mic, chia sẻ, rời",
+        "4"
+       ],
+       [
+        "Cổng guest",
+        "Khách hàng thấy một kênh được chia sẻ",
+        "Đăng nhập bằng mã, đọc, viết",
+        "5"
+       ],
+       [
+        "Mail",
+        "Mail trong Toki",
+        "Đọc, trả lời, soạn, lưu trữ, bàn trong kênh",
+        "7"
+       ],
+       [
+        "Bố cục điện thoại",
+        "Cùng ứng dụng, mỗi lần một khung",
+        "Thanh điều hướng dưới, sheet More, Back",
+        "1 (web), 3 (app)"
+       ]
+      ]
+     }
+    ]
+   },
+   {
+    "title": "2 · Gap về UI và chức năng",
+    "intro": "Các phát hiện mới trước, mỗi cái kèm bằng chứng trong prototype và tình trạng hiện tại. Sau đó là 39 gap trước đây, phân loại theo cùng cách.",
+    "blocks": [
+     {
+      "type": "h",
+      "text": "Phát hiện mới (28)"
+     },
+     {
+      "type": "table",
+      "head": [
+       "ID",
+       "Phát hiện",
+       "Bằng chứng trong prototype",
+       "Nhóm",
+       "Loại",
+       "Mức độ",
+       "Ảnh hưởng",
+       "Tình trạng"
+      ],
+      "rows": [
+       [
+        "N-01",
+        "Không có đăng nhập cho thành viên. Các màn hình đăng nhập duy nhất thuộc cổng guest. Màn hình 'Session ended' và 'Account deactivated' cũng không có.",
+        "Ứng dụng mở thẳng vào Home với tư cách Lan. Chỉ cổng guest có giao diện đăng nhập.",
+        "User flow",
+        "Thiếu",
+        "Nghiêm trọng",
+        "Chức năng, Bảo mật",
+        "Hành vi đã quyết định (F04–F07, flow 2.1, 3.2). Chưa có thiết kế màn hình."
+       ],
+       [
+        "N-02",
+        "Admin không có quản lý thành viên: không có bảng thành viên, mời, gửi lại, thu hồi, đổi vai trò, vô hiệu hoá.",
+        "Admin có hai tab: thống kê và automation.",
+        "UI/UX",
+        "Thiếu",
+        "Nghiêm trọng",
+        "Chức năng, Triển khai",
+        "Hành vi đã quyết định (F02, F39–F41, flow 2.12, 2.13). Chưa có thiết kế màn hình."
+       ],
+       [
+        "N-03",
+        "Không có cách tạo kênh hay thêm người vào kênh.",
+        "Không có thao tác này trong 151 thao tác của prototype; '+' chỉ dẫn tới Browse channels.",
+        "User flow",
+        "Thiếu",
+        "Cao",
+        "Chức năng, Triển khai",
+        "Đã quyết định (F20, F22, flow 2.8). Chưa có thiết kế; thêm người chưa có sơ đồ."
+       ],
+       [
+        "N-04",
+        "Không có Sign out ở đâu cả.",
+        "Menu tài khoản chỉ có trạng thái, pause, Focus và Preferences.",
+        "User flow",
+        "Thiếu",
+        "Cao",
+        "Chức năng, Bảo mật",
+        "Đã quyết định (F06)."
+       ],
+       [
+        "N-05",
+        "Không có trạng thái đang tải cho bất cứ thứ gì sản phẩm sẽ phải tải: danh sách, tin nhắn, tìm kiếm, file.",
+        "Mọi thứ nằm sẵn trong bộ nhớ; trạng thái 'loading' duy nhất là thẻ tóm tắt AI.",
+        "UI/UX",
+        "Thiếu",
+        "Cao",
+        "UX, Triển khai",
+        "Có mô tả ở flow 2.3, 2.4 (ô giữ chỗ). Chưa có thiết kế hình ảnh."
+       ],
+       [
+        "N-06",
+        "Không có trạng thái lỗi và không có Retry ở đâu: tải lỗi, gửi lỗi, tải lên lỗi, hành động bị từ chối.",
+        "Chữ 'error' và 'Retry' không xuất hiện trong prototype.",
+        "UI/UX",
+        "Thiếu",
+        "Cao",
+        "UX, Chức năng, Toàn vẹn dữ liệu",
+        "Đã đề xuất một cách xử lý chung ở flow 3.3; cần xác nhận (FA-08)."
+       ],
+       [
+        "N-07",
+        "Đính kèm file là giả lập: bấm một lần là có sẵn một file mẫu đã xong. Không có chọn file, tiến độ, từ chối theo dung lượng, kéo thả, dán, hay huỷ.",
+        "Thao tác attach lấy mục kế tiếp từ một danh sách file mẫu cố định.",
+        "User flow",
+        "Thiếu",
+        "Cao",
+        "Chức năng, Triển khai",
+        "Đã quyết định (F18, flow 2.6). Chưa có thiết kế màn hình."
+       ],
+       [
+        "N-08",
+        "Form báo lỗi bằng toast sau khi bấm nút ('Add a title', 'Enter a valid email'), không báo cạnh ô nhập, và nút không bao giờ bị tắt khi form chưa hợp lệ.",
+        "Mười toast kiểm tra; cả prototype chỉ có đúng một nút bị tắt (Join, trước giờ Meet).",
+        "UI/UX",
+        "Không nhất quán",
+        "Trung bình",
+        "UX",
+        "Còn mở: GQ-03. Các flow đang giả định báo lỗi dưới ô nhập."
+       ],
+       [
+        "N-09",
+        "Rời kênh vừa hỏi xác nhận rồi lại đưa thêm Undo, với cả kênh công khai lẫn riêng tư.",
+        "'Leave #name? You can rejoin from Browse channels.' rồi tới toast 'You left #name · Undo'.",
+        "UI/UX",
+        "Không nhất quán",
+        "Trung bình",
+        "UX",
+        "Đã quyết định: quy tắc NR3 (không bao giờ cả hai); flow 2.9."
+       ],
+       [
+        "N-10",
+        "Preferences có 'Notify me for @mentions even in muted channels', nhưng chưa có quyết định nào nói Mute làm gì với mention. Flow 2.7 từng ghi một quy tắc chưa được quyết định; giờ đã trỏ về đây.",
+        "Một công tắc trong phần thông báo của Preferences.",
+        "Logic nghiệp vụ",
+        "Mơ hồ",
+        "Cao",
+        "Chức năng, UX",
+        "Còn mở: GQ-01."
+       ],
+       [
+        "N-11",
+        "Một cuộc trò chuyện vừa có mức thông báo 'Nothing' vừa có công tắc Mute riêng. Khác nhau thế nào thì không nói.",
+        "Panel Details: All messages · Mentions only · Nothing, rồi tới Mute và Star.",
+        "Logic nghiệp vụ",
+        "Mơ hồ",
+        "Trung bình",
+        "UX, Chức năng",
+        "Còn mở: GQ-02."
+       ],
+       [
+        "N-12",
+        "Mọi màn hình đều được xem với vai trò Owner. Member hay Admin thấy gì thì prototype không có.",
+        "Người đăng nhập luôn là Lan, 'Founder & owner'; góc nhìn khác duy nhất là guest.",
+        "Logic nghiệp vụ",
+        "Giả định",
+        "Cao",
+        "Bảo mật",
+        "Bảng quyền (Roles & States) là căn cứ; cần xác nhận: GQ-20."
+       ],
+       [
+        "N-13",
+        "Địa chỉ không đổi theo màn hình, nên Back của trình duyệt, tải lại và link chia sẻ chưa có hành vi nào được định nghĩa.",
+        "Điều hướng giữ trong bộ nhớ; chỉ cổng guest có đặt địa chỉ.",
+        "User flow",
+        "Thiếu",
+        "Cao",
+        "Chức năng, UX",
+        "Flow 2.3 giả định có địa chỉ. Còn mở: GQ-06."
+       ],
+       [
+        "N-14",
+        "Hồ sơ chỉ đọc: không có cách đổi tên, chức danh hay ảnh. Ảnh là chữ cái đầu trên nền màu.",
+        "Panel hồ sơ và Preferences không có các ô này.",
+        "UI/UX",
+        "Thiếu",
+        "Trung bình",
+        "Chức năng",
+        "Tên, chức danh, múi giờ đã quyết định (F35). Ảnh còn mở: GQ-04."
+       ],
+       [
+        "N-15",
+        "Không có cách sửa chủ đề hay mô tả của kênh, đổi tên, hay lưu trữ kênh.",
+        "Details hiện chủ đề và mô tả dưới dạng chữ.",
+        "User flow",
+        "Thiếu",
+        "Trung bình",
+        "Chức năng",
+        "Chủ đề và lưu trữ đã quyết định (G8, F26). Đổi tên và mô tả còn mở: GQ-05."
+       ],
+       [
+        "N-16",
+        "Không bỏ theo dõi được một thread, và không đánh dấu chưa đọc được một cuộc trò chuyện.",
+        "Cả hai thao tác đều không có.",
+        "User flow",
+        "Thiếu",
+        "Thấp",
+        "UX",
+        "Còn mở: GQ-07, GQ-08."
+       ],
+       [
+        "N-17",
+        "Admin hiện dung lượng đã dùng so với hạn mức, nhưng không nói điều gì xảy ra khi chạm hạn mức.",
+        "Thẻ thống kê: số file, GB thêm, GB đã dùng trên hạn mức.",
+        "Logic nghiệp vụ",
+        "Thiếu",
+        "Trung bình",
+        "Chức năng, Toàn vẹn dữ liệu",
+        "Còn mở: GQ-09."
+       ],
+       [
+        "N-18",
+        "Không có gì cho thấy nút hành xử thế nào khi request đang chạy, nên bấm hai lần chưa được định nghĩa cho mọi thứ trừ gửi tin nhắn.",
+        "Mọi thao tác trong prototype hoàn tất tức thì.",
+        "Trường hợp biên",
+        "Thiếu",
+        "Trung bình",
+        "Toàn vẹn dữ liệu",
+        "Tin nhắn: đã quyết định (cùng ID). Còn lại mở: GQ-18."
+       ],
+       [
+        "N-19",
+        "Chỉ mô phỏng một người. Chỉ báo đang gõ, cập nhật trực tiếp, trạng thái đã đọc giữa hai thiết bị và tab thứ hai đều không quan sát được.",
+        "Trả lời của người khác được dựng sẵn theo kịch bản.",
+        "Hành vi hệ thống",
+        "Giả định",
+        "Cao",
+        "Toàn vẹn dữ liệu, Chức năng",
+        "Đã viết thành quyết định và giả định trong các flow; tab thứ hai còn mở: FQ-02."
+       ],
+       [
+        "N-20",
+        "Không có hành vi nào cho việc bản mới được triển khai khi ứng dụng đang mở.",
+        "Không áp dụng cho prototype.",
+        "Hành vi hệ thống",
+        "Thiếu",
+        "Trung bình",
+        "Chức năng, Triển khai",
+        "Còn mở: GQ-10."
+       ],
+       [
+        "N-21",
+        "Không có tuyên bố về trình duyệt được hỗ trợ. Web Push và cài ứng dụng khác nhau giữa các trình duyệt.",
+        "Không áp dụng cho prototype.",
+        "Hành vi hệ thống",
+        "Thiếu",
+        "Trung bình",
+        "Triển khai",
+        "Còn mở: GQ-11."
+       ],
+       [
+        "N-22",
+        "Các danh sách không có giới hạn trên trong thiết kế: thành viên trong Details, bộ chọn người, Browse channels.",
+        "Dữ liệu mẫu có khoảng mười người; Details liệt kê mọi thành viên.",
+        "Trường hợp biên",
+        "Thiếu",
+        "Trung bình",
+        "UX, Triển khai",
+        "Mục tiêu là 200 người (đã quyết định). Còn mở: GQ-12."
+       ],
+       [
+        "N-23",
+        "Hai người cùng đổi một thứ (chủ đề, task, trạng thái) chưa có kết quả nào được nêu.",
+        "Không thể xảy ra khi chỉ mô phỏng một người.",
+        "Trường hợp biên",
+        "Thiếu",
+        "Thấp",
+        "Toàn vẹn dữ liệu",
+        "Còn mở: GQ-13."
+       ],
+       [
+        "N-24",
+        "Tab trình duyệt không cho thấy dấu hiệu nào của tin chưa đọc.",
+        "Tiêu đề cố định.",
+        "UI/UX",
+        "Thiếu",
+        "Thấp",
+        "UX",
+        "Còn mở: GQ-14."
+       ],
+       [
+        "N-25",
+        "Giờ luôn hiện dạng 24 giờ, không có cài đặt.",
+        "'16:34', 'Tomorrow 09:00' ở khắp nơi.",
+        "UI/UX",
+        "Mơ hồ",
+        "Thấp",
+        "UX",
+        "Còn mở: GQ-15."
+       ],
+       [
+        "N-26",
+        "Không có ghi nhận các hành động quản trị (ai mời, đổi vai trò, vô hiệu hoá, xoá tin).",
+        "Admin không có màn hình này.",
+        "Logic nghiệp vụ",
+        "Thiếu",
+        "Trung bình",
+        "Bảo mật",
+        "Còn mở: GQ-16."
+       ],
+       [
+        "N-27",
+        "Tìm kiếm không có trạng thái đang tải, không có lỗi và không nêu giới hạn; tìm trong cuộc trò chuyện không có trạng thái 'không tìm thấy'.",
+        "Ctrl+K, People và Files có trạng thái trống; tìm trong cuộc trò chuyện thì không.",
+        "UI/UX",
+        "Thiếu",
+        "Trung bình",
+        "UX",
+        "Đã quyết định một phần (NR8, GAP-27). Phạm vi còn mở: GQ-19."
+       ],
+       [
+        "N-28",
+        "Ô soạn tin không hiện giới hạn ký tự hay bộ đếm.",
+        "Ô tin nhắn không có giới hạn độ dài.",
+        "Trường hợp biên",
+        "Thiếu",
+        "Thấp",
+        "UX",
+        "Đã quyết định: 10.000 kèm bộ đếm khi gần giới hạn (G9, F11)."
+       ]
+      ]
+     },
+     {
+      "type": "h",
+      "text": "Gap trước đây, đã phân loại (39)"
+     },
+     {
+      "type": "p",
+      "text": "Hành vi yêu cầu của chúng nằm ở tab Questions & Gaps."
+     },
+     {
+      "type": "table",
+      "head": [
+       "ID",
+       "Gap",
+       "Nhóm",
+       "Loại",
+       "Mức độ",
+       "Ảnh hưởng",
+       "Xử lý ở"
+      ],
+      "rows": [
+       [
+        "GAP-01",
+        "Guest mở được DM riêng của người khác và gõ vào đó",
+        "Logic nghiệp vụ",
+        "Thiếu",
+        "Nghiêm trọng",
+        "Bảo mật",
+        "Phase 5"
+       ],
+       [
+        "GAP-02",
+        "Rời channel riêng tư xong không vào lại được dù lời nhắc nói là được",
+        "Logic nghiệp vụ",
+        "Không nhất quán",
+        "Nghiêm trọng",
+        "Chức năng",
+        "TOKI-029"
+       ],
+       [
+        "GAP-03",
+        "Trên điện thoại, thanh mini-call che nút Back và tên channel",
+        "UI/UX",
+        "Không nhất quán",
+        "Nghiêm trọng",
+        "UX",
+        "Phase 4"
+       ],
+       [
+        "GAP-04",
+        "Mở app không cuộn tới tin mới",
+        "User flow",
+        "Thiếu",
+        "Cao",
+        "UX",
+        "TOKI-041"
+       ],
+       [
+        "GAP-05",
+        "Vạch New trôi xuống mỗi khi có tin mới",
+        "Hành vi hệ thống",
+        "Không nhất quán",
+        "Cao",
+        "UX",
+        "TOKI-054"
+       ],
+       [
+        "GAP-06",
+        "Vạch New và nút Catch-up không bao giờ biến mất",
+        "User flow",
+        "Thiếu",
+        "Cao",
+        "UX",
+        "TOKI-053"
+       ],
+       [
+        "GAP-07",
+        "Mark done và Snooze vô hình trên thiết bị chạm",
+        "UI/UX",
+        "Thiếu",
+        "Cao",
+        "Chức năng",
+        "TOKI-066"
+       ],
+       [
+        "GAP-08",
+        "Điện thoại không có tìm kiếm toàn cục, Focus time, menu tài khoản",
+        "User flow",
+        "Thiếu",
+        "Cao",
+        "Chức năng",
+        "TOKI-092"
+       ],
+       [
+        "GAP-09",
+        "Look Focus: thanh điều hướng bị cắt khi cửa sổ thấp",
+        "UI/UX",
+        "Không nhất quán",
+        "Cao",
+        "UX",
+        "TOKI-015"
+       ],
+       [
+        "GAP-10",
+        "Look Calm: danh sách hội thoại chỉ còn 1 tới 4 dòng",
+        "UI/UX",
+        "Không nhất quán",
+        "Cao",
+        "UX",
+        "TOKI-015"
+       ],
+       [
+        "GAP-11",
+        "Toast che composer",
+        "UI/UX",
+        "Không nhất quán",
+        "Cao",
+        "UX",
+        "TOKI-013"
+       ],
+       [
+        "GAP-12",
+        "Bỏ trống ngày thì hiện \"Invalid Date\"",
+        "Trường hợp biên",
+        "Thiếu",
+        "Cao",
+        "Toàn vẹn dữ liệu",
+        "TOKI-094"
+       ],
+       [
+        "GAP-13",
+        "Đặt Meet trong quá khứ được chấp nhận rồi biến mất",
+        "Trường hợp biên",
+        "Thiếu",
+        "Cao",
+        "Toàn vẹn dữ liệu",
+        "Phase 4"
+       ],
+       [
+        "GAP-14",
+        "Meet xa hơn 7 ngày không hiện ở đâu",
+        "Logic nghiệp vụ",
+        "Mơ hồ",
+        "Cao",
+        "Chức năng",
+        "Phase 4"
+       ],
+       [
+        "GAP-15",
+        "Meet đã đặt không sửa hay hủy được",
+        "User flow",
+        "Thiếu",
+        "Cao",
+        "Chức năng",
+        "Phase 4"
+       ],
+       [
+        "GAP-16",
+        "Mời guest nhận ngày hết hạn quá khứ và email trùng",
+        "Trường hợp biên",
+        "Thiếu",
+        "Cao",
+        "Toàn vẹn dữ liệu",
+        "Phase 5"
+       ],
+       [
+        "GAP-17",
+        "Bắt đầu được Meet ở channel chưa tham gia",
+        "Logic nghiệp vụ",
+        "Thiếu",
+        "Cao",
+        "Bảo mật",
+        "Phase 4"
+       ],
+       [
+        "GAP-18",
+        "Gửi hẹn giờ làm rơi file đính kèm",
+        "Hành vi hệ thống",
+        "Không nhất quán",
+        "Cao",
+        "Toàn vẹn dữ liệu",
+        "Phase 2"
+       ],
+       [
+        "GAP-19",
+        "Không nhắc được guest trong channel, nhưng nhắc được người ngoài",
+        "Logic nghiệp vụ",
+        "Không nhất quán",
+        "Cao",
+        "Chức năng",
+        "TOKI-050"
+       ],
+       [
+        "GAP-20",
+        "Duyệt một yêu cầu thì tự tạo thông báo chưa đọc cho mình",
+        "Logic nghiệp vụ",
+        "Không nhất quán",
+        "Cao",
+        "UX",
+        "TOKI-065"
+       ],
+       [
+        "GAP-21",
+        "Đang offline mà email vẫn gửi, Meet vẫn nối",
+        "Hành vi hệ thống",
+        "Không nhất quán",
+        "Cao",
+        "Toàn vẹn dữ liệu",
+        "TOKI-082, Phase 6"
+       ],
+       [
+        "GAP-22",
+        "Bấm ra ngoài modal làm mất nội dung đã gõ",
+        "UI/UX",
+        "Thiếu",
+        "Cao",
+        "Toàn vẹn dữ liệu",
+        "TOKI-093"
+       ],
+       [
+        "GAP-23",
+        "Nháp trong Mail không mở lại để sửa hay gửi được",
+        "User flow",
+        "Thiếu",
+        "Cao",
+        "Chức năng",
+        "Phase 7"
+       ],
+       [
+        "GAP-24",
+        "Xóa automation không hỏi và không hoàn tác được",
+        "UI/UX",
+        "Thiếu",
+        "Cao",
+        "Toàn vẹn dữ liệu",
+        "TOKI-093, Phase 5"
+       ],
+       [
+        "GAP-25",
+        "Bật Focus hai lần làm status kẹt ở \"Focusing\"",
+        "Trường hợp biên",
+        "Không nhất quán",
+        "Cao",
+        "Chức năng",
+        "TOKI-076"
+       ],
+       [
+        "GAP-26",
+        "Activity không xếp theo thời gian, thiếu chip lọc Approvals",
+        "UI/UX",
+        "Không nhất quán",
+        "Trung bình",
+        "UX",
+        "TOKI-065, 066"
+       ],
+       [
+        "GAP-27",
+        "Ctrl+K xếp kết quả không liên quan lên trước",
+        "Logic nghiệp vụ",
+        "Mơ hồ",
+        "Trung bình",
+        "UX",
+        "TOKI-071"
+       ],
+       [
+        "GAP-28",
+        "Hai dòng trùng tên trong bảng Busiest channels",
+        "UI/UX",
+        "Không nhất quán",
+        "Trung bình",
+        "UX",
+        "Phase 5"
+       ],
+       [
+        "GAP-29",
+        "Số trên thư mục Mail không cùng loại; trạng thái trống sai ngữ cảnh",
+        "UI/UX",
+        "Không nhất quán",
+        "Trung bình",
+        "UX",
+        "Phase 7"
+       ],
+       [
+        "GAP-30",
+        "Đổi email làm mất phần trả lời đang gõ",
+        "User flow",
+        "Thiếu",
+        "Trung bình",
+        "UX",
+        "Phase 7"
+       ],
+       [
+        "GAP-31",
+        "Later đếm sai sau khi tin gốc bị xóa",
+        "Hành vi hệ thống",
+        "Không nhất quán",
+        "Trung bình",
+        "Toàn vẹn dữ liệu",
+        "TOKI-067"
+       ],
+       [
+        "GAP-32",
+        "Chọn Tiếng Việt chỉ dịch thanh điều hướng",
+        "UI/UX",
+        "Không nhất quán",
+        "Trung bình",
+        "UX",
+        "TOKI-080"
+       ],
+       [
+        "GAP-33",
+        "Trạng thái trống lệch chỗ hoặc thiếu",
+        "UI/UX",
+        "Thiếu",
+        "Trung bình",
+        "UX",
+        "TOKI-013, 034, 079"
+       ],
+       [
+        "GAP-34",
+        "Điện thoại thật vẫn hiện thanh tiêu đề \"Desktop app\"",
+        "UI/UX",
+        "Không nhất quán",
+        "Trung bình",
+        "UX",
+        "—"
+       ],
+       [
+        "GAP-35",
+        "Cửa sổ hẹp mở thread thì chat bị ép, tab bị cắt",
+        "UI/UX",
+        "Không nhất quán",
+        "Trung bình",
+        "UX",
+        "TOKI-015"
+       ],
+       [
+        "GAP-36",
+        "Modal không giữ focus; menu không dùng được phím mũi tên",
+        "UI/UX",
+        "Thiếu",
+        "Thấp",
+        "UX",
+        "TOKI-014"
+       ],
+       [
+        "GAP-37",
+        "Nút icon trên điện thoại không có tên cho trình đọc màn hình",
+        "UI/UX",
+        "Thiếu",
+        "Thấp",
+        "UX",
+        "TOKI-012"
+       ],
+       [
+        "GAP-38",
+        "Lỗi nhãn nhỏ: lưu status rỗng, múi giờ hiện tên thành phố, ngày hạn lệch định dạng, thẻ mới bị bộ lọc ẩn, phụ đề che ô, reminder hiện trong lúc Pause",
+        "UI/UX",
+        "Không nhất quán",
+        "Thấp",
+        "UX",
+        "TOKI-056, 057, 076, 094, Phase 2 và 4"
+       ],
+       [
+        "GAP-39",
+        "Trên điện thoại, sheet More vẫn mở đè lên màn hình vừa chọn",
+        "User flow",
+        "Không nhất quán",
+        "Cao",
+        "UX",
+        "TOKI-092"
+       ]
+      ]
+     }
+    ]
+   },
+   {
+    "title": "3 · User flow còn thiếu",
+    "intro": "Các kịch bản prototype không phủ, và Blueprint đã viết hoặc vẽ chúng chưa.",
+    "blocks": [
+     {
+      "type": "table",
+      "head": [
+       "Kịch bản",
+       "Trong prototype",
+       "Trong Blueprint"
+      ],
+      "rows": [
+       [
+        "Đăng nhập của thành viên và các lỗi",
+        "Không có",
+        "Đã viết F04, F05 · đã vẽ 2.1"
+       ],
+       [
+        "Thiết lập lần đầu bởi Owner đầu tiên",
+        "Không có",
+        "Đã viết F01 · chưa có sơ đồ"
+       ],
+       [
+        "Mời thành viên, nhận lời mời",
+        "Không có (chỉ có mời guest)",
+        "Đã viết F02, F03 · đã vẽ 2.2, 2.12"
+       ],
+       [
+        "Sign out; phiên kết thúc; tài khoản bị vô hiệu hoá",
+        "Không có",
+        "Đã viết F06, F07 · đã vẽ 1.2, 3.2"
+       ],
+       [
+        "Tạo kênh",
+        "Không có",
+        "Đã viết F20 · đã vẽ 2.8"
+       ],
+       [
+        "Thêm người vào kênh",
+        "Không có",
+        "Đã viết F22 · chưa có sơ đồ"
+       ],
+       [
+        "Lưu trữ kênh",
+        "Không có",
+        "Đã viết F26 · chưa có sơ đồ"
+       ],
+       [
+        "Tải lên có tiến độ, bị từ chối, lỗi, huỷ",
+        "Giả lập",
+        "Đã viết F18 · đã vẽ 2.6"
+       ],
+       [
+        "Gửi lỗi, và Retry",
+        "Chỉ có chờ khi mất mạng",
+        "Đã viết F11 · đã vẽ 2.5, 3.1"
+       ],
+       [
+        "Đổi vai trò; vô hiệu hoá; kích hoạt lại",
+        "Không có",
+        "Đã viết F40, F41 · đã vẽ 2.13"
+       ],
+       [
+        "Mọi request bị từ chối hoặc lỗi",
+        "Không có",
+        "Đã vẽ 3.3 (đề xuất)"
+       ],
+       [
+        "Back của trình duyệt, tải lại, mở link chia sẻ",
+        "Không có",
+        "Vẽ một phần ở 2.3 · còn mở GQ-06"
+       ],
+       [
+        "Cùng một người trên hai thiết bị hoặc hai tab",
+        "Không quan sát được",
+        "Chưa có · FQ-02"
+       ],
+       [
+        "Sửa hồ sơ và ảnh của mình",
+        "Không có",
+        "Viết một phần ở F35 · còn mở GQ-04"
+       ],
+       [
+        "Đổi tên kênh, sửa mô tả",
+        "Không có",
+        "Chưa có · GQ-05"
+       ],
+       [
+        "Bỏ theo dõi thread; đánh dấu chưa đọc",
+        "Không có",
+        "Chưa có · GQ-07, GQ-08"
+       ],
+       [
+        "Chạm hạn mức lưu trữ",
+        "Không có",
+        "Chưa có · GQ-09"
+       ],
+       [
+        "Bản mới tới khi ứng dụng đang mở",
+        "Không áp dụng",
+        "Chưa có · GQ-10"
+       ]
+      ]
+     }
+    ]
+   },
+   {
+    "title": "4 · Câu hỏi mở",
+    "intro": "Mỗi gap chưa giải quyết một câu hỏi. Đề xuất là khuyến nghị, không phải quyết định; không có gì ở đây được ngầm dùng ở nơi khác trong Blueprint. 12 câu hỏi nảy ra khi vẽ flow (FQ-01 tới FQ-12) nằm ở tab Flows.",
+    "blocks": [
+     {
+      "type": "table",
+      "head": [
+       "ID",
+       "Câu hỏi",
+       "Vì sao cần trả lời",
+       "Phương án",
+       "Đề xuất",
+       "Ai trả lời",
+       "Mức độ",
+       "Từ"
+      ],
+      "rows": [
+       [
+        "GQ-01",
+        "Mention có báo cho người đó khi cuộc trò chuyện đã bị tắt tiếng không?",
+        "Prototype có một tuỳ chọn cho việc này; chưa có quyết định; không viết được spec cho các ticket thông báo nếu thiếu nó.",
+        "(a) Công tắc cá nhân, mặc định bật · (b) Không bao giờ · (c) Luôn luôn",
+        "(a), như prototype",
+        "PO",
+        "Cao",
+        "N-10"
+       ],
+       [
+        "GQ-02",
+        "Mức 'Nothing' và Mute khác nhau thế nào?",
+        "Hai điều khiển giống nhau sẽ bị làm hai lần hoặc gây nhầm.",
+        "(a) Mức quyết định toast, push, âm thanh; Mute còn ẩn cả huy hiệu chưa đọc và chữ đậm · (b) Bỏ 'Nothing', giữ Mute · (c) Bỏ Mute",
+        "(a)",
+        "PO, UX",
+        "Trung bình",
+        "N-11"
+       ],
+       [
+        "GQ-03",
+        "Lỗi của form hiện ở đâu: dưới ô nhập kèm nút bị tắt, hay trong toast sau khi bấm?",
+        "Prototype làm một kiểu, các flow giả định kiểu kia; mọi form đều phụ thuộc vào đây.",
+        "(a) Dưới ô nhập; nút tắt cho tới khi hợp lệ · (b) Toast sau khi bấm, như prototype",
+        "(a)",
+        "UX",
+        "Trung bình",
+        "N-08"
+       ],
+       [
+        "GQ-04",
+        "Phase 1 có cho tải ảnh hồ sơ lên không?",
+        "Nó thêm việc tải ảnh, cắt ảnh và đường lưu trữ vào phase 1.",
+        "(a) Phase 1 chỉ dùng chữ cái đầu · (b) Cho tải lên ở phase 1",
+        "(a)",
+        "PO",
+        "Thấp",
+        "N-14"
+       ],
+       [
+        "GQ-05",
+        "Kênh có đổi tên được không, và ai sửa mô tả?",
+        "Đổi tên ảnh hưởng tới link, tìm kiếm và quy tắc không trùng tên.",
+        "(a) Phase 1 không đổi tên; thành viên nào cũng sửa được chủ đề và mô tả · (b) Admin và người tạo được đổi tên",
+        "(a)",
+        "PO",
+        "Trung bình",
+        "N-15"
+       ],
+       [
+        "GQ-06",
+        "Mỗi cuộc trò chuyện, thread và mục có địa chỉ riêng không, và Back của trình duyệt làm gì?",
+        "Thông báo, link chia sẻ và tải lại đều cần; nó quyết định ticket khung ứng dụng.",
+        "(a) Mỗi thứ có địa chỉ; Back đóng panel bên trước, rồi về nơi trước đó · (b) Một địa chỉ cho cả ứng dụng",
+        "(a)",
+        "FE, UX",
+        "Cao",
+        "N-13"
+       ],
+       [
+        "GQ-07",
+        "Có cho ngừng theo dõi một thread không?",
+        "Người theo dõi được thêm tự động; không có lối ra thì thread đông người sẽ báo mãi.",
+        "(a) 'Unfollow thread' trong menu của thread · (b) Chưa có ở phase 1",
+        "(a)",
+        "PO",
+        "Thấp",
+        "N-16"
+       ],
+       [
+        "GQ-08",
+        "'Mark as unread' có ở phase 1 không?",
+        "Nó đổi quy tắc con trỏ đã đọc (con trỏ sẽ phải lùi lại).",
+        "(a) Phase sau · (b) Phase 1",
+        "(a); Later đã đáp ứng nhu cầu",
+        "PO",
+        "Thấp",
+        "N-16"
+       ],
+       [
+        "GQ-09",
+        "Điều gì xảy ra khi hết dung lượng hoặc chạm hạn mức?",
+        "Tự host trên một server: đầy đĩa thì database cũng dừng.",
+        "(a) Không hạn mức; Owner được cảnh báo ở 80% đĩa; từ chối tải lên ở 95% · (b) Hạn mức cố định cho workspace",
+        "(a)",
+        "PO, BE",
+        "Trung bình",
+        "N-17"
+       ],
+       [
+        "GQ-10",
+        "Ứng dụng đang mở làm gì khi có bản mới được triển khai?",
+        "Trang cũ nói chuyện với server mới có thể lỗi rất khó hiểu.",
+        "(a) Dải 'Update available · Reload'; chỉ bắt buộc khi server báo trang quá cũ · (b) Tự tải lại khi rảnh",
+        "(a)",
+        "FE, BE",
+        "Trung bình",
+        "N-20"
+       ],
+       [
+        "GQ-11",
+        "Hỗ trợ những trình duyệt nào?",
+        "Nó quyết định ma trận kiểm thử và Web Push có chạy trên iPhone không.",
+        "(a) Hai bản mới nhất của Chrome, Edge, Safari, Firefox; push trên iPhone chỉ khi đã cài ra màn hình chính · (b) Chỉ Chrome và Edge",
+        "(a)",
+        "PO, FE",
+        "Trung bình",
+        "N-21"
+       ],
+       [
+        "GQ-12",
+        "Danh sách thành viên và bộ chọn người hành xử thế nào khi có 200 người?",
+        "Thiết kế hiện mười người; mục tiêu là 200.",
+        "(a) Ô tìm ở trên, hiện 50 người đầu, cuộn để tải thêm · (b) Hiện hết",
+        "(a)",
+        "UX, FE",
+        "Trung bình",
+        "N-22"
+       ],
+       [
+        "GQ-13",
+        "Hai người cùng đổi một chủ đề, trạng thái hay task cùng lúc. Ai thắng?",
+        "Không có quy tắc thì mỗi màn hình hiện một sự thật khác nhau.",
+        "(a) Lần lưu sau cùng thắng và mọi người thấy ngay · (b) Lần lưu thứ hai bị từ chối với 'This changed'",
+        "(a) cho ô ngắn; (b) cho văn bản dài về sau",
+        "BE",
+        "Thấp",
+        "N-23"
+       ],
+       [
+        "GQ-14",
+        "Tab trình duyệt có hiện tin chưa đọc không?",
+        "Rẻ, và thường là tín hiệu duy nhất khi tắt thông báo.",
+        "(a) '(3) Toki' đếm mention và DM, một chấm cho thứ khác · (b) Không hiện gì",
+        "(a)",
+        "UX",
+        "Thấp",
+        "N-24"
+       ],
+       [
+        "GQ-15",
+        "Giờ 24 cho mọi người, hay theo ngôn ngữ?",
+        "Quy tắc NR7 yêu cầu một định dạng; chưa nói là định dạng nào.",
+        "(a) 24 giờ ở mọi nơi · (b) Theo ngôn ngữ · (c) Có cài đặt",
+        "(a)",
+        "UX",
+        "Thấp",
+        "N-25"
+       ],
+       [
+        "GQ-16",
+        "Các hành động quản trị có được ghi lại không, và có ai xem được bản ghi không?",
+        "Nếu không thì việc vô hiệu hoá và admin xoá tin không để lại dấu vết.",
+        "(a) Ghi ở server, phase 1 chưa có màn hình · (b) Có màn hình cho Owner · (c) Không ghi",
+        "(a)",
+        "PO, BE",
+        "Trung bình",
+        "N-26"
+       ],
+       [
+        "GQ-17",
+        "Workspace có xuất được dữ liệu (tin nhắn, file) không?",
+        "Lịch sử được quyết định giữ mãi; chưa nói nó ra khỏi hệ thống bằng cách nào.",
+        "(a) Phase 1 chỉ có backup ở server · (b) Có xuất dữ liệu cho Owner",
+        "(a)",
+        "PO",
+        "Thấp",
+        "N-26"
+       ],
+       [
+        "GQ-18",
+        "Chống bấm hai lần thế nào khi tạo kênh, gửi lời mời và đặt nhắc việc?",
+        "Hiện chỉ tin nhắn có ID chống trùng.",
+        "(a) Nút tắt khi request đang chạy, và server bỏ qua request lặp lại · (b) Chỉ tắt nút",
+        "(a)",
+        "BE, FE",
+        "Trung bình",
+        "N-18"
+       ],
+       [
+        "GQ-19",
+        "Tìm kiếm phủ những gì, và trả về bao nhiêu?",
+        "Ctrl+K, tìm trong cuộc trò chuyện, Files và People mỗi nơi tìm một kiểu trong prototype.",
+        "(a) Ctrl+K: cuộc trò chuyện, người, lệnh, rồi tin nhắn; 20 kết quả mỗi loại, xem thêm khi cần · (b) Tin nhắn chỉ ở một trang tìm riêng",
+        "(a)",
+        "PO, FE",
+        "Trung bình",
+        "N-27"
+       ],
+       [
+        "GQ-20",
+        "Bảng quyền ở tab Roles & States có phải là căn cứ đã thống nhất cho những gì Member và Admin thấy không?",
+        "Chưa màn hình nào được xem với vai trò Member hay Admin; mọi test phân quyền sẽ viết theo bảng đó.",
+        "(a) Đúng, duyệt nguyên trạng · (b) Rà từng dòng trước",
+        "(b)",
+        "PO, QA",
+        "Cao",
+        "N-12"
+       ]
+      ]
+     }
+    ]
+   },
+   {
+    "title": "5 · Giả định",
+    "intro": "Hành vi suy ra từ giao diện mà chưa ai nói ra. Mỗi cái cần một lời đồng ý hoặc chỉnh sửa. 12 giả định đặt ra khi vẽ flow (FA-01 tới FA-12) nằm ở tab Flows; 16 giả định đã xác nhận (G1 tới G16) nằm ở tab Requirements.",
+    "blocks": [
+     {
+      "type": "table",
+      "head": [
+       "ID",
+       "Hành vi giả định",
+       "Suy ra từ",
+       "Cần xác nhận với"
+      ],
+      "rows": [
+       [
+        "AS-01",
+        "Mọi thứ Member hay Admin thấy đều theo bảng quyền; prototype chỉ cho thấy Owner.",
+        "Thẻ tài khoản: 'Owner'",
+        "GQ-20"
+       ],
+       [
+        "AS-02",
+        "Tuỳ chọn thông báo thuộc về người dùng và áp dụng trên mọi thiết bị; chỉ quyền push của trình duyệt là theo từng thiết bị.",
+        "Preferences chỉ có một bộ công tắc",
+        "PO"
+       ],
+       [
+        "AS-03",
+        "Star và Mute là cá nhân: không ai khác thấy, và cuộc trò chuyện được đánh sao lên đầu danh sách của người đó.",
+        "Panel Details; biểu tượng sao trong danh sách",
+        "PO"
+       ],
+       [
+        "AS-04",
+        "Giờ địa phương trên hồ sơ lấy từ múi giờ người đó đã đặt, không phải từ nơi họ đang ở.",
+        "Hồ sơ: giờ địa phương và một thành phố",
+        "PO"
+       ],
+       [
+        "AS-05",
+        "Các điều khiển chỉ để demo không bao giờ lên sản phẩm: thanh Look / Device / Clock / Guide, 'Reset', và mọi lựa chọn '20 seconds (demo)'.",
+        "Được đánh dấu 'demo' trong prototype",
+        "Đã xác nhận (Requirements: Dropped)"
+       ],
+       [
+        "AS-06",
+        "Các nhãn 'New' màu hồng đánh dấu tính năng đề xuất, không phải trạng thái của sản phẩm.",
+        "Công tắc 'Highlight proposed features'",
+        "PO"
+       ],
+       [
+        "AS-07",
+        "Người, kênh và tin nhắn mẫu chỉ để minh hoạ; không có nội dung mẫu nào lên sản phẩm ngoài #general.",
+        "Workspace mẫu 'Hugepig Studio'",
+        "PO"
+       ],
+       [
+        "AS-08",
+        "Thống kê không bao giờ nêu tên kênh riêng tư hay DM và ẩn mọi nhóm nhỏ hơn ba.",
+        "Admin: 'Private channels and direct messages', 'fewer than 3'",
+        "PO (phase 5)"
+       ]
+      ]
+     }
+    ]
+   },
+   {
+    "title": "6 · Rủi ro và ảnh hưởng",
+    "intro": "Điều gì sẽ hỏng nếu các gap trên vẫn để mở, và cách giảm thiểu.",
+    "blocks": [
+     {
+      "type": "table",
+      "head": [
+       "ID",
+       "Rủi ro",
+       "Hậu quả",
+       "Mức độ",
+       "Ảnh hưởng",
+       "Cách giảm thiểu"
+      ],
+      "rows": [
+       [
+        "R-01",
+        "Phase 1 cần những màn hình prototype chưa từng vẽ: đăng nhập, hết phiên, thành viên trong Admin, tạo kênh, thêm người, tải lên, trạng thái đang tải và lỗi.",
+        "Mỗi người tự nghĩ ra khi làm; kết quả không nhất quán và phải làm lại.",
+        "Cao",
+        "Triển khai, UX",
+        "Thiết kế các màn hình này trong prototype trước khi bắt đầu ticket của chúng (N-01 tới N-07)."
+       ],
+       [
+        "R-02",
+        "Phân quyền mới chỉ được xem với vai trò Owner.",
+        "Member chạm được thứ không được phép, như GAP-01 đã cho thấy với guest.",
+        "Cao",
+        "Bảo mật",
+        "Duyệt bảng quyền (GQ-20); mỗi dòng và mỗi vai trò một test tự động."
+       ],
+       [
+        "R-03",
+        "Hành vi realtime giữa nhiều người và thiết bị không quan sát được trong prototype.",
+        "Sai số chưa đọc, tin nhắn bị trùng hoặc mất.",
+        "Cao",
+        "Toàn vẹn dữ liệu",
+        "Đã quyết định: ứng dụng tạo ID tin nhắn, event log đánh số. Thêm test với hai client cùng đăng nhập."
+       ],
+       [
+        "R-04",
+        "Quy tắc thông báo còn mơ hồ: mức, Mute, mention trong cuộc trò chuyện đã tắt tiếng.",
+        "Người dùng lỡ mention hoặc bị ngập thông báo; khó đổi sau khi ra mắt.",
+        "Cao",
+        "Chức năng, UX",
+        "Trả lời GQ-01 và GQ-02 trước các ticket thông báo."
+       ],
+       [
+        "R-05",
+        "Chưa có thiết kế cho các trường hợp lỗi.",
+        "Hành động tưởng thành công nhưng không; mất nội dung đã gõ.",
+        "Cao",
+        "Toàn vẹn dữ liệu, UX",
+        "Xác nhận flow 3.3 và FA-08 làm chuẩn; làm một lần thành thành phần dùng chung."
+       ],
+       [
+        "R-06",
+        "Địa chỉ và Back của trình duyệt chưa được định nghĩa.",
+        "Thông báo và link chia sẻ mở sai nơi; tải lại thì mất vị trí.",
+        "Trung bình",
+        "Chức năng",
+        "Trả lời GQ-06 trước ticket khung ứng dụng."
+       ],
+       [
+        "R-07",
+        "Không có gì giới hạn tăng trưởng: lưu trữ, lịch sử giữ mãi, danh sách dài.",
+        "Đầy đĩa làm dừng cả server; màn hình chậm khi có 200 người.",
+        "Trung bình",
+        "Toàn vẹn dữ liệu, Triển khai",
+        "Trả lời GQ-09 và GQ-12; cảnh báo đĩa trong ticket triển khai."
+       ],
+       [
+        "R-08",
+        "Còn nợ nhiều câu trả lời: các câu hỏi ở tab này, 12 câu ở tab Flows (FQ) và 12 giả định chưa xác nhận (FA).",
+        "Spec viết theo phỏng đoán, rồi phải viết lại.",
+        "Trung bình",
+        "Triển khai",
+        "Trả lời các câu mức Cao trước; mỗi câu chặn những ticket cụ thể."
+       ]
+      ]
+     }
+    ]
+   }
+  ],
+  "open": 20
  }
 }
