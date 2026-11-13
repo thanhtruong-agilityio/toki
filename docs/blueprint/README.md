@@ -13,6 +13,7 @@ Published at: https://claude.ai/code/artifact/e6b79d7f-ff70-41b2-99d6-d2cb61c33b
 | `gen_flowmaps.py` | The source of the charts and tables at the top of the Flows tab: 2 high-level charts, 13 detailed swimlane charts (user, frontend, backend), 3 error charts, the business rules, the assumptions and the open questions. Every string is `English||Tiếng Việt`. Edit this file. |
 | `flowmaps.json` | Written by `gen_flowmaps.py`. Do not edit by hand. |
 | `gen_analysis.py` | The source of the Gap analysis tab: prototype overview, findings, missing flows, open questions, assumptions and risks. Writes the `analysis` key into both language files. Edit this file. |
+| `gen_validation.py` | The source of the Validation tab: findings backlog, decisions required, flow validation, business rules, requirements (FR, NFR), acceptance criteria, test scenarios, traceability matrix and readiness report. Reads `gen_flowmaps.py` and `gen_analysis.py`; writes the `validation` key into both language files. Run it last. |
 | `flowmaps.prototype.json` | Six screen maps drawn from a walkthrough of the prototype. Not shown on the page; kept for reference. |
 | `prototype/index.html` | A snapshot of the Toki prototype, embedded in the Prototype tab. |
 | `blueprint.html` | The built page. Not committed; rebuild it. |
@@ -33,6 +34,8 @@ python3 gen_flowmaps.py
 
 # after editing gen_analysis.py: write the Gap analysis tab into both data files
 python3 gen_analysis.py
+# last: write the Validation tab (needs the three steps above)
+python3 gen_validation.py
 python3 $SKILL/flowmap.py --spec flowmaps.json --data en=blueprint.en.json --data vi=blueprint.vi.json
 
 # check each file, and that the two languages list the same things

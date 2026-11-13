@@ -45,7 +45,8 @@
   "allowWords": [
    "Tiếng",
    "Việt",
-   "Trần"
+   "Trần",
+   "Nguyễn"
   ],
   "labels": {}
  },
@@ -13055,5 +13056,3559 @@
    }
   ],
   "open": 20
+ },
+ "validation": {
+  "sections": [
+   {
+    "title": "Requirement clarification and validation",
+    "intro": "This tab brings the prototype analysis, the gap analysis, the open questions and the assumptions together and asks one thing: **are the requirements ready to build?** It takes 141 raw findings, questions and assumptions, merges them into 15 findings, separates what you decided (79 answers) from what is assumed (24) and what is open (45), and writes requirements only from what you decided: 32 functional, 12 non-functional, 73 acceptance criteria and 116 test scenarios.",
+    "blocks": [
+     {
+      "type": "note",
+      "text": "**Verdict: not ready as a whole.** 8 of 32 functional requirements can start (7 ready, 1 once their assumptions are accepted); 10 have a ready core with details waiting; 14 are blocked by 13 high-priority questions. No development ticket is generated from this tab; the 96 tickets on the Plan tab stay drafts until section 9 clears them."
+     },
+     {
+      "type": "table",
+      "head": [
+       "Output",
+       "Count",
+       "Section"
+      ],
+      "rows": [
+       [
+        "Findings backlog",
+        "15 (from 141)",
+        "1"
+       ],
+       [
+        "Requirement decisions",
+        "79 confirmed · 24 assumed · 45 open",
+        "2"
+       ],
+       [
+        "User flows validated",
+        "19",
+        "3"
+       ],
+       [
+        "Business rules",
+        "38",
+        "4"
+       ],
+       [
+        "Functional · non-functional requirements",
+        "32 · 12",
+        "5"
+       ],
+       [
+        "Acceptance criteria",
+        "73",
+        "6"
+       ],
+       [
+        "Test scenarios",
+        "116",
+        "7"
+       ],
+       [
+        "Traceability matrix",
+        "32 rows",
+        "8"
+       ],
+       [
+        "Readiness report",
+        "",
+        "9"
+       ]
+      ]
+     }
+    ]
+   },
+   {
+    "title": "1 · Findings backlog",
+    "intro": "Everything found so far, merged so each problem appears once: the 39 gaps from walking the prototype, the 33 findings of the gap analysis, the questions (FQ, GQ) and the assumptions (FA, AS). Ordered by severity, then by what it costs the business.",
+    "blocks": [
+     {
+      "type": "table",
+      "head": [
+       "ID",
+       "Finding",
+       "Merges",
+       "Category",
+       "Severity",
+       "Business impact",
+       "Owner",
+       "Depends on · status"
+      ],
+      "rows": [
+       [
+        "T-01",
+        "Getting in and out has no design: member sign-in, invitation, welcome step, refusal page, session ended, account deactivated, sign out.",
+        "N-01, N-04, N-29, N-30, FQ-01, FQ-13, FQ-14, FQ-15, FA-13, FA-14, FA-15, VQ-01",
+        "User flow",
+        "Critical",
+        "Nobody can enter the product; first thing every user meets.",
+        "PO, UX",
+        "The account that sends sign-in mail (still open on the Questions & Gaps tab)."
+       ],
+       [
+        "T-02",
+        "Admin has no member management: invite, resend, revoke, change role, deactivate.",
+        "N-02, N-26, FQ-03, FQ-11, FA-11, GQ-16",
+        "UI/UX",
+        "Critical",
+        "Without invitations the workspace stays at one person.",
+        "PO, UX",
+        "T-01 (invitation link), T-03 (who may do what)."
+       ],
+       [
+        "T-03",
+        "Permissions were only ever seen as an Owner; the capability table is not signed off.",
+        "N-12, N-32, GQ-20, AS-01, FQ-19, GAP-01, GAP-17",
+        "Business logic",
+        "Critical",
+        "A Member or guest reaching private content.",
+        "PO, QA",
+        "Blocks every permission test."
+       ],
+       [
+        "T-04",
+        "Creating channels and groups, and managing who is in them, is not drawn.",
+        "N-03, N-15, N-31, FQ-09, FQ-17, FQ-18, FQ-20, GQ-05, FA-04, FA-05, FA-10",
+        "User flow",
+        "High",
+        "The team cannot organise its conversations.",
+        "PO, UX",
+        "FQ-17 before FQ-18."
+       ],
+       [
+        "T-05",
+        "No loading, error or retry state anywhere; a double press is undefined.",
+        "N-05, N-06, N-08, N-18, N-33, GQ-03, GQ-18, FA-02, FA-08, FA-16, FQ-07, FQ-21",
+        "UI/UX",
+        "High",
+        "Actions that seem to succeed but did not; lost input.",
+        "UX, FE",
+        "GQ-03 decides every form."
+       ],
+       [
+        "T-06",
+        "Notification rules are ambiguous: level, Mute, a mention in a muted conversation.",
+        "N-10, N-11, GQ-01, GQ-02, FA-12, AS-02",
+        "Business logic",
+        "High",
+        "People miss mentions or are flooded.",
+        "PO",
+        "GQ-01 before GQ-02."
+       ],
+       [
+        "T-07",
+        "Addresses, browser Back, reload and shared links are undefined.",
+        "N-13, GQ-06",
+        "User flow",
+        "High",
+        "Notifications and links open the wrong place.",
+        "FE, UX",
+        "Shapes the app shell; needed before notifications."
+       ],
+       [
+        "T-09",
+        "Uploading is faked: no picker, progress, limit, failure or cancel.",
+        "N-07, FQ-04, FA-07",
+        "User flow",
+        "High",
+        "Files are a phase-1 feature with no design.",
+        "UX, BE",
+        "Limits are decided (G9, Q14)."
+       ],
+       [
+        "T-10",
+        "Behaviour between several people, devices and tabs cannot be observed in the prototype.",
+        "N-19, N-23, FQ-02, FQ-05, GQ-13",
+        "System behaviour",
+        "High",
+        "Wrong unread counts, duplicated or lost messages.",
+        "BE, QA",
+        "Needs tests with two signed-in clients."
+       ],
+       [
+        "T-11",
+        "39 defects found by walking through the prototype (wrong, misleading or inconsistent behaviour).",
+        "GAP-01…GAP-39",
+        "UI/UX",
+        "High",
+        "Rebuilt as designed, the product would repeat them.",
+        "BA, QA",
+        "**Resolved:** each has a required behaviour on the Questions & Gaps tab; 22 became rules NR1 to NR13."
+       ],
+       [
+        "T-08",
+        "Offline and reconnecting: wording, states and what is blocked.",
+        "GAP-21, FQ-22, FA-06, FA-09, FA-17",
+        "System behaviour",
+        "Medium",
+        "False success while offline.",
+        "UX, FE",
+        "Rule NR13 is decided; only wording and timing are open."
+       ],
+       [
+        "T-12",
+        "Growth has no bound and operations are unstated: storage, long lists, new versions, browsers, backup, performance.",
+        "N-17, N-20, N-21, N-22, GQ-09, GQ-10, GQ-11, GQ-12, GQ-17, FQ-12, VQ-02, VQ-03",
+        "System behaviour",
+        "Medium",
+        "A full disk stops the only server; no test can judge speed.",
+        "BE, PO",
+        "VQ-03 before launch."
+       ],
+       [
+        "T-13",
+        "Search: no loading or error, no stated coverage or limits.",
+        "N-27, GQ-19",
+        "UI/UX",
+        "Medium",
+        "Ctrl+K is a phase-1 feature with unclear scope.",
+        "PO, FE",
+        ""
+       ],
+       [
+        "T-14",
+        "Personal details and small conveniences: profile editing, picture, time format, tab title, unfollow a thread, mark unread, preview of a public channel, changing a sign-in address, a past reminder choice.",
+        "N-14, N-16, N-24, N-25, N-28, GQ-04, GQ-07, GQ-08, GQ-14, GQ-15, FQ-06, FQ-08, FQ-10, AS-03, AS-04",
+        "UI/UX",
+        "Low",
+        "Polish; none blocks a journey.",
+        "PO, UX",
+        ""
+       ],
+       [
+        "T-15",
+        "Demo-only content in the prototype: the demo bar, sample people and messages, 'New' pills, analytics privacy note.",
+        "AS-05, AS-06, AS-07, AS-08",
+        "UI/UX",
+        "Low",
+        "None, if left out of the build.",
+        "PO",
+        "AS-05 confirmed; the rest await a yes."
+       ]
+      ]
+     },
+     {
+      "type": "h",
+      "text": "Duplicates removed"
+     },
+     {
+      "type": "table",
+      "head": [
+       "Same problem",
+       "Recorded as",
+       "Kept in"
+      ],
+      "rows": [
+       [
+        "A failed send has no design",
+        "N-06 · N-33 · FQ-07 · FQ-21",
+        "T-05"
+       ],
+       [
+        "No way to create a channel",
+        "N-03 · FQ-17 · MF 'Create a channel'",
+        "T-04"
+       ],
+       [
+        "The code screen has no Resend",
+        "N-30 · FQ-14",
+        "T-01"
+       ],
+       [
+        "Mention in a muted conversation",
+        "N-10 · GQ-01 · R-04",
+        "T-06"
+       ],
+       [
+        "Storage quota",
+        "N-17 · GQ-09 · R-07",
+        "T-12"
+       ],
+       [
+        "Offline behaviour",
+        "GAP-21 · N-33 · FQ-22",
+        "T-08"
+       ],
+       [
+        "Double press",
+        "N-18 · GQ-18",
+        "T-05"
+       ],
+       [
+        "Second tab or device",
+        "N-19 · FQ-02",
+        "T-10"
+       ],
+       [
+        "Permissions seen only as Owner",
+        "N-12 · AS-01 · GQ-20 · R-02",
+        "T-03"
+       ]
+      ]
+     },
+     {
+      "type": "h",
+      "text": "Conflicting findings"
+     },
+     {
+      "type": "table",
+      "head": [
+       "Topic",
+       "The prototype",
+       "Against",
+       "Standing"
+      ],
+      "rows": [
+       [
+        "Leaving a channel",
+        "Asks for confirmation and then also offers Undo",
+        "Undo for a reversible action, confirmation for an irreversible one, never both (NR3)",
+        "**Resolved:** NR3"
+       ],
+       [
+        "Deleting a message that has a thread",
+        "Deletes every reply",
+        "The thread stays under a 'Message deleted' line (Q13)",
+        "**Resolved:** Q13"
+       ],
+       [
+        "Leaving a private channel",
+        "'You can rejoin from Browse channels'",
+        "A member must invite them back (OQ2)",
+        "**Resolved:** OQ2"
+       ],
+       [
+        "Default language",
+        "Vietnamese in the first answer to Q18",
+        "English (Q18, changed by you on 13 Nov 2026)",
+        "**Resolved:** Q18"
+       ],
+       [
+        "Offline banner",
+        "'Offline: showing saved messages'",
+        "Written flow F37: 'Reconnecting…' and a 'Reconnected' toast",
+        "**Open:** FQ-22"
+       ],
+       [
+        "Where a form error appears",
+        "A toast after pressing the button",
+        "The charts: a message under the field, button disabled",
+        "**Open:** GQ-03"
+       ],
+       [
+        "How long a sign-in code lasts",
+        "Guest screen: 'It works for 10 minutes'",
+        "Nothing decided for members",
+        "**Open:** FA-13"
+       ],
+       [
+        "Mention in a muted conversation",
+        "A personal switch in Preferences",
+        "Chart 2.7 shows badge only",
+        "**Open:** GQ-01"
+       ],
+       [
+        "'Nothing' level and Mute",
+        "Two separate controls",
+        "No stated difference",
+        "**Open:** GQ-02"
+       ]
+      ]
+     },
+     {
+      "type": "h",
+      "text": "Dependencies"
+     },
+     {
+      "type": "table",
+      "head": [
+       "This must be settled first",
+       "Because it holds up"
+      ],
+      "rows": [
+       [
+        "GQ-20 (capability table signed off)",
+        "FR-13, FR-19, FR-23, FR-25, FR-26 and every permission test"
+       ],
+       [
+        "GQ-06 (addresses and Back)",
+        "FR-07, opening a notification (FR-14, FR-18), the app shell"
+       ],
+       [
+        "GQ-03 (where form errors show)",
+        "Every form: sign-in, create channel, invite, welcome step"
+       ],
+       [
+        "GQ-01, then GQ-02 (Mute)",
+        "FR-14, FR-16"
+       ],
+       [
+        "FQ-17, then FQ-18 (create channel)",
+        "FR-19"
+       ],
+       [
+        "FA-13, FA-14 (code life, wrong tries)",
+        "Negative and boundary tests of FR-01"
+       ],
+       [
+        "The account that sends sign-in mail",
+        "FR-01, FR-04 in any real environment"
+       ],
+       [
+        "GQ-11 (supported browsers)",
+        "FR-18, NFR-06 and the test matrix"
+       ]
+      ]
+     }
+    ]
+   },
+   {
+    "title": "2 · Requirement decisions",
+    "intro": "Three kinds, kept apart: what you decided, what is assumed and waits for a yes, and what is open. Only the first kind becomes a requirement.",
+    "blocks": [
+     {
+      "type": "h",
+      "text": "Confirmed (79)"
+     },
+     {
+      "type": "table",
+      "head": [
+       "Kind",
+       "Count",
+       "Where"
+      ],
+      "rows": [
+       [
+        "Answers in the question rounds (Q1 to Q31)",
+        "33",
+        "Questions & Gaps"
+       ],
+       [
+        "Assumptions you confirmed (G1 to G16)",
+        "16",
+        "Requirements"
+       ],
+       [
+        "Review questions answered (OQ1 to OQ17)",
+        "17",
+        "Questions & Gaps"
+       ],
+       [
+        "Rules made from gaps (NR1 to NR13)",
+        "13",
+        "Requirements"
+       ]
+      ]
+     },
+     {
+      "type": "h",
+      "text": "Decisions required from stakeholders (45)"
+     },
+     {
+      "type": "p",
+      "text": "Every open question in one list: those raised while drawing flows (FQ), in the gap analysis (GQ) and by this validation (VQ). The proposal is a suggestion and is used nowhere until you agree."
+     },
+     {
+      "type": "table",
+      "head": [
+       "ID",
+       "Decision needed",
+       "Proposal",
+       "Who decides",
+       "Priority"
+      ],
+      "rows": [
+       [
+        "FQ-01",
+        "Someone is signed in as A and presses an invitation or sign-in link meant for B. Does the link replace A's session, or does the page ask first?",
+        "Ask first: 'You are signed in as A. Continue as B?'",
+        "PO, BE",
+        "High"
+       ],
+       [
+        "FQ-13",
+        "What does the invitation refusal page say, and does it tell the causes apart?",
+        "Three messages. **Expired:** 'This invitation expired on 12 Nov. Ask Minh to send a new one.' **Revoked:** 'This invitation is no longer valid. Ask an admin of Hugepig Studio for a new one.' **Unknown or damaged link:** 'This link is not valid.', with no workspace name. An invitation already used goes to the sign-in page with the email filled in. No page has a sign-in button for a stranger.",
+        "UX",
+        "High"
+       ],
+       [
+        "FQ-14",
+        "The prototype's code screen has no Resend, only 'Use a different email'. G5 already expects a Resend button after 60 seconds. Is Resend added to the screen, and does a new code cancel the earlier one?",
+        "Yes: 'Resend code' under the field, greyed with a countdown for 60 seconds. A new code cancels the earlier one, so only the newest mail works.",
+        "UX",
+        "High"
+       ],
+       [
+        "FQ-15",
+        "The welcome step after accepting an invitation is not in the prototype. Is it wanted, and with which fields?",
+        "One screen: display name (required, 1 to 80, filled from the address), job title (optional), time zone (from the device). 'Enter Toki' and 'Skip'.",
+        "PO, UX",
+        "High"
+       ],
+       [
+        "FQ-17",
+        "**Your finding:** the prototype has no '+' for a new channel, only '+ Browse channels', and Browse channels has nothing to create one. Where does 'Create channel' live?",
+        "(a) A 'Create channel' button at the top of Browse channels, a 'Create channel' command in Ctrl+K, and 'Create #text' when a search finds nothing · (b) A separate '+' beside the Conversations heading. Suggested: (a), as written flow F20 says.",
+        "UX",
+        "High"
+       ],
+       [
+        "FQ-19",
+        "Can an Owner or Admin remove a member from any channel? Decided so far (G14): no, only from a channel they belong to, and never from #general. Does that stand, and can the creator of a channel remove people too?",
+        "Keep G14. The creator has no extra right. The removed person gets an Activity item 'Lan removed you from #name'; the channel shows 'Lan removed Minh'. This flow has no chart yet.",
+        "PO",
+        "High"
+       ],
+       [
+        "FQ-20",
+        "How does a person choose several people for a group DM? The prototype's New message dialog opens a conversation on the first press.",
+        "Each press adds the person as a chip in the field; a 'Start' button opens the conversation. One chip plus Enter opens the DM. Channels in the list still open at once. Limit stays 8 with you (Q17).",
+        "UX",
+        "High"
+       ],
+       [
+        "FQ-21",
+        "The prototype shows 'Waiting to send' and nothing for a send that failed. Where do 'Not sent', Retry and Delete appear?",
+        "In the same place as 'Waiting to send', beside the time: a red 'Not sent' followed by two text buttons, Retry and Delete. The message stays faded. Delete asks nothing, since nobody else has seen it.",
+        "UX",
+        "High"
+       ],
+       [
+        "GQ-01",
+        "Does a mention notify the person when the conversation is muted?",
+        "(a) A personal switch, on by default · (b) Never · (c) Always Suggested: (a), as in the prototype",
+        "PO",
+        "High"
+       ],
+       [
+        "GQ-06",
+        "Does every conversation, thread and section have its own address, and what does browser Back do?",
+        "(a) Each has an address; Back closes the side panel first, then returns to the previous place · (b) One address for the whole app Suggested: (a)",
+        "FE, UX",
+        "High"
+       ],
+       [
+        "GQ-20",
+        "Is the capability matrix on the Roles & States tab the agreed authority for what Members and Admins see?",
+        "(a) Yes, sign it off as is · (b) Review it row by row first Suggested: (b)",
+        "PO, QA",
+        "High"
+       ],
+       [
+        "VQ-01",
+        "The 51 written flows were drafted by Claude under decision Q19 ('Claude decides what the prototype does not draw'). Several things in them were never asked one by one: Sign out and the list of signed-in devices (F06), Resend and Revoke of an invitation (F02), what deactivation does to a person's messages and DMs (F41). Are the written flows accepted as the baseline, or reviewed group by group first?",
+        "Review the four phase-1 groups that have no prototype screen (account and sign-in, channels, administration, status); accept the rest as written.",
+        "PO",
+        "High"
+       ],
+       [
+        "VQ-03",
+        "No decision on backup and recovery: how often data is backed up, and how much may be lost or how long the service may be down.",
+        "Nightly backup of database and files to another place, kept 14 days; a restore tested before launch.",
+        "PO, BE",
+        "High"
+       ],
+       [
+        "FQ-02",
+        "Sign out in one tab: do the other tabs of the same browser leave at once?",
+        "Yes, at once; they share the session",
+        "FE",
+        "Medium"
+       ],
+       [
+        "FQ-03",
+        "An Admin invites the address of a deactivated member. Refuse, or offer Reactivate?",
+        "Refuse with 'This account is deactivated' and a Reactivate button",
+        "PO",
+        "Medium"
+       ],
+       [
+        "FQ-04",
+        "Are any file types refused (for example programs), or is every type accepted up to 100 MB?",
+        "Accept every type; always download, never run in the browser",
+        "PO, BE",
+        "Medium"
+       ],
+       [
+        "FQ-05",
+        "A message is deleted while someone else is writing a reply in its thread. Is the reply still sent?",
+        "Yes; the thread stays under the 'Message deleted' line",
+        "PO",
+        "Medium"
+       ],
+       [
+        "FQ-07",
+        "How long does a 'Waiting to send' message keep trying before it becomes 'Not sent'?",
+        "It waits while offline; once online, one automatic try, then 'Not sent' with Retry",
+        "FE, BE",
+        "Medium"
+       ],
+       [
+        "FQ-08",
+        "Can a member change their own sign-in address, or only an Admin?",
+        "Nobody in phase 1; an Owner does it later",
+        "PO",
+        "Medium"
+       ],
+       [
+        "FQ-11",
+        "A batch of invitations fails halfway (the mail server goes down after 3 of 10). Keep the 3, or undo all?",
+        "Keep them; each row reports its own result",
+        "BE",
+        "Medium"
+       ],
+       [
+        "FQ-16",
+        "#general exists before anyone is invited and every newcomer is in it (G1). Does #general show a line when someone joins, and does that line notify anyone?",
+        "Yes: a grey system line 'Minh joined', with the date. It raises no unread count and no notification. The prototype has no system lines; its sample shows a person writing 'Welcome Jordan to the team!'.",
+        "PO",
+        "Medium"
+       ],
+       [
+        "FQ-18",
+        "Which fields does the Create channel dialog have, and what are their limits?",
+        "Name (rule G7), Private switch (off by default), Topic (optional, up to 250 characters), Add people (optional). Written flow F20 has 'add members'; the chart leaves it out until you confirm.",
+        "PO, UX",
+        "Medium"
+       ],
+       [
+        "FQ-22",
+        "The prototype's offline banner reads 'Offline: showing saved messages'. Written flow F37 said 'Reconnecting…' and a 'Reconnected' toast, which the prototype does not have. Which wording, and is there a separate reconnecting state?",
+        "(a) Keep the prototype's banner the whole time; it disappears when the connection is back, with no toast · (b) Same banner, plus the words 'Reconnecting…' during each try · (c) Replace it by 'Reconnecting…'. Suggested: (a). Until answered the charts use (a) (FA-17).",
+        "UX",
+        "Medium"
+       ],
+       [
+        "GQ-02",
+        "What is the difference between the level 'Nothing' and Mute?",
+        "(a) Level decides toast, push and sound; Mute also hides the unread badge and bold · (b) Remove 'Nothing', keep Mute · (c) Remove Mute Suggested: (a)",
+        "PO, UX",
+        "Medium"
+       ],
+       [
+        "GQ-03",
+        "Where do form errors appear: under the field with the button disabled, or in a toast after pressing?",
+        "(a) Under the field; button disabled until valid · (b) Toast after pressing, as the prototype Suggested: (a)",
+        "UX",
+        "Medium"
+       ],
+       [
+        "GQ-05",
+        "Can a channel be renamed, and who edits its description?",
+        "(a) No rename in phase 1; any member edits topic and description · (b) Admins and the creator rename Suggested: (a)",
+        "PO",
+        "Medium"
+       ],
+       [
+        "GQ-09",
+        "What happens when storage runs out or reaches a quota?",
+        "(a) No quota; Owners are warned at 80% of the disk; uploads refused at 95% · (b) A fixed quota per workspace Suggested: (a)",
+        "PO, BE",
+        "Medium"
+       ],
+       [
+        "GQ-10",
+        "What does an open app do when a new version is deployed?",
+        "(a) Strip 'Update available · Reload'; forced only when the server says the page is too old · (b) Silent reload when idle Suggested: (a)",
+        "FE, BE",
+        "Medium"
+       ],
+       [
+        "GQ-11",
+        "Which browsers are supported?",
+        "(a) The last two versions of Chrome, Edge, Safari, Firefox; iPhone push only when installed to the home screen · (b) Chrome and Edge only Suggested: (a)",
+        "PO, FE",
+        "Medium"
+       ],
+       [
+        "GQ-12",
+        "How do member lists and people pickers behave at 200 people?",
+        "(a) Search field on top, first 50 shown, more on scroll · (b) Show all Suggested: (a)",
+        "UX, FE",
+        "Medium"
+       ],
+       [
+        "GQ-16",
+        "Are administrative actions recorded, and can anyone see the record?",
+        "(a) Recorded on the server, no screen in phase 1 · (b) A screen for Owners · (c) Not recorded Suggested: (a)",
+        "PO, BE",
+        "Medium"
+       ],
+       [
+        "GQ-18",
+        "How is a double press prevented for creating a channel, sending invitations and setting a reminder?",
+        "(a) Button disabled while the request runs, and the server ignores a repeat of the same request · (b) Button disabled only Suggested: (a)",
+        "BE, FE",
+        "Medium"
+       ],
+       [
+        "GQ-19",
+        "What does search cover, and how much does it return?",
+        "(a) Ctrl+K: conversations, people, commands, then messages; 20 results per kind, more on request · (b) Messages only in a separate search page Suggested: (a)",
+        "PO, FE",
+        "Medium"
+       ],
+       [
+        "VQ-02",
+        "No performance target was ever decided: how fast a conversation opens, how fast a sent message reaches other people, how many people online at once.",
+        "Conversation open under 1 s and message delivery under 500 ms on a normal connection, with 200 people online. These numbers are a proposal.",
+        "PO, BE",
+        "Medium"
+       ],
+       [
+        "FQ-06",
+        "'Today 15:00' in the reminder menu after 15:00: hidden, or replaced by another choice?",
+        "Hidden; 'In 3 hours' takes its place",
+        "UX",
+        "Low"
+       ],
+       [
+        "FQ-09",
+        "Two people create a channel with the same name at the same moment.",
+        "The second gets '#name already exists' with a button to open it (already in the chart; confirm)",
+        "BE",
+        "Low"
+       ],
+       [
+        "FQ-10",
+        "Does previewing a public channel without joining count for its unread or Activity?",
+        "No; a preview leaves no trace",
+        "PO",
+        "Low"
+       ],
+       [
+        "FQ-12",
+        "Should the first load have a size limit for very large workspaces (how many conversations come with `GET /bootstrap`)?",
+        "All of them in phase 1; revisit past 500 conversations",
+        "BE",
+        "Low"
+       ],
+       [
+        "GQ-04",
+        "Can a person upload a profile picture in phase 1?",
+        "(a) Initials only in phase 1 · (b) Upload in phase 1 Suggested: (a)",
+        "PO",
+        "Low"
+       ],
+       [
+        "GQ-07",
+        "Can a person stop following a thread?",
+        "(a) 'Unfollow thread' in the thread menu · (b) Not in phase 1 Suggested: (a)",
+        "PO",
+        "Low"
+       ],
+       [
+        "GQ-08",
+        "Is 'Mark as unread' in phase 1?",
+        "(a) Later phase · (b) Phase 1 Suggested: (a); Later covers the need",
+        "PO",
+        "Low"
+       ],
+       [
+        "GQ-13",
+        "Two people change the same topic, status or task at the same moment. Who wins?",
+        "(a) The last save wins and everyone sees it live · (b) The second save is refused with 'This changed' Suggested: (a) for short fields; (b) for long text later",
+        "BE",
+        "Low"
+       ],
+       [
+        "GQ-14",
+        "Does the browser tab show unread messages?",
+        "(a) '(3) Toki' counting mentions and DMs, a dot for anything else · (b) Nothing Suggested: (a)",
+        "UX",
+        "Low"
+       ],
+       [
+        "GQ-15",
+        "24-hour time for everyone, or by language?",
+        "(a) 24-hour everywhere · (b) Follows the language · (c) A setting Suggested: (a)",
+        "UX",
+        "Low"
+       ],
+       [
+        "GQ-17",
+        "Can a workspace export its data (messages, files)?",
+        "(a) Server backup only in phase 1 · (b) An export for Owners Suggested: (a)",
+        "PO",
+        "Low"
+       ]
+      ]
+     },
+     {
+      "type": "h",
+      "text": "Assumptions awaiting a yes (24)"
+     },
+     {
+      "type": "table",
+      "head": [
+       "ID",
+       "Assumed",
+       "Used in",
+       "Why this value"
+      ],
+      "rows": [
+       [
+        "FA-01",
+        "Endpoint names and shapes in the charts (`POST /auth/code-requests`, `GET /bootstrap`, `PUT /conversations/:id/read` and the rest) are proposals. All sit under `/api/v1`.",
+        "all",
+        "Names are fixed in the spec of each ticket"
+       ],
+       [
+        "FA-02",
+        "A request with no answer after 10 seconds counts as failed and shows Retry.",
+        "2.3, 2.5, 3.3",
+        "Any value between 8 and 15 s works"
+       ],
+       [
+        "FA-04",
+        "Typing a space in a channel name turns it into a hyphen, and capitals into lowercase, instead of showing an error.",
+        "2.8",
+        "Fewer errors for the same rule"
+       ],
+       [
+        "FA-05",
+        "The uniqueness of a channel name includes archived channels.",
+        "2.8",
+        "Otherwise un-archiving could collide"
+       ],
+       [
+        "FA-06",
+        "Reconnect attempts wait 1, 2, 5, 10 and then 30 seconds, with a little randomness.",
+        "3.1",
+        "Avoids every client retrying at once"
+       ],
+       [
+        "FA-07",
+        "A file uploaded but never sent is deleted from storage after 24 hours.",
+        "2.6",
+        "Keeps storage clean"
+       ],
+       [
+        "FA-08",
+        "Server status codes map to screens as in flow 3.3: 400 field message, 403 and 404 one shared page, 409 and 410 fresh copy, 429 wait, 5xx Retry with an error ID.",
+        "3.3",
+        "One behaviour for every feature"
+       ],
+       [
+        "FA-09",
+        "A 'Waiting to send' message survives a page reload, kept in the browser, and is dropped if someone else signs in on that browser.",
+        "3.1, 3.2",
+        "Needed for the 'nothing lost' promise"
+       ],
+       [
+        "FA-10",
+        "Leaving a channel clears its unread count and its open Activity items for that person.",
+        "2.9",
+        "Otherwise items point to a place they cannot open"
+       ],
+       [
+        "FA-11",
+        "Batches of invitations are limited to 50 addresses.",
+        "2.12",
+        "Protects the mail account's sending limit"
+       ],
+       [
+        "FA-12",
+        "A mention of someone who is not in the channel creates no notification; the sender is offered 'Add them'.",
+        "2.7",
+        "Matches rule BR-09"
+       ],
+       [
+        "FA-13",
+        "A member's sign-in code is valid for 10 minutes.",
+        "2.1",
+        "The prototype's guest code screen says 'It works for 10 minutes'; nothing decides it for members"
+       ],
+       [
+        "FA-14",
+        "A code is cancelled after 5 wrong tries; the person asks for a new one.",
+        "2.1",
+        "A 6-digit code must not be guessable; the prototype accepts any 6 digits"
+       ],
+       [
+        "FA-15",
+        "A session renews on every use, so 30 days means 30 days without opening Toki.",
+        "1.1, 1.2, 3.2",
+        "Q11 fixes 30 days but not whether it counts from sign-in or from last use"
+       ],
+       [
+        "FA-16",
+        "Every screen and every wording in quotes that the prototype does not contain is a proposal: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', loading placeholders, and the rest.",
+        "all",
+        "The charts need a name for each state; the design decides the final words"
+       ],
+       [
+        "FA-17",
+        "While offline the banner keeps the prototype's words, 'Offline: showing saved messages'. A separate 'Reconnecting…' state is not assumed.",
+        "3.1",
+        "The prototype shows only this banner; see FQ-22"
+       ],
+       [
+        "AS-01",
+        "Everything a Member or Admin sees follows the capability matrix; the prototype shows only an Owner.",
+        "—",
+        "Account card: 'Owner'"
+       ],
+       [
+        "AS-02",
+        "Notification preferences belong to the person and apply on every device; only the browser's permission for push is per device.",
+        "—",
+        "Preferences shows one set of switches"
+       ],
+       [
+        "AS-03",
+        "Star and Mute are personal: nobody else sees them, and starred conversations sort to the top of that person's list.",
+        "—",
+        "Details panel; starred glyph in the list"
+       ],
+       [
+        "AS-04",
+        "The local time shown on a profile comes from the time zone the person set, not from where they are now.",
+        "—",
+        "Profile: local time and a city"
+       ],
+       [
+        "AS-05",
+        "Demo-only controls never ship: the Look / Device / Clock / Guide bar, 'Reset', and every '20 seconds (demo)' choice.",
+        "—",
+        "Marked 'demo' in the prototype"
+       ],
+       [
+        "AS-06",
+        "The pink 'New' pills mark proposed features, not states of the product.",
+        "—",
+        "Switch 'Highlight proposed features'"
+       ],
+       [
+        "AS-07",
+        "Sample people, channels and messages are illustration only; no seed content ships except #general.",
+        "—",
+        "Sample workspace 'Hugepig Studio'"
+       ],
+       [
+        "AS-08",
+        "Analytics never names private channels or DMs and hides any group smaller than three.",
+        "—",
+        "Admin: 'Private channels and direct messages', 'fewer than 3'"
+       ]
+      ]
+     }
+    ]
+   },
+   {
+    "title": "3 · User flow validation",
+    "intro": "Each of the 19 charts on the Flows tab, checked against the confirmed decisions. Today's review already corrected them (entry points that did not exist, values shown as decided, the offline wording). 'Decisions · errors' counts the branching points and the refusal or error states drawn. A chart is blocked when a high-priority question decides its shape.",
+    "blocks": [
+     {
+      "type": "table",
+      "head": [
+       "Flow",
+       "Decisions · errors",
+       "Built on (confirmed)",
+       "Assumes",
+       "Open",
+       "Result"
+      ],
+      "rows": [
+       [
+        "1.1 The whole app on one page: ways in, the gate, and what a signed-in person can reach",
+        "4 · 3",
+        "G4, Q11, Q12",
+        "FA-13, FA-15",
+        "FQ-13, FQ-15",
+        "**Blocked** by FQ-13, FQ-15"
+       ],
+       [
+        "1.2 Exit points: every way a person stops being in the app",
+        "0 · 0",
+        "Q11, Q12, NR13",
+        "FA-16",
+        "—",
+        "Valid with open details"
+       ],
+       [
+        "2.1 Sign in with an emailed code",
+        "5 · 3",
+        "Q11, G5",
+        "FA-13, FA-14",
+        "FQ-14",
+        "**Blocked** by FQ-14"
+       ],
+       [
+        "2.2 Accept an invitation (first time in)",
+        "3 · 2",
+        "Q11, Q26, G4, G1, Q31",
+        "—",
+        "FQ-13, FQ-15, FQ-16",
+        "**Blocked** by FQ-13, FQ-15"
+       ],
+       [
+        "2.3 Open the app: session check and first load",
+        "4 · 3",
+        "G2, Q11",
+        "FA-02, FA-16",
+        "GQ-06",
+        "**Blocked** by GQ-06"
+       ],
+       [
+        "2.4 Open and read a conversation",
+        "3 · 1",
+        "OQ3, G15, Q27, NR8",
+        "FA-16",
+        "FQ-10",
+        "Valid with open details"
+       ],
+       [
+        "2.5 Send a message",
+        "3 · 2",
+        "G9, NR11, NR13",
+        "FA-02",
+        "FQ-07, FQ-21",
+        "**Blocked** by FQ-21"
+       ],
+       [
+        "2.6 Attach files to a message",
+        "2 · 2",
+        "G9, Q14, NR11",
+        "FA-07",
+        "FQ-04",
+        "Valid with open details"
+       ],
+       [
+        "2.7 Being mentioned: from the sender's @ to the recipient reading it",
+        "4 · 0",
+        "Q16, NR5, NR6, G13, G8, G11",
+        "FA-12",
+        "GQ-01",
+        "**Blocked** by GQ-01"
+       ],
+       [
+        "2.8 Create a channel",
+        "2 · 2",
+        "Q12, G7, NR4, NR10",
+        "FA-04, FA-05",
+        "FQ-17, FQ-18, GQ-20",
+        "**Blocked** by FQ-17, GQ-20"
+       ],
+       [
+        "2.9 Join a public channel, and leave a channel",
+        "3 · 1",
+        "G1, NR3, OQ2, Q27, G14",
+        "FA-10",
+        "FQ-19",
+        "**Blocked** by FQ-19"
+       ],
+       [
+        "2.10 Edit or delete your own message",
+        "4 · 1",
+        "Q13, G10, G14, G16, NR3",
+        "—",
+        "FQ-05",
+        "Valid with open details"
+       ],
+       [
+        "2.11 Save for Later and set a reminder",
+        "2 · 1",
+        "Q2, NR7, NR6, NR8",
+        "—",
+        "FQ-06",
+        "Valid with open details"
+       ],
+       [
+        "2.12 Admin: invite members",
+        "4 · 3",
+        "Q11, Q26, Q12, G4",
+        "FA-11",
+        "FQ-03, FQ-11, GQ-20",
+        "**Blocked** by GQ-20"
+       ],
+       [
+        "2.13 Admin: change a role, deactivate a member",
+        "3 · 2",
+        "Q12, G6, NR3",
+        "—",
+        "GQ-20",
+        "**Blocked** by GQ-20"
+       ],
+       [
+        "2.14 Start a direct message or a group",
+        "2 · 1",
+        "Q17, G12, Q12",
+        "—",
+        "FQ-20",
+        "**Blocked** by FQ-20"
+       ],
+       [
+        "3.1 The connection drops and returns",
+        "2 · 1",
+        "NR13, NR12",
+        "FA-06, FA-09, FA-17",
+        "FQ-22",
+        "Valid with open details"
+       ],
+       [
+        "3.2 The session ends while the app is in use",
+        "3 · 1",
+        "Q11, Q12",
+        "FA-09, FA-16",
+        "FQ-02",
+        "Valid with open details"
+       ],
+       [
+        "3.3 A request is refused or fails: one behaviour for every feature",
+        "6 · 6",
+        "NR4",
+        "FA-02, FA-08, FA-16",
+        "GQ-03, GQ-18",
+        "Valid with open details"
+       ]
+      ]
+     },
+     {
+      "type": "note",
+      "text": "**Checked by script:** every decision has at least two answers drawn, every step is reachable, and no step stops without being an end or a stated refusal. **Not covered by a chart:** the 43 written phase-1 flows include journeys with no chart yet, among them first set-up by the first Owner, adding people to a channel, removing a member, archiving a channel, threads, reactions, pins, Activity, Files, People, Preferences and status. They are written step by step on the Flows tab and wait on VQ-01."
+     }
+    ]
+   },
+   {
+    "title": "4 · Business rules",
+    "intro": "The rules the flows and requirements rely on. Each names the decision behind it; a rule whose source is 'Technical' comes from the technical design and was not a question put to you.",
+    "blocks": [
+     {
+      "type": "table",
+      "head": [
+       "ID",
+       "Rule",
+       "Flows",
+       "Decided by"
+      ],
+      "rows": [
+       [
+        "BR-01",
+        "Nothing in Toki is readable without a session. Sign-in is the only public page.",
+        "all",
+        "Q11"
+       ],
+       [
+        "BR-02",
+        "Sign-in is by a 6-digit code sent to the member's address. There is no password. How long a code lasts and how many wrong tries it allows are not decided: FA-13, FA-14.",
+        "2.1",
+        "Q11"
+       ],
+       [
+        "BR-03",
+        "At most 5 code requests per address in 15 minutes; Resend enables after 60 seconds.",
+        "2.1",
+        "G5"
+       ],
+       [
+        "BR-04",
+        "A code request gets the same answer whether or not the address is a member.",
+        "2.1",
+        "Technical"
+       ],
+       [
+        "BR-05",
+        "A session lasts 30 days on one device. Whether it renews on use is not decided: FA-15.",
+        "1.2, 2.1, 3.2",
+        "Q11"
+       ],
+       [
+        "BR-06",
+        "People join only by invitation from an Admin or Owner. An invitation lasts 7 days, works once, and signs the person in without a code.",
+        "2.2, 2.12",
+        "G4, Q26"
+       ],
+       [
+        "BR-07",
+        "Every member is in #general; it cannot be left or archived.",
+        "2.2, 2.9",
+        "G1"
+       ],
+       [
+        "BR-08",
+        "With no link, the app opens the conversation last viewed on that device; the first time, #general.",
+        "2.3",
+        "G2"
+       ],
+       [
+        "BR-09",
+        "Permission is checked on the server for every request. Private conversations and DMs are visible to members only, including through search, file lists and direct links.",
+        "all",
+        "Technical"
+       ],
+       [
+        "BR-10",
+        "'No access' and 'not found' are answered the same way.",
+        "2.3, 3.3",
+        "Technical"
+       ],
+       [
+        "BR-11",
+        "Writing to a conversation requires membership, and the conversation must not be archived.",
+        "2.5, 2.6",
+        "NR11"
+       ],
+       [
+        "BR-12",
+        "A message holds up to 10,000 characters and 10 files; a file up to 100 MB.",
+        "2.5, 2.6",
+        "G9, Q14"
+       ],
+       [
+        "BR-13",
+        "The app creates the message ID; sending the same ID again returns the stored message instead of a second one.",
+        "2.5, 3.1",
+        "Technical"
+       ],
+       [
+        "BR-14",
+        "A conversation is marked read only when its newest message is on screen in a focused tab. There are no 'seen' receipts.",
+        "2.4",
+        "G15"
+       ],
+       [
+        "BR-15",
+        "Your own action never notifies you. An Activity item becomes done on its own once the thing it asks for is done.",
+        "2.7",
+        "NR5"
+       ],
+       [
+        "BR-16",
+        "During Pause or Focus there is no toast, push or sound, including your own reminders; badges update; one summary follows.",
+        "2.7, 2.11",
+        "NR6"
+       ],
+       [
+        "BR-17",
+        "Default notification level: 'Mentions only' for channels, 'All messages' for DMs.",
+        "2.7",
+        "G13"
+       ],
+       [
+        "BR-18",
+        "@channel in a channel of 20 or more people asks the sender to confirm.",
+        "2.7",
+        "G8"
+       ],
+       [
+        "BR-19",
+        "Channel names: lowercase letters, digits, hyphens, up to 80 characters, unique. Public or private is fixed at creation.",
+        "2.8",
+        "G7"
+       ],
+       [
+        "BR-20",
+        "A reversible action happens at once with Undo for 5 seconds; an irreversible one asks for confirmation and names its target; never both.",
+        "2.9, 2.10, 2.13",
+        "NR3"
+       ],
+       [
+        "BR-21",
+        "A form with content does not close on an outside click; closing it by button asks whether to discard.",
+        "2.8",
+        "NR4"
+       ],
+       [
+        "BR-22",
+        "After something is created the screen shows it; a filter that would hide it changes.",
+        "2.8",
+        "NR10"
+       ],
+       [
+        "BR-23",
+        "A private channel cannot be rejoined alone after leaving; the person must be added again.",
+        "2.9",
+        "OQ2, GAP-02"
+       ],
+       [
+        "BR-24",
+        "Only the author edits a message; there is no time limit and no edit history. Deleting is permanent and removes the attached files.",
+        "2.10",
+        "F16, G10"
+       ],
+       [
+        "BR-25",
+        "A deleted message with replies leaves a 'Message deleted' line and keeps its thread.",
+        "2.10",
+        "Technical"
+       ],
+       [
+        "BR-26",
+        "Admins and Owners see and moderate only conversations they are members of.",
+        "2.10, 2.13",
+        "G14"
+       ],
+       [
+        "BR-27",
+        "Only an Owner changes roles. An Admin deactivates Members; only an Owner deactivates Admins and Owners.",
+        "2.13",
+        "F40, F41"
+       ],
+       [
+        "BR-28",
+        "Nobody deactivates themselves. The last Owner cannot be demoted or deactivated.",
+        "2.13",
+        "G6, F41"
+       ],
+       [
+        "BR-29",
+        "Deactivation ends every session at once; messages stay; the account can be reactivated. Nothing is deleted permanently in phase 1.",
+        "2.13, 3.2",
+        "F41"
+       ],
+       [
+        "BR-30",
+        "Offline: loaded content stays readable, messages wait and send themselves, every other action is blocked with an explanation.",
+        "3.1",
+        "NR13"
+       ],
+       [
+        "BR-31",
+        "After reconnecting the app receives every missed event in order; after more than 7 days away it reloads.",
+        "3.1",
+        "Technical"
+       ],
+       [
+        "BR-32",
+        "Every list has an empty state written for its context; a count on a chip equals the rows shown.",
+        "2.4, 2.9, 2.11",
+        "NR8"
+       ],
+       [
+        "BR-33",
+        "Toasts and banners never cover the composer or the navigation.",
+        "3.1",
+        "NR12"
+       ],
+       [
+        "BR-34",
+        "Every action has an entry point on narrow and touch screens; nothing is hover-only.",
+        "all",
+        "NR1"
+       ],
+       [
+        "BR-35",
+        "A display name is 1 to 80 characters.",
+        "2.2",
+        "Q31 (your answer, 13 Nov 2026)"
+       ],
+       [
+        "BR-36",
+        "A group DM holds at most 8 people, counting its creator. Nobody is added or removed afterwards.",
+        "2.14",
+        "Q17, G12"
+       ],
+       [
+        "BR-37",
+        "Every Member, Admin and Owner may create public and private channels and start DMs and groups. Guests may not.",
+        "2.8, 2.14",
+        "Q12 (capability table)"
+       ],
+       [
+        "BR-38",
+        "Only an Admin or Owner removes someone from a channel, and only in a channel they belong to themselves.",
+        "2.9",
+        "G14, Q12"
+       ]
+      ]
+     }
+    ]
+   },
+   {
+    "title": "5 · Functional and non-functional requirements",
+    "intro": "Phase 1 only. Each functional requirement states only what you decided, with the answer quoted in 'Decided by'. Anything still assumed or open that touches it is listed beside it and is **not** part of the requirement.",
+    "blocks": [
+     {
+      "type": "h",
+      "text": "Functional requirements (32)"
+     },
+     {
+      "type": "table",
+      "head": [
+       "ID",
+       "Area",
+       "Requirement",
+       "Decided by",
+       "Not yet decided",
+       "Readiness"
+      ],
+      "rows": [
+       [
+        "FR-01",
+        "Access",
+        "A member signs in with a 6-digit code sent to their email address. There is no password.",
+        "(b) 6-digit emailed code, no password, admin invitation only, 30-day session (Q11)",
+        "FA-13, FA-14, FQ-14",
+        "**Blocked**"
+       ],
+       [
+        "FR-02",
+        "Access",
+        "A code can be requested at most 5 times per address in 15 minutes; the code can be sent again 60 seconds after the last request.",
+        "At most 5 code requests per email in 15 minutes; the resend button enables after 60 seconds. (G5)",
+        "FQ-14",
+        "**Blocked**"
+       ],
+       [
+        "FR-03",
+        "Access",
+        "A session lasts 30 days on one device. Nothing in Toki can be read without a session.",
+        "(b) 6-digit emailed code, no password, admin invitation only, 30-day session (Q11)",
+        "FA-15, FQ-02",
+        "Core ready; details wait for answers"
+       ],
+       [
+        "FR-04",
+        "Access",
+        "People join only by an invitation from an Admin or Owner. An invitation lasts 7 days, works once, and its link signs the person in without a code.",
+        "(b) 6-digit emailed code, no password, admin invitation only, 30-day session (Q11) · Created from environment variables or seed; that admin invites members (Q26) · An invitation expires after 7 days. The link in the invitation signs the person in directly, without a code. (G4)",
+        "FQ-13, FQ-15, FQ-01",
+        "**Blocked**"
+       ],
+       [
+        "FR-05",
+        "Access",
+        "#general exists from set-up; every member is in it automatically and it cannot be left or archived.",
+        "Every workspace has a #general channel created at setup; every member is in it automatically; it cannot be left or archived. (G1)",
+        "FQ-16",
+        "Core ready; details wait for answers"
+       ],
+       [
+        "FR-06",
+        "Access",
+        "A display name is 1 to 80 characters.",
+        "1 to 80 characters (Q31)",
+        "FQ-15",
+        "**Blocked**"
+       ],
+       [
+        "FR-07",
+        "Reading",
+        "With no link, the app opens on the conversation last viewed on that device; the first time, on #general.",
+        "The app opens on the conversation last viewed on that device; the first time, on #general. (G2)",
+        "GQ-06",
+        "**Blocked**"
+       ],
+       [
+        "FR-08",
+        "Reading",
+        "A conversation counts as read when it is open, the window is in use and the person is at the bottom of the list. The 'New' divider marks the first unread message at opening. Nobody sees who has read a message.",
+        "Read state never depends on AI. A conversation is read when it is open, the window is in use, and the person is at the bottom of the list. The New divider anchors to the first unread message at the time of opening (by ID, so it does not drift), stays while viewing, and is gone the next time the conversation opens. Opening the app or a conversation with unread messages scrolls to the divider. (OQ3) · Toki has no 'seen' receipts; a sender does not know who has read a message. (G15)",
+        "—",
+        "Ready"
+       ],
+       [
+        "FR-09",
+        "Messaging",
+        "A member of a conversation can send a message of up to 10,000 characters. Writing requires membership.",
+        "A message holds up to 10,000 characters and 10 files. (G9) · Writing to a conversation (sending, starting a Meet, scheduling) requires membership. Pickers list only conversations you have joined. (NR11)",
+        "FQ-07, FQ-21, FA-02",
+        "**Blocked**"
+       ],
+       [
+        "FR-10",
+        "Messaging",
+        "A message carries up to 10 files, each up to 100 MB. Images get thumbnails.",
+        "A message holds up to 10,000 characters and 10 files. (G9) · (b) MinIO, 100 MB, image thumbnails, link previews (Q14)",
+        "FQ-04, FA-07",
+        "Core ready; details wait for answers"
+       ],
+       [
+        "FR-11",
+        "Messaging",
+        "The author can edit a message at any time, with no time limit; an edited message is marked '(edited)'.",
+        "Edit without limit; soft delete that keeps the thread (Q13)",
+        "—",
+        "Ready"
+       ],
+       [
+        "FR-12",
+        "Messaging",
+        "Deleting a message asks for confirmation. A deleted message that has replies keeps its thread, and its files are removed from storage.",
+        "Edit without limit; soft delete that keeps the thread (Q13) · Deleting a message also removes its attached files from storage. (G10) · A reversible action happens at once and shows a toast with Undo for 5 seconds. An irreversible action, or one that affects other people, asks for confirmation and names its target. Never both for one action. (NR3)",
+        "FQ-05",
+        "Core ready; details wait for answers"
+       ],
+       [
+        "FR-13",
+        "Messaging",
+        "An Admin or Owner can delete another person's message only in a conversation they belong to. The message then reads 'Message deleted by an admin' and its author is told.",
+        "Admins and Owners do not automatically see private channels or DMs; deleting messages, removing people and archiving apply only where they are members. (G14) · A message deleted by an admin shows as 'Message deleted by an admin' and its author is told. (G16)",
+        "GQ-20",
+        "**Blocked**"
+       ],
+       [
+        "FR-14",
+        "Notifications",
+        "A mention creates an Activity item for the person mentioned. Your own action never notifies you. An item becomes done on its own once the thing it asks for is done.",
+        "Your own action never notifies you. An Activity item becomes done on its own once the thing it asks for is done. Activity is newest first and has a filter chip for every kind of item. (NR5)",
+        "GQ-01, FA-12, GQ-06",
+        "**Blocked**"
+       ],
+       [
+        "FR-15",
+        "Notifications",
+        "During Pause or Focus time there is no toast, push or sound, including your own reminders. Badges still update. When it ends, one summary lists what arrived.",
+        "During Pause or Focus time there is no toast, push or sound, including reminders you set yourself. Badges still update. When it ends, one summary lists what arrived. Starting Focus during Focus extends it rather than nesting; ending restores the earlier status. (NR6) · Badges, Web Push, sound, per-channel level, mute, Pause, Focus time. Missed-mention email later (Q16)",
+        "—",
+        "Ready"
+       ],
+       [
+        "FR-16",
+        "Notifications",
+        "The default notification level is 'Mentions only' for channels and 'All messages' for DMs.",
+        "Default notification level: 'Mentions only' for channels, 'All messages' for DMs. (G13)",
+        "GQ-02",
+        "Core ready; details wait for answers"
+       ],
+       [
+        "FR-17",
+        "Notifications",
+        "Any member of a channel can use @channel. In a channel of 20 or more people it asks for confirmation first.",
+        "Any channel member can edit the topic and use @channel; in a channel of 20 or more people, @channel asks for confirmation first. (G8) · As recommended; add @channel, group DMs up to 8, keep 8 fixed emoji (Q17)",
+        "—",
+        "Ready"
+       ],
+       [
+        "FR-18",
+        "Notifications",
+        "Phase 1 has badges, Web Push and sound. A push shows the sender, the conversation and the start of the message. The web app is installable.",
+        "Badges, Web Push, sound, per-channel level, mute, Pause, Focus time. Missed-mention email later (Q16) · A push notification shows the sender, the conversation and the start of the message. (G11) · Installable PWA; service worker for push only (Q28)",
+        "GQ-11, GQ-06",
+        "**Blocked**"
+       ],
+       [
+        "FR-19",
+        "Channels and DMs",
+        "Every Member, Admin and Owner can create a public or private channel. A name uses lowercase letters, digits and hyphens, up to 80 characters, and is unique. Public or private is fixed at creation.",
+        "As in the capability table under Roles & States (Q12) · Channel names: lowercase letters, digits, hyphens, up to 80 characters, unique. Public cannot become private after creation, or the reverse. (G7)",
+        "FQ-17, FQ-18, FA-04, FA-05, GQ-20, FQ-09",
+        "**Blocked**"
+       ],
+       [
+        "FR-20",
+        "Channels and DMs",
+        "Joining a public channel gives its full history. Channels are archived, never deleted.",
+        "Full history; channels are archived, never deleted (Q27)",
+        "FQ-10",
+        "Core ready; details wait for answers"
+       ],
+       [
+        "FR-21",
+        "Channels and DMs",
+        "Leaving a public channel happens at once with Undo for 5 seconds. Leaving a private channel asks for confirmation, and the person can return only when a member invites them. When the last member leaves, the channel is archived.",
+        "A reversible action happens at once and shows a toast with Undo for 5 seconds. An irreversible action, or one that affects other people, asks for confirmation and names its target. Never both for one action. (NR3) · A member must invite them back. The leave confirmation says so; Undo is still offered for 5 seconds. Private channels never appear in Browse or Ctrl+K for outsiders. If the last member leaves, the channel is archived. (OQ2)",
+        "FA-10",
+        "Ready if the assumptions are accepted"
+       ],
+       [
+        "FR-22",
+        "Channels and DMs",
+        "Members can start direct messages and group DMs of up to 8 people. People cannot be added to or removed from a group DM.",
+        "As recommended; add @channel, group DMs up to 8, keep 8 fixed emoji (Q17) · People cannot be added to or removed from a group DM. (G12) · As in the capability table under Roles & States (Q12)",
+        "FQ-20",
+        "**Blocked**"
+       ],
+       [
+        "FR-23",
+        "Channels and DMs",
+        "Only an Admin or Owner can remove a person from a channel, and only in a channel they belong to.",
+        "Admins and Owners do not automatically see private channels or DMs; deleting messages, removing people and archiving apply only where they are members. (G14) · As in the capability table under Roles & States (Q12)",
+        "FQ-19, GQ-20",
+        "**Blocked**"
+       ],
+       [
+        "FR-24",
+        "Later",
+        "A person can save messages to Later and set a reminder. A reminder time must be in the future.",
+        "Core chat, Activity, Later, Files, People, Preferences, command palette (Q2) · Dates and times: required fields cannot be left empty; where a future time is needed the past is rejected; the year is shown whenever it is not the current year; one format across the app; 'Invalid Date' never appears. (NR7)",
+        "FQ-06",
+        "Core ready; details wait for answers"
+       ],
+       [
+        "FR-25",
+        "Administration",
+        "The Admin page opens only for Admins and Owners. An Admin invites people as Members; an Owner invites with any role.",
+        "As in the capability table under Roles & States (Q12) · (b) 6-digit emailed code, no password, admin invitation only, 30-day session (Q11)",
+        "GQ-20, FQ-03, FQ-11, FA-11, VQ-01",
+        "**Blocked**"
+       ],
+       [
+        "FR-26",
+        "Administration",
+        "Only an Owner changes roles. An Admin deactivates and reactivates Members; an Owner anyone. There can be several Owners, and the last Owner cannot be demoted or deactivated.",
+        "As in the capability table under Roles & States (Q12) · There can be several Owners. The last Owner cannot be demoted or deactivated. (G6)",
+        "GQ-20, VQ-01",
+        "**Blocked**"
+       ],
+       [
+        "FR-27",
+        "Shared behaviour",
+        "When the connection drops, loaded content stays readable, messages being sent wait and send themselves when it returns, and every other action is blocked with an explanation.",
+        "When the connection drops: loaded content stays readable; messages being sent wait and send themselves when the connection returns; every other action is blocked with an explanation, never a false success. (NR13)",
+        "FQ-22, FA-06, FA-09, FA-17",
+        "Core ready; details wait for answers"
+       ],
+       [
+        "FR-28",
+        "Shared behaviour",
+        "A form that has content does not close on an outside click; closing it by a button asks whether to discard.",
+        "A form that has content does not close on an outside click; closing it by button asks whether to discard. (NR4)",
+        "GQ-03",
+        "Core ready; details wait for answers"
+       ],
+       [
+        "FR-29",
+        "Shared behaviour",
+        "A reversible action happens at once with Undo for 5 seconds. An irreversible action, or one that affects other people, asks for confirmation and names its target. Never both.",
+        "A reversible action happens at once and shows a toast with Undo for 5 seconds. An irreversible action, or one that affects other people, asks for confirmation and names its target. Never both for one action. (NR3)",
+        "—",
+        "Ready"
+       ],
+       [
+        "FR-30",
+        "Shared behaviour",
+        "Every searchable or filterable list has an empty state written for its context, and a count on a chip equals the rows shown. After something is created, the screen shows it.",
+        "Every searchable or filterable list has an empty state centred in the content area and written for that context. A count on a chip always equals the rows shown. (NR8) · After something is created, the screen shows it; if a filter would hide it, the filter changes. (NR10)",
+        "—",
+        "Ready"
+       ],
+       [
+        "FR-31",
+        "Shared behaviour",
+        "Ctrl+K searches conversations, people, messages and actions. Vietnamese text matches when typed without diacritics.",
+        "(a), ignoring Vietnamese diacritics, respecting permissions (Q15) · Core chat, Activity, Later, Files, People, Preferences, command palette (Q2)",
+        "GQ-19",
+        "Core ready; details wait for answers"
+       ],
+       [
+        "FR-32",
+        "Shared behaviour",
+        "Presence turns to Away after 5 minutes without activity. There is no separate Offline state.",
+        "Presence turns to Away after 5 minutes without activity. There is no separate Offline state. (G3)",
+        "—",
+        "Ready"
+       ]
+      ]
+     },
+     {
+      "type": "h",
+      "text": "Non-functional requirements (12)"
+     },
+     {
+      "type": "table",
+      "head": [
+       "ID",
+       "Requirement",
+       "Decided by",
+       "How it is measured"
+      ],
+      "rows": [
+       [
+        "NFR-01",
+        "Responsive web is the first platform. Smallest supported size is 360 × 560. Under 720 px one pane at a time; 720 to 1099 px side panels overlay the chat; from 1100 px three columns.",
+        "Q3, NR2, OQ5",
+        "Every phase-1 screen checked at 360 × 560, 719, 720, 1099 and 1100 px: nothing clipped, nothing unreachable."
+       ],
+       [
+        "NFR-02",
+        "No feature is hover-only or desktop-only; every action has an entry point on narrow and touch screens.",
+        "NR1, OQ4",
+        "Every action in the test list completed on a touch device at 360 px."
+       ],
+       [
+        "NFR-03",
+        "Every icon-only button has a name for screen readers; a modal traps focus and returns it to the opening button; menus work with arrow keys.",
+        "NR9",
+        "Automated check finds no unnamed button; keyboard-only run of each modal and menu."
+       ],
+       [
+        "NFR-04",
+        "The first version serves one company, up to about 200 people, on one server.",
+        "Q9, Q4",
+        "Load test with 200 signed-in people. **No speed target is decided: VQ-02.**"
+       ],
+       [
+        "NFR-05",
+        "English (default) and Vietnamese, both fully translated; two looks, Calm and Focus.",
+        "Q18",
+        "Automatic check finds no missing translation key; every screen reviewed in both languages and both looks."
+       ],
+       [
+        "NFR-06",
+        "The web app is an installable PWA; its service worker is used for push only.",
+        "Q28",
+        "Installs on the supported browsers; with the network off no stale page is served from a cache."
+       ],
+       [
+        "NFR-07",
+        "Single-tenant and self-hosted, reachable from the public internet, deployed with Docker Compose on one VPS.",
+        "Q4, Q20",
+        "A fresh server reaches a working sign-in page from the documented steps alone."
+       ],
+       [
+        "NFR-08",
+        "Dates and times: one format across the app; the year is shown when it is not the current year; 'Invalid Date' never appears.",
+        "NR7",
+        "Search of every screen for 'Invalid Date' with empty and odd inputs. **Which format: GQ-15.**"
+       ],
+       [
+        "NFR-09",
+        "Toasts and floating bars never cover the composer or the navigation.",
+        "NR12",
+        "Trigger each toast at 360 px and 1100 px: composer and navigation stay usable."
+       ],
+       [
+        "NFR-10",
+        "Built with TypeScript, React, Postgres and WebSocket; the backend is a modular monolith in Node.",
+        "Q5, Q24b",
+        "Repository check."
+       ],
+       [
+        "NFR-11",
+        "Files are kept in object storage; search uses Postgres full-text.",
+        "Q14, Q15",
+        "Repository and deployment check."
+       ],
+       [
+        "NFR-12",
+        "Sign-in mail is sent through configurable SMTP.",
+        "Q25",
+        "Changing the SMTP settings changes the sender without a code change. **Which account: still open.**"
+       ]
+      ]
+     },
+     {
+      "type": "h",
+      "text": "Non-functional areas with no decision"
+     },
+     {
+      "type": "p",
+      "text": "These cannot be written as requirements, because nothing measurable was decided."
+     },
+     {
+      "type": "table",
+      "head": [
+       "Area",
+       "Waits on"
+      ],
+      "rows": [
+       [
+        "Speed and capacity targets",
+        "VQ-02"
+       ],
+       [
+        "Backup, recovery and allowed downtime",
+        "VQ-03"
+       ],
+       [
+        "Supported browsers",
+        "GQ-11"
+       ],
+       [
+        "Storage running out",
+        "GQ-09"
+       ],
+       [
+        "Record of administrative actions",
+        "GQ-16"
+       ],
+       [
+        "Data export",
+        "GQ-17"
+       ],
+       [
+        "Behaviour when a new version is deployed",
+        "GQ-10"
+       ],
+       [
+        "Privacy and security rules beyond permissions (how a session is stored, encryption in transit and at rest)",
+        "Technical tab; never asked of you"
+       ]
+      ]
+     }
+    ]
+   },
+   {
+    "title": "6 · Acceptance criteria",
+    "intro": "Each criterion can be checked with a yes or a no. Numbers come from the decisions; a criterion that would need an undecided number is left out and listed under missing coverage in section 7.",
+    "blocks": [
+     {
+      "type": "table",
+      "head": [
+       "ID",
+       "Requirement",
+       "Criterion"
+      ],
+      "rows": [
+       [
+        "AC-001",
+        "FR-01",
+        "Entering the 6 digits sent to a member's address opens the app as that member."
+       ],
+       [
+        "AC-002",
+        "FR-01",
+        "The code field accepts exactly 6 digits; the sign-in page has no password field."
+       ],
+       [
+        "AC-003",
+        "FR-02",
+        "The 6th request for one address within 15 minutes is refused and no mail is sent."
+       ],
+       [
+        "AC-004",
+        "FR-02",
+        "Sending again is unavailable for 60 seconds after a request."
+       ],
+       [
+        "AC-005",
+        "FR-03",
+        "Any address opened without a session shows the sign-in page and no workspace content."
+       ],
+       [
+        "AC-006",
+        "FR-03",
+        "A session signed in on one device does not sign in another device."
+       ],
+       [
+        "AC-007",
+        "FR-03",
+        "A session unused for more than 30 days is no longer accepted."
+       ],
+       [
+        "AC-008",
+        "FR-04",
+        "Opening an unused invitation link within 7 days signs the person in with no code asked."
+       ],
+       [
+        "AC-009",
+        "FR-04",
+        "A link that was already used does not sign anyone in a second time."
+       ],
+       [
+        "AC-010",
+        "FR-04",
+        "An address with no invitation and no account cannot get into the workspace."
+       ],
+       [
+        "AC-011",
+        "FR-05",
+        "A person who accepts an invitation is a member of #general without doing anything."
+       ],
+       [
+        "AC-012",
+        "FR-05",
+        "#general offers no way to leave or archive it, for any role."
+       ],
+       [
+        "AC-013",
+        "FR-06",
+        "A name of 1 to 80 characters is saved; an empty name or one of 81 characters is refused."
+       ],
+       [
+        "AC-014",
+        "FR-07",
+        "After viewing a conversation and reopening the app on the same device, that conversation is shown."
+       ],
+       [
+        "AC-015",
+        "FR-07",
+        "The first opening on a device shows #general."
+       ],
+       [
+        "AC-016",
+        "FR-08",
+        "Opening a conversation and reaching the bottom clears its unread badge; opening it in a window that is not in use does not."
+       ],
+       [
+        "AC-017",
+        "FR-08",
+        "The 'New' divider sits above the first unread message, stays while viewing, and is gone the next time the conversation opens."
+       ],
+       [
+        "AC-018",
+        "FR-08",
+        "No screen shows who has read a message."
+       ],
+       [
+        "AC-019",
+        "FR-09",
+        "A message of 1 to 10,000 characters is sent; one of 10,001 cannot be sent."
+       ],
+       [
+        "AC-020",
+        "FR-09",
+        "A person who is not a member of the conversation cannot send to it, and pickers list only joined conversations."
+       ],
+       [
+        "AC-021",
+        "FR-10",
+        "10 files are accepted on one message; an 11th is refused and the 10 remain."
+       ],
+       [
+        "AC-022",
+        "FR-10",
+        "A file of 100 MB is accepted; a larger one is refused before or during upload, and the server refuses it too."
+       ],
+       [
+        "AC-023",
+        "FR-10",
+        "An attached image shows a thumbnail in the message."
+       ],
+       [
+        "AC-024",
+        "FR-10",
+        "Only people who can see the conversation can open its files."
+       ],
+       [
+        "AC-025",
+        "FR-11",
+        "The author can edit a message of any age; everyone then sees the new text with '(edited)'."
+       ],
+       [
+        "AC-026",
+        "FR-12",
+        "Delete removes the message only after a confirmation; cancelling changes nothing; there is no Undo."
+       ],
+       [
+        "AC-027",
+        "FR-12",
+        "Deleting a message with replies leaves the replies readable."
+       ],
+       [
+        "AC-028",
+        "FR-12",
+        "After deletion the message's files can no longer be opened or found in Files."
+       ],
+       [
+        "AC-029",
+        "FR-13",
+        "An Admin in the channel can delete a Member's message; it shows 'Message deleted by an admin' and the author gets a notice."
+       ],
+       [
+        "AC-030",
+        "FR-13",
+        "An Admin or Owner who is not in a private channel cannot see or delete its messages."
+       ],
+       [
+        "AC-031",
+        "FR-14",
+        "Mentioning a member of the channel gives them exactly one Activity item."
+       ],
+       [
+        "AC-032",
+        "FR-14",
+        "Mentioning yourself, or reacting to your own message, creates no item and no badge for you."
+       ],
+       [
+        "AC-033",
+        "FR-14",
+        "Opening the mentioned message marks its item done without a separate action."
+       ],
+       [
+        "AC-034",
+        "FR-15",
+        "While paused, a mention produces no toast, push or sound, and the badge still rises."
+       ],
+       [
+        "AC-035",
+        "FR-15",
+        "Ending Pause or Focus shows one summary of what arrived."
+       ],
+       [
+        "AC-036",
+        "FR-15",
+        "Starting Focus during Focus extends it; ending restores the earlier status."
+       ],
+       [
+        "AC-037",
+        "FR-16",
+        "A newly joined channel is at 'Mentions only'; a new DM is at 'All messages'."
+       ],
+       [
+        "AC-038",
+        "FR-17",
+        "@channel in a channel of 20 people asks for confirmation; in one of 19 it does not."
+       ],
+       [
+        "AC-039",
+        "FR-18",
+        "With the app closed and push allowed, a mention produces a system notification naming the sender and the conversation and showing the start of the message."
+       ],
+       [
+        "AC-040",
+        "FR-18",
+        "The web app can be installed to the home screen or desktop from a supported browser."
+       ],
+       [
+        "AC-041",
+        "FR-19",
+        "A valid, unused name creates the channel with its creator as a member."
+       ],
+       [
+        "AC-042",
+        "FR-19",
+        "A name of 80 characters is accepted, one of 81 refused; a name already in use is refused."
+       ],
+       [
+        "AC-043",
+        "FR-19",
+        "An existing channel offers no way to switch between public and private."
+       ],
+       [
+        "AC-044",
+        "FR-20",
+        "A person who joins a public channel can read messages sent before they joined."
+       ],
+       [
+        "AC-045",
+        "FR-20",
+        "No role has a way to delete a channel; an archived channel keeps its history."
+       ],
+       [
+        "AC-046",
+        "FR-21",
+        "Leaving a public channel shows Undo for 5 seconds and no confirmation; Undo restores membership."
+       ],
+       [
+        "AC-047",
+        "FR-21",
+        "Leaving a private channel asks for confirmation that says a member must invite you back, and offers no Undo."
+       ],
+       [
+        "AC-048",
+        "FR-21",
+        "When the last member leaves a channel it becomes archived."
+       ],
+       [
+        "AC-049",
+        "FR-22",
+        "A group of 8 people including its creator can be started; a 9th person cannot be included."
+       ],
+       [
+        "AC-050",
+        "FR-22",
+        "An existing group DM offers no way to add or remove a person."
+       ],
+       [
+        "AC-051",
+        "FR-22",
+        "A guest cannot start a DM."
+       ],
+       [
+        "AC-052",
+        "FR-23",
+        "An Admin who is a member of a channel can remove another member from it; a Member cannot."
+       ],
+       [
+        "AC-053",
+        "FR-23",
+        "An Admin or Owner who is not in the channel cannot remove anyone from it."
+       ],
+       [
+        "AC-054",
+        "FR-24",
+        "Saving a message adds it to that person's Later list only."
+       ],
+       [
+        "AC-055",
+        "FR-24",
+        "A reminder cannot be set to a time in the past."
+       ],
+       [
+        "AC-056",
+        "FR-25",
+        "A Member has no Admin entry and its address shows no admin content; the server refuses every admin request from a Member."
+       ],
+       [
+        "AC-057",
+        "FR-25",
+        "An Admin's invitation creates a Member; only an Owner can invite an Admin or Owner."
+       ],
+       [
+        "AC-058",
+        "FR-26",
+        "An Owner can change a role; an Admin cannot."
+       ],
+       [
+        "AC-059",
+        "FR-26",
+        "An Admin can deactivate a Member and cannot deactivate an Admin or Owner."
+       ],
+       [
+        "AC-060",
+        "FR-26",
+        "With one Owner left, demoting or deactivating that Owner is refused; with two, it succeeds."
+       ],
+       [
+        "AC-061",
+        "FR-27",
+        "Offline, loaded conversations can still be read and scrolled."
+       ],
+       [
+        "AC-062",
+        "FR-27",
+        "A message sent offline is shown as waiting and is delivered exactly once after the connection returns."
+       ],
+       [
+        "AC-063",
+        "FR-27",
+        "Any other action offline does not happen, does not report success, and says why."
+       ],
+       [
+        "AC-064",
+        "FR-28",
+        "With text typed, an outside click leaves the form open and the text intact."
+       ],
+       [
+        "AC-065",
+        "FR-28",
+        "With text typed, the close button asks to discard; with nothing typed it closes at once."
+       ],
+       [
+        "AC-066",
+        "FR-29",
+        "No action shows both a confirmation and an Undo."
+       ],
+       [
+        "AC-067",
+        "FR-29",
+        "Every confirmation names the thing it acts on."
+       ],
+       [
+        "AC-068",
+        "FR-30",
+        "A search with no result shows a message specific to that list, centred in the content area."
+       ],
+       [
+        "AC-069",
+        "FR-30",
+        "For every chip with a count, the number equals the rows listed under it."
+       ],
+       [
+        "AC-070",
+        "FR-30",
+        "After creating an item, it is visible without changing a filter by hand."
+       ],
+       [
+        "AC-071",
+        "FR-31",
+        "Typing 'nguyen' finds 'Nguyễn'."
+       ],
+       [
+        "AC-072",
+        "FR-31",
+        "Search never returns a private conversation, or a message from one, to a person who is not in it."
+       ],
+       [
+        "AC-073",
+        "FR-32",
+        "A person with no activity for 5 minutes is shown as Away to others."
+       ]
+      ]
+     }
+    ]
+   },
+   {
+    "title": "7 · QA test scenarios",
+    "intro": "116 scenarios, each tied to one criterion: 47 positive, 44 negative, 19 boundary, 6 exception. Every criterion has at least one.",
+    "blocks": [
+     {
+      "type": "table",
+      "head": [
+       "ID",
+       "Criterion",
+       "Requirement",
+       "Type",
+       "Scenario"
+      ],
+      "rows": [
+       [
+        "TS-001",
+        "AC-001",
+        "FR-01",
+        "Positive",
+        "Request a code, enter it, land in the app."
+       ],
+       [
+        "TS-002",
+        "AC-001",
+        "FR-01",
+        "Negative",
+        "Enter 6 digits that were not sent: refused, still on the code screen."
+       ],
+       [
+        "TS-003",
+        "AC-002",
+        "FR-01",
+        "Boundary",
+        "5 digits and 7 digits are not submitted."
+       ],
+       [
+        "TS-004",
+        "AC-002",
+        "FR-01",
+        "Negative",
+        "Letters in the code field are rejected."
+       ],
+       [
+        "TS-005",
+        "AC-003",
+        "FR-02",
+        "Boundary",
+        "5th request succeeds, 6th is refused."
+       ],
+       [
+        "TS-006",
+        "AC-003",
+        "FR-02",
+        "Positive",
+        "After 15 minutes a request succeeds again."
+       ],
+       [
+        "TS-007",
+        "AC-004",
+        "FR-02",
+        "Boundary",
+        "At 59 s unavailable; at 60 s available."
+       ],
+       [
+        "TS-008",
+        "AC-005",
+        "FR-03",
+        "Negative",
+        "Open a conversation link signed out: sign-in page only."
+       ],
+       [
+        "TS-009",
+        "AC-005",
+        "FR-03",
+        "Negative",
+        "Call the API without a session: refused."
+       ],
+       [
+        "TS-010",
+        "AC-006",
+        "FR-03",
+        "Positive",
+        "Sign in on A; B still asks for a code."
+       ],
+       [
+        "TS-011",
+        "AC-007",
+        "FR-03",
+        "Boundary",
+        "Day 30 accepted, day 31 refused (clock moved in a test)."
+       ],
+       [
+        "TS-012",
+        "AC-008",
+        "FR-04",
+        "Positive",
+        "Accept on day 1: signed in."
+       ],
+       [
+        "TS-013",
+        "AC-008",
+        "FR-04",
+        "Boundary",
+        "Accept just before 7 days: works; just after: refused."
+       ],
+       [
+        "TS-014",
+        "AC-009",
+        "FR-04",
+        "Negative",
+        "Open the same link again: no session is created."
+       ],
+       [
+        "TS-015",
+        "AC-010",
+        "FR-04",
+        "Negative",
+        "Request a code for a stranger's address: no access results."
+       ],
+       [
+        "TS-016",
+        "AC-011",
+        "FR-05",
+        "Positive",
+        "New member's list contains #general."
+       ],
+       [
+        "TS-017",
+        "AC-012",
+        "FR-05",
+        "Negative",
+        "Leave is unavailable in #general for Member, Admin, Owner."
+       ],
+       [
+        "TS-018",
+        "AC-012",
+        "FR-05",
+        "Negative",
+        "A leave request sent directly to the server is refused."
+       ],
+       [
+        "TS-019",
+        "AC-013",
+        "FR-06",
+        "Boundary",
+        "1 and 80 characters saved."
+       ],
+       [
+        "TS-020",
+        "AC-013",
+        "FR-06",
+        "Boundary",
+        "0 and 81 characters refused."
+       ],
+       [
+        "TS-021",
+        "AC-013",
+        "FR-06",
+        "Positive",
+        "A Vietnamese name with diacritics is kept exactly."
+       ],
+       [
+        "TS-022",
+        "AC-014",
+        "FR-07",
+        "Positive",
+        "View #launch, reopen: #launch."
+       ],
+       [
+        "TS-023",
+        "AC-014",
+        "FR-07",
+        "Exception",
+        "The last conversation was left or archived meanwhile: the app still opens somewhere usable."
+       ],
+       [
+        "TS-024",
+        "AC-015",
+        "FR-07",
+        "Positive",
+        "New device: #general."
+       ],
+       [
+        "TS-025",
+        "AC-016",
+        "FR-08",
+        "Positive",
+        "Read to the bottom: badge gone."
+       ],
+       [
+        "TS-026",
+        "AC-016",
+        "FR-08",
+        "Negative",
+        "Background window: badge stays."
+       ],
+       [
+        "TS-027",
+        "AC-016",
+        "FR-08",
+        "Negative",
+        "Scrolled up, new message arrives: badge stays."
+       ],
+       [
+        "TS-028",
+        "AC-017",
+        "FR-08",
+        "Positive",
+        "3 unread: divider above the first of them; reopen: no divider."
+       ],
+       [
+        "TS-029",
+        "AC-018",
+        "FR-08",
+        "Negative",
+        "Sender sees no read mark after the recipient reads."
+       ],
+       [
+        "TS-030",
+        "AC-019",
+        "FR-09",
+        "Boundary",
+        "10,000 sent; 10,001 not sent."
+       ],
+       [
+        "TS-031",
+        "AC-019",
+        "FR-09",
+        "Negative",
+        "Only spaces: nothing is sent."
+       ],
+       [
+        "TS-032",
+        "AC-020",
+        "FR-09",
+        "Negative",
+        "Send to an unjoined channel by direct request: refused."
+       ],
+       [
+        "TS-033",
+        "AC-020",
+        "FR-09",
+        "Positive",
+        "After joining, sending works."
+       ],
+       [
+        "TS-034",
+        "AC-021",
+        "FR-10",
+        "Boundary",
+        "10 accepted, 11th refused."
+       ],
+       [
+        "TS-035",
+        "AC-022",
+        "FR-10",
+        "Boundary",
+        "100 MB accepted; just over refused."
+       ],
+       [
+        "TS-036",
+        "AC-022",
+        "FR-10",
+        "Negative",
+        "Oversized upload sent straight to storage: refused."
+       ],
+       [
+        "TS-037",
+        "AC-023",
+        "FR-10",
+        "Positive",
+        "Send a PNG: thumbnail appears."
+       ],
+       [
+        "TS-038",
+        "AC-024",
+        "FR-10",
+        "Negative",
+        "A file address from a private channel opened by a non-member: refused."
+       ],
+       [
+        "TS-039",
+        "AC-025",
+        "FR-11",
+        "Positive",
+        "Edit a message from last month."
+       ],
+       [
+        "TS-040",
+        "AC-025",
+        "FR-11",
+        "Negative",
+        "Another member has no Edit on it, and a direct request is refused."
+       ],
+       [
+        "TS-041",
+        "AC-026",
+        "FR-12",
+        "Positive",
+        "Confirm: gone for everyone."
+       ],
+       [
+        "TS-042",
+        "AC-026",
+        "FR-12",
+        "Negative",
+        "Cancel: message unchanged."
+       ],
+       [
+        "TS-043",
+        "AC-027",
+        "FR-12",
+        "Positive",
+        "Delete a parent with 3 replies: 3 replies remain."
+       ],
+       [
+        "TS-044",
+        "AC-028",
+        "FR-12",
+        "Negative",
+        "Open the old file address: not available."
+       ],
+       [
+        "TS-045",
+        "AC-029",
+        "FR-13",
+        "Positive",
+        "Admin deletes: label shown, author notified."
+       ],
+       [
+        "TS-046",
+        "AC-030",
+        "FR-13",
+        "Negative",
+        "Owner outside the channel: no access by any route."
+       ],
+       [
+        "TS-047",
+        "AC-030",
+        "FR-13",
+        "Negative",
+        "A Member cannot delete another Member's message."
+       ],
+       [
+        "TS-048",
+        "AC-031",
+        "FR-14",
+        "Positive",
+        "Mention once: one item."
+       ],
+       [
+        "TS-049",
+        "AC-032",
+        "FR-14",
+        "Negative",
+        "Self-mention: Activity unchanged."
+       ],
+       [
+        "TS-050",
+        "AC-033",
+        "FR-14",
+        "Positive",
+        "Open the message: item done, count down by one."
+       ],
+       [
+        "TS-051",
+        "AC-034",
+        "FR-15",
+        "Positive",
+        "Paused, mentioned: badge +1, nothing else."
+       ],
+       [
+        "TS-052",
+        "AC-034",
+        "FR-15",
+        "Exception",
+        "A reminder falls due during Focus: no toast."
+       ],
+       [
+        "TS-053",
+        "AC-035",
+        "FR-15",
+        "Positive",
+        "3 mentions during Focus: one summary naming 3."
+       ],
+       [
+        "TS-054",
+        "AC-035",
+        "FR-15",
+        "Boundary",
+        "Nothing arrived: no summary, or an empty one, consistently."
+       ],
+       [
+        "TS-055",
+        "AC-036",
+        "FR-15",
+        "Exception",
+        "Start twice: one Focus period, longer."
+       ],
+       [
+        "TS-056",
+        "AC-037",
+        "FR-16",
+        "Positive",
+        "Join a channel: level reads 'Mentions only'."
+       ],
+       [
+        "TS-057",
+        "AC-037",
+        "FR-16",
+        "Positive",
+        "New DM: level reads 'All messages'."
+       ],
+       [
+        "TS-058",
+        "AC-038",
+        "FR-17",
+        "Boundary",
+        "19 members: sent at once. 20 members: asked first."
+       ],
+       [
+        "TS-059",
+        "AC-038",
+        "FR-17",
+        "Negative",
+        "Cancel the confirmation: nothing is sent."
+       ],
+       [
+        "TS-060",
+        "AC-039",
+        "FR-18",
+        "Positive",
+        "App closed, mention: notification with the three parts."
+       ],
+       [
+        "TS-061",
+        "AC-039",
+        "FR-18",
+        "Negative",
+        "Push not allowed: no notification, badge still updates."
+       ],
+       [
+        "TS-062",
+        "AC-040",
+        "FR-18",
+        "Positive",
+        "Install offered and works."
+       ],
+       [
+        "TS-063",
+        "AC-041",
+        "FR-19",
+        "Positive",
+        "Member creates a public channel."
+       ],
+       [
+        "TS-064",
+        "AC-041",
+        "FR-19",
+        "Positive",
+        "Member creates a private channel."
+       ],
+       [
+        "TS-065",
+        "AC-042",
+        "FR-19",
+        "Boundary",
+        "80 accepted, 81 refused."
+       ],
+       [
+        "TS-066",
+        "AC-042",
+        "FR-19",
+        "Negative",
+        "Existing name refused."
+       ],
+       [
+        "TS-067",
+        "AC-042",
+        "FR-19",
+        "Negative",
+        "A name with a character outside a–z, 0–9, hyphen is not created as typed."
+       ],
+       [
+        "TS-068",
+        "AC-043",
+        "FR-19",
+        "Negative",
+        "No such control; a direct request is refused."
+       ],
+       [
+        "TS-069",
+        "AC-044",
+        "FR-20",
+        "Positive",
+        "Join, scroll to the first message."
+       ],
+       [
+        "TS-070",
+        "AC-045",
+        "FR-20",
+        "Negative",
+        "No delete control for Owner."
+       ],
+       [
+        "TS-071",
+        "AC-045",
+        "FR-20",
+        "Positive",
+        "Archived channel still readable by its members."
+       ],
+       [
+        "TS-072",
+        "AC-046",
+        "FR-21",
+        "Positive",
+        "Leave, Undo within 5 s: still a member."
+       ],
+       [
+        "TS-073",
+        "AC-046",
+        "FR-21",
+        "Boundary",
+        "After 5 s Undo is gone."
+       ],
+       [
+        "TS-074",
+        "AC-047",
+        "FR-21",
+        "Positive",
+        "Confirm: left; the channel is absent from Browse and Ctrl+K."
+       ],
+       [
+        "TS-075",
+        "AC-047",
+        "FR-21",
+        "Negative",
+        "Cancel: still a member."
+       ],
+       [
+        "TS-076",
+        "AC-048",
+        "FR-21",
+        "Exception",
+        "Sole member leaves: channel archived, not deleted."
+       ],
+       [
+        "TS-077",
+        "AC-049",
+        "FR-22",
+        "Boundary",
+        "8 people: created. 9: refused."
+       ],
+       [
+        "TS-078",
+        "AC-049",
+        "FR-22",
+        "Positive",
+        "DM with one person opens."
+       ],
+       [
+        "TS-079",
+        "AC-050",
+        "FR-22",
+        "Negative",
+        "No such control; a direct request is refused."
+       ],
+       [
+        "TS-080",
+        "AC-051",
+        "FR-22",
+        "Negative",
+        "Guest has no New message to members (phase 5 role, rule checked now)."
+       ],
+       [
+        "TS-081",
+        "AC-052",
+        "FR-23",
+        "Positive",
+        "Admin in the channel removes a Member."
+       ],
+       [
+        "TS-082",
+        "AC-052",
+        "FR-23",
+        "Negative",
+        "Member tries: refused."
+       ],
+       [
+        "TS-083",
+        "AC-053",
+        "FR-23",
+        "Negative",
+        "Owner outside the channel: refused."
+       ],
+       [
+        "TS-084",
+        "AC-054",
+        "FR-24",
+        "Positive",
+        "Save: appears in Later."
+       ],
+       [
+        "TS-085",
+        "AC-054",
+        "FR-24",
+        "Negative",
+        "Another person's Later does not show it."
+       ],
+       [
+        "TS-086",
+        "AC-055",
+        "FR-24",
+        "Negative",
+        "Past time refused."
+       ],
+       [
+        "TS-087",
+        "AC-055",
+        "FR-24",
+        "Boundary",
+        "One minute ahead accepted."
+       ],
+       [
+        "TS-088",
+        "AC-056",
+        "FR-25",
+        "Negative",
+        "Member opens the Admin address: refused."
+       ],
+       [
+        "TS-089",
+        "AC-056",
+        "FR-25",
+        "Negative",
+        "Member calls an admin request directly: refused."
+       ],
+       [
+        "TS-090",
+        "AC-056",
+        "FR-25",
+        "Positive",
+        "Admin and Owner open it."
+       ],
+       [
+        "TS-091",
+        "AC-057",
+        "FR-25",
+        "Positive",
+        "Owner invites an Admin."
+       ],
+       [
+        "TS-092",
+        "AC-057",
+        "FR-25",
+        "Negative",
+        "Admin tries to invite as Admin: refused."
+       ],
+       [
+        "TS-093",
+        "AC-058",
+        "FR-26",
+        "Positive",
+        "Owner makes a Member an Admin."
+       ],
+       [
+        "TS-094",
+        "AC-058",
+        "FR-26",
+        "Negative",
+        "Admin tries to change a role: refused."
+       ],
+       [
+        "TS-095",
+        "AC-059",
+        "FR-26",
+        "Positive",
+        "Admin deactivates a Member."
+       ],
+       [
+        "TS-096",
+        "AC-059",
+        "FR-26",
+        "Negative",
+        "Admin tries on an Owner: refused."
+       ],
+       [
+        "TS-097",
+        "AC-060",
+        "FR-26",
+        "Boundary",
+        "One Owner: refused. Two Owners: allowed."
+       ],
+       [
+        "TS-098",
+        "AC-061",
+        "FR-27",
+        "Positive",
+        "Go offline: content stays."
+       ],
+       [
+        "TS-099",
+        "AC-062",
+        "FR-27",
+        "Positive",
+        "Send offline, reconnect: delivered once."
+       ],
+       [
+        "TS-100",
+        "AC-062",
+        "FR-27",
+        "Exception",
+        "Connection flaps several times: still one copy."
+       ],
+       [
+        "TS-101",
+        "AC-063",
+        "FR-27",
+        "Negative",
+        "React offline: no reaction recorded, explanation shown."
+       ],
+       [
+        "TS-102",
+        "AC-063",
+        "FR-27",
+        "Negative",
+        "Join a channel offline: not joined."
+       ],
+       [
+        "TS-103",
+        "AC-064",
+        "FR-28",
+        "Negative",
+        "Click outside: nothing lost."
+       ],
+       [
+        "TS-104",
+        "AC-065",
+        "FR-28",
+        "Positive",
+        "Typed, close: asked."
+       ],
+       [
+        "TS-105",
+        "AC-065",
+        "FR-28",
+        "Boundary",
+        "Empty form: closes without asking."
+       ],
+       [
+        "TS-106",
+        "AC-066",
+        "FR-29",
+        "Negative",
+        "Review every destructive action: one or the other."
+       ],
+       [
+        "TS-107",
+        "AC-067",
+        "FR-29",
+        "Positive",
+        "Each confirmation contains the target's name."
+       ],
+       [
+        "TS-108",
+        "AC-068",
+        "FR-30",
+        "Positive",
+        "No-result search in each list."
+       ],
+       [
+        "TS-109",
+        "AC-069",
+        "FR-30",
+        "Positive",
+        "Compare count and rows for each chip."
+       ],
+       [
+        "TS-110",
+        "AC-069",
+        "FR-30",
+        "Exception",
+        "A listed item's message is deleted: count and rows still agree."
+       ],
+       [
+        "TS-111",
+        "AC-070",
+        "FR-30",
+        "Positive",
+        "Create under a filter that would hide it: the filter changes."
+       ],
+       [
+        "TS-112",
+        "AC-071",
+        "FR-31",
+        "Positive",
+        "Unaccented query finds accented name and message."
+       ],
+       [
+        "TS-113",
+        "AC-071",
+        "FR-31",
+        "Positive",
+        "Accented query also finds it."
+       ],
+       [
+        "TS-114",
+        "AC-072",
+        "FR-31",
+        "Negative",
+        "Non-member searches a word used only in a private channel: no result."
+       ],
+       [
+        "TS-115",
+        "AC-073",
+        "FR-32",
+        "Boundary",
+        "Just under 5 minutes: active. At 5 minutes: Away."
+       ],
+       [
+        "TS-116",
+        "AC-073",
+        "FR-32",
+        "Positive",
+        "Any activity returns them to active."
+       ]
+      ]
+     },
+     {
+      "type": "h",
+      "text": "Missing test coverage"
+     },
+     {
+      "type": "table",
+      "head": [
+       "What cannot be tested yet",
+       "Why",
+       "Waits on"
+      ],
+      "rows": [
+       [
+        "Expiry of a sign-in code; lock after wrong tries",
+        "No decided number",
+        "FA-13, FA-14"
+       ],
+       [
+        "Session renewal on use",
+        "Not decided whether 30 days counts from sign-in or last use",
+        "FA-15"
+       ],
+       [
+        "Every error, loading and retry state",
+        "No decided behaviour; flow 3.3 is a proposal",
+        "FA-08, FA-02, GQ-03, FQ-21"
+       ],
+       [
+        "Mention in a muted conversation; 'Nothing' against Mute",
+        "Open",
+        "GQ-01, GQ-02"
+       ],
+       [
+        "Links, reload and browser Back",
+        "Open",
+        "GQ-06"
+       ],
+       [
+        "Sign out, signed-in devices, session ended",
+        "Only in written flows",
+        "VQ-01"
+       ],
+       [
+        "The full permission matrix: one test per row and role",
+        "The table is not signed off; only the rules in FR-13, FR-19, FR-22, FR-23, FR-25, FR-26 are covered",
+        "GQ-20"
+       ],
+       [
+        "Two people or two devices at once: live updates, typing, unread across devices",
+        "Cannot be observed in the prototype; no decision on conflicts",
+        "FQ-02, GQ-13"
+       ],
+       [
+        "Speed, load, backup and recovery",
+        "No target",
+        "VQ-02, VQ-03"
+       ],
+       [
+        "Phase-1 features with no requirement written here: threads, reactions, pins, Activity filters, Files, People, Preferences, status, typing indicator",
+        "In scope by Q2 and Q17 and described in written flows, but with no decision of their own to write a criterion from",
+        "VQ-01"
+       ]
+      ]
+     }
+    ]
+   },
+   {
+    "title": "8 · Requirements traceability matrix",
+    "intro": "One row per functional requirement, from the screen in the prototype to the tests. An empty rule cell means the requirement comes straight from a decision with no numbered rule.",
+    "blocks": [
+     {
+      "type": "table",
+      "head": [
+       "UI screen",
+       "User flow",
+       "Business rule",
+       "Requirement",
+       "Acceptance criteria",
+       "Test scenarios"
+      ],
+      "rows": [
+       [
+        "Sign-in (not in the prototype)",
+        "2.1",
+        "BR-02",
+        "FR-01",
+        "AC-001, AC-002",
+        "TS-001, TS-002, TS-003, TS-004"
+       ],
+       [
+        "Sign-in (not in the prototype)",
+        "2.1",
+        "BR-03",
+        "FR-02",
+        "AC-003, AC-004",
+        "TS-005, TS-006, TS-007"
+       ],
+       [
+        "not in the prototype",
+        "1.1, 2.3, 3.2",
+        "BR-01, BR-05",
+        "FR-03",
+        "AC-005, AC-006, AC-007",
+        "TS-008, TS-009, TS-010, TS-011"
+       ],
+       [
+        "not in the prototype",
+        "2.2, 2.12",
+        "BR-06",
+        "FR-04",
+        "AC-008, AC-009, AC-010",
+        "TS-012, TS-013, TS-014, TS-015"
+       ],
+       [
+        "Home, Details panel",
+        "2.2, 2.9",
+        "BR-07",
+        "FR-05",
+        "AC-011, AC-012",
+        "TS-016, TS-017, TS-018"
+       ],
+       [
+        "not in the prototype",
+        "2.2",
+        "BR-35",
+        "FR-06",
+        "AC-013",
+        "TS-019, TS-020, TS-021"
+       ],
+       [
+        "Home",
+        "2.3",
+        "BR-08",
+        "FR-07",
+        "AC-014, AC-015",
+        "TS-022, TS-023, TS-024"
+       ],
+       [
+        "Home: message list",
+        "2.4",
+        "BR-14",
+        "FR-08",
+        "AC-016, AC-017, AC-018",
+        "TS-025, TS-026, TS-027, TS-028, TS-029"
+       ],
+       [
+        "Home: composer",
+        "2.5",
+        "BR-11, BR-12",
+        "FR-09",
+        "AC-019, AC-020",
+        "TS-030, TS-031, TS-032, TS-033"
+       ],
+       [
+        "Composer: attach (faked in the prototype)",
+        "2.6",
+        "BR-12",
+        "FR-10",
+        "AC-021, AC-022, AC-023, AC-024",
+        "TS-034, TS-035, TS-036, TS-037, TS-038"
+       ],
+       [
+        "Message menu: Edit",
+        "2.10",
+        "BR-24",
+        "FR-11",
+        "AC-025",
+        "TS-039, TS-040"
+       ],
+       [
+        "Message menu: Delete",
+        "2.10",
+        "BR-20, BR-24, BR-25",
+        "FR-12",
+        "AC-026, AC-027, AC-028",
+        "TS-041, TS-042, TS-043, TS-044"
+       ],
+       [
+        "Message menu (seen only as Owner)",
+        "2.10",
+        "BR-26",
+        "FR-13",
+        "AC-029, AC-030",
+        "TS-045, TS-046, TS-047"
+       ],
+       [
+        "Composer @, Activity",
+        "2.7",
+        "BR-15",
+        "FR-14",
+        "AC-031, AC-032, AC-033",
+        "TS-048, TS-049, TS-050"
+       ],
+       [
+        "Account menu: Pause, Focus time",
+        "2.7, 2.11",
+        "BR-16",
+        "FR-15",
+        "AC-034, AC-035, AC-036",
+        "TS-051, TS-052, TS-053, TS-054, TS-055"
+       ],
+       [
+        "Details panel: notification level",
+        "2.7",
+        "BR-17",
+        "FR-16",
+        "AC-037",
+        "TS-056, TS-057"
+       ],
+       [
+        "Composer @ (no @channel in the prototype)",
+        "2.7",
+        "BR-18",
+        "FR-17",
+        "AC-038",
+        "TS-058, TS-059"
+       ],
+       [
+        "not observable in the prototype",
+        "2.7",
+        "—",
+        "FR-18",
+        "AC-039, AC-040",
+        "TS-060, TS-061, TS-062"
+       ],
+       [
+        "not in the prototype",
+        "2.8",
+        "BR-19, BR-37",
+        "FR-19",
+        "AC-041, AC-042, AC-043",
+        "TS-063, TS-064, TS-065, TS-066, TS-067, TS-068"
+       ],
+       [
+        "Browse channels",
+        "2.9",
+        "—",
+        "FR-20",
+        "AC-044, AC-045",
+        "TS-069, TS-070, TS-071"
+       ],
+       [
+        "Details panel: Leave channel",
+        "2.9",
+        "BR-20, BR-23",
+        "FR-21",
+        "AC-046, AC-047, AC-048",
+        "TS-072, TS-073, TS-074, TS-075, TS-076"
+       ],
+       [
+        "New message (one person only in the prototype)",
+        "2.14",
+        "BR-36, BR-37",
+        "FR-22",
+        "AC-049, AC-050, AC-051",
+        "TS-077, TS-078, TS-079, TS-080"
+       ],
+       [
+        "not in the prototype",
+        "no chart",
+        "BR-38",
+        "FR-23",
+        "AC-052, AC-053",
+        "TS-081, TS-082, TS-083"
+       ],
+       [
+        "Later; message menu: Remind me",
+        "2.11",
+        "—",
+        "FR-24",
+        "AC-054, AC-055",
+        "TS-084, TS-085, TS-086, TS-087"
+       ],
+       [
+        "Admin (members part not in the prototype)",
+        "2.12",
+        "—",
+        "FR-25",
+        "AC-056, AC-057",
+        "TS-088, TS-089, TS-090, TS-091, TS-092"
+       ],
+       [
+        "not in the prototype",
+        "2.13",
+        "BR-27, BR-28",
+        "FR-26",
+        "AC-058, AC-059, AC-060",
+        "TS-093, TS-094, TS-095, TS-096, TS-097"
+       ],
+       [
+        "Offline banner, 'Waiting to send'",
+        "3.1",
+        "BR-30",
+        "FR-27",
+        "AC-061, AC-062, AC-063",
+        "TS-098, TS-099, TS-100, TS-101, TS-102"
+       ],
+       [
+        "Every dialog with fields",
+        "2.8",
+        "BR-21",
+        "FR-28",
+        "AC-064, AC-065",
+        "TS-103, TS-104, TS-105"
+       ],
+       [
+        "Toasts and confirmations",
+        "2.9, 2.10, 2.13",
+        "BR-20",
+        "FR-29",
+        "AC-066, AC-067",
+        "TS-106, TS-107"
+       ],
+       [
+        "Activity, Later, Files, People, Browse channels",
+        "2.4, 2.9, 2.11",
+        "BR-22, BR-32",
+        "FR-30",
+        "AC-068, AC-069, AC-070",
+        "TS-108, TS-109, TS-110, TS-111"
+       ],
+       [
+        "Search box 'Ctrl K', command palette",
+        "1.1",
+        "—",
+        "FR-31",
+        "AC-071, AC-072",
+        "TS-112, TS-113, TS-114"
+       ],
+       [
+        "Presence dot on avatars",
+        "—",
+        "—",
+        "FR-32",
+        "AC-073",
+        "TS-115, TS-116"
+       ]
+      ]
+     }
+    ]
+   },
+   {
+    "title": "9 · Development readiness report",
+    "intro": "Whether building can start, and what stands in the way.",
+    "blocks": [
+     {
+      "type": "table",
+      "head": [
+       "Item",
+       "Count",
+       "Detail"
+      ],
+      "rows": [
+       [
+        "Resolved findings",
+        "39 + 5",
+        "The 39 prototype gaps each have a required behaviour (T-11); 4 conflicts settled by NR3, Q13, OQ2, Q18; display name settled by Q31."
+       ],
+       [
+        "Remaining open questions",
+        "45",
+        "13 high priority (below), 32 medium or low. Section 2."
+       ],
+       [
+        "Accepted assumptions",
+        "17",
+        "G1 to G16, and AS-05 (demo-only controls never ship)."
+       ],
+       [
+        "Assumptions not yet accepted",
+        "23",
+        "FA-01 to FA-17 and AS-01 to AS-08 except AS-05. Section 2."
+       ],
+       [
+        "Deferred requirements",
+        "6 phases",
+        "2: Working together · 3: Phone app · 4: Meetings · 5: Beyond the team · 6: Desktop and AI · 7: Mail"
+       ],
+       [
+        "Critical blockers",
+        "3",
+        "T-01 (no way in is designed), T-02 (no member management), T-03 (permissions unsigned)."
+       ]
+      ]
+     },
+     {
+      "type": "h",
+      "text": "High-priority questions that block work (13)"
+     },
+     {
+      "type": "table",
+      "head": [
+       "ID",
+       "Decision needed",
+       "Who decides",
+       "Holds up"
+      ],
+      "rows": [
+       [
+        "FQ-01",
+        "Someone is signed in as A and presses an invitation or sign-in link meant for B. Does the link replace A's session, or does the page ask first?",
+        "PO, BE",
+        "FR-04"
+       ],
+       [
+        "FQ-13",
+        "What does the invitation refusal page say, and does it tell the causes apart?",
+        "UX",
+        "FR-04"
+       ],
+       [
+        "FQ-14",
+        "The prototype's code screen has no Resend, only 'Use a different email'. G5 already expects a Resend button after 60 seconds. Is Resend added to the screen, and does a new code cancel the earlier one?",
+        "UX",
+        "FR-01, FR-02"
+       ],
+       [
+        "FQ-15",
+        "The welcome step after accepting an invitation is not in the prototype. Is it wanted, and with which fields?",
+        "PO, UX",
+        "FR-04, FR-06"
+       ],
+       [
+        "FQ-17",
+        "**Your finding:** the prototype has no '+' for a new channel, only '+ Browse channels', and Browse channels has nothing to create one. Where does 'Create channel' live?",
+        "UX",
+        "FR-19"
+       ],
+       [
+        "FQ-19",
+        "Can an Owner or Admin remove a member from any channel? Decided so far (G14): no, only from a channel they belong to, and never from #general. Does that stand, and can the creator of a channel remove people too?",
+        "PO",
+        "FR-23"
+       ],
+       [
+        "FQ-20",
+        "How does a person choose several people for a group DM? The prototype's New message dialog opens a conversation on the first press.",
+        "UX",
+        "FR-22"
+       ],
+       [
+        "FQ-21",
+        "The prototype shows 'Waiting to send' and nothing for a send that failed. Where do 'Not sent', Retry and Delete appear?",
+        "UX",
+        "FR-09"
+       ],
+       [
+        "GQ-01",
+        "Does a mention notify the person when the conversation is muted?",
+        "PO",
+        "FR-14"
+       ],
+       [
+        "GQ-06",
+        "Does every conversation, thread and section have its own address, and what does browser Back do?",
+        "FE, UX",
+        "FR-07, FR-14, FR-18"
+       ],
+       [
+        "GQ-20",
+        "Is the capability matrix on the Roles & States tab the agreed authority for what Members and Admins see?",
+        "PO, QA",
+        "FR-13, FR-19, FR-23, FR-25, FR-26"
+       ],
+       [
+        "VQ-01",
+        "The 51 written flows were drafted by Claude under decision Q19 ('Claude decides what the prototype does not draw'). Several things in them were never asked one by one: Sign out and the list of signed-in devices (F06), Resend and Revoke of an invitation (F02), what deactivation does to a person's messages and DMs (F41). Are the written flows accepted as the baseline, or reviewed group by group first?",
+        "PO",
+        "FR-25, FR-26"
+       ],
+       [
+        "VQ-03",
+        "No decision on backup and recovery: how often data is backed up, and how much may be lost or how long the service may be down.",
+        "PO, BE",
+        "—"
+       ]
+      ]
+     },
+     {
+      "type": "h",
+      "text": "Readiness by requirement"
+     },
+     {
+      "type": "table",
+      "head": [
+       "Readiness",
+       "Requirements",
+       "What it means"
+      ],
+      "rows": [
+       [
+        "Ready",
+        "FR-08, FR-11, FR-15, FR-17, FR-29, FR-30, FR-32",
+        "Fully decided; can be specified and built."
+       ],
+       [
+        "Ready if the assumptions are accepted",
+        "FR-21",
+        "Buildable once you say yes to the assumptions listed beside it."
+       ],
+       [
+        "Core ready; details wait for answers",
+        "FR-03, FR-05, FR-10, FR-12, FR-16, FR-20, FR-24, FR-27, FR-28, FR-31",
+        "The decided part can be built; the open detail must be answered before its ticket closes."
+       ],
+       [
+        "**Blocked**",
+        "FR-01, FR-02, FR-04, FR-06, FR-07, FR-09, FR-13, FR-14, FR-18, FR-19, FR-22, FR-23, FR-25, FR-26",
+        "A high-priority question decides its screens or rules. Do not start."
+       ]
+      ]
+     },
+     {
+      "type": "h",
+      "text": "Dependencies that need technical validation"
+     },
+     {
+      "type": "table",
+      "head": [
+       "To prove",
+       "Affects",
+       "How"
+      ],
+      "rows": [
+       [
+        "Web Push on iPhone works only for an installed web app",
+        "FR-18 · Q28, GQ-11",
+        "Try on a real iPhone before the notification work starts."
+       ],
+       [
+        "Postgres full-text search matching Vietnamese without diacritics",
+        "FR-31 · Q15",
+        "A short trial with sample Vietnamese messages."
+       ],
+       [
+        "Uploading 100 MB straight to object storage from a browser, with the size enforced by the server",
+        "FR-10 · Q14",
+        "Trial upload on a slow connection."
+       ],
+       [
+        "Catching up after a reconnect without losing or doubling a message",
+        "FR-27 · NR13",
+        "Two-client test with the network cut mid-send."
+       ],
+       [
+        "Mail delivery of sign-in codes through SMTP (speed, spam folders)",
+        "FR-01, FR-04 · Q25",
+        "Send to Gmail and Outlook addresses from the chosen account."
+       ],
+       [
+        "200 people connected at once on one server",
+        "NFR-04 · Q9",
+        "Load test once VQ-02 gives a target."
+       ]
+      ]
+     },
+     {
+      "type": "note",
+      "text": "**What clears the gate.** (1) Answer the 13 high-priority questions, or accept the proposal for each in writing. (2) Say yes or no to the unaccepted assumptions. (3) Add the missing screens to the prototype for T-01 to T-05, or accept that they are designed during the build. After that this tab is regenerated, the blocked requirements move up, and tickets can be drawn from the requirements. Until then the 96 draft tickets on the Plan tab are not confirmed work."
+     }
+    ]
+   }
+  ],
+  "open": 13
  }
 }

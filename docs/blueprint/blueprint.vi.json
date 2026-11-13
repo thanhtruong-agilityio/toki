@@ -154,12 +154,14 @@
    "Size": "Cỡ",
    "Needs": "Cần ticket",
    "Left for the spec": "Còn lại cho spec",
-   "Gap analysis": "Phân tích gap"
+   "Gap analysis": "Phân tích gap",
+   "Validation": "Kiểm định"
   },
   "allowWords": [
    "Tiếng",
    "Việt",
-   "Trần"
+   "Trần",
+   "Nguyễn"
   ]
  },
  "overview": {
@@ -7490,5 +7492,3559 @@
    }
   ],
   "open": 20
+ },
+ "validation": {
+  "sections": [
+   {
+    "title": "Làm rõ và kiểm định yêu cầu",
+    "intro": "Tab này gom phân tích prototype, phân tích gap, các câu hỏi mở và các giả định lại và hỏi một điều: **yêu cầu đã sẵn sàng để làm chưa?** Nó lấy 141 phát hiện, câu hỏi và giả định thô, gộp thành 15 phát hiện, tách những gì bạn đã quyết định (79 câu trả lời) khỏi những gì đang giả định (24) và còn mở (45), và chỉ viết yêu cầu từ những gì bạn đã quyết định: 32 yêu cầu chức năng, 12 phi chức năng, 73 tiêu chí chấp nhận và 116 kịch bản test.",
+    "blocks": [
+     {
+      "type": "note",
+      "text": "**Kết luận: chưa sẵn sàng trên tổng thể.** 8 trên 32 yêu cầu chức năng bắt đầu được (7 sẵn sàng, 1 khi các giả định được chấp nhận); 10 có phần lõi sẵn sàng, chi tiết đang chờ; 14 bị chặn bởi 13 câu hỏi ưu tiên cao. Tab này không sinh ticket phát triển nào; 96 ticket ở tab Plan vẫn là bản nháp cho tới khi mục 9 cho qua."
+     },
+     {
+      "type": "table",
+      "head": [
+       "Kết quả",
+       "Số lượng",
+       "Mục"
+      ],
+      "rows": [
+       [
+        "Backlog phát hiện",
+        "15 (từ 141)",
+        "1"
+       ],
+       [
+        "Quyết định về yêu cầu",
+        "79 đã chốt · 24 giả định · 45 còn mở",
+        "2"
+       ],
+       [
+        "User flow đã kiểm định",
+        "19",
+        "3"
+       ],
+       [
+        "Quy tắc nghiệp vụ",
+        "38",
+        "4"
+       ],
+       [
+        "Yêu cầu chức năng · phi chức năng",
+        "32 · 12",
+        "5"
+       ],
+       [
+        "Tiêu chí chấp nhận",
+        "73",
+        "6"
+       ],
+       [
+        "Kịch bản test",
+        "116",
+        "7"
+       ],
+       [
+        "Ma trận truy vết",
+        "32 dòng",
+        "8"
+       ],
+       [
+        "Báo cáo sẵn sàng",
+        "",
+        "9"
+       ]
+      ]
+     }
+    ]
+   },
+   {
+    "title": "1 · Backlog phát hiện",
+    "intro": "Mọi thứ đã tìm ra cho tới nay, gộp lại để mỗi vấn đề chỉ xuất hiện một lần: 39 gap khi đi qua prototype, 33 phát hiện của phân tích gap, các câu hỏi (FQ, GQ) và các giả định (FA, AS). Xếp theo mức độ, rồi theo thiệt hại với công việc.",
+    "blocks": [
+     {
+      "type": "table",
+      "head": [
+       "ID",
+       "Phát hiện",
+       "Gộp từ",
+       "Nhóm",
+       "Mức độ",
+       "Ảnh hưởng",
+       "Phụ trách",
+       "Phụ thuộc · tình trạng"
+      ],
+      "rows": [
+       [
+        "T-01",
+        "Việc vào và ra chưa có thiết kế: đăng nhập thành viên, lời mời, màn hình chào, trang từ chối, hết phiên, tài khoản bị vô hiệu hoá, sign out.",
+        "N-01, N-04, N-29, N-30, FQ-01, FQ-13, FQ-14, FQ-15, FA-13, FA-14, FA-15, VQ-01",
+        "User flow",
+        "Nghiêm trọng",
+        "Không ai vào được sản phẩm; là thứ đầu tiên mọi người dùng gặp.",
+        "PO, UX",
+        "Tài khoản gửi mail đăng nhập (còn mở ở tab Questions & Gaps)."
+       ],
+       [
+        "T-02",
+        "Admin không có quản lý thành viên: mời, gửi lại, thu hồi, đổi vai trò, vô hiệu hoá.",
+        "N-02, N-26, FQ-03, FQ-11, FA-11, GQ-16",
+        "UI/UX",
+        "Nghiêm trọng",
+        "Không có lời mời thì workspace chỉ có một người.",
+        "PO, UX",
+        "T-01 (link mời), T-03 (ai được làm gì)."
+       ],
+       [
+        "T-03",
+        "Phân quyền mới chỉ được xem với vai trò Owner; bảng quyền chưa được duyệt.",
+        "N-12, N-32, GQ-20, AS-01, FQ-19, GAP-01, GAP-17",
+        "Logic nghiệp vụ",
+        "Nghiêm trọng",
+        "Member hoặc guest chạm được nội dung riêng tư.",
+        "PO, QA",
+        "Chặn mọi test phân quyền."
+       ],
+       [
+        "T-04",
+        "Tạo kênh và nhóm, và quản lý ai ở trong đó, chưa được vẽ.",
+        "N-03, N-15, N-31, FQ-09, FQ-17, FQ-18, FQ-20, GQ-05, FA-04, FA-05, FA-10",
+        "User flow",
+        "Cao",
+        "Nhóm không tổ chức được các cuộc trò chuyện.",
+        "PO, UX",
+        "FQ-17 trước FQ-18."
+       ],
+       [
+        "T-05",
+        "Không có trạng thái đang tải, lỗi hay thử lại ở đâu cả; bấm hai lần chưa được định nghĩa.",
+        "N-05, N-06, N-08, N-18, N-33, GQ-03, GQ-18, FA-02, FA-08, FA-16, FQ-07, FQ-21",
+        "UI/UX",
+        "Cao",
+        "Hành động tưởng thành công nhưng không; mất nội dung đã gõ.",
+        "UX, FE",
+        "GQ-03 quyết định cho mọi form."
+       ],
+       [
+        "T-06",
+        "Quy tắc thông báo còn mơ hồ: mức, Mute, mention trong cuộc trò chuyện đã tắt tiếng.",
+        "N-10, N-11, GQ-01, GQ-02, FA-12, AS-02",
+        "Logic nghiệp vụ",
+        "Cao",
+        "Người dùng lỡ mention hoặc bị ngập thông báo.",
+        "PO",
+        "GQ-01 trước GQ-02."
+       ],
+       [
+        "T-07",
+        "Địa chỉ, Back của trình duyệt, tải lại và link chia sẻ chưa được định nghĩa.",
+        "N-13, GQ-06",
+        "User flow",
+        "Cao",
+        "Thông báo và link mở sai nơi.",
+        "FE, UX",
+        "Quyết định khung ứng dụng; cần trước phần thông báo."
+       ],
+       [
+        "T-09",
+        "Tải lên là giả lập: không có chọn file, tiến độ, giới hạn, lỗi hay huỷ.",
+        "N-07, FQ-04, FA-07",
+        "User flow",
+        "Cao",
+        "File là tính năng phase 1 mà chưa có thiết kế.",
+        "UX, BE",
+        "Giới hạn đã chốt (G9, Q14)."
+       ],
+       [
+        "T-10",
+        "Hành vi giữa nhiều người, thiết bị và tab không quan sát được trong prototype.",
+        "N-19, N-23, FQ-02, FQ-05, GQ-13",
+        "Hành vi hệ thống",
+        "Cao",
+        "Sai số chưa đọc, tin bị trùng hoặc mất.",
+        "BE, QA",
+        "Cần test với hai client cùng đăng nhập."
+       ],
+       [
+        "T-11",
+        "39 lỗi tìm thấy khi đi qua prototype (hành vi sai, gây hiểu lầm hoặc không nhất quán).",
+        "GAP-01…GAP-39",
+        "UI/UX",
+        "Cao",
+        "Làm lại đúng như thiết kế thì sản phẩm sẽ lặp lại chúng.",
+        "BA, QA",
+        "**Đã giải quyết:** mỗi lỗi có hành vi yêu cầu ở tab Questions & Gaps; 22 lỗi thành quy tắc NR1 tới NR13."
+       ],
+       [
+        "T-08",
+        "Offline và kết nối lại: câu chữ, trạng thái và những gì bị chặn.",
+        "GAP-21, FQ-22, FA-06, FA-09, FA-17",
+        "Hành vi hệ thống",
+        "Trung bình",
+        "Báo thành công giả khi offline.",
+        "UX, FE",
+        "Quy tắc NR13 đã chốt; chỉ còn câu chữ và thời gian."
+       ],
+       [
+        "T-12",
+        "Tăng trưởng không có giới hạn và vận hành chưa được nêu: lưu trữ, danh sách dài, bản mới, trình duyệt, sao lưu, hiệu năng.",
+        "N-17, N-20, N-21, N-22, GQ-09, GQ-10, GQ-11, GQ-12, GQ-17, FQ-12, VQ-02, VQ-03",
+        "Hành vi hệ thống",
+        "Trung bình",
+        "Đầy đĩa làm dừng server duy nhất; không test nào đánh giá được tốc độ.",
+        "BE, PO",
+        "VQ-03 trước khi ra mắt."
+       ],
+       [
+        "T-13",
+        "Tìm kiếm: không có trạng thái tải hay lỗi, không nêu phạm vi hay giới hạn.",
+        "N-27, GQ-19",
+        "UI/UX",
+        "Trung bình",
+        "Ctrl+K là tính năng phase 1 mà phạm vi chưa rõ.",
+        "PO, FE",
+        ""
+       ],
+       [
+        "T-14",
+        "Thông tin cá nhân và tiện ích nhỏ: sửa hồ sơ, ảnh, định dạng giờ, tiêu đề tab, bỏ theo dõi thread, đánh dấu chưa đọc, xem trước kênh công khai, đổi địa chỉ đăng nhập, lựa chọn nhắc việc đã qua.",
+        "N-14, N-16, N-24, N-25, N-28, GQ-04, GQ-07, GQ-08, GQ-14, GQ-15, FQ-06, FQ-08, FQ-10, AS-03, AS-04",
+        "UI/UX",
+        "Thấp",
+        "Hoàn thiện; không cái nào chặn một hành trình.",
+        "PO, UX",
+        ""
+       ],
+       [
+        "T-15",
+        "Nội dung chỉ để demo trong prototype: thanh demo, người và tin nhắn mẫu, nhãn 'New', ghi chú riêng tư của thống kê.",
+        "AS-05, AS-06, AS-07, AS-08",
+        "UI/UX",
+        "Thấp",
+        "Không có, nếu không đưa vào bản build.",
+        "PO",
+        "AS-05 đã xác nhận; phần còn lại chờ đồng ý."
+       ]
+      ]
+     },
+     {
+      "type": "h",
+      "text": "Trùng lặp đã gộp"
+     },
+     {
+      "type": "table",
+      "head": [
+       "Cùng một vấn đề",
+       "Đã ghi nhận là",
+       "Giữ ở"
+      ],
+      "rows": [
+       [
+        "Gửi lỗi chưa có thiết kế",
+        "N-06 · N-33 · FQ-07 · FQ-21",
+        "T-05"
+       ],
+       [
+        "Không có cách tạo kênh",
+        "N-03 · FQ-17 · MF 'Create a channel'",
+        "T-04"
+       ],
+       [
+        "Màn hình mã không có Resend",
+        "N-30 · FQ-14",
+        "T-01"
+       ],
+       [
+        "Mention trong cuộc trò chuyện đã tắt tiếng",
+        "N-10 · GQ-01 · R-04",
+        "T-06"
+       ],
+       [
+        "Hạn mức lưu trữ",
+        "N-17 · GQ-09 · R-07",
+        "T-12"
+       ],
+       [
+        "Hành vi khi offline",
+        "GAP-21 · N-33 · FQ-22",
+        "T-08"
+       ],
+       [
+        "Bấm hai lần",
+        "N-18 · GQ-18",
+        "T-05"
+       ],
+       [
+        "Tab hoặc thiết bị thứ hai",
+        "N-19 · FQ-02",
+        "T-10"
+       ],
+       [
+        "Phân quyền chỉ xem với vai trò Owner",
+        "N-12 · AS-01 · GQ-20 · R-02",
+        "T-03"
+       ]
+      ]
+     },
+     {
+      "type": "h",
+      "text": "Phát hiện mâu thuẫn nhau"
+     },
+     {
+      "type": "table",
+      "head": [
+       "Chủ đề",
+       "Prototype",
+       "Đối lập với",
+       "Tình trạng"
+      ],
+      "rows": [
+       [
+        "Rời một kênh",
+        "Hỏi xác nhận rồi lại đưa thêm Undo",
+        "Undo cho hành động hoàn tác được, xác nhận cho hành động không hoàn tác được, không bao giờ cả hai (NR3)",
+        "**Đã giải quyết:** NR3"
+       ],
+       [
+        "Xoá một tin có thread",
+        "Xoá luôn mọi trả lời",
+        "Thread vẫn còn dưới dòng 'Message deleted' (Q13)",
+        "**Đã giải quyết:** Q13"
+       ],
+       [
+        "Rời một kênh riêng tư",
+        "'You can rejoin from Browse channels'",
+        "Phải được một thành viên mời lại (OQ2)",
+        "**Đã giải quyết:** OQ2"
+       ],
+       [
+        "Ngôn ngữ mặc định",
+        "Tiếng Việt ở câu trả lời đầu cho Q18",
+        "Tiếng Anh (Q18, bạn đổi ngày 13/11/2026)",
+        "**Đã giải quyết:** Q18"
+       ],
+       [
+        "Banner offline",
+        "'Offline: showing saved messages'",
+        "Flow viết F37: 'Reconnecting…' và toast 'Reconnected'",
+        "**Còn mở:** FQ-22"
+       ],
+       [
+        "Lỗi của form hiện ở đâu",
+        "Một toast sau khi bấm nút",
+        "Các sơ đồ: thông báo dưới ô nhập, nút bị tắt",
+        "**Còn mở:** GQ-03"
+       ],
+       [
+        "Mã đăng nhập sống bao lâu",
+        "Màn hình guest: 'It works for 10 minutes'",
+        "Chưa quyết định gì cho thành viên",
+        "**Còn mở:** FA-13"
+       ],
+       [
+        "Mention trong cuộc trò chuyện đã tắt tiếng",
+        "Một công tắc cá nhân trong Preferences",
+        "Sơ đồ 2.7 thể hiện chỉ có huy hiệu",
+        "**Còn mở:** GQ-01"
+       ],
+       [
+        "Mức 'Nothing' và Mute",
+        "Hai điều khiển riêng",
+        "Chưa nêu khác biệt",
+        "**Còn mở:** GQ-02"
+       ]
+      ]
+     },
+     {
+      "type": "h",
+      "text": "Phụ thuộc"
+     },
+     {
+      "type": "table",
+      "head": [
+       "Việc này phải xong trước",
+       "Vì nó giữ chân"
+      ],
+      "rows": [
+       [
+        "GQ-20 (duyệt bảng quyền)",
+        "FR-13, FR-19, FR-23, FR-25, FR-26 và mọi test phân quyền"
+       ],
+       [
+        "GQ-06 (địa chỉ và Back)",
+        "FR-07, mở một thông báo (FR-14, FR-18), khung ứng dụng"
+       ],
+       [
+        "GQ-03 (lỗi form hiện ở đâu)",
+        "Mọi form: đăng nhập, tạo kênh, mời, màn hình chào"
+       ],
+       [
+        "GQ-01, rồi GQ-02 (Mute)",
+        "FR-14, FR-16"
+       ],
+       [
+        "FQ-17, rồi FQ-18 (tạo kênh)",
+        "FR-19"
+       ],
+       [
+        "FA-13, FA-14 (thời gian sống của mã, số lần sai)",
+        "Test phủ định và test biên của FR-01"
+       ],
+       [
+        "Tài khoản gửi mail đăng nhập",
+        "FR-01, FR-04 ở mọi môi trường thật"
+       ],
+       [
+        "GQ-11 (trình duyệt hỗ trợ)",
+        "FR-18, NFR-06 và ma trận kiểm thử"
+       ]
+      ]
+     }
+    ]
+   },
+   {
+    "title": "2 · Quyết định về yêu cầu",
+    "intro": "Ba loại, để riêng: những gì bạn đã quyết định, những gì đang giả định và chờ đồng ý, và những gì còn mở. Chỉ loại đầu trở thành yêu cầu.",
+    "blocks": [
+     {
+      "type": "h",
+      "text": "Đã chốt (79)"
+     },
+     {
+      "type": "table",
+      "head": [
+       "Loại",
+       "Số lượng",
+       "Ở đâu"
+      ],
+      "rows": [
+       [
+        "Câu trả lời ở các vòng hỏi (Q1 tới Q31)",
+        "33",
+        "Questions & Gaps"
+       ],
+       [
+        "Giả định bạn đã xác nhận (G1 tới G16)",
+        "16",
+        "Requirements"
+       ],
+       [
+        "Câu hỏi review đã trả lời (OQ1 tới OQ17)",
+        "17",
+        "Questions & Gaps"
+       ],
+       [
+        "Quy tắc rút ra từ gap (NR1 tới NR13)",
+        "13",
+        "Requirements"
+       ]
+      ]
+     },
+     {
+      "type": "h",
+      "text": "Quyết định cần từ các bên (45)"
+     },
+     {
+      "type": "p",
+      "text": "Mọi câu hỏi còn mở trong một danh sách: các câu nảy ra khi vẽ flow (FQ), trong phân tích gap (GQ) và từ lần kiểm định này (VQ). Đề xuất chỉ là gợi ý và không được dùng ở đâu cho tới khi bạn đồng ý."
+     },
+     {
+      "type": "table",
+      "head": [
+       "ID",
+       "Cần quyết định",
+       "Đề xuất",
+       "Ai quyết định",
+       "Ưu tiên"
+      ],
+      "rows": [
+       [
+        "FQ-01",
+        "Đang đăng nhập là A và bấm link mời hoặc link đăng nhập dành cho B. Link thay phiên của A luôn, hay trang hỏi trước?",
+        "Hỏi trước: 'Bạn đang đăng nhập là A. Tiếp tục với B?'",
+        "PO, BE",
+        "Cao"
+       ],
+       [
+        "FQ-13",
+        "Trang từ chối lời mời ghi gì, và có phân biệt từng nguyên nhân không?",
+        "Ba câu. **Hết hạn:** 'This invitation expired on 12 Nov. Ask Minh to send a new one.' **Bị thu hồi:** 'This invitation is no longer valid. Ask an admin of Hugepig Studio for a new one.' **Link lạ hoặc hỏng:** 'This link is not valid.', không nêu tên workspace. Lời mời đã dùng rồi thì tới trang đăng nhập với email điền sẵn. Không trang nào có nút đăng nhập cho người lạ.",
+        "UX",
+        "Cao"
+       ],
+       [
+        "FQ-14",
+        "Màn hình nhập mã của prototype không có Resend, chỉ có 'Use a different email'. G5 đã mặc định có nút Resend sau 60 giây. Có thêm Resend vào màn hình không, và mã mới có huỷ mã cũ không?",
+        "Có: 'Resend code' dưới ô nhập, xám kèm đếm ngược 60 giây. Mã mới huỷ mã cũ, nên chỉ mail mới nhất dùng được.",
+        "UX",
+        "Cao"
+       ],
+       [
+        "FQ-15",
+        "Màn hình chào sau khi nhận lời mời không có trong prototype. Có cần nó không, và gồm những ô nào?",
+        "Một màn hình: tên hiển thị (bắt buộc, 1 tới 80, điền sẵn từ địa chỉ), chức danh (không bắt buộc), múi giờ (lấy từ thiết bị). 'Enter Toki' và 'Skip'.",
+        "PO, UX",
+        "Cao"
+       ],
+       [
+        "FQ-17",
+        "**Bạn phát hiện:** prototype không có '+' để tạo kênh, chỉ có '+ Browse channels', và trong Browse channels không có chỗ nào để tạo. 'Create channel' nằm ở đâu?",
+        "(a) Nút 'Create channel' ở đầu Browse channels, lệnh 'Create channel' trong Ctrl+K, và 'Create #text' khi tìm không ra · (b) Một nút '+' riêng cạnh tiêu đề Conversations. Đề xuất: (a), đúng như flow viết F20.",
+        "UX",
+        "Cao"
+       ],
+       [
+        "FQ-19",
+        "Owner hoặc Admin có gỡ được thành viên khỏi một kênh bất kỳ không? Hiện đã quyết định (G14): không, chỉ trong kênh họ là thành viên, và không bao giờ khỏi #general. Giữ như vậy chứ, và người tạo kênh có được gỡ người không?",
+        "Giữ G14. Người tạo kênh không có quyền gì thêm. Người bị gỡ nhận một mục Activity 'Lan removed you from #name'; kênh hiện 'Lan removed Minh'. Flow này chưa có sơ đồ.",
+        "PO",
+        "Cao"
+       ],
+       [
+        "FQ-20",
+        "Người dùng chọn nhiều người cho một group DM bằng cách nào? Hộp thoại New message của prototype mở cuộc trò chuyện ngay ở lần bấm đầu.",
+        "Mỗi lần bấm thêm người đó thành một chip trong ô; nút 'Start' mở cuộc trò chuyện. Một chip rồi Enter thì mở DM. Kênh trong danh sách vẫn mở ngay. Giới hạn vẫn là 8 tính cả bạn (Q17).",
+        "UX",
+        "Cao"
+       ],
+       [
+        "FQ-21",
+        "Prototype có 'Waiting to send' và không có gì cho trường hợp gửi lỗi. 'Not sent', Retry và Delete hiện ở đâu?",
+        "Ở đúng chỗ của 'Waiting to send', cạnh giờ: chữ đỏ 'Not sent' rồi hai nút chữ, Retry và Delete. Tin vẫn mờ. Delete không hỏi lại, vì chưa ai khác thấy tin đó.",
+        "UX",
+        "Cao"
+       ],
+       [
+        "GQ-01",
+        "Mention có báo cho người đó khi cuộc trò chuyện đã bị tắt tiếng không?",
+        "(a) Công tắc cá nhân, mặc định bật · (b) Không bao giờ · (c) Luôn luôn Đề xuất: (a), như prototype",
+        "PO",
+        "Cao"
+       ],
+       [
+        "GQ-06",
+        "Mỗi cuộc trò chuyện, thread và mục có địa chỉ riêng không, và Back của trình duyệt làm gì?",
+        "(a) Mỗi thứ có địa chỉ; Back đóng panel bên trước, rồi về nơi trước đó · (b) Một địa chỉ cho cả ứng dụng Đề xuất: (a)",
+        "FE, UX",
+        "Cao"
+       ],
+       [
+        "GQ-20",
+        "Bảng quyền ở tab Roles & States có phải là căn cứ đã thống nhất cho những gì Member và Admin thấy không?",
+        "(a) Đúng, duyệt nguyên trạng · (b) Rà từng dòng trước Đề xuất: (b)",
+        "PO, QA",
+        "Cao"
+       ],
+       [
+        "VQ-01",
+        "51 flow viết do Claude soạn theo quyết định Q19 ('Claude quyết định những gì prototype không vẽ'). Nhiều điều trong đó chưa từng được hỏi riêng: Sign out và danh sách thiết bị đã đăng nhập (F06), Resend và Revoke lời mời (F02), vô hiệu hoá ảnh hưởng thế nào tới tin nhắn và DM của một người (F41). Chấp nhận các flow viết làm nền, hay rà từng nhóm trước?",
+        "Rà bốn nhóm của phase 1 không có màn hình trong prototype (tài khoản và đăng nhập, kênh, quản trị, trạng thái); phần còn lại chấp nhận như đã viết.",
+        "PO",
+        "Cao"
+       ],
+       [
+        "VQ-03",
+        "Chưa có quyết định về sao lưu và khôi phục: sao lưu bao lâu một lần, được phép mất bao nhiêu dữ liệu hoặc ngừng dịch vụ bao lâu.",
+        "Sao lưu hàng đêm database và file sang nơi khác, giữ 14 ngày; thử khôi phục trước khi ra mắt.",
+        "PO, BE",
+        "Cao"
+       ],
+       [
+        "FQ-02",
+        "Sign out ở một tab: các tab khác của cùng trình duyệt có thoát ngay không?",
+        "Có, ngay lập tức; chúng dùng chung phiên",
+        "FE",
+        "Trung bình"
+       ],
+       [
+        "FQ-03",
+        "Admin mời địa chỉ của một thành viên đã bị vô hiệu hoá. Từ chối, hay đề nghị Reactivate?",
+        "Từ chối với 'This account is deactivated' kèm nút Reactivate",
+        "PO",
+        "Trung bình"
+       ],
+       [
+        "FQ-04",
+        "Có loại file nào bị từ chối không (ví dụ chương trình), hay nhận mọi loại tới 100 MB?",
+        "Nhận mọi loại; luôn tải về, không bao giờ chạy trong trình duyệt",
+        "PO, BE",
+        "Trung bình"
+       ],
+       [
+        "FQ-05",
+        "Một tin bị xoá trong lúc người khác đang viết trả lời trong thread của nó. Trả lời đó có được gửi không?",
+        "Có; thread vẫn nằm dưới dòng 'Message deleted'",
+        "PO",
+        "Trung bình"
+       ],
+       [
+        "FQ-07",
+        "Tin 'Waiting to send' thử bao lâu rồi mới thành 'Not sent'?",
+        "Chờ khi mất mạng; có mạng lại thì tự thử một lần, rồi 'Not sent' kèm Retry",
+        "FE, BE",
+        "Trung bình"
+       ],
+       [
+        "FQ-08",
+        "Thành viên có tự đổi được địa chỉ đăng nhập không, hay chỉ Admin?",
+        "Phase 1 không ai đổi; về sau do Owner làm",
+        "PO",
+        "Trung bình"
+       ],
+       [
+        "FQ-11",
+        "Một lô lời mời lỗi giữa chừng (máy chủ mail hỏng sau 3 trên 10). Giữ 3 cái đã xong, hay huỷ hết?",
+        "Giữ; mỗi hàng báo kết quả riêng",
+        "BE",
+        "Trung bình"
+       ],
+       [
+        "FQ-16",
+        "#general có sẵn trước khi mời ai và người mới nào cũng ở trong đó (G1). #general có hiện một dòng khi có người vào không, và dòng đó có báo cho ai không?",
+        "Có: một dòng hệ thống màu xám 'Minh joined', kèm ngày. Không làm tăng số chưa đọc và không tạo thông báo. Prototype không có dòng hệ thống; dữ liệu mẫu chỉ có một người viết 'Welcome Jordan to the team!'.",
+        "PO",
+        "Trung bình"
+       ],
+       [
+        "FQ-18",
+        "Hộp thoại Create channel có những ô nào, và giới hạn của chúng?",
+        "Tên (quy tắc G7), công tắc Private (mặc định tắt), Topic (không bắt buộc, tối đa 250 ký tự), Add people (không bắt buộc). Flow viết F20 có 'add members'; sơ đồ chưa vẽ cho tới khi bạn xác nhận.",
+        "PO, UX",
+        "Trung bình"
+       ],
+       [
+        "FQ-22",
+        "Banner offline của prototype ghi 'Offline: showing saved messages'. Flow viết F37 ghi 'Reconnecting…' và toast 'Reconnected', những thứ prototype không có. Dùng câu chữ nào, và có trạng thái đang kết nối lại riêng không?",
+        "(a) Giữ banner của prototype suốt thời gian đó; nó biến mất khi có lại kết nối, không có toast · (b) Cùng banner, thêm chữ 'Reconnecting…' trong mỗi lần thử · (c) Thay bằng 'Reconnecting…'. Đề xuất: (a). Cho tới khi có trả lời, sơ đồ dùng (a) (FA-17).",
+        "UX",
+        "Trung bình"
+       ],
+       [
+        "GQ-02",
+        "Mức 'Nothing' và Mute khác nhau thế nào?",
+        "(a) Mức quyết định toast, push, âm thanh; Mute còn ẩn cả huy hiệu chưa đọc và chữ đậm · (b) Bỏ 'Nothing', giữ Mute · (c) Bỏ Mute Đề xuất: (a)",
+        "PO, UX",
+        "Trung bình"
+       ],
+       [
+        "GQ-03",
+        "Lỗi của form hiện ở đâu: dưới ô nhập kèm nút bị tắt, hay trong toast sau khi bấm?",
+        "(a) Dưới ô nhập; nút tắt cho tới khi hợp lệ · (b) Toast sau khi bấm, như prototype Đề xuất: (a)",
+        "UX",
+        "Trung bình"
+       ],
+       [
+        "GQ-05",
+        "Kênh có đổi tên được không, và ai sửa mô tả?",
+        "(a) Phase 1 không đổi tên; thành viên nào cũng sửa được chủ đề và mô tả · (b) Admin và người tạo được đổi tên Đề xuất: (a)",
+        "PO",
+        "Trung bình"
+       ],
+       [
+        "GQ-09",
+        "Điều gì xảy ra khi hết dung lượng hoặc chạm hạn mức?",
+        "(a) Không hạn mức; Owner được cảnh báo ở 80% đĩa; từ chối tải lên ở 95% · (b) Hạn mức cố định cho workspace Đề xuất: (a)",
+        "PO, BE",
+        "Trung bình"
+       ],
+       [
+        "GQ-10",
+        "Ứng dụng đang mở làm gì khi có bản mới được triển khai?",
+        "(a) Dải 'Update available · Reload'; chỉ bắt buộc khi server báo trang quá cũ · (b) Tự tải lại khi rảnh Đề xuất: (a)",
+        "FE, BE",
+        "Trung bình"
+       ],
+       [
+        "GQ-11",
+        "Hỗ trợ những trình duyệt nào?",
+        "(a) Hai bản mới nhất của Chrome, Edge, Safari, Firefox; push trên iPhone chỉ khi đã cài ra màn hình chính · (b) Chỉ Chrome và Edge Đề xuất: (a)",
+        "PO, FE",
+        "Trung bình"
+       ],
+       [
+        "GQ-12",
+        "Danh sách thành viên và bộ chọn người hành xử thế nào khi có 200 người?",
+        "(a) Ô tìm ở trên, hiện 50 người đầu, cuộn để tải thêm · (b) Hiện hết Đề xuất: (a)",
+        "UX, FE",
+        "Trung bình"
+       ],
+       [
+        "GQ-16",
+        "Các hành động quản trị có được ghi lại không, và có ai xem được bản ghi không?",
+        "(a) Ghi ở server, phase 1 chưa có màn hình · (b) Có màn hình cho Owner · (c) Không ghi Đề xuất: (a)",
+        "PO, BE",
+        "Trung bình"
+       ],
+       [
+        "GQ-18",
+        "Chống bấm hai lần thế nào khi tạo kênh, gửi lời mời và đặt nhắc việc?",
+        "(a) Nút tắt khi request đang chạy, và server bỏ qua request lặp lại · (b) Chỉ tắt nút Đề xuất: (a)",
+        "BE, FE",
+        "Trung bình"
+       ],
+       [
+        "GQ-19",
+        "Tìm kiếm phủ những gì, và trả về bao nhiêu?",
+        "(a) Ctrl+K: cuộc trò chuyện, người, lệnh, rồi tin nhắn; 20 kết quả mỗi loại, xem thêm khi cần · (b) Tin nhắn chỉ ở một trang tìm riêng Đề xuất: (a)",
+        "PO, FE",
+        "Trung bình"
+       ],
+       [
+        "VQ-02",
+        "Chưa từng quyết định mục tiêu hiệu năng nào: mở một cuộc trò chuyện nhanh cỡ nào, tin gửi đi tới người khác nhanh cỡ nào, bao nhiêu người online cùng lúc.",
+        "Mở cuộc trò chuyện dưới 1 giây và tin tới nơi dưới 500 ms trên kết nối bình thường, với 200 người online. Các con số này là đề xuất.",
+        "PO, BE",
+        "Trung bình"
+       ],
+       [
+        "FQ-06",
+        "'Today 15:00' trong menu nhắc việc khi đã quá 15:00: ẩn đi, hay thay bằng lựa chọn khác?",
+        "Ẩn; 'In 3 hours' thế chỗ",
+        "UX",
+        "Thấp"
+       ],
+       [
+        "FQ-09",
+        "Hai người tạo kênh trùng tên cùng một lúc.",
+        "Người thứ hai nhận '#name already exists' kèm nút mở kênh (đã có trong sơ đồ; cần xác nhận)",
+        "BE",
+        "Thấp"
+       ],
+       [
+        "FQ-10",
+        "Xem trước một kênh công khai mà không tham gia có tính vào chưa đọc hay Activity không?",
+        "Không; xem trước không để lại dấu vết",
+        "PO",
+        "Thấp"
+       ],
+       [
+        "FQ-12",
+        "Lần tải đầu có cần giới hạn cho workspace rất lớn không (`GET /bootstrap` trả bao nhiêu cuộc trò chuyện)?",
+        "Phase 1 trả hết; xem lại khi quá 500 cuộc trò chuyện",
+        "BE",
+        "Thấp"
+       ],
+       [
+        "GQ-04",
+        "Phase 1 có cho tải ảnh hồ sơ lên không?",
+        "(a) Phase 1 chỉ dùng chữ cái đầu · (b) Cho tải lên ở phase 1 Đề xuất: (a)",
+        "PO",
+        "Thấp"
+       ],
+       [
+        "GQ-07",
+        "Có cho ngừng theo dõi một thread không?",
+        "(a) 'Unfollow thread' trong menu của thread · (b) Chưa có ở phase 1 Đề xuất: (a)",
+        "PO",
+        "Thấp"
+       ],
+       [
+        "GQ-08",
+        "'Mark as unread' có ở phase 1 không?",
+        "(a) Phase sau · (b) Phase 1 Đề xuất: (a); Later đã đáp ứng nhu cầu",
+        "PO",
+        "Thấp"
+       ],
+       [
+        "GQ-13",
+        "Hai người cùng đổi một chủ đề, trạng thái hay task cùng lúc. Ai thắng?",
+        "(a) Lần lưu sau cùng thắng và mọi người thấy ngay · (b) Lần lưu thứ hai bị từ chối với 'This changed' Đề xuất: (a) cho ô ngắn; (b) cho văn bản dài về sau",
+        "BE",
+        "Thấp"
+       ],
+       [
+        "GQ-14",
+        "Tab trình duyệt có hiện tin chưa đọc không?",
+        "(a) '(3) Toki' đếm mention và DM, một chấm cho thứ khác · (b) Không hiện gì Đề xuất: (a)",
+        "UX",
+        "Thấp"
+       ],
+       [
+        "GQ-15",
+        "Giờ 24 cho mọi người, hay theo ngôn ngữ?",
+        "(a) 24 giờ ở mọi nơi · (b) Theo ngôn ngữ · (c) Có cài đặt Đề xuất: (a)",
+        "UX",
+        "Thấp"
+       ],
+       [
+        "GQ-17",
+        "Workspace có xuất được dữ liệu (tin nhắn, file) không?",
+        "(a) Phase 1 chỉ có backup ở server · (b) Có xuất dữ liệu cho Owner Đề xuất: (a)",
+        "PO",
+        "Thấp"
+       ]
+      ]
+     },
+     {
+      "type": "h",
+      "text": "Giả định chờ đồng ý (24)"
+     },
+     {
+      "type": "table",
+      "head": [
+       "ID",
+       "Đang giả định",
+       "Dùng ở",
+       "Vì sao chọn vậy"
+      ],
+      "rows": [
+       [
+        "FA-01",
+        "Tên và dạng endpoint trong các sơ đồ (`POST /auth/code-requests`, `GET /bootstrap`, `PUT /conversations/:id/read` và phần còn lại) là đề xuất. Tất cả nằm dưới `/api/v1`.",
+        "tất cả",
+        "Tên được chốt trong spec của từng ticket"
+       ],
+       [
+        "FA-02",
+        "Request không có trả lời sau 10 giây được coi là lỗi và hiện Retry.",
+        "2.3, 2.5, 3.3",
+        "Giá trị nào từ 8 đến 15 giây cũng được"
+       ],
+       [
+        "FA-04",
+        "Gõ khoảng trắng trong tên kênh thì tự thành gạch nối, chữ hoa thành chữ thường, thay vì báo lỗi.",
+        "2.8",
+        "Ít lỗi hơn cho cùng một quy tắc"
+       ],
+       [
+        "FA-05",
+        "Tính không trùng của tên kênh bao gồm cả kênh đã lưu trữ.",
+        "2.8",
+        "Nếu không, bỏ lưu trữ có thể bị trùng tên"
+       ],
+       [
+        "FA-06",
+        "Các lần kết nối lại chờ 1, 2, 5, 10 rồi 30 giây, có thêm chút ngẫu nhiên.",
+        "3.1",
+        "Tránh mọi máy cùng thử lại một lúc"
+       ],
+       [
+        "FA-07",
+        "File đã tải lên nhưng không bao giờ được gửi sẽ bị xoá khỏi kho sau 24 giờ.",
+        "2.6",
+        "Giữ kho lưu trữ sạch"
+       ],
+       [
+        "FA-08",
+        "Mã trạng thái của server ứng với màn hình như ở flow 3.3: 400 thông báo dưới ô, 403 và 404 chung một trang, 409 và 410 hiện bản mới, 429 chờ, 5xx Retry kèm mã lỗi.",
+        "3.3",
+        "Một cách xử lý cho mọi tính năng"
+       ],
+       [
+        "FA-09",
+        "Tin 'Waiting to send' vẫn còn sau khi tải lại trang, được giữ trong trình duyệt, và bị bỏ nếu người khác đăng nhập trên trình duyệt đó.",
+        "3.1, 3.2",
+        "Cần cho lời hứa 'không mất gì'"
+       ],
+       [
+        "FA-10",
+        "Rời một kênh thì xoá số chưa đọc và các mục Activity còn mở của kênh đó với người rời.",
+        "2.9",
+        "Nếu không, các mục sẽ trỏ tới nơi họ không mở được"
+       ],
+       [
+        "FA-11",
+        "Một lô lời mời giới hạn 50 địa chỉ.",
+        "2.12",
+        "Bảo vệ giới hạn gửi của tài khoản mail"
+       ],
+       [
+        "FA-12",
+        "Mention một người không ở trong kênh thì không tạo thông báo; người gửi được đề nghị 'Add them'.",
+        "2.7",
+        "Khớp với quy tắc BR-09"
+       ],
+       [
+        "FA-13",
+        "Mã đăng nhập của thành viên có hiệu lực 10 phút.",
+        "2.1",
+        "Màn hình nhập mã của guest trong prototype ghi 'It works for 10 minutes'; chưa có gì quyết định cho thành viên"
+       ],
+       [
+        "FA-14",
+        "Mã bị huỷ sau 5 lần sai; người dùng phải xin mã mới.",
+        "2.1",
+        "Mã 6 số không được để đoán mò; prototype nhận 6 số bất kỳ"
+       ],
+       [
+        "FA-15",
+        "Phiên được gia hạn mỗi lần dùng, nên 30 ngày nghĩa là 30 ngày không mở Toki.",
+        "1.1, 1.2, 3.2",
+        "Q11 chốt 30 ngày nhưng chưa nói tính từ lúc đăng nhập hay từ lần dùng cuối"
+       ],
+       [
+        "FA-16",
+        "Mọi màn hình và mọi câu chữ trong dấu nháy mà prototype không có đều là đề xuất: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', ô giữ chỗ khi tải, và phần còn lại.",
+        "tất cả",
+        "Sơ đồ cần một cái tên cho từng trạng thái; thiết kế sẽ quyết định câu chữ cuối cùng"
+       ],
+       [
+        "FA-17",
+        "Khi mất mạng, banner giữ câu chữ của prototype, 'Offline: showing saved messages'. Không giả định có trạng thái 'Reconnecting…' riêng.",
+        "3.1",
+        "Prototype chỉ có banner này; xem FQ-22"
+       ],
+       [
+        "AS-01",
+        "Mọi thứ Member hay Admin thấy đều theo bảng quyền; prototype chỉ cho thấy Owner.",
+        "—",
+        "Thẻ tài khoản: 'Owner'"
+       ],
+       [
+        "AS-02",
+        "Tuỳ chọn thông báo thuộc về người dùng và áp dụng trên mọi thiết bị; chỉ quyền push của trình duyệt là theo từng thiết bị.",
+        "—",
+        "Preferences chỉ có một bộ công tắc"
+       ],
+       [
+        "AS-03",
+        "Star và Mute là cá nhân: không ai khác thấy, và cuộc trò chuyện được đánh sao lên đầu danh sách của người đó.",
+        "—",
+        "Panel Details; biểu tượng sao trong danh sách"
+       ],
+       [
+        "AS-04",
+        "Giờ địa phương trên hồ sơ lấy từ múi giờ người đó đã đặt, không phải từ nơi họ đang ở.",
+        "—",
+        "Hồ sơ: giờ địa phương và một thành phố"
+       ],
+       [
+        "AS-05",
+        "Các điều khiển chỉ để demo không bao giờ lên sản phẩm: thanh Look / Device / Clock / Guide, 'Reset', và mọi lựa chọn '20 seconds (demo)'.",
+        "—",
+        "Được đánh dấu 'demo' trong prototype"
+       ],
+       [
+        "AS-06",
+        "Các nhãn 'New' màu hồng đánh dấu tính năng đề xuất, không phải trạng thái của sản phẩm.",
+        "—",
+        "Công tắc 'Highlight proposed features'"
+       ],
+       [
+        "AS-07",
+        "Người, kênh và tin nhắn mẫu chỉ để minh hoạ; không có nội dung mẫu nào lên sản phẩm ngoài #general.",
+        "—",
+        "Workspace mẫu 'Hugepig Studio'"
+       ],
+       [
+        "AS-08",
+        "Thống kê không bao giờ nêu tên kênh riêng tư hay DM và ẩn mọi nhóm nhỏ hơn ba.",
+        "—",
+        "Admin: 'Private channels and direct messages', 'fewer than 3'"
+       ]
+      ]
+     }
+    ]
+   },
+   {
+    "title": "3 · Kiểm định user flow",
+    "intro": "Từng sơ đồ trong 19 sơ đồ ở tab Flows, đối chiếu với các quyết định đã chốt. Lần rà hôm nay đã sửa chúng (lối vào không tồn tại, giá trị ghi như đã chốt, câu chữ offline). 'Quyết định · lỗi' đếm số điểm rẽ nhánh và số trạng thái từ chối hoặc lỗi đã vẽ. Sơ đồ bị chặn khi một câu hỏi ưu tiên cao quyết định hình dạng của nó.",
+    "blocks": [
+     {
+      "type": "table",
+      "head": [
+       "Flow",
+       "Quyết định · lỗi",
+       "Dựa trên (đã chốt)",
+       "Đang giả định",
+       "Còn mở",
+       "Kết quả"
+      ],
+      "rows": [
+       [
+        "1.1 Toàn bộ ứng dụng trên một trang: lối vào, cửa kiểm tra, và những gì người đã đăng nhập tới được",
+        "4 · 3",
+        "G4, Q11, Q12",
+        "FA-13, FA-15",
+        "FQ-13, FQ-15",
+        "**Bị chặn** bởi FQ-13, FQ-15"
+       ],
+       [
+        "1.2 Lối ra: mọi cách một người rời khỏi ứng dụng",
+        "0 · 0",
+        "Q11, Q12, NR13",
+        "FA-16",
+        "—",
+        "Hợp lệ, còn chi tiết mở"
+       ],
+       [
+        "2.1 Đăng nhập bằng mã gửi qua email",
+        "5 · 3",
+        "Q11, G5",
+        "FA-13, FA-14",
+        "FQ-14",
+        "**Bị chặn** bởi FQ-14"
+       ],
+       [
+        "2.2 Nhận lời mời (lần đầu vào)",
+        "3 · 2",
+        "Q11, Q26, G4, G1, Q31",
+        "—",
+        "FQ-13, FQ-15, FQ-16",
+        "**Bị chặn** bởi FQ-13, FQ-15"
+       ],
+       [
+        "2.3 Mở ứng dụng: kiểm tra phiên và lần tải đầu",
+        "4 · 3",
+        "G2, Q11",
+        "FA-02, FA-16",
+        "GQ-06",
+        "**Bị chặn** bởi GQ-06"
+       ],
+       [
+        "2.4 Mở và đọc một cuộc trò chuyện",
+        "3 · 1",
+        "OQ3, G15, Q27, NR8",
+        "FA-16",
+        "FQ-10",
+        "Hợp lệ, còn chi tiết mở"
+       ],
+       [
+        "2.5 Gửi một tin nhắn",
+        "3 · 2",
+        "G9, NR11, NR13",
+        "FA-02",
+        "FQ-07, FQ-21",
+        "**Bị chặn** bởi FQ-21"
+       ],
+       [
+        "2.6 Đính kèm file vào tin nhắn",
+        "2 · 2",
+        "G9, Q14, NR11",
+        "FA-07",
+        "FQ-04",
+        "Hợp lệ, còn chi tiết mở"
+       ],
+       [
+        "2.7 Được mention: từ dấu @ của người gửi tới lúc người nhận đọc",
+        "4 · 0",
+        "Q16, NR5, NR6, G13, G8, G11",
+        "FA-12",
+        "GQ-01",
+        "**Bị chặn** bởi GQ-01"
+       ],
+       [
+        "2.8 Tạo một kênh",
+        "2 · 2",
+        "Q12, G7, NR4, NR10",
+        "FA-04, FA-05",
+        "FQ-17, FQ-18, GQ-20",
+        "**Bị chặn** bởi FQ-17, GQ-20"
+       ],
+       [
+        "2.9 Tham gia kênh công khai, và rời một kênh",
+        "3 · 1",
+        "G1, NR3, OQ2, Q27, G14",
+        "FA-10",
+        "FQ-19",
+        "**Bị chặn** bởi FQ-19"
+       ],
+       [
+        "2.10 Sửa hoặc xoá tin nhắn của mình",
+        "4 · 1",
+        "Q13, G10, G14, G16, NR3",
+        "—",
+        "FQ-05",
+        "Hợp lệ, còn chi tiết mở"
+       ],
+       [
+        "2.11 Lưu vào Later và đặt nhắc việc",
+        "2 · 1",
+        "Q2, NR7, NR6, NR8",
+        "—",
+        "FQ-06",
+        "Hợp lệ, còn chi tiết mở"
+       ],
+       [
+        "2.12 Admin: mời thành viên",
+        "4 · 3",
+        "Q11, Q26, Q12, G4",
+        "FA-11",
+        "FQ-03, FQ-11, GQ-20",
+        "**Bị chặn** bởi GQ-20"
+       ],
+       [
+        "2.13 Admin: đổi vai trò, vô hiệu hoá thành viên",
+        "3 · 2",
+        "Q12, G6, NR3",
+        "—",
+        "GQ-20",
+        "**Bị chặn** bởi GQ-20"
+       ],
+       [
+        "2.14 Bắt đầu một tin nhắn trực tiếp hoặc một nhóm",
+        "2 · 1",
+        "Q17, G12, Q12",
+        "—",
+        "FQ-20",
+        "**Bị chặn** bởi FQ-20"
+       ],
+       [
+        "3.1 Mất kết nối rồi có lại",
+        "2 · 1",
+        "NR13, NR12",
+        "FA-06, FA-09, FA-17",
+        "FQ-22",
+        "Hợp lệ, còn chi tiết mở"
+       ],
+       [
+        "3.2 Phiên kết thúc khi đang dùng ứng dụng",
+        "3 · 1",
+        "Q11, Q12",
+        "FA-09, FA-16",
+        "FQ-02",
+        "Hợp lệ, còn chi tiết mở"
+       ],
+       [
+        "3.3 Một request bị từ chối hoặc lỗi: một cách xử lý cho mọi tính năng",
+        "6 · 6",
+        "NR4",
+        "FA-02, FA-08, FA-16",
+        "GQ-03, GQ-18",
+        "Hợp lệ, còn chi tiết mở"
+       ]
+      ]
+     },
+     {
+      "type": "note",
+      "text": "**Được script kiểm tra:** mọi quyết định có ít nhất hai câu trả lời được vẽ, mọi bước đều tới được, và không bước nào dừng lại mà không phải điểm kết thúc hoặc lần từ chối có ghi rõ. **Chưa có sơ đồ:** 43 flow viết của phase 1 gồm cả những hành trình chưa có sơ đồ, trong đó có thiết lập lần đầu bởi Owner đầu tiên, thêm người vào kênh, gỡ thành viên, lưu trữ kênh, thread, reaction, ghim, Activity, Files, People, Preferences và trạng thái. Chúng được viết từng bước ở tab Flows và đang chờ VQ-01."
+     }
+    ]
+   },
+   {
+    "title": "4 · Quy tắc nghiệp vụ",
+    "intro": "Các quy tắc mà flow và yêu cầu dựa vào. Mỗi quy tắc nêu quyết định đứng sau nó; quy tắc có nguồn 'Technical' đến từ thiết kế kỹ thuật và chưa phải là câu hỏi đã đặt cho bạn.",
+    "blocks": [
+     {
+      "type": "table",
+      "head": [
+       "ID",
+       "Quy tắc",
+       "Flow",
+       "Quyết định bởi"
+      ],
+      "rows": [
+       [
+        "BR-01",
+        "Không có gì trong Toki đọc được khi chưa có phiên. Đăng nhập là trang công khai duy nhất.",
+        "tất cả",
+        "Q11"
+       ],
+       [
+        "BR-02",
+        "Đăng nhập bằng mã 6 số gửi tới địa chỉ của thành viên. Không có mật khẩu. Mã sống bao lâu và cho sai mấy lần thì chưa quyết định: FA-13, FA-14.",
+        "2.1",
+        "Q11"
+       ],
+       [
+        "BR-03",
+        "Tối đa 5 lần xin mã cho một địa chỉ trong 15 phút; Resend bật sau 60 giây.",
+        "2.1",
+        "G5"
+       ],
+       [
+        "BR-04",
+        "Yêu cầu xin mã nhận cùng một câu trả lời dù địa chỉ có là thành viên hay không.",
+        "2.1",
+        "Technical"
+       ],
+       [
+        "BR-05",
+        "Một phiên kéo dài 30 ngày trên một thiết bị. Có gia hạn khi dùng hay không thì chưa quyết định: FA-15.",
+        "1.2, 2.1, 3.2",
+        "Q11"
+       ],
+       [
+        "BR-06",
+        "Chỉ vào được qua lời mời của Admin hoặc Owner. Lời mời có hạn 7 ngày, dùng một lần, và đăng nhập thẳng không cần mã.",
+        "2.2, 2.12",
+        "G4, Q26"
+       ],
+       [
+        "BR-07",
+        "Mọi thành viên đều ở trong #general; không rời và không lưu trữ được kênh này.",
+        "2.2, 2.9",
+        "G1"
+       ],
+       [
+        "BR-08",
+        "Không có link thì ứng dụng mở cuộc trò chuyện xem gần nhất trên thiết bị đó; lần đầu là #general.",
+        "2.3",
+        "G2"
+       ],
+       [
+        "BR-09",
+        "Quyền được kiểm tra ở server cho mọi request. Cuộc trò chuyện riêng tư và DM chỉ thành viên thấy, kể cả qua tìm kiếm, danh sách file và link trực tiếp.",
+        "tất cả",
+        "Technical"
+       ],
+       [
+        "BR-10",
+        "'Không có quyền' và 'không tồn tại' được trả lời giống nhau.",
+        "2.3, 3.3",
+        "Technical"
+       ],
+       [
+        "BR-11",
+        "Viết vào một cuộc trò chuyện cần là thành viên, và cuộc trò chuyện chưa bị lưu trữ.",
+        "2.5, 2.6",
+        "NR11"
+       ],
+       [
+        "BR-12",
+        "Một tin chứa tối đa 10.000 ký tự và 10 file; mỗi file tối đa 100 MB.",
+        "2.5, 2.6",
+        "G9, Q14"
+       ],
+       [
+        "BR-13",
+        "Ứng dụng tạo ID tin nhắn; gửi lại cùng ID thì trả về tin đã lưu chứ không tạo tin thứ hai.",
+        "2.5, 3.1",
+        "Technical"
+       ],
+       [
+        "BR-14",
+        "Chỉ đánh dấu đã đọc khi tin mới nhất nằm trên màn hình ở tab đang focus. Không có 'đã xem'.",
+        "2.4",
+        "G15"
+       ],
+       [
+        "BR-15",
+        "Hành động của chính mình không tạo thông báo cho mình. Mục Activity tự thành xong khi việc nó yêu cầu đã xong.",
+        "2.7",
+        "NR5"
+       ],
+       [
+        "BR-16",
+        "Trong Pause hoặc Focus không có toast, push hay âm thanh, kể cả nhắc việc của chính mình; huy hiệu vẫn cập nhật; sau đó có một bản tóm tắt.",
+        "2.7, 2.11",
+        "NR6"
+       ],
+       [
+        "BR-17",
+        "Mức thông báo mặc định: 'Mentions only' cho kênh, 'All messages' cho DM.",
+        "2.7",
+        "G13"
+       ],
+       [
+        "BR-18",
+        "@channel trong kênh từ 20 người trở lên hỏi người gửi xác nhận.",
+        "2.7",
+        "G8"
+       ],
+       [
+        "BR-19",
+        "Tên kênh: chữ thường, số, gạch nối, tối đa 80 ký tự, không trùng. Công khai hay riêng tư cố định từ lúc tạo.",
+        "2.8",
+        "G7"
+       ],
+       [
+        "BR-20",
+        "Hành động hoàn tác được thì xảy ra ngay kèm Undo 5 giây; không hoàn tác được thì hỏi xác nhận và nêu rõ đối tượng; không bao giờ cả hai.",
+        "2.9, 2.10, 2.13",
+        "NR3"
+       ],
+       [
+        "BR-21",
+        "Form đã có nội dung không đóng khi bấm ra ngoài; đóng bằng nút thì hỏi có bỏ không.",
+        "2.8",
+        "NR4"
+       ],
+       [
+        "BR-22",
+        "Sau khi tạo thứ gì, màn hình hiện thứ đó; bộ lọc nào che nó thì phải đổi.",
+        "2.8",
+        "NR10"
+       ],
+       [
+        "BR-23",
+        "Rời kênh riêng tư rồi thì không tự vào lại được; phải được thêm lại.",
+        "2.9",
+        "OQ2, GAP-02"
+       ],
+       [
+        "BR-24",
+        "Chỉ tác giả sửa được tin; không giới hạn thời gian và không có lịch sử sửa. Xoá là vĩnh viễn và gỡ luôn file đính kèm.",
+        "2.10",
+        "F16, G10"
+       ],
+       [
+        "BR-25",
+        "Tin đã xoá mà có trả lời thì để lại dòng 'Message deleted' và giữ thread.",
+        "2.10",
+        "Technical"
+       ],
+       [
+        "BR-26",
+        "Admin và Owner chỉ thấy và quản lý các cuộc trò chuyện mà họ là thành viên.",
+        "2.10, 2.13",
+        "G14"
+       ],
+       [
+        "BR-27",
+        "Chỉ Owner đổi vai trò. Admin vô hiệu hoá Member; chỉ Owner vô hiệu hoá Admin và Owner.",
+        "2.13",
+        "F40, F41"
+       ],
+       [
+        "BR-28",
+        "Không ai tự vô hiệu hoá mình. Owner cuối cùng không thể bị hạ vai trò hay vô hiệu hoá.",
+        "2.13",
+        "G6, F41"
+       ],
+       [
+        "BR-29",
+        "Vô hiệu hoá kết thúc mọi phiên ngay; tin nhắn vẫn còn; tài khoản kích hoạt lại được. Phase 1 không xoá vĩnh viễn thứ gì.",
+        "2.13, 3.2",
+        "F41"
+       ],
+       [
+        "BR-30",
+        "Mất mạng: nội dung đã tải vẫn đọc được, tin nhắn chờ và tự gửi, mọi hành động khác bị chặn kèm giải thích.",
+        "3.1",
+        "NR13"
+       ],
+       [
+        "BR-31",
+        "Kết nối lại thì ứng dụng nhận mọi event bị lỡ theo thứ tự; vắng hơn 7 ngày thì tải lại.",
+        "3.1",
+        "Technical"
+       ],
+       [
+        "BR-32",
+        "Mọi danh sách có trạng thái trống viết riêng cho ngữ cảnh; số trên chip bằng số hàng đang hiện.",
+        "2.4, 2.9, 2.11",
+        "NR8"
+       ],
+       [
+        "BR-33",
+        "Toast và banner không bao giờ che ô soạn tin hay thanh điều hướng.",
+        "3.1",
+        "NR12"
+       ],
+       [
+        "BR-34",
+        "Mọi hành động đều có lối vào trên màn hình hẹp và cảm ứng; không có gì chỉ dùng được bằng hover.",
+        "tất cả",
+        "NR1"
+       ],
+       [
+        "BR-35",
+        "Tên hiển thị dài từ 1 tới 80 ký tự.",
+        "2.2",
+        "Q31 (bạn trả lời, 13/11/2026)"
+       ],
+       [
+        "BR-36",
+        "Một group DM tối đa 8 người, tính cả người tạo. Về sau không thêm hay bớt người.",
+        "2.14",
+        "Q17, G12"
+       ],
+       [
+        "BR-37",
+        "Mọi Member, Admin và Owner đều tạo được kênh công khai, kênh riêng tư, DM và nhóm. Guest thì không.",
+        "2.8, 2.14",
+        "Q12 (bảng quyền)"
+       ],
+       [
+        "BR-38",
+        "Chỉ Admin hoặc Owner gỡ được người khỏi kênh, và chỉ trong kênh mà chính họ là thành viên.",
+        "2.9",
+        "G14, Q12"
+       ]
+      ]
+     }
+    ]
+   },
+   {
+    "title": "5 · Yêu cầu chức năng và phi chức năng",
+    "intro": "Chỉ phase 1. Mỗi yêu cầu chức năng chỉ nêu những gì bạn đã quyết định, kèm câu trả lời được trích ở cột 'Quyết định bởi'. Những gì còn giả định hoặc còn mở liên quan tới nó được ghi bên cạnh và **không** thuộc yêu cầu.",
+    "blocks": [
+     {
+      "type": "h",
+      "text": "Yêu cầu chức năng (32)"
+     },
+     {
+      "type": "table",
+      "head": [
+       "ID",
+       "Mảng",
+       "Yêu cầu",
+       "Quyết định bởi",
+       "Chưa quyết định",
+       "Mức sẵn sàng"
+      ],
+      "rows": [
+       [
+        "FR-01",
+        "Truy cập",
+        "Thành viên đăng nhập bằng mã 6 số gửi tới địa chỉ email. Không có mật khẩu.",
+        "(b) Mã 6 số qua email, không mật khẩu, chỉ admin mời, phiên 30 ngày (Q11)",
+        "FA-13, FA-14, FQ-14",
+        "**Bị chặn**"
+       ],
+       [
+        "FR-02",
+        "Truy cập",
+        "Mỗi địa chỉ xin mã tối đa 5 lần trong 15 phút; gửi lại mã được sau 60 giây kể từ lần xin trước.",
+        "Xin mã tối đa 5 lần trong 15 phút cho mỗi email; nút gửi lại bật sau 60 giây. (G5)",
+        "FQ-14",
+        "**Bị chặn**"
+       ],
+       [
+        "FR-03",
+        "Truy cập",
+        "Một phiên kéo dài 30 ngày trên một thiết bị. Không có phiên thì không đọc được gì trong Toki.",
+        "(b) Mã 6 số qua email, không mật khẩu, chỉ admin mời, phiên 30 ngày (Q11)",
+        "FA-15, FQ-02",
+        "Phần lõi sẵn sàng; chi tiết chờ trả lời"
+       ],
+       [
+        "FR-04",
+        "Truy cập",
+        "Chỉ vào được qua lời mời của Admin hoặc Owner. Lời mời có hạn 7 ngày, dùng một lần, và link trong đó đăng nhập không cần mã.",
+        "(b) Mã 6 số qua email, không mật khẩu, chỉ admin mời, phiên 30 ngày (Q11) · Tạo từ biến môi trường hoặc seed; admin mời thành viên (Q26) · Lời mời hết hạn sau 7 ngày. Link trong thư mời đăng nhập thẳng, không cần mã. (G4)",
+        "FQ-13, FQ-15, FQ-01",
+        "**Bị chặn**"
+       ],
+       [
+        "FR-05",
+        "Truy cập",
+        "#general có từ lúc thiết lập; mọi thành viên tự động ở trong đó và không rời hay lưu trữ được.",
+        "Mỗi workspace có kênh #general tạo sẵn; mọi thành viên tự động ở trong đó; không rời và không lưu trữ được. (G1)",
+        "FQ-16",
+        "Phần lõi sẵn sàng; chi tiết chờ trả lời"
+       ],
+       [
+        "FR-06",
+        "Truy cập",
+        "Tên hiển thị dài từ 1 tới 80 ký tự.",
+        "1 tới 80 ký tự (Q31)",
+        "FQ-15",
+        "**Bị chặn**"
+       ],
+       [
+        "FR-07",
+        "Đọc",
+        "Không có link thì ứng dụng mở vào cuộc trò chuyện xem gần nhất trên thiết bị đó; lần đầu thì vào #general.",
+        "Mở app thì vào hội thoại đã xem lần cuối trên thiết bị đó; lần đầu thì vào #general. (G2)",
+        "GQ-06",
+        "**Bị chặn**"
+       ],
+       [
+        "FR-08",
+        "Đọc",
+        "Một cuộc trò chuyện tính là đã đọc khi nó đang mở, cửa sổ đang được dùng và người dùng ở cuối danh sách. Vạch 'New' đánh dấu tin chưa đọc đầu tiên lúc mở. Không ai thấy ai đã đọc tin.",
+        "Đã đọc không phụ thuộc AI. Hội thoại được đánh dấu đã đọc khi nó đang mở, cửa sổ đang được dùng, và người dùng đã ở cuối danh sách tin. Vạch New neo vào tin chưa đọc đầu tiên tại lúc mở (theo ID, không trôi khi có tin mới), giữ nguyên trong lúc đang xem, và biến mất ở lần mở kế tiếp. Mở app hoặc mở hội thoại có tin chưa đọc thì cuộn tới vạch New. (OQ3) · Toki không có dấu “đã xem” cho tin nhắn; người gửi không biết ai đã đọc. (G15)",
+        "—",
+        "Sẵn sàng"
+       ],
+       [
+        "FR-09",
+        "Nhắn tin",
+        "Thành viên của một cuộc trò chuyện gửi được tin dài tới 10.000 ký tự. Phải là thành viên mới viết được.",
+        "Một tin tối đa 10.000 ký tự và 10 file. (G9) · Muốn ghi vào một hội thoại (gửi tin, bắt đầu Meet, đặt lịch) phải là thành viên của nó. Danh sách chọn chỉ gồm hội thoại mình đã tham gia. (NR11)",
+        "FQ-07, FQ-21, FA-02",
+        "**Bị chặn**"
+       ],
+       [
+        "FR-10",
+        "Nhắn tin",
+        "Một tin kèm tối đa 10 file, mỗi file tối đa 100 MB. Ảnh có thumbnail.",
+        "Một tin tối đa 10.000 ký tự và 10 file. (G9) · (b) MinIO, 100 MB, thumbnail ảnh, link preview (Q14)",
+        "FQ-04, FA-07",
+        "Phần lõi sẵn sàng; chi tiết chờ trả lời"
+       ],
+       [
+        "FR-11",
+        "Nhắn tin",
+        "Tác giả sửa được tin bất kỳ lúc nào, không giới hạn thời gian; tin đã sửa có nhãn '(edited)'.",
+        "Sửa không giới hạn; xóa mềm, giữ thread (Q13)",
+        "—",
+        "Sẵn sàng"
+       ],
+       [
+        "FR-12",
+        "Nhắn tin",
+        "Xoá một tin thì hỏi xác nhận. Tin đã xoá mà có trả lời thì giữ thread, và file của nó bị gỡ khỏi kho.",
+        "Sửa không giới hạn; xóa mềm, giữ thread (Q13) · Xóa tin thì file đính kèm cũng bị gỡ khỏi kho. (G10) · Hành động hoàn tác được thì làm ngay và hiện toast có nút Hoàn tác trong 5 giây. Hành động không hoàn tác được hoặc ảnh hưởng người khác thì hỏi xác nhận, nêu rõ đối tượng. Không dùng cả hai cho một hành động. (NR3)",
+        "FQ-05",
+        "Phần lõi sẵn sàng; chi tiết chờ trả lời"
+       ],
+       [
+        "FR-13",
+        "Nhắn tin",
+        "Admin hoặc Owner chỉ xoá được tin của người khác trong cuộc trò chuyện mà họ là thành viên. Tin khi đó ghi 'Message deleted by an admin' và tác giả được báo.",
+        "Admin và Owner không tự động thấy kênh riêng tư hay DM; quyền xóa tin, gỡ người, lưu trữ chỉ áp dụng ở nơi họ là thành viên. (G14) · Tin bị Admin xóa hiện là “Tin nhắn đã bị quản trị viên xóa” và tác giả được báo. (G16)",
+        "GQ-20",
+        "**Bị chặn**"
+       ],
+       [
+        "FR-14",
+        "Thông báo",
+        "Mention tạo một mục Activity cho người được nhắc. Hành động của chính mình không tạo thông báo cho mình. Mục tự thành xong khi việc nó yêu cầu đã xong.",
+        "Hành động của chính mình không tạo thông báo cho mình. Mục Activity tự chuyển thành đã xong khi việc nó nhắc tới đã được làm. Activity xếp mới nhất trước và có chip lọc cho mọi loại mục. (NR5)",
+        "GQ-01, FA-12, GQ-06",
+        "**Bị chặn**"
+       ],
+       [
+        "FR-15",
+        "Thông báo",
+        "Trong Pause hoặc Focus time không có toast, push hay âm thanh, kể cả nhắc việc của chính mình. Huy hiệu vẫn cập nhật. Khi kết thúc, một bản tóm tắt liệt kê những gì đã tới.",
+        "Trong lúc Pause hoặc Focus time, không có toast, push hay âm thanh nào, kể cả reminder do mình đặt. Badge vẫn cập nhật. Khi kết thúc, hiện một tổng kết những gì đã đến. Bật Focus khi đang Focus thì gia hạn, không lồng; kết thúc thì trả lại status trước đó. (NR6) · Badge, Web Push, âm thanh, mức theo channel, mute, Pause, Focus time. Thư báo lỡ mention để sau (Q16)",
+        "—",
+        "Sẵn sàng"
+       ],
+       [
+        "FR-16",
+        "Thông báo",
+        "Mức thông báo mặc định là 'Mentions only' cho kênh và 'All messages' cho DM.",
+        "Mặc định mức thông báo: kênh là “Chỉ khi được nhắc”, DM là “Mọi tin nhắn”. (G13)",
+        "GQ-02",
+        "Phần lõi sẵn sàng; chi tiết chờ trả lời"
+       ],
+       [
+        "FR-17",
+        "Thông báo",
+        "Thành viên nào của kênh cũng dùng được @channel. Trong kênh từ 20 người trở lên thì hỏi xác nhận trước.",
+        "Mọi thành viên của kênh sửa được topic và dùng được @channel; kênh từ 20 người thì hỏi xác nhận trước khi gửi @channel. (G8) · Như đề xuất; thêm @channel, group DM tới 8 người, giữ 8 emoji cố định (Q17)",
+        "—",
+        "Sẵn sàng"
+       ],
+       [
+        "FR-18",
+        "Thông báo",
+        "Phase 1 có huy hiệu, Web Push và âm thanh. Push hiện người gửi, cuộc trò chuyện và phần đầu tin nhắn. Ứng dụng web cài được.",
+        "Badge, Web Push, âm thanh, mức theo channel, mute, Pause, Focus time. Thư báo lỡ mention để sau (Q16) · Thông báo đẩy hiện tên người gửi, tên hội thoại và đoạn đầu của tin. (G11) · PWA cài được, service worker chỉ cho push (Q28)",
+        "GQ-11, GQ-06",
+        "**Bị chặn**"
+       ],
+       [
+        "FR-19",
+        "Kênh và DM",
+        "Mọi Member, Admin và Owner tạo được kênh công khai hoặc riêng tư. Tên dùng chữ thường, số và gạch nối, tối đa 80 ký tự, và không trùng. Công khai hay riêng tư cố định từ lúc tạo.",
+        "Như bảng quyền ở mục Phạm vi (Q12) · Tên kênh: chữ thường, số, gạch nối, tối đa 80 ký tự, không trùng. Không đổi công khai thành riêng tư sau khi tạo. (G7)",
+        "FQ-17, FQ-18, FA-04, FA-05, GQ-20, FQ-09",
+        "**Bị chặn**"
+       ],
+       [
+        "FR-20",
+        "Kênh và DM",
+        "Tham gia kênh công khai thì thấy đầy đủ lịch sử. Kênh được lưu trữ, không bao giờ bị xoá.",
+        "Thấy toàn bộ lịch sử; lưu trữ được, không xóa hẳn (Q27)",
+        "FQ-10",
+        "Phần lõi sẵn sàng; chi tiết chờ trả lời"
+       ],
+       [
+        "FR-21",
+        "Kênh và DM",
+        "Rời kênh công khai thì xảy ra ngay kèm Undo 5 giây. Rời kênh riêng tư thì hỏi xác nhận, và chỉ quay lại được khi một thành viên mời. Khi thành viên cuối rời đi, kênh được lưu trữ.",
+        "Hành động hoàn tác được thì làm ngay và hiện toast có nút Hoàn tác trong 5 giây. Hành động không hoàn tác được hoặc ảnh hưởng người khác thì hỏi xác nhận, nêu rõ đối tượng. Không dùng cả hai cho một hành động. (NR3) · Cần một thành viên mời lại. Lời xác nhận khi rời nói rõ điều đó; vẫn có Hoàn tác trong 5 giây. Channel riêng tư không xuất hiện trong Browse hay Ctrl+K với người ngoài. Nếu người cuối cùng rời đi, channel được lưu trữ. (OQ2)",
+        "FA-10",
+        "Sẵn sàng nếu chấp nhận các giả định"
+       ],
+       [
+        "FR-22",
+        "Kênh và DM",
+        "Thành viên mở được tin nhắn trực tiếp và group DM tối đa 8 người. Không thêm hay bớt người trong group DM được.",
+        "Như đề xuất; thêm @channel, group DM tới 8 người, giữ 8 emoji cố định (Q17) · Group DM không thêm bớt người được. (G12) · Như bảng quyền ở mục Phạm vi (Q12)",
+        "FQ-20",
+        "**Bị chặn**"
+       ],
+       [
+        "FR-23",
+        "Kênh và DM",
+        "Chỉ Admin hoặc Owner gỡ được người khỏi kênh, và chỉ trong kênh mà họ là thành viên.",
+        "Admin và Owner không tự động thấy kênh riêng tư hay DM; quyền xóa tin, gỡ người, lưu trữ chỉ áp dụng ở nơi họ là thành viên. (G14) · Như bảng quyền ở mục Phạm vi (Q12)",
+        "FQ-19, GQ-20",
+        "**Bị chặn**"
+       ],
+       [
+        "FR-24",
+        "Later",
+        "Người dùng lưu được tin vào Later và đặt nhắc việc. Giờ nhắc phải ở tương lai.",
+        "Chat lõi, Activity, Later, Files, People, Preferences, command palette (Q2) · Ngày giờ: trường bắt buộc thì không cho bỏ trống; nơi cần thời điểm tương lai thì từ chối quá khứ; luôn hiện năm khi khác năm hiện tại; một định dạng thống nhất toàn app; không bao giờ hiện \"Invalid Date\". (NR7)",
+        "FQ-06",
+        "Phần lõi sẵn sàng; chi tiết chờ trả lời"
+       ],
+       [
+        "FR-25",
+        "Quản trị",
+        "Trang Admin chỉ mở cho Admin và Owner. Admin mời người với vai trò Member; Owner mời với vai trò nào cũng được.",
+        "Như bảng quyền ở mục Phạm vi (Q12) · (b) Mã 6 số qua email, không mật khẩu, chỉ admin mời, phiên 30 ngày (Q11)",
+        "GQ-20, FQ-03, FQ-11, FA-11, VQ-01",
+        "**Bị chặn**"
+       ],
+       [
+        "FR-26",
+        "Quản trị",
+        "Chỉ Owner đổi vai trò. Admin vô hiệu hoá và kích hoạt lại Member; Owner thì với bất kỳ ai. Có thể có nhiều Owner, và Owner cuối cùng không thể bị hạ vai trò hay vô hiệu hoá.",
+        "Như bảng quyền ở mục Phạm vi (Q12) · Có thể có nhiều Owner. Owner cuối cùng không bị hạ vai trò hay vô hiệu hóa được. (G6)",
+        "GQ-20, VQ-01",
+        "**Bị chặn**"
+       ],
+       [
+        "FR-27",
+        "Hành vi chung",
+        "Khi mất kết nối, nội dung đã tải vẫn đọc được, tin đang gửi thì chờ và tự gửi khi có lại mạng, và mọi hành động khác bị chặn kèm giải thích.",
+        "Khi mất kết nối: nội dung đã tải vẫn đọc được; tin đang gửi chuyển sang chờ và tự gửi lại khi có mạng; mọi thao tác khác bị chặn kèm lời giải thích, không báo thành công giả. (NR13)",
+        "FQ-22, FA-06, FA-09, FA-17",
+        "Phần lõi sẵn sàng; chi tiết chờ trả lời"
+       ],
+       [
+        "FR-28",
+        "Hành vi chung",
+        "Form đã có nội dung không đóng khi bấm ra ngoài; đóng bằng nút thì hỏi có bỏ không.",
+        "Form đã có nội dung không đóng khi bấm ra ngoài; đóng bằng nút thì hỏi có bỏ nội dung không. (NR4)",
+        "GQ-03",
+        "Phần lõi sẵn sàng; chi tiết chờ trả lời"
+       ],
+       [
+        "FR-29",
+        "Hành vi chung",
+        "Hành động hoàn tác được thì xảy ra ngay kèm Undo 5 giây. Hành động không hoàn tác được, hoặc ảnh hưởng tới người khác, thì hỏi xác nhận và nêu rõ đối tượng. Không bao giờ cả hai.",
+        "Hành động hoàn tác được thì làm ngay và hiện toast có nút Hoàn tác trong 5 giây. Hành động không hoàn tác được hoặc ảnh hưởng người khác thì hỏi xác nhận, nêu rõ đối tượng. Không dùng cả hai cho một hành động. (NR3)",
+        "—",
+        "Sẵn sàng"
+       ],
+       [
+        "FR-30",
+        "Hành vi chung",
+        "Mọi danh sách tìm hoặc lọc được đều có trạng thái trống viết cho ngữ cảnh của nó, và số trên chip bằng số hàng đang hiện. Sau khi tạo thứ gì, màn hình hiện thứ đó.",
+        "Mọi danh sách có tìm hoặc lọc đều có trạng thái trống đặt giữa vùng nội dung, viết riêng cho ngữ cảnh đó. Số đếm trên chip luôn khớp với số dòng hiển thị. (NR8) · Sau khi tạo một thứ, màn hình phải hiện ra thứ vừa tạo; nếu bộ lọc đang ẩn nó thì đổi bộ lọc. (NR10)",
+        "—",
+        "Sẵn sàng"
+       ],
+       [
+        "FR-31",
+        "Hành vi chung",
+        "Ctrl+K tìm cuộc trò chuyện, người, tin nhắn và thao tác. Chữ tiếng Việt khớp cả khi gõ không dấu.",
+        "(a), bỏ dấu tiếng Việt, tôn trọng quyền (Q15) · Chat lõi, Activity, Later, Files, People, Preferences, command palette (Q2)",
+        "GQ-19",
+        "Phần lõi sẵn sàng; chi tiết chờ trả lời"
+       ],
+       [
+        "FR-32",
+        "Hành vi chung",
+        "Trạng thái hiện diện chuyển sang Away sau 5 phút không hoạt động. Không có trạng thái Offline riêng.",
+        "Chuyển sang Vắng mặt sau 5 phút không thao tác. Không có trạng thái Offline riêng. (G3)",
+        "—",
+        "Sẵn sàng"
+       ]
+      ]
+     },
+     {
+      "type": "h",
+      "text": "Yêu cầu phi chức năng (12)"
+     },
+     {
+      "type": "table",
+      "head": [
+       "ID",
+       "Yêu cầu",
+       "Quyết định bởi",
+       "Đo bằng cách nào"
+      ],
+      "rows": [
+       [
+        "NFR-01",
+        "Web responsive là nền tảng đầu tiên. Kích thước nhỏ nhất được hỗ trợ là 360 × 560. Dưới 720 px mỗi lần một khung; từ 720 tới 1099 px panel bên phủ lên khung chat; từ 1100 px có ba cột.",
+        "Q3, NR2, OQ5",
+        "Mọi màn hình phase 1 kiểm ở 360 × 560, 719, 720, 1099 và 1100 px: không bị cắt, không có gì không chạm tới được."
+       ],
+       [
+        "NFR-02",
+        "Không tính năng nào chỉ dùng được bằng hover hay chỉ trên desktop; mọi hành động đều có lối vào trên màn hình hẹp và cảm ứng.",
+        "NR1, OQ4",
+        "Mọi hành động trong danh sách test thực hiện được trên thiết bị cảm ứng ở 360 px."
+       ],
+       [
+        "NFR-03",
+        "Mọi nút chỉ có icon đều có tên cho trình đọc màn hình; modal giữ focus và trả về nút đã mở; menu dùng được bằng phím mũi tên.",
+        "NR9",
+        "Kiểm tra tự động không thấy nút nào thiếu tên; chạy từng modal và menu chỉ bằng bàn phím."
+       ],
+       [
+        "NFR-04",
+        "Phiên bản đầu phục vụ một công ty, tới khoảng 200 người, trên một server.",
+        "Q9, Q4",
+        "Test tải với 200 người đăng nhập. **Chưa quyết định mục tiêu tốc độ: VQ-02.**"
+       ],
+       [
+        "NFR-05",
+        "Tiếng Anh (mặc định) và tiếng Việt, cả hai dịch đầy đủ; hai look, Calm và Focus.",
+        "Q18",
+        "Kiểm tra tự động không thấy khoá dịch nào thiếu; mọi màn hình được rà ở cả hai ngôn ngữ và hai look."
+       ],
+       [
+        "NFR-06",
+        "Ứng dụng web là PWA cài được; service worker chỉ dùng cho push.",
+        "Q28",
+        "Cài được trên các trình duyệt hỗ trợ; khi tắt mạng không có trang cũ nào được phục vụ từ cache."
+       ],
+       [
+        "NFR-07",
+        "Single-tenant và tự host, truy cập được từ internet công cộng, triển khai bằng Docker Compose trên một VPS.",
+        "Q4, Q20",
+        "Một server mới tới được trang đăng nhập hoạt động chỉ từ các bước đã ghi trong tài liệu."
+       ],
+       [
+        "NFR-08",
+        "Ngày giờ: một định dạng trên toàn ứng dụng; hiện năm khi không phải năm hiện tại; 'Invalid Date' không bao giờ xuất hiện.",
+        "NR7",
+        "Tìm 'Invalid Date' trên mọi màn hình với dữ liệu trống và bất thường. **Định dạng nào: GQ-15.**"
+       ],
+       [
+        "NFR-09",
+        "Toast và thanh nổi không bao giờ che ô soạn tin hay thanh điều hướng.",
+        "NR12",
+        "Kích từng toast ở 360 px và 1100 px: ô soạn tin và điều hướng vẫn dùng được."
+       ],
+       [
+        "NFR-10",
+        "Xây bằng TypeScript, React, Postgres và WebSocket; backend là modular monolith trên Node.",
+        "Q5, Q24b",
+        "Kiểm tra repository."
+       ],
+       [
+        "NFR-11",
+        "File lưu ở object storage; tìm kiếm dùng full-text của Postgres.",
+        "Q14, Q15",
+        "Kiểm tra repository và triển khai."
+       ],
+       [
+        "NFR-12",
+        "Mail đăng nhập gửi qua SMTP cấu hình được.",
+        "Q25",
+        "Đổi cấu hình SMTP thì đổi người gửi mà không sửa code. **Tài khoản nào: còn mở.**"
+       ]
+      ]
+     },
+     {
+      "type": "h",
+      "text": "Mảng phi chức năng chưa có quyết định"
+     },
+     {
+      "type": "p",
+      "text": "Các mảng này chưa viết thành yêu cầu được, vì chưa có gì đo được được quyết định."
+     },
+     {
+      "type": "table",
+      "head": [
+       "Mảng",
+       "Chờ"
+      ],
+      "rows": [
+       [
+        "Mục tiêu tốc độ và sức tải",
+        "VQ-02"
+       ],
+       [
+        "Sao lưu, khôi phục và thời gian ngừng cho phép",
+        "VQ-03"
+       ],
+       [
+        "Trình duyệt được hỗ trợ",
+        "GQ-11"
+       ],
+       [
+        "Hết dung lượng lưu trữ",
+        "GQ-09"
+       ],
+       [
+        "Ghi nhận hành động quản trị",
+        "GQ-16"
+       ],
+       [
+        "Xuất dữ liệu",
+        "GQ-17"
+       ],
+       [
+        "Hành vi khi triển khai bản mới",
+        "GQ-10"
+       ],
+       [
+        "Quy định riêng tư và bảo mật ngoài phân quyền (phiên được lưu thế nào, mã hoá khi truyền và khi lưu)",
+        "Tab Technical; chưa từng hỏi bạn"
+       ]
+      ]
+     }
+    ]
+   },
+   {
+    "title": "6 · Tiêu chí chấp nhận",
+    "intro": "Mỗi tiêu chí kiểm được bằng có hoặc không. Các con số lấy từ quyết định; tiêu chí nào cần một con số chưa quyết định thì không viết, và được liệt kê ở phần thiếu độ phủ của mục 7.",
+    "blocks": [
+     {
+      "type": "table",
+      "head": [
+       "ID",
+       "Yêu cầu",
+       "Tiêu chí"
+      ],
+      "rows": [
+       [
+        "AC-001",
+        "FR-01",
+        "Nhập đúng 6 số đã gửi tới địa chỉ của thành viên thì mở ứng dụng với tư cách người đó."
+       ],
+       [
+        "AC-002",
+        "FR-01",
+        "Ô mã nhận đúng 6 chữ số; trang đăng nhập không có ô mật khẩu."
+       ],
+       [
+        "AC-003",
+        "FR-02",
+        "Lần xin thứ 6 cho một địa chỉ trong 15 phút bị từ chối và không gửi mail."
+       ],
+       [
+        "AC-004",
+        "FR-02",
+        "Trong 60 giây sau một lần xin thì chưa gửi lại được."
+       ],
+       [
+        "AC-005",
+        "FR-03",
+        "Mở bất kỳ địa chỉ nào khi chưa có phiên thì hiện trang đăng nhập và không có nội dung workspace."
+       ],
+       [
+        "AC-006",
+        "FR-03",
+        "Phiên đăng nhập ở một thiết bị không làm thiết bị khác đăng nhập theo."
+       ],
+       [
+        "AC-007",
+        "FR-03",
+        "Phiên không dùng quá 30 ngày thì không còn được chấp nhận."
+       ],
+       [
+        "AC-008",
+        "FR-04",
+        "Mở link mời chưa dùng trong vòng 7 ngày thì đăng nhập mà không hỏi mã."
+       ],
+       [
+        "AC-009",
+        "FR-04",
+        "Link đã dùng rồi thì không đăng nhập được lần thứ hai."
+       ],
+       [
+        "AC-010",
+        "FR-04",
+        "Địa chỉ không có lời mời và không có tài khoản thì không vào được workspace."
+       ],
+       [
+        "AC-011",
+        "FR-05",
+        "Người nhận lời mời là thành viên của #general mà không phải làm gì."
+       ],
+       [
+        "AC-012",
+        "FR-05",
+        "#general không có cách nào để rời hay lưu trữ, với mọi vai trò."
+       ],
+       [
+        "AC-013",
+        "FR-06",
+        "Tên từ 1 tới 80 ký tự thì lưu được; tên trống hoặc 81 ký tự thì bị từ chối."
+       ],
+       [
+        "AC-014",
+        "FR-07",
+        "Xem một cuộc trò chuyện rồi mở lại ứng dụng trên cùng thiết bị thì hiện đúng cuộc trò chuyện đó."
+       ],
+       [
+        "AC-015",
+        "FR-07",
+        "Lần mở đầu tiên trên một thiết bị hiện #general."
+       ],
+       [
+        "AC-016",
+        "FR-08",
+        "Mở cuộc trò chuyện và tới cuối danh sách thì xoá huy hiệu chưa đọc; mở trong cửa sổ không được dùng thì không xoá."
+       ],
+       [
+        "AC-017",
+        "FR-08",
+        "Vạch 'New' nằm trên tin chưa đọc đầu tiên, giữ nguyên khi đang xem, và biến mất ở lần mở sau."
+       ],
+       [
+        "AC-018",
+        "FR-08",
+        "Không màn hình nào cho thấy ai đã đọc tin."
+       ],
+       [
+        "AC-019",
+        "FR-09",
+        "Tin từ 1 tới 10.000 ký tự thì gửi được; tin 10.001 ký tự thì không."
+       ],
+       [
+        "AC-020",
+        "FR-09",
+        "Người không phải thành viên thì không gửi được vào đó, và các danh sách chọn chỉ liệt kê cuộc trò chuyện đã tham gia."
+       ],
+       [
+        "AC-021",
+        "FR-10",
+        "Một tin nhận 10 file; file thứ 11 bị từ chối và 10 file kia vẫn còn."
+       ],
+       [
+        "AC-022",
+        "FR-10",
+        "File 100 MB được nhận; file lớn hơn bị từ chối trước hoặc trong khi tải, và server cũng từ chối."
+       ],
+       [
+        "AC-023",
+        "FR-10",
+        "Ảnh đính kèm hiện thumbnail trong tin nhắn."
+       ],
+       [
+        "AC-024",
+        "FR-10",
+        "Chỉ người xem được cuộc trò chuyện mới mở được file của nó."
+       ],
+       [
+        "AC-025",
+        "FR-11",
+        "Tác giả sửa được tin dù cũ tới đâu; mọi người thấy nội dung mới kèm '(edited)'."
+       ],
+       [
+        "AC-026",
+        "FR-12",
+        "Delete chỉ xoá tin sau khi xác nhận; huỷ thì không đổi gì; không có Undo."
+       ],
+       [
+        "AC-027",
+        "FR-12",
+        "Xoá tin có trả lời thì các trả lời vẫn đọc được."
+       ],
+       [
+        "AC-028",
+        "FR-12",
+        "Sau khi xoá, file của tin không còn mở được hay tìm thấy trong Files."
+       ],
+       [
+        "AC-029",
+        "FR-13",
+        "Admin trong kênh xoá được tin của Member; tin hiện 'Message deleted by an admin' và tác giả nhận thông báo."
+       ],
+       [
+        "AC-030",
+        "FR-13",
+        "Admin hoặc Owner không ở trong một kênh riêng tư thì không thấy và không xoá được tin trong đó."
+       ],
+       [
+        "AC-031",
+        "FR-14",
+        "Mention một thành viên của kênh thì họ nhận đúng một mục Activity."
+       ],
+       [
+        "AC-032",
+        "FR-14",
+        "Tự mention mình, hoặc reaction vào tin của mình, không tạo mục hay huy hiệu nào cho mình."
+       ],
+       [
+        "AC-033",
+        "FR-14",
+        "Mở tin được mention thì mục tự thành xong, không cần thao tác riêng."
+       ],
+       [
+        "AC-034",
+        "FR-15",
+        "Khi đang pause, một mention không tạo toast, push hay âm thanh, và huy hiệu vẫn tăng."
+       ],
+       [
+        "AC-035",
+        "FR-15",
+        "Kết thúc Pause hoặc Focus thì hiện một bản tóm tắt những gì đã tới."
+       ],
+       [
+        "AC-036",
+        "FR-15",
+        "Bắt đầu Focus khi đang Focus thì kéo dài nó; kết thúc thì trả lại trạng thái trước đó."
+       ],
+       [
+        "AC-037",
+        "FR-16",
+        "Kênh vừa tham gia ở mức 'Mentions only'; DM mới ở mức 'All messages'."
+       ],
+       [
+        "AC-038",
+        "FR-17",
+        "@channel trong kênh 20 người thì hỏi xác nhận; trong kênh 19 người thì không."
+       ],
+       [
+        "AC-039",
+        "FR-18",
+        "Khi ứng dụng đóng và đã cho phép push, một mention tạo thông báo hệ thống ghi người gửi, cuộc trò chuyện và phần đầu tin nhắn."
+       ],
+       [
+        "AC-040",
+        "FR-18",
+        "Ứng dụng web cài được ra màn hình chính hoặc desktop từ trình duyệt được hỗ trợ."
+       ],
+       [
+        "AC-041",
+        "FR-19",
+        "Tên hợp lệ và chưa dùng thì tạo được kênh, người tạo là thành viên."
+       ],
+       [
+        "AC-042",
+        "FR-19",
+        "Tên 80 ký tự được nhận, 81 ký tự bị từ chối; tên đã dùng thì bị từ chối."
+       ],
+       [
+        "AC-043",
+        "FR-19",
+        "Kênh đã tạo không có cách nào đổi giữa công khai và riêng tư."
+       ],
+       [
+        "AC-044",
+        "FR-20",
+        "Người tham gia kênh công khai đọc được tin đã gửi trước khi họ vào."
+       ],
+       [
+        "AC-045",
+        "FR-20",
+        "Không vai trò nào có cách xoá kênh; kênh đã lưu trữ vẫn giữ lịch sử."
+       ],
+       [
+        "AC-046",
+        "FR-21",
+        "Rời kênh công khai hiện Undo 5 giây và không hỏi xác nhận; Undo trả lại tư cách thành viên."
+       ],
+       [
+        "AC-047",
+        "FR-21",
+        "Rời kênh riêng tư thì hỏi xác nhận có ghi phải được thành viên mời lại, và không có Undo."
+       ],
+       [
+        "AC-048",
+        "FR-21",
+        "Khi thành viên cuối rời kênh thì kênh thành lưu trữ."
+       ],
+       [
+        "AC-049",
+        "FR-22",
+        "Tạo được nhóm 8 người tính cả người tạo; không đưa được người thứ 9 vào."
+       ],
+       [
+        "AC-050",
+        "FR-22",
+        "Group DM đã có không có cách nào thêm hay bớt người."
+       ],
+       [
+        "AC-051",
+        "FR-22",
+        "Guest không mở được DM."
+       ],
+       [
+        "AC-052",
+        "FR-23",
+        "Admin là thành viên của kênh thì gỡ được thành viên khác; Member thì không."
+       ],
+       [
+        "AC-053",
+        "FR-23",
+        "Admin hoặc Owner không ở trong kênh thì không gỡ được ai khỏi đó."
+       ],
+       [
+        "AC-054",
+        "FR-24",
+        "Lưu một tin thì thêm nó vào danh sách Later của riêng người đó."
+       ],
+       [
+        "AC-055",
+        "FR-24",
+        "Không đặt được nhắc việc vào giờ đã qua."
+       ],
+       [
+        "AC-056",
+        "FR-25",
+        "Member không có mục Admin và địa chỉ của nó không hiện nội dung quản trị; server từ chối mọi request quản trị từ Member."
+       ],
+       [
+        "AC-057",
+        "FR-25",
+        "Lời mời của Admin tạo ra Member; chỉ Owner mời được Admin hoặc Owner."
+       ],
+       [
+        "AC-058",
+        "FR-26",
+        "Owner đổi được vai trò; Admin thì không."
+       ],
+       [
+        "AC-059",
+        "FR-26",
+        "Admin vô hiệu hoá được Member và không vô hiệu hoá được Admin hay Owner."
+       ],
+       [
+        "AC-060",
+        "FR-26",
+        "Khi chỉ còn một Owner, hạ vai trò hoặc vô hiệu hoá Owner đó bị từ chối; khi có hai thì được."
+       ],
+       [
+        "AC-061",
+        "FR-27",
+        "Khi offline, các cuộc trò chuyện đã tải vẫn đọc và cuộn được."
+       ],
+       [
+        "AC-062",
+        "FR-27",
+        "Tin gửi khi offline hiện là đang chờ và được gửi đúng một lần sau khi có lại mạng."
+       ],
+       [
+        "AC-063",
+        "FR-27",
+        "Mọi hành động khác khi offline không xảy ra, không báo thành công, và nêu lý do."
+       ],
+       [
+        "AC-064",
+        "FR-28",
+        "Khi đã gõ chữ, bấm ra ngoài thì form vẫn mở và chữ còn nguyên."
+       ],
+       [
+        "AC-065",
+        "FR-28",
+        "Khi đã gõ chữ, nút đóng hỏi có bỏ không; chưa gõ gì thì đóng ngay."
+       ],
+       [
+        "AC-066",
+        "FR-29",
+        "Không hành động nào vừa hỏi xác nhận vừa có Undo."
+       ],
+       [
+        "AC-067",
+        "FR-29",
+        "Mọi hộp xác nhận đều nêu tên thứ nó tác động."
+       ],
+       [
+        "AC-068",
+        "FR-30",
+        "Tìm không ra kết quả thì hiện câu riêng cho danh sách đó, ở giữa vùng nội dung."
+       ],
+       [
+        "AC-069",
+        "FR-30",
+        "Với mọi chip có số, con số bằng số hàng liệt kê bên dưới."
+       ],
+       [
+        "AC-070",
+        "FR-30",
+        "Sau khi tạo một mục, nó hiện ra mà không phải tự đổi bộ lọc."
+       ],
+       [
+        "AC-071",
+        "FR-31",
+        "Gõ 'nguyen' thì tìm thấy 'Nguyễn'."
+       ],
+       [
+        "AC-072",
+        "FR-31",
+        "Tìm kiếm không bao giờ trả về cuộc trò chuyện riêng tư, hay tin trong đó, cho người không ở trong."
+       ],
+       [
+        "AC-073",
+        "FR-32",
+        "Người không hoạt động 5 phút thì người khác thấy là Away."
+       ]
+      ]
+     }
+    ]
+   },
+   {
+    "title": "7 · Kịch bản test cho QA",
+    "intro": "116 kịch bản, mỗi cái gắn với một tiêu chí: 47 tích cực, 44 phủ định, 19 biên, 6 ngoại lệ. Tiêu chí nào cũng có ít nhất một kịch bản.",
+    "blocks": [
+     {
+      "type": "table",
+      "head": [
+       "ID",
+       "Tiêu chí",
+       "Yêu cầu",
+       "Loại",
+       "Kịch bản"
+      ],
+      "rows": [
+       [
+        "TS-001",
+        "AC-001",
+        "FR-01",
+        "Tích cực",
+        "Xin mã, nhập mã, vào ứng dụng."
+       ],
+       [
+        "TS-002",
+        "AC-001",
+        "FR-01",
+        "Phủ định",
+        "Nhập 6 số không phải mã đã gửi: bị từ chối, vẫn ở màn hình mã."
+       ],
+       [
+        "TS-003",
+        "AC-002",
+        "FR-01",
+        "Biên",
+        "5 số và 7 số thì không gửi được."
+       ],
+       [
+        "TS-004",
+        "AC-002",
+        "FR-01",
+        "Phủ định",
+        "Chữ cái trong ô mã bị từ chối."
+       ],
+       [
+        "TS-005",
+        "AC-003",
+        "FR-02",
+        "Biên",
+        "Lần 5 thành công, lần 6 bị từ chối."
+       ],
+       [
+        "TS-006",
+        "AC-003",
+        "FR-02",
+        "Tích cực",
+        "Sau 15 phút xin lại được."
+       ],
+       [
+        "TS-007",
+        "AC-004",
+        "FR-02",
+        "Biên",
+        "Giây 59 chưa được; giây 60 được."
+       ],
+       [
+        "TS-008",
+        "AC-005",
+        "FR-03",
+        "Phủ định",
+        "Mở link cuộc trò chuyện khi chưa đăng nhập: chỉ có trang đăng nhập."
+       ],
+       [
+        "TS-009",
+        "AC-005",
+        "FR-03",
+        "Phủ định",
+        "Gọi API không có phiên: bị từ chối."
+       ],
+       [
+        "TS-010",
+        "AC-006",
+        "FR-03",
+        "Tích cực",
+        "Đăng nhập ở A; B vẫn hỏi mã."
+       ],
+       [
+        "TS-011",
+        "AC-007",
+        "FR-03",
+        "Biên",
+        "Ngày 30 được, ngày 31 bị từ chối (chỉnh đồng hồ khi test)."
+       ],
+       [
+        "TS-012",
+        "AC-008",
+        "FR-04",
+        "Tích cực",
+        "Nhận lời mời ngày 1: đã đăng nhập."
+       ],
+       [
+        "TS-013",
+        "AC-008",
+        "FR-04",
+        "Biên",
+        "Nhận ngay trước 7 ngày: được; ngay sau: bị từ chối."
+       ],
+       [
+        "TS-014",
+        "AC-009",
+        "FR-04",
+        "Phủ định",
+        "Mở lại cùng link: không tạo phiên."
+       ],
+       [
+        "TS-015",
+        "AC-010",
+        "FR-04",
+        "Phủ định",
+        "Xin mã cho địa chỉ lạ: không vào được."
+       ],
+       [
+        "TS-016",
+        "AC-011",
+        "FR-05",
+        "Tích cực",
+        "Danh sách của thành viên mới có #general."
+       ],
+       [
+        "TS-017",
+        "AC-012",
+        "FR-05",
+        "Phủ định",
+        "Leave không dùng được ở #general với Member, Admin, Owner."
+       ],
+       [
+        "TS-018",
+        "AC-012",
+        "FR-05",
+        "Phủ định",
+        "Request rời kênh gửi thẳng tới server bị từ chối."
+       ],
+       [
+        "TS-019",
+        "AC-013",
+        "FR-06",
+        "Biên",
+        "1 và 80 ký tự lưu được."
+       ],
+       [
+        "TS-020",
+        "AC-013",
+        "FR-06",
+        "Biên",
+        "0 và 81 ký tự bị từ chối."
+       ],
+       [
+        "TS-021",
+        "AC-013",
+        "FR-06",
+        "Tích cực",
+        "Tên tiếng Việt có dấu được giữ nguyên."
+       ],
+       [
+        "TS-022",
+        "AC-014",
+        "FR-07",
+        "Tích cực",
+        "Xem #launch, mở lại: #launch."
+       ],
+       [
+        "TS-023",
+        "AC-014",
+        "FR-07",
+        "Ngoại lệ",
+        "Cuộc trò chuyện gần nhất đã bị rời hoặc lưu trữ: ứng dụng vẫn mở vào một nơi dùng được."
+       ],
+       [
+        "TS-024",
+        "AC-015",
+        "FR-07",
+        "Tích cực",
+        "Thiết bị mới: #general."
+       ],
+       [
+        "TS-025",
+        "AC-016",
+        "FR-08",
+        "Tích cực",
+        "Đọc tới cuối: mất huy hiệu."
+       ],
+       [
+        "TS-026",
+        "AC-016",
+        "FR-08",
+        "Phủ định",
+        "Cửa sổ nền: huy hiệu vẫn còn."
+       ],
+       [
+        "TS-027",
+        "AC-016",
+        "FR-08",
+        "Phủ định",
+        "Đang cuộn lên, có tin mới: huy hiệu vẫn còn."
+       ],
+       [
+        "TS-028",
+        "AC-017",
+        "FR-08",
+        "Tích cực",
+        "3 tin chưa đọc: vạch nằm trên tin đầu; mở lại: không còn vạch."
+       ],
+       [
+        "TS-029",
+        "AC-018",
+        "FR-08",
+        "Phủ định",
+        "Người gửi không thấy dấu đã đọc sau khi người nhận đọc."
+       ],
+       [
+        "TS-030",
+        "AC-019",
+        "FR-09",
+        "Biên",
+        "10.000 gửi được; 10.001 không gửi được."
+       ],
+       [
+        "TS-031",
+        "AC-019",
+        "FR-09",
+        "Phủ định",
+        "Chỉ có khoảng trắng: không gửi gì."
+       ],
+       [
+        "TS-032",
+        "AC-020",
+        "FR-09",
+        "Phủ định",
+        "Gửi vào kênh chưa tham gia bằng request trực tiếp: bị từ chối."
+       ],
+       [
+        "TS-033",
+        "AC-020",
+        "FR-09",
+        "Tích cực",
+        "Sau khi tham gia thì gửi được."
+       ],
+       [
+        "TS-034",
+        "AC-021",
+        "FR-10",
+        "Biên",
+        "10 file được, file thứ 11 bị từ chối."
+       ],
+       [
+        "TS-035",
+        "AC-022",
+        "FR-10",
+        "Biên",
+        "100 MB được; nhỉnh hơn thì bị từ chối."
+       ],
+       [
+        "TS-036",
+        "AC-022",
+        "FR-10",
+        "Phủ định",
+        "Tải file quá cỡ thẳng lên kho: bị từ chối."
+       ],
+       [
+        "TS-037",
+        "AC-023",
+        "FR-10",
+        "Tích cực",
+        "Gửi một PNG: có thumbnail."
+       ],
+       [
+        "TS-038",
+        "AC-024",
+        "FR-10",
+        "Phủ định",
+        "Địa chỉ file của kênh riêng tư do người ngoài mở: bị từ chối."
+       ],
+       [
+        "TS-039",
+        "AC-025",
+        "FR-11",
+        "Tích cực",
+        "Sửa một tin từ tháng trước."
+       ],
+       [
+        "TS-040",
+        "AC-025",
+        "FR-11",
+        "Phủ định",
+        "Thành viên khác không có Edit, và request trực tiếp bị từ chối."
+       ],
+       [
+        "TS-041",
+        "AC-026",
+        "FR-12",
+        "Tích cực",
+        "Xác nhận: mất với mọi người."
+       ],
+       [
+        "TS-042",
+        "AC-026",
+        "FR-12",
+        "Phủ định",
+        "Huỷ: tin giữ nguyên."
+       ],
+       [
+        "TS-043",
+        "AC-027",
+        "FR-12",
+        "Tích cực",
+        "Xoá tin gốc có 3 trả lời: 3 trả lời vẫn còn."
+       ],
+       [
+        "TS-044",
+        "AC-028",
+        "FR-12",
+        "Phủ định",
+        "Mở địa chỉ file cũ: không còn."
+       ],
+       [
+        "TS-045",
+        "AC-029",
+        "FR-13",
+        "Tích cực",
+        "Admin xoá: có nhãn, tác giả được báo."
+       ],
+       [
+        "TS-046",
+        "AC-030",
+        "FR-13",
+        "Phủ định",
+        "Owner ngoài kênh: không vào được bằng đường nào."
+       ],
+       [
+        "TS-047",
+        "AC-030",
+        "FR-13",
+        "Phủ định",
+        "Member không xoá được tin của Member khác."
+       ],
+       [
+        "TS-048",
+        "AC-031",
+        "FR-14",
+        "Tích cực",
+        "Mention một lần: một mục."
+       ],
+       [
+        "TS-049",
+        "AC-032",
+        "FR-14",
+        "Phủ định",
+        "Tự mention: Activity không đổi."
+       ],
+       [
+        "TS-050",
+        "AC-033",
+        "FR-14",
+        "Tích cực",
+        "Mở tin: mục thành xong, số đếm giảm một."
+       ],
+       [
+        "TS-051",
+        "AC-034",
+        "FR-15",
+        "Tích cực",
+        "Đang pause, được mention: huy hiệu +1, không gì khác."
+       ],
+       [
+        "TS-052",
+        "AC-034",
+        "FR-15",
+        "Ngoại lệ",
+        "Nhắc việc tới hạn trong Focus: không có toast."
+       ],
+       [
+        "TS-053",
+        "AC-035",
+        "FR-15",
+        "Tích cực",
+        "3 mention trong Focus: một bản tóm tắt ghi 3."
+       ],
+       [
+        "TS-054",
+        "AC-035",
+        "FR-15",
+        "Biên",
+        "Không có gì tới: không có tóm tắt, hoặc tóm tắt trống, nhất quán."
+       ],
+       [
+        "TS-055",
+        "AC-036",
+        "FR-15",
+        "Ngoại lệ",
+        "Bắt đầu hai lần: một khoảng Focus, dài hơn."
+       ],
+       [
+        "TS-056",
+        "AC-037",
+        "FR-16",
+        "Tích cực",
+        "Tham gia kênh: mức ghi 'Mentions only'."
+       ],
+       [
+        "TS-057",
+        "AC-037",
+        "FR-16",
+        "Tích cực",
+        "DM mới: mức ghi 'All messages'."
+       ],
+       [
+        "TS-058",
+        "AC-038",
+        "FR-17",
+        "Biên",
+        "19 thành viên: gửi ngay. 20 thành viên: hỏi trước."
+       ],
+       [
+        "TS-059",
+        "AC-038",
+        "FR-17",
+        "Phủ định",
+        "Huỷ hộp xác nhận: không gửi gì."
+       ],
+       [
+        "TS-060",
+        "AC-039",
+        "FR-18",
+        "Tích cực",
+        "Ứng dụng đóng, có mention: thông báo có đủ ba phần."
+       ],
+       [
+        "TS-061",
+        "AC-039",
+        "FR-18",
+        "Phủ định",
+        "Chưa cho phép push: không có thông báo, huy hiệu vẫn cập nhật."
+       ],
+       [
+        "TS-062",
+        "AC-040",
+        "FR-18",
+        "Tích cực",
+        "Có đề nghị cài và cài được."
+       ],
+       [
+        "TS-063",
+        "AC-041",
+        "FR-19",
+        "Tích cực",
+        "Member tạo một kênh công khai."
+       ],
+       [
+        "TS-064",
+        "AC-041",
+        "FR-19",
+        "Tích cực",
+        "Member tạo một kênh riêng tư."
+       ],
+       [
+        "TS-065",
+        "AC-042",
+        "FR-19",
+        "Biên",
+        "80 được, 81 bị từ chối."
+       ],
+       [
+        "TS-066",
+        "AC-042",
+        "FR-19",
+        "Phủ định",
+        "Tên đã có bị từ chối."
+       ],
+       [
+        "TS-067",
+        "AC-042",
+        "FR-19",
+        "Phủ định",
+        "Tên có ký tự ngoài a–z, 0–9, gạch nối thì không được tạo đúng như đã gõ."
+       ],
+       [
+        "TS-068",
+        "AC-043",
+        "FR-19",
+        "Phủ định",
+        "Không có điều khiển này; request trực tiếp bị từ chối."
+       ],
+       [
+        "TS-069",
+        "AC-044",
+        "FR-20",
+        "Tích cực",
+        "Tham gia, cuộn tới tin đầu tiên."
+       ],
+       [
+        "TS-070",
+        "AC-045",
+        "FR-20",
+        "Phủ định",
+        "Owner không có điều khiển xoá."
+       ],
+       [
+        "TS-071",
+        "AC-045",
+        "FR-20",
+        "Tích cực",
+        "Kênh đã lưu trữ vẫn đọc được với thành viên."
+       ],
+       [
+        "TS-072",
+        "AC-046",
+        "FR-21",
+        "Tích cực",
+        "Rời, Undo trong 5 giây: vẫn là thành viên."
+       ],
+       [
+        "TS-073",
+        "AC-046",
+        "FR-21",
+        "Biên",
+        "Sau 5 giây không còn Undo."
+       ],
+       [
+        "TS-074",
+        "AC-047",
+        "FR-21",
+        "Tích cực",
+        "Xác nhận: đã rời; kênh không có trong Browse và Ctrl+K."
+       ],
+       [
+        "TS-075",
+        "AC-047",
+        "FR-21",
+        "Phủ định",
+        "Huỷ: vẫn là thành viên."
+       ],
+       [
+        "TS-076",
+        "AC-048",
+        "FR-21",
+        "Ngoại lệ",
+        "Thành viên duy nhất rời: kênh được lưu trữ, không bị xoá."
+       ],
+       [
+        "TS-077",
+        "AC-049",
+        "FR-22",
+        "Biên",
+        "8 người: tạo được. 9: bị từ chối."
+       ],
+       [
+        "TS-078",
+        "AC-049",
+        "FR-22",
+        "Tích cực",
+        "DM với một người mở được."
+       ],
+       [
+        "TS-079",
+        "AC-050",
+        "FR-22",
+        "Phủ định",
+        "Không có điều khiển này; request trực tiếp bị từ chối."
+       ],
+       [
+        "TS-080",
+        "AC-051",
+        "FR-22",
+        "Phủ định",
+        "Guest không có New message tới thành viên (vai trò của phase 5, kiểm tra quy tắc từ bây giờ)."
+       ],
+       [
+        "TS-081",
+        "AC-052",
+        "FR-23",
+        "Tích cực",
+        "Admin trong kênh gỡ một Member."
+       ],
+       [
+        "TS-082",
+        "AC-052",
+        "FR-23",
+        "Phủ định",
+        "Member thử: bị từ chối."
+       ],
+       [
+        "TS-083",
+        "AC-053",
+        "FR-23",
+        "Phủ định",
+        "Owner ngoài kênh: bị từ chối."
+       ],
+       [
+        "TS-084",
+        "AC-054",
+        "FR-24",
+        "Tích cực",
+        "Lưu: xuất hiện trong Later."
+       ],
+       [
+        "TS-085",
+        "AC-054",
+        "FR-24",
+        "Phủ định",
+        "Later của người khác không có nó."
+       ],
+       [
+        "TS-086",
+        "AC-055",
+        "FR-24",
+        "Phủ định",
+        "Giờ đã qua bị từ chối."
+       ],
+       [
+        "TS-087",
+        "AC-055",
+        "FR-24",
+        "Biên",
+        "Trước một phút thì được."
+       ],
+       [
+        "TS-088",
+        "AC-056",
+        "FR-25",
+        "Phủ định",
+        "Member mở địa chỉ Admin: bị từ chối."
+       ],
+       [
+        "TS-089",
+        "AC-056",
+        "FR-25",
+        "Phủ định",
+        "Member gọi thẳng một request quản trị: bị từ chối."
+       ],
+       [
+        "TS-090",
+        "AC-056",
+        "FR-25",
+        "Tích cực",
+        "Admin và Owner mở được."
+       ],
+       [
+        "TS-091",
+        "AC-057",
+        "FR-25",
+        "Tích cực",
+        "Owner mời một Admin."
+       ],
+       [
+        "TS-092",
+        "AC-057",
+        "FR-25",
+        "Phủ định",
+        "Admin thử mời với vai trò Admin: bị từ chối."
+       ],
+       [
+        "TS-093",
+        "AC-058",
+        "FR-26",
+        "Tích cực",
+        "Owner đưa một Member lên Admin."
+       ],
+       [
+        "TS-094",
+        "AC-058",
+        "FR-26",
+        "Phủ định",
+        "Admin thử đổi vai trò: bị từ chối."
+       ],
+       [
+        "TS-095",
+        "AC-059",
+        "FR-26",
+        "Tích cực",
+        "Admin vô hiệu hoá một Member."
+       ],
+       [
+        "TS-096",
+        "AC-059",
+        "FR-26",
+        "Phủ định",
+        "Admin thử với Owner: bị từ chối."
+       ],
+       [
+        "TS-097",
+        "AC-060",
+        "FR-26",
+        "Biên",
+        "Một Owner: bị từ chối. Hai Owner: được."
+       ],
+       [
+        "TS-098",
+        "AC-061",
+        "FR-27",
+        "Tích cực",
+        "Mất mạng: nội dung vẫn còn."
+       ],
+       [
+        "TS-099",
+        "AC-062",
+        "FR-27",
+        "Tích cực",
+        "Gửi khi offline, có lại mạng: tới nơi một lần."
+       ],
+       [
+        "TS-100",
+        "AC-062",
+        "FR-27",
+        "Ngoại lệ",
+        "Mạng chập chờn nhiều lần: vẫn chỉ một bản."
+       ],
+       [
+        "TS-101",
+        "AC-063",
+        "FR-27",
+        "Phủ định",
+        "Reaction khi offline: không ghi nhận, có giải thích."
+       ],
+       [
+        "TS-102",
+        "AC-063",
+        "FR-27",
+        "Phủ định",
+        "Tham gia kênh khi offline: chưa tham gia."
+       ],
+       [
+        "TS-103",
+        "AC-064",
+        "FR-28",
+        "Phủ định",
+        "Bấm ra ngoài: không mất gì."
+       ],
+       [
+        "TS-104",
+        "AC-065",
+        "FR-28",
+        "Tích cực",
+        "Đã gõ, đóng: được hỏi."
+       ],
+       [
+        "TS-105",
+        "AC-065",
+        "FR-28",
+        "Biên",
+        "Form trống: đóng không hỏi."
+       ],
+       [
+        "TS-106",
+        "AC-066",
+        "FR-29",
+        "Phủ định",
+        "Rà mọi hành động phá huỷ: chỉ một trong hai."
+       ],
+       [
+        "TS-107",
+        "AC-067",
+        "FR-29",
+        "Tích cực",
+        "Mỗi hộp xác nhận có tên đối tượng."
+       ],
+       [
+        "TS-108",
+        "AC-068",
+        "FR-30",
+        "Tích cực",
+        "Tìm không ra ở từng danh sách."
+       ],
+       [
+        "TS-109",
+        "AC-069",
+        "FR-30",
+        "Tích cực",
+        "So số đếm và số hàng ở từng chip."
+       ],
+       [
+        "TS-110",
+        "AC-069",
+        "FR-30",
+        "Ngoại lệ",
+        "Tin của một mục bị xoá: số đếm và số hàng vẫn khớp."
+       ],
+       [
+        "TS-111",
+        "AC-070",
+        "FR-30",
+        "Tích cực",
+        "Tạo khi đang lọc theo cách sẽ ẩn nó: bộ lọc tự đổi."
+       ],
+       [
+        "TS-112",
+        "AC-071",
+        "FR-31",
+        "Tích cực",
+        "Từ không dấu tìm ra tên và tin có dấu."
+       ],
+       [
+        "TS-113",
+        "AC-071",
+        "FR-31",
+        "Tích cực",
+        "Từ có dấu cũng tìm ra."
+       ],
+       [
+        "TS-114",
+        "AC-072",
+        "FR-31",
+        "Phủ định",
+        "Người ngoài tìm một từ chỉ dùng trong kênh riêng tư: không có kết quả."
+       ],
+       [
+        "TS-115",
+        "AC-073",
+        "FR-32",
+        "Biên",
+        "Gần 5 phút: active. Đủ 5 phút: Away."
+       ],
+       [
+        "TS-116",
+        "AC-073",
+        "FR-32",
+        "Tích cực",
+        "Có hoạt động thì về active."
+       ]
+      ]
+     },
+     {
+      "type": "h",
+      "text": "Độ phủ test còn thiếu"
+     },
+     {
+      "type": "table",
+      "head": [
+       "Chưa test được gì",
+       "Vì sao",
+       "Chờ"
+      ],
+      "rows": [
+       [
+        "Mã đăng nhập hết hạn; khoá sau nhiều lần sai",
+        "Chưa có con số được quyết định",
+        "FA-13, FA-14"
+       ],
+       [
+        "Phiên gia hạn khi dùng",
+        "Chưa quyết định 30 ngày tính từ lúc đăng nhập hay lần dùng cuối",
+        "FA-15"
+       ],
+       [
+        "Mọi trạng thái lỗi, đang tải và thử lại",
+        "Chưa có hành vi được quyết định; flow 3.3 là đề xuất",
+        "FA-08, FA-02, GQ-03, FQ-21"
+       ],
+       [
+        "Mention trong cuộc trò chuyện đã tắt tiếng; 'Nothing' so với Mute",
+        "Còn mở",
+        "GQ-01, GQ-02"
+       ],
+       [
+        "Link, tải lại và Back của trình duyệt",
+        "Còn mở",
+        "GQ-06"
+       ],
+       [
+        "Sign out, thiết bị đã đăng nhập, hết phiên",
+        "Chỉ có trong flow viết",
+        "VQ-01"
+       ],
+       [
+        "Toàn bộ bảng quyền: mỗi dòng và mỗi vai trò một test",
+        "Bảng chưa được duyệt; mới phủ các quy tắc ở FR-13, FR-19, FR-22, FR-23, FR-25, FR-26",
+        "GQ-20"
+       ],
+       [
+        "Hai người hoặc hai thiết bị cùng lúc: cập nhật trực tiếp, đang gõ, chưa đọc giữa các thiết bị",
+        "Không quan sát được trong prototype; chưa có quyết định về xung đột",
+        "FQ-02, GQ-13"
+       ],
+       [
+        "Tốc độ, tải, sao lưu và khôi phục",
+        "Chưa có mục tiêu",
+        "VQ-02, VQ-03"
+       ],
+       [
+        "Tính năng phase 1 chưa có yêu cầu ở đây: thread, reaction, ghim, bộ lọc Activity, Files, People, Preferences, trạng thái, chỉ báo đang gõ",
+        "Thuộc phạm vi theo Q2 và Q17 và có trong flow viết, nhưng chưa có quyết định riêng để viết tiêu chí",
+        "VQ-01"
+       ]
+      ]
+     }
+    ]
+   },
+   {
+    "title": "8 · Ma trận truy vết yêu cầu",
+    "intro": "Mỗi yêu cầu chức năng một dòng, từ màn hình trong prototype tới các test. Ô quy tắc trống nghĩa là yêu cầu đến thẳng từ một quyết định, không qua quy tắc có đánh số.",
+    "blocks": [
+     {
+      "type": "table",
+      "head": [
+       "Màn hình",
+       "User flow",
+       "Quy tắc",
+       "Yêu cầu",
+       "Tiêu chí chấp nhận",
+       "Kịch bản test"
+      ],
+      "rows": [
+       [
+        "Đăng nhập (không có trong prototype)",
+        "2.1",
+        "BR-02",
+        "FR-01",
+        "AC-001, AC-002",
+        "TS-001, TS-002, TS-003, TS-004"
+       ],
+       [
+        "Đăng nhập (không có trong prototype)",
+        "2.1",
+        "BR-03",
+        "FR-02",
+        "AC-003, AC-004",
+        "TS-005, TS-006, TS-007"
+       ],
+       [
+        "không có trong prototype",
+        "1.1, 2.3, 3.2",
+        "BR-01, BR-05",
+        "FR-03",
+        "AC-005, AC-006, AC-007",
+        "TS-008, TS-009, TS-010, TS-011"
+       ],
+       [
+        "không có trong prototype",
+        "2.2, 2.12",
+        "BR-06",
+        "FR-04",
+        "AC-008, AC-009, AC-010",
+        "TS-012, TS-013, TS-014, TS-015"
+       ],
+       [
+        "Home, panel Details",
+        "2.2, 2.9",
+        "BR-07",
+        "FR-05",
+        "AC-011, AC-012",
+        "TS-016, TS-017, TS-018"
+       ],
+       [
+        "không có trong prototype",
+        "2.2",
+        "BR-35",
+        "FR-06",
+        "AC-013",
+        "TS-019, TS-020, TS-021"
+       ],
+       [
+        "Home",
+        "2.3",
+        "BR-08",
+        "FR-07",
+        "AC-014, AC-015",
+        "TS-022, TS-023, TS-024"
+       ],
+       [
+        "Home: danh sách tin nhắn",
+        "2.4",
+        "BR-14",
+        "FR-08",
+        "AC-016, AC-017, AC-018",
+        "TS-025, TS-026, TS-027, TS-028, TS-029"
+       ],
+       [
+        "Home: ô soạn tin",
+        "2.5",
+        "BR-11, BR-12",
+        "FR-09",
+        "AC-019, AC-020",
+        "TS-030, TS-031, TS-032, TS-033"
+       ],
+       [
+        "Ô soạn tin: đính kèm (giả lập trong prototype)",
+        "2.6",
+        "BR-12",
+        "FR-10",
+        "AC-021, AC-022, AC-023, AC-024",
+        "TS-034, TS-035, TS-036, TS-037, TS-038"
+       ],
+       [
+        "Menu tin nhắn: Edit",
+        "2.10",
+        "BR-24",
+        "FR-11",
+        "AC-025",
+        "TS-039, TS-040"
+       ],
+       [
+        "Menu tin nhắn: Delete",
+        "2.10",
+        "BR-20, BR-24, BR-25",
+        "FR-12",
+        "AC-026, AC-027, AC-028",
+        "TS-041, TS-042, TS-043, TS-044"
+       ],
+       [
+        "Menu tin nhắn (chỉ xem với vai trò Owner)",
+        "2.10",
+        "BR-26",
+        "FR-13",
+        "AC-029, AC-030",
+        "TS-045, TS-046, TS-047"
+       ],
+       [
+        "Ô soạn tin @, Activity",
+        "2.7",
+        "BR-15",
+        "FR-14",
+        "AC-031, AC-032, AC-033",
+        "TS-048, TS-049, TS-050"
+       ],
+       [
+        "Menu tài khoản: Pause, Focus time",
+        "2.7, 2.11",
+        "BR-16",
+        "FR-15",
+        "AC-034, AC-035, AC-036",
+        "TS-051, TS-052, TS-053, TS-054, TS-055"
+       ],
+       [
+        "Panel Details: mức thông báo",
+        "2.7",
+        "BR-17",
+        "FR-16",
+        "AC-037",
+        "TS-056, TS-057"
+       ],
+       [
+        "Ô soạn tin @ (prototype không có @channel)",
+        "2.7",
+        "BR-18",
+        "FR-17",
+        "AC-038",
+        "TS-058, TS-059"
+       ],
+       [
+        "không quan sát được trong prototype",
+        "2.7",
+        "—",
+        "FR-18",
+        "AC-039, AC-040",
+        "TS-060, TS-061, TS-062"
+       ],
+       [
+        "không có trong prototype",
+        "2.8",
+        "BR-19, BR-37",
+        "FR-19",
+        "AC-041, AC-042, AC-043",
+        "TS-063, TS-064, TS-065, TS-066, TS-067, TS-068"
+       ],
+       [
+        "Browse channels",
+        "2.9",
+        "—",
+        "FR-20",
+        "AC-044, AC-045",
+        "TS-069, TS-070, TS-071"
+       ],
+       [
+        "Panel Details: Leave channel",
+        "2.9",
+        "BR-20, BR-23",
+        "FR-21",
+        "AC-046, AC-047, AC-048",
+        "TS-072, TS-073, TS-074, TS-075, TS-076"
+       ],
+       [
+        "New message (prototype chỉ chọn được một người)",
+        "2.14",
+        "BR-36, BR-37",
+        "FR-22",
+        "AC-049, AC-050, AC-051",
+        "TS-077, TS-078, TS-079, TS-080"
+       ],
+       [
+        "không có trong prototype",
+        "chưa có sơ đồ",
+        "BR-38",
+        "FR-23",
+        "AC-052, AC-053",
+        "TS-081, TS-082, TS-083"
+       ],
+       [
+        "Later; menu tin nhắn: Remind me",
+        "2.11",
+        "—",
+        "FR-24",
+        "AC-054, AC-055",
+        "TS-084, TS-085, TS-086, TS-087"
+       ],
+       [
+        "Admin (phần thành viên không có trong prototype)",
+        "2.12",
+        "—",
+        "FR-25",
+        "AC-056, AC-057",
+        "TS-088, TS-089, TS-090, TS-091, TS-092"
+       ],
+       [
+        "không có trong prototype",
+        "2.13",
+        "BR-27, BR-28",
+        "FR-26",
+        "AC-058, AC-059, AC-060",
+        "TS-093, TS-094, TS-095, TS-096, TS-097"
+       ],
+       [
+        "Banner offline, 'Waiting to send'",
+        "3.1",
+        "BR-30",
+        "FR-27",
+        "AC-061, AC-062, AC-063",
+        "TS-098, TS-099, TS-100, TS-101, TS-102"
+       ],
+       [
+        "Mọi hộp thoại có ô nhập",
+        "2.8",
+        "BR-21",
+        "FR-28",
+        "AC-064, AC-065",
+        "TS-103, TS-104, TS-105"
+       ],
+       [
+        "Toast và hộp xác nhận",
+        "2.9, 2.10, 2.13",
+        "BR-20",
+        "FR-29",
+        "AC-066, AC-067",
+        "TS-106, TS-107"
+       ],
+       [
+        "Activity, Later, Files, People, Browse channels",
+        "2.4, 2.9, 2.11",
+        "BR-22, BR-32",
+        "FR-30",
+        "AC-068, AC-069, AC-070",
+        "TS-108, TS-109, TS-110, TS-111"
+       ],
+       [
+        "Ô Search 'Ctrl K', bảng lệnh",
+        "1.1",
+        "—",
+        "FR-31",
+        "AC-071, AC-072",
+        "TS-112, TS-113, TS-114"
+       ],
+       [
+        "Chấm hiện diện trên avatar",
+        "—",
+        "—",
+        "FR-32",
+        "AC-073",
+        "TS-115, TS-116"
+       ]
+      ]
+     }
+    ]
+   },
+   {
+    "title": "9 · Báo cáo sẵn sàng phát triển",
+    "intro": "Đã bắt đầu làm được chưa, và điều gì đang cản.",
+    "blocks": [
+     {
+      "type": "table",
+      "head": [
+       "Hạng mục",
+       "Số lượng",
+       "Chi tiết"
+      ],
+      "rows": [
+       [
+        "Phát hiện đã giải quyết",
+        "39 + 5",
+        "39 gap của prototype đều có hành vi yêu cầu (T-11); 4 mâu thuẫn được giải quyết bởi NR3, Q13, OQ2, Q18; tên hiển thị được chốt bởi Q31."
+       ],
+       [
+        "Câu hỏi còn mở",
+        "45",
+        "13 ưu tiên cao (bên dưới), 32 trung bình hoặc thấp. Mục 2."
+       ],
+       [
+        "Giả định đã chấp nhận",
+        "17",
+        "G1 tới G16, và AS-05 (điều khiển chỉ để demo không lên sản phẩm)."
+       ],
+       [
+        "Giả định chưa được chấp nhận",
+        "23",
+        "FA-01 tới FA-17 và AS-01 tới AS-08 trừ AS-05. Mục 2."
+       ],
+       [
+        "Yêu cầu hoãn lại",
+        "6 phase",
+        "2: Làm việc cùng nhau · 3: App điện thoại · 4: Họp · 5: Vượt ra ngoài team · 6: Desktop và AI · 7: Mail"
+       ],
+       [
+        "Điểm chặn nghiêm trọng",
+        "3",
+        "T-01 (chưa thiết kế lối vào), T-02 (chưa có quản lý thành viên), T-03 (phân quyền chưa duyệt)."
+       ]
+      ]
+     },
+     {
+      "type": "h",
+      "text": "Câu hỏi ưu tiên cao đang chặn công việc (13)"
+     },
+     {
+      "type": "table",
+      "head": [
+       "ID",
+       "Cần quyết định",
+       "Ai quyết định",
+       "Giữ chân"
+      ],
+      "rows": [
+       [
+        "FQ-01",
+        "Đang đăng nhập là A và bấm link mời hoặc link đăng nhập dành cho B. Link thay phiên của A luôn, hay trang hỏi trước?",
+        "PO, BE",
+        "FR-04"
+       ],
+       [
+        "FQ-13",
+        "Trang từ chối lời mời ghi gì, và có phân biệt từng nguyên nhân không?",
+        "UX",
+        "FR-04"
+       ],
+       [
+        "FQ-14",
+        "Màn hình nhập mã của prototype không có Resend, chỉ có 'Use a different email'. G5 đã mặc định có nút Resend sau 60 giây. Có thêm Resend vào màn hình không, và mã mới có huỷ mã cũ không?",
+        "UX",
+        "FR-01, FR-02"
+       ],
+       [
+        "FQ-15",
+        "Màn hình chào sau khi nhận lời mời không có trong prototype. Có cần nó không, và gồm những ô nào?",
+        "PO, UX",
+        "FR-04, FR-06"
+       ],
+       [
+        "FQ-17",
+        "**Bạn phát hiện:** prototype không có '+' để tạo kênh, chỉ có '+ Browse channels', và trong Browse channels không có chỗ nào để tạo. 'Create channel' nằm ở đâu?",
+        "UX",
+        "FR-19"
+       ],
+       [
+        "FQ-19",
+        "Owner hoặc Admin có gỡ được thành viên khỏi một kênh bất kỳ không? Hiện đã quyết định (G14): không, chỉ trong kênh họ là thành viên, và không bao giờ khỏi #general. Giữ như vậy chứ, và người tạo kênh có được gỡ người không?",
+        "PO",
+        "FR-23"
+       ],
+       [
+        "FQ-20",
+        "Người dùng chọn nhiều người cho một group DM bằng cách nào? Hộp thoại New message của prototype mở cuộc trò chuyện ngay ở lần bấm đầu.",
+        "UX",
+        "FR-22"
+       ],
+       [
+        "FQ-21",
+        "Prototype có 'Waiting to send' và không có gì cho trường hợp gửi lỗi. 'Not sent', Retry và Delete hiện ở đâu?",
+        "UX",
+        "FR-09"
+       ],
+       [
+        "GQ-01",
+        "Mention có báo cho người đó khi cuộc trò chuyện đã bị tắt tiếng không?",
+        "PO",
+        "FR-14"
+       ],
+       [
+        "GQ-06",
+        "Mỗi cuộc trò chuyện, thread và mục có địa chỉ riêng không, và Back của trình duyệt làm gì?",
+        "FE, UX",
+        "FR-07, FR-14, FR-18"
+       ],
+       [
+        "GQ-20",
+        "Bảng quyền ở tab Roles & States có phải là căn cứ đã thống nhất cho những gì Member và Admin thấy không?",
+        "PO, QA",
+        "FR-13, FR-19, FR-23, FR-25, FR-26"
+       ],
+       [
+        "VQ-01",
+        "51 flow viết do Claude soạn theo quyết định Q19 ('Claude quyết định những gì prototype không vẽ'). Nhiều điều trong đó chưa từng được hỏi riêng: Sign out và danh sách thiết bị đã đăng nhập (F06), Resend và Revoke lời mời (F02), vô hiệu hoá ảnh hưởng thế nào tới tin nhắn và DM của một người (F41). Chấp nhận các flow viết làm nền, hay rà từng nhóm trước?",
+        "PO",
+        "FR-25, FR-26"
+       ],
+       [
+        "VQ-03",
+        "Chưa có quyết định về sao lưu và khôi phục: sao lưu bao lâu một lần, được phép mất bao nhiêu dữ liệu hoặc ngừng dịch vụ bao lâu.",
+        "PO, BE",
+        "—"
+       ]
+      ]
+     },
+     {
+      "type": "h",
+      "text": "Mức sẵn sàng theo yêu cầu"
+     },
+     {
+      "type": "table",
+      "head": [
+       "Mức sẵn sàng",
+       "Yêu cầu",
+       "Nghĩa là"
+      ],
+      "rows": [
+       [
+        "Sẵn sàng",
+        "FR-08, FR-11, FR-15, FR-17, FR-29, FR-30, FR-32",
+        "Đã quyết định đủ; viết spec và làm được."
+       ],
+       [
+        "Sẵn sàng nếu chấp nhận các giả định",
+        "FR-21",
+        "Làm được khi bạn đồng ý với các giả định ghi bên cạnh."
+       ],
+       [
+        "Phần lõi sẵn sàng; chi tiết chờ trả lời",
+        "FR-03, FR-05, FR-10, FR-12, FR-16, FR-20, FR-24, FR-27, FR-28, FR-31",
+        "Phần đã quyết định làm được; chi tiết còn mở phải được trả lời trước khi đóng ticket."
+       ],
+       [
+        "**Bị chặn**",
+        "FR-01, FR-02, FR-04, FR-06, FR-07, FR-09, FR-13, FR-14, FR-18, FR-19, FR-22, FR-23, FR-25, FR-26",
+        "Một câu hỏi ưu tiên cao quyết định màn hình hoặc quy tắc của nó. Chưa bắt đầu."
+       ]
+      ]
+     },
+     {
+      "type": "h",
+      "text": "Phụ thuộc cần kiểm chứng kỹ thuật"
+     },
+     {
+      "type": "table",
+      "head": [
+       "Cần chứng minh",
+       "Ảnh hưởng tới",
+       "Bằng cách"
+      ],
+      "rows": [
+       [
+        "Web Push trên iPhone chỉ chạy khi ứng dụng web đã được cài",
+        "FR-18 · Q28, GQ-11",
+        "Thử trên iPhone thật trước khi bắt đầu phần thông báo."
+       ],
+       [
+        "Full-text của Postgres khớp tiếng Việt không dấu",
+        "FR-31 · Q15",
+        "Thử ngắn với tin nhắn tiếng Việt mẫu."
+       ],
+       [
+        "Tải 100 MB thẳng lên object storage từ trình duyệt, server kiểm soát dung lượng",
+        "FR-10 · Q14",
+        "Thử tải trên kết nối chậm."
+       ],
+       [
+        "Bắt kịp sau khi kết nối lại mà không mất hay trùng tin",
+        "FR-27 · NR13",
+        "Test hai client, cắt mạng giữa lúc gửi."
+       ],
+       [
+        "Gửi mã đăng nhập qua SMTP (tốc độ, hộp spam)",
+        "FR-01, FR-04 · Q25",
+        "Gửi tới địa chỉ Gmail và Outlook từ tài khoản đã chọn."
+       ],
+       [
+        "200 người kết nối cùng lúc trên một server",
+        "NFR-04 · Q9",
+        "Test tải khi VQ-02 có mục tiêu."
+       ]
+      ]
+     },
+     {
+      "type": "note",
+      "text": "**Điều gì mở được cổng.** (1) Trả lời 13 câu hỏi ưu tiên cao, hoặc chấp nhận bằng văn bản đề xuất cho từng câu. (2) Đồng ý hoặc không với các giả định chưa được chấp nhận. (3) Bổ sung vào prototype các màn hình còn thiếu cho T-01 tới T-05, hoặc chấp nhận rằng chúng được thiết kế trong lúc làm. Sau đó tab này được sinh lại, các yêu cầu bị chặn được nâng lên, và ticket có thể rút ra từ yêu cầu. Cho tới lúc đó 96 ticket nháp ở tab Plan chưa phải là công việc đã chốt."
+     }
+    ]
+   }
+  ],
+  "open": 13
  }
 }

@@ -846,6 +846,7 @@ BP = {l: json.loads(pathlib.Path(__file__).with_name(f"blueprint.{l}.json").read
 G_QUESTION = {
     "G1": "Which channel does everyone start in, and can it be left?||Mọi người bắt đầu ở kênh nào, và có rời kênh đó được không?",
     "G2": "Which conversation does the app open on?||Ứng dụng mở vào cuộc trò chuyện nào?",
+    "G3": "When does a person show as away, and is there an offline state?||Khi nào một người hiện là away, và có trạng thái offline không?",
     "G4": "How long does an invitation last, and does its link need a sign-in code?||Lời mời có hạn bao lâu, và link trong đó có cần mã đăng nhập không?",
     "G5": "How often may a sign-in code be requested, and when can it be sent again?||Được xin mã đăng nhập bao nhiêu lần, và khi nào gửi lại được?",
     "G6": "Can there be several Owners, and what protects the last one?||Có thể có nhiều Owner không, và Owner cuối cùng được bảo vệ thế nào?",
@@ -881,7 +882,7 @@ CITE = {
     "2.9": "G1 NR3 OQ2 Q27 G14 FA-10 FQ-19",
     "2.10": "Q13 G10 G14 G16 NR3 FQ-05",
     "2.11": "Q2 NR7 NR6 NR8 FQ-06",
-    "2.12": "Q11 Q26 Q12 G4 F02 FA-11 FQ-03 FQ-11",
+    "2.12": "Q11 Q26 Q12 G4 F02 FA-11 FQ-03 FQ-11 GQ-20",
     "2.13": "Q12 G6 NR3 F40 F41 GQ-20",
     "2.14": "Q17 G12 Q12 F25 FQ-20",
     "3.1": "NR13 NR12 T4 F37 FA-06 FA-09 FA-17 FQ-22",
