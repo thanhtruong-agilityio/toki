@@ -5080,7 +5080,7 @@
        "**After:** a 30-day session on this device only; the code can never be used again; the app opens where the person was heading.",
        "**Validation:** email must look like an address before the button enables. Code: exactly 6 digits, one use, valid 10 minutes, locked after the 5th wrong try. At most 5 code requests per address in 15 minutes.",
        "**Back / cancel / retry:** 'Use a different email' returns to the email field. 'Resend code' enables after 60 seconds. A network failure re-enables the button with 'Could not connect'.",
-       "**Alternative:** the mail also has a sign-in button. Pressing it signs in the device where it is pressed and skips typing the code.",
+       "**No shortcut:** the mail carries the code only; there is no button that signs in without it.",
        "**Security rule:** the answer to a code request is identical for members and strangers, so the page never reveals who is a member.",
        "**In the prototype:** No member sign-in. The nearest screens are the guest portal's: 'Sign in as a guest' (email, 'Email me a code') and 'Check your email' (6-digit field, 'Sign in', 'Use a different email', 'It works for 10 minutes'). That screen has **no Resend**, no limit on requests and no wrong-code state (any 6 digits work). Its two errors show in a red line under the card."
       ]
@@ -5497,7 +5497,7 @@
        "**Rule NR3** (made from GAP-24 · OQ12): A reversible action happens at once and shows a toast with Undo for 5 seconds. An irreversible action, or one that affects other people, asks for confirmation and names its target. Never both for one action.",
        [
         "After leaving a private channel, can a member rejoin alone or do they need an invitation? (OQ2)",
-        "Answer: A member must invite them back. The leave confirmation says so; Undo is still offered for 5 seconds. Private channels never appear in Browse or Ctrl+K for outsiders. If the last member leaves, the channel is archived."
+        "Answer: A member must invite them back. The leave confirmation says so, and there is no Undo (Q86). Private channels never appear in Browse or Ctrl+K for outsiders. If the last member leaves, the channel is archived."
        ],
        [
         "What do people who join a channel later see of its history, and what happens to a channel that is no longer used? (Q27)",
@@ -7298,7 +7298,7 @@
         "**After:** a 30-day session on this device only; the code can never be used again; the app opens where the person was heading.||**Sau:** một phiên 30 ngày chỉ trên thiết bị này; mã không dùng lại được; ứng dụng mở đúng nơi người dùng định tới.",
         "**Validation:** email must look like an address before the button enables. Code: exactly 6 digits, one use, valid 10 minutes, locked after the 5th wrong try. At most 5 code requests per address in 15 minutes.||**Kiểm tra:** email phải đúng dạng thì nút mới bật. Mã: đúng 6 số, dùng một lần, hiệu lực 10 phút, bị khoá sau lần sai thứ 5. Tối đa 5 lần xin mã cho một địa chỉ trong 15 phút.",
         "**Back / cancel / retry:** 'Use a different email' returns to the email field. 'Resend code' enables after 60 seconds. A network failure re-enables the button with 'Could not connect'.||**Quay lại / huỷ / thử lại:** 'Use a different email' quay về ô email. 'Resend code' bật sau 60 giây. Lỗi mạng thì nút bấm lại được, kèm 'Could not connect'.",
-        "**Alternative:** the mail also has a sign-in button. Pressing it signs in the device where it is pressed and skips typing the code.||**Nhánh khác:** mail còn có nút đăng nhập. Bấm nút thì thiết bị bấm được đăng nhập, không cần gõ mã.",
+        "**No shortcut:** the mail carries the code only; there is no button that signs in without it.||**Không có lối tắt:** mail chỉ có mã; không có nút nào đăng nhập mà không cần mã.",
         "**Security rule:** the answer to a code request is identical for members and strangers, so the page never reveals who is a member.||**Quy tắc bảo mật:** câu trả lời cho yêu cầu xin mã giống hệt nhau với thành viên và người lạ, nên trang không bao giờ lộ ai là thành viên.",
         "**In the prototype:** No member sign-in. The nearest screens are the guest portal's: 'Sign in as a guest' (email, 'Email me a code') and 'Check your email' (6-digit field, 'Sign in', 'Use a different email', 'It works for 10 minutes'). That screen has **no Resend**, no limit on requests and no wrong-code state (any 6 digits work). Its two errors show in a red line under the card.||**Trong prototype:** Không có đăng nhập cho thành viên. Màn hình gần nhất là của cổng guest: 'Sign in as a guest' (email, 'Email me a code') và 'Check your email' (ô 6 số, 'Sign in', 'Use a different email', 'It works for 10 minutes'). Màn hình đó **không có Resend**, không giới hạn số lần xin mã và không có trạng thái sai mã (6 số nào cũng được). Hai lỗi của nó hiện ở một dòng đỏ dưới thẻ."
        ],
@@ -9727,7 +9727,7 @@
          "**Rule NR3** (made from GAP-24 · OQ12): A reversible action happens at once and shows a toast with Undo for 5 seconds. An irreversible action, or one that affects other people, asks for confirmation and names its target. Never both for one action.||**Quy tắc NR3** (rút ra từ GAP-24 · OQ12): Hành động hoàn tác được thì làm ngay và hiện toast có nút Hoàn tác trong 5 giây. Hành động không hoàn tác được hoặc ảnh hưởng người khác thì hỏi xác nhận, nêu rõ đối tượng. Không dùng cả hai cho một hành động.",
          [
           "After leaving a private channel, can a member rejoin alone or do they need an invitation? (OQ2)||Rời channel riêng tư rồi thì tự vào lại hay cần lời mời mới? (OQ2)",
-          "Answer: A member must invite them back. The leave confirmation says so; Undo is still offered for 5 seconds. Private channels never appear in Browse or Ctrl+K for outsiders. If the last member leaves, the channel is archived.||Trả lời: Cần một thành viên mời lại. Lời xác nhận khi rời nói rõ điều đó; vẫn có Hoàn tác trong 5 giây. Channel riêng tư không xuất hiện trong Browse hay Ctrl+K với người ngoài. Nếu người cuối cùng rời đi, channel được lưu trữ."
+          "Answer: A member must invite them back. The leave confirmation says so, and there is no Undo (Q86). Private channels never appear in Browse or Ctrl+K for outsiders. If the last member leaves, the channel is archived.||Trả lời: Phải được một thành viên mời lại. Hộp xác nhận khi rời ghi rõ điều đó, và không có Undo (Q86). Kênh riêng tư không bao giờ xuất hiện trong Browse hay Ctrl+K với người ngoài. Nếu thành viên cuối rời đi, kênh được lưu trữ."
          ],
          [
           "What do people who join a channel later see of its history, and what happens to a channel that is no longer used? (Q27)||Người vào kênh sau thấy được gì trong lịch sử, và kênh không dùng nữa thì xử lý ra sao? (Q27)",

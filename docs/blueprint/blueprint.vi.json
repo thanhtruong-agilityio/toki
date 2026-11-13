@@ -5194,7 +5194,7 @@
        "**Sau:** một phiên 30 ngày chỉ trên thiết bị này; mã không dùng lại được; ứng dụng mở đúng nơi người dùng định tới.",
        "**Kiểm tra:** email phải đúng dạng thì nút mới bật. Mã: đúng 6 số, dùng một lần, hiệu lực 10 phút, bị khoá sau lần sai thứ 5. Tối đa 5 lần xin mã cho một địa chỉ trong 15 phút.",
        "**Quay lại / huỷ / thử lại:** 'Use a different email' quay về ô email. 'Resend code' bật sau 60 giây. Lỗi mạng thì nút bấm lại được, kèm 'Could not connect'.",
-       "**Nhánh khác:** mail còn có nút đăng nhập. Bấm nút thì thiết bị bấm được đăng nhập, không cần gõ mã.",
+       "**Không có lối tắt:** mail chỉ có mã; không có nút nào đăng nhập mà không cần mã.",
        "**Quy tắc bảo mật:** câu trả lời cho yêu cầu xin mã giống hệt nhau với thành viên và người lạ, nên trang không bao giờ lộ ai là thành viên.",
        "**Trong prototype:** Không có đăng nhập cho thành viên. Màn hình gần nhất là của cổng guest: 'Sign in as a guest' (email, 'Email me a code') và 'Check your email' (ô 6 số, 'Sign in', 'Use a different email', 'It works for 10 minutes'). Màn hình đó **không có Resend**, không giới hạn số lần xin mã và không có trạng thái sai mã (6 số nào cũng được). Hai lỗi của nó hiện ở một dòng đỏ dưới thẻ."
       ]
@@ -5611,7 +5611,7 @@
        "**Quy tắc NR3** (rút ra từ GAP-24 · OQ12): Hành động hoàn tác được thì làm ngay và hiện toast có nút Hoàn tác trong 5 giây. Hành động không hoàn tác được hoặc ảnh hưởng người khác thì hỏi xác nhận, nêu rõ đối tượng. Không dùng cả hai cho một hành động.",
        [
         "Rời channel riêng tư rồi thì tự vào lại hay cần lời mời mới? (OQ2)",
-        "Trả lời: Cần một thành viên mời lại. Lời xác nhận khi rời nói rõ điều đó; vẫn có Hoàn tác trong 5 giây. Channel riêng tư không xuất hiện trong Browse hay Ctrl+K với người ngoài. Nếu người cuối cùng rời đi, channel được lưu trữ."
+        "Trả lời: Phải được một thành viên mời lại. Hộp xác nhận khi rời ghi rõ điều đó, và không có Undo (Q86). Kênh riêng tư không bao giờ xuất hiện trong Browse hay Ctrl+K với người ngoài. Nếu thành viên cuối rời đi, kênh được lưu trữ."
        ],
        [
         "Người vào kênh sau thấy được gì trong lịch sử, và kênh không dùng nữa thì xử lý ra sao? (Q27)",
