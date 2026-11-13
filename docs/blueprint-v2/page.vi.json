@@ -1,7 +1,7 @@
 {
  "product": "Toki",
  "prototypeNote": "Nó mô phỏng một người, luôn là Owner, với dữ liệu mẫu và thao tác tức thì.",
- "writtenNote": "Do Claude soạn theo D-019. Tám hành trình đã được viết lại ngày 13/11/2026 cho khớp với các câu trả lời hôm đó: F02, F03, F20, F21, F25, F39, F40, F41. Các hành trình khác được viết từ trước; chỗ nào khác với tab Quyết định thì quyết định thắng, và chúng chờ lần rà được nêu ở D-091.",
+ "writtenNote": "Do Claude soạn theo D-019. Ngày 13/11/2026 tám hành trình đã được viết lại (F02, F03, F20, F21, F25, F39, F40, F41) và 35 hành trình còn lại của phase 1 đã được đọc đối chiếu với các quyết định; 16 trong số đó đã được sửa. Có bốn lựa chọn trong đó chưa quyết định nào phủ tới và còn cần xác nhận: nút đăng nhập trong mail đăng nhập (F04), sign out và danh sách thiết bị đã đăng nhập (F06), Undo sau khi rời kênh riêng tư (F23), và link đăng nhập khẩn cấp (F43).",
  "changes": {
   "title": "Trang này được sắp xếp lại thế nào ngày 13/11/2026",
   "head": [
@@ -3777,7 +3777,9 @@
    "id": "F01",
    "group": "Tài khoản và đăng nhập",
    "title": "Khởi tạo workspace lần đầu",
-   "roles": [],
+   "roles": [
+    "Admin"
+   ],
    "context": "Server vừa cài, database trống. Biến môi trường có email và tên của admin đầu tiên, và tên workspace.",
    "steps": [
     "Server khởi động, thấy chưa có tài khoản nào, tạo workspace, tài khoản Admin và kênh #general.",
@@ -3905,7 +3907,8 @@
    ],
    "cases": [
     "Sau khi mọi thiết bị đã đăng xuất, người khác thấy mình ở trạng thái Vắng mặt.",
-    "Thiết bị bị đăng xuất từ xa: xem F07."
+    "Thiết bị bị đăng xuất từ xa: xem F07.",
+    "Sign out ở một tab thì các tab khác của cùng trình duyệt thoát ngay."
    ],
    "phase": 1
   },
@@ -3949,7 +3952,7 @@
     "Khung hẹp: Home là danh sách hội thoại toàn màn hình; chạm một dòng mới mở hội thoại. Thanh tab đáy: Home, Activity, Later, Files, More.",
     "Hội thoại xem lần cuối đã bị lưu trữ hoặc mình đã rời: mở #general.",
     "Đang Tạm dừng hoặc Focus: dải trạng thái ở đầu vùng chính, có giờ kết thúc và nút kết thúc sớm.",
-    "Mất kết nối lúc mở: hiện dải “Đang kết nối lại” và thử lại tự động."
+    "Không có kết nối lúc mở: banner 'Offline: showing saved messages' hiện ra và ứng dụng tự thử lại."
    ],
    "phase": 1
   },
@@ -3965,10 +3968,10 @@
    "steps": [
     "Ba nhóm gập mở được: Đã gắn sao, Kênh, Tin nhắn riêng. Nhóm trống thì không hiện.",
     "Dòng kênh: dấu # (công khai) hoặc ổ khóa (riêng tư), rồi tên. Dòng DM: avatar kèm chấm presence, rồi tên. Group DM: icon nhóm và tên các thành viên.",
-    "Dòng có tin chưa đọc: tên in đậm, số ở bên phải. Có mention: thêm chấm đỏ chữ @. Hội thoại tắt tiếng: tên xám, không hiện số, vẫn hiện @.",
+    "Hàng có tin chưa đọc thì tên in đậm và có số đếm bên phải. Có mention thì thêm chấm @ đỏ. Cuộc trò chuyện đã tắt tiếng có màu xám, không hiện số đếm và không in đậm; nó vẫn hiện @ khi công tắc cho mention ở nơi đã tắt tiếng của người đó đang bật.",
     "Hội thoại có nháp chưa gửi và không đang mở: nhãn “Nháp”.",
     "Ba chip lọc: Tất cả, Chưa đọc, Mention. Ô tìm lọc theo tên.",
-    "Hai nút ở đầu: Duyệt kênh và Tin nhắn mới. Cuối danh sách có dòng “Duyệt kênh”."
+    "Phía trên: nút Browse channels. Tiêu đề 'Direct messages' có dấu '+' để mở DM hoặc nhóm (F25); nó hiện khi hover và luôn hiện trên màn hình cảm ứng. Hàng '+ Browse channels' nằm cuối danh sách."
    ],
    "cases": [
     "Lọc không ra gì: “Không có hội thoại nào khớp” và nút “Xóa bộ lọc”.",
@@ -4000,7 +4003,7 @@
     "Hội thoại trống: “Đây là khởi đầu của #tên. Hãy gửi lời chào.”",
     "Mở từ link tới một tin cụ thể: cuộn tới tin đó và nháy sáng 2 giây.",
     "Mở link tới kênh riêng tư mình không ở trong: trang “Bạn không có quyền xem hội thoại này”, không lộ tên kênh.",
-    "Mở link tới kênh công khai chưa tham gia: xem trước chỉ đọc, kèm nút “Tham gia”.",
+    "Link tới một kênh công khai chưa tham gia: trang hiện tên và chủ đề của kênh kèm nút 'Join' và không có tin nào; không có xem trước.",
     "Kênh đã lưu trữ: đọc được; ô soạn thay bằng dòng “Kênh này đã được lưu trữ”."
    ],
    "phase": 1
@@ -4023,7 +4026,7 @@
     "Người khác đang mở hội thoại thấy tin xuất hiện ngay. Người không mở thấy dòng hội thoại in đậm và số tăng."
    ],
    "cases": [
-    "Gửi lỗi do mạng: tin có nhãn “Chưa gửi được” và nút “Thử lại”, “Xóa”. Khi có mạng lại, app tự thử một lần.",
+    "Gửi lỗi: nhãn đỏ 'Not sent' hiện cạnh giờ, kèm 'Retry' và 'Delete'. Khi mất mạng thì tin chờ; có mạng lại thì ứng dụng tự thử một lần trước khi hiện 'Not sent'. Delete không hỏi lại.",
     "Ô trống hoặc chỉ có khoảng trắng: nút gửi không làm gì.",
     "Tin quá 10.000 ký tự: bộ đếm hiện khi gần giới hạn; vượt thì nút gửi bị khóa.",
     "Đang gõ tiếng Việt chưa xong một từ: Enter chỉ kết thúc từ, không gửi.",
@@ -4050,7 +4053,7 @@
    ],
    "cases": [
     "Dùng @channel ở kênh từ 20 người trở lên: hỏi xác nhận “Báo cho 34 người?” trước khi gửi.",
-    "Gõ @ theo sau là tên không thuộc hội thoại: không có gợi ý, chữ được gửi như văn bản thường, không ai được báo.",
+    "@ kèm tên một người ngoài cuộc trò chuyện: không ai được báo, và người gửi được gợi ý 'Add them'.",
     "Người gửi gỡ được thẻ xem trước link bằng nút × trên thẻ.",
     "Guest không thấy mục @channel."
    ],
@@ -4077,7 +4080,8 @@
     "Minh sửa tin bỏ @Lan, hoặc xóa tin: mục Activity bị gỡ, badge giảm lại.",
     "Nhắc trong một reply của thread: kênh không tăng số chưa đọc nhưng có chấm @; mở mục Activity thì panel thread mở ra đúng reply đó.",
     "Dùng @channel: mọi thành viên trừ người gửi nhận như trên, lời ghi là “nhắc cả kênh”.",
-    "Phía Minh: tin trông như tin thường. Minh không biết Lan đã đọc hay chưa; Toki không có dấu đã xem."
+    "Phía Minh: tin trông như tin thường. Minh không biết Lan đã đọc hay chưa; Toki không có dấu đã xem.",
+    "Lan đã tắt tiếng #project-launch: cô vẫn được báo khi công tắc 'Notify me for @mentions even in muted channels' đang bật (mặc định); khi tắt thì không có toast, push hay âm thanh."
    ],
    "phase": 1
   },
@@ -4103,7 +4107,8 @@
     "Từ 720 tới 1099px, panel thread phủ lên vùng chat. Khung hẹp: thread chiếm toàn màn hình, có nút Quay lại.",
     "Tin gốc bị xóa: thread còn nguyên, tin gốc thành “Tin nhắn đã bị xóa”.",
     "Thread chỉ một cấp: bên trong thread không có nút trả lời lồng tiếp.",
-    "Đường dẫn của thread chia sẻ được và mở lại đúng thread."
+    "Đường dẫn của thread chia sẻ được và mở lại đúng thread.",
+    "Phase 1 không có cách ngừng theo dõi một thread."
    ],
    "phase": 1
   },
@@ -4197,7 +4202,9 @@
     "File quá 100 MB: thẻ báo đỏ “Vượt quá 100 MB”, không tải lên.",
     "Tải lên lỗi giữa chừng: thẻ có nút “Thử lại”.",
     "Link tới file chỉ mở được với người có quyền xem hội thoại chứa nó.",
-    "Ảnh chưa tạo xong thu nhỏ: khung giữ chỗ đúng tỉ lệ, không làm nhảy bố cục."
+    "Ảnh chưa tạo xong thu nhỏ: khung giữ chỗ đúng tỉ lệ, không làm nhảy bố cục.",
+    "Nhận mọi loại file tới 100 MB; file luôn được tải về, không bao giờ chạy trong trình duyệt.",
+    "File đã tải lên nhưng không bao giờ được gửi sẽ bị xoá khỏi kho sau 24 giờ."
    ],
    "phase": 1
   },
@@ -4322,7 +4329,7 @@
    "steps": [
     "Panel Details gồm: Giới thiệu (tên, topic, mô tả, người tạo, ngày tạo), Thành viên (avatar, presence, tên, chức danh; bấm để xem hồ sơ), Thông báo, Cài đặt.",
     "Thông báo có ba mức: Mọi tin nhắn, Chỉ khi được nhắc, Không gì cả. Mặc định: kênh là “Chỉ khi được nhắc”, DM là “Mọi tin nhắn”.",
-    "Công tắc “Tắt tiếng”: dòng hội thoại thành xám, không tính vào badge Home, không toast hay push.",
+    "Công tắc 'Mute': hàng chuyển xám, không có số đếm và không in đậm, rời khỏi huy hiệu Home, và không tạo toast, push hay âm thanh. Mention vẫn báo khi công tắc tương ứng trong Preferences của người đó đang bật. Mức 'Nothing' chỉ chặn toast, push và âm thanh; số đếm vẫn còn.",
     "Công tắc “Gắn sao”: hội thoại chuyển lên nhóm Đã gắn sao; header hiện ngôi sao.",
     "Sửa topic và mô tả ngay trong mục Giới thiệu."
    ],
@@ -4399,7 +4406,8 @@
     "Mục đã hoãn biến khỏi danh sách chính; tới giờ thì trở lại đầu danh sách, chưa đọc, có nhãn “Trở lại sau khi hoãn”, kèm toast.",
     "Danh sách trống: “Bạn đã xem hết” và nút “Mở hội thoại”.",
     "Trên thiết bị chạm, nút Xong và Hoãn luôn hiện.",
-    "Mục tự gỡ khi tin gốc bị xóa."
+    "Mục tự gỡ khi tin gốc bị xóa.",
+    "Lựa chọn hoãn đã qua, ví dụ 'Today 15:00' khi đã quá 15:00, không được đưa ra; 'In 3 hours' thế chỗ."
    ],
    "phase": 1
   },
@@ -4423,7 +4431,8 @@
     "Cũng đặt được từ menu Thêm của tin: “Nhắc tôi về tin này” vừa lưu vừa đặt giờ.",
     "Tin gốc bị xóa: dòng hiện “Tin nhắn đã bị xóa”, vẫn đánh dấu xong hoặc gỡ được, số đếm vẫn khớp.",
     "Đang Tạm dừng hoặc Focus khi tới giờ: không toast, không push; badge vẫn tăng và mục được tính vào tổng kết khi kết thúc.",
-    "Later là của riêng mình; không ai khác thấy."
+    "Later là của riêng mình; không ai khác thấy.",
+    "Lựa chọn nhắc việc đã qua thì không được đưa ra; 'In 3 hours' thế chỗ."
    ],
    "phase": 1
   },
@@ -4439,12 +4448,12 @@
    "steps": [
     "Nhấn Ctrl+K (Cmd+K trên Mac) hoặc bấm ô Tìm kiếm. Bảng lệnh mở giữa màn hình.",
     "Chưa gõ gì: hiện các hội thoại gần đây và các lệnh nhanh.",
-    "Gõ: kết quả chia nhóm Hội thoại, Mọi người, Kênh có thể tham gia, Tin nhắn (từ 2 ký tự), Lệnh. Khớp chính xác đứng trước.",
+    "Khi gõ: kết quả chia nhóm Conversations, People, Channels you can join, Actions, rồi Messages (từ 2 ký tự). Tối đa 20 mỗi nhóm, xem thêm khi cần. Kết quả khớp chính xác đứng trước.",
     "Mũi tên để chọn, Enter để mở, Esc để đóng.",
     "Chọn tin nhắn thì mở hội thoại tới tin đó; chọn người thì mở hồ sơ."
    ],
    "cases": [
-    "Lệnh nhanh ở phase 1: Tạo kênh, Duyệt kênh, Tin nhắn mới, Đặt status, Tạm dừng thông báo, Bắt đầu Focus time, Đổi look, và Tới Activity, Later, Files, People, Tùy chọn.",
+    "Thao tác nhanh ở phase 1: Browse channels, New direct message, Set status, Pause notifications, Start Focus time, Switch look, và Go to Activity, Later, Files, People, Preferences. 'Create channel' chỉ có với Admin.",
     "Tin nhắn chỉ tìm trong hội thoại mình là thành viên.",
     "Không có kết quả: “Không tìm thấy gì cho “…””.",
     "Khung hẹp: mở từ ô tìm ở đầu Home và từ sheet More."
@@ -4481,7 +4490,7 @@
    ],
    "context": "Bấm People.",
    "steps": [
-    "Lưới thẻ: avatar, presence, tên, nhãn Admin hoặc Admin, chức danh, giờ địa phương. Có ô tìm theo tên hoặc chức danh.",
+    "Một lưới thẻ: avatar (chữ cái đầu trên nền màu), trạng thái hiện diện, tên, nhãn Admin nếu có, chức danh, giờ địa phương. Có ô tìm theo tên hoặc chức danh; khi có nhiều người thì hiện 50 người đầu và tải thêm khi cuộn.",
     "Bấm một thẻ, hoặc bấm tên hay avatar ở bất kỳ tin nào: panel Hồ sơ mở bên phải.",
     "Hồ sơ: avatar lớn, tên, chức danh, presence bằng chữ, status nếu có, giờ địa phương, múi giờ dạng UTC.",
     "Nút “Nhắn tin” mở DM. Nút “Bắt đầu Meet” có từ phase 4.",
@@ -4575,8 +4584,8 @@
     "Look: Calm, Focus, hoặc Theo thiết bị. Đổi là thấy ngay, không tải lại.",
     "Màu nhấn: teal, indigo, clay, violet. Mật độ: Thoải mái hoặc Gọn (ẩn trên khung hẹp).",
     "Thông báo: Thông báo trên máy, Phát âm thanh, Báo @mention kể cả ở kênh đã tắt tiếng.",
-    "Ngôn ngữ: Tiếng Việt hoặc English. Đổi là toàn bộ giao diện đổi ngay.",
-    "Hồ sơ: tên hiển thị, chức danh, múi giờ.",
+    "Ngôn ngữ: English (mặc định) hoặc Tiếng Việt. Đổi thì cả giao diện chuyển ngay.",
+    "Hồ sơ: tên hiển thị (1 tới 80 ký tự), chức danh, múi giờ. Phase 1 không có tải ảnh hồ sơ.",
     "Thiết bị đang đăng nhập (F06)."
    ],
    "cases": [
@@ -4619,11 +4628,11 @@
    ],
    "context": "Đang dùng app thì mạng rớt.",
    "steps": [
-    "Dải vàng “Đang kết nối lại…” hiện ở đầu vùng chính và đầu danh sách hội thoại.",
+    "Banner 'Offline: showing saved messages' xuất hiện phía trên vùng chính và danh sách cuộc trò chuyện, và giữ nguyên suốt thời gian đó.",
     "Nội dung đã tải vẫn đọc và cuộn được.",
     "Tin gửi trong lúc này hiện với nhãn “Đang chờ gửi” và tự gửi khi có mạng.",
     "Mọi thao tác ghi khác (reaction, sửa, ghim, tham gia kênh, lưu cài đặt) bị khóa; bấm vào thì báo “Cần có kết nối”.",
-    "Có mạng lại: dải biến mất, tin chờ được gửi, những gì bỏ lỡ được tải về, toast “Đã kết nối lại”."
+    "Khi có lại kết nối, banner biến mất, các tin đang chờ được gửi, và những gì bị lỡ được tải về. Không có toast."
    ],
    "cases": [
     "Mất kết nối dưới 3 giây: không hiện dải.",

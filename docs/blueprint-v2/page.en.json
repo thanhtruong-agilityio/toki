@@ -1,7 +1,7 @@
 {
  "product": "Toki",
  "prototypeNote": "It simulates one person, always an Owner, with sample data and instant actions.",
- "writtenNote": "Drafted by Claude under D-019. Eight journeys were rewritten on 13 Nov 2026 to match the answers of that day: F02, F03, F20, F21, F25, F39, F40, F41. The others were written earlier; where one differs from the Decisions tab, the decision wins, and they await the review asked for in D-091.",
+ "writtenNote": "Drafted by Claude under D-019. On 13 Nov 2026 eight journeys were rewritten (F02, F03, F20, F21, F25, F39, F40, F41) and the other 35 of phase 1 were read against the decisions; 16 of them were corrected. Four choices found in them are covered by no decision and are still to be confirmed: the sign-in button in the sign-in mail (F04), sign out and the list of signed-in devices (F06), Undo after leaving a private channel (F23), and the emergency sign-in link (F43).",
  "changes": {
   "title": "How this page was reorganised on 13 Nov 2026",
   "head": [
@@ -3777,7 +3777,9 @@
    "id": "F01",
    "group": "Account and sign-in",
    "title": "First-time workspace setup",
-   "roles": [],
+   "roles": [
+    "Admin"
+   ],
    "context": "The server was just installed and the database is empty. Environment variables hold the first admin's email and name, and the workspace name.",
    "steps": [
     "The server starts, finds no accounts, and creates the workspace, the first Admin account and the #general channel.",
@@ -3905,7 +3907,8 @@
    ],
    "cases": [
     "Once every device is signed out, other people see the person as Away.",
-    "A device signed out remotely: see F07."
+    "A device signed out remotely: see F07.",
+    "Signing out in one tab signs out the other tabs of the same browser at once."
    ],
    "phase": 1
   },
@@ -3949,7 +3952,7 @@
     "Narrow screens: Home is the full-screen conversation list; tapping a row opens the conversation. Bottom tabs: Home, Activity, Later, Files, More.",
     "The last-viewed conversation was archived or left: #general opens.",
     "In Pause or Focus: a strip at the top of the main area shows the end time and an end-early button.",
-    "No connection at open: a 'Reconnecting' strip shows and the app retries on its own."
+    "No connection at open: the banner 'Offline: showing saved messages' shows and the app retries on its own."
    ],
    "phase": 1
   },
@@ -3965,10 +3968,10 @@
    "steps": [
     "Three collapsible groups: Starred, Channels, Direct messages. An empty group is not shown.",
     "A channel row: # (public) or a lock (private), then the name. A DM row: avatar with presence dot, then the name. A group DM: a group icon and the members' names.",
-    "A row with unread messages has a bold name and a count on the right. With a mention it adds a red @ dot. A muted conversation is grey, shows no count, and still shows the @.",
+    "A row with unread messages has a bold name and a count on the right. With a mention it adds a red @ dot. A muted conversation is grey and shows no count and no bold; it still shows the @ when the person's switch for mentions in muted conversations is on.",
     "A conversation with an unsent draft that is not open has a 'Draft' label.",
     "Three filter chips: All, Unread, Mentions. The search field filters by name.",
-    "Two buttons at the top: Browse channels and New message. A 'Browse channels' row closes the list."
+    "At the top: a Browse channels button. The 'Direct messages' heading has a '+' that starts a DM or a group (F25); it shows on hover and is always visible on touch screens. A '+ Browse channels' row closes the list."
    ],
    "cases": [
     "A filter matches nothing: 'No conversations match' and a 'Clear filter' button.",
@@ -4000,7 +4003,7 @@
     "An empty conversation: 'This is the start of #name. Say hello.'",
     "Opened from a link to one message: it scrolls there and flashes for 2 seconds.",
     "A link to a private channel the person is not in: 'You do not have access to this conversation', without revealing the channel name.",
-    "A link to a public channel not yet joined: a read-only preview with a 'Join' button.",
+    "A link to a public channel not yet joined: the page shows the channel's name and topic with a 'Join' button and no messages; there is no preview.",
     "An archived channel: readable; the composer is replaced by 'This channel has been archived'."
    ],
    "phase": 1
@@ -4023,7 +4026,7 @@
     "Others with the conversation open see it appear immediately. Others see the row turn bold and its count rise."
    ],
    "cases": [
-    "Send fails on the network: the message gets a 'Not sent' label with 'Retry' and 'Delete'. When the connection returns the app retries once on its own.",
+    "Send fails: a red 'Not sent' label appears beside the time, with 'Retry' and 'Delete'. While offline the message waits; once the connection returns the app tries once on its own before showing 'Not sent'. Delete asks nothing.",
     "Empty or whitespace only: the send button does nothing.",
     "Over 10,000 characters: a counter appears near the limit; beyond it the send button is locked.",
     "Mid-word while typing Vietnamese: Enter finishes the word and does not send.",
@@ -4050,7 +4053,7 @@
    ],
    "cases": [
     "@channel in a channel of 20 or more people asks 'Notify 34 people?' before sending.",
-    "@ followed by a name outside the conversation: no suggestion, the text goes as plain text, nobody is notified.",
+    "@ followed by the name of someone outside the conversation: nobody is notified, and the sender is offered 'Add them'.",
     "The sender can remove a link preview with the × on the card.",
     "A guest does not see the @channel entry."
    ],
@@ -4077,7 +4080,8 @@
     "Minh edits out @Lan or deletes the message: the Activity item is removed and the badges fall back.",
     "A mention inside a thread reply: the channel's unread count does not rise but an @ dot appears; opening the Activity item opens the thread panel at that reply.",
     "With @channel: every member except the sender gets the same, worded 'mentioned the channel'.",
-    "On Minh's side the message looks like any other. Minh cannot tell whether Lan has read it; Toki has no seen receipts."
+    "On Minh's side the message looks like any other. Minh cannot tell whether Lan has read it; Toki has no seen receipts.",
+    "Lan has muted #project-launch: she is still notified while her switch 'Notify me for @mentions even in muted channels' is on (the default); with it off there is no toast, push or sound."
    ],
    "phase": 1
   },
@@ -4103,7 +4107,8 @@
     "From 720 to 1099px the thread panel overlays the chat. On narrow screens the thread is full screen with a Back button.",
     "The root message is deleted: the thread stays, and the root becomes 'Message deleted'.",
     "Threads are one level deep: there is no reply button inside a thread.",
-    "A thread has a shareable path that reopens the same thread."
+    "A thread has a shareable path that reopens the same thread.",
+    "There is no way to stop following a thread in phase 1."
    ],
    "phase": 1
   },
@@ -4197,7 +4202,9 @@
     "A file over 100 MB: the card turns red, 'Over 100 MB', and is not uploaded.",
     "An upload fails midway: the card gets a 'Retry' button.",
     "A file link opens only for people who can see the conversation holding it.",
-    "A thumbnail not yet ready: a placeholder with the right proportions, so the layout does not jump."
+    "A thumbnail not yet ready: a placeholder with the right proportions, so the layout does not jump.",
+    "Every file type is accepted up to 100 MB; a file is always downloaded, never run in the browser.",
+    "A file uploaded but never sent is removed from storage after 24 hours."
    ],
    "phase": 1
   },
@@ -4322,7 +4329,7 @@
    "steps": [
     "The Details panel has: About (name, topic, description, creator, creation date), Members (avatar, presence, name, job title; press to open a profile), Notifications, Settings.",
     "Notifications has three levels: All messages, Mentions only, Nothing. Defaults: 'Mentions only' for channels, 'All messages' for DMs.",
-    "The 'Mute' switch: the row turns grey, leaves the Home badge, and produces no toast or push.",
+    "The 'Mute' switch: the row turns grey with no count and no bold, leaves the Home badge, and produces no toast, push or sound. A mention still notifies while the person's switch for it in Preferences is on. The level 'Nothing' only stops toast, push and sound; the count stays.",
     "The 'Star' switch: the conversation moves to the Starred group; a star shows in the header.",
     "Edit the topic and description in place under About."
    ],
@@ -4399,7 +4406,8 @@
     "A snoozed item leaves the main list; when due it returns to the top, unread, labelled 'Back from snooze', with a toast.",
     "An empty list: 'You are all caught up' and an 'Open your conversations' button.",
     "On touch devices Done and Snooze are always visible.",
-    "An item removes itself when its source message is deleted."
+    "An item removes itself when its source message is deleted.",
+    "A snooze choice that is already past, such as 'Today 15:00' after 15:00, is not offered; 'In 3 hours' takes its place."
    ],
    "phase": 1
   },
@@ -4423,7 +4431,8 @@
     "It can also be set from a message's More menu: 'Remind me about this' saves and schedules in one step.",
     "The source message was deleted: the row reads 'Message deleted' and can still be completed or removed; the count still matches.",
     "In Pause or Focus when due: no toast or push; the badge still rises and the item counts in the summary at the end.",
-    "Later is personal; nobody else sees it."
+    "Later is personal; nobody else sees it.",
+    "A reminder choice that is already past is not offered; 'In 3 hours' takes its place."
    ],
    "phase": 1
   },
@@ -4439,12 +4448,12 @@
    "steps": [
     "Press Ctrl+K (Cmd+K on a Mac) or the Search field. The palette opens in the middle of the screen.",
     "Before typing: recent conversations and quick actions.",
-    "While typing: results grouped as Conversations, People, Channels you can join, Messages (from 2 characters), Actions. Exact matches come first.",
+    "While typing: results grouped as Conversations, People, Channels you can join, Actions, then Messages (from 2 characters). Up to 20 per group, with more on request. Exact matches come first.",
     "Arrow keys choose, Enter opens, Esc closes.",
     "Choosing a message opens its conversation at that message; choosing a person opens their profile."
    ],
    "cases": [
-    "Phase 1 quick actions: Create channel, Browse channels, New message, Set status, Pause notifications, Start Focus time, Switch look, and Go to Activity, Later, Files, People, Preferences.",
+    "Phase 1 quick actions: Browse channels, New direct message, Set status, Pause notifications, Start Focus time, Switch look, and Go to Activity, Later, Files, People, Preferences. 'Create channel' is offered to Admins only.",
     "Messages are searched only in conversations you belong to.",
     "No results: 'No results for …'.",
     "Narrow screens: opened from the search field at the top of Home and from the More sheet."
@@ -4481,7 +4490,7 @@
    ],
    "context": "Press People.",
    "steps": [
-    "A grid of cards: avatar, presence, name, an Admin or Admin label, job title, local time. A field searches by name or job title.",
+    "A grid of cards: avatar (initials on a colour), presence, name, an Admin label where it applies, job title, local time. A field searches by name or job title; with many people the first 50 show and more load on scroll.",
     "Press a card, or a name or avatar on any message: the Profile panel opens on the right.",
     "The profile: large avatar, name, job title, presence in words, status if any, local time, time zone as a UTC offset.",
     "'Message' opens the DM. 'Start a Meet' arrives in phase 4.",
@@ -4575,8 +4584,8 @@
     "Look: Calm, Focus, or Match my device. A change shows immediately without reloading.",
     "Accent: teal, indigo, clay, violet. Density: Comfortable or Compact (hidden on narrow screens).",
     "Notifications: Desktop notifications, Play a sound, Notify me for @mentions even in muted channels.",
-    "Language: Tiếng Việt or English. A change switches the whole interface at once.",
-    "Profile: display name, job title, time zone.",
+    "Language: English (the default) or Tiếng Việt. A change switches the whole interface at once.",
+    "Profile: display name (1 to 80 characters), job title, time zone. There is no picture upload in phase 1.",
     "Signed-in devices (F06)."
    ],
    "cases": [
@@ -4619,11 +4628,11 @@
    ],
    "context": "Using the app when the network drops.",
    "steps": [
-    "A yellow 'Reconnecting…' strip appears at the top of the main area and of the conversation list.",
+    "A banner 'Offline: showing saved messages' appears at the top of the main area and of the conversation list, and stays the whole time.",
     "Loaded content can still be read and scrolled.",
     "Messages sent now appear labelled 'Waiting to send' and go out on their own when the connection returns.",
     "Every other write (reactions, edits, pins, joining a channel, saving settings) is locked; pressing one says 'A connection is needed'.",
-    "When the connection returns the strip goes, waiting messages are sent, what was missed is fetched, and a toast says 'Reconnected'."
+    "When the connection returns the banner goes, waiting messages are sent, and what was missed is fetched. There is no toast."
    ],
    "cases": [
     "A drop of under 3 seconds shows no strip.",
