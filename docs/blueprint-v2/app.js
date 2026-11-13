@@ -5,6 +5,7 @@ const STL={"Open":"Open||Còn mở","In Review":"In Review||Đang xem xét","Con
 const STC={"Open":"H","In Review":"a","Confirmed":"ok","Rejected":"L","Deferred":"L","Accepted Assumption":"ok"};
 const DONE=new Set(["Confirmed","Rejected","Deferred","Accepted Assumption"]);
 const KEY="toki-blueprint-v2";
+const SRCL={user:"Your own answer||Bạn tự trả lời",recommended:"You chose the recommended option||Bạn chọn phương án được đề xuất",deferred:"Deferred||Hoãn lại"};
 let S={tab:0,status:{},f:{},lang:"en"};
 try{const s=JSON.parse(localStorage.getItem(KEY)||"null");if(s&&s.status)S=Object.assign(S,s)}catch(e){}
 if(!ALL[S.lang])S.lang="en";
@@ -15,7 +16,7 @@ const fmt=s=>esc(s).replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/`(.+?)`/g,"<s
 const pill=(t,c)=>"<span class='pill "+c+"'>"+esc(t)+"</span>";
 const SEVL={C:"Critical||Nghiêm trọng",H:"High||Cao",M:"Medium||Trung bình",L:"Low||Thấp"};
 const TTL={P:"Positive||Tích cực",N:"Negative||Phủ định",B:"Boundary||Biên",X:"Exception||Ngoại lệ"},TTC={P:"ok",N:"C",B:"H",X:"a"};
-const KIND={ans:"Answer||Câu trả lời",gas:"Confirmed assumption||Giả định đã xác nhận",rev:"Review answer||Trả lời khi review",rule:"Rule from a gap||Quy tắc từ gap",q:"Question||Câu hỏi",asm:"Assumption||Giả định"};
+const KIND={ans:"Brainstorming answer||Trả lời khi brainstorming",gas:"Confirmed assumption||Giả định đã xác nhận",rev:"Review answer||Trả lời khi review",rule:"Rule from a gap||Quy tắc từ gap",q:"Question||Câu hỏi",asm:"Assumption||Giả định"};
 const sev=s=>s?pill(L(SEVL[s]),s):"";
 const id=s=>"<span class='id'>"+esc(s)+"</span>";
 const ids=a=>"<span class='id' style='white-space:normal'>"+esc(a.join(" ")||"—")+"</span>";
@@ -32,7 +33,7 @@ const fold=(left,mid,right,body,open)=>"<details class='fr'"+(open?" open":"")+"
 function block(b){switch(b.type){
  case"h":return"<h3>"+fmt(b.text)+"</h3>";case"p":return"<p class='lede' style='margin:0'>"+fmt(b.text)+"</p>";
  case"note":return"<div class='note'>"+fmt(b.text)+"</div>";
- case"list":return"<ul class='plain'>"+b.items.map(i=>"<li>"+fmt(i)+"</li>").join("")+"</ul>";
+ case"list":return(b.ordered?"<ol class='plain' style='padding-left:22px'>":"<ul class='plain'>")+b.items.map(i=>"<li>"+fmt(i)+"</li>").join("")+(b.ordered?"</ol>":"</ul>");
  case"table":return table(b.head,b.rows.map(r=>r.map(fmt)));
  case"pre":return"<pre class='code'>"+esc(b.text)+"</pre>";
  case"svg":return"<figure class='chart'>"+b.svg+"</figure>"+(b.caption?"<p class='cap'>"+fmt(b.caption)+"</p>":"");
@@ -76,12 +77,12 @@ const TABS=[
 const VIEW=[
 /* 1 · Overview */
 ()=>{const v=verdict(),b=blockers(),o=D.overview,n=k=>D.frs.filter(f=>frState(f)===k).length;
- return title("Toki Blueprint · v2 proposal||Toki Blueprint · đề xuất v2","Where Toki stands, and what it needs from you||Toki đang ở đâu, và cần gì từ bạn",o.summary)
+ return title("Overview||Tổng quan","Where Toki stands, and what it needs from you||Toki đang ở đâu, và cần gì từ bạn",o.summary)
  +"<div class='note "+v[3]+"'>"+pill(v[0],v[1]+" big")+" &nbsp;"+esc(v[2])+". "+L("Every number on this page is counted from the decision log; change a status on the Decisions tab and it moves.||Mọi con số trên trang này được đếm từ sổ quyết định; đổi một trạng thái ở tab Quyết định thì chúng đổi theo.")+"</div>"
  +stats([[D.decisions.filter(d=>!isOpen(d.id)).length,"decisions settled||quyết định đã chốt"],[openQ().length,"questions open||câu hỏi còn mở"],[b.length,"of them blocking||trong đó đang chặn"],[openA().length,"assumptions undecided||giả định chưa quyết định"],[(n("R")+n("A"))+"/"+D.frs.length,"requirements can start||yêu cầu bắt đầu được"]])
  +h3("Needed from you first||Cần từ bạn trước tiên")+table(["ID","Decision needed||Cần quyết định","Who decides||Ai quyết định","Holds up||Giữ chân"],b.map(q=>[dref(q.id),"<b>"+fmt(q.q)+"</b>",esc(q.owner),ids(D.frs.filter(f=>f.open.includes(q.id)).map(f=>f.id))]),["","w","n",""])
  +"<div class='two'><div>"+h3("Product||Sản phẩm")+"<ul class='plain' style='margin-top:8px'>"+o.product.map(x=>"<li>"+fmt(x)+"</li>").join("")+"</ul></div><div>"+h3("Technical||Kỹ thuật")+"<ul class='plain' style='margin-top:8px'>"+o.technical.map(x=>"<li>"+fmt(x)+"</li>").join("")+"</ul></div></div>"
- +h3("What changed from v1||Thay đổi so với v1")+table(["In v1||Ở v1","In v2||Ở v2","Why||Vì sao"],[
+ +h3("How this page was reorganised on 13 Nov 2026||Trang này được sắp xếp lại thế nào ngày 13/11/2026")+table(["Before||Trước đây","Now||Bây giờ","Why||Vì sao"],[
   ["Nine id series for questions and assumptions (Q, OQ, G, NR, FA, FQ, GQ, AS, VQ) across four tabs||Chín dãy mã cho câu hỏi và giả định (Q, OQ, G, NR, FA, FQ, GQ, AS, VQ) rải trên bốn tab","One decision log, D-001 onward, each with a status. The earlier id stays in its own column.||Một sổ quyết định, từ D-001, mỗi mục có trạng thái. Mã cũ nằm ở một cột riêng.","One place answers 'what is still open?'||Một nơi trả lời 'còn gì chưa chốt?'"],
   ["Gaps in two lists (GAP, N), merged again in a third (T)||Gap ở hai danh sách (GAP, N), gộp lại ở danh sách thứ ba (T)","One findings backlog of 15; the 72 detailed findings open inside each.||Một backlog 15 phát hiện; 72 phát hiện chi tiết mở ra bên trong từng mục.","Each problem appears once||Mỗi vấn đề chỉ xuất hiện một lần"],
   ["Questions & Gaps, Gap analysis and Validation overlapped||Questions & Gaps, Gap analysis và Validation chồng lên nhau","Findings → Decisions → Requirements → QA, the order of the BA & QA workflow.||Phát hiện → Quyết định → Yêu cầu → QA, đúng thứ tự của quy trình BA & QA.","Tabs follow what the reader needs next||Tab đi theo thứ người đọc cần tiếp theo"],
@@ -110,20 +111,21 @@ const VIEW=[
  +stats([[D.decisions.length,"entries||mục"],[D.decisions.filter(d=>!isOpen(d.id)).length,"settled||đã chốt"],[openQ().length,"questions open||câu hỏi còn mở"],[blockers().length,"blocking||đang chặn"],[openA().length,"assumptions undecided||giả định chưa quyết định"]])
  +"<div class='bar'><label for='f-dst'>"+L("Status||Trạng thái")+"</label><select id='f-dst' data-f='dst'><option value=''>"+L("All||Tất cả")+"</option><option value='open'"+(F("dst")==="open"?" selected":"")+">"+L("Not settled||Chưa chốt")+"</option>"+STATUSES.map(s=>"<option value='"+s+"'"+(F("dst")===s?" selected":"")+">"+L(STL[s])+"</option>").join("")+"</select>"
  +sel("dk","Kind||Loại",Object.keys(KIND),o=>L(KIND[o]))+sel("dsev","Priority||Ưu tiên",["C","H","M","L"],o=>L(SEVL[o]))+sel("down","Who decides||Ai quyết định",owners)
- +"<label for='f-dq'>"+L("Find||Tìm")+"</label><input type='search' id='f-dq' data-f='dq' value='"+esc(F("dq"))+"' placeholder='"+L("id, earlier id or words||mã, mã cũ hoặc từ khoá")+"'>"+shown(rows.length)+"<button class='btn' data-act='reset'>"+L("Reset statuses||Đặt lại trạng thái")+"</button></div>"
- +table(["ID","Kind||Loại","Question||Câu hỏi","Answer · proposal||Câu trả lời · đề xuất","Who decides||Ai quyết định","Priority||Ưu tiên","Status||Trạng thái"],rows.map(d=>["<span id='row-"+d.id+"'>"+id(d.id)+"</span><div class='sub'>"+esc(d.old)+"</div>",esc(L(KIND[d.kind])),"<b>"+fmt(d.q)+"</b>",(isOpen(d.id)&&d.kind!=="asm"?"<small style='margin:0 0 3px'>"+L("Proposal, not confirmed||Đề xuất, chưa chốt")+"</small>":"")+fmt(d.a),esc(d.owner),sev(d.sev),stSel(d.id)]),["n","n","w","w","n","",""])
- +note("Statuses you set are kept in this browser only. In the real Blueprint an answer is written into the data, and every tab is rebuilt from it.||Trạng thái bạn đặt chỉ lưu trong trình duyệt này. Ở Blueprint thật, câu trả lời được ghi vào dữ liệu, và mọi tab được dựng lại từ đó.")},
+ +"<label for='f-dq'>"+L("Find||Tìm")+"</label><input type='search' id='f-dq' data-f='dq' value='"+esc(F("dq"))+"' placeholder='"+L("id, earlier id or words||mã, mã cũ hoặc từ khoá")+"'>"+shown(rows.length)+"<button class='btn' data-quick='brain'>"+L("Brainstorming questions||Câu hỏi brainstorming")+"</button><button class='btn' data-act='reset'>"+L("Reset statuses||Đặt lại trạng thái")+"</button></div>"
+ +table(["ID","Kind||Loại","Question||Câu hỏi","Answer · proposal||Câu trả lời · đề xuất","Who decides||Ai quyết định","Priority||Ưu tiên","Status||Trạng thái"],rows.map(d=>["<span id='row-"+d.id+"'>"+id(d.id)+"</span><div class='sub'>"+esc(d.old)+"</div>",esc(L(KIND[d.kind]))+(d.topic?"<div class='sub' style='font-family:var(--sans)'>"+esc(d.topic)+"</div>":""),"<b>"+fmt(d.q)+"</b>"+(d.options?"<small>"+L("Options: ||Phương án: ")+fmt(d.options)+"</small>":""),(isOpen(d.id)&&d.kind!=="asm"?"<small style='margin:0 0 3px'>"+L("Proposal, not confirmed||Đề xuất, chưa chốt")+"</small>":"")+fmt(d.a)+(d.source&&SRCL[d.source]?"<small>"+L(SRCL[d.source])+"</small>":""),esc(d.owner),sev(d.sev),stSel(d.id)]),["n","n","w","w","n","",""])
+ +(D.stillOpen.length?h3("Decided later, on purpose||Chủ động để quyết định sau")+table(["Item||Hạng mục","Decide when||Quyết định khi nào","Note||Ghi chú"],D.stillOpen.map(o=>["<b>"+fmt(o.item)+"</b>",esc(o.when||""),fmt(o.note||"")]),["w","n","w"]):"")
+ +note("Statuses you set here are kept in this browser only. To record an answer for good, tell Claude; it is written into the data and every tab is rebuilt from it.||Trạng thái bạn đặt ở đây chỉ lưu trong trình duyệt này. Để ghi nhận hẳn một câu trả lời, hãy nói với Claude; nó được ghi vào dữ liệu và mọi tab được dựng lại từ đó.")},
 /* 5 · Flows */
 ()=>{const groups=uniq(D.charts.map(c=>c.group)),wg=uniq(D.written.map(f=>f.group));
  return title("Tab 5||Tab 5","How people move through Toki||Người dùng đi qua Toki thế nào","Charts first, then the written step-by-step journeys. Under each chart: what the prototype has, and the decisions behind each condition. Rules, assumptions and questions are no longer kept here; they are on the Decisions and Requirements tabs.||Sơ đồ trước, rồi tới các hành trình viết từng bước. Dưới mỗi sơ đồ: prototype có gì, và các quyết định đứng sau từng điều kiện. Quy tắc, giả định và câu hỏi không còn nằm ở đây; chúng ở tab Quyết định và Yêu cầu.")
- +stats([[D.charts.length,"charts||sơ đồ"],[D.charts.filter(c=>chartBlocked(c).length).length,"blocked by a question||bị chặn bởi một câu hỏi"],[D.written.length,"written journeys||hành trình đã viết"]])
+ +stats([[D.charts.length,"charts||sơ đồ"],[D.charts.filter(c=>chartBlocked(c).length).length,"blocked by a question||bị chặn bởi một câu hỏi"],[D.written.filter(f=>String(f.phase)==="1").length,"written journeys, phase 1||hành trình đã viết, phase 1"],[D.written.filter(f=>String(f.phase)!=="1").length,"outlines for later phases||phác thảo cho phase sau"]])
  +groups.map(g=>"<h3>"+esc(g)+"</h3><div>"+D.charts.filter(c=>c.group===g).map(c=>{const b=chartBlocked(c),o=c.open.filter(isOpen);
    return fold(id(c.id),"<b>"+esc(c.title.split(" ").slice(1).join(" "))+"</b>",b.length?pill(L("Blocked||Bị chặn"),"C"):o.length?pill(L("Valid, details open||Hợp lệ, chi tiết còn mở"),"M"):pill(L("Valid||Hợp lệ"),"ok"),
     "<figure class='chart'>"+c.svg+"</figure>"+(c.caption?"<p class='cap'>"+fmt(c.caption)+"</p>":"")+"<ul class='plain'>"+c.notes.map(n=>"<li>"+fmt(n)+"</li>").join("")+"</ul>"
     +"<dl><dt>"+L("Waits on||Chờ")+"</dt><dd>"+drefs(o)+"</dd></dl>"
     +"<details class='fr'><summary><span class='id'>"+c.sources.length+"</span><b>"+L("Sources||Nguồn")+"</b><span></span></summary><div class='body' style='padding-left:14px'><ul class='plain'>"+c.sources.map(s=>Array.isArray(s)?"<li><b>"+fmt(s[0])+"</b><br>"+fmt(s[1])+"</li>":"<li>"+fmt(s)+"</li>").join("")+"</ul></div></details>")}).join("")+"</div>").join("")
- +h3("Written journeys, phase 1||Hành trình đã viết, phase 1")+note("Drafted by Claude under D-019; several were never confirmed line by line. They are a proposal until the question about accepting them is answered.||Do Claude soạn theo D-019; nhiều hành trình chưa từng được xác nhận từng dòng. Chúng là đề xuất cho tới khi câu hỏi về việc chấp nhận chúng được trả lời.","warn")
- +wg.map(g=>"<h3 style='font-size:13px;color:var(--muted)'>"+esc(g)+"</h3><div>"+D.written.filter(f=>f.group===g).map(f=>fold(id(f.id),"<b>"+esc(f.title)+"</b>","<span class='sub'>"+esc(f.roles.join(" · "))+"</span>",
+ +h3("Written journeys||Hành trình đã viết")+note("Drafted by Claude under D-019; several were never confirmed line by line. They are a proposal until the question about accepting them is answered.||Do Claude soạn theo D-019; nhiều hành trình chưa từng được xác nhận từng dòng. Chúng là đề xuất cho tới khi câu hỏi về việc chấp nhận chúng được trả lời.","warn")
+ +wg.map(g=>"<h3 style='font-size:13px;color:var(--muted)'>"+esc(g)+"</h3><div>"+D.written.filter(f=>f.group===g).map(f=>fold(id(f.id),"<b>"+esc(f.title)+"</b>","<span class='sub'>"+(String(f.phase)!=="1"?"phase "+esc(f.phase)+" · ":"")+esc(f.roles.join(" · "))+"</span>",
     (f.context?"<p style='margin:0'><b>"+L("Context||Bối cảnh")+":</b> "+fmt(f.context)+"</p>":"")+"<ol class='plain' style='padding-left:20px;margin:0;color:var(--ink-2)'>"+f.steps.map(s=>"<li>"+fmt(s)+"</li>").join("")+"</ol>"+(f.cases.length?"<ul class='plain'>"+f.cases.map(s=>"<li>"+fmt(s)+"</li>").join("")+"</ul>":""))).join("")+"</div>").join("")},
 /* 6 · Requirements */
 ()=>{const areas=uniq(D.frs.map(f=>f.area)),rows=D.frs.filter(f=>(!F("area")||f.area===F("area"))&&(!F("rs")||frState(f)===F("rs"))),n=k=>D.frs.filter(f=>frState(f)===k).length,cap=D.capabilities;
@@ -132,6 +134,9 @@ const VIEW=[
  +h3("Scope||Phạm vi")+D.scope.map(block).join("")
  +h3("Roles||Vai trò")+table(["Role||Vai trò","Who||Là ai","Sees||Thấy gì"],D.roles.map(r=>["<b>"+esc(r.name)+"</b>",esc(r.who),esc(r.sees)]),["n","w","w"])
  +fold("<span class='id'>"+cap.rows.length+"</span>","<b>"+L("Who may do what||Ai được làm gì")+"</b>",pill(L("Awaiting sign-off||Chờ duyệt"),"H"),table(["Action||Hành động"].concat(cap.columns),cap.rows.map(r=>[esc(r.action)].concat(r.values.map(esc))),["w"]))
+ +fold("<span class='id'>"+D.states.length+"</span>","<b>"+L("States of an account, a channel and a message||Trạng thái của tài khoản, kênh và tin nhắn")+"</b>","",table(["Object||Đối tượng","State||Trạng thái","Meaning||Ý nghĩa"],D.states.map(x=>[esc(x.object),"<b>"+esc(x.state)+"</b>",fmt(x.meaning)]),["n","n","w"]))
+ +(D.eventMatrix?fold("<span class='id'>"+D.eventMatrix.rows.length+"</span>","<b>"+esc(D.eventMatrix.title)+"</b>","","<p style='margin:0'>"+fmt(D.eventMatrix.intro||"")+"</p>"+table(D.eventMatrix.columns,D.eventMatrix.rows.map(r=>r.map(fmt)),["w"])):"")
+ +D.reqMore.map(x=>fold("<span class='id'>·</span>","<b>"+esc(x.title)+"</b>","",x.blocks.map(block).join(""))).join("")
  +fold("<span class='id'>"+D.rules.length+"</span>","<b>"+L("Business rules||Quy tắc nghiệp vụ")+"</b>","",table(["ID","Rule||Quy tắc","Flows||Flow","Decided by||Quyết định bởi"],D.rules.map(r=>[id(r[0]),esc(r[1]),esc(r[2]),id(r[3])]),["","w","n",""]))
  +h3("Functional requirements||Yêu cầu chức năng")+"<div class='bar'>"+sel("area","Area||Mảng",areas)+sel("rs","Readiness||Mức sẵn sàng",["R","A","Q","B"],o=>L(FRS[o][0]))+shown(rows.length)+"</div><div>"
  +rows.map(f=>{const s=FRS[frState(f)],o=f.open.filter(isOpen);return fold(id(f.id),"<b>"+esc(f.text)+"</b><small style='display:block;color:var(--muted)'>"+esc(f.area)+"</small>",pill(L(s[0]),s[1]),
@@ -160,18 +165,20 @@ const VIEW=[
  +"<div class='note "+v[3]+"'>"+pill(v[0],v[1]+" big")+" &nbsp;"+esc(v[2])+".</div>"
  +stats([[nT(all),"draft tickets||ticket nháp"],[nT(can),"in areas that may start||ở mảng bắt đầu được"],[nT(wait),"in areas that wait||ở mảng phải chờ"],[D.milestones.length,"milestones||milestone"]])
  +note("Requirements are linked to plan **areas**, not yet to single tickets. Linking each ticket to its requirement is the next step if this structure is accepted; a ticket with no requirement then shows either a missing requirement or a ticket that is not needed.||Yêu cầu mới được nối với **mảng** của kế hoạch, chưa tới từng ticket. Nối từng ticket với yêu cầu của nó là bước tiếp theo nếu cấu trúc này được chấp nhận; khi đó ticket không có yêu cầu sẽ cho thấy hoặc thiếu yêu cầu, hoặc ticket không cần.","warn")
- +D.milestones.map(m=>"<h3>"+id(m.id)+" "+esc(m.name)+"</h3><p class='cap' style='margin:0;max-width:80ch'>"+fmt(m.goal)+"</p><div>"+m.areas.map(a=>{const s=aState(a),o=uniq(a.frs.flatMap(i=>FB[i].open.filter(x=>isOpen(x)&&DEC[x].kind==="q"&&ORD[DEC[x].sev]<=1)));
+ +D.milestones.map(m=>"<h3>"+id(m.id)+" "+esc(m.name)+"</h3><p class='cap' style='margin:0;max-width:80ch'>"+fmt(m.goal)+"<br><b>"+L("Done when||Xong khi")+":</b> "+fmt(m.exit||"")+"</p>"
+   +(D.intents.filter(i=>i.milestone===m.id).length?fold("<span class='id'>"+D.intents.filter(i=>i.milestone===m.id).length+"</span>","<b>"+L("Intents: the outcomes this milestone delivers||Intent: các kết quả milestone này mang lại")+"</b>",pill(L("draft||nháp"),"L"),table(["ID","Want||Mong muốn","For whom||Cho ai","Done when||Xong khi","Tickets||Ticket"],D.intents.filter(i=>i.milestone===m.id).map(i=>[id(i.id),"<b>"+fmt(i.want)+"</b>",esc(i.who),fmt(i.done),ids(i.tickets||[])]),["","w","n","w",""])):"")+"<div>"+m.areas.map(a=>{const s=aState(a),o=uniq(a.frs.flatMap(i=>FB[i].open.filter(x=>isOpen(x)&&DEC[x].kind==="q"&&ORD[DEC[x].sev]<=1)));
    return fold("<span class='id'>"+a.tickets.length+"</span>","<b>"+esc(a.name)+"</b><small style='display:block;color:var(--muted)'>"+(a.frs.length?a.frs.join(" "):L("no functional requirement||không có yêu cầu chức năng"))+"</small>",pill(L(AL[s][0]),AL[s][1]),
     "<dl><dt>"+L("Builds||Thực hiện")+"</dt><dd>"+(a.frs.length?a.frs.map(i=>id(i)+" "+esc(FB[i].text.split(".")[0])+". "+pill(L(FRS[frState(FB[i])][0]),FRS[frState(FB[i])][1])).join("<br>"):"—")+"</dd><dt>"+L("Waits on||Chờ")+"</dt><dd>"+drefs(o)+"</dd></dl>"
     +table(["Ticket","Title||Tiêu đề","Scope||Phạm vi","Size||Cỡ"],a.tickets.map(t=>[id(t.id),"<b>"+fmt(t.title)+"</b>",fmt(t.scope),esc(t.size)]),["","w","w","n"]))}).join("")+"</div>").join("")
- +h3("Roadmap||Lộ trình")+table(["Phase","Name||Tên","Delivers||Nội dung","State||Tình trạng"],D.phases.map(p=>[id(p.id),"<b>"+esc(p.name)+"</b>",esc(p.delivers),esc(p.state)]),["","n","w","n"])}
+ +((D.plan.notes||[]).length?h3("Notes on the order of work||Ghi chú về thứ tự công việc")+"<ul class='plain'>"+D.plan.notes.map(x=>"<li>"+fmt(x)+"</li>").join("")+"</ul>":"")
+ +h3("Roadmap||Lộ trình")+(D.plan.phasesIntro?"<p class='cap' style='margin:0'>"+fmt(D.plan.phasesIntro)+"</p>":"")+table(["Phase","Name||Tên","Delivers||Nội dung","State||Tình trạng"],D.phases.map(p=>[id(p.id),"<b>"+esc(p.name)+"</b>",esc(p.delivers),esc(p.state)]),["","n","w","n"])}
 ];
 
 let protoDone=false;
 function loadProto(){const f=document.getElementById("pf");if(!f)return;try{const bin=atob(document.getElementById("proto-b64").textContent.trim()),bytes=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);f.srcdoc=new TextDecoder().decode(bytes)}catch(e){}}
 function render(){const v=verdict();
  document.documentElement.lang=S.lang;
- document.getElementById("title").innerHTML="<h1>Toki Blueprint <span class='pill a'>v2 · "+L("proposal||đề xuất")+"</span></h1><p>"+L("The Blueprint reorganised to follow the BA & QA workflow. Content of ||Blueprint được sắp xếp lại theo quy trình BA & QA. Nội dung ngày ")+esc(D.built)+".</p>";
+ document.getElementById("title").innerHTML="<h1>Toki Blueprint</h1><p>"+esc(D.tagline)+" · "+esc(D.built)+"</p>";
  document.querySelectorAll("[data-lang]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.lang===S.lang)));
  document.getElementById("gate").innerHTML=pill(v[0],v[1]+" big")+"<span class='id'>"+blockers().length+L(" blocking · || chặn · ")+openQ().length+L(" open · || mở · ")+D.frs.filter(f=>frState(f)!=="B").length+"/"+D.frs.length+L(" FR startable|| FR bắt đầu được")+"</span>";
  document.getElementById("rail").innerHTML=TABS.map((t,i)=>"<button data-go='"+i+"'"+(S.tab===i?" aria-current='page'":"")+"><span class='n'>"+(i+1)+"</span><span>"+esc(L(t[0]))+"</span><span class='c'>"+esc(String(t[1]()))+"</span></button>").join("");
@@ -182,6 +189,7 @@ document.addEventListener("click",e=>{const d=e.target.closest("[data-d]");
  if(d){e.preventDefault();S.tab=3;S.f={dst:"",dq:d.dataset.d};save();render();window.scrollTo(0,0);return}
  const g=e.target.closest("[data-go]");if(g){go(+g.dataset.go);return}
  const l=e.target.closest("[data-lang]");if(l){const y=window.scrollY;S.lang=l.dataset.lang;S.f={};load();save();render();window.scrollTo(0,y);return}
+ if(e.target.closest("[data-quick='brain']")){S.f={dst:"",dk:"ans"};render();return}
  if(e.target.closest("[data-act='reset']")){S.status={};save();render()}});
 document.addEventListener("change",e=>{const t=e.target;
  if(t.dataset.st){const y=window.scrollY;S.status[t.dataset.st]=t.value;save();render();window.scrollTo(0,y);const el=document.getElementById("st-"+t.dataset.st);if(el)el.focus()}

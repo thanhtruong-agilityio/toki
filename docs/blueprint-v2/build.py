@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Builds toki-blueprint-v2.html: the Blueprint reorganised into nine tabs that follow the BA & QA workflow.
+"""Builds toki-blueprint.html: the Blueprint reorganised into nine tabs that follow the BA & QA workflow.
 
-A proposal for review. It reads the v1 sources in ../blueprint and does not change them.
+This is the page published as the Toki Blueprint since 13 Nov 2026. It reads the data sources in ../blueprint and does not change them.
 What v2 changes: one decision log (D-001…) instead of nine id series, one findings backlog, requirements and
 QA as their own tabs, and a plan that follows the readiness of the requirements.
 Run:   python3 build.py
@@ -64,11 +64,11 @@ def build(lang):
     kinds = {}
     dec = []
 
-    def add(old, kind, q, a, owner="", sev="", status="Confirmed"):
-        dec.append(dict(id=NEW[old], old=old, kind=kind, q=q, a=a, owner=owner, sev=sev, status=status))
+    def add(old, kind, q, a, owner="", sev="", status="Confirmed", **kw):
+        dec.append(dict(id=NEW[old], old=old, kind=kind, q=q, a=a, owner=owner, sev=sev, status=status, **kw))
 
     for d in B["decisions"]:
-        add(d["id"], "ans", d["question"], d["decision"], "PO")
+        add(d["id"], "ans", d["question"], d["decision"], "PO", topic=d.get("topic", ""), options=d.get("options", ""), source=d.get("source", ""))
     for a in B["assumptions"]:
         add(a["id"], "gas", en(FM.G_QUESTION.get(a["id"], "")), a["text"], "PO")
     for q in B["questions"]:
@@ -138,8 +138,10 @@ def build(lang):
         screens=[dict(name=en(s[0]), purpose=en(s[1]), actions=en(s[2]), phase=en(s[3])) for s in GA.SCREENS],
         findings=findings, dupes=en(GV.DUPES), conflicts=en(GV.CONFLICTS), depends=en(GV.DEPENDS),
         decisions=dec, charts=charts,
-        written=[dict(id=f["id"], group=f["group"], title=f["title"], roles=f["roles"], context=f.get("context", ""), steps=f["steps"], cases=f.get("cases", [])) for f in B["flows"] if str(f["phase"]) == "1"],
-        scope=B["requirements"]["sections"][0]["blocks"], roles=B["roles"], capabilities=B["capabilities"], states=B["states"],
+        written=[dict(id=f["id"], group=f["group"], title=f["title"], roles=f["roles"], context=f.get("context", ""), steps=f["steps"], cases=f.get("cases", []), phase=f["phase"]) for f in B["flows"]],
+        scope=B["requirements"]["sections"][0]["blocks"], roles=B["roles"], capabilities=B["capabilities"], states=B["states"], eventMatrix=B.get("eventMatrix"),
+        reqMore=B["requirements"]["sections"][1:], stillOpen=B.get("open", []), tagline=B["meta"].get("tagline", ""),
+        intents=B.get("intents", []), plan=B.get("plan", {}), roadmapOutro=(B.get("roadmap") or {}).get("outro", ""),
         rules=[en(r) for r in GV.BR_ROWS], frs=frs,
         nfr=[dict(id=f"NFR-{i:02d}", text=en(n[0]), src=n[1].replace(" ", ", "), measure=en(n[2])) for i, n in enumerate(GV.NFR, 1)],
         nfrMissing=en(GV.NFR_MISSING), techDeps=en(GV.TECH_DEPS), technical=B["technical"]["sections"],
@@ -158,6 +160,6 @@ proto = base64.b64encode((BP / "prototype" / "index.html").read_bytes()).decode(
 html = (HERE / "template.html").read_text(encoding="utf-8") \
     .replace("/*DATA*/null", json.dumps(data, ensure_ascii=False).replace("</", "<\\/")) \
     .replace("/*APP*/", (HERE / "app.js").read_text(encoding="utf-8")).replace("__PROTO_B64__", proto)
-(HERE / "toki-blueprint-v2.html").write_text(html, encoding="utf-8")
+(HERE / "toki-blueprint.html").write_text(html, encoding="utf-8")
 d = data["en"]
-print(f"toki-blueprint-v2.html · {len(html) // 1024} KB · en + vi · {len(d['decisions'])} decisions · {len(d['findings'])} findings · {len(d['charts'])} charts · {len(d['frs'])} FR · {sum(len(a['tickets']) for m in d['milestones'] for a in m['areas'])} tickets")
+print(f"toki-blueprint.html · {len(html) // 1024} KB · en + vi · {len(d['decisions'])} decisions · {len(d['findings'])} findings · {len(d['charts'])} charts · {len(d['frs'])} FR · {sum(len(a['tickets']) for m in d['milestones'] for a in m['areas'])} tickets")

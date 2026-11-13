@@ -52,3 +52,13 @@ Then publish `blueprint.html` to the artifact URL above.
 ## If these files are ever lost
 
 The published page embeds both data files as JSON in `<script id="bp-data">`, and the English data carries the chart spec at `flowsTab.spec`. Everything here except the prototype snapshot can be extracted from the page.
+
+## The published page since 13 Nov 2026
+
+The Toki Blueprint artifact is now built by `../blueprint-v2/build.py`, which reads the generators and data files in this folder and lays them out in nine tabs (Overview, Prototype, Findings, Decisions, Flows, Requirements, QA, Technical, Plan) with one decision log (D-001 onward; the earlier ids stay in a column). This folder remains the source of the content. The older twelve-tab page (`blueprint.html`, built with the skill's `build.py`) is no longer published.
+
+```bash
+python3 gen_flowmaps.py
+python3 ~/.claude/skills/prototype-blueprint/scripts/flowmap.py --spec flowmaps.json --data en=blueprint.en.json --data vi=blueprint.vi.json
+cd ../blueprint-v2 && python3 build.py      # writes toki-blueprint.html, the file to publish
+```
