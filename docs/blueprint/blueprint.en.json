@@ -2349,6 +2349,15 @@
    "decision": "Remove it. Toki has Member and Admin (and Guest in phase 5).",
    "source": "user",
    "note": "Your answer on 13 Nov 2026. It overrides the Owner column of the capability table (Q12), G6 (several Owners, last Owner protected) and Q26 (first Owner from server configuration). Proposed and not yet confirmed: an Admin does everything an Owner did (change roles, deactivate another Admin, invite as Admin), the first Admin comes from server configuration, and the last Admin cannot be demoted or deactivated."
+  },
+  {
+   "id": "Q44",
+   "topic": "What an Admin may do without an Owner",
+   "question": "With the Owner role removed (Q43), who changes roles, deactivates an Admin, invites an Admin, and what protects the workspace from having no Admin?",
+   "options": "Admins do everything an Owner did · A stricter rule",
+   "decision": "An Admin changes roles, deactivates another Admin and invites with the role Admin. The first Admin of a fresh installation comes from server configuration. The last Admin cannot be demoted or deactivated, and nobody deactivates themselves.",
+   "source": "user",
+   "note": "Confirmed by you on 13 Nov 2026. Replaces G6 and the Owner parts of Q12 and Q26."
   }
  ],
  "questions": [

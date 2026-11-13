@@ -2463,6 +2463,15 @@
    "decision": "Bỏ. Toki có Member và Admin (và Guest ở phase 5).",
    "source": "user",
    "note": "Bạn trả lời ngày 13/11/2026. Nó thay cột Owner của bảng quyền (Q12), G6 (nhiều Owner, Owner cuối được bảo vệ) và Q26 (Owner đầu tiên tạo từ cấu hình server). Đã đề xuất và chưa được xác nhận: Admin làm được mọi việc Owner từng làm (đổi vai trò, vô hiệu hoá Admin khác, mời với vai trò Admin), Admin đầu tiên tạo từ cấu hình server, và Admin cuối cùng không thể bị hạ vai trò hay vô hiệu hoá."
+  },
+  {
+   "id": "Q44",
+   "topic": "Admin được làm gì khi không còn Owner",
+   "question": "Khi bỏ vai trò Owner (Q43), ai đổi vai trò, vô hiệu hoá Admin, mời Admin, và điều gì bảo vệ workspace khỏi việc không còn Admin?",
+   "options": "Admin làm mọi việc Owner từng làm · Một quy tắc chặt hơn",
+   "decision": "Admin đổi được vai trò, vô hiệu hoá Admin khác và mời với vai trò Admin. Admin đầu tiên của một bản cài mới tạo từ cấu hình server. Admin cuối cùng không thể bị hạ vai trò hay vô hiệu hoá, và không ai tự vô hiệu hoá mình.",
+   "source": "user",
+   "note": "Bạn xác nhận ngày 13/11/2026. Thay G6 và các phần về Owner của Q12 và Q26."
   }
  ],
  "questions": [
