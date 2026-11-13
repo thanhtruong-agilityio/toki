@@ -2624,8 +2624,9 @@
    "q": "Endpoint names and shapes in the charts (`POST /auth/code-requests`, `GET /bootstrap`, `PUT /conversations/:id/read` and the rest) are proposals. All sit under `/api/v1`.",
    "a": "Names are fixed in the spec of each ticket",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Accepted Assumption",
+   "note": "Accepted by the user in one review of the 20 remaining assumptions."
   },
   {
    "id": "D-126",
@@ -2634,8 +2635,9 @@
    "q": "A request with no answer after 10 seconds counts as failed and shows Retry.",
    "a": "Any value between 8 and 15 s works",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Accepted Assumption",
+   "note": "Accepted by the user in one review of the 20 remaining assumptions."
   },
   {
    "id": "D-127",
@@ -2644,8 +2646,9 @@
    "q": "Typing a space in a channel name turns it into a hyphen, and capitals into lowercase, instead of showing an error.",
    "a": "Fewer errors for the same rule",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Accepted Assumption",
+   "note": "Accepted by the user in one review of the 20 remaining assumptions."
   },
   {
    "id": "D-128",
@@ -2654,8 +2657,9 @@
    "q": "The uniqueness of a channel name includes archived channels.",
    "a": "Otherwise un-archiving could collide",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Accepted Assumption",
+   "note": "Accepted by the user in one review of the 20 remaining assumptions."
   },
   {
    "id": "D-129",
@@ -2664,8 +2668,9 @@
    "q": "Reconnect attempts wait 1, 2, 5, 10 and then 30 seconds, with a little randomness.",
    "a": "Avoids every client retrying at once",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Accepted Assumption",
+   "note": "Accepted by the user in one review of the 20 remaining assumptions."
   },
   {
    "id": "D-130",
@@ -2674,8 +2679,9 @@
    "q": "A file uploaded but never sent is deleted from storage after 24 hours.",
    "a": "Keeps storage clean",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Accepted Assumption",
+   "note": "Accepted by the user in one review of the 20 remaining assumptions."
   },
   {
    "id": "D-131",
@@ -2684,8 +2690,9 @@
    "q": "Server status codes map to screens as in flow 3.3: 400 field message, 403 and 404 one shared page, 409 and 410 fresh copy, 429 wait, 5xx Retry with an error ID.",
    "a": "One behaviour for every feature",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Accepted Assumption",
+   "note": "Accepted by the user in one review of the 20 remaining assumptions."
   },
   {
    "id": "D-132",
@@ -2694,8 +2701,9 @@
    "q": "A 'Waiting to send' message survives a page reload, kept in the browser, and is dropped if someone else signs in on that browser.",
    "a": "Needed for the 'nothing lost' promise",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Accepted Assumption",
+   "note": "Accepted by the user in one review of the 20 remaining assumptions."
   },
   {
    "id": "D-133",
@@ -2704,8 +2712,9 @@
    "q": "Leaving a channel clears its unread count and its open Activity items for that person.",
    "a": "Otherwise items point to a place they cannot open",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Accepted Assumption",
+   "note": "Accepted by the user in one review of the 20 remaining assumptions."
   },
   {
    "id": "D-134",
@@ -2714,8 +2723,9 @@
    "q": "Batches of invitations are limited to 50 addresses.",
    "a": "Protects the mail account's sending limit",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Accepted Assumption",
+   "note": "Accepted by the user in one review of the 20 remaining assumptions."
   },
   {
    "id": "D-135",
@@ -2724,8 +2734,9 @@
    "q": "A mention of someone who is not in the channel creates no notification; the sender is offered 'Add them'.",
    "a": "Matches rule BR-09",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Accepted Assumption",
+   "note": "Accepted by the user in one review of the 20 remaining assumptions."
   },
   {
    "id": "D-136",
@@ -2760,8 +2771,9 @@
    "q": "A session renews on every use, so 30 days means 30 days without opening Toki.",
    "a": "D-011 fixes 30 days but not whether it counts from sign-in or from last use",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Accepted Assumption",
+   "note": "Accepted by the user in one review of the 20 remaining assumptions."
   },
   {
    "id": "D-139",
@@ -2770,8 +2782,9 @@
    "q": "Every screen and every wording in quotes that the prototype does not contain is a proposal: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', loading placeholders, and the rest.",
    "a": "The charts need a name for each state; the design decides the final words",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Accepted Assumption",
+   "note": "Accepted by the user in one review of the 20 remaining assumptions."
   },
   {
    "id": "D-140",
@@ -2793,8 +2806,9 @@
    "q": "Everything a Member or Admin sees follows the capability matrix; the prototype shows only an Owner.",
    "a": "Account card: 'Owner'",
    "owner": "PO",
-   "sev": "L",
-   "status": "Open"
+   "sev": "",
+   "status": "Accepted Assumption",
+   "note": "Accepted by the user in one review of the 20 remaining assumptions."
   },
   {
    "id": "D-142",
@@ -2803,8 +2817,9 @@
    "q": "Notification preferences belong to the person and apply on every device; only the browser's permission for push is per device.",
    "a": "Preferences shows one set of switches",
    "owner": "PO",
-   "sev": "L",
-   "status": "Open"
+   "sev": "",
+   "status": "Accepted Assumption",
+   "note": "Accepted by the user in one review of the 20 remaining assumptions."
   },
   {
    "id": "D-143",
@@ -2813,8 +2828,9 @@
    "q": "Star and Mute are personal: nobody else sees them, and starred conversations sort to the top of that person's list.",
    "a": "Details panel; starred glyph in the list",
    "owner": "PO",
-   "sev": "L",
-   "status": "Open"
+   "sev": "",
+   "status": "Accepted Assumption",
+   "note": "Accepted by the user in one review of the 20 remaining assumptions."
   },
   {
    "id": "D-144",
@@ -2823,8 +2839,9 @@
    "q": "The local time shown on a profile comes from the time zone the person set, not from where they are now.",
    "a": "Profile: local time and a city",
    "owner": "PO",
-   "sev": "L",
-   "status": "Open"
+   "sev": "",
+   "status": "Accepted Assumption",
+   "note": "Accepted by the user in one review of the 20 remaining assumptions."
   },
   {
    "id": "D-145",
@@ -2843,8 +2860,9 @@
    "q": "The pink 'New' pills mark proposed features, not states of the product.",
    "a": "Switch 'Highlight proposed features'",
    "owner": "PO",
-   "sev": "L",
-   "status": "Open"
+   "sev": "",
+   "status": "Accepted Assumption",
+   "note": "Accepted by the user in one review of the 20 remaining assumptions."
   },
   {
    "id": "D-147",
@@ -2853,8 +2871,9 @@
    "q": "Sample people, channels and messages are illustration only; no seed content ships except #general.",
    "a": "Sample workspace 'Hugepig Studio'",
    "owner": "PO",
-   "sev": "L",
-   "status": "Open"
+   "sev": "",
+   "status": "Accepted Assumption",
+   "note": "Accepted by the user in one review of the 20 remaining assumptions."
   },
   {
    "id": "D-148",
@@ -2863,8 +2882,9 @@
    "q": "Analytics never names private channels or DMs and hides any group smaller than three.",
    "a": "Admin: 'Private channels and direct messages', 'fewer than 3'",
    "owner": "PO",
-   "sev": "L",
-   "status": "Open"
+   "sev": "",
+   "status": "Accepted Assumption",
+   "note": "Accepted by the user in one review of the 20 remaining assumptions."
   },
   {
    "id": "D-149",

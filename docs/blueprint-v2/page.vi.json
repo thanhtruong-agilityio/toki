@@ -2624,8 +2624,9 @@
    "q": "Tên và dạng endpoint trong các sơ đồ (`POST /auth/code-requests`, `GET /bootstrap`, `PUT /conversations/:id/read` và phần còn lại) là đề xuất. Tất cả nằm dưới `/api/v1`.",
    "a": "Tên được chốt trong spec của từng ticket",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Accepted Assumption",
+   "note": "Người dùng chấp nhận trong một lần duyệt 20 giả định còn lại."
   },
   {
    "id": "D-126",
@@ -2634,8 +2635,9 @@
    "q": "Request không có trả lời sau 10 giây được coi là lỗi và hiện Retry.",
    "a": "Giá trị nào từ 8 đến 15 giây cũng được",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Accepted Assumption",
+   "note": "Người dùng chấp nhận trong một lần duyệt 20 giả định còn lại."
   },
   {
    "id": "D-127",
@@ -2644,8 +2646,9 @@
    "q": "Gõ khoảng trắng trong tên kênh thì tự thành gạch nối, chữ hoa thành chữ thường, thay vì báo lỗi.",
    "a": "Ít lỗi hơn cho cùng một quy tắc",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Accepted Assumption",
+   "note": "Người dùng chấp nhận trong một lần duyệt 20 giả định còn lại."
   },
   {
    "id": "D-128",
@@ -2654,8 +2657,9 @@
    "q": "Tính không trùng của tên kênh bao gồm cả kênh đã lưu trữ.",
    "a": "Nếu không, bỏ lưu trữ có thể bị trùng tên",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Accepted Assumption",
+   "note": "Người dùng chấp nhận trong một lần duyệt 20 giả định còn lại."
   },
   {
    "id": "D-129",
@@ -2664,8 +2668,9 @@
    "q": "Các lần kết nối lại chờ 1, 2, 5, 10 rồi 30 giây, có thêm chút ngẫu nhiên.",
    "a": "Tránh mọi máy cùng thử lại một lúc",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Accepted Assumption",
+   "note": "Người dùng chấp nhận trong một lần duyệt 20 giả định còn lại."
   },
   {
    "id": "D-130",
@@ -2674,8 +2679,9 @@
    "q": "File đã tải lên nhưng không bao giờ được gửi sẽ bị xoá khỏi kho sau 24 giờ.",
    "a": "Giữ kho lưu trữ sạch",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Accepted Assumption",
+   "note": "Người dùng chấp nhận trong một lần duyệt 20 giả định còn lại."
   },
   {
    "id": "D-131",
@@ -2684,8 +2690,9 @@
    "q": "Mã trạng thái của server ứng với màn hình như ở flow 3.3: 400 thông báo dưới ô, 403 và 404 chung một trang, 409 và 410 hiện bản mới, 429 chờ, 5xx Retry kèm mã lỗi.",
    "a": "Một cách xử lý cho mọi tính năng",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Accepted Assumption",
+   "note": "Người dùng chấp nhận trong một lần duyệt 20 giả định còn lại."
   },
   {
    "id": "D-132",
@@ -2694,8 +2701,9 @@
    "q": "Tin 'Waiting to send' vẫn còn sau khi tải lại trang, được giữ trong trình duyệt, và bị bỏ nếu người khác đăng nhập trên trình duyệt đó.",
    "a": "Cần cho lời hứa 'không mất gì'",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Accepted Assumption",
+   "note": "Người dùng chấp nhận trong một lần duyệt 20 giả định còn lại."
   },
   {
    "id": "D-133",
@@ -2704,8 +2712,9 @@
    "q": "Rời một kênh thì xoá số chưa đọc và các mục Activity còn mở của kênh đó với người rời.",
    "a": "Nếu không, các mục sẽ trỏ tới nơi họ không mở được",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Accepted Assumption",
+   "note": "Người dùng chấp nhận trong một lần duyệt 20 giả định còn lại."
   },
   {
    "id": "D-134",
@@ -2714,8 +2723,9 @@
    "q": "Một lô lời mời giới hạn 50 địa chỉ.",
    "a": "Bảo vệ giới hạn gửi của tài khoản mail",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Accepted Assumption",
+   "note": "Người dùng chấp nhận trong một lần duyệt 20 giả định còn lại."
   },
   {
    "id": "D-135",
@@ -2724,8 +2734,9 @@
    "q": "Mention một người không ở trong kênh thì không tạo thông báo; người gửi được đề nghị 'Add them'.",
    "a": "Khớp với quy tắc BR-09",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Accepted Assumption",
+   "note": "Người dùng chấp nhận trong một lần duyệt 20 giả định còn lại."
   },
   {
    "id": "D-136",
@@ -2760,8 +2771,9 @@
    "q": "Phiên được gia hạn mỗi lần dùng, nên 30 ngày nghĩa là 30 ngày không mở Toki.",
    "a": "D-011 chốt 30 ngày nhưng chưa nói tính từ lúc đăng nhập hay từ lần dùng cuối",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Accepted Assumption",
+   "note": "Người dùng chấp nhận trong một lần duyệt 20 giả định còn lại."
   },
   {
    "id": "D-139",
@@ -2770,8 +2782,9 @@
    "q": "Mọi màn hình và mọi câu chữ trong dấu nháy mà prototype không có đều là đề xuất: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', ô giữ chỗ khi tải, và phần còn lại.",
    "a": "Sơ đồ cần một cái tên cho từng trạng thái; thiết kế sẽ quyết định câu chữ cuối cùng",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Accepted Assumption",
+   "note": "Người dùng chấp nhận trong một lần duyệt 20 giả định còn lại."
   },
   {
    "id": "D-140",
@@ -2793,8 +2806,9 @@
    "q": "Mọi thứ Member hay Admin thấy đều theo bảng quyền; prototype chỉ cho thấy Owner.",
    "a": "Thẻ tài khoản: 'Owner'",
    "owner": "PO",
-   "sev": "L",
-   "status": "Open"
+   "sev": "",
+   "status": "Accepted Assumption",
+   "note": "Người dùng chấp nhận trong một lần duyệt 20 giả định còn lại."
   },
   {
    "id": "D-142",
@@ -2803,8 +2817,9 @@
    "q": "Tuỳ chọn thông báo thuộc về người dùng và áp dụng trên mọi thiết bị; chỉ quyền push của trình duyệt là theo từng thiết bị.",
    "a": "Preferences chỉ có một bộ công tắc",
    "owner": "PO",
-   "sev": "L",
-   "status": "Open"
+   "sev": "",
+   "status": "Accepted Assumption",
+   "note": "Người dùng chấp nhận trong một lần duyệt 20 giả định còn lại."
   },
   {
    "id": "D-143",
@@ -2813,8 +2828,9 @@
    "q": "Star và Mute là cá nhân: không ai khác thấy, và cuộc trò chuyện được đánh sao lên đầu danh sách của người đó.",
    "a": "Panel Details; biểu tượng sao trong danh sách",
    "owner": "PO",
-   "sev": "L",
-   "status": "Open"
+   "sev": "",
+   "status": "Accepted Assumption",
+   "note": "Người dùng chấp nhận trong một lần duyệt 20 giả định còn lại."
   },
   {
    "id": "D-144",
@@ -2823,8 +2839,9 @@
    "q": "Giờ địa phương trên hồ sơ lấy từ múi giờ người đó đã đặt, không phải từ nơi họ đang ở.",
    "a": "Hồ sơ: giờ địa phương và một thành phố",
    "owner": "PO",
-   "sev": "L",
-   "status": "Open"
+   "sev": "",
+   "status": "Accepted Assumption",
+   "note": "Người dùng chấp nhận trong một lần duyệt 20 giả định còn lại."
   },
   {
    "id": "D-145",
@@ -2843,8 +2860,9 @@
    "q": "Các nhãn 'New' màu hồng đánh dấu tính năng đề xuất, không phải trạng thái của sản phẩm.",
    "a": "Công tắc 'Highlight proposed features'",
    "owner": "PO",
-   "sev": "L",
-   "status": "Open"
+   "sev": "",
+   "status": "Accepted Assumption",
+   "note": "Người dùng chấp nhận trong một lần duyệt 20 giả định còn lại."
   },
   {
    "id": "D-147",
@@ -2853,8 +2871,9 @@
    "q": "Người, kênh và tin nhắn mẫu chỉ để minh hoạ; không có nội dung mẫu nào lên sản phẩm ngoài #general.",
    "a": "Workspace mẫu 'Hugepig Studio'",
    "owner": "PO",
-   "sev": "L",
-   "status": "Open"
+   "sev": "",
+   "status": "Accepted Assumption",
+   "note": "Người dùng chấp nhận trong một lần duyệt 20 giả định còn lại."
   },
   {
    "id": "D-148",
@@ -2863,8 +2882,9 @@
    "q": "Thống kê không bao giờ nêu tên kênh riêng tư hay DM và ẩn mọi nhóm nhỏ hơn ba.",
    "a": "Admin: 'Private channels and direct messages', 'fewer than 3'",
    "owner": "PO",
-   "sev": "L",
-   "status": "Open"
+   "sev": "",
+   "status": "Accepted Assumption",
+   "note": "Người dùng chấp nhận trong một lần duyệt 20 giả định còn lại."
   },
   {
    "id": "D-149",
