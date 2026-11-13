@@ -2436,6 +2436,24 @@
    "decision": "Hoãn sang phase sau.",
    "source": "deferred",
    "note": "Nêu ở D-092 (VQ-03). Bạn hoãn ngày 13/11/2026."
+  },
+  {
+   "id": "Q41",
+   "topic": "Admin tạo kênh ở đâu",
+   "question": "Member không tạo được kênh (Q38). Vậy Admin tạo kênh ở đâu?",
+   "options": "Một nút trong Browse channels, chỉ admin thấy · Ở trang Admin",
+   "decision": "Ở trang Admin: mục 'Busiest channels' có thêm dấu '+' để tạo kênh.",
+   "source": "user",
+   "note": "Bạn trả lời ngày 13/11/2026, tiếp theo Q38. Trong prototype trang Admin có thống kê ('Messages per day', 'Busiest channels') và automation."
+  },
+  {
+   "id": "Q42",
+   "topic": "Gỡ thành viên khỏi kênh",
+   "question": "Admin có gỡ được thành viên khỏi một kênh bất kỳ không?",
+   "options": "Kênh bất kỳ · Chỉ kênh họ là thành viên",
+   "decision": "Chỉ trong kênh mà admin đó là thành viên, và không bao giờ khỏi #general (giữ G14).",
+   "source": "user",
+   "note": "Nêu ở D-085 (FQ-19). Phần về người tạo kênh tự mất đi khi chỉ admin tạo kênh (Q38)."
   }
  ],
  "questions": [

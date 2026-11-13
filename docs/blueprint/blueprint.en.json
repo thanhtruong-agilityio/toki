@@ -2322,6 +2322,24 @@
    "decision": "Deferred to a later phase.",
    "source": "deferred",
    "note": "Raised as D-092 (VQ-03). You deferred it on 13 Nov 2026."
+  },
+  {
+   "id": "Q41",
+   "topic": "Where an admin creates a channel",
+   "question": "Members cannot create channels (Q38). Where does an Admin create one?",
+   "options": "A button in Browse channels, shown to admins · On the Admin page",
+   "decision": "On the Admin page: the 'Busiest channels' section gets a '+' that creates a channel.",
+   "source": "user",
+   "note": "Your answer on 13 Nov 2026, following Q38. In the prototype the Admin page has analytics ('Messages per day', 'Busiest channels') and automations."
+  },
+  {
+   "id": "Q42",
+   "topic": "Removing a member from a channel",
+   "question": "Can an admin remove a member from any channel?",
+   "options": "Any channel · Only channels they belong to",
+   "decision": "Only from a channel the admin belongs to, and never from #general (G14 stands).",
+   "source": "user",
+   "note": "Raised as D-085 (FQ-19). The part about the channel's creator fell away once only admins create channels (Q38)."
   }
  ],
  "questions": [
