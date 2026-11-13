@@ -2340,6 +2340,15 @@
    "decision": "Only from a channel the admin belongs to, and never from #general (G14 stands).",
    "source": "user",
    "note": "Raised as D-085 (FQ-19). The part about the channel's creator fell away once only admins create channels (Q38)."
+  },
+  {
+   "id": "Q43",
+   "topic": "Owner role",
+   "question": "The prototype shows Owner, Admin and ordinary members. Is the Owner role needed?",
+   "options": "Keep Owner · Remove Owner",
+   "decision": "Remove it. Toki has Member and Admin (and Guest in phase 5).",
+   "source": "user",
+   "note": "Your answer on 13 Nov 2026. It overrides the Owner column of the capability table (Q12), G6 (several Owners, last Owner protected) and Q26 (first Owner from server configuration). Proposed and not yet confirmed: an Admin does everything an Owner did (change roles, deactivate another Admin, invite as Admin), the first Admin comes from server configuration, and the last Admin cannot be demoted or deactivated."
   }
  ],
  "questions": [

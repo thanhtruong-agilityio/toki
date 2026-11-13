@@ -2454,6 +2454,15 @@
    "decision": "Chỉ trong kênh mà admin đó là thành viên, và không bao giờ khỏi #general (giữ G14).",
    "source": "user",
    "note": "Nêu ở D-085 (FQ-19). Phần về người tạo kênh tự mất đi khi chỉ admin tạo kênh (Q38)."
+  },
+  {
+   "id": "Q43",
+   "topic": "Vai trò Owner",
+   "question": "Prototype có Owner, Admin và thành viên thường. Có cần vai trò Owner không?",
+   "options": "Giữ Owner · Bỏ Owner",
+   "decision": "Bỏ. Toki có Member và Admin (và Guest ở phase 5).",
+   "source": "user",
+   "note": "Bạn trả lời ngày 13/11/2026. Nó thay cột Owner của bảng quyền (Q12), G6 (nhiều Owner, Owner cuối được bảo vệ) và Q26 (Owner đầu tiên tạo từ cấu hình server). Đã đề xuất và chưa được xác nhận: Admin làm được mọi việc Owner từng làm (đổi vai trò, vô hiệu hoá Admin khác, mời với vai trò Admin), Admin đầu tiên tạo từ cấu hình server, và Admin cuối cùng không thể bị hạ vai trò hay vô hiệu hoá."
   }
  ],
  "questions": [
