@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
-"""Builds toki-blueprint.html: the Blueprint reorganised into nine tabs that follow the BA & QA workflow.
+"""Writes page.en.json and page.vi.json: the data of the nine-tab Blueprint page.
 
-This is the page published as the Toki Blueprint since 13 Nov 2026. It reads the data sources in ../blueprint and does not change them.
-What v2 changes: one decision log (D-001…) instead of nine id series, one findings backlog, requirements and
-QA as their own tabs, and a plan that follows the readiness of the requirements.
-Run:   python3 build.py
+It reads the generators and data files in ../blueprint and does not change them. It gives every question,
+answer, rule and assumption one id in a single decision log (D-001 onward; the earlier id is kept beside it),
+merges the findings into one backlog, and links plan areas to the requirements they build.
+
+Run:   python3 gen_page.py
+Then:  python3 ~/.claude/skills/prototype-blueprint/scripts/build_page.py --data en=page.en.json --data vi=page.vi.json \\
+           --prototype ../blueprint/prototype/index.html --out toki-blueprint.html --title "Toki Blueprint"
 """
-import base64, contextlib, io, json, pathlib, re, sys
+import contextlib, io, json, pathlib, re, sys
 
 HERE = pathlib.Path(__file__).parent
 BP = HERE.parent / "blueprint"
@@ -50,6 +53,14 @@ def remap(x):
         return {k: (v if k in ("old", "id") else remap(v)) for k, v in x.items()}
     return x
 
+
+CHANGES = [
+    ["Nine id series for questions and assumptions across four tabs||Chín dãy mã cho câu hỏi và giả định rải trên bốn tab", "One decision log, D-001 onward, each with a status. The earlier id stays in its own column.||Một sổ quyết định, từ D-001, mỗi mục có trạng thái. Mã cũ nằm ở một cột riêng.", "One place answers 'what is still open?'||Một nơi trả lời 'còn gì chưa chốt?'"],
+    ["Gaps in two lists, merged again in a third||Gap ở hai danh sách, gộp lại ở danh sách thứ ba", "One findings backlog of 15; the 72 detailed observations open inside each.||Một backlog 15 phát hiện; 72 quan sát chi tiết mở ra bên trong từng mục.", "Each problem appears once||Mỗi vấn đề chỉ xuất hiện một lần"],
+    ["Three analysis tabs that overlapped||Ba tab phân tích chồng lên nhau", "Findings → Decisions → Requirements → QA, the order of the BA & QA workflow.||Phát hiện → Quyết định → Yêu cầu → QA, đúng thứ tự của quy trình BA & QA.", "Tabs follow what the reader needs next||Tab đi theo thứ người đọc cần tiếp theo"],
+    ["The Flows tab also held rules, assumptions and questions||Tab Flows chứa cả quy tắc, giả định và câu hỏi", "Flows holds charts and written journeys only.||Flows chỉ chứa sơ đồ và hành trình đã viết.", "A tab does one job||Mỗi tab làm một việc"],
+    ["Plan, Milestones and Roadmap: three tabs, written before validation||Plan, Milestones và Roadmap: ba tab, viết trước khi kiểm định", "One Plan tab that opens with the readiness gate; each area shows the requirements it builds and whether it may start.||Một tab Kế hoạch mở đầu bằng cổng sẵn sàng; mỗi mảng cho thấy các yêu cầu nó thực hiện và đã bắt đầu được chưa.", "The plan follows the requirements||Kế hoạch đi sau yêu cầu"],
+]
 
 # area of the v1 plan -> the requirements it builds (area level; ticket level is the next step)
 AREA_FR = {"Sign-in and members": "FR-01 FR-02 FR-03 FR-04 FR-06 FR-25 FR-26", "Conversations": "FR-05 FR-07 FR-19 FR-20 FR-21 FR-22 FR-23",
@@ -134,6 +145,11 @@ def build(lang):
         milestones.append(dict(id=m["id"], name=m["name"], goal=m["goal"], exit=m["exit"], areas=areas))
 
     out = dict(
+        product="Toki",
+        prototypeNote=en("It simulates one person, always an Owner, with sample data and instant actions.||Nó mô phỏng một người, luôn là Owner, với dữ liệu mẫu và thao tác tức thì."),
+        writtenNote=en("Drafted by Claude under Q19; several were never confirmed line by line. They are a proposal until the question about accepting them (VQ-01) is answered.||Do Claude soạn theo Q19; nhiều hành trình chưa từng được xác nhận từng dòng. Chúng là đề xuất cho tới khi câu hỏi về việc chấp nhận chúng (VQ-01) được trả lời."),
+        changes=dict(title=en("How this page was reorganised on 13 Nov 2026||Trang này được sắp xếp lại thế nào ngày 13/11/2026"),
+                     head=en(["Before||Trước đây", "Now||Bây giờ", "Why||Vì sao"]), rows=[en(r) for r in CHANGES]),
         built="13 Nov 2026" if lang == "en" else "13/11/2026", overview=B["overview"], counts=dict(actions=151),
         screens=[dict(name=en(s[0]), purpose=en(s[1]), actions=en(s[2]), phase=en(s[3])) for s in GA.SCREENS],
         findings=findings, dupes=en(GV.DUPES), conflicts=en(GV.CONFLICTS), depends=en(GV.DEPENDS),
@@ -155,11 +171,7 @@ def build(lang):
     return out
 
 
-data = {l: build(l) for l in ("en", "vi")}
-proto = base64.b64encode((BP / "prototype" / "index.html").read_bytes()).decode("ascii")
-html = (HERE / "template.html").read_text(encoding="utf-8") \
-    .replace("/*DATA*/null", json.dumps(data, ensure_ascii=False).replace("</", "<\\/")) \
-    .replace("/*APP*/", (HERE / "app.js").read_text(encoding="utf-8")).replace("__PROTO_B64__", proto)
-(HERE / "toki-blueprint.html").write_text(html, encoding="utf-8")
-d = data["en"]
-print(f"toki-blueprint.html · {len(html) // 1024} KB · en + vi · {len(d['decisions'])} decisions · {len(d['findings'])} findings · {len(d['charts'])} charts · {len(d['frs'])} FR · {sum(len(a['tickets']) for m in d['milestones'] for a in m['areas'])} tickets")
+for lang in ("en", "vi"):
+    d = build(lang)
+    (HERE / f"page.{lang}.json").write_text(json.dumps(d, ensure_ascii=False, indent=1), encoding="utf-8")
+    print(f"page.{lang}.json · {len(d['decisions'])} decisions · {len(d['findings'])} findings · {len(d['charts'])} charts · {len(d['frs'])} FR · {sum(len(a['tickets']) for m in d['milestones'] for a in m['areas'])} tickets")

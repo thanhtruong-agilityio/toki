@@ -55,10 +55,16 @@ The published page embeds both data files as JSON in `<script id="bp-data">`, an
 
 ## The published page since 13 Nov 2026
 
-The Toki Blueprint artifact is now built by `../blueprint-v2/build.py`, which reads the generators and data files in this folder and lays them out in nine tabs (Overview, Prototype, Findings, Decisions, Flows, Requirements, QA, Technical, Plan) with one decision log (D-001 onward; the earlier ids stay in a column). This folder remains the source of the content. The older twelve-tab page (`blueprint.html`, built with the skill's `build.py`) is no longer published.
+The Toki Blueprint artifact is published in the nine-tab format of the `prototype-blueprint` skill (Overview, Prototype, Findings, Decisions, Flows, Requirements, QA, Technical, Plan), with one decision log (D-001 onward; the earlier ids stay in a column). This folder remains the source of the content. `../blueprint-v2/gen_page.py` assembles the page data from it, and the skill's `build_page.py` renders the page. The older twelve-tab page (`blueprint.html`) is no longer published.
 
 ```bash
+S=~/.claude/skills/prototype-blueprint/scripts
 python3 gen_flowmaps.py
-python3 ~/.claude/skills/prototype-blueprint/scripts/flowmap.py --spec flowmaps.json --data en=blueprint.en.json --data vi=blueprint.vi.json
-cd ../blueprint-v2 && python3 build.py      # writes toki-blueprint.html, the file to publish
+python3 $S/flowmap.py --spec flowmaps.json --data en=blueprint.en.json --data vi=blueprint.vi.json
+cd ../blueprint-v2
+python3 gen_page.py                       # writes page.en.json and page.vi.json
+python3 $S/build_page.py --data en=page.en.json --data vi=page.vi.json \
+        --prototype ../blueprint/prototype/index.html --out toki-blueprint.html --title "Toki Blueprint"
 ```
+
+Publish `toki-blueprint.html`. The format and the shape of `page.<lang>.json` are described in the skill's `references/page-format.md`.
