@@ -294,7 +294,7 @@
   },
   {
    "id": "G4",
-   "text": "An invitation expires after 7 days. The link in the invitation signs the person in directly, without a code.",
+   "text": "An invitation expires after 7 days and works once. Its mail carries the Join button and a 6-digit code; the link alone does not sign anyone in (Q32).",
    "usedIn": "F02, F03",
    "status": "confirmed"
   },
@@ -306,7 +306,7 @@
   },
   {
    "id": "G6",
-   "text": "There can be several Owners. The last Owner cannot be demoted or deactivated.",
+   "text": "Replaced by Q43 and Q44: there is no Owner role. There can be several Admins; the last Admin cannot be demoted or deactivated.",
    "usedIn": "F40, F41",
    "status": "confirmed"
   },
@@ -354,7 +354,7 @@
   },
   {
    "id": "G14",
-   "text": "Admins and Owners do not automatically see private channels or DMs; deleting messages, removing people and archiving apply only where they are members.",
+   "text": "Admins do not automatically see private channels or DMs; deleting messages, removing people and archiving apply only where they are members.",
    "usedIn": "F26, F39, F42",
    "status": "confirmed"
   },
@@ -2051,7 +2051,7 @@
    "topic": "Permissions",
    "question": "The prototype shows Owner, Admin and ordinary members but no difference between them. Who is allowed to do what?",
    "options": "What Member, Admin and Owner can do",
-   "decision": "As in the capability table under Roles & States",
+   "decision": "As in the capability table, reviewed and signed off in Q50 (Member, Admin, Guest; no Owner).",
    "source": "recommended"
   },
   {
@@ -2179,7 +2179,7 @@
    "topic": "First admin",
    "question": "A fresh installation has no accounts. How does the first Owner come to exist?",
    "options": "First-run setup page, or environment",
-   "decision": "Created from environment variables or seed; that admin invites members",
+   "decision": "The first Admin is created from environment variables or seed; that Admin invites members (no Owner role, Q43).",
    "source": "user"
   },
   {
@@ -2608,9 +2608,9 @@
    "topic": "Unfollowing a thread",
    "question": "Can a person stop following a thread?",
    "options": "",
-   "decision": "No such flow.",
+   "decision": "No 'Unfollow thread' in phase 1. Threads themselves stay in phase 1.",
    "source": "user",
-   "note": "Raised as D-119 (GQ-07). You answered 'there is no thread flow'. To confirm: whether this means no Unfollow only, or no threads at all in phase 1."
+   "note": "Raised as D-119 (GQ-07). You confirmed that only the Unfollow action is left out, not threads."
   },
   {
    "id": "Q76",

@@ -408,7 +408,7 @@
   },
   {
    "id": "G4",
-   "text": "Lời mời hết hạn sau 7 ngày. Link trong thư mời đăng nhập thẳng, không cần mã.",
+   "text": "Lời mời hết hạn sau 7 ngày và dùng một lần. Mail mời có nút Join và mã 6 số; riêng link thì không đăng nhập cho ai (Q32).",
    "usedIn": "F02, F03",
    "status": "confirmed"
   },
@@ -420,7 +420,7 @@
   },
   {
    "id": "G6",
-   "text": "Có thể có nhiều Owner. Owner cuối cùng không bị hạ vai trò hay vô hiệu hóa được.",
+   "text": "Được thay bởi Q43 và Q44: không có vai trò Owner. Có thể có nhiều Admin; Admin cuối cùng không thể bị hạ vai trò hay vô hiệu hoá.",
    "usedIn": "F40, F41",
    "status": "confirmed"
   },
@@ -468,7 +468,7 @@
   },
   {
    "id": "G14",
-   "text": "Admin và Owner không tự động thấy kênh riêng tư hay DM; quyền xóa tin, gỡ người, lưu trữ chỉ áp dụng ở nơi họ là thành viên.",
+   "text": "Admin không tự động thấy kênh riêng tư hay DM; xoá tin, gỡ người và lưu trữ chỉ áp dụng ở nơi họ là thành viên.",
    "usedIn": "F26, F39, F42",
    "status": "confirmed"
   },
@@ -2165,7 +2165,7 @@
    "topic": "Phân quyền",
    "question": "Prototype có Owner, Admin và thành viên thường nhưng không thể hiện khác biệt. Ai được làm gì?",
    "options": "Member, Admin, Owner được làm gì",
-   "decision": "Như bảng quyền ở mục Phạm vi",
+   "decision": "Như bảng quyền, đã rà và duyệt ở Q50 (Member, Admin, Guest; không có Owner).",
    "source": "recommended"
   },
   {
@@ -2293,7 +2293,7 @@
    "topic": "Admin đầu tiên",
    "question": "Bản cài mới chưa có tài khoản nào. Owner đầu tiên được tạo thế nào?",
    "options": "Trang thiết lập lần đầu, hay env",
-   "decision": "Tạo từ biến môi trường hoặc seed; admin mời thành viên",
+   "decision": "Admin đầu tiên được tạo từ biến môi trường hoặc seed; Admin đó mời thành viên (không có vai trò Owner, Q43).",
    "source": "user"
   },
   {
@@ -2722,9 +2722,9 @@
    "topic": "Ngừng theo dõi thread",
    "question": "Có cho ngừng theo dõi một thread không?",
    "options": "",
-   "decision": "Không có flow này.",
+   "decision": "Phase 1 không có 'Unfollow thread'. Bản thân thread vẫn thuộc phase 1.",
    "source": "user",
-   "note": "Nêu ở D-119 (GQ-07). Bạn trả lời 'không có flow thread'. Cần xác nhận: ý là chỉ không có Unfollow, hay phase 1 không có thread."
+   "note": "Nêu ở D-119 (GQ-07). Bạn xác nhận chỉ bỏ thao tác Unfollow, không bỏ thread."
   },
   {
    "id": "Q76",
