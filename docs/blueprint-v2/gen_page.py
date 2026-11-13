@@ -126,6 +126,9 @@ def build(lang):
         d = byq[i]
         add(i, "rev", d["question"], d["decision"], "PO", topic=d.get("topic", ""), options=d.get("options", ""), source=d.get("source", ""), note=d.get("note", ""))
     rows = {r["old"]: r for r in dec}
+    acc = B.get("acceptedAssumptions", {})
+    for i in acc.get("ids", []):                 # assumptions the user accepted: they stand as decisions
+        rows[i].update(status="Accepted Assumption", sev="", note=acc.get("note", ""))
     for old, q in RESOLVE.items():               # the settled rows take the answer and its standing
         d, r = byq[q], rows[old]
         r.update(kind="rev", a=d["decision"], sev="", status="Deferred" if d.get("source") == "deferred" else "Confirmed",
