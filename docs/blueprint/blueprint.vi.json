@@ -991,12 +991,12 @@
    "steps": [
     "Mở Toki, thấy thẻ đăng nhập: logo và tên workspace, ô email, nút “Gửi mã”.",
     "Nhập email, bấm “Gửi mã”. Màn hình đổi sang “Kiểm tra hộp thư”: nêu lại địa chỉ, ô nhập 6 số, dòng “Mã có hiệu lực 10 phút”, link “Dùng email khác”, và nút “Gửi lại mã” bật sau 60 giây.",
-    "Thư đến có mã 6 số và một nút đăng nhập.",
-    "Nhập mã (dán được cả 6 số, tự gửi khi đủ) hoặc bấm nút trong thư.",
+    "Email tới kèm một mã 6 số. Mail không có nút đăng nhập.",
+    "Gõ mã (dán được cả 6 số; tự gửi khi đủ).",
     "Vào Home. Phiên được giữ 30 ngày và tự gia hạn mỗi lần dùng."
    ],
    "cases": [
-    "Bấm nút trong thư trên một thiết bị khác thiết bị đã xin mã: thiết bị bấm nút được đăng nhập; thiết bị kia vẫn chờ nhập mã.",
+    "Gõ mã trên một thiết bị khác với thiết bị đã xin mã: thiết bị đó không được đăng nhập; mã gắn với lần xin.",
     "Đã có phiên còn hạn: mở Toki là vào thẳng Home, không thấy trang đăng nhập."
    ]
   },
@@ -1438,7 +1438,7 @@
    "context": "Details → “Rời kênh”.",
    "steps": [
     "Kênh công khai: rời ngay; toast “Đã rời #tên” có nút Hoàn tác trong 5 giây. Vào lại bất cứ lúc nào qua Duyệt kênh.",
-    "Kênh riêng tư: hộp xác nhận “Rời #tên? Bạn sẽ cần một thành viên mời lại.” Sau khi rời vẫn có Hoàn tác 5 giây.",
+    "Kênh riêng tư: một hộp xác nhận, 'Leave #name? A member will have to invite you back.' Sau đó không có Undo.",
     "Kênh biến khỏi danh sách; màn hình chuyển sang #general.",
     "Trong kênh hiện dòng hệ thống “Lan đã rời kênh”."
    ],
@@ -2779,6 +2779,51 @@
    "decision": "Phase 1 chưa có; phase sau, cùng với sao lưu (Q40).",
    "source": "deferred",
    "note": "Nêu ở D-124 (GQ-17)."
+  },
+  {
+   "id": "Q85",
+   "topic": "Các hành trình đã viết",
+   "question": "Chấp nhận các hành trình đã viết làm nền, hay rà trước?",
+   "options": "",
+   "decision": "Đã rà ngày 13/11/2026: 8 hành trình viết lại, 16 sửa, 19 giữ nguyên. Khi bốn lựa chọn ở Q86 tới Q89 đã chốt, các hành trình phase 1 được chấp nhận làm nền.",
+   "source": "recommended",
+   "note": "Nêu ở D-091 (VQ-01)."
+  },
+  {
+   "id": "Q86",
+   "topic": "Rời kênh riêng tư",
+   "question": "OQ2 ghi có xác nhận rồi vẫn có Undo; quy tắc NR3 ghi không bao giờ cả hai. Theo cái nào?",
+   "options": "",
+   "decision": "Theo NR3: một hộp xác nhận ghi phải được thành viên mời lại, và không có Undo.",
+   "source": "recommended",
+   "note": "Phát hiện khi rà các hành trình đã viết ngày 13/11/2026."
+  },
+  {
+   "id": "Q87",
+   "topic": "Mail đăng nhập",
+   "question": "Mail đăng nhập có nút bấm để đăng nhập mà không cần gõ mã không?",
+   "options": "",
+   "decision": "Không. Mail chỉ có mã 6 số, giống lời mời (Q32).",
+   "source": "recommended",
+   "note": "Phát hiện khi rà các hành trình đã viết ngày 13/11/2026."
+  },
+  {
+   "id": "Q88",
+   "topic": "Sign out và thiết bị đã đăng nhập",
+   "question": "Prototype không có sign out. Có chấp nhận hành trình viết F06 không?",
+   "options": "",
+   "decision": "Có: 'Sign out' trong menu tài khoản; Preferences liệt kê các thiết bị đã đăng nhập và đăng xuất được một thiết bị hoặc mọi thiết bị khác.",
+   "source": "recommended",
+   "note": "Phát hiện khi rà các hành trình đã viết ngày 13/11/2026."
+  },
+  {
+   "id": "Q89",
+   "topic": "Link đăng nhập khẩn cấp",
+   "question": "Khi không gửi được mail, người có quyền vào server có được cấp link đăng nhập một lần không?",
+   "options": "",
+   "decision": "Có: một lệnh trên server in ra link có hiệu lực 10 phút cho một thành viên; mỗi lần dùng đều ghi log. Đây là cách đăng nhập duy nhất không cần mã.",
+   "source": "recommended",
+   "note": "Phát hiện khi rà các hành trình đã viết ngày 13/11/2026."
   }
  ],
  "questions": [
@@ -2792,7 +2837,7 @@
   {
    "id": "OQ2",
    "question": "Rời channel riêng tư rồi thì tự vào lại hay cần lời mời mới?",
-   "answer": "Cần một thành viên mời lại. Lời xác nhận khi rời nói rõ điều đó; vẫn có Hoàn tác trong 5 giây. Channel riêng tư không xuất hiện trong Browse hay Ctrl+K với người ngoài. Nếu người cuối cùng rời đi, channel được lưu trữ.",
+   "answer": "Phải được một thành viên mời lại. Hộp xác nhận khi rời ghi rõ điều đó, và không có Undo (Q86). Kênh riêng tư không bao giờ xuất hiện trong Browse hay Ctrl+K với người ngoài. Nếu thành viên cuối rời đi, kênh được lưu trữ.",
    "phase": "1",
    "status": "confirmed"
   },

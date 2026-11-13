@@ -107,7 +107,7 @@ c = Chart("2.1 Sign in with an emailed code||2.1 Đăng nhập bằng mã gửi 
            "**After:** a 30-day session on this device only; the code can never be used again; the app opens where the person was heading.||**Sau:** một phiên 30 ngày chỉ trên thiết bị này; mã không dùng lại được; ứng dụng mở đúng nơi người dùng định tới.",
            "**Validation:** email must look like an address before the button enables. Code: exactly 6 digits, one use, valid 10 minutes, locked after the 5th wrong try. At most 5 code requests per address in 15 minutes.||**Kiểm tra:** email phải đúng dạng thì nút mới bật. Mã: đúng 6 số, dùng một lần, hiệu lực 10 phút, bị khoá sau lần sai thứ 5. Tối đa 5 lần xin mã cho một địa chỉ trong 15 phút.",
            "**Back / cancel / retry:** 'Use a different email' returns to the email field. 'Resend code' enables after 60 seconds. A network failure re-enables the button with 'Could not connect'.||**Quay lại / huỷ / thử lại:** 'Use a different email' quay về ô email. 'Resend code' bật sau 60 giây. Lỗi mạng thì nút bấm lại được, kèm 'Could not connect'.",
-           "**Alternative:** the mail also has a sign-in button. Pressing it signs in the device where it is pressed and skips typing the code.||**Nhánh khác:** mail còn có nút đăng nhập. Bấm nút thì thiết bị bấm được đăng nhập, không cần gõ mã.",
+           "**No shortcut:** the mail carries the code only; there is no button that signs in without it.||**Không có lối tắt:** mail chỉ có mã; không có nút nào đăng nhập mà không cần mã.",
            "**Security rule:** the answer to a code request is identical for members and strangers, so the page never reveals who is a member.||**Quy tắc bảo mật:** câu trả lời cho yêu cầu xin mã giống hệt nhau với thành viên và người lạ, nên trang không bao giờ lộ ai là thành viên."])
 c.n("s", U, 0, "Opens Toki without a session||Mở Toki khi chưa có phiên", None, "st")
 c.n("f_email", F, 0, "Sign-in card: email field||Thẻ đăng nhập: ô email", "'Send code' disabled until email is valid||'Send code' tắt cho tới khi email hợp lệ")
@@ -882,7 +882,7 @@ TECH = {
 RESOLVE = dict(x.split(":") for x in """FQ-01:Q45 FQ-13:Q46 FQ-14:Q35 FQ-15:Q33 FQ-17:Q38 FQ-19:Q42 FQ-20:Q39 FQ-21:Q47 GQ-01:Q48 GQ-06:Q49 GQ-20:Q50
 VQ-03:Q40 FQ-02:Q53 FQ-03:Q52 FQ-04:Q58 FQ-05:Q59 FQ-07:Q60 FQ-08:Q54 FQ-11:Q71 FQ-16:Q55 FQ-18:Q56 FQ-22:Q61 GQ-02:Q62 GQ-03:Q63 GQ-05:Q57
 GQ-09:Q73 GQ-10:Q66 GQ-11:Q67 GQ-12:Q64 GQ-16:Q72 GQ-18:Q68 GQ-19:Q65 VQ-02:Q69 FQ-06:Q82 FQ-09:Q76 FQ-10:Q74 FQ-12:Q83 GQ-04:Q79 GQ-07:Q75
-GQ-08:Q77 GQ-13:Q78 GQ-14:Q80 GQ-15:Q81 GQ-17:Q84 FA-13:Q34 FA-14:Q36 FA-17:Q61""".split())   # an earlier question -> the answer that settled it
+GQ-08:Q77 GQ-13:Q78 GQ-14:Q80 GQ-15:Q81 GQ-17:Q84 FA-13:Q34 FA-14:Q36 FA-17:Q61 VQ-01:Q85""".split())   # an earlier question -> the answer that settled it
 EXTRA = {"1.1": "Q32 Q43", "2.1": "Q34 Q35 Q36", "2.2": "Q32 Q33 Q34 Q37 Q45", "2.8": "Q38 Q41 Q56 Q76", "2.12": "Q43 Q44 Q52 Q71", "2.13": "Q43 Q44 Q52 Q72", "2.14": "Q39 Q51 Q70"}
 CITE = {
     "1.1": "G4 Q11 Q12 FA-13 FA-15 F03 FQ-13 FQ-15",

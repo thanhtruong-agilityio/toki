@@ -877,12 +877,12 @@
    "steps": [
     "Open Toki and see the sign-in card: logo and workspace name, an email field, a 'Send code' button.",
     "Enter the email and press 'Send code'. The screen changes to 'Check your email': it repeats the address, shows a 6-digit field, the line 'The code works for 10 minutes', a 'Use a different email' link, and a 'Resend code' button that enables after 60 seconds.",
-    "The email arrives with a 6-digit code and a sign-in button.",
-    "Type the code (all 6 digits can be pasted; it submits when complete) or press the button in the email.",
+    "The email arrives with a 6-digit code. It has no sign-in button.",
+    "Type the code (all 6 digits can be pasted; it submits when complete).",
     "Home opens. The session lasts 30 days and renews on every use."
    ],
    "cases": [
-    "The email button is pressed on a different device from the one that asked for the code: that device is signed in; the other still waits for the code.",
+    "The code is typed on a different device from the one that asked for it: it does not sign that device in; the code belongs to the request.",
     "A valid session already exists: opening Toki goes straight to Home, with no sign-in page."
    ]
   },
@@ -1324,7 +1324,7 @@
    "context": "Details → 'Leave channel'.",
    "steps": [
     "A public channel: you leave at once; the toast 'Left #name' offers Undo for 5 seconds. You can rejoin any time from Browse channels.",
-    "A private channel: a confirmation, 'Leave #name? A member will have to invite you back.' Undo is still offered for 5 seconds afterwards.",
+    "A private channel: a confirmation, 'Leave #name? A member will have to invite you back.' There is no Undo afterwards.",
     "The channel leaves your list; the view moves to #general.",
     "The channel shows a system line, 'Lan left the channel'."
    ],
@@ -2665,6 +2665,51 @@
    "decision": "Not in phase 1; a later phase, together with backup (Q40).",
    "source": "deferred",
    "note": "Raised as D-124 (GQ-17)."
+  },
+  {
+   "id": "Q85",
+   "topic": "The written journeys",
+   "question": "Are the written journeys accepted as the baseline, or reviewed first?",
+   "options": "",
+   "decision": "Reviewed on 13 Nov 2026: 8 rewritten, 16 corrected, 19 unchanged. With the four choices in Q86 to Q89 settled, the phase-1 journeys are accepted as the baseline.",
+   "source": "recommended",
+   "note": "Raised as D-091 (VQ-01)."
+  },
+  {
+   "id": "Q86",
+   "topic": "Leaving a private channel",
+   "question": "OQ2 said a confirmation and then Undo; rule NR3 says never both. Which holds?",
+   "options": "",
+   "decision": "NR3 holds: a confirmation that says a member must invite you back, and no Undo.",
+   "source": "recommended",
+   "note": "Found while reviewing the written journeys on 13 Nov 2026."
+  },
+  {
+   "id": "Q87",
+   "topic": "Sign-in mail",
+   "question": "Does the sign-in mail carry a button that signs in without typing the code?",
+   "options": "",
+   "decision": "No. The mail carries the 6-digit code only, as with invitations (Q32).",
+   "source": "recommended",
+   "note": "Found while reviewing the written journeys on 13 Nov 2026."
+  },
+  {
+   "id": "Q88",
+   "topic": "Sign out and signed-in devices",
+   "question": "The prototype has no sign out. Is the written journey F06 accepted?",
+   "options": "",
+   "decision": "Yes: 'Sign out' in the account menu; Preferences lists signed-in devices and can sign out one device or all others.",
+   "source": "recommended",
+   "note": "Found while reviewing the written journeys on 13 Nov 2026."
+  },
+  {
+   "id": "Q89",
+   "topic": "Emergency sign-in link",
+   "question": "When mail cannot be sent, may a person with server access issue a one-time sign-in link?",
+   "options": "",
+   "decision": "Yes: a server command prints a link valid 10 minutes for one member; every use is logged. It is the only sign-in without a code.",
+   "source": "recommended",
+   "note": "Found while reviewing the written journeys on 13 Nov 2026."
   }
  ],
  "questions": [
@@ -2678,7 +2723,7 @@
   {
    "id": "OQ2",
    "question": "After leaving a private channel, can a member rejoin alone or do they need an invitation?",
-   "answer": "A member must invite them back. The leave confirmation says so; Undo is still offered for 5 seconds. Private channels never appear in Browse or Ctrl+K for outsiders. If the last member leaves, the channel is archived.",
+   "answer": "A member must invite them back. The leave confirmation says so, and there is no Undo (Q86). Private channels never appear in Browse or Ctrl+K for outsiders. If the last member leaves, the channel is archived.",
    "phase": "1",
    "status": "confirmed"
   },
