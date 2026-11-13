@@ -383,11 +383,6 @@
    "sees": "As a member, plus the Admin item in navigation. Does not automatically see other people's private channels or DMs"
   },
   {
-   "name": "Owner",
-   "who": "The person who set up the workspace; there can be several",
-   "sees": "As an admin, plus the right to change roles"
-  },
-  {
    "name": "Guest",
    "who": "Someone outside the company invited to exactly one channel",
    "sees": "Only that channel: messages, files, Meets. No navigation, directory or global search",
@@ -398,14 +393,12 @@
   "columns": [
    "Member",
    "Admin",
-   "Owner",
    "Guest"
   ],
   "rows": [
    {
     "action": "Sign in with an emailed code",
     "values": [
-     "yes",
      "yes",
      "yes",
      "yes"
@@ -416,7 +409,6 @@
     "values": [
      "yes",
      "yes",
-     "yes",
      "—"
     ]
    },
@@ -425,15 +417,13 @@
     "values": [
      "if a member",
      "if a member",
-     "if a member",
      "invited channel only"
     ]
    },
    {
     "action": "Create public and private channels",
     "values": [
-     "yes",
-     "yes",
+     "—",
      "yes",
      "—"
     ]
@@ -441,7 +431,6 @@
    {
     "action": "Join public channels; add people to a channel you are in",
     "values": [
-     "yes",
      "yes",
      "yes",
      "—"
@@ -452,14 +441,12 @@
     "values": [
      "yes",
      "yes",
-     "yes",
      "—"
     ]
    },
    {
     "action": "Threads, reactions, sending files",
     "values": [
-     "yes",
      "yes",
      "yes",
      "yes"
@@ -470,14 +457,12 @@
     "values": [
      "yes",
      "yes",
-     "yes",
      "—"
     ]
    },
    {
     "action": "Edit and delete your own messages",
     "values": [
-     "yes",
      "yes",
      "yes",
      "yes"
@@ -488,14 +473,12 @@
     "values": [
      "—",
      "where a member",
-     "where a member",
      "—"
     ]
    },
    {
     "action": "Activity, Later, Files, People, Ctrl+K",
     "values": [
-     "yes",
      "yes",
      "yes",
      "—"
@@ -506,7 +489,6 @@
     "values": [
      "—",
      "where a member",
-     "where a member",
      "—"
     ]
    },
@@ -514,7 +496,6 @@
     "action": "Archive and restore channels",
     "values": [
      "—",
-     "where a member",
      "where a member",
      "—"
     ]
@@ -524,7 +505,6 @@
     "values": [
      "—",
      "yes",
-     "yes",
      "—"
     ]
    },
@@ -532,8 +512,7 @@
     "action": "Invite members",
     "values": [
      "—",
-     "as Member",
-     "any role",
+     "with any role",
      "—"
     ]
    },
@@ -541,8 +520,7 @@
     "action": "Deactivate and reactivate",
     "values": [
      "—",
-     "Members only",
-     "anyone but the last Owner",
+     "anyone but the last Admin and themselves",
      "—"
     ]
    },
@@ -550,8 +528,7 @@
     "action": "Change roles",
     "values": [
      "—",
-     "—",
-     "yes",
+     "yes, except demoting the last Admin",
      "—"
     ]
    },
@@ -560,14 +537,12 @@
     "values": [
      "yes",
      "yes",
-     "yes",
      "—"
     ]
    },
    {
     "action": "Create automations (phase 5)",
     "values": [
-     "if channel creator",
      "yes",
      "yes",
      "—"
@@ -577,7 +552,6 @@
     "action": "See Analytics (phase 5)",
     "values": [
      "—",
-     "yes",
      "yes",
      "—"
     ]
@@ -2358,6 +2332,69 @@
    "decision": "An Admin changes roles, deactivates another Admin and invites with the role Admin. The first Admin of a fresh installation comes from server configuration. The last Admin cannot be demoted or deactivated, and nobody deactivates themselves.",
    "source": "user",
    "note": "Confirmed by you on 13 Nov 2026. Replaces G6 and the Owner parts of Q12 and Q26."
+  },
+  {
+   "id": "Q45",
+   "topic": "Signed in as someone else",
+   "question": "Someone signed in as A presses Join in an invitation meant for B. What happens?",
+   "options": "Replace A's session · Ask first",
+   "decision": "The page asks first: 'You are signed in as A. Sign out to continue as B?' Choosing no keeps A signed in and leaves B's invitation valid.",
+   "source": "user",
+   "note": "Raised as D-080 (FQ-01). Lighter than first asked, because the link no longer signs anyone in by itself (Q32)."
+  },
+  {
+   "id": "Q46",
+   "topic": "Invitation that cannot be used",
+   "question": "What does the person see when they press Join and the invitation can no longer be used?",
+   "options": "One message · A message per cause",
+   "decision": "Three messages: expired after 7 days ('ask the inviter for a new one'), revoked ('ask an admin'), and a link that is not recognised ('This link is not valid', with no workspace name). An invitation already used goes to the normal sign-in page.",
+   "source": "user",
+   "note": "Raised as D-081 (FQ-13)."
+  },
+  {
+   "id": "Q47",
+   "topic": "A message that failed to send",
+   "question": "Where do 'Not sent', Retry and Delete appear?",
+   "options": "Beside the time · Elsewhere",
+   "decision": "Where 'Waiting to send' is, beside the time: a red 'Not sent' and two text buttons, Retry and Delete. Delete asks nothing.",
+   "source": "user",
+   "note": "Raised as D-087 (FQ-21)."
+  },
+  {
+   "id": "Q48",
+   "topic": "Mention in a muted conversation",
+   "question": "Does a mention notify the person when they muted the conversation?",
+   "options": "(a) A personal switch, on by default · (b) Never · (c) Always",
+   "decision": "(a) A personal switch in Preferences, on by default, as in the prototype.",
+   "source": "user",
+   "note": "Raised as D-088 (GQ-01)."
+  },
+  {
+   "id": "Q49",
+   "topic": "Addresses and Back",
+   "question": "Does every conversation, thread and section have its own address, and what does browser Back do?",
+   "options": "(a) Each has an address · (b) One address for the app",
+   "decision": "(a) Each has an address. Back closes the side panel first, then returns to the previous place.",
+   "source": "user",
+   "note": "Raised as D-089 (GQ-06)."
+  },
+  {
+   "id": "Q50",
+   "topic": "Capability table signed off",
+   "question": "Is the table of who may do what agreed?",
+   "options": "Sign off as is · Review row by row",
+   "decision": "Reviewed row by row and signed off with three columns (Member, Admin, Guest). Changed rows: only an Admin creates channels; an Admin invites with any role, changes roles, and deactivates anyone but the last Admin and themselves; a Member can create automations (phase 5). A Member still adds people to a channel they are in.",
+   "source": "user",
+   "note": "Raised as D-090 (GQ-20). Accepted consequence: a private channel with no Admin inside has nobody who can remove people, delete others' messages or archive it."
+  },
+  {
+   "id": "Q51",
+   "topic": "The '+' for a group DM on touch screens",
+   "question": "The '+' on Direct messages appears on hover (Q39). Rule NR1 forbids hover-only features. How does it appear on touch screens?",
+   "options": "Always visible on touch",
+   "decision": "On hover on a desktop; always visible on touch and narrow screens.",
+   "source": "user",
+   "note": "Still open: whether the prototype's pencil 'New message' icon stays beside the new '+'. No proposal was given for it."
   }
  ],
  "questions": [

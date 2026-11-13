@@ -497,11 +497,6 @@
    "sees": "Như Member, thêm mục Admin trong điều hướng. Không tự động thấy kênh riêng tư hay DM của người khác"
   },
   {
-   "name": "Owner",
-   "who": "Người khởi tạo workspace; có thể có nhiều Owner",
-   "sees": "Như Admin, thêm quyền đổi vai trò"
-  },
-  {
    "name": "Guest",
    "who": "Người ngoài công ty được mời vào đúng một kênh",
    "sees": "Chỉ kênh đó: tin nhắn, file, Meet. Không có thanh điều hướng, danh bạ hay tìm kiếm toàn cục",
@@ -512,50 +507,44 @@
   "columns": [
    "Member",
    "Admin",
-   "Owner",
    "Guest"
   ],
   "rows": [
    {
-    "action": "Đăng nhập bằng mã qua email",
+    "action": "Đăng nhập bằng mã gửi qua email",
     "values": [
-     "có",
      "có",
      "có",
      "có"
     ]
    },
    {
-    "action": "Đọc và gửi tin ở channel công khai",
+    "action": "Đọc và đăng tin trong kênh công khai",
     "values": [
-     "có",
      "có",
      "có",
      "—"
     ]
    },
    {
-    "action": "Đọc và gửi tin ở channel riêng tư",
+    "action": "Đọc và đăng tin trong kênh riêng tư",
     "values": [
      "nếu là thành viên",
      "nếu là thành viên",
-     "nếu là thành viên",
-     "chỉ channel được mời"
+     "chỉ kênh được mời"
     ]
    },
    {
-    "action": "Tạo channel công khai và riêng tư",
+    "action": "Tạo kênh công khai và riêng tư",
     "values": [
-     "có",
-     "có",
+     "—",
      "có",
      "—"
     ]
    },
    {
-    "action": "Tham gia channel công khai, thêm người vào channel mình ở",
+    "action": "Tham gia kênh công khai; thêm người vào kênh mình đang ở",
     "values": [
-     "có",
      "có",
      "có",
      "—"
@@ -566,14 +555,12 @@
     "values": [
      "có",
      "có",
-     "có",
      "—"
     ]
    },
    {
     "action": "Thread, reaction, gửi file",
     "values": [
-     "có",
      "có",
      "có",
      "có"
@@ -584,25 +571,22 @@
     "values": [
      "có",
      "có",
-     "có",
      "—"
     ]
    },
    {
-    "action": "Sửa và xóa tin của mình",
+    "action": "Sửa và xoá tin của mình",
     "values": [
-     "có",
      "có",
      "có",
      "có"
     ]
    },
    {
-    "action": "Xóa tin của người khác",
+    "action": "Xoá tin của người khác",
     "values": [
      "—",
-     "ở hội thoại mình tham gia",
-     "ở hội thoại mình tham gia",
+     "ở kênh mình là thành viên",
      "—"
     ]
    },
@@ -611,33 +595,29 @@
     "values": [
      "có",
      "có",
-     "có",
      "—"
     ]
    },
    {
-    "action": "Gỡ người khỏi channel",
+    "action": "Gỡ người khỏi kênh",
     "values": [
      "—",
-     "ở channel mình tham gia",
-     "ở channel mình tham gia",
+     "ở kênh mình là thành viên",
      "—"
     ]
    },
    {
-    "action": "Lưu trữ và khôi phục channel",
+    "action": "Lưu trữ và khôi phục kênh",
     "values": [
      "—",
-     "ở channel mình tham gia",
-     "ở channel mình tham gia",
+     "ở kênh mình là thành viên",
      "—"
     ]
    },
    {
-    "action": "Xem trang Admin",
+    "action": "Mở trang Admin",
     "values": [
      "—",
-     "có",
      "có",
      "—"
     ]
@@ -646,17 +626,15 @@
     "action": "Mời thành viên",
     "values": [
      "—",
-     "vai trò Member",
-     "mọi vai trò",
+     "với vai trò nào cũng được",
      "—"
     ]
    },
    {
-    "action": "Vô hiệu hóa và kích hoạt lại",
+    "action": "Vô hiệu hoá và kích hoạt lại",
     "values": [
      "—",
-     "chỉ Member",
-     "mọi người, trừ Owner cuối cùng",
+     "bất kỳ ai, trừ Admin cuối cùng và chính mình",
      "—"
     ]
    },
@@ -664,15 +642,13 @@
     "action": "Đổi vai trò",
     "values": [
      "—",
-     "—",
-     "có",
+     "có, trừ hạ Admin cuối cùng",
      "—"
     ]
    },
    {
-    "action": "Mời guest vào channel (phase 5)",
+    "action": "Mời guest vào một kênh (phase 5)",
     "values": [
-     "có",
      "có",
      "có",
      "—"
@@ -681,7 +657,6 @@
    {
     "action": "Tạo automation (phase 5)",
     "values": [
-     "nếu là người tạo channel",
      "có",
      "có",
      "—"
@@ -691,7 +666,6 @@
     "action": "Xem Analytics (phase 5)",
     "values": [
      "—",
-     "có",
      "có",
      "—"
     ]
@@ -2472,6 +2446,69 @@
    "decision": "Admin đổi được vai trò, vô hiệu hoá Admin khác và mời với vai trò Admin. Admin đầu tiên của một bản cài mới tạo từ cấu hình server. Admin cuối cùng không thể bị hạ vai trò hay vô hiệu hoá, và không ai tự vô hiệu hoá mình.",
    "source": "user",
    "note": "Bạn xác nhận ngày 13/11/2026. Thay G6 và các phần về Owner của Q12 và Q26."
+  },
+  {
+   "id": "Q45",
+   "topic": "Đang đăng nhập bằng tài khoản khác",
+   "question": "Người đang đăng nhập là A bấm Join trong lời mời dành cho B. Điều gì xảy ra?",
+   "options": "Thay phiên của A · Hỏi trước",
+   "decision": "Trang hỏi trước: 'Bạn đang đăng nhập là A. Đăng xuất để tiếp tục với B?' Chọn không thì A vẫn đăng nhập và lời mời của B còn hiệu lực.",
+   "source": "user",
+   "note": "Nêu ở D-080 (FQ-01). Nhẹ hơn lúc đầu, vì link không còn tự đăng nhập cho ai (Q32)."
+  },
+  {
+   "id": "Q46",
+   "topic": "Lời mời không dùng được",
+   "question": "Người dùng thấy gì khi bấm Join mà lời mời không còn dùng được?",
+   "options": "Một câu chung · Mỗi nguyên nhân một câu",
+   "decision": "Ba câu: hết hạn sau 7 ngày ('nhờ người mời gửi lại'), bị thu hồi ('hỏi admin'), và link không nhận ra ('Link này không hợp lệ', không nêu tên workspace). Lời mời đã dùng rồi thì tới trang đăng nhập thường.",
+   "source": "user",
+   "note": "Nêu ở D-081 (FQ-13)."
+  },
+  {
+   "id": "Q47",
+   "topic": "Tin gửi lỗi",
+   "question": "'Not sent', Retry và Delete hiện ở đâu?",
+   "options": "Cạnh giờ · Chỗ khác",
+   "decision": "Ở chỗ của 'Waiting to send', cạnh giờ: chữ đỏ 'Not sent' và hai nút chữ, Retry và Delete. Delete không hỏi lại.",
+   "source": "user",
+   "note": "Nêu ở D-087 (FQ-21)."
+  },
+  {
+   "id": "Q48",
+   "topic": "Mention trong cuộc trò chuyện đã tắt tiếng",
+   "question": "Mention có báo cho người đó khi họ đã tắt tiếng cuộc trò chuyện không?",
+   "options": "(a) Công tắc cá nhân, mặc định bật · (b) Không bao giờ · (c) Luôn luôn",
+   "decision": "(a) Một công tắc cá nhân trong Preferences, mặc định bật, như prototype.",
+   "source": "user",
+   "note": "Nêu ở D-088 (GQ-01)."
+  },
+  {
+   "id": "Q49",
+   "topic": "Địa chỉ và nút Back",
+   "question": "Mỗi cuộc trò chuyện, thread và mục có địa chỉ riêng không, và Back của trình duyệt làm gì?",
+   "options": "(a) Mỗi thứ có địa chỉ · (b) Một địa chỉ cho cả ứng dụng",
+   "decision": "(a) Mỗi thứ có địa chỉ. Back đóng panel bên trước, rồi về nơi trước đó.",
+   "source": "user",
+   "note": "Nêu ở D-089 (GQ-06)."
+  },
+  {
+   "id": "Q50",
+   "topic": "Duyệt bảng quyền",
+   "question": "Bảng ai được làm gì đã được thống nhất chưa?",
+   "options": "Duyệt nguyên trạng · Rà từng dòng",
+   "decision": "Đã rà từng dòng và duyệt với ba cột (Member, Admin, Guest). Các dòng đổi: chỉ Admin tạo kênh; Admin mời với vai trò nào cũng được, đổi vai trò, và vô hiệu hoá bất kỳ ai trừ Admin cuối cùng và chính mình; Member tạo được automation (phase 5). Member vẫn thêm được người vào kênh mình đang ở.",
+   "source": "user",
+   "note": "Nêu ở D-090 (GQ-20). Hệ quả đã chấp nhận: kênh riêng tư không có Admin bên trong thì không ai gỡ người, xoá tin của người khác hay lưu trữ được."
+  },
+  {
+   "id": "Q51",
+   "topic": "Dấu '+' tạo group DM trên màn hình cảm ứng",
+   "question": "Dấu '+' ở Direct messages hiện khi hover (Q39). Quy tắc NR1 cấm tính năng chỉ dùng được bằng hover. Trên màn hình cảm ứng nó hiện thế nào?",
+   "options": "Luôn hiện trên cảm ứng",
+   "decision": "Khi hover trên máy tính; luôn hiện trên màn hình cảm ứng và màn hình hẹp.",
+   "source": "user",
+   "note": "Còn mở: icon bút 'New message' của prototype có giữ cạnh dấu '+' mới không. Chưa có đề xuất cho việc này."
   }
  ],
  "questions": [
