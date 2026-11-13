@@ -1,7 +1,7 @@
 {
  "product": "Toki",
  "prototypeNote": "It simulates one person, always an Owner, with sample data and instant actions.",
- "writtenNote": "Drafted by Claude under D-019 and written before the answers of 13 Nov 2026. Where a journey differs from the Decisions tab, the decision wins. Known to differ and still to be rewritten: F02 and F03 (invitation now needs a code; no welcome step), F20 (only an Admin creates channels, from the Admin page), F21 (no preview of a channel), F25 (groups start from the + on Direct messages), F39 to F41 (no Owner; what an Admin may do). The rest await the review asked for in D-091.",
+ "writtenNote": "Drafted by Claude under D-019. Eight journeys were rewritten on 13 Nov 2026 to match the answers of that day: F02, F03, F20, F21, F25, F39, F40, F41. The others were written earlier; where one differs from the Decisions tab, the decision wins, and they await the review asked for in D-091.",
  "changes": {
   "title": "How this page was reorganised on 13 Nov 2026",
   "head": [
@@ -3781,17 +3781,19 @@
    ],
    "context": "On the Admin page.",
    "steps": [
-    "Press 'Invite members'. The modal has an email field (several addresses, separated by commas or new lines) and a role picker, Member by default.",
+    "Press 'Invite members'. The modal has an email field (several addresses, separated by commas or new lines) and a role picker with Member and Admin, Member by default.",
     "Press 'Send invitations'. Each valid address becomes a row in the member table with status 'Invited', the date and who invited them.",
-    "Toki emails each address. Toast: '3 invitations sent'.",
+    "Toki emails each address. The mail names the workspace and the inviter, and carries a 'Join' button and a 6-digit code.",
     "An 'Invited' row has two buttons: 'Resend' and 'Revoke'."
    ],
    "cases": [
-    "Malformed email: the field shows an error underneath and that address is not sent; valid ones still go.",
-    "The email is already a member or already invited: it says 'already in the workspace' or 'already invited on …'; no duplicate is created.",
-    "An Admin can invite only as Member. An Admin can invite as Admin too.",
+    "Malformed email: the error shows under the field and 'Send invitations' stays disabled until every address is valid.",
+    "The email is already an active member or already invited: the row says so and no duplicate is created.",
+    "The email belongs to a deactivated person: the invitation is sent. When they accept, the same account is reactivated with its history and channels.",
+    "The mail server fails partway through a batch: the invitations already sent stay; the others read 'Mail not sent' with 'Resend'.",
     "An invitation expires after 7 days: the row turns to 'Expired' and keeps 'Resend'.",
-    "Revoke asks for confirmation; the link in the old email stops working."
+    "Revoke asks for confirmation; the Join button in the old mail then leads to a page saying the invitation is no longer valid.",
+    "Every invitation, resend and revoke is recorded on the server with who did it and when."
    ],
    "phase": 1
   },
@@ -3805,17 +3807,21 @@
    ],
    "context": "An invitation email is in the inbox.",
    "steps": [
-    "The email names the workspace and the inviter, and has a 'Join' button.",
-    "Pressing it opens Toki and signs the person in directly, with no code, because the link already proves control of that email.",
-    "A one-time welcome screen asks for a display name and job title; time zone and language come from the device and can be changed.",
-    "Press 'Enter Toki'. The newcomer lands on Home, already in #general, with its full history.",
-    "#general shows a system line, 'Minh joined'. The Admin page changes the person's status to 'Active'.",
+    "The email names the workspace and the inviter, and has a 'Join' button and a 6-digit code.",
+    "Pressing Join opens Toki at the code step with the email address filled in. The link alone signs nobody in.",
+    "The person types the 6 digits from the mail. The code is valid for 10 minutes.",
+    "With the right code they are signed in and land on Home, already in #general, with its full history. There is no welcome step.",
+    "Their display name is the part of the email before the @; they can change it later.",
+    "#general shows a grey system line, 'Minh joined', which raises no unread count and no notification. The Admin page changes the person's status to 'Active'.",
     "A small card asks whether to turn on notifications (F36)."
    ],
    "cases": [
-    "The link was already used: it goes to the normal sign-in page with the email filled in.",
-    "The link expired or was revoked: the page says why and suggests contacting the inviter.",
-    "Skipping the welcome screen: the display name is the part of the email before the @, editable later in Preferences."
+    "The code in the mail has expired (the mail was opened more than 10 minutes after it was sent): the screen says so, and 'Resend code' sends a new code. Resend is available after 60 seconds; a new code cancels the old one.",
+    "A wrong code: the screen says how many tries are left. The 5th wrong try locks the code and a new one must be requested.",
+    "The invitation was already used: Join goes to the normal sign-in page with the email filled in.",
+    "The invitation expired after 7 days: a page says so and to ask the inviter for a new one. It was revoked: a page says it is no longer valid and to ask an admin. The link is not recognised: 'This link is not valid', with no workspace name.",
+    "The person is already signed in as someone else: the page asks 'You are signed in as A. Sign out to continue as B?'. Staying keeps A signed in and leaves the invitation valid.",
+    "The address belongs to a deactivated person: after the code they are back in their old account, with their messages and channels."
    ],
    "phase": 1
   },
@@ -4201,19 +4207,20 @@
    "group": "Channels and direct messages",
    "title": "Create a channel",
    "roles": [
-    "Member",
     "Admin"
    ],
-   "context": "From 'Browse channels' → 'Create channel', or from Ctrl+K.",
+   "context": "On the Admin page, press the '+' beside 'Busiest channels'. Only an Admin can create a channel.",
    "steps": [
-    "The modal: Name (lower-cased automatically, spaces become hyphens), Topic (optional), a 'Private' switch, a field to add members.",
-    "Press 'Create'. The channel opens at once; you are its first member; a system line reads 'Lan created this channel'.",
+    "The modal: Name, a 'Private' switch (off by default), Topic (optional, up to 250 characters), and a field to add people (optional).",
+    "Press 'Create'. The channel opens at once; the Admin and the people chosen are its members; a system line reads 'Lan created this channel'.",
     "A public channel appears in everyone's 'Browse channels'. A private channel appears only to its members."
    ],
    "cases": [
-    "The name already exists: an error under the field, even when it clashes with an archived channel.",
-    "Names use only lowercase letters, digits and hyphens, up to 80 characters.",
-    "A channel cannot switch between public and private after creation."
+    "A Member has no way to create a channel: no button in the sidebar, in Browse channels or in Ctrl+K, and the server refuses the request.",
+    "Names use only lowercase letters, digits and hyphens, up to 80 characters. The error shows under the field and 'Create' stays disabled until the name is valid.",
+    "The name already exists: the server refuses it and the field says so. Two Admins submitting the same name at the same moment end with one channel.",
+    "A channel cannot switch between public and private after creation, and cannot be renamed in phase 1.",
+    "Closing the modal with something typed asks whether to discard; an outside click does nothing."
    ],
    "phase": 1
   },
@@ -4225,16 +4232,17 @@
     "Member",
     "Admin"
    ],
-   "context": "Press 'Browse channels'.",
+   "context": "Press '+ Browse channels'. It is for finding and joining channels; channels are not created here.",
    "steps": [
     "The modal lists every public channel and the private ones you are in: name, topic, member count. It has a search field.",
-    "Joined channels have an 'Open' button; others have 'Join'.",
+    "Joined channels have an 'Open' button; others have 'Join'. A channel you have not joined cannot be read: there is no preview.",
     "Press 'Join': the channel opens with its full history and enters your list. Toast: 'Joined #name'.",
-    "The channel shows a system line, 'Lan joined'."
+    "The channel shows a grey system line, 'Lan joined', with no notification."
    ],
    "cases": [
-    "Archived channels are listed with an 'Archived' label and only a 'View' button.",
-    "Nothing found: 'No channels match' and a 'Create channel' button named after the search text."
+    "Archived channels are listed with an 'Archived' label; only their members can open them.",
+    "Nothing found: 'No channels match', centred in the list. There is no button to create a channel.",
+    "With many channels the list shows the first 50 and loads more on scroll."
    ],
    "phase": 1
   },
@@ -4313,19 +4321,21 @@
     "Member",
     "Admin"
    ],
-   "context": "Press 'New message'.",
+   "context": "Press the '+' on the 'Direct messages' heading. It shows on hover on a desktop and is always visible on touch and narrow screens. It replaces the prototype's pencil icon.",
    "steps": [
-    "The modal has a field that searches people and channels.",
-    "Choose one person: the DM with them opens. If you have talked before, the same conversation reopens with its history.",
-    "Choose two to seven people: a group DM is created (8 people at most, counting you).",
+    "The modal has a field that searches people. With many people it shows the first 50 and loads more on scroll.",
+    "Each person pressed becomes a chip with their name in the field; a chip can be removed.",
+    "Press 'Start'. One chip: the DM with that person opens. If you have talked before, the same conversation reopens with its history.",
+    "Two to seven chips: a group DM with those people is created (8 people at most, counting you).",
     "A DM appears in the other person's list only when the first message is sent.",
     "The DM header shows the other person's avatar, presence, name, and status or job title."
    ],
    "cases": [
+    "An 8th chip is refused: 'Up to 8 people, counting you'.",
     "The same set of people always leads to the same conversation. People cannot be added to or removed from a group DM; for a different set, start a new group.",
-    "The other person is deactivated: history stays, and the composer is replaced by 'This account has been deactivated'.",
+    "A deactivated person is not listed. An existing DM with them keeps its history, and the composer is replaced by 'This account has been deactivated'.",
     "The other person is in Pause or Focus: a line under the header reads 'Khoa has paused notifications until 14:00'. The message can still be sent.",
-    "Messaging yourself is not supported in phase 1."
+    "Messaging yourself is not supported in phase 1. Guests cannot start DMs."
    ],
    "phase": 1
   },
@@ -4631,15 +4641,18 @@
    "roles": [
     "Admin"
    ],
-   "context": "The Admin item appears in navigation only for Admins.",
+   "context": "The Admin item appears in navigation only for Admins. There are two roles, Member and Admin; there is no Owner.",
    "steps": [
-    "The member table: avatar, name, email, role, status (Invited, Active, Deactivated), last active. A search field and status filter chips.",
+    "The member table: avatar, name, email, role, status (Invited, Active, Deactivated), last active. A search field and status filter chips; with many people it shows the first 50 and loads more on scroll.",
     "At the top: a total per status and an 'Invite members' button (F02).",
-    "Each row has an action menu whose contents depend on the viewer's role and the row's role."
+    "Each row has an action menu: Change role (F40) and Deactivate (F41). On the Admin's own row and on the last Admin's row the entries are locked, with the reason.",
+    "Beside 'Busiest channels' a '+' creates a channel (F20)."
    ],
    "cases": [
-    "A Member typing /admin directly sees 'You do not have access to this page'.",
-    "Nothing on the Admin page leads to message content. Admins do not see private channels or DMs they are not in."
+    "A Member typing the Admin address directly sees 'You do not have access to this page', and the server refuses every admin request from a Member.",
+    "Nothing on the Admin page leads to message content. Admins do not see private channels or DMs they are not in.",
+    "When the disk is 80% full, Admins see a warning here; at 95% uploads are refused while messaging keeps working.",
+    "Every administrative action is recorded on the server; phase 1 has no screen to read the record."
    ],
    "phase": 1
   },
@@ -4647,17 +4660,20 @@
    "id": "F40",
    "group": "Administration",
    "title": "Change a role",
-   "roles": [],
-   "context": "On the Admin page, in a member's row menu.",
+   "roles": [
+    "Admin"
+   ],
+   "context": "On the Admin page, in a member's row menu. Any Admin can do this.",
    "steps": [
-    "Choose 'Change role': Member, Admin.",
+    "Choose 'Change role': Member or Admin.",
     "The confirmation names the person and the new role, with a line on what changes.",
     "Afterwards the role label updates on Admin, People and the profile. The person sees the Admin item appear or disappear at once, without signing in again.",
     "The person gets an Activity item: 'Lan changed your role to Admin'."
    ],
    "cases": [
-    "Admins do not see 'Change role'.",
-    "The last Admin cannot demote themselves: the entry is locked with an explanation."
+    "A Member has no 'Change role', and the server refuses the request.",
+    "The last Admin cannot be changed to Member: the entry is locked with 'Make someone else an Admin first'.",
+    "Closing the confirmation changes nothing."
    ],
    "phase": 1
   },
@@ -4668,16 +4684,16 @@
    "roles": [
     "Admin"
    ],
-   "context": "On the Admin page, in a member's row menu.",
+   "context": "On the Admin page, in a member's row menu. Any Admin can deactivate anyone, another Admin included.",
    "steps": [
     "Choose 'Deactivate'. The confirmation names the person and the effect: they are signed out everywhere and cannot sign in again.",
     "On confirming, every session ends at once; the person sees 'This account has been deactivated'.",
-    "For everyone else: the person's old messages stay, their name carries a 'Deactivated' label; they leave People, mention suggestions and add-people lists; DMs with them become read-only.",
-    "'Reactivate' in the same menu lets them sign in again, back in the same channels."
+    "For everyone else: the person's old messages stay, their name carries a 'Deactivated' label; they leave People, mention suggestions and people lists; DMs with them become read-only.",
+    "To bring them back: 'Reactivate' in the same menu, or invite their address again (F02). Either way the same account returns, in the same channels."
    ],
    "cases": [
-    "An Admin can deactivate Members. Only an Admin can deactivate Admins and other Admins.",
     "Nobody can deactivate themselves. The last Admin cannot be deactivated.",
+    "A Member has no 'Deactivate', and the server refuses the request.",
     "There is no permanent account deletion in phase 1."
    ],
    "phase": 1
