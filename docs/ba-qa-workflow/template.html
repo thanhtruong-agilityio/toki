@@ -1,0 +1,313 @@
+<title>Toki BA & QA Workflow</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: a review desk. A rail of the ten phases on the left; the working sheet for the chosen phase on the right;
+   a status strip on top that always says whether the work may start. Ids are set in mono, like on a test report. */
+:root{
+  --bg:#F2F5F8;--surface:#FFFFFF;--surface-2:#F7F9FB;--ink:#15202B;--ink-2:#39485A;--muted:#5D6B7B;--line:#D8E0E8;
+  --accent:#1B5FBF;--accent-soft:#E4EEFB;--accent-ink:#134A96;
+  --crit:#B5302A;--crit-soft:#FBE9E7;--high:#B4600F;--high-soft:#FBEEDD;--med:#7A6A0E;--med-soft:#F6F1D6;--low:#586574;--low-soft:#E9EEF3;--ok:#1B7448;--ok-soft:#E1F3E9;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  --r:8px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;
+  --bg:#0F151B;--surface:#172029;--surface-2:#1D2832;--ink:#E6ECF2;--ink-2:#C2CCD7;--muted:#93A1B0;--line:#2B3844;
+  --accent:#6FA8F5;--accent-soft:#1B2F4A;--accent-ink:#9CC4FA;
+  --crit:#F08A82;--crit-soft:#3D1F1D;--high:#F0A85A;--high-soft:#3A2A16;--med:#D8C665;--med-soft:#322E14;--low:#A3B0BE;--low-soft:#24303B;--ok:#6FD3A0;--ok-soft:#173326}}
+:root[data-theme="dark"]{color-scheme:dark;
+  --bg:#0F151B;--surface:#172029;--surface-2:#1D2832;--ink:#E6ECF2;--ink-2:#C2CCD7;--muted:#93A1B0;--line:#2B3844;
+  --accent:#6FA8F5;--accent-soft:#1B2F4A;--accent-ink:#9CC4FA;
+  --crit:#F08A82;--crit-soft:#3D1F1D;--high:#F0A85A;--high-soft:#3A2A16;--med:#D8C665;--med-soft:#322E14;--low:#A3B0BE;--low-soft:#24303B;--ok:#6FD3A0;--ok-soft:#173326}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:14px/1.55 var(--sans);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+button,select,input{font:inherit;color:inherit}
+button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1320px;margin:0 auto}
+header.top{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;padding:20px 0 14px;border-bottom:1px solid var(--line)}
+header.top h1{font-size:20px;font-weight:700;margin:0;letter-spacing:-.01em}
+header.top p{margin:2px 0 0;color:var(--muted);font-size:13px}
+.gate{margin-left:auto;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:600;white-space:nowrap}
+.pill.C{background:var(--crit-soft);color:var(--crit)}.pill.H{background:var(--high-soft);color:var(--high)}.pill.M{background:var(--med-soft);color:var(--med)}.pill.L{background:var(--low-soft);color:var(--low)}.pill.ok{background:var(--ok-soft);color:var(--ok)}.pill.a{background:var(--accent-soft);color:var(--accent-ink)}
+.pill.big{font-size:13px;padding:6px 14px}
+.id{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--ink-2);white-space:nowrap}
+.shell{display:grid;grid-template-columns:248px minmax(0,1fr);gap:28px;margin-top:20px;align-items:start}
+nav.rail{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px);display:flex;flex-direction:column;gap:2px}
+nav.rail button{display:grid;grid-template-columns:26px 1fr auto;gap:8px;align-items:center;text-align:left;background:none;border:0;border-radius:var(--r);padding:7px 9px;cursor:pointer;color:var(--ink-2)}
+nav.rail button:hover{background:var(--surface-2)}
+nav.rail button[aria-current="page"]{background:var(--surface);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line);font-weight:600}
+nav.rail .n{font-family:var(--mono);font-size:12px;color:var(--muted)}
+nav.rail .c{font-family:var(--mono);font-size:11px;color:var(--muted)}
+nav.rail .sep{height:1px;background:var(--line);margin:8px 0}
+main{min-width:0;display:flex;flex-direction:column;gap:22px}
+h2{font-size:22px;font-weight:700;margin:0;letter-spacing:-.01em;text-wrap:balance}
+h3{font-size:15px;font-weight:600;margin:0}
+.eyebrow{font-family:var(--mono);font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.lede{max-width:68ch;color:var(--ink-2);margin:6px 0 0}
+.brief{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+.brief>div{padding:14px 16px;border-left:1px solid var(--line)}.brief>div:first-child{border-left:0}
+.brief h4{margin:0 0 6px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.brief ul{margin:0;padding-left:16px;color:var(--ink-2);font-size:13px}.brief li{margin:2px 0}
+.files{display:flex;flex-wrap:wrap;gap:6px}
+.file{font-family:var(--mono);font-size:12px;background:var(--surface-2);border:1px solid var(--line);border-radius:5px;padding:2px 7px;color:var(--ink-2)}
+.stats{display:flex;flex-wrap:wrap;gap:8px 28px}
+.stat b{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums;display:block;line-height:1.2}
+.stat span{font-size:12px;color:var(--muted)}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.bar label{font-size:12px;color:var(--muted)}
+select,input[type=search]{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:5px 8px}
+input[type=search]{min-width:200px}
+.btn{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:5px 10px;cursor:pointer}
+.btn:hover{border-color:var(--accent)}.btn.pri{background:var(--accent);border-color:var(--accent);color:#fff}
+:root[data-theme="dark"] .btn.pri{color:#0F151B}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn.pri{color:#0F151B}}
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);background:var(--surface-2);white-space:nowrap}
+td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.w{min-width:260px}td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+td small{color:var(--muted);display:block;margin-top:3px}
+.note{border:1px solid var(--line);border-left:3px solid var(--accent);background:var(--surface);border-radius:var(--r);padding:12px 14px;max-width:80ch;color:var(--ink-2)}
+.note.warn{border-left-color:var(--high)}.note.bad{border-left-color:var(--crit)}.note.good{border-left-color:var(--ok)}
+.flow{display:flex;flex-direction:column;gap:0;max-width:760px}
+.flow button{display:grid;grid-template-columns:34px 1fr auto;gap:12px;align-items:center;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:10px 14px;cursor:pointer}
+.flow button:hover{border-color:var(--accent)}
+.flow .arrow{height:14px;width:1px;background:var(--line);margin-left:31px}
+.flow .n{font-family:var(--mono);color:var(--muted)}
+.flow small{display:block;color:var(--muted);font-size:12px}
+.flow .end{margin-left:14px;color:var(--muted);font-size:13px;padding:6px 0}
+details.fr{border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+details.fr+details.fr{margin-top:8px}
+details.fr summary{display:grid;grid-template-columns:62px 1fr auto;gap:10px;align-items:start;padding:11px 14px;cursor:pointer;list-style:none}
+details.fr summary::-webkit-details-marker{display:none}
+details.fr .body{padding:0 14px 14px 86px;display:flex;flex-direction:column;gap:10px;color:var(--ink-2)}
+details.fr dl{margin:0;display:grid;grid-template-columns:120px 1fr;gap:4px 12px;font-size:13px}
+details.fr dt{color:var(--muted)}details.fr dd{margin:0}
+.ac{border-top:1px solid var(--line);padding-top:8px}
+.ac ul{margin:4px 0 0;padding-left:18px;font-size:13px}
+.tree{font-family:var(--mono);font-size:12.5px;line-height:1.7;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;overflow-x:auto;white-space:pre;color:var(--ink-2)}
+.check{display:grid;grid-template-columns:22px 1fr auto auto;gap:10px;align-items:center;padding:9px 12px;border-bottom:1px solid var(--line)}
+.check:last-child{border-bottom:0}
+.check .mark{font-family:var(--mono);font-weight:600}
+.check .mark.y{color:var(--ok)}.check .mark.x{color:var(--crit)}
+.check small{color:var(--muted)}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+@media (max-width:980px){.shell{grid-template-columns:1fr}nav.rail{position:static;flex-direction:row;overflow-x:auto;padding-bottom:6px}nav.rail button{grid-template-columns:auto auto;white-space:nowrap}nav.rail .c{display:none}nav.rail .sep{display:none}.brief,.two{grid-template-columns:1fr}.brief>div{border-left:0;border-top:1px solid var(--line)}.brief>div:first-child{border-top:0}.gate{margin-left:0}details.fr .body{padding-left:14px}details.fr dl{grid-template-columns:1fr}.check{grid-template-columns:22px 1fr}}
+@media (prefers-reduced-motion:no-preference){nav.rail button,.btn,.flow button{transition:background .12s,border-color .12s}}
+</style>
+<div class="wrap">
+  <header class="top">
+    <div><h1>Toki · BA &amp; QA Workflow</h1><p>From prototype to development-ready requirements, in ten phases. Filled with the Toki findings of <span id="built"></span>.</p></div>
+    <div class="gate" id="gate"></div>
+  </header>
+  <div class="shell">
+    <nav class="rail" id="rail" aria-label="Phases"></nav>
+    <main id="main"></main>
+  </div>
+</div>
+<script>
+const D=/*DATA*/null;
+const SEV={C:"Critical",H:"High",M:"Medium",L:"Low"},ORD={C:0,H:1,M:2,L:3};
+const STATUSES=["Open","In Review","Confirmed","Rejected","Deferred","Accepted Assumption"];
+const DONE=new Set(["Confirmed","Rejected","Deferred","Accepted Assumption"]);
+const KEY="toki-baqa-v1";
+let S={phase:0,status:{},dor:{},f:{}};
+try{const s=JSON.parse(localStorage.getItem(KEY)||"null");if(s&&s.status)S=Object.assign(S,s)}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt=s=>esc(s).replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/`(.+?)`/g,"<span class='id'>$1</span>");
+const pill=(t,c)=>"<span class='pill "+c+"'>"+esc(t)+"</span>";
+const sev=s=>pill(SEV[s],s);
+const id=s=>"<span class='id'>"+esc(s)+"</span>";
+const table=(head,rows,cls)=>"<div class='scroll'><table><thead><tr>"+head.map(h=>"<th>"+esc(h)+"</th>").join("")+"</tr></thead><tbody>"+(rows.length?rows.map(r=>"<tr>"+r.map((c,i)=>"<td class='"+((cls||[])[i]||"")+"'>"+c+"</td>").join("")+"</tr>").join(""):"<tr><td colspan='"+head.length+"' style='color:var(--muted)'>Nothing matches these filters.</td></tr>")+"</tbody></table></div>";
+
+/* ---- state derived from the decision log ---- */
+const Q=Object.fromEntries(D.questions.map(q=>[q.id,q])),A=Object.fromEntries(D.assumptions.map(a=>[a.id,a]));
+const st=i=>S.status[i]||(i==="AS-05"?"Accepted Assumption":"Open");
+const openQ=()=>D.questions.filter(q=>!DONE.has(st(q.id)));
+const blockers=()=>openQ().filter(q=>ORD[q.sev]<=1);
+const openA=()=>D.assumptions.filter(a=>!DONE.has(st(a.id)));
+function frState(f){const ids=f.open.filter(i=>!DONE.has(st(i)));const qs=ids.filter(i=>Q[i]);
+  if(qs.some(i=>ORD[Q[i].sev]<=1))return"B";if(qs.length)return"Q";return ids.length?"A":"R"}
+const FRS={R:["Ready","ok"],A:["Ready if assumptions accepted","a"],Q:["Core ready, details open","M"],B:["Blocked","C"]};
+const flowBlocked=f=>f.open.filter(i=>Q[i]&&ORD[Q[i].sev]<=1&&!DONE.has(st(i)));
+const allAC=D.frs.flatMap(f=>f.acs.map(a=>Object.assign({fr:f.id},a))),allTS=allAC.flatMap(a=>a.tests.map(t=>Object.assign({ac:a.id,fr:a.fr},t)));
+const DOR=[["Requirements are clear and unambiguous","BA",()=>D.frs.every(f=>frState(f)!=="B"),"No requirement is blocked"],
+ ["Business rules are confirmed","BA / PO",null],["User flows are complete","BA / UX",()=>D.flows.every(f=>!flowBlocked(f).length),"No flow waits on a high-priority question"],
+ ["UI states are defined","BA / UX",null],["Acceptance criteria are testable","BA / QA",()=>allAC.every(a=>a.tests.length>0),"Every criterion has a test"],
+ ["Critical questions are resolved","BA",()=>blockers().length===0,"No Critical or High question is open"],
+ ["Assumptions are confirmed or explicitly accepted","BA / PO",()=>openA().length===0,"Every assumption has a decision"],
+ ["Test scenarios are identified","QA",()=>allTS.length>0,allTS.length+" scenarios"],
+ ["Requirements traceability is established","BA / QA",()=>D.frs.every(f=>f.acs.length>0),"Every requirement maps to criteria and tests"],
+ ["Technical feasibility is validated","Developer / Tech Lead",null],["Dependencies are identified","BA / Developer",()=>true,D.depends.length+" recorded in phase 3"],
+ ["Scope and priorities are confirmed","PO",null]];
+const dorVal=(d,i)=>d[2]?d[2]():!!S.dor[i];
+function verdict(){const b=blockers().length,rest=DOR.filter((d,i)=>!dorVal(d,i)).length;
+  if(b)return["Blocked","C",b+" high-priority question"+(b>1?"s":"")+" open"];
+  if(rest||openQ().length)return["Ready with accepted risks","M",(openQ().length)+" lower-priority questions open · "+rest+" checklist items unticked"];
+  return["Ready","ok","Definition of Ready met"]}
+
+/* ---- the workflow itself ---- */
+const PH=[
+ {n:"Prototype analysis",obj:"Understand the product, its features, screens, interactions and expected user journeys from the prototype.",
+  ba:["Analyse every screen and component","Identify features, roles and entry points","Understand navigation and interactions","Infer business rules from the interface","Relate features to one another"],
+  qa:["Review interactions and expected behaviour","Identify missing interface states","Spot negative and alternative scenarios","Check navigation is consistent","Note usability and functional issues"],
+  out:["prototype-analysis.md","screen-inventory.md","feature-inventory.md"],c:()=>D.screens.length+" screens"},
+ {n:"Gaps and questions",obj:"Identify missing, ambiguous, inconsistent or undefined requirements, from seven angles.",
+  ba:["Identify functional and business gaps","Write the questions stakeholders must answer","Record assumptions made from incomplete information"],
+  qa:["Identify missing test scenarios","Flag unclear expected outcomes","Find edge cases and failure scenarios"],
+  out:["gap-analysis.md","open-questions.md","assumptions.md"],c:()=>D.findings.length+" findings"},
+ {n:"Triage and priority",obj:"Consolidate and prioritise every finding before clarification starts.",
+  ba:["Consolidate BA and QA findings","Remove duplicates","Categorise by type and impact","Find dependencies and conflicts","Assign owners and priorities"],
+  qa:["Contribute findings and severity","Challenge priorities from a risk view","Identify critical blockers"],
+  out:["findings-backlog.md"],c:()=>D.triage.length+" merged"},
+ {n:"Requirement clarification",obj:"Resolve open questions and validate assumptions with the people who own them.",
+  ba:["Review questions with the PO and stakeholders","Clarify rules and expected behaviour","Confirm what is in and out of scope","Record each decision and its reason","Update or reject assumptions"],
+  qa:["Check that clarified requirements are testable","Find missing conditions and outcomes","Challenge unclear scenarios","Raise further questions from testing"],
+  out:["requirement-decisions.md","open-questions.md","assumptions.md","business-rules.md"],c:()=>openQ().length+" open"},
+ {n:"Flow and logic validation",obj:"Make sure every journey and business behaviour is defined: happy, alternative, error and edge paths.",
+  ba:["Update flows from confirmed decisions","Define happy, alternative and error paths","Validate decision points and rules","Validate navigation and state changes","Find missing screens"],
+  qa:["Review that flows are complete","Find missing test paths","Validate the outcome of each branch","Find negative scenarios"],
+  out:["user-flow.md","business-rules.md"],c:()=>D.flows.length+" flows"},
+ {n:"Functional requirements",obj:"Turn confirmed decisions into clear, structured, implementable requirements with unique ids.",
+  ba:["Define functional requirements and ids","Define inputs, outputs and behaviour","Define validation and constraints","Define roles and permissions","Define non-functional requirements"],
+  qa:["Review completeness","Flag ambiguous statements","Check each is measurable and testable","Find missing negative and boundary conditions"],
+  out:["functional-requirements.md","non-functional-requirements.md","business-rules.md"],c:()=>D.frs.length+" FR · "+D.nfr.length+" NFR"},
+ {n:"Acceptance criteria",obj:"Define verifiable conditions that decide whether each requirement is correctly built.",
+  ba:["Define the expected outcome of each requirement","Reflect only confirmed rules","Use consistent, unambiguous language"],
+  qa:["Review testability and completeness","Find missing positive and negative cases","Validate boundary conditions","Check each criterion can be verified"],
+  out:["acceptance-criteria.md"],c:()=>allAC.length+" AC"},
+ {n:"QA test design",obj:"Prepare test scenarios from validated requirements and acceptance criteria.",
+  ba:["Clarify business-related scenarios","Validate expected business outcomes","Help resolve unclear requirements"],
+  qa:["Derive scenarios from requirements and flows","Design positive and negative cases","Find boundary and edge cases","Plan permission and integration tests","List the test data needed"],
+  out:["test-strategy.md","test-scenarios.md","test-cases.md","test-data-requirements.md"],c:()=>allTS.length+" TS"},
+ {n:"Traceability and coverage",obj:"Connect every requirement to its flow, criteria and tests, and find what is not covered.",
+  ba:["Map screens to flows and flows to requirements","Map rules to criteria","Find inconsistencies across artifacts"],
+  qa:["Map criteria to test scenarios","Find requirements without tests","Find tests without a requirement"],
+  out:["requirements-traceability-matrix.md","coverage-analysis.md"],c:()=>D.frs.length+" rows"},
+ {n:"Readiness review",obj:"Decide whether the requirements are clear, validated and testable enough to build.",
+  ba:["Confirm requirements, rules and flows","Confirm critical questions are resolved","Confirm assumptions are accepted or rejected"],
+  qa:["Confirm criteria are testable","Confirm scenarios exist","Confirm traceability"],
+  out:["development-readiness-report.md"],c:()=>verdict()[0]}];
+const RACI=[["UI prototype analysis","Lead","Review","Support","Support"],["Gap identification","Lead","Contribute","Support","Support"],["Open questions","Lead","Contribute","Answer","Answer technical questions"],["Findings prioritisation","Lead","Contribute","Approve priority","Support"],["Business rules","Lead","Validate","Approve","Review feasibility"],["User flow","Lead","Review","Support","Review"],["Functional requirements","Lead","Review","Approve","Review"],["Acceptance criteria","Lead","Validate","Approve","Review"],["Test scenarios","Support","Lead","Support","Support"],["Test cases","Review","Lead","—","Support"],["Traceability","Shared","Shared","—","Support"],["Development readiness","Shared","Shared","Approve scope","Approve technical readiness"],["Test execution","Support","Lead","Support UAT","Fix defects"]];
+const TREE=`docs/
+├── 01-discovery/
+│   ├── prototype-analysis.md
+│   ├── screen-inventory.md
+│   └── feature-inventory.md
+├── 02-gap-analysis/
+│   ├── gap-analysis.md
+│   ├── open-questions.md
+│   ├── assumptions.md
+│   └── findings-backlog.md
+├── 03-requirements/
+│   ├── requirement-decisions.md
+│   ├── business-rules.md
+│   ├── user-flow.md
+│   ├── functional-requirements.md
+│   ├── non-functional-requirements.md
+│   └── acceptance-criteria.md
+├── 04-qa/
+│   ├── test-strategy.md
+│   ├── test-scenarios.md
+│   ├── test-cases.md
+│   ├── test-data-requirements.md
+│   ├── requirements-traceability-matrix.md
+│   └── coverage-analysis.md
+└── 05-readiness/
+    └── development-readiness-report.md`;
+const PRINCIPLES=[["BA and QA work in parallel","From the first look at the prototype. BA follows rules, journeys and expected behaviour; QA follows testability, coverage and what can go wrong."],["Questions must lead to decisions","Each has an id, an owner, a priority, a status and a recorded answer. No undocumented assumption, and no developer deciding a business rule alone."],["Requirements must be testable","Each has a description, its rules, the expected behaviour, acceptance criteria and test scenarios."],["Maintain traceability","The same ids run through requirements, flows, criteria and tests, so a change can be followed."],["Do not force 100% clarification","Critical rules, core journeys, and security and data risks must be settled. Everything deferred has an owner and an explicit decision."]];
+
+function head(i){const p=PH[i-1];return "<div><div class='eyebrow'>Phase "+i+" of 10</div><h2>"+esc(p.n)+"</h2><p class='lede'>"+esc(p.obj)+"</p></div>"
+ +"<div class='brief'><div><h4>BA</h4><ul>"+p.ba.map(x=>"<li>"+esc(x)+"</li>").join("")+"</ul></div><div><h4>QA</h4><ul>"+p.qa.map(x=>"<li>"+esc(x)+"</li>").join("")+"</ul></div><div><h4>Expected outputs</h4><div class='files'>"+p.out.map(x=>"<span class='file'>"+x+"</span>").join("")+"</div></div></div>"}
+const stats=a=>"<div class='stats'>"+a.map(x=>"<div class='stat'><b>"+x[0]+"</b><span>"+esc(x[1])+"</span></div>").join("")+"</div>";
+const sel=(k,label,opts)=>"<label for='f-"+k+"'>"+label+"</label><select id='f-"+k+"' data-f='"+k+"'><option value=''>All</option>"+opts.map(o=>"<option"+(S.f[k]===o?" selected":"")+">"+esc(o)+"</option>").join("")+"</select>";
+const F=k=>S.f[k]||"";
+const uniq=a=>[...new Set(a)];
+
+const VIEW=[
+()=>{const v=verdict(),b=blockers();
+ const succ=[["All gaps reviewed and prioritised",true,D.findings.length+" findings merged into "+D.triage.length],["Critical open questions resolved",b.length===0,b.length+" open"],["Business rules confirmed or accepted as assumptions",openA().length===0,openA().length+" assumptions without a decision"],["Flows cover primary, alternative and exception paths",D.flows.every(f=>!flowBlocked(f).length),D.flows.filter(f=>flowBlocked(f).length).length+" of "+D.flows.length+" flows blocked"],["Functional requirements clear and unambiguous",D.frs.every(f=>frState(f)!=="B"),D.frs.filter(f=>frState(f)==="B").length+" of "+D.frs.length+" blocked"],["Acceptance criteria measurable and testable",true,allAC.length+" criteria"],["Test scenarios cover the agreed requirements",true,allTS.length+" scenarios, at least one per criterion"],["Traceability established",true,"Screen → flow → rule → FR → AC → TS"],["Development readiness reviewed and approved",v[0]==="Ready",v[0]]];
+ return "<div><div class='eyebrow'>Overview</div><h2>The workflow, and where Toki stands in it</h2><p class='lede'>A structured way for a Business Analyst and a QA engineer to read a prototype, find what is missing, get decisions, and hand over requirements that can be built and tested. Choose a phase to see its work and its Toki results.</p></div>"
+ +"<div class='note "+(v[1]==="C"?"bad":v[1]==="ok"?"good":"warn")+"'><b>"+v[0]+".</b> "+esc(v[2])+". The verdict follows the decision log in phase 4: change a question's status there and it is recalculated here.</div>"
+ +"<div class='two'><div class='flow'><div class='end'>Prototype and product requirements</div>"+PH.map((p,i)=>"<div class='arrow'></div><button data-go='"+(i+1)+"'><span class='n'>"+String(i+1).padStart(2,"0")+"</span><span><b>"+esc(p.n)+"</b><small>"+p.out.join(" · ")+"</small></span><span class='id'>"+esc(p.c())+"</span></button>").join("")+"<div class='arrow'></div><div class='end'>Development tickets and implementation → QA execution → UAT and release</div></div>"
+ +"<div style='display:flex;flex-direction:column;gap:22px'><div><h3>Definition of success</h3><div class='scroll' style='margin-top:8px'>"+succ.map(s=>"<div class='check'><span class='mark "+(s[1]?"y":"x")+"'>"+(s[1]?"✓":"✕")+"</span><span>"+esc(s[0])+"<br><small>"+esc(s[2])+"</small></span></div>").join("")+"</div></div>"
+ +"<div><h3>Working principles</h3><div class='scroll' style='margin-top:8px'>"+PRINCIPLES.map(p=>"<div class='check' style='grid-template-columns:1fr'><span><b>"+esc(p[0])+"</b><br><small>"+esc(p[1])+"</small></span></div>").join("")+"</div></div></div></div>"
+ +"<h3>Who does what</h3>"+table(["Activity","BA","QA","PO / UX","Developer"],RACI.map(r=>r.map((c,i)=>i&&c==="Lead"?pill("Lead","a"):esc(c))))
+ +"<h3>Artifact structure</h3><div class='tree'>"+TREE+"</div>"},
+()=>head(1)+stats([[D.screens.length,"screens and panels"],[D.counts.actions,"actions handled"],[D.counts.roles,"roles"],[D.counts.writtenFlows,"written journeys"]])
+ +"<div class='note'>The prototype simulates one person, always an Owner, with sample data and instant actions. It shows chatting faithfully. It contains nothing about getting in, nothing about waiting or failing, and nothing about a second person or device.</div>"
+ +"<h3>Screen inventory</h3>"+table(["Screen","Purpose","Main actions","Release phase"],D.screens.map(s=>["<b>"+esc(s.name)+"</b>",esc(s.purpose),esc(s.actions),esc(s.phase)]),["","w","w","n"])
+ +"<h3>Journeys the prototype does not cover</h3>"+table(["Scenario","In the prototype","Since written or drawn"],D.missingFlows.map(r=>r.map(esc))),
+()=>{const cats=uniq(D.findings.map(f=>f.cat)),types=uniq(D.findings.map(f=>f.type));
+ const rows=D.findings.filter(f=>(!F("cat")||f.cat===F("cat"))&&(!F("type")||f.type===F("type"))&&(!F("fsev")||SEV[f.sev]===F("fsev"))).sort((a,b)=>ORD[a.sev]-ORD[b.sev]);
+ const n=s=>D.findings.filter(f=>f.sev===s).length;
+ return head(2)+stats([[D.findings.length,"findings"],[n("C"),"critical"],[n("H"),"high"],[D.questions.length,"open questions"],[D.assumptions.length,"assumptions"]])
+ +"<div class='bar'>"+sel("cat","Category",cats)+sel("type","Type",types)+sel("fsev","Severity",Object.values(SEV))+"<span class='id'>"+rows.length+" shown</span></div>"
+ +table(["ID","Finding","Evidence in the prototype","Category","Type","Severity","Status"],rows.map(f=>[id(f.id),"<b>"+esc(f.text)+"</b>",esc(f.evidence),esc(f.cat),esc(f.type),sev(f.sev),fmt(f.status)]),["","w","w","n","n","","w"])
+ +"<div class='note'>The questions and assumptions raised here are worked in phase 4, where each gets a status and a decision.</div>"},
+()=>head(3)+stats([[D.findings.length+D.questions.length+D.assumptions.length,"raw items"],[D.triage.length,"merged findings"],[D.triage.filter(t=>t.sev==="C").length,"critical blockers"],[D.dupes.length,"duplicate groups"],[D.conflicts.length,"conflicts"]])
+ +"<h3>Findings backlog</h3>"+table(["ID","Finding","Merges","Type area","Priority","Business impact","Owner","Depends on · status"],D.triage.slice().sort((a,b)=>ORD[a.sev]-ORD[b.sev]).map(t=>[id(t.id),"<b>"+esc(t.text)+"</b>","<span class='id' style='white-space:normal'>"+t.merges.join(" ")+"</span>",esc(t.cat),sev(t.sev),esc(t.impact),esc(t.owner),fmt(t.note)]),["","w","w","n","","w","n","w"])
+ +"<h3>Duplicates removed</h3>"+table(["Same problem","Recorded as","Kept in"],D.dupes.map(r=>[esc(r[0]),id(r[1]),id(r[2])]))
+ +"<h3>Conflicting findings</h3>"+table(["Topic","The prototype","Against","Standing"],D.conflicts.map(r=>r.map(fmt)))
+ +"<h3>Dependencies</h3>"+table(["Settle this first","Because it holds up"],D.depends.map(r=>r.map(esc))),
+()=>{const owners=uniq(D.questions.flatMap(q=>q.owner.split(", ")));
+ const rows=D.questions.filter(q=>(!F("qst")||st(q.id)===F("qst"))&&(!F("qsev")||SEV[q.sev]===F("qsev"))&&(!F("own")||q.owner.includes(F("own"))));
+ const stSel=i=>"<select data-st='"+i+"' id='st-"+i+"' aria-label='Status of "+i+"'>"+STATUSES.map(s=>"<option"+(st(i)===s?" selected":"")+">"+s+"</option>").join("")+"</select>";
+ const by=s=>D.questions.filter(q=>st(q.id)===s).length;
+ return head(4)+stats([[D.confirmed.length,"confirmed decisions"],[openQ().length,"questions open"],[blockers().length,"of them high priority"],[openA().length,"assumptions undecided"]])
+ +"<div class='note'><b>This log is live.</b> Set a status as each question is settled; requirement readiness in phases 6 and 10 follows. Statuses are kept in this browser only. The proposals are suggestions: none is used as a rule until it is confirmed.</div>"
+ +"<h3>Decision log: open questions</h3><div class='bar'>"+sel("qst","Status",STATUSES)+sel("qsev","Priority",Object.values(SEV))+sel("own","Owner",owners)+"<span class='id'>"+rows.length+" shown</span><button class='btn' data-act='reset'>Reset all statuses</button></div>"
+ +table(["ID","Decision needed","Proposal","Owner","Priority","Status"],rows.map(q=>[id(q.id),"<b>"+fmt(q.q)+"</b>",fmt(q.proposal),esc(q.owner),sev(q.sev),stSel(q.id)]),["","w","w","n","",""])
+ +"<h3>Assumptions</h3>"+table(["ID","Assumed","Why this value","Status"],D.assumptions.map(a=>[id(a.id),"<b>"+fmt(a.text)+"</b>",fmt(a.why),stSel(a.id)]),["","w","w",""])
+ +"<details class='fr'><summary><span class='id'>"+D.confirmed.length+"</span><b>Confirmed decisions already on record</b><span class='pill ok'>Confirmed</span></summary><div class='body' style='padding-left:14px'>"+table(["ID","Kind","Question","Answer chosen"],D.confirmed.map(c=>[id(c.id),esc(c.kind),esc(c.q),"<b>"+esc(c.a)+"</b>"]),["","n","w","w"])+"</div></details>"},
+()=>{const blocked=D.flows.filter(f=>flowBlocked(f).length);
+ return head(5)+stats([[D.flows.length,"flows drawn"],[D.flows.reduce((a,f)=>a+f.steps,0),"steps"],[D.flows.reduce((a,f)=>a+f.decisions,0),"decision points"],[D.flows.reduce((a,f)=>a+f.errors,0),"error states"],[blocked.length,"blocked"]])
+ +table(["Flow","Steps","Decisions","Error states","Built on (confirmed)","Still assumed or open","Result"],D.flows.map(f=>{const b=flowBlocked(f),o=f.open.filter(i=>!DONE.has(st(i)));return[id(f.id)+" <b>"+esc(f.title)+"</b>",f.steps,f.decisions,f.errors,"<span class='id' style='white-space:normal'>"+f.decided.join(" ")+"</span>","<span class='id' style='white-space:normal'>"+(o.join(" ")||"—")+"</span>",b.length?pill("Blocked by "+b.join(", "),"C"):o.length?pill("Valid, details open","M"):pill("Valid","ok")]}),["w","n","n","n","","",""])
+ +"<div class='note'>Checked by script: every decision has at least two answers drawn, every step can be reached, and no step stops without being an end or a stated refusal. The charts themselves are on the Flows tab of the Toki Blueprint.</div>"
+ +"<h3>Business rules</h3>"+table(["ID","Rule","Flows","Decided by"],D.rules.map(r=>[id(r[0]),esc(r[1]),esc(r[2]),id(r[3])]),["","w","n",""])},
+()=>{const areas=uniq(D.frs.map(f=>f.area));const rows=D.frs.filter(f=>(!F("area")||f.area===F("area"))&&(!F("rs")||FRS[frState(f)][0]===F("rs")));
+ const n=k=>D.frs.filter(f=>frState(f)===k).length;
+ return head(6)+stats([[D.frs.length,"functional"],[D.nfr.length,"non-functional"],[n("R")+n("A"),"can start"],[n("Q"),"core ready"],[n("B"),"blocked"]])
+ +"<div class='note'>Each requirement states only what was decided, and quotes the answer. Whatever is still assumed or open is listed under it and is not part of the requirement.</div>"
+ +"<div class='bar'>"+sel("area","Area",areas)+sel("rs","Readiness",Object.values(FRS).map(x=>x[0]))+"<span class='id'>"+rows.length+" shown</span></div><div>"
+ +rows.map(f=>{const s=FRS[frState(f)],o=f.open.filter(i=>!DONE.has(st(i)));return "<details class='fr'><summary>"+id(f.id)+"<span><b>"+esc(f.text)+"</b><small style='display:block;color:var(--muted)'>"+esc(f.area)+"</small></span>"+pill(s[0],s[1])+"</summary><div class='body'><dl><dt>Decided by</dt><dd>"+f.decided.map(d=>id(d.id)+" "+esc(d.a)).join("<br>")+"</dd><dt>Not yet decided</dt><dd>"+(o.length?o.map(i=>id(i)+" "+fmt((Q[i]||{}).q||(A[i]||{}).text||"")).join("<br>"):"Nothing")+"</dd><dt>Screen</dt><dd>"+esc(f.screen)+"</dd><dt>Flow · rules</dt><dd>"+esc(f.flows||"—")+" · "+esc(f.rules||"—")+"</dd></dl>"
+   +f.acs.map(a=>"<div class='ac'>"+id(a.id)+" "+esc(a.text)+"</div>").join("")+"</div></details>"}).join("")+"</div>"
+ +"<h3>Non-functional requirements</h3>"+table(["ID","Requirement","Decided by","How it is measured"],D.nfr.map(n=>[id(n.id),esc(n.text),id(n.src),fmt(n.measure)]),["","w","","w"])
+ +"<h3>Non-functional areas with no decision</h3>"+table(["Area","Waits on"],D.nfrMissing.map(r=>[esc(r[0]),id(r[1])]))},
+()=>head(7)+stats([[allAC.length,"criteria"],[D.frs.length,"requirements covered"],[(allAC.length/D.frs.length).toFixed(1),"criteria per requirement"]])
+ +"<div class='note'>Each criterion is answered with yes or no, and its numbers come from decisions. A criterion that would need an undecided number is not written; it appears under missing coverage in phase 9.</div>"
+ +table(["ID","Requirement","Criterion","Tests"],allAC.map(a=>[id(a.id),id(a.fr),esc(a.text),"<span class='id' style='white-space:normal'>"+a.tests.map(t=>t.id).join(" ")+"</span>"]),["","","w",""]),
+()=>{const types=uniq(allTS.map(t=>t.type));const rows=allTS.filter(t=>(!F("tt")||t.type===F("tt"))&&(!F("tfr")||t.fr===F("tfr")));
+ return head(8)+stats([[allTS.length,"scenarios"]].concat(types.map(t=>[allTS.filter(x=>x.type===t).length,t.toLowerCase()])))
+ +"<div class='bar'>"+sel("tt","Type",types)+sel("tfr","Requirement",D.frs.map(f=>f.id))+"<span class='id'>"+rows.length+" shown</span></div>"
+ +table(["ID","Type","Scenario and expected result","Criterion","Requirement"],rows.map(t=>[id(t.id),pill(t.type,t.type==="Positive"?"ok":t.type==="Negative"?"C":t.type==="Boundary"?"H":"a"),esc(t.text),id(t.ac),id(t.fr)]),["","","w","",""])
+ +"<h3>Technical points to prove before or during test design</h3>"+table(["To prove","Affects","How"],D.techDeps.map(r=>[esc(r[0]),id(r[1]),esc(r[2])]),["w","","w"])},
+()=>{const gaps=D.frs.filter(f=>f.open.some(i=>!DONE.has(st(i))));
+ return head(9)+stats([[D.frs.length,"requirements traced"],["100%","criteria with a test"],[gaps.length,"requirements with undecided parts"]])
+ +"<h3>Traceability matrix</h3>"+table(["UI screen","Flow","Rules","Requirement","Acceptance criteria","Test scenarios"],D.frs.map(f=>[esc(f.screen),esc(f.flows||"—"),"<span class='id' style='white-space:normal'>"+esc(f.rules||"—")+"</span>",id(f.id),"<span class='id' style='white-space:normal'>"+f.acs.map(a=>a.id).join(" ")+"</span>","<span class='id' style='white-space:normal'>"+f.acs.flatMap(a=>a.tests.map(t=>t.id)).join(" ")+"</span>"]),["w","n","","","",""])
+ +"<h3>Coverage analysis: what cannot be tested yet</h3>"+table(["Requirement","Undecided part","Waits on"],gaps.map(f=>{const o=f.open.filter(i=>!DONE.has(st(i)));return[id(f.id)+" "+esc(f.text.split(".")[0])+".",o.map(i=>fmt((Q[i]||{}).q||(A[i]||{}).text||"")).join("<br>"),"<span class='id' style='white-space:normal'>"+o.join(" ")+"</span>"]}),["w","w",""])
+ +"<div class='note warn'>Not yet written as requirements, so not traced: threads, reactions, pins, Activity filters, Files, People, Preferences, status, typing indicator, sign out. They are in scope and described in written journeys, but have no decision of their own to write a criterion from (question VQ-01).</div>"},
+()=>{const v=verdict(),b=blockers();const n=k=>D.frs.filter(f=>frState(f)===k);
+ return head(10)+"<div class='note "+(v[1]==="C"?"bad":v[1]==="ok"?"good":"warn")+"'>"+pill(v[0],v[1]+" big")+" &nbsp;"+esc(v[2])+". No development ticket is drawn until this reads Ready, or the remaining items are accepted in writing.</div>"
+ +"<h3>Definition of Ready</h3><div class='scroll'>"+DOR.map((d,i)=>{const ok=dorVal(d,i);return "<div class='check'><span class='mark "+(ok?"y":"x")+"'>"+(ok?"✓":"✕")+"</span><span>"+esc(d[0])+(d[3]?"<br><small>"+esc(d[3])+"</small>":"")+"</span><span class='id'>"+esc(d[1])+"</span>"+(d[2]?"<small>calculated</small>":"<label><input type='checkbox' id='dor-"+i+"' data-dor='"+i+"'"+(ok?" checked":"")+"> confirmed</label>")+"</div>"}).join("")+"</div>"
+ +"<h3>Readiness by requirement</h3>"+table(["Readiness","Requirements","What it means"],[["R","Fully decided; can be specified and built."],["A","Buildable once the listed assumptions get a yes."],["Q","The decided part can be built; the open detail is answered before its ticket closes."],["B","A high-priority question decides its screens or rules. Do not start."]].map(r=>[pill(FRS[r[0]][0],FRS[r[0]][1]),"<span class='id' style='white-space:normal'>"+(n(r[0]).map(f=>f.id).join(" ")||"—")+"</span>",esc(r[1])]),["n","","w"])
+ +"<h3>High-priority questions still open ("+b.length+")</h3>"+table(["ID","Decision needed","Owner","Holds up"],b.map(q=>[id(q.id),fmt(q.q),esc(q.owner),"<span class='id' style='white-space:normal'>"+(D.frs.filter(f=>f.open.includes(q.id)).map(f=>f.id).join(" ")||"—")+"</span>"]),["","w","n",""])
+ +"<h3>Deferred to later releases</h3>"+table(["Phase","Name","Delivers"],D.deferred.map(p=>[id(p.id),"<b>"+esc(p.name)+"</b>",esc(p.delivers)]),["","n","w"])}
+];
+
+function render(){const v=verdict();
+ document.getElementById("built").textContent=D.built;
+ document.getElementById("gate").innerHTML=pill(v[0],v[1]+" big")+"<span class='id'>"+blockers().length+" blocking · "+openQ().length+" open · "+D.frs.filter(f=>frState(f)!=="B").length+"/"+D.frs.length+" FR startable</span>";
+ document.getElementById("rail").innerHTML="<button data-go='0'"+(S.phase===0?" aria-current='page'":"")+"><span class='n'>—</span><span>Overview</span><span class='c'></span></button><div class='sep'></div>"+PH.map((p,i)=>"<button data-go='"+(i+1)+"'"+(S.phase===i+1?" aria-current='page'":"")+"><span class='n'>"+String(i+1).padStart(2,"0")+"</span><span>"+esc(p.n)+"</span><span class='c'>"+esc(p.c())+"</span></button>").join("");
+ document.getElementById("main").innerHTML=VIEW[S.phase]()}
+document.addEventListener("click",e=>{const g=e.target.closest("[data-go]");if(g){S.phase=+g.dataset.go;S.f={};save();render();window.scrollTo(0,0);return}
+ if(e.target.closest("[data-act='reset']")){S.status={};save();render()}});
+document.addEventListener("change",e=>{const t=e.target;
+ if(t.dataset.st){const y=window.scrollY;S.status[t.dataset.st]=t.value;save();render();window.scrollTo(0,y);const el=document.getElementById("st-"+t.dataset.st);if(el)el.focus()}
+ else if(t.dataset.f){S.f[t.dataset.f]=t.value;render();const el=document.getElementById("f-"+t.dataset.f);if(el)el.focus()}
+ else if(t.dataset.dor){S.dor[t.dataset.dor]=t.checked;save();render()}});
+render();
+</script>
