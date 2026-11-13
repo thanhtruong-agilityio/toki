@@ -36,11 +36,37 @@ def pick(x, lang):
 # ───────── one decision log: every earlier id gets one new id ─────────
 B_EN = json.loads(before["en"])
 ORDER = {"C": 0, "H": 1, "M": 2, "L": 3}
-old_ids = [d["id"] for d in B_EN["decisions"]] + [a["id"] for a in B_EN["assumptions"]] + [q["id"] for q in B_EN["questions"]] + \
-          [r["id"] for r in B_EN["rules"]] + [r[0] for r in GV.OPEN] + [r[0] for r in GV.FA_ROWS] + [a[0] for a in GA.A]
+RESOLVE = FM.RESOLVE          # an earlier open question or assumption -> the decision that settled it; the row keeps
+# its D id and becomes that decision. Decisions that settle nothing earlier get new ids.
+SETTLING = set(RESOLVE.values())
+FIRST = [d["id"] for d in B_EN["decisions"] if int(re.sub(r"\D", "", d["id"])) <= 31]      # the decisions that had ids before 13 Nov
+LATER = [d["id"] for d in B_EN["decisions"] if d["id"] not in FIRST and d["id"] not in SETTLING]
+old_ids = FIRST + [a["id"] for a in B_EN["assumptions"]] + [q["id"] for q in B_EN["questions"]] + \
+          [r["id"] for r in B_EN["rules"]] + [r[0] for r in GV.OPEN] + [r[0] for r in GV.FA_ROWS] + [a[0] for a in GA.A] + LATER
 NEW = {o: f"D-{i:03d}" for i, o in enumerate(old_ids, 1)}
+for old, q in RESOLVE.items():
+    NEW.setdefault(q, NEW[old])                  # a settling decision is cited by the id of the row it settled
 ID_RE = re.compile(r"\b(OQ\d{1,2}|NR\d{1,2}|FA-\d{2}|FQ-\d{2}|GQ-\d{2}|AS-\d{2}|VQ-\d{2}|Q\d{1,2}[abc]?|G\d{1,2})\b")
 sub = lambda s: ID_RE.sub(lambda m: NEW.get(m.group(1), m.group(1)), s)
+
+
+OPEN_ID = re.compile(r"\b(FQ-\d{2}|GQ-\d{2}|VQ-\d{2}|FA-\d{2})\b")
+
+
+def settle(x):
+    """A text that says 'Open: GQ-03' is stale once every id in it has been settled: say 'Decided' instead."""
+    if isinstance(x, str):
+        ids = OPEN_ID.findall(x)
+        if ids and all(i in RESOLVE for i in ids):
+            for a, b in (("**Open:**", "**Decided:**"), ("Open:", "Decided:"), ("**Còn mở:**", "**Đã quyết định:**"), ("Còn mở:", "Đã quyết định:"),
+                         ("still open", "now decided"), ("còn mở", "đã quyết định")):
+                x = x.replace(a, b)
+        return x
+    if isinstance(x, list):
+        return [settle(i) for i in x]
+    if isinstance(x, dict):
+        return {k: settle(v) for k, v in x.items()}
+    return x
 
 
 def remap(x):
@@ -80,8 +106,10 @@ def build(lang):
     def add(old, kind, q, a, owner="", sev="", status="Confirmed", **kw):
         dec.append(dict(id=NEW[old], old=old, kind=kind, q=q, a=a, owner=owner, sev=sev, status=status, **kw))
 
+    byq = {d["id"]: d for d in B["decisions"]}
     for d in B["decisions"]:
-        add(d["id"], "ans", d["question"], d["decision"], "PO", topic=d.get("topic", ""), options=d.get("options", ""), source=d.get("source", ""))
+        if d["id"] in FIRST:
+            add(d["id"], "ans", d["question"], d["decision"], "PO", topic=d.get("topic", ""), options=d.get("options", ""), source=d.get("source", ""))
     for a in B["assumptions"]:
         add(a["id"], "gas", en(FM.G_QUESTION.get(a["id"], "")), a["text"], "PO")
     for q in B["questions"]:
@@ -94,6 +122,14 @@ def build(lang):
         add(r[0], "asm", en(r[1]), en(r[3]), "PO", "M", "Open")
     for a in GA.A:
         add(a[0], "asm", en(a[1]), en(a[2]), "PO", "L", "Accepted Assumption" if a[0] == "AS-05" else "Open")
+    for i in LATER:
+        d = byq[i]
+        add(i, "rev", d["question"], d["decision"], "PO", topic=d.get("topic", ""), options=d.get("options", ""), source=d.get("source", ""), note=d.get("note", ""))
+    rows = {r["old"]: r for r in dec}
+    for old, q in RESOLVE.items():               # the settled rows take the answer and its standing
+        d, r = byq[q], rows[old]
+        r.update(kind="rev", a=d["decision"], sev="", status="Deferred" if d.get("source") == "deferred" else "Confirmed",
+                 old=f"{old} · {q}", topic=d.get("topic", ""), source=d.get("source", ""), note=d.get("note", ""))
 
     detail = {f[0]: dict(id=f[0], text=en(f[1]), evidence=en(f[2]), type=en(GA.TYP[f[4]]), sev=f[5], status=en(f[7])) for f in GA.F}
     for g in B["gaps"]:
@@ -150,7 +186,7 @@ def build(lang):
     out = dict(
         product="Toki",
         prototypeNote=en("It simulates one person, always an Owner, with sample data and instant actions.||Nó mô phỏng một người, luôn là Owner, với dữ liệu mẫu và thao tác tức thì."),
-        writtenNote=en("Drafted by Claude under Q19; several were never confirmed line by line. They are a proposal until the question about accepting them (VQ-01) is answered.||Do Claude soạn theo Q19; nhiều hành trình chưa từng được xác nhận từng dòng. Chúng là đề xuất cho tới khi câu hỏi về việc chấp nhận chúng (VQ-01) được trả lời."),
+        writtenNote=en("Drafted by Claude under Q19 and written before the answers of 13 Nov 2026. Where a journey differs from the Decisions tab, the decision wins. Known to differ and still to be rewritten: F02 and F03 (invitation now needs a code; no welcome step), F20 (only an Admin creates channels, from the Admin page), F21 (no preview of a channel), F25 (groups start from the + on Direct messages), F39 to F41 (no Owner; what an Admin may do). The rest await the review asked for in VQ-01.||Do Claude soạn theo Q19 và viết trước các câu trả lời ngày 13/11/2026. Hành trình nào khác với tab Quyết định thì quyết định thắng. Đã biết là khác và còn phải viết lại: F02 và F03 (lời mời giờ cần mã; không có màn hình chào), F20 (chỉ Admin tạo kênh, từ trang Admin), F21 (không xem trước kênh), F25 (nhóm tạo từ dấu + ở Direct messages), F39 tới F41 (không có Owner; Admin được làm gì). Phần còn lại chờ lần rà được nêu ở VQ-01."),
         changes=dict(title=en("How this page was reorganised on 13 Nov 2026||Trang này được sắp xếp lại thế nào ngày 13/11/2026"),
                      head=en(["Before||Trước đây", "Now||Bây giờ", "Why||Vì sao"]), rows=[en(r) for r in CHANGES]),
         built="13 Nov 2026" if lang == "en" else "13/11/2026", overview=B["overview"], counts=dict(actions=151),
@@ -166,7 +202,11 @@ def build(lang):
         nfrMissing=en(GV.NFR_MISSING), techDeps=en(GV.TECH_DEPS), technical=B["technical"]["sections"],
         milestones=milestones, phases=[dict(id=p["id"], name=p["name"], delivers=p.get("delivers", ""), state=p.get("state", "")) for p in B["phases"]],
     )
+    out = settle(out)
     out = remap(out)
+    for d in out["decisions"]:                    # "Raised as D-081 (D-081)." says nothing once the row is that id
+        if d.get("note"):
+            d["note"] = re.sub(r"(Raised as|Nêu ở) D-\d+ \(D-\d+\)\.\s*", "", d["note"]).strip()
     tf = lambda x: re.sub(r"\bT-(\d\d)\b", r"F-\1", x) if isinstance(x, str) else [tf(i) for i in x] if isinstance(x, list) else x
     for f in out["findings"]:                      # the merged findings are F-01… in v2
         f["note"] = tf(f["note"]).replace("Questions & Gaps", "Decisions")

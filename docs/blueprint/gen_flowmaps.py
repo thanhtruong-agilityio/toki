@@ -51,18 +51,17 @@ h1 = Chart("1.1 The whole app on one page: ways in, the gate, and what a signed-
            "Thick outline: an entry point. Diamond: a check. Red: a refusal. Each box on the right continues in a detailed flow of section 2.||Viền đậm: một lối vào. Hình thoi: một lần kiểm tra. Đỏ: bị từ chối. Mỗi ô bên phải được vẽ tiếp ở một flow chi tiết trong mục 2.",
            ["**Entry points (4):** the Toki address, a link to a conversation or message (from a notification, a mail or a colleague), the installed app icon, and the invitation mail.||**Lối vào (4):** địa chỉ Toki, link tới một cuộc trò chuyện hoặc tin nhắn (từ thông báo, mail hoặc đồng nghiệp), icon ứng dụng đã cài, và mail mời.",
             "**One gate:** every way in passes the session check. Nothing in Toki is readable without a session; there is no public page besides sign-in.||**Một cửa kiểm tra:** mọi lối vào đều qua bước kiểm tra phiên. Không có gì trong Toki đọc được khi chưa có phiên; ngoài trang đăng nhập không có trang công khai nào.",
-            "**Role check:** Admin is the only section gated by role. Everything else is gated by membership of the conversation, checked on the server for every request.||**Kiểm tra vai trò:** Admin là mục duy nhất chặn theo vai trò. Mọi thứ khác chặn theo tư cách thành viên của cuộc trò chuyện, kiểm tra ở server cho mọi request."],
+            "**Roles:** Member and Admin; there is no Owner. Admin is the only section gated by role. Everything else is gated by membership of the conversation, checked on the server for every request.||**Vai trò:** Member và Admin; không có Owner. Admin là mục duy nhất chặn theo vai trò. Mọi thứ khác chặn theo tư cách thành viên của cuộc trò chuyện, kiểm tra ở server cho mọi request."],
            lanes=False, colWidth=236, rowHeight=86)
-h1.n("inv", 0, 0, "Invitation mail: Join||Mail mời: nút Join", "first time only||chỉ lần đầu", "st")
-h1.n("d_inv", 1, 0, "Invitation valid?||Lời mời hợp lệ?", "unused, under 7 days (G4)||chưa dùng, dưới 7 ngày (G4)", "d")
-h1.n("welcome", 2, 0, "Welcome step||Màn hình chào", "not in the prototype · FQ-15||không có trong prototype · FQ-15")
-h1.n("x_inv", 1, 1, "Refusal page with reason||Trang từ chối kèm lý do", "expired / revoked · wording: FQ-13||hết hạn / thu hồi · câu chữ: FQ-13", "x", terminal=True)
+h1.n("inv", 0, 6, "Invitation mail: Join||Mail mời: nút Join", "first time · carries a code||lần đầu · có kèm mã", "st")
+h1.n("d_inv", 1, 6, "Invitation valid?||Lời mời hợp lệ?", "unused, under 7 days (G4)||chưa dùng, dưới 7 ngày (G4)", "d")
+h1.n("x_inv", 1, 7, "Refusal page with reason||Trang từ chối kèm lý do", "expired · revoked · not valid||hết hạn · thu hồi · không hợp lệ", "x", terminal=True)
 h1.n("url", 0, 2, "Opens the Toki address||Mở địa chỉ Toki", None, "st")
 h1.n("link", 0, 3, "Opens a link||Mở một link", "notification, mail, shared||thông báo, mail, được gửi", "st")
 h1.n("pwa", 0, 4, "Installed app icon||Icon ứng dụng đã cài", None, "st")
 h1.n("d_sess", 1, 3, "Valid session?||Phiên còn hiệu lực?", "30 days (Q11)||30 ngày (Q11)", "d")
 h1.n("email", 1, 5, "Sign-in: email||Đăng nhập: email", "flow 2.1||flow 2.1")
-h1.n("code", 2, 5, "Enter the 6-digit code||Nhập mã 6 số", "or press the button in the mail||hoặc bấm nút trong mail")
+h1.n("code", 2, 5, "Enter the 6-digit code||Nhập mã 6 số", "valid 10 minutes · Resend||hiệu lực 10 phút · Resend")
 h1.n("d_code", 3, 5, "Code accepted?||Mã được chấp nhận?", None, "d")
 h1.n("x_code", 3, 6, "Error under the field||Lỗi ngay dưới ô nhập", "wrong, expired, locked, too many||sai, hết hạn, bị khoá, quá nhiều", "x")
 h1.n("home", 4, 3, "Home||Home", "last conversation, or the link's||cuộc trò chuyện gần nhất / theo link")
@@ -75,10 +74,10 @@ for i, (nid, lab, sub) in enumerate([
         ("prefs", "Preferences and status||Preferences và trạng thái", "Pause, Focus, look, language||Pause, Focus, giao diện, ngôn ngữ")]):
     h1.n(nid, 5, i, lab, sub, terminal=True)
     h1.e("home", nid)
-h1.n("d_role", 5, 6, "Admin or Owner?||Admin hoặc Owner?", None, "d")
+h1.n("d_role", 5, 6, "Admin?||Là Admin?", None, "d")
 h1.n("admin", 6, 6, "Admin||Admin", "invite, roles, deactivate · 2.12–13||mời, vai trò, vô hiệu · 2.12–13", terminal=True)
 h1.n("x_admin", 6, 7, "No Admin entry||Không có mục Admin", "its address shows 'No access'||địa chỉ đó báo 'No access'", "x", terminal=True)
-h1.e("inv", "d_inv"); h1.e("d_inv", "welcome", Y); h1.e("d_inv", "x_inv", N); h1.e("welcome", "home", t=.3)
+h1.e("inv", "d_inv"); h1.e("d_inv", "code", "yes: code from the mail||có: mã trong mail", t=.55); h1.e("d_inv", "x_inv", N)
 h1.e("url", "d_sess"); h1.e("link", "d_sess"); h1.e("pwa", "d_sess")
 h1.e("d_sess", "home", Y); h1.e("d_sess", "email", N)
 h1.e("email", "code"); h1.e("code", "d_code"); h1.e("d_code", "home", Y); h1.e("d_code", "x_code", N); h1.e("x_code", "code", "retry / resend||thử lại / gửi lại")
@@ -106,7 +105,7 @@ c = Chart("2.1 Sign in with an emailed code||2.1 Đăng nhập bằng mã gửi 
           "Happy path runs down the middle; every refusal returns to a screen where the person can act.||Luồng chính chạy dọc ở giữa; mọi lần bị từ chối đều quay về một màn hình mà người dùng làm tiếp được.",
           ["**Before:** the address belongs to an active member; this device has no valid session.||**Trước:** địa chỉ thuộc về một thành viên đang hoạt động; thiết bị này chưa có phiên hợp lệ.",
            "**After:** a 30-day session on this device only; the code can never be used again; the app opens where the person was heading.||**Sau:** một phiên 30 ngày chỉ trên thiết bị này; mã không dùng lại được; ứng dụng mở đúng nơi người dùng định tới.",
-           "**Validation:** email must look like an address before the button enables. Code: exactly 6 digits, one use. Valid 10 minutes and cancelled after 5 wrong tries are assumptions (FA-13, FA-14). At most 5 code requests per address in 15 minutes (G5).||**Kiểm tra:** email phải đúng dạng thì nút mới bật. Mã: đúng 6 số, dùng một lần. Hiệu lực 10 phút và huỷ sau 5 lần sai là giả định (FA-13, FA-14). Tối đa 5 lần xin mã cho một địa chỉ trong 15 phút (G5).",
+           "**Validation:** email must look like an address before the button enables. Code: exactly 6 digits, one use, valid 10 minutes, locked after the 5th wrong try. At most 5 code requests per address in 15 minutes.||**Kiểm tra:** email phải đúng dạng thì nút mới bật. Mã: đúng 6 số, dùng một lần, hiệu lực 10 phút, bị khoá sau lần sai thứ 5. Tối đa 5 lần xin mã cho một địa chỉ trong 15 phút.",
            "**Back / cancel / retry:** 'Use a different email' returns to the email field. 'Resend code' enables after 60 seconds. A network failure re-enables the button with 'Could not connect'.||**Quay lại / huỷ / thử lại:** 'Use a different email' quay về ô email. 'Resend code' bật sau 60 giây. Lỗi mạng thì nút bấm lại được, kèm 'Could not connect'.",
            "**Alternative:** the mail also has a sign-in button. Pressing it signs in the device where it is pressed and skips typing the code.||**Nhánh khác:** mail còn có nút đăng nhập. Bấm nút thì thiết bị bấm được đăng nhập, không cần gõ mã.",
            "**Security rule:** the answer to a code request is identical for members and strangers, so the page never reveals who is a member.||**Quy tắc bảo mật:** câu trả lời cho yêu cầu xin mã giống hệt nhau với thành viên và người lạ, nên trang không bao giờ lộ ai là thành viên."])
@@ -121,11 +120,11 @@ c.n("d_member", B, 3, "Active member?||Thành viên đang hoạt động?", None
 c.n("b_mail", B, 4, "Store hashed code, queue the mail||Lưu mã đã băm, xếp hàng gửi mail", "code + sign-in button, 10 minutes||mã + nút đăng nhập, 10 phút")
 c.n("f_code", F, 4, "'Check your email': 6-digit field||'Check your email': ô 6 số", "Resend disabled for 60 s||Resend tắt trong 60 giây")
 c.n("d_got", U, 5, "Mail arrived?||Mail đã tới?", None, "d")
-c.n("f_resend", F, 5, "Waits 60 s, presses Resend code||Đợi 60 giây, bấm Resend code", "not in the prototype · FQ-14||không có trong prototype · FQ-14", "s")
+c.n("f_resend", F, 5, "Waits 60 s, presses Resend code||Đợi 60 giây, bấm Resend code", "a new code cancels the old one||mã mới huỷ mã cũ", "s")
 c.n("u_code", U, 6, "Types or pastes the 6 digits||Gõ hoặc dán 6 số", "submits itself on the 6th digit||tự gửi khi đủ số thứ 6")
 c.n("f_lock", F, 6, "Field locked, spinner||Ô bị khoá, đang quay", None, "s")
 c.n("b_sess", B, 6, "POST /auth/sessions {email, code}||POST /auth/sessions {email, code}")
-c.n("d_code", B, 7, "Right code, under 10 min?||Mã đúng, dưới 10 phút?", "10 min: FA-13||10 phút: FA-13", "d")
+c.n("d_code", B, 7, "Right code, under 10 min?||Mã đúng, dưới 10 phút?", None, "d")
 c.n("x_code", F, 7, "'Not right. N tries left' / 'Expired'||'Not right. N tries left' / 'Expired'", "5th wrong try locks the code||sai lần 5 thì mã bị khoá", "x")
 c.n("d_active", B, 8, "Account still active?||Tài khoản còn hoạt động?", None, "d")
 c.n("x_deact", F, 8, "'This account has been deactivated'||'This account has been deactivated'", "contact an admin · no further step||liên hệ admin · không có bước tiếp", "x", terminal=True)
@@ -143,30 +142,34 @@ c.e("d_code", "d_active", Y); c.e("d_active", "x_deact", N); c.e("d_active", "b_
 D.append(c)
 
 c = Chart("2.2 Accept an invitation (first time in)||2.2 Nhận lời mời (lần đầu vào)",
-          "The link proves control of the mailbox, so no code is asked.||Link đã chứng minh người dùng có quyền với hộp thư, nên không hỏi mã.",
-          ["**Before:** an Admin or Owner sent an invitation to this address (flow 2.12).||**Trước:** một Admin hoặc Owner đã gửi lời mời tới địa chỉ này (flow 2.12).",
-           "**After:** the member is Active, in #general with its full history, signed in on this device; the link no longer works; #general shows 'X joined'.||**Sau:** thành viên ở trạng thái Active, đã ở trong #general với đầy đủ lịch sử, đã đăng nhập trên thiết bị này; link hết tác dụng; #general hiện 'X joined'.",
-           "**Validation:** display name 1 to 80 characters (your answer, Q31). Time zone and language come from the device and can be changed.||**Kiểm tra:** tên hiển thị từ 1 đến 80 ký tự (bạn trả lời, Q31). Múi giờ và ngôn ngữ lấy từ thiết bị và đổi được.",
-           "**Skip:** the welcome step can be skipped; the name becomes the part of the address before @.||**Bỏ qua:** bước chào có thể bỏ qua; tên sẽ là phần trước @ của địa chỉ.",
-           "**Next:** a small card asks whether to turn on notifications.||**Tiếp theo:** một thẻ nhỏ hỏi có bật thông báo không."])
-c.n("s", U, 0, "Presses Join in the invitation mail||Bấm Join trong mail mời", None, "st")
+          "The mail carries the Join button and a 6-digit code; the link alone signs nobody in.||Mail mời có nút Join và mã 6 số; riêng link thì không đăng nhập cho ai.",
+          ["**Before:** an Admin sent an invitation to this address (flow 2.12), less than 7 days ago.||**Trước:** một Admin đã gửi lời mời tới địa chỉ này (flow 2.12), chưa quá 7 ngày.",
+           "**After:** the member is Active, in #general with its full history, signed in on this device; the invitation is used up; #general shows a grey line 'X joined'.||**Sau:** thành viên ở trạng thái Active, đã ở trong #general với đầy đủ lịch sử, đã đăng nhập trên thiết bị này; lời mời hết tác dụng; #general hiện một dòng xám 'X joined'.",
+           "**The code:** the one printed in the invitation mail, valid 10 minutes like every code. Opened later than that, the person presses Resend code (available after 60 seconds) and gets a new one; a new code cancels the old one. The 5th wrong try locks the code.||**Mã:** mã in trong mail mời, hiệu lực 10 phút như mọi mã. Mở mail muộn hơn thì người dùng bấm Resend code (dùng được sau 60 giây) để nhận mã mới; mã mới huỷ mã cũ. Sai lần thứ 5 thì mã bị khoá.",
+           "**No welcome step:** after the code the person goes straight to #general. The display name is the part of the address before @ and can be changed later (1 to 80 characters).||**Không có màn hình chào:** nhập mã xong, người dùng vào thẳng #general. Tên hiển thị là phần trước @ của địa chỉ và sửa được sau (1 tới 80 ký tự).",
+           "**Signed in as someone else:** the page asks 'You are signed in as A. Sign out to continue as B?'. Choosing to stay keeps A signed in and leaves the invitation valid.||**Đang đăng nhập bằng tài khoản khác:** trang hỏi 'Bạn đang đăng nhập là A. Đăng xuất để tiếp tục với B?'. Chọn ở lại thì A vẫn đăng nhập và lời mời còn hiệu lực.",
+           "**Refusal page:** three messages. Expired after 7 days: ask the inviter for a new one. Revoked: ask an admin. Link not recognised: 'This link is not valid', with no workspace name.||**Trang từ chối:** ba câu. Hết hạn sau 7 ngày: nhờ người mời gửi lại. Bị thu hồi: hỏi admin. Link không nhận ra: 'This link is not valid', không nêu tên workspace."])
+c.n("s", U, 0, "Presses Join in the invitation mail||Bấm Join trong mail mời", "the mail also carries a 6-digit code||mail có kèm mã 6 số", "st")
 c.n("f_wait", F, 0, "Blank page with spinner||Trang trống, đang quay", None, "s")
-c.n("b_acc", B, 0, "POST /auth/invitations/accept||POST /auth/invitations/accept", "{token}||{token}")
-c.n("d_used", B, 1, "Link already used?||Link đã dùng rồi?", None, "d")
+c.n("b_chk", B, 0, "GET /auth/invitations/:token||GET /auth/invitations/:token")
+c.n("d_used", B, 1, "Already used?||Đã dùng rồi?", None, "d")
 c.n("f_used", F, 1, "Sign-in page, email filled in||Trang đăng nhập, điền sẵn email", "continues in flow 2.1||tiếp ở flow 2.1", "s", terminal=True)
-c.n("d_valid", B, 2, "Expired or revoked?||Hết hạn hoặc bị thu hồi?", "7 days||7 ngày", "d")
-c.n("x_exp", F, 2, "Page says why; 'contact the inviter'||Trang nêu lý do; 'liên hệ người mời'", "wording: FQ-13 · no further step||câu chữ: FQ-13 · không có bước tiếp", "x", terminal=True)
-c.n("b_act", B, 3, "Member Active; session created||Thành viên Active; tạo phiên", "added to #general; link used up||thêm vào #general; link hết hiệu lực")
-c.n("f_wel", F, 3, "Welcome: name, job title, time zone||Chào: tên, chức danh, múi giờ", "not in the prototype · FQ-15||không có trong prototype · FQ-15")
-c.n("u_name", U, 4, "Fills in, presses Enter Toki||Điền, bấm Enter Toki", "or Skip||hoặc Skip")
-c.n("d_name", F, 4, "Name 1–80 characters?||Tên 1–80 ký tự?", "Q31 · Skip always passes||Q31 · Skip luôn qua", "d")
-c.n("x_name", F, 5, "Message under the name field||Thông báo dưới ô tên", None, "x")
-c.n("b_me", B, 4, "PATCH /me {name, title, timeZone}||PATCH /me {name, title, timeZone}")
-c.n("f_boot", F, 6, "Load the app (flow 2.3)||Tải ứng dụng (flow 2.3)")
-c.n("end", U, 7, "In #general, asked about notifications||Ở #general, được hỏi về thông báo", None, "en")
-c.e("s", "f_wait"); c.e("f_wait", "b_acc"); c.e("b_acc", "d_used"); c.e("d_used", "f_used", Y); c.e("d_used", "d_valid", N)
-c.e("d_valid", "x_exp", Y); c.e("d_valid", "b_act", N); c.e("b_act", "f_wel"); c.e("f_wel", "u_name"); c.e("u_name", "d_name")
-c.e("d_name", "x_name", N); c.e("x_name", "f_wel", "correct it||sửa lại", loop="right"); c.e("d_name", "b_me", Y); c.e("b_me", "f_boot", t=.35); c.e("f_boot", "end")
+c.n("d_valid", B, 2, "Expired, revoked, unknown?||Hết hạn, thu hồi, link lạ?", "7 days||7 ngày", "d")
+c.n("x_exp", F, 2, "Page says which, and whom to ask||Trang nêu lý do và nên hỏi ai", "three messages · no further step||ba câu · không có bước tiếp", "x", terminal=True)
+c.n("d_other", F, 3, "Signed in as someone else?||Đang đăng nhập người khác?", None, "d")
+c.n("u_out", U, 3, "Chooses to sign out and continue||Chọn đăng xuất để tiếp tục", "or stays: the invitation remains valid||hoặc ở lại: lời mời vẫn còn hiệu lực")
+c.n("f_code", F, 5, "Code step, email filled in||Bước nhập mã, email điền sẵn", "code from the mail · valid 10 minutes||mã lấy từ mail · hiệu lực 10 phút")
+c.n("u_code", U, 6, "Types the 6 digits from the mail||Gõ 6 số trong mail")
+c.n("b_sess", B, 6, "POST /auth/sessions {token, code}||POST /auth/sessions {token, code}")
+c.n("d_code", B, 7, "Right code, under 10 min?||Mã đúng, dưới 10 phút?", None, "d")
+c.n("x_code", F, 7, "'Not right' / 'Expired: Resend code'||'Not right' / 'Expired: Resend code'", "5th wrong try locks the code||sai lần 5 thì mã bị khoá", "x")
+c.n("b_act", B, 8, "Member Active; session created||Thành viên Active; tạo phiên", "in #general; name from the email||vào #general; tên lấy từ email")
+c.n("f_boot", F, 8, "Load the app (flow 2.3)||Tải ứng dụng (flow 2.3)")
+c.n("end", U, 9, "In #general||Ở #general", None, "en")
+c.e("s", "f_wait"); c.e("f_wait", "b_chk"); c.e("b_chk", "d_used"); c.e("d_used", "f_used", Y); c.e("d_used", "d_valid", N)
+c.e("d_valid", "x_exp", Y); c.e("d_valid", "d_other", N, t=.35); c.e("d_other", "u_out", Y); c.e("d_other", "f_code", N); c.e("u_out", "f_code", "signed out||đã đăng xuất", t=.4)
+c.e("f_code", "u_code"); c.e("u_code", "b_sess", t=.75); c.e("b_sess", "d_code"); c.e("d_code", "x_code", N); c.e("x_code", "f_code", "retry / resend||thử lại / gửi lại", loop="left")
+c.e("d_code", "b_act", Y); c.e("b_act", "f_boot"); c.e("f_boot", "end")
 D.append(c)
 
 c = Chart("2.3 Open the app: session check and first load||2.3 Mở ứng dụng: kiểm tra phiên và lần tải đầu",
@@ -189,7 +192,7 @@ c.n("f_render", F, 4, "Show sidebar; open WS /events?after=N||Hiện sidebar; m�
 c.n("d_link", F, 5, "Address names a place?||Địa chỉ trỏ tới một nơi?", "conversation or message||hội thoại hoặc tin nhắn", "d")
 c.n("b_conv", B, 5, "GET /conversations/:id||GET /conversations/:id")
 c.n("f_last", F, 6, "Open last conversation on this device||Mở cuộc trò chuyện gần nhất ở máy này", "first time: #general||lần đầu: #general")
-c.n("d_can", B, 6, "Member, or public channel?||Thành viên / kênh công khai?", None, "d")
+c.n("d_can", B, 6, "Member of it?||Là thành viên?", None, "d")
 c.n("end", U, 7, "Reads the conversation (flow 2.4)||Đọc cuộc trò chuyện (flow 2.4)", None, "en")
 c.n("x_no", F, 7, "'Not found or no access' + Home||'Not found or no access' + Home", "same page for both cases||cùng một trang cho cả hai trường hợp", "x")
 c.n("f_open", F, 8, "Open it; scroll to the linked message||Mở; cuộn tới tin nhắn được link", "highlighted for 2 seconds||tô sáng 2 giây")
@@ -201,12 +204,12 @@ D.append(c)
 
 c = Chart("2.4 Open and read a conversation||2.4 Mở và đọc một cuộc trò chuyện",
           "What clears an unread badge, and what does not.||Điều gì xoá huy hiệu chưa đọc, và điều gì thì không.",
-          ["**Before:** signed in; a member of the conversation, or it is a public channel being previewed.||**Trước:** đã đăng nhập; là thành viên của cuộc trò chuyện, hoặc đang xem trước một kênh công khai.",
+          ["**Before:** signed in and a member of the conversation.||**Trước:** đã đăng nhập và là thành viên của cuộc trò chuyện.",
            "**After:** the read pointer sits on the newest message seen; the badge is cleared on every device of this person. Nobody else is told (no 'seen' receipts).||**Sau:** con trỏ đã đọc nằm ở tin mới nhất đã xem; huy hiệu được xoá trên mọi thiết bị của người này. Không ai khác được báo (không có 'đã xem').",
            "**Rule:** a conversation is marked read only when its newest message is on screen and the tab has focus. Opening it in a background tab changes nothing.||**Quy tắc:** chỉ đánh dấu đã đọc khi tin mới nhất nằm trên màn hình và tab đang được focus. Mở ở tab nền thì không đổi gì.",
            "**Older messages:** scrolling up loads 50 more with a spinner at the top and keeps the scroll position; at the start a 'Beginning of #name' marker shows.||**Tin cũ hơn:** cuộn lên thì tải thêm 50 tin, có vòng quay ở trên và giữ nguyên vị trí cuộn; tới đầu thì hiện mốc 'Beginning of #name'.",
            "**Load failure:** the message area shows 'Couldn't load messages' with Retry; the sidebar keeps working (flow 3.3).||**Tải lỗi:** vùng tin nhắn hiện 'Couldn't load messages' kèm Retry; sidebar vẫn dùng được (flow 3.3).",
-           "**Preview:** a public channel the person has not joined is readable; the composer is replaced by a Join button.||**Xem trước:** kênh công khai chưa tham gia vẫn đọc được; ô soạn tin được thay bằng nút Join."])
+           "**No preview:** a channel the person has not joined cannot be read. Browse channels shows its name, topic and member count, with Join.||**Không có xem trước:** kênh chưa tham gia thì không đọc được. Browse channels hiện tên, chủ đề và số thành viên, kèm nút Join."])
 c.n("s", U, 0, "Clicks a conversation in the sidebar||Bấm một cuộc trò chuyện ở sidebar", None, "st")
 c.n("f_skel", F, 0, "Header at once; grey message rows||Header hiện ngay; hàng tin màu xám", None, "s")
 c.n("b_get", B, 0, "GET /conversations/:id/messages||GET /conversations/:id/messages", "50 around the unread line||50 tin quanh vạch chưa đọc")
@@ -244,7 +247,7 @@ c.n("d_on", F, 2, "Online?||Đang có mạng?", None, "d")
 c.n("b_post", B, 2, "POST /conversations/:id/messages||POST /conversations/:id/messages", "{id, text, fileIds}||{id, text, fileIds}")
 c.n("f_wait", F, 3, "'Waiting to send'||'Waiting to send'", "sends itself on reconnect (flow 3.1)||tự gửi khi có lại mạng (flow 3.1)", "s")
 c.n("d_mem", B, 3, "Member, not archived?||Thành viên, chưa lưu trữ?", None, "d")
-c.n("x_fail", F, 4, "'Not sent' · Retry · Delete||'Not sent' · Retry · Delete", "not in the prototype · FQ-21||không có trong prototype · FQ-21", "x")
+c.n("x_fail", F, 4, "'Not sent' · Retry · Delete||'Not sent' · Retry · Delete", "red text beside the time||chữ đỏ cạnh giờ", "x")
 c.n("d_dup", B, 4, "This ID already stored?||ID này đã lưu rồi?", None, "d")
 c.n("x_mem", F, 5, "'Not sent' with the reason; no Retry||'Not sent' kèm lý do; không có Retry", "composer becomes Join / archived note||ô soạn thành Join / ghi chú đã lưu trữ", "x", terminal=True)
 c.n("b_save", B, 5, "Save; read mentions; write events||Lưu; đọc mention; ghi event", "unread, Activity items, push jobs||chưa đọc, mục Activity, job push")
@@ -289,7 +292,7 @@ c = Chart("2.7 Being mentioned: from the sender's @ to the recipient reading it|
            "**After:** the recipient has one Activity item; it becomes done by itself once the message has been opened.||**Sau:** người nhận có một mục Activity; mục tự thành xong khi tin đã được mở.",
            "**Rule:** your own action never notifies you.||**Quy tắc:** hành động của chính mình không bao giờ tạo thông báo cho mình.",
            "**Rule:** during Pause or Focus there is no toast, push or sound; badges still update, and one summary lists what arrived when it ends.||**Quy tắc:** trong Pause hoặc Focus không có toast, push hay âm thanh; huy hiệu vẫn cập nhật, và khi kết thúc có một bản tóm tắt những gì đã tới.",
-           "**Open:** a mention always gets through the 'Mentions only' level. Whether it gets through Mute is not decided (question GQ-01 on the Gap analysis tab); the chart shows the muted case as badge only until it is.||**Còn mở:** mention luôn vượt qua mức 'Mentions only'. Nó có vượt qua Mute hay không thì chưa quyết định (câu hỏi GQ-01 ở tab Phân tích gap); cho tới lúc đó sơ đồ thể hiện trường hợp tắt tiếng là chỉ có huy hiệu.",
+           "**Rule:** a mention always gets through the 'Mentions only' level. In a muted conversation it notifies only when the person's switch 'Notify me for @mentions even in muted channels' is on; the switch is on by default. Mute also hides the unread badge and bold; the level 'Nothing' only stops toast, push and sound.||**Quy tắc:** mention luôn vượt qua mức 'Mentions only'. Trong cuộc trò chuyện đã tắt tiếng, nó chỉ báo khi công tắc 'Notify me for @mentions even in muted channels' của người đó đang bật; công tắc mặc định bật. Mute còn ẩn cả huy hiệu chưa đọc và chữ đậm; mức 'Nothing' chỉ chặn toast, push và âm thanh.",
            "**Rule:** @channel in a channel of 20 or more people asks the sender to confirm first.||**Quy tắc:** @channel trong kênh từ 20 người trở lên hỏi người gửi xác nhận trước.",
            "**Edit:** adding a mention by editing notifies the new person; removing one removes the earlier notification.||**Sửa:** thêm mention khi sửa tin thì báo cho người mới; bỏ mention thì gỡ thông báo trước đó."])
 c.n("s", U, 0, "Sender types @ and picks a person||Người gửi gõ @ và chọn một người", None, "st")
@@ -317,29 +320,32 @@ c.e("d_open", "f_toast", Y); c.e("d_open", "b_push", N); c.e("b_push", "f_push")
 c.e("u_click", "f_jump"); c.e("f_jump", "b_done"); c.e("b_done", "f_drop", t=.4); c.e("f_drop", "end")
 D.append(c)
 
-c = Chart("2.8 Create a channel||2.8 Tạo một kênh",
-          "The prototype has no way to create a channel; this chart follows written flow F20.||Prototype không có cách nào tạo kênh; sơ đồ này vẽ theo flow viết F20.",
-          ["**Before:** signed in as Member, Admin or Owner.||**Trước:** đã đăng nhập với vai trò Member, Admin hoặc Owner.",
-           "**After:** the channel exists, the creator is its only member, it is open on screen and listed in the sidebar.||**Sau:** kênh tồn tại, người tạo là thành viên duy nhất, kênh đang mở và có trong sidebar.",
-           "**Validation:** lowercase letters, digits and hyphens, up to 80 characters, unique among all channels including archived ones. Public or private is chosen here and cannot be changed later.||**Kiểm tra:** chữ thường, số và gạch nối, tối đa 80 ký tự, không trùng với mọi kênh kể cả kênh đã lưu trữ. Công khai hay riêng tư chọn tại đây và sau này không đổi được.",
-           "**Cancel:** Cancel, Esc or the × asks 'Discard this channel?' if anything was typed; an outside click does nothing.||**Huỷ:** Cancel, Esc hoặc × sẽ hỏi 'Discard this channel?' nếu đã gõ gì đó; bấm ra ngoài thì không có gì xảy ra.",
-           "**Rule:** after creating, the screen shows the new thing.||**Quy tắc:** sau khi tạo, màn hình phải hiện thứ vừa tạo."])
-c.n("s", U, 0, "Browse channels → Create channel||Browse channels → Create channel", "button not in the prototype · FQ-17||nút không có trong prototype · FQ-17", "st")
-c.n("f_dlg", F, 0, "Dialog: name, private switch, topic||Hộp thoại: tên, riêng tư, chủ đề", "fields: FQ-18 · Create off until valid||các ô: FQ-18 · Create tắt tới khi hợp lệ")
+c = Chart("2.8 Create a channel (Admin)||2.8 Tạo một kênh (Admin)",
+          "Only an Admin creates channels, from the Admin page. The prototype has no way to create one.||Chỉ Admin tạo kênh, từ trang Admin. Prototype không có cách nào tạo kênh.",
+          ["**Before:** signed in as Admin. A Member has no such control, and the server refuses a Member who tries.||**Trước:** đã đăng nhập với vai trò Admin. Member không có điều khiển này, và server từ chối nếu Member thử.",
+           "**After:** the channel exists, the Admin and the people chosen are its members, it is open on screen and listed in the sidebar.||**Sau:** kênh tồn tại, Admin và những người được chọn là thành viên, kênh đang mở và có trong sidebar.",
+           "**Fields:** name, a Private switch (off by default), topic (optional, up to 250 characters), people to add (optional).||**Các ô:** tên, công tắc Private (mặc định tắt), chủ đề (không bắt buộc, tối đa 250 ký tự), người cần thêm (không bắt buộc).",
+           "**Validation:** lowercase letters, digits and hyphens, up to 80 characters. The server checks the name and never creates two channels with the same name. Public or private is chosen here and cannot be changed later.||**Kiểm tra:** chữ thường, số và gạch nối, tối đa 80 ký tự. Server kiểm tra tên và không bao giờ tạo hai kênh trùng tên. Công khai hay riêng tư chọn tại đây và sau này không đổi được.",
+           "**Errors** show under the field, and Create stays disabled until the form is valid.||**Lỗi** hiện dưới ô nhập, và Create bị tắt cho tới khi form hợp lệ.",
+           "**Cancel:** Cancel, Esc or the × asks 'Discard this channel?' if anything was typed; an outside click does nothing.||**Huỷ:** Cancel, Esc hoặc × sẽ hỏi 'Discard this channel?' nếu đã gõ gì đó; bấm ra ngoài thì không có gì xảy ra."])
+c.n("s", U, 0, "Admin page: + beside Busiest channels||Trang Admin: + cạnh Busiest channels", "Admins only · not in the prototype||chỉ Admin · không có trong prototype", "st")
+c.n("f_dlg", F, 0, "Dialog: name, Private, topic, people||Hộp thoại: tên, Private, chủ đề, người", "Create disabled until the name is valid||Create tắt cho tới khi tên hợp lệ")
 c.n("u_name", U, 1, "Types a name||Gõ tên")
-c.n("d_fmt", F, 1, "a–z, 0–9, hyphens, ≤ 80?||a–z, 0–9, gạch nối, ≤ 80?", "G7||G7", "d")
-c.n("x_fmt", F, 2, "Message under the field as they type||Thông báo dưới ô ngay khi gõ", "spaces become hyphens on their own||khoảng trắng tự thành gạch nối", "x")
+c.n("d_fmt", F, 1, "a–z, 0–9, hyphens, ≤ 80?||a–z, 0–9, gạch nối, ≤ 80?", None, "d")
+c.n("x_fmt", F, 2, "Message under the field as they type||Thông báo dưới ô ngay khi gõ", None, "x")
 c.n("u_go", U, 3, "Presses Create||Bấm Create")
 c.n("f_load", F, 3, "Button loading; dialog locked||Nút đang tải; hộp thoại bị khoá", None, "s")
-c.n("b_post", B, 3, "POST /conversations||POST /conversations", "{kind: channel, name, private}||{kind: channel, name, private}")
-c.n("d_dup", B, 4, "Name already taken?||Tên đã có rồi?", None, "d")
-c.n("x_dup", F, 4, "'#name already exists' + Open it||'#name already exists' + Open it", "dialog stays, name selected||hộp thoại giữ nguyên, tên được chọn", "x")
-c.n("b_make", B, 5, "Create channel; creator is a member||Tạo kênh; người tạo là thành viên")
-c.n("f_open", F, 5, "Dialog closes; channel opens||Hộp thoại đóng; kênh mở ra", "listed in the sidebar||có trong sidebar")
-c.n("end", U, 6, "Empty channel: add people or write||Kênh trống: thêm người hoặc viết", None, "en")
+c.n("b_post", B, 3, "POST /conversations||POST /conversations", "{kind: channel, name, private, people}||{kind: channel, name, private, people}")
+c.n("d_adm", B, 4, "Sender is an Admin?||Người gửi là Admin?", None, "d")
+c.n("x_adm", F, 4, "'No access'; dialog closes||'No access'; hộp thoại đóng", "403 · a Member can never get here||403 · Member không bao giờ tới được đây", "x", terminal=True)
+c.n("d_dup", B, 5, "Name already taken?||Tên đã có rồi?", None, "d")
+c.n("x_dup", F, 5, "'#name already exists' + Open it||'#name already exists' + Open it", "dialog stays, name selected||hộp thoại giữ nguyên, tên được chọn", "x")
+c.n("b_make", B, 6, "Create channel; add the people chosen||Tạo kênh; thêm những người được chọn")
+c.n("f_open", F, 6, "Dialog closes; channel opens||Hộp thoại đóng; kênh mở ra", "listed in the sidebar||có trong sidebar")
+c.n("end", U, 7, "In the new channel||Ở trong kênh mới", None, "en")
 c.e("s", "f_dlg"); c.e("f_dlg", "u_name"); c.e("u_name", "d_fmt"); c.e("d_fmt", "x_fmt", N); c.e("x_fmt", "f_dlg", "keeps typing||gõ tiếp", loop="right")
-c.e("d_fmt", "u_go", Y, t=.35); c.e("u_go", "f_load"); c.e("f_load", "b_post"); c.e("b_post", "d_dup"); c.e("d_dup", "x_dup", Y)
-c.e("x_dup", "f_dlg", "another name||tên khác", loop="left"); c.e("d_dup", "b_make", N); c.e("b_make", "f_open"); c.e("f_open", "end")
+c.e("d_fmt", "u_go", Y, t=.35); c.e("u_go", "f_load"); c.e("f_load", "b_post"); c.e("b_post", "d_adm"); c.e("d_adm", "x_adm", N); c.e("d_adm", "d_dup", Y)
+c.e("d_dup", "x_dup", Y); c.e("x_dup", "f_dlg", "another name||tên khác", loop="left"); c.e("d_dup", "b_make", N); c.e("b_make", "f_open"); c.e("f_open", "end")
 D.append(c)
 
 c = Chart("2.9 Join a public channel, and leave a channel||2.9 Tham gia kênh công khai, và rời một kênh",
@@ -439,7 +445,8 @@ D.append(c)
 
 c = Chart("2.12 Admin: invite members||2.12 Admin: mời thành viên",
           "One result per address, so a batch never fails silently.||Mỗi địa chỉ một kết quả, nên một lô không bao giờ lỗi âm thầm.",
-          ["**Before:** signed in as Admin or Owner.||**Trước:** đã đăng nhập với vai trò Admin hoặc Owner.",
+          ["**Before:** signed in as Admin. An Admin invites with any role.||**Trước:** đã đăng nhập với vai trò Admin. Admin mời với vai trò nào cũng được.",
+           "**Deactivated address:** it can be invited again; accepting reactivates the same account with its history. **Batch failing halfway:** the invitations already sent are kept, and each row reports its own result.||**Địa chỉ đã bị vô hiệu hoá:** vẫn mời lại được; nhận lời mời thì kích hoạt lại đúng tài khoản cũ cùng lịch sử. **Lô lỗi giữa chừng:** các lời mời đã gửi được giữ lại, và mỗi dòng báo kết quả riêng.",
            "**After:** each new address has an 'Invited' row with its expiry date and an invitation mail on its way; nothing is created twice.||**Sau:** mỗi địa chỉ mới có một hàng 'Invited' kèm ngày hết hạn và một mail mời đang được gửi; không có gì bị tạo hai lần.",
            "**Validation:** every entry must look like an address; duplicates inside the batch are merged.||**Kiểm tra:** mọi mục phải đúng dạng địa chỉ; mục trùng trong cùng một lô được gộp.",
            "**Authorization:** checked on the server for every admin request; hiding the menu item is not the check.||**Phân quyền:** kiểm tra ở server cho mọi request admin; việc ẩn mục menu không phải là kiểm tra.",
@@ -448,7 +455,7 @@ c = Chart("2.12 Admin: invite members||2.12 Admin: mời thành viên",
 c.n("s", U, 0, "Opens Admin → Members||Mở Admin → Members", None, "st")
 c.n("f_skel", F, 0, "Table with grey rows||Bảng với hàng xám", None, "s")
 c.n("b_list", B, 0, "GET /admin/users||GET /admin/users")
-c.n("d_role", B, 1, "Admin or Owner?||Admin hoặc Owner?", None, "d")
+c.n("d_role", B, 1, "Sender is an Admin?||Người gửi là Admin?", None, "d")
 c.n("x_role", F, 1, "'No access' page||Trang 'No access'", "403 · button: Back to Home||403 · nút: Back to Home", "x", terminal=True)
 c.n("f_table", F, 2, "Members and pending invitations||Thành viên và lời mời đang chờ", "Invite button||nút Invite")
 c.n("u_inv", U, 3, "Invite → types emails, picks a role||Invite → gõ email, chọn vai trò")
@@ -470,47 +477,48 @@ D.append(c)
 
 c = Chart("2.13 Admin: change a role, deactivate a member||2.13 Admin: đổi vai trò, vô hiệu hoá thành viên",
           "The effect reaches the other person's screen at once, without a new sign-in.||Hiệu lực tới màn hình của người kia ngay, không cần đăng nhập lại.",
-          ["**Before:** signed in as Admin or Owner, on the Admin page.||**Trước:** đã đăng nhập với vai trò Admin hoặc Owner, ở trang Admin.",
-           "**Who may do what:** only an Owner changes roles. An Admin deactivates Members; only an Owner deactivates Admins and Owners.||**Ai được làm gì:** chỉ Owner đổi vai trò. Admin vô hiệu hoá Member; chỉ Owner vô hiệu hoá Admin và Owner.",
-           "**Constraints:** nobody deactivates themselves; the last Owner cannot be demoted or deactivated.||**Ràng buộc:** không ai tự vô hiệu hoá mình; Owner cuối cùng không thể bị hạ vai trò hay vô hiệu hoá.",
-           "**After (role):** the label updates on Admin, People and the profile; the person gets an Activity item and sees the Admin entry appear or disappear.||**Sau (vai trò):** nhãn cập nhật ở Admin, People và hồ sơ; người đó nhận một mục Activity và thấy mục Admin xuất hiện hoặc biến mất.",
-           "**After (deactivate):** every session ends; old messages stay with a 'Deactivated' label; the person leaves People, mention lists and add-people lists; DMs with them become read-only. Reactivate restores access to the same channels.||**Sau (vô hiệu hoá):** mọi phiên kết thúc; tin cũ vẫn còn kèm nhãn 'Deactivated'; người đó rời People, danh sách mention và danh sách thêm người; DM với họ thành chỉ đọc. Reactivate trả lại quyền vào đúng các kênh cũ.",
+          ["**Before:** signed in as Admin, on the Admin page. There is no Owner role.||**Trước:** đã đăng nhập với vai trò Admin, ở trang Admin. Không có vai trò Owner.",
+           "**Who may do what:** any Admin changes roles and deactivates anyone, another Admin included.||**Ai được làm gì:** Admin nào cũng đổi được vai trò và vô hiệu hoá bất kỳ ai, kể cả Admin khác.",
+           "**Constraints:** nobody deactivates themselves; the last Admin cannot be demoted or deactivated.||**Ràng buộc:** không ai tự vô hiệu hoá mình; Admin cuối cùng không thể bị hạ vai trò hay vô hiệu hoá.",
+           "**After (role):** the label updates on Admin, People and the profile; the Admin entry appears or disappears for that person.||**Sau (vai trò):** nhãn cập nhật ở Admin, People và hồ sơ; mục Admin xuất hiện hoặc biến mất với người đó.",
+           "**After (deactivate):** every session ends; the person cannot sign in. Inviting them again later reactivates the same account with its history and channels.||**Sau (vô hiệu hoá):** mọi phiên kết thúc; người đó không đăng nhập được. Mời lại họ sau này thì kích hoạt lại đúng tài khoản cũ cùng lịch sử và các kênh.",
+           "**Record:** each of these actions is recorded on the server (who, what, to whom, when); phase 1 has no screen for it.||**Ghi nhận:** mỗi hành động này được ghi ở server (ai, làm gì, với ai, lúc nào); phase 1 chưa có màn hình xem.",
            "**Cancel:** closing the confirmation changes nothing.||**Huỷ:** đóng hộp xác nhận thì không có gì thay đổi."])
 c.n("s", U, 0, "Opens a member's row menu||Mở menu trên hàng của một thành viên", None, "st")
-c.n("f_menu", F, 0, "Change role · Deactivate||Change role · Deactivate", "not allowed: hidden or locked + reason||không được phép: ẩn hoặc khoá + lý do")
+c.n("f_menu", F, 0, "Change role · Deactivate||Change role · Deactivate", "self and last Admin: locked + reason||chính mình và Admin cuối: khoá + lý do")
 c.n("u_pick", U, 1, "Picks an action||Chọn một thao tác")
 c.n("f_conf", F, 1, "Confirmation names person and effect||Hộp xác nhận nêu tên người và hệ quả", "Confirm · Cancel||Confirm · Cancel")
 c.n("u_ok", U, 2, "Confirms||Xác nhận")
 c.n("f_load", F, 2, "Button loading||Nút đang tải", None, "s")
 c.n("b_patch", B, 2, "PATCH /admin/users/:id||PATCH /admin/users/:id", "{role} or {status}||{role} hoặc {status}")
-c.n("d_rank", B, 3, "Allowed for this target?||Được phép với người này?", None, "d")
-c.n("x_rank", F, 3, "'Only an Owner can do this'||'Only an Owner can do this'", "403 · dialog closes||403 · hộp thoại đóng", "x", terminal=True)
-c.n("d_last", B, 4, "Self, or the last Owner?||Chính mình / Owner cuối?", None, "d")
-c.n("x_last", F, 4, "'Make someone else an Owner first'||'Make someone else an Owner first'", "409 · nothing changes||409 · không đổi gì", "x", terminal=True)
+c.n("d_adm", B, 3, "Sender is an Admin?||Người gửi là Admin?", None, "d")
+c.n("x_rank", F, 3, "'No access'||'No access'", "403 · dialog closes||403 · hộp thoại đóng", "x", terminal=True)
+c.n("d_last", B, 4, "Self, or the last Admin?||Chính mình / Admin cuối?", None, "d")
+c.n("x_last", F, 4, "'Make someone else an Admin first'||'Make someone else an Admin first'", "409 · nothing changes||409 · không đổi gì", "x", terminal=True)
 c.n("d_kind", B, 5, "Deactivating?||Là vô hiệu hoá?", None, "d")
-c.n("f_live", F, 5, "Their app: menus update live||Ứng dụng của họ: menu cập nhật ngay", "Activity: 'X changed your role'||Activity: 'X changed your role'")
+c.n("f_live", F, 5, "Their app: menus update live||Ứng dụng của họ: menu cập nhật ngay")
 c.n("b_end", B, 6, "End all sessions; close connections||Kết thúc mọi phiên; đóng kết nối")
 c.n("f_out", F, 6, "Their app: 'Account deactivated'||Ứng dụng của họ: 'Account deactivated'")
 c.n("f_row", F, 7, "Admin's table: row updated + toast||Bảng của admin: hàng cập nhật + toast")
 c.n("end", U, 8, "Sees the new role or status||Thấy vai trò hoặc trạng thái mới", None, "en")
-c.e("s", "f_menu"); c.e("f_menu", "u_pick"); c.e("u_pick", "f_conf"); c.e("f_conf", "u_ok"); c.e("u_ok", "f_load"); c.e("f_load", "b_patch"); c.e("b_patch", "d_rank")
-c.e("d_rank", "x_rank", N); c.e("d_rank", "d_last", Y); c.e("d_last", "x_last", Y); c.e("d_last", "d_kind", N)
+c.e("s", "f_menu"); c.e("f_menu", "u_pick"); c.e("u_pick", "f_conf"); c.e("f_conf", "u_ok"); c.e("u_ok", "f_load"); c.e("f_load", "b_patch"); c.e("b_patch", "d_adm")
+c.e("d_adm", "x_rank", N); c.e("d_adm", "d_last", Y); c.e("d_last", "x_last", Y); c.e("d_last", "d_kind", N)
 c.e("d_kind", "f_live", N); c.e("d_kind", "b_end", Y); c.e("b_end", "f_out"); c.e("f_live", "f_row", loop="left"); c.e("f_out", "f_row"); c.e("f_row", "end")
 D.append(c)
 
 c = Chart("2.14 Start a direct message or a group||2.14 Bắt đầu một tin nhắn trực tiếp hoặc một nhóm",
-          "The prototype opens a DM with one person; choosing several people is not drawn.||Prototype mở được DM với một người; chọn nhiều người thì chưa được vẽ.",
+          "A + on the Direct messages heading replaces the prototype's pencil icon.||Dấu + ở tiêu đề Direct messages thay icon bút của prototype.",
           ["**Before:** signed in as Member, Admin or Owner. Guests cannot start DMs.||**Trước:** đã đăng nhập với vai trò Member, Admin hoặc Owner. Guest không mở được DM.",
            "**After:** the conversation is open. The other people see it in their list only once the first message is sent.||**Sau:** cuộc trò chuyện đang mở. Những người kia chỉ thấy nó trong danh sách khi tin đầu tiên được gửi.",
            "**Limit:** a group holds at most 8 people, counting the person who starts it. Nobody can be added or removed later; a different set of people is a new group.||**Giới hạn:** một nhóm tối đa 8 người, tính cả người tạo. Về sau không thêm hay bớt người được; một tập người khác là một nhóm mới.",
            "**Same people, same conversation:** choosing a set of people that already has a conversation reopens it with its history.||**Cùng người, cùng cuộc trò chuyện:** chọn một tập người đã có cuộc trò chuyện thì mở lại nó kèm lịch sử.",
            "**Deactivated person:** not listed in the picker; an existing DM with them stays readable, without a composer.||**Người đã bị vô hiệu hoá:** không có trong danh sách chọn; DM đã có với họ vẫn đọc được, không có ô soạn tin."])
-c.n("s", U, 0, "Presses New message||Bấm New message", "pencil icon above the list||icon bút phía trên danh sách", "st")
-c.n("f_dlg", F, 0, "Dialog: search people and channels||Hộp thoại: tìm người và kênh", "several people as chips: FQ-20||nhiều người dạng chip: FQ-20")
+c.n("s", U, 0, "Presses + on Direct messages||Bấm + ở Direct messages", "on hover; always shown on touch||khi hover; luôn hiện trên cảm ứng", "st")
+c.n("f_dlg", F, 0, "Dialog: search people||Hộp thoại: tìm người", "each person pressed becomes a chip||mỗi người được bấm thành một chip")
 c.n("u_pick", U, 1, "Picks one or more people||Chọn một hoặc nhiều người")
 c.n("d_cnt", F, 1, "1 to 7 other people?||Từ 1 tới 7 người khác?", "8 with you (Q17)||8 tính cả bạn (Q17)", "d")
 c.n("x_cnt", F, 2, "'Up to 8 people, counting you'||'Up to 8 people, counting you'", "the 8th pick is refused||lượt chọn thứ 8 bị từ chối", "x")
-c.n("u_go", U, 2, "Presses Start||Bấm Start", "one person: opens on the pick||một người: mở ngay khi chọn")
+c.n("u_go", U, 2, "Presses Start||Bấm Start", "one chip: a DM · several: a group||một chip: DM · nhiều chip: nhóm")
 c.n("f_load", F, 3, "Start button loading||Nút Start đang tải", None, "s")
 c.n("b_post", B, 3, "POST /conversations||POST /conversations", "{kind: dm, memberIds}||{kind: dm, memberIds}")
 c.n("d_same", B, 4, "This set of people exists?||Tập người này đã có?", None, "d")
@@ -538,7 +546,7 @@ c.n("u_msg", U, 2, "Sends a message||Gửi một tin nhắn")
 c.n("f_q", F, 2, "Shown as 'Waiting to send'||Hiện là 'Waiting to send'", None, "s")
 c.n("u_oth", U, 3, "Tries anything else||Thử bất kỳ việc gì khác", "react, upload, join, save, edit||reaction, tải lên, tham gia, lưu, sửa")
 c.n("x_blk", F, 3, "'You're offline' · action not done||'You're offline' · không thực hiện", "can be repeated once online||làm lại được khi có mạng", "x", terminal=True)
-c.n("f_retry", F, 4, "Retries: 1 s, 2 s, 5 s … up to 30 s||Thử lại: 1 giây, 2, 5 … tối đa 30 giây", "'Reconnecting…' wording: FQ-22||câu chữ 'Reconnecting…': FQ-22")
+c.n("f_retry", F, 4, "Retries: 1 s, 2 s, 5 s … up to 30 s||Thử lại: 1 giây, 2, 5 … tối đa 30 giây", "the banner stays the same throughout||banner giữ nguyên suốt thời gian đó")
 c.n("b_ws", B, 4, "WS /events?after=N||WS /events?after=N")
 c.n("d_sess", B, 5, "Session still valid?||Phiên còn hợp lệ?", None, "d")
 c.n("f_signin", F, 5, "'Session ended' (flow 3.2)||'Session ended' (flow 3.2)", "waiting messages are kept||tin đang chờ được giữ lại", "s", terminal=True)
@@ -635,11 +643,11 @@ def rows(text):
 
 RULES_EN = rows("""
 BR-01 | Nothing in Toki is readable without a session. Sign-in is the only public page. | all | Q11
-BR-02 | Sign-in is by a 6-digit code sent to the member's address. There is no password. How long a code lasts and how many wrong tries it allows are not decided: FA-13, FA-14. | 2.1 | Q11
-BR-03 | At most 5 code requests per address in 15 minutes; Resend enables after 60 seconds. | 2.1 | G5
+BR-02 | Sign-in is by a 6-digit code sent to the member's address: valid 10 minutes, usable once, locked after the 5th wrong try. There is no password. | 2.1 | Q11, Q34, Q36
+BR-03 | At most 5 code requests per address in 15 minutes; Resend code is available after 60 seconds, and a new code cancels the old one. | 2.1, 2.2 | G5, Q35
 BR-04 | A code request gets the same answer whether or not the address is a member. | 2.1 | Technical
 BR-05 | A session lasts 30 days on one device. Whether it renews on use is not decided: FA-15. | 1.2, 2.1, 3.2 | Q11
-BR-06 | People join only by invitation from an Admin or Owner. An invitation lasts 7 days, works once, and signs the person in without a code. | 2.2, 2.12 | G4, Q26
+BR-06 | People join only by invitation from an Admin. An invitation lasts 7 days and works once. Its mail carries a 6-digit code; the link alone signs nobody in. There is no welcome step. | 2.2, 2.12 | G4, Q32, Q33
 BR-07 | Every member is in #general; it cannot be left or archived. | 2.2, 2.9 | G1
 BR-08 | With no link, the app opens the conversation last viewed on that device; the first time, #general. | 2.3 | G2
 BR-09 | Permission is checked on the server for every request. Private conversations and DMs are visible to members only, including through search, file lists and direct links. | all | Technical
@@ -659,10 +667,10 @@ BR-22 | After something is created the screen shows it; a filter that would hide
 BR-23 | A private channel cannot be rejoined alone after leaving; the person must be added again. | 2.9 | OQ2, GAP-02
 BR-24 | Only the author edits a message; there is no time limit and no edit history. Deleting is permanent and removes the attached files. | 2.10 | F16, G10
 BR-25 | A deleted message with replies leaves a 'Message deleted' line and keeps its thread. | 2.10 | Technical
-BR-26 | Admins and Owners see and moderate only conversations they are members of. | 2.10, 2.13 | G14
-BR-27 | Only an Owner changes roles. An Admin deactivates Members; only an Owner deactivates Admins and Owners. | 2.13 | F40, F41
-BR-28 | Nobody deactivates themselves. The last Owner cannot be demoted or deactivated. | 2.13 | G6, F41
-BR-29 | Deactivation ends every session at once; messages stay; the account can be reactivated. Nothing is deleted permanently in phase 1. | 2.13, 3.2 | F41
+BR-26 | Admins see and moderate only conversations they are members of. | 2.10, 2.13 | G14
+BR-27 | There are two roles, Member and Admin; there is no Owner. Any Admin changes roles, invites with any role and deactivates anyone. | 2.12, 2.13 | Q43, Q44
+BR-28 | Nobody deactivates themselves. The last Admin cannot be demoted or deactivated. | 2.13 | Q44
+BR-29 | Deactivation ends every session at once; messages stay. Inviting the person again reactivates the same account. Nothing is deleted permanently in phase 1. | 2.13, 3.2 | Q52
 BR-30 | Offline: loaded content stays readable, messages wait and send themselves, every other action is blocked with an explanation. | 3.1 | NR13
 BR-31 | After reconnecting the app receives every missed event in order; after more than 7 days away it reloads. | 3.1 | Technical
 BR-32 | Every list has an empty state written for its context; a count on a chip equals the rows shown. | 2.4, 2.9, 2.11 | NR8
@@ -671,11 +679,11 @@ BR-34 | Every action has an entry point on narrow and touch screens; nothing is 
 """)
 RULES_VI = rows("""
 BR-01 | Không có gì trong Toki đọc được khi chưa có phiên. Đăng nhập là trang công khai duy nhất. | tất cả | Q11
-BR-02 | Đăng nhập bằng mã 6 số gửi tới địa chỉ của thành viên. Không có mật khẩu. Mã sống bao lâu và cho sai mấy lần thì chưa quyết định: FA-13, FA-14. | 2.1 | Q11
-BR-03 | Tối đa 5 lần xin mã cho một địa chỉ trong 15 phút; Resend bật sau 60 giây. | 2.1 | G5
+BR-02 | Đăng nhập bằng mã 6 số gửi tới địa chỉ của thành viên: hiệu lực 10 phút, dùng một lần, bị khoá sau lần sai thứ 5. Không có mật khẩu. | 2.1 | Q11, Q34, Q36
+BR-03 | Tối đa 5 lần xin mã cho một địa chỉ trong 15 phút; Resend code dùng được sau 60 giây, và mã mới huỷ mã cũ. | 2.1, 2.2 | G5, Q35
 BR-04 | Yêu cầu xin mã nhận cùng một câu trả lời dù địa chỉ có là thành viên hay không. | 2.1 | Technical
 BR-05 | Một phiên kéo dài 30 ngày trên một thiết bị. Có gia hạn khi dùng hay không thì chưa quyết định: FA-15. | 1.2, 2.1, 3.2 | Q11
-BR-06 | Chỉ vào được qua lời mời của Admin hoặc Owner. Lời mời có hạn 7 ngày, dùng một lần, và đăng nhập thẳng không cần mã. | 2.2, 2.12 | G4, Q26
+BR-06 | Chỉ vào được qua lời mời của Admin. Lời mời có hạn 7 ngày và dùng một lần. Mail mời có mã 6 số; riêng link thì không đăng nhập cho ai. Không có màn hình chào. | 2.2, 2.12 | G4, Q32, Q33
 BR-07 | Mọi thành viên đều ở trong #general; không rời và không lưu trữ được kênh này. | 2.2, 2.9 | G1
 BR-08 | Không có link thì ứng dụng mở cuộc trò chuyện xem gần nhất trên thiết bị đó; lần đầu là #general. | 2.3 | G2
 BR-09 | Quyền được kiểm tra ở server cho mọi request. Cuộc trò chuyện riêng tư và DM chỉ thành viên thấy, kể cả qua tìm kiếm, danh sách file và link trực tiếp. | tất cả | Technical
@@ -695,10 +703,10 @@ BR-22 | Sau khi tạo thứ gì, màn hình hiện thứ đó; bộ lọc nào c
 BR-23 | Rời kênh riêng tư rồi thì không tự vào lại được; phải được thêm lại. | 2.9 | OQ2, GAP-02
 BR-24 | Chỉ tác giả sửa được tin; không giới hạn thời gian và không có lịch sử sửa. Xoá là vĩnh viễn và gỡ luôn file đính kèm. | 2.10 | F16, G10
 BR-25 | Tin đã xoá mà có trả lời thì để lại dòng 'Message deleted' và giữ thread. | 2.10 | Technical
-BR-26 | Admin và Owner chỉ thấy và quản lý các cuộc trò chuyện mà họ là thành viên. | 2.10, 2.13 | G14
-BR-27 | Chỉ Owner đổi vai trò. Admin vô hiệu hoá Member; chỉ Owner vô hiệu hoá Admin và Owner. | 2.13 | F40, F41
-BR-28 | Không ai tự vô hiệu hoá mình. Owner cuối cùng không thể bị hạ vai trò hay vô hiệu hoá. | 2.13 | G6, F41
-BR-29 | Vô hiệu hoá kết thúc mọi phiên ngay; tin nhắn vẫn còn; tài khoản kích hoạt lại được. Phase 1 không xoá vĩnh viễn thứ gì. | 2.13, 3.2 | F41
+BR-26 | Admin chỉ thấy và quản lý các cuộc trò chuyện mà họ là thành viên. | 2.10, 2.13 | G14
+BR-27 | Có hai vai trò, Member và Admin; không có Owner. Admin nào cũng đổi được vai trò, mời với vai trò nào cũng được và vô hiệu hoá bất kỳ ai. | 2.12, 2.13 | Q43, Q44
+BR-28 | Không ai tự vô hiệu hoá mình. Admin cuối cùng không thể bị hạ vai trò hay vô hiệu hoá. | 2.13 | Q44
+BR-29 | Vô hiệu hoá kết thúc mọi phiên ngay; tin nhắn vẫn còn. Mời lại người đó thì kích hoạt lại đúng tài khoản cũ. Phase 1 không xoá vĩnh viễn thứ gì. | 2.13, 3.2 | Q52
 BR-30 | Mất mạng: nội dung đã tải vẫn đọc được, tin nhắn chờ và tự gửi, mọi hành động khác bị chặn kèm giải thích. | 3.1 | NR13
 BR-31 | Kết nối lại thì ứng dụng nhận mọi event bị lỡ theo thứ tự; vắng hơn 7 ngày thì tải lại. | 3.1 | Technical
 BR-32 | Mọi danh sách có trạng thái trống viết riêng cho ngữ cảnh; số trên chip bằng số hàng đang hiện. | 2.4, 2.9, 2.11 | NR8
@@ -772,8 +780,11 @@ def both(en, vi):
 NEW_RULES = [
     ["BR-35", "A display name is 1 to 80 characters.||Tên hiển thị dài từ 1 tới 80 ký tự.", "2.2", "Q31 (your answer, 13 Nov 2026)||Q31 (bạn trả lời, 13/11/2026)"],
     ["BR-36", "A group DM holds at most 8 people, counting its creator. Nobody is added or removed afterwards.||Một group DM tối đa 8 người, tính cả người tạo. Về sau không thêm hay bớt người.", "2.14", "Q17, G12"],
-    ["BR-37", "Every Member, Admin and Owner may create public and private channels and start DMs and groups. Guests may not.||Mọi Member, Admin và Owner đều tạo được kênh công khai, kênh riêng tư, DM và nhóm. Guest thì không.", "2.8, 2.14", "Q12 (capability table)||Q12 (bảng quyền)"],
-    ["BR-38", "Only an Admin or Owner removes someone from a channel, and only in a channel they belong to themselves.||Chỉ Admin hoặc Owner gỡ được người khỏi kênh, và chỉ trong kênh mà chính họ là thành viên.", "2.9", "G14, Q12"],
+    ["BR-37", "Only an Admin creates channels, from the Admin page. Every Member and Admin may start DMs and groups. Guests may not.||Chỉ Admin tạo kênh, từ trang Admin. Mọi Member và Admin đều mở được DM và nhóm. Guest thì không.", "2.8, 2.14", "Q38, Q41, Q50"],
+    ["BR-38", "Only an Admin removes someone from a channel, and only in a channel they belong to; nobody is removed from #general.||Chỉ Admin gỡ được người khỏi kênh, và chỉ trong kênh mà họ là thành viên; không ai bị gỡ khỏi #general.", "2.9", "G14, Q42"],
+    ["BR-39", "A person cannot read a channel they have not joined; there is no preview.||Người dùng không đọc được kênh mình chưa tham gia; không có xem trước.", "2.4, 2.9", "Q74"],
+    ["BR-40", "Form errors show under the field, and the button stays disabled until the form is valid. A button is disabled while its request runs, and the server ignores a repeat of the same request.||Lỗi của form hiện dưới ô nhập, và nút bị tắt cho tới khi form hợp lệ. Nút bị tắt khi request đang chạy, và server bỏ qua request lặp lại.", "all||tất cả", "Q63, Q68"],
+    ["BR-41", "A mention in a muted conversation notifies only when the person's own switch allows it; the switch is on by default.||Mention trong cuộc trò chuyện đã tắt tiếng chỉ báo khi công tắc của chính người đó cho phép; công tắc mặc định bật.", "2.7", "Q48, Q62"],
 ]
 NEW_ASSUME = [
     ["FA-13", "A member's sign-in code is valid for 10 minutes.||Mã đăng nhập của thành viên có hiệu lực 10 phút.", "2.1", "The prototype's guest code screen says 'It works for 10 minutes'; nothing decides it for members||Màn hình nhập mã của guest trong prototype ghi 'It works for 10 minutes'; chưa có gì quyết định cho thành viên"],
@@ -868,6 +879,11 @@ TECH = {
     "T4": "Every change is a numbered event. After reconnecting, the app asks for everything after the last number it saw; after more than 7 days away it reloads.||Mọi thay đổi là một event có đánh số. Khi kết nối lại, ứng dụng xin mọi thứ sau số cuối cùng nó đã thấy; vắng hơn 7 ngày thì tải lại toàn bộ.",
     "T5": "The server checks the session on every request and closes the live connection the moment a session ends.||Server kiểm tra phiên ở mọi request và đóng kết nối trực tiếp ngay khi phiên kết thúc.",
 }
+RESOLVE = dict(x.split(":") for x in """FQ-01:Q45 FQ-13:Q46 FQ-14:Q35 FQ-15:Q33 FQ-17:Q38 FQ-19:Q42 FQ-20:Q39 FQ-21:Q47 GQ-01:Q48 GQ-06:Q49 GQ-20:Q50
+VQ-03:Q40 FQ-02:Q53 FQ-03:Q52 FQ-04:Q58 FQ-05:Q59 FQ-07:Q60 FQ-08:Q54 FQ-11:Q71 FQ-16:Q55 FQ-18:Q56 FQ-22:Q61 GQ-02:Q62 GQ-03:Q63 GQ-05:Q57
+GQ-09:Q73 GQ-10:Q66 GQ-11:Q67 GQ-12:Q64 GQ-16:Q72 GQ-18:Q68 GQ-19:Q65 VQ-02:Q69 FQ-06:Q82 FQ-09:Q76 FQ-10:Q74 FQ-12:Q83 GQ-04:Q79 GQ-07:Q75
+GQ-08:Q77 GQ-13:Q78 GQ-14:Q80 GQ-15:Q81 GQ-17:Q84 FA-13:Q34 FA-14:Q36 FA-17:Q61""".split())   # an earlier question -> the answer that settled it
+EXTRA = {"1.1": "Q32 Q43", "2.1": "Q34 Q35 Q36", "2.2": "Q32 Q33 Q34 Q37 Q45", "2.8": "Q38 Q41 Q56 Q76", "2.12": "Q43 Q44 Q52 Q71", "2.13": "Q43 Q44 Q52 Q72", "2.14": "Q39 Q51 Q70"}
 CITE = {
     "1.1": "G4 Q11 Q12 FA-13 FA-15 F03 FQ-13 FQ-15",
     "1.2": "Q11 Q12 NR13 F06 F41 FA-16",
@@ -889,6 +905,15 @@ CITE = {
     "3.2": "Q11 Q12 T5 F06 F07 F41 FA-09 FA-16 FQ-02",
     "3.3": "NR4 FA-02 FA-08 FA-16 GQ-03 GQ-18",
 }
+
+DROP = {"F03", "G6"}                              # superseded: the welcome step, the Owner rule
+for _k in list(CITE):
+    _ids = []
+    for _i in (EXTRA.get(_k, "").split() + CITE[_k].split()):
+        _i = RESOLVE.get(_i, _i)
+        if _i not in _ids and _i not in DROP:
+            _ids.append(_i)
+    CITE[_k] = " ".join(sorted(_ids, key=lambda x: (x[:2] in ("FA", "FQ", "GQ", "VQ"), x[0] not in "QGON")))
 
 
 def _by(lang, key):
