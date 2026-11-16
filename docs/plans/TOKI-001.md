@@ -127,6 +127,10 @@ Commit: `chore(repo): add the two apps and six packages (TOKI-001)`.
 
 Clone `feat/toki-001` into a temporary folder, switch to Node 22, run every test of the table in the spec's order (R1, R2, R3, R4, R5, R6, R9, R10, R12, R11), then R7 and R8. No file changes.
 
+### Dev-flow files
+
+Files (create, by the Dev flow itself, on every ticket branch): `docs/plans/TOKI-001.md` (this plan) and `docs/plans/TOKI-001.state.json` (written only by the `dev-state` script; its content changes at every stage). They are part of the branch diff and carry no product change.
+
 ## What can break
 
 - pnpm 12 or TypeScript 7 behaves differently from the spec's wording (engine check on the workspace root, `--if-present` exit code, `tsc` path output). Step 3 runs each command for real; a difference stops the build and goes back to the Dev, it is not worked around.
