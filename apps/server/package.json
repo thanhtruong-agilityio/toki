@@ -1,0 +1,7 @@
+{
+  "name": "@toki/server",
+  "private": true,
+  "type": "module",
+  "scripts": { "typecheck": "tsc --noEmit" },
+  "dependencies": { "@toki/shared": "workspace:*" }
+}

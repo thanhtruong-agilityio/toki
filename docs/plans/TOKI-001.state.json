@@ -1,0 +1,72 @@
+{
+  "approved_auto": true,
+  "base": "main",
+  "branch": "chore/toki-001-monorepo-typescript-setup",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-16T09:16:25Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-16T09:16:25Z",
+      "stage": "plan"
+    },
+    {
+      "at": "2026-11-16T09:17:22Z",
+      "auto": true,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-16T09:18:10Z",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-16T09:21:11Z",
+      "auto": true,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-16T09:21:34Z",
+      "stage": "check"
+    },
+    {
+      "at": "2026-11-16T09:23:46Z",
+      "auto": true,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-16T09:24:13Z",
+      "stage": "drift"
+    },
+    {
+      "at": "2026-11-16T09:25:17Z",
+      "stage": "ship"
+    },
+    {
+      "at": "2026-11-16T09:25:36Z",
+      "stage": "ci"
+    },
+    {
+      "at": "2026-11-16T09:29:27Z",
+      "auto": true,
+      "stage": "approve"
+    }
+  ],
+  "key": "TOKI-001",
+  "main_sha": "a246ca0918f4971b8425bbcd9d982188e2639377",
+  "metrics": {},
+  "mode": "Auto to PR",
+  "plan_approved": true,
+  "plan_hash": "bb2b9d1b2f6fcd5f9fc9ef7ac7ceba88a565b9375f8b805ec297f89432026517",
+  "spec_commit": "34f266e5ce2675798e2d17e5cfee6ed475032437",
+  "spec_paths": [
+    "docs/specs/2026-11-12-monorepo-typescript-setup-design.md"
+  ],
+  "stage": "ci",
+  "tier": "S",
+  "verifier": {
+    "result": "PASS",
+    "round": 3
+  }
+}
