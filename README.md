@@ -2,18 +2,18 @@
 
 Internal team chat for one company: single-tenant, self-hosted, built in phases. Phase 1 is core chat on the web.
 
-> Status: the repository holds the workflow files and the specs of the Repository foundation tickets. No application code is on `main` yet. Everything marked `(planned)` below is described by a spec in `docs/specs/` and arrives with the ticket named next to it.
+> Status: the repository holds the workflow files and the specs of the first ten tickets (TOKI-001 to TOKI-008, TOKI-095, TOKI-096). No application code is on `main` yet. Everything marked `(planned)` below is described by a spec in [`docs/specs/`](docs/specs/) and arrives with the ticket named next to it.
 
 ## 1. Overview
 
 This repository owns:
 
-- The intents and specs of the product work: `docs/intents/`, `docs/specs/`.
-- The working agreements for people and for Claude: `CLAUDE.md`, `.claude/settings.json`, `docs/definition-of-done.md`.
-- The automation that gives a merged spec its ticket: `.github/workflows/spec-ticket.yml`.
+- The intents and specs of the product work: [`docs/intents/`](docs/intents/), [`docs/specs/`](docs/specs/).
+- The working agreements for people and for Claude: [`CLAUDE.md`](CLAUDE.md), [`.claude/settings.json`](.claude/settings.json), [`docs/definition-of-done.md`](docs/definition-of-done.md).
+- The automation that gives a merged spec its ticket: [`.github/workflows/spec-ticket.yml`](.github/workflows/spec-ticket.yml).
 - The server, the web app and the shared packages `(planned, TOKI-001)`.
 
-Work moves in one direction: intent -> spec -> ticket -> plan -> pull request. A spec merged into `main` gets a ticket on the tracker; a spec with an open question gets a blocked ticket.
+Work moves in one direction: intent -> spec -> ticket -> plan -> pull request. A spec merged into `main` gets a ticket on the tracker; a spec with an open question or concern gets a blocked ticket.
 
 ## 2. Architecture
 
@@ -22,14 +22,14 @@ flowchart LR
   browser[Browser] -.planned.-> web[apps/web<br/>Vite + React]
   web -.planned.-> server[apps/server<br/>Fastify, /api/v1]
   server -.planned.-> pg[(Postgres)]
-  server -.planned.-> files[(MinIO<br/>file storage)]
+  server -.planned.-> files[(S3-compatible file storage<br/>MinIO in development)]
   server -.planned.-> mail[SMTP<br/>Mailpit in development]
 ```
 
 None of these boxes exists on `main` yet.
 
 - The web app calls the server under `/api/v1`; in development a proxy in the web app forwards those calls to the local server.
-- The server keeps its data in Postgres, stores files in MinIO and sends sign-in mail over SMTP.
+- The server keeps its data in Postgres, stores files in S3-compatible storage (MinIO in development) and sends sign-in mail over SMTP (Mailpit catches it in development).
 - Each company runs its own copy on one VPS.
 - Shared code lives in packages (`shared`, `client-core`, `tokens`, `i18n`, `platform`, `ui-web`). Lint rules keep `client-core`, `shared`, `i18n` and `tokens` free of browser APIs, so a later native app can reuse them.
 
@@ -43,11 +43,11 @@ All `(planned)`; the spec of each ticket is the source.
 - Fastify (TOKI-004), Drizzle migrations on Postgres (TOKI-005)
 - Vite, React, TanStack Router, TanStack Query (TOKI-006)
 - GitHub Actions (TOKI-007)
-- Vitest, Playwright (TOKI-008)
+- Vitest (minimal setup TOKI-004, full harness TOKI-008), Playwright (TOKI-008)
 
 ## 4. Prerequisites
 
-- Git and Bash, to read the repository and run the script test.
+- Git and Bash, to clone the repository and run the one existing test.
 - The GitHub CLI (`gh`) with write access to this repository, to open pull requests.
 - Node 22, pnpm and Docker `(planned, TOKI-001 and TOKI-003)`.
 
@@ -60,34 +60,35 @@ All `(planned)`; the spec of each ticket is the source.
    cd toki
    ```
 
-2. Run the test of the spec check to confirm the checkout works. It ends with `all cases passed`.
+2. Read [`CLAUDE.md`](CLAUDE.md) before the first change. With Claude Code, start work on a ticket with `/cl-core:ticket <ticket>`.
+
+3. Run the existing test to confirm the checkout works. It ends with `all cases passed`.
 
    ```bash
    bash .github/scripts/spec-ready.test.sh
    ```
 
-3. Read `CLAUDE.md` before the first change. With Claude Code, start work on a ticket with `/cl-core:ticket <ticket>`.
-
-Installing and running the apps: TBD, arrives with TOKI-001.
+Installing arrives with TOKI-001; running the apps arrives with TOKI-003 (services), TOKI-004 (server) and TOKI-006 (web). Commands: TBD.
 
 ## 6. Project Structure
 
-```
+```text
 .
 ├─ CLAUDE.md                     working agreements for Claude sessions
 ├─ .claude/settings.json         project permissions for Claude Code
 ├─ .github/
-│  ├─ pull_request_template.md   Ticket, What, Why, How tested, Risk
+│  ├─ pull_request_template.md   Ticket, What, Why, How tested, Screenshots, Risk
 │  ├─ scripts/                   spec check, its test, and the ticket script
 │  └─ workflows/spec-ticket.yml  gives each merged spec its ticket
 ├─ docs/
 │  ├─ intents/                   one file per raw requirement
 │  ├─ specs/                     one design per intent, named <date>-<slug>-design.md
-│  ├─ plans/                     implementation plan per ticket (planned)
+│  ├─ plans/                     implementation plan per ticket (planned, TOKI-095)
 │  ├─ definition-of-done.md      when a ticket is done
 │  └─ ticket-config.yml          tracker, statuses, labels, thresholds
 ├─ apps/                         server and web (planned, TOKI-001)
 ├─ packages/                     shared, client-core, tokens, i18n, platform, ui-web (planned, TOKI-001)
+├─ e2e/                          Playwright end-to-end tests (planned, TOKI-008)
 └─ infra/                        development Compose file and scripts (planned, TOKI-003)
 ```
 
@@ -99,7 +100,7 @@ One test exists today, for the script that decides whether a spec has open point
 bash .github/scripts/spec-ready.test.sh
 ```
 
-The test harness for the apps (Vitest against a real Postgres, Playwright) and the CI checks are `(planned, TOKI-008 and TOKI-007)`. `docs/definition-of-done.md` requires a test for every change and green CI.
+The test harness for the apps (Vitest against a real Postgres, Playwright) and the CI checks are `(planned, TOKI-008 and TOKI-007)`. [`docs/definition-of-done.md`](docs/definition-of-done.md) requires a test for every change and green CI.
 
 ## 8. Deployment
 
@@ -113,7 +114,7 @@ Nothing is deployed yet; the production image and the deploy on merge are `(plan
 
 - Board: https://github.com/thanhtruong-agilityio/toki/issues
 - Design doc: the Toki Blueprint, kept outside this repository. Link: TBD.
-- Specs: `docs/specs/`
+- Specs: [`docs/specs/`](docs/specs/)
 - Runbook: TBD
 - Changelog: TBD
 - API reference: TBD
