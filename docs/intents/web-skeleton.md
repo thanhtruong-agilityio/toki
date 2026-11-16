@@ -30,7 +30,7 @@ Toki phase 1 is core chat on the web, but the web app does not exist yet. Nothin
 - The server API is versioned under `/api/v1`. Source: Toki Blueprint, technical design.
 - Milestone: M1 Foundation and design system. Exit check for the milestone: `pnpm dev` runs, CI is green, and the component preview page matches the prototype. Source: Toki Blueprint, milestone M1.
 - Size: S (about half a working session with Claude). Source: Toki Blueprint, ticket TOKI-006.
-- Needs: TOKI-001 (pnpm monorepo and TypeScript). Source: Toki Blueprint, ticket TOKI-006.
+- Needs: TOKI-001 (pnpm monorepo and TypeScript). Source: Toki Blueprint, ticket TOKI-006. Plan change: it now also needs TOKI-096 (environment variables), for the dev proxy target variable name (decision of 2026-11-12).
 - Needed by: TOKI-008 (test harness), TOKI-010 (self-hosted fonts) and TOKI-011 (icon set). Source: Toki Blueprint, ticket list, Needs column.
 - Belongs to Blueprint intent I01 repo-foundation, alongside TOKI-001 to TOKI-008. Source: Toki Blueprint, intent list.
 
