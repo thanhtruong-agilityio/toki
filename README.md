@@ -113,7 +113,7 @@ Nothing is deployed yet; the production image and the deploy on merge are `(plan
 ## 9. Links
 
 - Board: https://github.com/thanhtruong-agilityio/toki/issues
-- Design doc: the Toki Blueprint, kept outside this repository. Link: TBD.
+- Design doc: the [Toki Blueprint](https://claude.ai/code/artifact/e6b79d7f-ff70-41b2-99d6-d2cb61c33b35), kept outside this repository.
 - Specs: [`docs/specs/`](docs/specs/)
 - Runbook: TBD
 - Changelog: TBD
