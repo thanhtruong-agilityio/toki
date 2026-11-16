@@ -19,7 +19,7 @@ The builder (Thanh and Claude) can build the shell, the lists, the profile and t
 - Belongs to Blueprint intent I02 design-system, whose result is that every base component matches the prototype in Calm and Focus, in all three layouts. Source: Toki Blueprint, intent list.
 - Milestone: M1, Foundation and design system. Source: Toki Blueprint, milestone M1.
 - Size: M, about one working session with Claude. Source: Toki Blueprint, ticket TOKI-013.
-- Needs: TOKI-009 (tokens) and TOKI-018 (platform). Source: Toki Blueprint, ticket TOKI-013, Needs column. It also builds on the icons of TOKI-011 and the fonts of TOKI-010.
+- Needs: TOKI-009 (tokens) and TOKI-018 (platform). Source: Toki Blueprint, ticket TOKI-013, Needs column. It also builds on the icons of TOKI-011 and the fonts of TOKI-010. The spec proposes one plan change to this line: TOKI-012 (it supplies the shared files and the test set-up) instead of TOKI-018, which nothing here calls.
 - Needed by: TOKI-015 (AppShell) and TOKI-093 (Destructive-action and unsaved-form patterns) directly. Source: Toki Blueprint, ticket list, Needs column.
 - Agreed scope: Avatar, PresenceDot, EmptyState centred in the content area, Toast placed above the composer with an Undo button. Source: Toki Blueprint, ticket TOKI-013.
 - An empty list shows a message written for its context, centred in the content area. Source: D-074, FR-30, AC-079.
