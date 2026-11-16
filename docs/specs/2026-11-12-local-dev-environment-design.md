@@ -90,7 +90,7 @@ toki/
 - `dev:reset:mail` deletes all messages through Mailpit's HTTP API, called from inside a container of the `toki-dev` project, so R21 still holds; it does not restart the container.
 - One shared guard is called first by every reset script. It reads the environment name variable from the TOKI-096 inventory in the shell and in the root `.env` separately, before `.env` is loaded. It lets the script continue only when every source that sets the variable says `development` (R10).
 - `dev:reset` runs the same entry point as `pnpm dev:reset:db`, `pnpm dev:reset:files` and `pnpm dev:reset:mail`; it does not copy them. Later steps (such as migrate) are added inside that entry point, so `dev:reset` runs them too.
-- Assumption: the folder name `infra/dev/` and the script language. The Blueprint fixes only the compose path and the script names.
+- The reset scripts, the shared guard and the smoke test live in `infra/dev/` and are Bash scripts (`.sh`). The Blueprint fixes only the compose path and the script names. Decided by Thanh Truong (lead, as product owner) on 2026-11-16.
 - Variable names for the database, the bucket, credentials and ports are the ones in the TOKI-096 inventory (R17). The compose file and the scripts need these values; the list is handed to TOKI-096, which names them:
   - Postgres user, Postgres password and development database name;
   - test database name (read only by the guard of R24);
