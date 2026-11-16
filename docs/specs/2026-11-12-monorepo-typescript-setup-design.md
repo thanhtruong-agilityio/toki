@@ -27,7 +27,7 @@ The builder (Thanh and Claude) needs one agreed place for the server, the web ap
 - R5. `tsconfig.base.json` exists at the root and sets `"strict": true`, `"module": "ESNext"`, `"moduleResolution": "Bundler"` and `"noEmit": true`. Every project `tsconfig.json` extends it, and no project `tsconfig.json` sets `strict`, `target`, `module` or `moduleResolution` itself (checked with `grep`).
 - R6. `pnpm typecheck` at the root type-checks all eight projects and exits 0.
 - R7. When a type error is added to `src/index.ts` of any one project, `pnpm typecheck` exits non-zero and prints that file path.
-- R8. The root `package.json` sets `engines.node` to `22.x` and `.nvmrc` holds `22`. With another Node major version, `pnpm install` stops with an unsupported engine error.
+- R8. The root `package.json` sets `engines.node` to `22.x` and `devEngines.runtime` to Node `22.x` with `onFail: error`, and `.nvmrc` holds `22`. With another Node major version, `pnpm install` exits non-zero with a runtime version error and installs nothing.
 - R9. The root `package.json` has a `packageManager` field of the form `pnpm@<exact version>`; the version is the stable pnpm release in use when this ticket is built. Check: `pnpm --version` at the root prints exactly that version, and `git ls-files` lists `pnpm-lock.yaml` and neither `package-lock.json` nor `yarn.lock`.
 - R10. `apps/server` and `apps/web` each declare the `shared` package as a `workspace:*` dependency. A line `import {} from "@toki/shared"` in either app passes `pnpm typecheck`; it resolves to the source file through the `exports` entry of `@toki/shared` (R4), with no build step.
 - R11. `.gitignore` ignores `node_modules`, build output (`dist`) and local environment files, with exactly these environment patterns: `.env`, `.env.*`, `!.env.example`. Check: `git check-ignore .env` and `git check-ignore .env.local` each print the path, and `git check-ignore .env.example` prints nothing. After `pnpm install` and `pnpm typecheck`, `git status --porcelain` prints nothing.
@@ -37,7 +37,7 @@ The builder (Thanh and Claude) needs one agreed place for the server, the web ap
 ### Layout
 ```
 toki/
-├─ package.json          private root; scripts: typecheck, dev; engines; packageManager
+├─ package.json          private root; scripts: typecheck, dev; engines; devEngines; packageManager
 ├─ pnpm-workspace.yaml   apps/*, packages/*
 ├─ pnpm-lock.yaml
 ├─ tsconfig.base.json    the one shared compiler config
@@ -51,14 +51,14 @@ toki/
 - TypeScript is installed once, in the root `devDependencies`. No project installs its own copy.
 - Each project has a `typecheck` script that runs `tsc --noEmit`. The root `typecheck` script runs it in every project with `pnpm -r`.
 - The root `dev` script is `pnpm -r --parallel --if-present run dev` (R12). `--if-present` makes it exit 0 while no project has a `dev` script; `--parallel` starts the long-running dev servers together and streams their output. It does not start the services of TOKI-003. TOKI-004 and TOKI-006 add only the `dev` script of their own project (`apps/server`, `apps/web`); they do not edit the root script.
-- The Node pin in R8 needs no extra setting: pnpm checks the `engines.node` of the workspace root itself. There is no `.npmrc` and no `engine-strict` setting, because `engine-strict` would also refuse any dependency whose own `engines` excludes the running Node.
+- The Node pin in R8 needs `devEngines.runtime` in the root `package.json`: pnpm 12.21.0 only warns when the running Node does not match the `engines.node` of the workspace root, and still installs. `devEngines.runtime` with `onFail: error` makes `pnpm install` stop, and it checks only the runtime of this repository. There is no `.npmrc` and no `engine-strict` setting, because `engine-strict` would also refuse any dependency whose own `engines` excludes the running Node. Found when TOKI-001 was built; decided by Thanh Truong (lead, as product owner) on 2026-11-16.
 - `.gitignore` is owned by this ticket (R11). `.env.example` stays tracked, so TOKI-096 can add it without editing `.gitignore`.
 - Compiler options that differ by project (for example DOM types for `web` and `ui-web`) are added by the ticket that first needs them, in that project's `tsconfig.json`.
 - Packages are named `@toki/<folder>` (for example `@toki/shared`). Decided, see concern 1.
 - All projects are ES modules and are consumed from source: no build step and no emitted files; type check only. Decided, see concern 2.
 
 ### Errors
-- Wrong Node major version -> `pnpm install` stops with an unsupported engine error (R8).
+- Wrong Node major version -> `pnpm install` stops with a runtime version error (R8).
 - Type error in any project -> `pnpm typecheck` exits non-zero and names the file (R7).
 - No project has a `dev` script -> `pnpm dev` has nothing to run and exits 0, with no error (R12).
 
