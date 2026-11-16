@@ -5,69 +5,77 @@ Intent: docs/intents/sign-in-screens.md (Thanh Truong)
 Ticket: TOKI-023
 
 ## Goal
-A Member or an Admin needs a way into Toki: enter an email address, type the 6-digit code from the mail, and be in the app, with no password and no welcome step. The prototype has no sign-in screen, and the Sign-in API (TOKI-022) shows nothing to a person.
+A Member or an Admin needs a way into Toki: enter an email address, type the 6-digit code from the mail, and be in the app, with no password and no welcome step. The prototype has no sign-in screen for members, only the guest one (D-011), and the Sign-in API (TOKI-022) shows nothing to a person.
 This ticket builds the two steps of the sign-in page, what the person sees for each of the 7 error cases of journey F05, and the 'Your session has ended' screen of journey F07. It targets the web app at every supported width, with the keyboard alone, in English and Vietnamese.
 
 ## Scope
 - In:
   - The sign-in page at `/login` with its two steps: the email step and the 'Check your email' step.
-  - The 7 error cases of journey F05 and what the person sees for each.
+  - The 7 error cases of journey F05 and what the person sees for each, and every other answer of the Sign-in API these screens can receive ("API outcomes and what the person sees").
   - Sending a person without a session to the sign-in page, and a person with a session past it.
-  - The 'Your session has ended' screen and its deactivated form (journey F07).
-  - The small piece of `client-core` these screens need: the session state and the calls to the Sign-in API.
+  - The 'Your session has ended' screen and its deactivated form (journeys F07 and F41).
+  - The small piece of `client-core` these screens need: the session state, and the calls to four routes of the Sign-in API (request a code, exchange a code, read the session, read the workspace name).
   - The English and Vietnamese text keys of these screens.
 - Out (not now):
   - The server side: codes, limits, sessions, the cookie, the answers themselves. That is TOKI-022. This ticket only shows what the server answers and enforces none of the limits itself.
   - The sign-in mail and its templates: TOKI-021.
-  - Accepting an invitation, its code step and its refusal pages: TOKI-097. The hand-off: TOKI-097 sends a person whose invitation was already used to `/login` with the email filled in (design, "Routes and state"), and may reuse the code step component of this ticket.
-  - 'Sign out', the account menu and the signed-in devices list: TOKI-099. The hand-off: after Sign out the app shows `/login`; this ticket supplies that page and the session state TOKI-099 changes.
+  - Accepting an invitation, its code step and its refusal pages: TOKI-097. The hand-off: TOKI-097 sends a person whose invitation was already used to `/login` with the email filled in (design, "Routes and state"), and may reuse the code step component of this ticket. The question 'You are signed in as A. Sign out to continue as B?' (D-080) is asked for links; the sign-in mail has no link (D-157) and `/login` is not shown to a person with a session (R2), so this ticket has no such question.
+  - 'Sign out', the account menu and the signed-in devices list: TOKI-099. TOKI-099 adds the client call for sign-out (`DELETE /api/v1/auth/session`) and, after it, calls the function of this ticket that sets the session state to signed out (R39); the app then shows `/login`.
+  - Other tabs of the same browser on sign-out (D-093), split in three. TOKI-022 owns the server side: after a sign-out the other tabs' next request is answered 401 `unauthenticated`. This ticket owns the session state in `client-core` that reacts when any request is answered as not signed in, and exposes it so other tickets can trigger it (R39). The signal sent between tabs when a person presses 'Sign out', which makes the other tabs react before their next request, belongs to TOKI-099.
   - The emergency sign-in link: TOKI-026. It opens the app directly and never shows these screens.
   - The guest portal sign-in (phase 5).
-  - The base components (Button, Field) and the Modal: TOKI-012 and TOKI-014. This ticket adds no new base component.
+  - The base components (Button, Field) and the Modal: TOKI-012 and TOKI-014. This ticket adds no new base component. It needs four things from the Modal that the ticket text of TOKI-014 does not promise; they are listed in concern 14.
   - Keeping the composer draft across a sign-in (last line of journey F07): see concern 8.
 
 ## Requirements
-- R1. With no valid session, opening any address of the web app shows the sign-in page at `/login`. The page shows no channel name, no message and no member name (FR-03 AC-007, BR-01).
+A text in quotes is the English text of a key in "Texts". That table says for each text whether its wording is decided or proposed; a requirement holds for whatever wording is finally signed off. Words in `code font` are names of the Sign-in API (TOKI-022).
+
+- R1. With no valid session, opening any address of the web app shows the sign-in page at `/login`. "No valid session" means `GET /api/v1/auth/session` answers 401 with the code `unauthenticated` or `session_ended`. The page shows no channel name, no message and no member name (FR-03 AC-007, BR-01).
 - R2. With a valid session, opening `/login` or any other address shows the app; the sign-in page is not shown (journey F04).
 - R3. After a successful sign-in the person lands on the address they first opened; when there was none, on `/`. An address that is not a path of this web app is ignored and `/` is used.
-- R4. The email step shows exactly: the logo and the workspace name, one email field, and the button 'Send code'. It has no password field (journey F04, FR-01 AC-002).
+- R4. The email step shows exactly: the logo and the workspace name (R38), one email field, and the button 'Send code'. It has no password field (journey F04, FR-01 AC-002).
 - R5. 'Send code' is disabled until the field holds a well-formed email address; pressing Enter in the field does nothing while it is disabled (D-104).
 - R6. While a code request runs, 'Send code' is disabled, and a second press or a second Enter sends no second request (D-111).
-- R7. When the server accepts the request, the screen changes to the 'Check your email' step. What is shown is identical for an address that is a member and one that is not (BR-04, journey F05 case 1).
-- R8. The 'Check your email' step shows exactly: the logo and the workspace name, the heading 'Check your email', the address that was typed, one 6-digit field, the line 'The code works for 10 minutes', the link 'Use a different email' and the button 'Resend code' (journey F04, D-082, D-136).
-- R9. The code field holds digits only and at most 6: typed letters and symbols do not appear, a 7th digit is not taken, and pasting 'ab12cd' leaves '12' (FR-01 AC-002, TS-003, TS-004).
-- R10. When the field reaches 6 digits, by typing or by pasting, the code is sent once without any button press. With fewer than 6 digits nothing is sent, whatever key is pressed (journey F04, TS-003).
-- R11. With the right code the app opens at the address of R3. No welcome screen or other step is shown in between (D-083).
-- R12. 'Resend code' is disabled for 60 seconds after the latest code request for this address and enabled from the 60th second: at 59 seconds it cannot be pressed, at 60 it can (D-038, D-082, TS-009).
-- R13. Pressing 'Resend code' asks for a new code. When the server accepts, the code field is emptied and enabled, any message under it is removed, and the 60 seconds of R12 start again.
-- R14. 'Use a different email' returns to the email step with the earlier address in the field and selected. It sends no request.
-- R15. Reloading the page on the 'Check your email' step shows that step again, with the same address and the remaining wait of R12, for up to 10 minutes after the latest code request. After that, a reload shows the email step.
-- R16. Wrong code: the message 'That code is not right. 4 tries left.' shows under the code field, with the number the server gave. The field shakes slightly, is emptied and keeps the focus. The person stays on this step (journey F05 case 2, D-137, TS-002).
-- R17. Locked code: after the 5th wrong try the message 'This code is locked. Ask for a new one.' shows under the code field, and the field is disabled until a new code has been requested (journey F05 case 3, D-137, TS-006).
-- R18. Expired code: the message 'This code has expired' shows under the code field together with a button 'Send a new code'. Pressing it does what 'Resend code' does in R13 (journey F05 case 4, D-136, TS-005).
-- R19. Too many requests: the message 'You have asked for too many codes. Try again in 12 minutes.' shows under the field of the step where the request was made, with the server's wait rounded up to whole minutes. The step does not change (journey F05 case 5, D-038, TS-007).
-- R20. Deactivated account: after a correct code the message 'This account has been deactivated. Contact an admin.' shows under the code field. The app does not open (journey F05 case 6).
-- R21. Network lost: when a request gets no answer from the server, the message 'Could not connect. Check your network and try again.' shows under the field of the current step, what was typed stays in the field, and the control that sent the request can be used again (journey F05 case 7).
-- R22. Server failure: when the server answers with a failure (5xx), a message that includes the server's error ID shows under the field of the current step, and the control that sent the request can be used again (D-131). Its wording is not decided: concern 1.
+- R7. When the server accepts the request (200 from `POST /api/v1/auth/codes`), the screen changes to the 'Check your email' step. What is shown is identical for an address that is a member and one that is not (BR-04, journey F05 case 1).
+- R8. The 'Check your email' step shows: the logo and the workspace name (R38), the heading 'Check your email', the address that was typed, one 6-digit field, the line 'The code works for 10 minutes', the link 'Use a different email' and the button 'Resend code' (journey F04, D-082, D-136). Whether it also shows a button that sends the code is not decided: R36 and concern 6.
+- R9. The code field holds digits only and at most 6: typed letters and symbols do not appear, a 7th digit is not taken, and pasting 'ab12cd' leaves '12' (FR-01 AC-002, TS-003, TS-004). The length is the shared constant of TOKI-022 (`packages/shared/src/auth/limits.ts`), not a number of this ticket.
+- R10. When the field reaches 6 digits, by typing or by pasting, the code is sent once with nothing more to press (journey F04: "it submits when complete"). With fewer than 6 digits nothing is sent, whatever key or control is used (TS-003).
+- R11. With the right code (200 from `POST /api/v1/auth/sessions`) the app opens at the address of R3. No welcome screen or other step is shown in between (D-083).
+- R12. 'Resend code' is disabled after the latest accepted code request for `resendAfterSeconds` of its answer (60) and enabled from then on: at 59 seconds it cannot be pressed, at 60 it can (D-038, D-082, TS-009).
+- R13. Pressing 'Resend code' asks for a new code for the same address. When the server accepts, the code field is emptied and enabled, any message under it is removed, and the wait of R12 starts again.
+- R14. 'Use a different email' returns to the email step with the earlier address in the field. It sends no request. Decided in this spec: the address is also selected, so typing replaces it.
+- R15. Reloading the page on the 'Check your email' step shows that step again, with the same address and the remaining wait of R12, for as long as the code lives: `expiresInSeconds` of the answer (600) after the latest accepted code request. After that, a reload shows the email step. A code typed after the reload signs in (R35).
+- R16. Wrong code (`code_incorrect`): the message 'That code is not right. 4 tries left.' shows under the code field, with the number from `details.triesLeft`. The field shakes slightly. The person stays on this step (journey F05 case 2, D-137, TS-002). Decided in this spec: the field is emptied and keeps the focus.
+- R17. Locked code (`code_locked`): after the 5th wrong try the message 'This code is locked. Ask for a new one.' shows under the code field (journey F05 case 3, D-137). Decided in this spec: the field is emptied and stays enabled, so a person can still type the right code and is shown the same message again, as TS-006 expects; only a new code request (R13) leaves this state.
+- R18. Expired code: when the server answers `code_expired`, or when `expiresInSeconds` have passed since the latest accepted code request while the step is showing, the message 'This code has expired' shows under the code field together with a button 'Send a new code'. Pressing it does what 'Resend code' does in R13 (journey F05 case 4, D-136, TS-005). Decided in this spec: while it shows, 'Send a new code' takes the place of 'Resend code' and obeys the same wait (R12); the field is emptied and stays enabled.
+- R19. Too many requests (`code_request_limit`): the message 'You have asked for too many codes. Try again in 12 minutes.' shows under the field of the step where the request was made, with `details.retryAfterSeconds` rounded up to whole minutes. The step does not change (journey F05 case 5, D-038, TS-007). Decided in this spec: the control that made the request stays disabled until the wait ends; the number is counted down each minute; when the wait ends the message is removed and the control is enabled. On the email step, changing the address in the field removes the message and the wait at once, because the limit belongs to the address.
+- R20. Deactivated account (`account_deactivated` from `POST /api/v1/auth/sessions`, status 400): after a correct code the message 'This account has been deactivated. Contact an admin.' shows under the code field. The app does not open (journey F05 case 6).
+- R21. Network lost: when a request fails to connect, or has no answer after 10 seconds (D-126), the message 'Could not connect. Check your network and try again.' shows under the field of the current step, what was typed stays in the field, and the control that sent the request can be used again (journey F05 case 7).
+- R22. Server failure: when the server answers with a failure (5xx), or with any answer that "API outcomes and what the person sees" does not name, a general failure message shows under the field of the current step, what was typed stays in the field, and the control that sent the request can be used again (D-131). Its wording is not decided (concern 1). D-131 also asks for an error ID; no spec gives the client one, so none is shown until concern 13 is answered.
 - R23. Under a field there is at most one message at a time. A new answer replaces it; leaving the step removes it.
-- R24. When the server refuses a request because the session is no longer valid while an app screen is showing, a modal with the text 'Your session has ended' and the button 'Sign in again' covers the app. Nothing behind it can be read, focused, clicked or reached by a screen reader, and neither Esc nor a click outside closes it (journey F07, D-075).
-- R25. 'Sign in again' opens `/login` with the address that was showing as the return address of R3 and with the person's email filled in (journey F07).
-- R26. When the refusal says the account was deactivated, the same modal says 'This account has been deactivated' and has no button (journey F07).
+- R24. When a request is answered 401 with the code `session_ended` or `unauthenticated` while an app screen is showing, a modal with the text 'Your session has ended' and the button 'Sign in again' covers the app. Nothing behind it can be read, focused, clicked or reached by a screen reader, and neither Esc nor a click outside closes it (journey F07, D-075).
+- R25. 'Sign in again' opens `/login` with the address that was showing as the return address of R3 (journey F07). Decided in this spec: the person's email is filled in on the email step.
+- R26. When a request is answered 401 with the code `account_deactivated`, the same modal says 'This account has been deactivated' and has no button (journeys F07 and F41). This holds while an app screen is showing and also when Toki is opened; when Toki is opened, only the page background is behind the modal.
 - R27. However many requests are refused, one modal is shown.
 - R28. Every text of these screens is read from the `i18n` package and exists in English and Vietnamese; no component of this ticket holds a literal text, and the missing-translation check of TOKI-017 passes (D-018, D-064).
 - R29. At 360 × 560, 719, 720, 1099 and 1100 px wide, each step and the modal show with nothing clipped, no sideways scrolling and every control reachable; under 720 px every control is at least 40 px tall (D-068, NFR-01, journey F38).
 - R30. The whole flow can be done with the keyboard alone, and nothing in it needs hover (D-067, D-075). The focus is placed as "Keyboard and screen readers" says.
 - R31. Each message under a field is tied to that field for screen readers and is announced when it appears; an invalid field is marked invalid.
-- R32. The email address and the code never appear in the address bar, and the code is never written to browser storage.
+- R32. The email address, the code and the `requestId` never appear in the address bar, and the code is never written to browser storage.
 - R33. When the device asks for reduced motion, the code field does not shake (R16); the message still shows.
 - R34. Both steps and the modal are drawn only with the tokens and base components of the design system, and show correctly in Calm and in Focus (NFR-05).
+- R35. The `requestId` of the latest accepted code request is kept for the tab together with the address (R15), is sent with the code to `POST /api/v1/auth/sessions`, is replaced by every accepted resend, and is removed on sign-in, on 'Use a different email' and when its code has expired. It is never written to the console or to a log.
+- R36. The code step has one send action, used by every way of sending the code. It sends the 6 digits in the field with the `requestId` (R35) and does nothing when the field holds fewer than 6 digits or while a check runs. It is triggered by the 6th digit (R10) and by Enter in the field. A button on the step, if there is one, triggers the same action and is disabled whenever the action would do nothing. Whether there is one is not decided (concern 6); the design draws it, and taking it away changes no other requirement.
+- R37. Asked again too soon (`code_resend_too_soon`): the step does not change, the address, the `requestId` and the field stay as they were, and the control that made the request stays disabled for `details.retryAfterSeconds` and is then enabled. No text is decided for this case, so no message is shown until concern 7 is answered.
+- R38. The workspace name on the card is the `name` returned by `GET /api/v1/auth/workspace`, which needs no session. Until the answer arrives, and when the request fails, the card shows the logo without a name, and both steps work all the same.
+- R39. `client-core` holds one session state, and every request the app makes reports to it: a 401 answer with `unauthenticated`, `session_ended` or `account_deactivated` changes the state as R1, R24 and R26 say, whichever request it was. `client-core` exports two functions for other tickets: one that reports an ended session with its code (for the realtime connection of TOKI-038), and one that sets the state to signed out, after which `/login` is shown without the modal (for TOKI-099).
 
 ## Design
 Marked "Decided in this spec" where the Blueprint leaves the choice to the builder.
 
 ### Screens
-1. **Email step** (`/login`, first step). A card centred on the page background. From top to bottom: the logo and the workspace name; the email field; the button 'Send code' as wide as the card. The look follows the prototype's guest sign-in card (`.gsign`, `.gcard`: card up to 420 px wide, 24 px padding, the workspace tile and name on top, `.inp` field, `.btn primary wide` button). The email field is focused when the step opens.
-2. **'Check your email' step** (`/login`, second step). The same card. From top to bottom: the logo and the workspace name; the heading 'Check your email'; the address that was typed; the 6-digit field; the line 'The code works for 10 minutes'; under the field, the place for one message; the button 'Resend code'; the link 'Use a different email'. There is no button that sends the code (R10; see concern 6). The code field is focused when the step opens.
+1. **Email step** (`/login`, first step). A card centred on the page background. From top to bottom: the logo and the workspace name; the label 'Email' and the email field; under the field, the place for one message; the button 'Send code' as wide as the card. The look follows the prototype's guest sign-in card (`.gsign`, `.gcard`: card up to 420 px wide, 24 px padding, the workspace tile and name on top, `.inp` field, `.btn primary wide` button). The email field is focused when the step opens.
+2. **'Check your email' step** (`/login`, second step). The same card. From top to bottom: the logo and the workspace name; the heading 'Check your email'; the address that was typed; the line 'The code works for 10 minutes'; the label 'Code' and the 6-digit field; directly under the field, the place for one message (D-104), with 'Send a new code' beside it when R18 applies; the button 'Sign in' as wide as the card (drawn, not decided: R36, concern 6); the button 'Resend code'; the link 'Use a different email'. Decided in this spec: the validity line sits above the field, as the prototype's sentence does, so that the message is the first thing under the field. The code field is focused when the step opens.
 3. **'Your session has ended' modal.** The Modal of TOKI-014 over the app, at every width. Its backdrop is opaque, so the content behind is covered, not dimmed. Decided in this spec: opaque, because journey F07 says the content is covered and FR-46 TS-210 requires that no message can be read. It holds the text 'Your session has ended' and the button 'Sign in again'. In the deactivated form it holds only the text 'This account has been deactivated'.
 4. **Checking the session.** While the app asks the server whether the browser has a session, the page shows the page background only: no card, no text and no app content. Decided in this spec: no text, so that no undecided wording is needed and the sign-in card does not flash before the app opens.
 
@@ -76,37 +84,86 @@ Marked "Decided in this spec" where the Blueprint leaves the choice to the build
 | :---- | :---- | :---- |
 | Email, empty or malformed | 'Send code' disabled | The address becomes well-formed |
 | Email, well-formed | 'Send code' enabled | Press or Enter |
-| Email, request running | Field read-only, 'Send code' disabled | The server answers, or no answer comes |
-| Code, waiting for digits | Field enabled; 'Resend code' disabled until 60 s have passed | 6th digit; 'Resend code'; 'Use a different email' |
-| Code, check running | Field read-only; 'Resend code' and the link disabled | The server answers, or no answer comes |
+| Email, request running | Field read-only, 'Send code' disabled | The server answers, or 10 seconds pass |
+| Email, waiting (R19, R37) | 'Send code' disabled | The wait ends, or the address is changed |
+| Code, waiting for digits | Field enabled; 'Sign in' disabled; 'Resend code' disabled until its wait has passed | 6th digit; 'Resend code'; 'Use a different email'; the code expires |
+| Code, check running | Field read-only; 'Sign in', 'Resend code' and the link disabled | The server answers, or 10 seconds pass |
 | Code, wrong | R16 | Next 6th digit |
 | Code, locked | R17 | A new code is requested |
-| Code, expired | R18 | A new code is requested |
-| Code, resend running | 'Resend code' and 'Send a new code' disabled | The server answers, or no answer comes |
+| Code, expired | R18; 'Send a new code' in place of 'Resend code' | A new code is requested |
+| Code, deactivated | R20; field emptied and enabled | 'Use a different email', or a new code is requested |
+| Code, not sent (R21, R22) | The 6 digits stay; 'Sign in' enabled | Enter, 'Sign in', or the field changes |
+| Code, resend running | 'Resend code' or 'Send a new code' disabled | The server answers, or 10 seconds pass |
 | Signed in | The app at the return address | Not applicable |
 
+### Standing of the texts
+Two decisions speak about the wording of these screens, and both are decided.
+
+- D-091 (Confirmed) answers whether the written journeys are accepted, given that "several things in them were never asked one by one". Its answer: "Reviewed on 13 Nov 2026: 8 rewritten, 16 corrected, 19 unchanged. With the four choices in D-156 to D-159 settled, the phase-1 journeys are accepted as the baseline." It speaks of what the journeys do. It does not mention wording.
+- D-139 (Accepted Assumption): "Every screen and every wording in quotes that the prototype does not contain is a proposal: 'Session ended', 'Account deactivated', 'Not found or no access', 'Not sent', 'Can't reach Toki', loading placeholders, and the rest." Its answer: "The charts need a name for each state; the design decides the final words". Two of its examples are the two screens of journey F07.
+
+The log gives no date for D-139 and does not say that either decision replaces the other, so this spec reads them together:
+
+- What happens is decided. The journeys F04, F05 and F07 fix which steps and cases exist, what the person is told in each, and what they can do next (D-091).
+- A wording is **decided** when a Confirmed decision states it, or when the prototype's sign-in card contains it. The prototype is the only design source (D-019), and D-082 calls its guest sign-in card "the prototype's code screen".
+- Every other wording is **proposed**, a journey's wording included (D-139). The journey's words are the working text, used in the requirements and the tests so that there is one text to build with, and they wait for a sign-off (concern 5). The ticket text of TOKI-023 repeats two of them ('The code works for 10 minutes', 'Your session has ended'); it names the line and the screen and is not a decision about their words.
+
 ### Texts
-Decided texts, with their source. Key names are decided in this spec (namespaces `signIn` and `sessionEnded`).
+Key names are decided in this spec (namespaces `signIn` and `sessionEnded`). "Prototype" means its guest sign-in card (`index.html`, function `guestHtml`).
 
-| Key | English text | Source |
-| :---- | :---- | :---- |
-| `signIn.email.submit` | Send code | Journey F04 |
-| `signIn.code.title` | Check your email | Journey F04, ticket TOKI-023 |
-| `signIn.code.validity` | The code works for 10 minutes | Journey F04, D-136 |
-| `signIn.code.changeEmail` | Use a different email | Journey F04, D-082 |
-| `signIn.code.resend` | Resend code | D-082, journey F04 |
-| `signIn.error.wrongCode` | That code is not right. {count} tries left. | Journey F05, D-137 |
-| `signIn.error.locked` | This code is locked. Ask for a new one. | Journey F05, D-137 |
-| `signIn.error.expired` | This code has expired | Journey F05, D-136 |
-| `signIn.code.sendNew` | Send a new code | Journey F05 |
-| `signIn.error.tooMany` | You have asked for too many codes. Try again in {minutes} minutes. | Journey F05, D-038 |
-| `signIn.error.deactivated` | This account has been deactivated. Contact an admin. | Journey F05 |
-| `signIn.error.network` | Could not connect. Check your network and try again. | Journey F05 |
-| `sessionEnded.title` | Your session has ended | Journey F07 |
-| `sessionEnded.signInAgain` | Sign in again | Journey F07 |
-| `sessionEnded.deactivated` | This account has been deactivated | Journey F07 |
+| Key | English text | Wording | Source |
+| :---- | :---- | :---- | :---- |
+| `signIn.email.label` | Email | Decided | Prototype |
+| `signIn.email.submit` | Send code | Proposed | Journey F04. The prototype's card says 'Email me a code' |
+| `signIn.code.title` | Check your email | Decided | Prototype; journey F04 |
+| `signIn.code.validity` | The code works for 10 minutes | Proposed | Journey F04, ticket text. The prototype says 'We sent a 6-digit code to (address). It works for 10 minutes.' The number is decided (D-136) |
+| `signIn.code.label` | Code | Decided | Prototype |
+| `signIn.code.submit` | Sign in | Decided, if the button exists (concern 6) | Prototype |
+| `signIn.code.changeEmail` | Use a different email | Decided | Prototype; D-082 |
+| `signIn.code.resend` | Resend code | Decided | D-082 |
+| `signIn.error.wrongCode` | That code is not right. {count} tries left. | Proposed | Journey F05. The count is decided (D-137) |
+| `signIn.error.locked` | This code is locked. Ask for a new one. | Proposed | Journey F05 |
+| `signIn.error.expired` | This code has expired | Proposed | Journey F05 |
+| `signIn.code.sendNew` | Send a new code | Proposed | Journey F05 |
+| `signIn.error.tooMany` | You have asked for too many codes. Try again in {minutes} minutes. | Proposed | Journey F05. The limit is decided (D-038) |
+| `signIn.error.deactivated` | This account has been deactivated. Contact an admin. | Proposed | Journey F05 |
+| `signIn.error.network` | Could not connect. Check your network and try again. | Proposed | Journey F05 |
+| `sessionEnded.title` | Your session has ended | Proposed | Journey F07, ticket text. D-139 names this screen |
+| `sessionEnded.signInAgain` | Sign in again | Proposed | Journey F07 |
+| `sessionEnded.deactivated` | This account has been deactivated | Proposed | Journeys F07 and F41. D-139 names this screen |
 
-The journeys are the accepted baseline (D-091). The texts that no decision or journey gives are listed in concern 1 with a proposal each; the Vietnamese texts are concern 2. The workspace name and the address are data, not translated text.
+The texts that no decision, journey or prototype card gives are listed in concern 1 with a proposal each; the Vietnamese texts are concern 2. The workspace name and the address are data, not translated text.
+
+### API outcomes and what the person sees
+The names are those of the Sign-in API spec (TOKI-022, "Outcomes and what a client does with them"). All paths are under `/api/v1`. The screens choose by `error.code`, never by the status alone: `account_deactivated` comes with 400 on the exchange and with 401 on the session check.
+
+| Call | Status | `error.code` | What the person sees | Requirement |
+| :---- | :---- | :---- | :---- | :---- |
+| `POST /auth/codes` `{ email }` | 200 | none | The 'Check your email' step. The `requestId` is kept in place of any earlier one; 'Resend code' waits `resendAfterSeconds`; the code counts as expired after `expiresInSeconds` | R7, R12, R13, R15, R35 |
+| | 400 | `validation_error` | The email step, with the malformed-address message under the email field (wording: concern 1). Not expected: 'Send code' is disabled for a malformed address, and the screen checks with the same shared schema as the server | R5, R23 |
+| | 429 | `code_request_limit` | 'You have asked for too many codes. Try again in N minutes.' under the field of the current step; an earlier `requestId` stays | R19 |
+| | 429 | `code_resend_too_soon` | No change of step; the control waits `retryAfterSeconds`; no message (not decided, concern 7) | R37 |
+| `POST /auth/sessions` `{ requestId, code }` | 200 | none | The app at the return address. The cookie is set by the server; the `requestId` is dropped | R11, R35 |
+| | 400 | `code_incorrect` | 'That code is not right. N tries left.' with `details.triesLeft` | R16 |
+| | 400 | `code_locked` | 'This code is locked. Ask for a new one.' Also for the right code after the lock | R17 |
+| | 400 | `code_expired` | 'This code has expired' and 'Send a new code'. The server gives this code also for a code that was used, cancelled by a newer one, or whose `requestId` it does not know (concern 16) | R18 |
+| | 400 | `account_deactivated` | 'This account has been deactivated. Contact an admin.' under the code field | R20 |
+| | 400 | `validation_error` | The general failure message. Not reachable from a correct screen (R9, R36) | R22 |
+| `GET /auth/session` when Toki is opened | 200 | none | The app, as `user` | R2 |
+| | 401 | `unauthenticated`, `session_ended` | The sign-in page | R1 |
+| | 401 | `account_deactivated` | The modal 'This account has been deactivated', no button, over the page background | R26 |
+| Any request while an app screen is showing | 401 | `session_ended` | The modal 'Your session has ended' with 'Sign in again' | R24 |
+| | 401 | `unauthenticated` | The same modal. This is what the other tabs get after a sign-out in one tab, at their next request; the signal that makes them react at once is TOKI-099 | R24, R39 |
+| | 401 | `account_deactivated` | The modal 'This account has been deactivated', no button | R26 |
+| `GET /auth/workspace` | 200 | none | The workspace name on the card | R38 |
+| | any failure | any | The card without the name; no message | R38 |
+| `DELETE /auth/session` | 204 | none | Not called by this ticket (TOKI-099). Afterwards the state is signed out and `/login` shows | R39 |
+| Any call of this ticket | 403 | `origin_not_allowed` | The general failure message. Not reachable from the app itself | R22 |
+| | 415 | `unsupported_media_type` | The general failure message. Not reachable from the app itself | R22 |
+| | 5xx | as TOKI-004 | The general failure message; the control can be used again | R22 |
+| | none | none | No connection, or no answer after 10 seconds: 'Could not connect. Check your network and try again.' | R21 |
+
+The calls of this ticket use the cookie transport: they send no `transport` field and read no token.
 
 ### Errors
 Every message shows under the field of the step, never in a toast (D-104).
@@ -114,15 +171,15 @@ Every message shows under the field of the step, never in a toast (D-104).
 - Address not in the workspace -> the 'Check your email' step as usual; nothing tells the cases apart (R7). No mail is sent; that is the server's part.
 - Malformed address -> 'Send code' stays disabled (R5). Whether a message also shows, and its wording, is not decided: concern 1.
 - Wrong code -> R16. The number comes from the server; the screen does not count tries itself.
-- 5th wrong try -> R17. 'Resend code' stays under its 60-second wait; when it enables, the person asks for a new code.
-- Code older than 10 minutes -> R18. The screen learns this from the server's answer when a code is sent; it runs no 10-minute timer of its own. Decided in this spec: the server is the only judge of expiry, so the screen and the server cannot disagree when clocks differ.
-- 6th request in 15 minutes -> R19. On the email step the message is under the email field; after 'Resend code' or 'Send a new code' it is under the code field.
-- Deactivated account -> R20. The code field is emptied and stays enabled; 'Use a different email' still works.
-- No answer from the server -> R21. On the code step the 6 digits stay in the field; the person sends them again by pressing Enter or by changing the field back to 6 digits (see concern 6).
-- Server failure (5xx) -> R22.
-- Session refused while the app is showing -> R24; account deactivated while the app is showing -> R26.
-- Session missing or older than 30 days when Toki is opened -> the sign-in page (R1), not the modal. The modal is only for a session that ends while an app screen is showing.
-- The same address asks again inside 60 seconds (possible through 'Use a different email', or a second tab) -> not decided: concern 7.
+- 5th wrong try -> R17. 'Resend code' stays under its wait; when it enables, the person asks for a new code.
+- Code that has expired -> R18. The screen shows the expired state when the server says so, and by itself when `expiresInSeconds` have passed since the answer to the code request. Decided in this spec: the screen counts elapsed time from the answer and compares no wall clocks, so a device with a wrong clock still agrees with the server; the API spec sets the boundary so that a countdown reaching 0 and the server agree.
+- 6th request in 15 minutes -> R19. On the email step the message is under the email field; after 'Resend code' or 'Send a new code' it is under the code field. The wait is not kept across a reload; a press after a reload is answered `code_request_limit` again and the message returns.
+- Asked again inside 60 seconds -> R37. Reachable from 'Use a different email' and back with the same address, from a second tab, from another person asking for the same address, or from a small difference between the screen's wait and the server's.
+- Deactivated account -> R20. The code field is emptied and stays enabled; 'Use a different email' still works. The code is used up; a new code would end the same way.
+- No answer from the server -> R21. On the code step the 6 digits stay in the field; the person sends them again with the send action of R36: Enter, or the 'Sign in' button if the step has one.
+- Server failure (5xx) or an answer the table does not name -> R22.
+- Session refused while the app is showing -> R24; account deactivated -> R26.
+- Session missing or older than 30 days when Toki is opened -> the sign-in page (R1), not the modal. The modal 'Your session has ended' is only for a session that ends while an app screen is showing.
 
 ### Layout at the three widths
 The sign-in page has no sidebar, no tabs and no panels, so it is one centred card at every width. Calm and Focus differ here only in colours and type.
@@ -133,7 +190,7 @@ The sign-in page has no sidebar, no tabs and no panels, so it is one centred car
 
 ### Keyboard and screen readers
 - Email step: focus starts in the email field. Tab order: field, 'Send code'. Enter in the field does what the button does when it is enabled.
-- Code step: focus starts in the code field. Tab order: field, 'Send a new code' (only when shown), 'Resend code', 'Use a different email'. After a wrong code the focus stays in the emptied field (R16). After 'Resend code' succeeds the focus returns to the field. 'Use a different email' puts the focus in the email field.
+- Code step: focus starts in the code field. Tab order: field, 'Send a new code' (only when shown), 'Sign in' (if the step has it), 'Resend code' (not shown while 'Send a new code' is), 'Use a different email'. Enter in the field triggers the send action of R36. After a wrong code the focus stays in the emptied field (R16). After 'Resend code' succeeds the focus returns to the field. 'Use a different email' puts the focus in the email field.
 - A disabled button is skipped by Tab and announced as unavailable.
 - The code field is one text input with `inputmode="numeric"`, `autocomplete="one-time-code"` and a 6-character limit. Decided in this spec: one input instead of six boxes, because paste, autofill from the mail app and screen readers work without extra code. The email field uses `type="email"` and `autocomplete="email"`.
 - A message is linked to its field with `aria-describedby`, the field carries `aria-invalid`, and the message sits in a live region so it is read out when it appears (R31).
@@ -143,56 +200,69 @@ The sign-in page has no sidebar, no tabs and no panels, so it is one centred car
 ### Routes and state
 - **Path.** The sign-in page is `/login` (technical design). Decided in this spec: both steps are on `/login` and the step is not part of the address, because the code step means nothing without a code request and must not be reachable by typing an address.
 - **Guard.** A check in the root route asks `client-core` for the session before any app route renders. No session -> `/login?next=<path>`; session and the path is `/login` -> `next` or `/`. Decided in this spec.
-- **Return address.** `next` holds a path of this app only. It is used when it starts with one `/` and is not `/login`; otherwise `/` is used (R3). It never holds an email address.
+- **Return address.** `next` holds a path of this app only. It is used when it starts with one `/` that is not followed by `/` or `\`, resolves to the app's own origin, and is not `/login`; otherwise `/` is used (R3). It never holds an email address.
 - **Filled-in email.** `/login` accepts an address through the router's navigation state, not through the address bar (R32). It is used by 'Sign in again' (R25) and by TOKI-097 for a used invitation. Decided in this spec.
-- **Session state.** `client-core` holds one session state: `unknown`, `signedOut`, `signedIn` (with the person), `ended` (reason `expired` or `deactivated`). The API client sets `ended` when the server refuses a request for a missing or ended session while the state is `signedIn`; the realtime connection, when it is built, calls the same function. The modal is shown from this state, once (R27). Decided in this spec.
-- **Code step state.** The address, the time of the latest code request and the wait until 'Resend code' are kept for the tab through the storage interface of the `platform` package, so a reload or a phone that reloads the tab after the mail app does not lose the step (R15). The record is removed on sign-in, on 'Use a different email', and when it is older than 10 minutes. The code itself is never kept. Decided in this spec.
-- **Waits.** The 60 seconds of R12 and the minutes of R19 use the wait the server gives in its answer when it gives one; otherwise 60 seconds counted from the answer. The countdown reads the time through one clock function, so tests can move it.
+- **Session state.** `client-core` holds one session state: `unknown`, `signedOut`, `signedIn` (with `user`), `ended` (reason `expired` or `deactivated`). Decided in this spec. How an answer changes it:
+
+  | State before | Answer | State after | Shown |
+  | :---- | :---- | :---- | :---- |
+  | `unknown` | 200 from `GET /auth/session` | `signedIn` | The app |
+  | `unknown` | 401 `unauthenticated` or `session_ended` | `signedOut` | `/login` |
+  | `unknown` or `signedIn` | 401 `account_deactivated` | `ended`, `deactivated` | Modal, R26 |
+  | `signedIn` | 401 `unauthenticated` or `session_ended` | `ended`, `expired` | Modal, R24 |
+  | `signedOut` | 200 from `POST /auth/sessions` | `signedIn` | The app |
+  | any | the signed-out function is called (TOKI-099) | `signedOut` | `/login` |
+
+  A 401 that arrives while the state is `signedOut` or `ended` changes nothing, so one modal shows (R27). The API client reports every 401 through `reportUnauthenticated(code)`; the realtime connection, when it is built, calls the same function. TOKI-099 calls `markSignedOut()` after its sign-out call and when its signal arrives in another tab.
+- **Code step state.** One record is kept for the tab through the storage interface of the `platform` package: the address, the `requestId`, the time of the answer to the latest accepted code request, and `resendAfterSeconds` and `expiresInSeconds` from that answer. A reload, or a phone that reloads the tab after the mail app, therefore does not lose the step, and a code typed after it can still be exchanged (R15, R35). The record is replaced by every accepted code request and removed on sign-in, on 'Use a different email' and when `expiresInSeconds` have passed; a step that is showing at that moment stays, in the expired state of R18, until it is left or reloaded. The code itself is never kept. Decided in this spec: storage of the tab and not of the browser, so the `requestId` is not readable from another tab and is gone when the tab closes.
+- **Waits and numbers.** The wait of R12 is `resendAfterSeconds`, the life of the code in R15 and R18 is `expiresInSeconds`, the waits of R19 and R37 are `details.retryAfterSeconds`: all three come from the server's answers. The length of the code field is the shared constant of TOKI-022 (`packages/shared/src/auth/limits.ts`). This ticket defines no number of its own except the 10 seconds of D-126. Every countdown reads the time through the clock interface of TOKI-008, so tests can move it.
 - **Language and look before sign-in.** The page shows the language and the look that the `i18n` and `tokens` packages report as active. This ticket adds no language switch and no look switch. English is the default (D-018). What is active before sign-in is concern 3.
-
-### What the screens need from the Sign-in API
-The names and shapes are fixed by the TOKI-022 spec (D-125). The screens need these outcomes to be told apart:
-
-| Call | Outcomes the screen must be able to tell apart |
-| :---- | :---- |
-| Ask for a code (email) | Accepted (same for member and non-member; ideally with the seconds until a resend is allowed) · too many requests (with the seconds to wait) · malformed address · asked again too soon (concern 7) |
-| Send a code (6 digits) | Signed in · wrong (with the tries left) · locked · expired · account deactivated |
-| Read the current session | The person (at least id and email) · no session |
-| Any other request | Refused because the session ended · refused because the account is deactivated |
 
 ### Layout
 ```
 packages/client-core/src/auth/
-├─ session-store.ts      the session state and markSessionEnded()
-└─ sign-in.ts            requestCode(), submitCode(), readSession(); no DOM
+├─ session-store.ts      the session state, reportUnauthenticated(), markSignedOut()
+└─ sign-in.ts            requestCode(), submitCode(), readSession(), readWorkspaceName(); no DOM
 packages/ui-web/src/sign-in/
 ├─ SignInCard.tsx        logo, workspace name, slot for a step
 ├─ EmailStep.tsx
 ├─ CodeStep.tsx          exported; TOKI-097 may reuse it
-├─ CodeField.tsx         digits only, 6 at most, sends on the 6th
+├─ CodeField.tsx         digits only, 6 at most, triggers the send action on the 6th
 └─ SessionEndedModal.tsx
 packages/i18n/           keys signIn.* and sessionEnded.* in en and vi
 apps/web/src/routes/
 ├─ login.tsx             the /login route; reads next and the filled-in email
 └─ __root.tsx            the guard; mounts SessionEndedModal
 ```
-Storage is reached only through `platform`, and `client-core` touches no DOM (boundary rules of TOKI-002).
+Storage is reached only through `platform`, and `client-core` touches no DOM (boundary rules of TOKI-002). The request and response types come from the shared schemas of TOKI-022 (`packages/shared/src/auth/schemas.ts`).
 
 ## Testing
-- Unit tests (Vitest), written first: the code field (R9: letters, a 7th digit, pasting 'ab12cd', pasting '123 456'); sending once on the 6th digit (R10); the return address rule (R3: `/c/1`, `//other.example`, `https://other.example`, `/login`); the session state changes (R24, R26, R27); rounding the wait up to minutes (R19).
-- Component tests with a faked API, one per row of "Errors": each asserts the text, that it sits under the right field, and the state of the field and buttons afterwards (R16 to R23). The 60-second rule is tested at 59 and 60 seconds with the controllable clock of TOKI-008 (R12).
-- End-to-end tests (Playwright) against the real server and Mailpit: sign in as an active member by reading the code from the mail (R1, R4 to R11, TS-001); an address that is not a member reaches the same step and gets no mail (R7); five wrong codes then the right one (R16, R17, TS-006); a code entered just over 10 minutes after it was sent, by moving the clock (R18, TS-005); a 6th request (R19, TS-007); a deactivated member (R20); the network switched off before 'Send code' (R21); opening a deep address without a session and landing on it after sign-in (R1, R3, TS-011); reload on the code step (R15).
-- Session ended: end the session on the server while a page is open, trigger a request, expect the modal, press Tab and Esc, then sign in again and land on the same address (R24, R25, R27). Repeat with a deactivated account (R26).
+- Unit tests (Vitest), written first: the code field (R9: letters, a 7th digit, pasting 'ab12cd', pasting '123 456'); the send action (R10, R36: sent once on the 6th digit, once on Enter with 6 digits, nothing with 5 digits, nothing while a check runs); the return address rule (R3: `/c/1` is kept; `//other.example`, `/\other.example`, `https://other.example` and `/login` give `/`); every row of the session state table, with two refusals giving one change, and both exported functions (R24, R26, R27, R39); rounding the wait up to minutes, with 1, 60, 61 and 719 seconds (R19).
+- Component tests with a faked API and the controllable clock of TOKI-008, one per row of "API outcomes and what the person sees": each asserts the text, that it sits under the right field, and the state of the field and buttons afterwards (R16 to R23, R37). In addition:
+  - 'Send code' is disabled for an empty and a malformed address, and Enter sends nothing (R5); two quick presses send one request (R6).
+  - 'Resend code' at 59 and at 60 seconds (R12); an accepted resend empties the field, removes the message, restarts the wait and sends the next code with the new `requestId` (R13, R35).
+  - 'Use a different email' sends no request, shows the earlier address selected, and removes the record (R14, R35).
+  - After `code_locked` the field takes 6 more digits and the message shows again (R17).
+  - The expired state: by the answer `code_expired`, and by moving the clock to `expiresInSeconds` with no request sent; 'Send a new code' replaces 'Resend code' and waits like it (R18).
+  - `code_request_limit` on each step: the control is disabled, the minutes count down, the message goes when the wait ends, and on the email step when the address changes (R19).
+  - A request that never answers shows the network message after 10 seconds and keeps what was typed (R21); a 5xx, a 403 `origin_not_allowed` and an unknown code show the general failure message (R22).
+  - The workspace name: shown after the answer, absent while it loads and when it fails, with the step still usable (R38).
+  - The record: the `requestId` is in tab storage with the address, and neither it nor the code is in the address or the console (R32, R35).
+- End-to-end tests (Playwright) against the real server and Mailpit. They need no moved clock: every case that depends on time is a component test above, and the rules themselves are tested on the server by TOKI-022. The cases: sign in as an active member by reading the code from the mail (R1, R4, R7 to R11, TS-001); an address that is not a member reaches the same step and gets no mail (R7); five wrong codes, then the right one typed into the field and refused with the locked message (R16, R17, TS-006); a deactivated member from the test seed (R20); the network switched off before 'Send code' (R21); opening a deep address without a session and landing on it after sign-in (R1, R3, TS-011); opening `/login` and a deep address with a session shows the app (R2); reload on the code step, then sign in with the code from the mail (R15, R35).
+- Session ended (end-to-end): with a page open, end the session by a sign-out request that carries the same cookie value from outside the browser, trigger a request, expect the modal, press Tab and Esc, then sign in again and land on the same address (R24, R25, R27). Repeat with the cookie removed from the browser, which the server answers `unauthenticated` (R24). Repeat with the account set to Deactivated in the test database, while the app is open and on opening Toki (R26).
 - Layout: each step, each message and the modal are opened at 360 × 560, 719, 720, 1099 and 1100 px, in Calm and Focus, in English and Vietnamese (R29, R34). Keyboard-only run of the whole flow (R30). An automated accessibility check on both steps and the modal (R31).
 - R28 is checked by the missing-translation check of TOKI-017 and by a search of `packages/ui-web/src/sign-in` for literal texts. R32 is checked in the end-to-end test by reading the address bar and the browser storage after each step. R33 is checked with reduced motion emulated.
+- Browsers: the end-to-end tests run in the browsers the harness of TOKI-008 is set up for, which today is Chromium only. The eight browser versions of NFR-14 are not set up by any spec yet (concern 15).
 - Fake data only: addresses on `example.com`, accounts from the test seed. No real address and no real code in any test or fixture.
 
 ## Data safety
-- The email address is never put in the address bar or in `next` (R32). It is kept for the tab only, for at most 10 minutes, and removed on sign-in.
+- The email address is never put in the address bar or in `next` (R32). It is kept for the tab only, for at most the 10 minutes of the code, and removed on sign-in.
+- The `requestId` is a secret for the 10 minutes of its code (Sign-in API spec, R37 and "API"). It is kept only in the tab's record beside the address, replaced on every accepted resend, removed on sign-in, on 'Use a different email' and at expiry, never put in an address and never written to the console or a log (R32, R35).
 - The code is held in the field only; it is never stored and never written to the console or to a log.
 - The page never shows whether an address is a member (R7). The screen draws no conclusion of its own from timing or from the answer.
 - `next` accepts paths of this app only, so a link cannot send a person to another site after sign-in (R3).
-- The session itself is a cookie set by the server (technical design); this ticket reads and stores no session secret.
+- The session itself is a cookie set by the server (technical design); this ticket reads and stores no session secret and never asks for the token transport.
+- The workspace name is shown to anyone who can open the page (R38); the API spec accepts this.
 - When the modal of R24 shows, the content behind is not reachable. What happens to data cached in the browser when a different person then signs in belongs to the cache work in `client-core` (D-132); this ticket does not decide it.
 
 ## How each constraint in the intent is met
@@ -200,52 +270,56 @@ Storage is reached only through `platform`, and `client-core` touches no DOM (bo
 | :---- | :---- |
 | Belongs to Blueprint intent I03 sign-in-by-email-code | Planning fact; Scope names the line with TOKI-021, 022, 026, 097 and 099. |
 | Milestone M2; size M | Planning fact. Scope keeps the server, the mail and the invitation pages out. |
-| Needs TOKI-014 and TOKI-022 | Modal from TOKI-014 (R24); the outcomes in "What the screens need from the Sign-in API". Other needs the plan does not list: concern 10. |
-| Builds FR-01, FR-02, FR-03 on the screen side; follows FR-28 | FR-01: R4, R9 to R11, R16 to R18. FR-02: R12, R13, R19. FR-03: R1, R2. FR-28: R5, R23 and "Errors". |
+| Needs TOKI-014 and TOKI-022 | Modal from TOKI-014 (R24; concern 14); "API outcomes and what the person sees". Other needs the plan does not list: concern 10. |
+| Builds FR-01, FR-02, FR-03 on the screen side; follows FR-28 | FR-01: R4, R9 to R11, R16 to R18. FR-02: R12, R13, R19, R37. FR-03: R1, R2. FR-28: R5, R23 and "Errors". |
 | Agreed scope: email step, 'Check your email' step, 7 error cases, 'Your session has ended' | R4 to R8; R7 and R16 to R21 (the 7 cases); R24 to R27. |
 | 6-digit emailed code, no password | R4 (no password field), R9, R10. |
-| The mail carries the code only; nothing signs in without the code | The only way through the page is the code field (R10, R11); `/login` takes no sign-in link or token. |
+| The mail carries the code only; nothing signs in without the code | The only way through the page is the code field (R10, R11, R36); `/login` takes no sign-in link or token. |
 | A code is valid for 10 minutes | The line 'The code works for 10 minutes' (R8); the expired case (R18). |
 | 5th wrong try locks the code; the screen says how many tries are left | R16, R17. |
-| At most 5 requests in 15 minutes; resend after 60 seconds; a new code cancels the earlier one | R19; R12; R13 (the field is emptied; cancelling is done by the server). |
+| At most 5 requests in 15 minutes; resend after 60 seconds; a new code cancels the earlier one | R19; R12, R37; R13 and R35 (the new `requestId` replaces the earlier one; cancelling is done by the server). |
 | Same behaviour whether or not the address is a member | R7; Data safety. |
-| A code signs in only the device that asked | Enforced by TOKI-022. The screen keeps the step on the device that asked (R15) and offers no way to enter a code without first asking for one (code step not reachable by address). |
-| Errors under the field; button disabled until valid | R5, R16 to R23. For the code step, which has no button: concern 6. |
-| A button is disabled while its request runs | R6; state table ("request running", "resend running"). |
+| A code signs in only the device that asked | Enforced by TOKI-022 through the `requestId`. The screen keeps it in the tab that asked and sends it with the code (R35), keeps the step on that tab (R15), and offers no way to enter a code without first asking for one. |
+| Errors under the field; button disabled until valid | R5, R16 to R23. On the code step: the send action and its button, R36; whether the button exists is concern 6. |
+| A button is disabled while its request runs | R6, R36; state table ("request running", "check running", "resend running"). |
 | No welcome screen | R11. |
 | With a session, straight to the app; without one, the sign-in page and no workspace content | R2; R1. |
 | A session lasts 30 days and renews on every use | Enforced by TOKI-022. The screen shows the sign-in page when the server reports no session (R1) and the modal when it ends in use (R24). |
 | 'Your session has ended', 'Sign in again', content covered, return to the open conversation; deactivated form without a button | R24, R25, R26. The draft in the composer: concern 8. |
-| Texts are those of journeys F04, F05 and F07 | "Texts" table. Status of those texts under D-139: concern 5. |
+| The journeys F04, F05 and F07 are the baseline for what the screens do; their wordings are working texts | "Standing of the texts" and the "Texts" table, which marks each wording decided or proposed. Sign-off of the proposed ones: concern 5. |
 | English by default, Vietnamese fully translated, every text through the translation package | R28. Vietnamese wording: concern 2. Language before sign-in: concern 3. |
 | Smallest size 360 × 560; layout changes at 720 and 1100 px | R29; "Layout at the three widths". |
-| Nothing hover-only or desktop-only | R30. Sending the code again on a touch keyboard: concern 6. |
+| Nothing hover-only or desktop-only | R30. Sending the same 6 digits again on a touch keyboard depends on the button: concern 6. |
 | Icon-only buttons are named; a modal traps focus | No icon-only control; R24 and "Keyboard and screen readers". |
-| Last two versions of Chrome, Edge, Safari and Firefox | Standard inputs and attributes only; the end-to-end tests are run on the browsers of NFR-14. |
+| Last two versions of Chrome, Edge, Safari and Firefox | Standard inputs and attributes only. The end-to-end tests run in the browsers of the TOKI-008 harness; the full list of NFR-14 has no owner yet: concern 15. |
 | The sign-in page lives at `/login` | "Routes and state". |
 | Member, Admin, Guest; no Owner | The screens are the same for Member and Admin and name no role. |
 
 ## Open questions from the intent
-- Q1. Which small texts are missing? Not answered. The log decides none of them. Carried forward as concern 1, with a proposal for each.
+- Q1. Which small texts are missing? Not answered. The log decides none of them; the prototype's card gives the two field labels. Carried forward as concern 1, with a proposal for each.
 - Q2. What are the Vietnamese texts? Not answered. D-188 is Open. Carried forward as concern 2.
 - Q3. Which language and look before sign-in? Answered in part: English is the default (D-018). Whether a language or look remembered on the device is used is not decided. Carried forward as concern 3.
-- Q4. Where does a signed-out page get the workspace name? Not answered. Carried forward as concern 4.
-- Q5. D-139 or D-091 for the sign-in texts? Answered for this spec: D-091 is the later decision (13 Nov 2026) and accepts the phase-1 journeys as the baseline, so the texts of F04, F05 and F07 are used as written. The log does not say that D-139 is withdrawn. Carried forward as concern 5 for confirmation.
-- Q6. A button on the code step? Not answered. Journey F04 lists none. Carried forward as concern 6.
-- Q7. The same address asking again inside 60 seconds? Not answered. Carried forward as concern 7.
+- Q4. Where does a signed-out page get the workspace name? Answered: from `GET /api/v1/auth/workspace`, which TOKI-022 supplies and which returns the name only (R38; Sign-in API spec R39).
+- Q5. D-139 or D-091 for the sign-in texts? Answered: both hold. D-091 accepts what the journeys do; D-139 keeps every wording the prototype does not contain a proposal. "Standing of the texts" quotes both, and the "Texts" table marks each wording. The proposed wordings need a sign-off: concern 5.
+- Q6. A button on the code step besides sending on the 6th digit? Not answered. Journey F04 supports sending on the 6th digit and does not say whether there is a button; the prototype's card has one. Carried forward as concern 6; R36 is written so that either answer can be built.
+- Q7. The same address asking again inside 60 seconds? Answered in part: the server refuses with `code_resend_too_soon` (Sign-in API spec R5) and the screen waits (R37). What the person reads is not decided. Carried forward as concern 7.
 - Q8. The draft after signing in again? Answered for this spec: not built here; this ticket returns the person to the same address (R25). Carried forward as concern 8.
-- Q9. Which work makes other tabs notice a sign-out? Not answered. Carried forward as concern 9.
+- Q9. Which work makes other tabs notice a sign-out? Answered: the signal between tabs is TOKI-099; the session state it acts on is this ticket (R39); the server side is TOKI-022. See Scope.
 
 ## Areas of concern
-1. Texts that no decision, requirement or journey gives. Each needs a wording before the build; the proposals are proposals only. (a) Label of the email field: proposal 'Email' (the prototype's guest card uses it). (b) Label of the code field for screen readers: proposal 'Code'. (c) Message for a malformed address, and whether it shows at all while 'Send code' is disabled: proposal 'Enter a valid email address', shown when the field loses focus. (d) Server failure (R22): proposal 'Something went wrong. Try again. (Error {id})'. (e) Text on or beside 'Resend code' while it waits: proposal 'Resend code in {seconds} s'; without a decision the button is simply disabled. (f) Confirmation after a resend: proposal 'We sent a new code.'; without a decision nothing is shown beyond the emptied field. (g) One try left and one minute left: the journeys give only '4 tries left' and '12 minutes'; proposal '1 try left' and '1 minute'. (h) Browser tab title: proposal 'Sign in · Toki'. Owner: Thanh Truong.
+1. Texts that no decision, journey or prototype card gives. Each needs a wording before the build; the proposals are proposals only. (a) Message for a malformed address, and whether it shows at all while 'Send code' is disabled: proposal 'Enter a valid email address', shown when the field loses focus. The prototype's card has a message of this kind for the code, 'Enter the 6 digits from the email.', which this design never needs because fewer than 6 digits cannot be sent. (b) General failure message (R22): proposal 'Something went wrong. Try again.' (c) Text on or beside 'Resend code' while it waits: proposal 'Resend code in {seconds} s'; without a decision the button is simply disabled. (d) Confirmation after a resend: proposal 'We sent a new code.'; without a decision nothing is shown beyond the emptied field. (e) One try left and one minute left: the journeys give only '4 tries left' and '12 minutes'; proposal '1 try left' and '1 minute'. (f) Browser tab title: proposal 'Sign in · Toki'. (g) How the address is shown on the code step: this spec shows the address alone; the prototype has the sentence 'We sent a 6-digit code to (address). It works for 10 minutes.', which would also replace the validity line. The two field labels 'Email' and 'Code' are no longer in this list: the prototype's card has them. Owner: Thanh Truong.
 2. The Vietnamese texts of every key are not decided, and D-188 (form of address) is Open, yet the missing-translation check fails the build without them (D-064). Proposal: translate with 'bạn', as D-188 proposes, and review them with the English texts. Owner: Thanh Truong.
 3. Language and look before sign-in. Both are saved to the account (D-175), which is unknown on a signed-out page. D-018 gives English as the default; nothing says whether the page follows the browser's language, a choice remembered on the device, or 'Match my device' for the look. This spec shows what `i18n` and `tokens` report as active and adds no switch. Proposal: the last language and look used on this device, else English and the default look. Owner: Thanh Truong.
-4. The sign-in card shows the workspace name (journeys F01 and F04), but no ticket scope names a way for a signed-out page to read it, and BR-01 allows only the sign-in page to be public. Proposal: TOKI-022 adds one public answer that holds the workspace name only. Until it is decided R4 cannot be completed. Owner: Thanh Truong.
-5. D-139 (Accepted Assumption) says every wording the prototype does not contain is a proposal and "the design decides the final words"; D-091 (Confirmed, 13 Nov 2026) accepts the phase-1 journeys as the baseline. This spec treats the texts of F04, F05 and F07 as decided. If D-139 still holds for them, the "Texts" table needs a sign-off. Owner: Thanh Truong.
-6. The code step has no send button, as journey F04 describes ("it submits when complete"). Two effects: D-104 ("the button is disabled until the form is valid") has no button to apply to on this step; and after a network failure (R21) a person on a phone keypad that has no Enter key can send the same 6 digits again only by deleting and retyping one. Proposal: add a button 'Sign in', disabled until the field holds 6 digits, as on the prototype's guest card; its text is not decided. Owner: Thanh Truong.
-7. Nothing decides what the email step shows when the same address asks again inside 60 seconds (through 'Use a different email' and back, or a second tab). The server allows a resend only after 60 seconds (TOKI-022). Proposal: go to the 'Check your email' step without sending a mail, with 'Resend code' waiting for the rest of the 60 seconds. Owner: Thanh Truong.
-8. Journey F07 ends with "The draft being typed is still in the composer". This ticket returns the person to the same address (R25) but the composer and its drafts do not exist when it is built, and the page leaves the app to show `/login`. The draft must be kept by the drafts work (FR-38); that ticket should carry this case as a test. Owner: Thanh Truong.
-9. D-093 requires the other tabs of a browser to be signed out at once. A tab that makes no request does not learn that the session ended, so the modal of R24 appears only at its next request. No ticket scope names the signal between tabs. This spec leaves it to TOKI-099 (Sign out), which can set the session state of this ticket to `signedOut` in every tab. Owner: Thanh Truong.
+4. Answered. The workspace name on the card comes from `GET /api/v1/auth/workspace`, a public read of the name only that TOKI-022 supplies (R38). It means anyone who can reach the server can read the workspace name; the Sign-in API spec records that under its concern 5. Owner: Thanh Truong.
+5. The proposed wordings need a sign-off. By D-139 a wording the prototype does not contain is a proposal, and D-091 accepts the journeys without speaking of wording ("Standing of the texts"). 12 of the 18 texts in the "Texts" table are proposed, among them all six error messages of F05 and both texts of F07. Two differ from what the prototype's card says: 'Send code' (prototype: 'Email me a code') and 'The code works for 10 minutes' (prototype: 'It works for 10 minutes.' inside a sentence). Until they are signed off the journey's words are built, and a change is a change of text keys only. Owner: Thanh Truong.
+6. Not decided: does the code step have a button that sends the code, besides sending on the 6th digit? Sending on the 6th digit is supported by journey F04 ("it submits when complete"). F04 lists the elements of the step and names no button; the prototype's card, which D-082 calls "the prototype's code screen" and changes only by adding 'Resend code', has the button 'Sign in'; D-104 ("the button is disabled until the form is valid"), journey F05 case 7 ("the button becomes pressable again") and TS-003 ("Enter 5 digits and try to submit") each assume a button. Option A, no button: the step is as F04 lists it. On a touch screen the numeric keypad has no Enter key, so after a failed send (R21, R22) the person can send the same 6 digits again only by deleting one digit and typing it back; D-067 asks that every action has an entry point on touch screens. D-104 then has nothing to apply to on this step. Option B, a button 'Sign in', disabled until the field holds 6 digits and while a check runs: retry is one tap on any screen, D-104, F05 case 7 and TS-003 apply as written, and the code is still sent on the 6th digit, so the button is used mostly for a retry. What this spec draws: option B, because the prototype is the only design source (D-019) and more of the decided material assumes the button than not. It is drawn, not decided: R36 gives every way of sending one action, so option A is built by leaving the button out of `CodeStep` and nothing else changes. Owner: Thanh Truong.
+7. Not decided: what the person reads when a code request is refused with `code_resend_too_soon`. The server side is decided (Sign-in API spec R5; D-038, D-082), and journey F05 has no text for it. It reaches a person who never pressed 'Resend code': 'Use a different email' and back with the same address, a second tab, or another person asking for the same address. Built until it is decided: no change of step, no message, the control waits `retryAfterSeconds` (R37). Two effects of that: on the email step 'Send code' is disabled for up to 60 seconds with no explanation; and after 'Use a different email' the earlier `requestId` is gone (R35), so the code already in the mail cannot be used and the person must wait and ask again. Proposals, not decisions: (a) a message under the field, for example 'A code was just sent. Try again in {seconds} seconds.'; (b) when the tab still holds the record of that address, show the 'Check your email' step again without a new request, which needs 'Use a different email' to keep the record instead of removing it. The Sign-in API spec lists the same question as its concern 10. Owner: Thanh Truong.
+8. Journey F07 ends with "The draft being typed is still in the composer". This ticket returns the person to the same address (R25) but the composer and its drafts do not exist when it is built, and 'Sign in again' leaves the app to show `/login`, so the composer is unmounted. A draft that was not yet saved when the session ended cannot be saved to the server, which refuses the request. So the drafts work (FR-38) must keep the draft in the browser across the sign-in and carry this case as a test. The other way, not chosen here: sign in inside the modal so the composer is never unmounted; it would put both steps inside the Modal and change R25. Owner: Thanh Truong.
+9. Answered. D-093 requires the other tabs of a browser to leave at once. The split is in Scope: TOKI-022 answers every later request of those tabs 401 `unauthenticated`; this ticket's session state reacts to that answer and can be set to signed out by a function it exports (R39); the signal between tabs on 'Sign out' is TOKI-099. Until TOKI-099 is built, another tab shows the modal of R24 at its next request, which TS-210 allows ("a notice that the session has ended with the content covered"). The plan's text of TOKI-099 does not yet list the signal or the client call for sign-out; it should. Owner: Thanh Truong.
 10. The plan lists only TOKI-014 and TOKI-022 as needs. The design also uses the router of TOKI-006, the `i18n` package of TOKI-017, the `platform` storage of TOKI-018 (reached through TOKI-012) and the Playwright harness and clock of TOKI-008. All are in M1, which ends before M2, so the order holds; the plan's needs list should name TOKI-006 and TOKI-017. Owner: Thanh Truong.
-11. The table "What the screens need from the Sign-in API" is written before the TOKI-022 spec is merged. If that spec cannot tell two outcomes apart (for example locked and expired, or ended and deactivated), the matching requirement here (R17, R18, R26) cannot be built as written. The two specs must be compared before either is built. Owner: Thanh Truong.
-12. `client-core` has no API client yet and no ticket in M1 owns it (noted in the web skeleton spec). This ticket adds only `auth/`; if TOKI-022 or another M2 ticket creates the shared API client first, `sign-in.ts` uses it instead of its own calls. Owner: Thanh Truong.
+11. Answered. The outcomes these screens need were compared with the Sign-in API spec (TOKI-022); "API outcomes and what the person sees" uses its names and has a row for each of its answers. If that spec changes a code, a status or a field, this table and the requirement beside the row change with it. Owner: Thanh Truong.
+12. `client-core` has no API client yet and no ticket in M1 owns it (noted in the web skeleton spec). This ticket adds only `auth/`; if TOKI-022 or another M2 ticket creates the shared API client first, `sign-in.ts` uses it instead of its own calls. Whichever ticket builds the shared client must report every 401 to the session state (R39). Owner: Thanh Truong.
+13. D-131 (Accepted Assumption) says a 5xx shows "Retry with an error ID". No spec gives the client such an ID: the one error body of the server skeleton (TOKI-004) is `{ "error": { "code", "message", "details"? } }`, its concern 4 lists "a request id on each line" as not decided, and the Sign-in API spec adds none. R22 is therefore built and tested without an ID. When TOKI-004 names the field or header, the ID is added to the message of R22 and to its text key. Owner: Thanh Truong.
+14. The modal of R24 needs four things from the Modal of TOKI-014 that its ticket text does not promise ("focus trapped inside and returned on close, Esc in order"): an option that Esc and a click outside do not close it; an opaque backdrop with the content behind made inert and hidden from screen readers; first focus on a chosen element, which can be plain text (the deactivated form has no button); and no return of focus when it goes away. TOKI-014 has no spec yet. If its Modal does not offer these, 'this ticket adds no new base component' does not hold and this ticket would have to build its own cover. They should be written into the TOKI-014 spec. Owner: Thanh Truong.
+15. NFR-14 measures browser support by a test matrix on eight browser versions (the last two of Chrome, Edge, Safari and Firefox, D-108). The harness of TOKI-008 runs Chromium only and its concern 5 leaves the browser list undecided; no ticket sets up the eight. This ticket uses standard inputs and attributes only, and its end-to-end tests run wherever the harness runs. Which ticket adds the other browsers is not decided. Owner: Thanh Truong.
+16. Places where the Sign-in API spec and a journey or decision do not say the same thing. This ticket follows the API and changes nothing there. (a) `code_expired` is also the answer for a code that was used, cancelled by a newer one, or whose `requestId` the server does not know, so 'This code has expired' can show for a code that is seconds old, for example when a second tab asked for a newer one; journey F05 gives that text for "Code older than 10 minutes" only. The next step is the same, a new code, so one text may be enough; that is for the sign-off of concern 5. (b) Opening Toki in a browser whose cookie belongs to a Deactivated account is answered 401 `account_deactivated`, and the API expects the deactivated form with no way to sign in (R26, journey F41). That browser then shows only that notice for as long as the cookie lives, also to another person who wants to sign in on it. Proposal, not a decision: a link 'Use a different email' on the notice when it shows on opening Toki. (c) After a sign-out in one tab the other tabs get `unauthenticated`, not `session_ended`; until the signal of TOKI-099 exists they show 'Your session has ended' to a person who signed out on purpose (concern 9). (d) The error ID of D-131: concern 13. Owner: Thanh Truong.

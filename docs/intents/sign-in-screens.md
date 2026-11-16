@@ -2,7 +2,7 @@
 Author: Thanh Truong
 
 ## Problem
-Nothing in Toki can be read without a session, and sign-in is the only public page. The prototype has no sign-in screen at all, so a Member or an Admin has no way to ask for a code, type it, or learn why a code was refused.
+Nothing in Toki can be read without a session, and sign-in is the only public page. The prototype has no sign-in screen for members, only the guest one (D-011), so a Member or an Admin has no way to ask for a code, type it, or learn why a code was refused.
 The server side of sign-in (TOKI-022) answers requests but shows nothing to a person. Without the screens nobody can enter Toki, and milestone M2 cannot be shown.
 A person whose session ends while Toki is open also needs to be told, and needs a way back in.
 
@@ -37,7 +37,7 @@ The screens work at every supported width, with the keyboard alone, in English a
 - With a valid session, opening Toki goes straight to the app with no sign-in page. Without one, every address shows the sign-in page and no workspace content. Source: journey F04, FR-03 (AC-007).
 - A session lasts 30 days and renews on every use. Source: D-011, D-138.
 - When a session ends while Toki is in use, the app shows 'Your session has ended' with a 'Sign in again' button and covers the content behind. After signing in again the person returns to the conversation that was open. For a person deactivated while in use, the screen says 'This account has been deactivated' and has no sign-in button. Source: journey F07.
-- The texts of the screens and of the 7 error cases are those of journeys F04, F05 and F07, accepted as the baseline. Source: D-091.
+- Journeys F04, F05 and F07 are the accepted baseline for what these screens do. Source: D-091. Assumption, not a decision: the wordings quoted in those journeys are the working texts; a wording that the prototype does not contain stays a proposal until it is signed off (D-139; open question 5).
 - English is the default language and Vietnamese is fully translated. Every text goes through the translation package; a missing translation fails CI. Source: D-018, D-064.
 - Smallest supported size is 360 × 560. Under 720 px one pane at a time; the layout changes again at 1100 px. Source: D-068, NFR-01.
 - No action is hover-only or desktop-only. Source: D-067.
@@ -52,7 +52,7 @@ The screens work at every supported width, with the keyboard alone, in English a
 3. Which language and which look (Calm or Focus) does the sign-in page use before anyone is signed in? Both are saved to the account (D-175), which is not known yet.
 4. Journey F04 shows the logo and the workspace name on the sign-in card. Where does a signed-out page get the workspace name from?
 5. D-139 calls every text that the prototype does not contain a proposal; D-091 accepts the journeys as the baseline. Which holds for the sign-in texts?
-6. The code step has no button in journey F04: the code is sent when the 6th digit is typed. Is a button wanted as well?
+6. Journey F04 says the code is sent when the 6th digit is typed, and does not say whether the step also has a button. The prototype's guest sign-in card has a 'Sign in' button. Does the code step have a button as well?
 7. What does the screen show when the same address asks for a code again inside 60 seconds?
 8. Journey F07 says the draft being typed is still in the composer after signing in again. Is that part of this work or of the composer work?
 9. D-093 says the other tabs of the same browser are signed out at once. Which work makes the other tabs notice?
