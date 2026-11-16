@@ -12,7 +12,7 @@
 
 ## AC -> step -> test
 
-There is no test runner yet (TOKI-008), so each test is a command run by hand, as the spec's Testing section says. All tests run in a clean clone of `feat/toki-001` under Node 22.
+There is no test runner yet (TOKI-008), so each test is a command run by hand, as the spec's Testing section says. All tests run in a clean clone of `chore/toki-001-monorepo-typescript-setup` under Node 22.
 
 | AC | Step | Test (command -> expected) |
 | :-- | :-- | :-- |
@@ -125,7 +125,7 @@ Commit: `chore(repo): add the two apps and six packages (TOKI-001)`.
 
 ### Step 3: full check on a clean clone
 
-Clone `feat/toki-001` into a temporary folder, switch to Node 22, run every test of the table in the spec's order (R1, R2, R3, R4, R5, R6, R9, R10, R12, R11), then R7 and R8. No file changes.
+Clone `chore/toki-001-monorepo-typescript-setup` into a temporary folder, switch to Node 22, run every test of the table in the spec's order (R1, R2, R3, R4, R5, R6, R9, R10, R12, R11), then R7 and R8. No file changes.
 
 ### Dev-flow files
 
