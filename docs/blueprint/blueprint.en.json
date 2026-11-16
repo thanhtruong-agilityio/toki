@@ -3610,14 +3610,24 @@
        "title": "Set up Claude for the project",
        "scope": "`CLAUDE.md` (what the project is, repository layout, common commands, boundary rules, where documents live); enable the cl plugins and create `docs/intents`, `docs/specs`, `docs/plans`; permissions and hooks in `.claude/settings.json`; move the Blueprint sources into `docs/blueprint/`",
        "size": "M",
-       "needs": []
+       "needs": [],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #9",
+        "fix": ""
+       }
       },
       {
        "id": "096",
        "title": "Set up configuration for each environment",
-       "scope": "An inventory of every environment variable (name, purpose, required or not, default, who supplies it); `.env.example` matching the inventory; the list of values that must come from outside (domain, mail account, VPS, backup storage); how secrets are kept per environment",
+       "scope": "An inventory of every environment variable (name, purpose, required or not, default, who supplies it); `.env.example` matching the inventory; the list of values that must come from outside (domain, mail account, VPS); how secrets are kept per environment",
        "size": "M",
-       "needs": []
+       "needs": [],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #10",
+        "fix": "The spec asks for a backup storage value; backup is deferred (Q40)."
+       }
       }
      ]
     },
@@ -3629,7 +3639,12 @@
        "title": "Set up the pnpm monorepo and TypeScript",
        "scope": "Create `apps/server` and `apps/web`, and the six packages `shared`, `client-core`, `tokens`, `i18n`, `platform`, `ui-web`, with shared TypeScript config. `apps/mobile`, `apps/desktop` and `ui-native` are added in their own phases",
        "size": "S",
-       "needs": []
+       "needs": [],
+       "spec": {
+        "state": "merged",
+        "pr": "PR #1",
+        "fix": ""
+       }
       },
       {
        "id": "002",
@@ -3638,46 +3653,73 @@
        "size": "M",
        "needs": [
         "001"
-       ]
+       ],
+       "spec": {
+        "state": "merged",
+        "pr": "PR #2",
+        "fix": ""
+       }
       },
       {
        "id": "003",
        "title": "Local development environment",
-       "scope": "(1) `infra/docker-compose.dev.yml` runs Postgres, MinIO and Mailpit. (2) Scripts in the root `package.json`: `dev:up` starts the services; `dev:down` stops them and keeps data; four reset scripts: `dev:reset:db` wipes Postgres and re-runs migrations, `dev:reset:files` empties the MinIO bucket, `dev:reset:mail` clears the Mailpit inbox, and `dev:reset` does all three. No reset touches `.env` or the test database, and every reset refuses to run in production. A partial reset can leave references between the three (messages pointing at deleted files, old codes in the inbox); `dev:reset` is the one that returns a clean state",
-       "size": "M",
-       "needs": [
-        "001"
-       ]
-      },
-      {
-       "id": "004",
-       "title": "Fastify server skeleton",
-       "scope": "Read and validate environment variables, /healthz, structured logs, one error format, the /api/v1 prefix",
+       "scope": "(1) `infra/docker-compose.dev.yml` runs Postgres, MinIO and Mailpit. (2) Scripts in the root `package.json`: `dev:up` starts the services; `dev:down` stops them and keeps data; four reset scripts: `dev:reset:db` wipes Postgres and re-runs migrations, `dev:reset:files` empties the MinIO bucket, `dev:reset:mail` clears the Mailpit inbox, and `dev:reset` does all three. No reset touches `.env` or the test database, and every reset refuses to run in production. A partial reset can leave references between the three (messages pointing at deleted files, old codes in the inbox); `dev:reset` is the one that returns a clean state. As specified: `dev:reset:db` only wipes here (TOKI-005 adds the migration step), and `dev:up` creates the development file bucket",
        "size": "M",
        "needs": [
         "001",
         "096"
        ],
-       "open": "The error format returned to clients"
+       "spec": {
+        "state": "pr",
+        "pr": "PR #3",
+        "fix": ""
+       }
+      },
+      {
+       "id": "004",
+       "title": "Server skeleton",
+       "scope": "Read and validate environment variables, /healthz, structured logs, one error format, the /api/v1 prefix. As specified: also a minimal Vitest setup in `apps/server` and the error response schema in `packages/shared`",
+       "size": "M",
+       "needs": [
+        "001",
+        "096"
+       ],
+       "open": "The error format returned to clients",
+       "spec": {
+        "state": "pr",
+        "pr": "PR #4",
+        "fix": ""
+       }
       },
       {
        "id": "005",
-       "title": "Drizzle, migrations and the workspaces table",
-       "scope": "Postgres connection, the migration workflow, the first table",
+       "title": "Database connection, migrations and the workspaces table",
+       "scope": "Postgres connection, the migration workflow, the first table. As specified: also adds the migration step to `dev:reset:db` and chooses the UUIDv7 generator",
        "size": "S",
        "needs": [
         "003",
         "004"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #5",
+        "fix": "The spec names an Owner account (TOKI-020); the Owner role was removed (Q43)."
+       }
       },
       {
        "id": "006",
-       "title": "Vite + React web skeleton",
-       "scope": "Router, Query, an empty page, dev proxy to the server",
+       "title": "Web app skeleton",
+       "scope": "Router, Query, an empty page, dev proxy to the server. As specified: also a plain not-found view and a 200 KB check on the initial JavaScript",
        "size": "S",
        "needs": [
-        "001"
-       ]
+        "001",
+        "096"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #6",
+        "fix": ""
+       }
       },
       {
        "id": "007",
@@ -3686,17 +3728,28 @@
        "size": "M",
        "needs": [
         "002"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #7",
+        "fix": ""
+       }
       },
       {
        "id": "008",
        "title": "Test harness",
-       "scope": "Vitest against a real Postgres, Playwright running one sample test, a controllable clock",
+       "scope": "Vitest against a real Postgres, Playwright running one sample test, a controllable clock. As specified: also the end-to-end job and the Postgres service in CI, and a separate test database",
        "size": "M",
        "needs": [
         "005",
-        "006"
-       ]
+        "006",
+        "007"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #8",
+        "fix": "The spec lists the browsers to test as open; they are decided (Q67)."
+       }
       }
      ]
     },
@@ -3734,7 +3787,7 @@
       {
        "id": "018",
        "title": "The platform package",
-       "scope": "Interface for notifications, storage, file picking and sound; the web implementation",
+       "scope": "Interface for notifications, storage, file picking and sound; the web implementation. Its import ban is added to the boundary rules of TOKI-002",
        "size": "S",
        "needs": [
         "001"
@@ -3743,7 +3796,7 @@
       {
        "id": "012",
        "title": "Base components, group 1",
-       "scope": "Button, IconButton, Chip, Switch, Field, Select, Tag, Badge; icon-only buttons must have a name, checked by lint (NR9)",
+       "scope": "Button, IconButton, Chip, Switch, Field, Select, Tag, Badge; icon-only buttons must have a name, checked by lint (NR9). The lint rule for icon-only buttons goes into the ESLint config of TOKI-002",
        "size": "M",
        "needs": [
         "009",
@@ -3791,7 +3844,7 @@
       {
        "id": "017",
        "title": "The i18n package",
-       "scope": "Translation framework, English by default, automatic check for missing keys",
+       "scope": "Translation framework, English by default, automatic check for missing keys. Its missing-translation check is added to the CI workflow of TOKI-007",
        "size": "S",
        "needs": [
         "001"
@@ -3810,7 +3863,7 @@
       {
        "id": "094",
        "title": "Shared date and time rules",
-       "scope": "Validation and formatting in shared: required fields, no past where a future time is needed, the year shown when it differs, one format (NR7)",
+       "scope": "Validation and formatting in shared: required fields, no past where a future time is needed, the year shown when it differs, one format with 24-hour time everywhere (D-073, D-123)",
        "size": "S",
        "needs": [
         "001"
@@ -3824,7 +3877,7 @@
    "id": "M2",
    "name": "Sign-in, members and conversations",
    "goal": "People can get in and find their way around.",
-   "exit": "The first Admin is created from the environment and invites a member; both sign in with a code; they create, browse and join channels and open DMs.",
+   "exit": "The first Admin is created from the environment and invites a member; both sign in with a code; the Admin creates a channel; both browse and join channels and open DMs.",
    "areas": [
     {
      "name": "Sign-in and members",
@@ -3850,7 +3903,7 @@
       {
        "id": "021",
        "title": "Sending mail over SMTP",
-       "scope": "A configurable mail layer, with code and invitation templates in both languages",
+       "scope": "A configurable mail layer (D-027) and two templates in English and Vietnamese: the sign-in mail carries the 6-digit code only, with no button (D-157); the invitation mail names the workspace and the inviter and carries the Join button and a 6-digit code (D-149)",
        "size": "M",
        "needs": [
         "004"
@@ -3860,7 +3913,7 @@
       {
        "id": "022",
        "title": "Sign-in API",
-       "scope": "Request a code, exchange it for a session, sign out; cookie and token; rate limits; a code is cancelled after 5 wrong tries; at most 5 requests in 15 minutes; the email button signs in directly (G5, F04, F05)",
+       "scope": "Request a code, exchange it for a session, sign out; cookie and token. A 6-digit code is valid 10 minutes, works once, only for the request that asked for it, and is locked after the 5th wrong try (D-136, D-137). At most 5 requests per email in 15 minutes, a resend only after 60 seconds, and a new code cancels the earlier one (D-038, D-082). The answer is the same whether or not the address is a member (BR-04); a deactivated account is refused after a correct code (F05). A session lasts 30 days and renews on every use (D-011, D-138). Nothing in the mail signs anyone in without the code (D-157). Signing out ends the session for every tab of that browser at once (D-093)",
        "size": "L",
        "needs": [
         "019",
@@ -3870,7 +3923,7 @@
       {
        "id": "023",
        "title": "Sign-in screens",
-       "scope": "Enter email, enter code, 7 error cases, expired session, the first-time welcome screen (F03, F04, F05, F07)",
+       "scope": "Enter email; the 'Check your email' step with the 6-digit field, the line 'The code works for 10 minutes', 'Use a different email' and 'Resend code' enabled after 60 seconds (D-082, D-136); the 7 error cases of F05, with the tries left and the locked code (D-137); the 'Your session has ended' screen (F07). Errors show under the field (D-104). There is no welcome screen (D-083)",
        "size": "M",
        "needs": [
         "014",
@@ -3889,8 +3942,8 @@
       {
        "id": "024",
        "title": "Member management (API)",
-       "scope": "Invite, resend, revoke, change role, deactivate, reactivate. Invitations expire after 7 days; the last Admin cannot be demoted or deactivated (G4, G6, F02, F40, F41)",
-       "size": "M",
+       "scope": "Invite with the role Member or Admin (D-153), up to 50 addresses per batch (D-134); each address reports its own result and those already sent stay when mail fails (D-099); resend and revoke; an invitation lasts 7 days and works once (D-037). A deactivated person can be invited again (D-094). Change role, deactivate, reactivate: deactivation ends every session at once (BR-29); nobody deactivates themselves; the last Admin cannot be demoted or deactivated (D-153). The server refuses every request from a Member (D-090), ignores a repeat of the same request (D-111) and records each action: who, what, to whom, when (D-110)",
+       "size": "L",
        "needs": [
         "022",
         "027"
@@ -3899,20 +3952,34 @@
       {
        "id": "025",
        "title": "Admin page",
-       "scope": "Member list, statuses, management actions",
-       "size": "M",
+       "scope": "Opens only for Admins; a Member sees 'You do not have access to this page' (D-090). Member table with name, email, role, status (Invited, Active, Deactivated) and last active; search, a status chip with a total for each status, the first 50 rows and more on scroll (D-109). 'Invite members': several addresses, role Member or Admin with Member by default, each row showing 'Invited' or 'Mail not sent' with Resend (D-153, D-099); Revoke asks for confirmation. Row menu: Change role, Deactivate, Reactivate, each with a confirmation that names the person (D-061, D-069); the entries are locked, with the reason, on the Admin's own row and on the last Admin (D-153)",
+       "size": "L",
        "needs": [
         "024"
        ]
       },
       {
        "id": "026",
-       "title": "Sessions and emergency access",
-       "scope": "See and revoke your own sessions; a server command that issues a one-time sign-in link",
+       "title": "Sessions and emergency access (server)",
+       "scope": "List your own sessions with device kind, browser and last use; sign out one device or all others; a session ended this way is refused on its next request (D-158, F07). A server command prints a one-time sign-in link valid 10 minutes for one member, refuses an address that is not in the workspace or is deactivated, and logs every use (D-159)",
        "size": "S",
        "needs": [
         "022"
        ]
+      },
+      {
+       "id": "097",
+       "title": "Accept an invitation",
+       "scope": "Join in the mail opens the code step with the email filled in; the link alone signs nobody in (D-149). The code is valid 10 minutes; 'Resend code' sends a new one after 60 seconds and cancels the old one (D-136, D-082); the 5th wrong try locks it (D-137). On success the person is in #general and lands there, with no welcome step (D-083, D-034); the display name is the part of the email before @ (D-150); a deactivated person gets the same account back with its history and channels (D-094). Pages for an expired, a revoked and an unrecognised invitation; a used one leads to sign-in (D-081). A person signed in as someone else is asked before anything changes (D-080)",
+       "size": "M",
+       "needs": []
+      },
+      {
+       "id": "099",
+       "title": "Account menu, Sign out and signed-in devices (screens)",
+       "scope": "The account card's menu: Set status, Pause notifications, Focus time, Preferences, Sign out; an entry appears when its own ticket is built. 'Sign out' in the account menu, and in the More sheet on narrow screens (D-158, D-067). A 'Signed-in devices' section in Preferences: each row shows the device kind, browser and last use, and the current one is labelled 'This device'; 'Sign out' beside another device and 'Sign out all other devices', each asking for confirmation (D-158, D-069)",
+       "size": "S",
+       "needs": []
       }
      ]
     },
@@ -3931,7 +3998,7 @@
       {
        "id": "029",
        "title": "Channel API",
-       "scope": "Create, browse, join, leave, edit topic and description, add people, archive. Leaving a private channel says an invitation is needed; the last member leaving archives it (OQ2). Every write requires membership (NR11). Names are lowercase letters, digits and hyphens, up to 80 characters, unique; any member can edit the topic; admins can remove people from channels they are in (G7, G8, G14)",
+       "scope": "Create (Admin only; a Member's request is refused, D-084, D-090), browse, join, leave, edit topic and description, add people, remove people, archive and restore. Names are lowercase letters, digits and hyphens, up to 80 characters; the server never creates two channels with one name, also when two requests arrive together and against archived channels (D-040, D-115, D-128); topic up to 250 characters (D-101); public or private is fixed and there is no rename (D-040, D-105). A channel that is not joined cannot be read, and joining gives the full history (D-116, D-029). Every write requires membership (D-077). Any member edits the topic and adds people (D-041, D-090); an Admin removes people and archives only where a member, never in #general (D-085, D-047, D-034). A private channel is rejoined only when a member adds the person back, and the last member leaving archives it (D-051)",
        "size": "L",
        "needs": [
         "028",
@@ -3960,7 +4027,7 @@
       {
        "id": "032",
        "title": "client-core: API client and conversation store",
-       "scope": "A client typed from the shared schemas; the list already grouped and filtered",
+       "scope": "A client typed from the shared schemas; the list already grouped and filtered. Uses the error schema built in TOKI-004",
        "size": "M",
        "needs": [
         "031"
@@ -3969,7 +4036,7 @@
       {
        "id": "033",
        "title": "Conversation list",
-       "scope": "Starred, Channels, Direct messages groups; collapse; All, Unread, Mentions filters; search",
+       "scope": "Starred, Channels, Direct messages groups; collapse; All, Unread, Mentions filters; search by name. The Direct messages heading has a '+' that starts a DM or a group: on hover on desktop, always visible on touch and narrow screens (D-086, D-154); there is no pencil icon (D-155). A '+ Browse channels' row closes the list; nothing in the list creates a channel (D-084). A filter that matches nothing shows its own empty state (D-074). Each conversation has its own address, and Back closes an open panel first (Q49)",
        "size": "M",
        "needs": [
         "015",
@@ -3978,8 +4045,8 @@
       },
       {
        "id": "034",
-       "title": "Three modals",
-       "scope": "New message, Browse channels, Create channel",
+       "title": "Browse channels and the people picker",
+       "scope": "Browse channels: search, name, topic and member count, 'Join' or 'Open', an 'Archived' label, the first 50 and more on scroll (D-109), 'No channels match' centred (D-074); a channel that is not joined shows no messages, here or from a link, only its name and topic with Join (D-116); no button creates a channel (D-084). The picker opened by the '+' on Direct messages: a people search showing the first 50 (D-109); each person pressed becomes a removable chip; Start opens the DM for one chip or a group DM for more; a person beyond 8, counting yourself, is refused (D-086, D-017)",
        "size": "M",
        "needs": [
         "014",
@@ -3989,11 +4056,32 @@
       {
        "id": "035",
        "title": "Conversation header and Details panel",
-       "scope": "Name, topic, members, notification level, mute, star, leave. Defaults: Mentions only for channels, All messages for DMs (G13, F24)",
+       "scope": "Name, topic, members, notification level, mute, star, leave. Defaults: Mentions only for channels, All messages for DMs (D-046). Mute also hides the unread badge and bold; the level 'Nothing' only stops toast, push and sound (D-103). Any member edits the topic and description in place; the name cannot be changed (D-105). Leaving a public channel happens at once with Undo for 5 seconds; leaving a private channel asks for confirmation that says a member must invite you back, with no Undo (D-156, D-061); the last member is told the channel will be archived (D-051); #general has no Leave (D-034)",
        "size": "M",
        "needs": [
         "033"
        ]
+      },
+      {
+       "id": "098",
+       "title": "Create a channel from the Admin page",
+       "scope": "A '+' beside 'Busiest channels' on the Admin page opens the Create channel dialog (D-151): Name, a Private switch off by default, Topic (optional, up to 250 characters), Add people (optional) (D-101). A space typed in the name becomes a hyphen and capitals become lowercase (D-127). Errors show under the field; Create is disabled until the form is valid and while the request runs (D-104, D-111); a name already in use is refused by the server and the field says so (D-115). Closing with content asks whether to discard (D-070). The new channel opens at once (D-076). A Member has no way to open this dialog (D-084)",
+       "size": "M",
+       "needs": []
+      },
+      {
+       "id": "100",
+       "title": "Add and remove people in a channel (screens)",
+       "scope": "Add people: a search that lists only people not yet in the channel, the first 50 shown and more on scroll (D-109); choose one or more and press Add; any member can do it, in private channels too (D-090). Remove a person: offered only to an Admin who is a member of the channel, never in #general, with a confirmation that names the person (D-085, D-047, D-069)",
+       "size": "S",
+       "needs": []
+      },
+      {
+       "id": "101",
+       "title": "Archive and restore a channel (screens)",
+       "scope": "Archive: offered only to an Admin who is a member, never for #general (D-047, D-034); the confirmation names the channel and its member count (D-061, D-069). Afterwards the channel leaves everyone's list, its composer is replaced by 'This channel has been archived' and its history stays readable (D-029). Browse channels shows it with an 'Archived' label and gives Admins a 'Restore' button (F26)",
+       "size": "S",
+       "needs": []
       }
      ]
     }
@@ -4011,7 +4099,7 @@
       {
        "id": "036",
        "title": "messages and events tables",
-       "scope": "UUIDv7, pagination indexes, a numbered event log",
+       "scope": "UUIDv7, pagination indexes, a numbered event log. Reuses the UUIDv7 generator chosen in TOKI-005",
        "size": "M",
        "needs": [
         "028"
@@ -4048,7 +4136,7 @@
       {
        "id": "040",
        "title": "client-core: sync engine",
-       "scope": "Apply events to the cache, optimistic send, retry failed messages",
+       "scope": "Apply events to the cache; optimistic send. A message sent offline waits and sends itself when the connection returns; once online there is one automatic try, then the message is marked 'Not sent' for a manual Retry or Delete (D-097, D-079). A waiting message is kept in the browser across a reload and dropped when someone else signs in there (D-132). A request with no answer after 10 seconds counts as failed (D-126)",
        "size": "L",
        "needs": [
         "037",
@@ -4068,7 +4156,7 @@
       {
        "id": "042",
        "title": "Message component",
-       "scope": "Avatar, name, time, grouping within 5 minutes, day dividers; system lines for join, leave, add, pin and channel creation (F10, F21 to F23)",
+       "scope": "Avatar, name, 24-hour time (D-123), grouping within 5 minutes, day dividers. Send states beside the time: faded until confirmed, 'Waiting to send', and a red 'Not sent' with Retry and Delete, where Delete asks nothing (D-087). Grey system lines for join, leave, add, pin and channel creation, including a newcomer joining #general; a system line raises no unread count and no notification (D-100)",
        "size": "M",
        "needs": [
         "041"
@@ -4100,7 +4188,7 @@
       {
        "id": "045",
        "title": "Threads",
-       "scope": "API, followers, thread panel, Also send to channel, a link to the thread",
+       "scope": "API, thread panel, Also send to channel. One level deep. The root author, everyone who replied and everyone mentioned follow the thread automatically; there is no 'Unfollow thread' (D-119). When the root is deleted the thread stays under a 'Message deleted' line, and a reply being written is still sent (D-013, D-096). Each thread has its own address; Back closes the panel first (D-089). From 720 to 1099px the panel overlays the chat (D-068)",
        "size": "L",
        "needs": [
         "040"
@@ -4145,7 +4233,7 @@
       {
        "id": "050",
        "title": "Mentions",
-       "scope": "People and @channel, a suggestion popup that matches with or without diacritics, a tinted background on messages that mention you; only conversation members are suggested (OQ9); any member can use @channel, with confirmation in channels of 20 or more (G8, F12)",
+       "scope": "People and @channel, a suggestion popup that matches with or without diacritics, a tinted background on messages that mention you; only conversation members are suggested (D-058); a name typed for someone outside the conversation notifies nobody and offers the sender 'Add them' (D-135); any member can use @channel, with confirmation in channels of 20 or more (D-041)",
        "size": "M",
        "needs": [
         "043"
@@ -4172,7 +4260,7 @@
       {
        "id": "081",
        "title": "Prototype seed data",
-       "scope": "A `dev:seed` script that loads the prototype's sample workspace: Hugepig Studio, 8 people, the sample channels, DMs, messages, threads, reactions and pins. Used for development after a reset and by the end-to-end tests. Sample files and images join the seed in TOKI-063, once file storage exists",
+       "scope": "A `dev:seed` script that loads the prototype's sample workspace: Hugepig Studio, 8 people with the roles Member and Admin only (D-152), the sample channels, DMs, messages, threads, reactions and pins. Used for development after a reset and by the end-to-end tests; it never runs in production, which starts with #general only (D-031, D-147). Sample files and images join the seed in TOKI-063, once file storage exists",
        "size": "M",
        "needs": [
         "045",
@@ -4210,7 +4298,7 @@
       {
        "id": "053",
        "title": "Read pointer",
-       "scope": "Unread counts synced across devices. Read when the conversation is open, the window is in use and the list is at the bottom (OQ3)",
+       "scope": "Unread counts per conversation, synced across devices. Read when the conversation is open, the window is in use and the list is at the bottom (D-052). Grey system lines such as 'Minh joined' raise no count (D-100); thread replies do not raise the channel's count (F14); leaving a channel clears its count (D-133); nobody sees who has read a message (D-048)",
        "size": "L",
        "needs": [
         "040"
@@ -4219,7 +4307,7 @@
       {
        "id": "054",
        "title": "New divider, badges, filters",
-       "scope": "The New divider anchored to the first unread message, never drifting, gone on the next open (OQ3); badges in the list and navigation; Unread and Mentions filters",
+       "scope": "The New divider anchored to the first unread message, never drifting, gone on the next open (D-052); badges in the list and navigation, the Home badge counting unmuted conversations only (F08); a muted conversation shows no count and no bold (D-103) but keeps the @ dot while the person's switch for mentions in muted conversations is on (D-088); the browser tab title reads '(3) Toki' for mentions and DMs and shows a dot for anything else (D-122); Unread and Mentions filters",
        "size": "M",
        "needs": [
         "053"
@@ -4246,7 +4334,7 @@
       {
        "id": "057",
        "title": "Profile panel",
-       "scope": "Name, job title, presence, status, local time with the time zone as a UTC offset, a Message button",
+       "scope": "Initials avatar on a colour, no picture (D-118); name, job title, presence, status, local time from the time zone the person set, shown with a UTC offset (D-144); a Message button; a deactivated person is labelled 'Deactivated' and has no Message button (F41); your own profile has Set status and Edit profile (F31)",
        "size": "S",
        "needs": [
         "055"
@@ -4260,7 +4348,7 @@
       {
        "id": "058",
        "title": "File storage",
-       "scope": "files and attachments tables; signed URLs for upload and download; permission checks",
+       "scope": "files and attachments tables on MinIO (D-014); signed URLs for upload and download; only people who can see the conversation can open its files; every file type accepted up to 100 MB, checked on the server, always downloaded and never run in the browser (D-095); a file uploaded but never sent is deleted after 24 hours (D-130). The development bucket already exists (TOKI-003); this ticket does not create it",
        "size": "L",
        "needs": [
         "036"
@@ -4270,7 +4358,7 @@
       {
        "id": "059",
        "title": "Attachments in the composer",
-       "scope": "Pick, drag and drop, paste an image, progress, the over-100-MB error",
+       "scope": "Pick, drag and drop, paste an image; one card per file with progress, remove and Retry; up to 10 files per message (D-042); the over-100-MB error (D-014); Send waits until every file has uploaded (F18); uploading is blocked while offline, with the reason (D-060)",
        "size": "M",
        "needs": [
         "043",
@@ -4299,7 +4387,7 @@
       {
        "id": "062",
        "title": "Attachment cards and viewer modal",
-       "scope": "File, image and link cards; the detail modal; copy link",
+       "scope": "File, image and link cards; the detail modal with Open in conversation, Copy link and Download; a file is always downloaded, never run in the browser (D-095); a file link opens only for people who can see its conversation (F18)",
        "size": "M",
        "needs": [
         "058"
@@ -4314,6 +4402,13 @@
         "062",
         "081"
        ]
+      },
+      {
+       "id": "103",
+       "title": "Disk-space warning and upload refusal",
+       "scope": "No quota. When the disk is 80% full Admins see a warning on the Admin page; at 95% uploads are refused with the reason while messaging keeps working (D-106)",
+       "size": "S",
+       "needs": []
       }
      ]
     },
@@ -4332,7 +4427,7 @@
       {
        "id": "070",
        "title": "Search API",
-       "scope": "Conversations, people, messages; only results the person may see",
+       "scope": "Conversations, people, messages; Vietnamese matches with or without diacritics (D-015); 20 results per kind, more on request (D-112); messages only from conversations the person belongs to, and private channels never returned to outsiders (D-116, D-051); deactivated people are not listed (F41)",
        "size": "M",
        "needs": [
         "069"
@@ -4341,7 +4436,7 @@
       {
        "id": "071",
        "title": "Command palette",
-       "scope": "Ctrl+K, arrow keys, grouped results, quick actions; ranking: exact match, word-start, contains, then fuzzy. Quick actions as listed in F29",
+       "scope": "Ctrl+K, arrow keys; results grouped as conversations, people, commands, then messages, 20 per group with more on request (D-112); ranking: exact match, word-start, contains, then fuzzy; quick actions as listed in F29, with 'Create channel' offered to Admins only (D-084, D-151); on narrow screens opened from the search field on Home and from the More sheet (D-053)",
        "size": "M",
        "needs": [
         "014",
@@ -4373,7 +4468,7 @@
       {
        "id": "065",
        "title": "Activity (server)",
-       "scope": "Create items from mentions, replies in followed threads and reactions; API and events. Never notify the actor; newest first; items complete themselves when the work is done (NR5). Adds an Other kind: added to a channel, role changed, message deleted by an admin (F27). Implements all 15 situations of the 'When you are mentioned' table",
+       "scope": "Create items from mentions, replies in threads the person follows, and reactions; API and events. The root author, repliers and people mentioned follow a thread automatically; there is no Unfollow (D-119). Never notify the actor; newest first; items complete themselves when the work is done (D-071); an item is removed when its source message is deleted or the mention edited out (F13); leaving a channel clears that person's open items for it (D-133). An Other kind: added to a channel, role changed, message deleted by an admin (D-049, F27). Implements all 15 situations of the 'When you are mentioned' table, including a mention in a muted conversation (D-088)",
        "size": "L",
        "needs": [
         "045",
@@ -4384,7 +4479,7 @@
       {
        "id": "066",
        "title": "Activity screen",
-       "scope": "A filter chip for every kind, Done with Undo, Snooze, Mark all read; action buttons always visible on touch devices (NR1). Snooze times: in 1 hour, today 15:00, tomorrow 09:00 (F27)",
+       "scope": "A filter chip for every kind, each count equal to the rows shown (D-071, D-074); Done with a 5-second Undo (D-069), Snooze, Mark all read; Done and Snooze always visible on touch devices (D-067, D-053). Snooze times: In 1 hour, Today 15:00, Tomorrow 09:00; a choice already past is hidden and 'In 3 hours' takes its place (D-114)",
        "size": "M",
        "needs": [
         "065"
@@ -4393,7 +4488,7 @@
       {
        "id": "067",
        "title": "Later",
-       "scope": "Save a message, In progress and Completed, set a reminder that fires on time; a replacement row when the source message was deleted, with the count still matching (NR8). Reminder times match snooze times (F28)",
+       "scope": "Save a message, In progress and Completed, set a reminder that fires on time and must be in the future (D-073); a reminder due during Pause or Focus is held (D-072); a replacement row when the source message was deleted, with the count still matching (D-074); removing from Later offers Undo (D-061). Reminder times match snooze times, with 'In 3 hours' replacing a choice already past (D-114)",
        "size": "M",
        "needs": [
         "064"
@@ -4416,7 +4511,7 @@
       {
        "id": "073",
        "title": "Notification decision engine",
-       "scope": "Who is notified, from channel level, mute, Pause, Focus, and whether the app is open",
+       "scope": "Who gets a toast, push or sound, from: the conversation's level, by default 'Mentions only' for channels and 'All messages' for DMs (D-046); Mute, where a mention still notifies while the person's own switch is on, on by default (D-088, D-103); Pause and Focus (D-072); and whether that conversation is on screen (F36). Your own action never notifies you (D-071); people outside the conversation are not notified (D-058)",
        "size": "L",
        "needs": [
         "065"
@@ -4425,7 +4520,7 @@
       {
        "id": "074",
        "title": "Web Push",
-       "scope": "VAPID keys, service worker, device registration, a click that opens the right conversation; the notification shows sender, conversation and the start of the message; a card offering notifications on first visit (G11, F36)",
+       "scope": "VAPID keys, a service worker used for push only (D-030), device registration with a test notification, a click that opens Toki at that message; the notification shows sender, conversation and the start of the message (D-044); a card offering notifications on first visit, the browser asked only after Turn on (F36); on iPhone push works only once Toki is added to the Home Screen (D-108); signing out removes that device's registration (D-158). Adds the VAPID keys to the configuration list and `.env.example` of TOKI-096",
        "size": "L",
        "needs": [
         "073"
@@ -4458,6 +4553,13 @@
        "needs": [
         "074"
        ]
+      },
+      {
+       "id": "102",
+       "title": "Notification preferences (server)",
+       "scope": "Per-account switches read by the decision engine: Desktop notifications, Play a sound, and 'Notify me for @mentions even in muted channels', on by default (D-088); one set for the person on every device, only the browser's push permission is per device (D-142); API and events",
+       "size": "S",
+       "needs": []
       }
      ]
     }
@@ -4467,7 +4569,7 @@
    "id": "M6",
    "name": "Polish and launch",
    "goal": "Ready for the company to use.",
-   "exit": "Every phase 1 acceptance criterion passes, and Toki runs on its real domain with backups.",
+   "exit": "Every phase 1 acceptance criterion passes, and Toki runs on its real domain.",
    "areas": [
     {
      "name": "Preferences, People and polish",
@@ -4475,7 +4577,7 @@
       {
        "id": "078",
        "title": "Preferences screen",
-       "scope": "Look, accent, density, notifications, Pause, status, language; saved to the account",
+       "scope": "Look (Calm, Focus, Match my device), accent, density; notification switches including 'Notify me for @mentions even in muted channels', on by default (D-088); Pause, status; language: English by default or Tiếng Việt, switching the whole interface at once (D-018); profile: display name of 1 to 80 characters (D-033), job title, time zone (D-144), no picture upload (D-118); the 'Signed-in devices' list with sign out of one device or of all others, after confirmation (D-158); saved to the account and applied on every device (D-142)",
        "size": "M",
        "needs": [
         "056",
@@ -4485,7 +4587,7 @@
       {
        "id": "079",
        "title": "People screen",
-       "scope": "Directory, search, presence, local time, role",
+       "scope": "Directory of active people as cards: initials avatar (D-118), presence, name, an Admin label where it applies (no Owner, D-152), job title, local time (D-144); search by name or job title; the first 50 shown, more on scroll (D-109); deactivated people are not listed (F41); the 'Nobody matches' empty state (D-074)",
        "size": "S",
        "needs": [
         "055"
@@ -4494,7 +4596,7 @@
       {
        "id": "080",
        "title": "Full translation",
-       "scope": "Every string in vi and en; dates, times and numbers by language and time zone",
+       "scope": "Every string in English (the default) and Vietnamese (D-018); CI fails when a string lacks a translation in either language (D-064); 24-hour time everywhere (D-123); one date format across the app, with the year shown when it is not the current year (D-073); times shown in the person's time zone",
        "size": "M",
        "needs": [
         "017"
@@ -4504,7 +4606,7 @@
       {
        "id": "082",
        "title": "Extra states",
-       "scope": "Loading skeletons, the reconnecting strip, 404, no access; while disconnected, writes are blocked with an explanation and only messages wait to resend (NR13)",
+       "scope": "Loading skeletons; the banner 'Offline: showing saved messages' for the whole time offline, with no reconnecting state and no toast when the connection returns (D-102); one shared page for not found and no access (D-131); a request with no answer after 10 seconds shows Retry (D-126); while disconnected, writes are blocked with an explanation and only messages wait to resend (D-079). Replaces the plain not-found view of TOKI-006; the server's 404 and 500 format comes from TOKI-004",
        "size": "M",
        "needs": [
         "040"
@@ -4522,12 +4624,19 @@
       {
        "id": "092",
        "title": "Entry points on narrow screens",
-       "scope": "A More sheet with global search, the account menu, status, Pause and Focus time, so the phone lacks nothing (NR1, OQ4); the sheet closes as soon as a destination is chosen (GAP-39)",
+       "scope": "A More sheet with Search, People, Preferences, Admin (Admins only) and an account section with Set status, Pause notifications, Focus time and Sign out (D-158), so the phone lacks nothing (D-067, D-053); the sheet closes as soon as a destination is chosen (GAP-39)",
        "size": "M",
        "needs": [
         "071",
         "076"
        ]
+      },
+      {
+       "id": "104",
+       "title": "Update-available strip",
+       "scope": "When a new version is deployed an open app shows the strip 'Update available · Reload'; the reload is forced only when the server says the page is too old (D-107)",
+       "size": "S",
+       "needs": []
       }
      ]
     },
@@ -4555,19 +4664,9 @@
        "open": "Automatic deploy or a manual trigger"
       },
       {
-       "id": "086",
-       "title": "Backup and restore",
-       "scope": "A nightly script, encrypted, pushed off-site, with a restore rehearsal",
-       "size": "M",
-       "needs": [
-        "084"
-       ],
-       "open": "Where backups are stored"
-      },
-      {
        "id": "087",
        "title": "Installation guide",
-       "scope": "Step-by-step instructions and .env.example",
+       "scope": "Step-by-step instructions and .env.example: SMTP settings (D-027), the first Admin from server configuration (D-028), and the server command that prints a one-time sign-in link when mail cannot be sent (D-159); no backup steps in this phase (D-092). Points to the `.env.example` built in TOKI-096; it does not write a second one",
        "size": "S",
        "needs": [
         "084",
@@ -4577,7 +4676,7 @@
       {
        "id": "088",
        "title": "Access-control test suite",
-       "scope": "Every endpoint against a person without access",
+       "scope": "Every endpoint against a person without access: signed out; a Member on admin requests and on creating a channel (D-090, D-084); anyone, an Admin included, outside a private channel or DM (D-047); the messages of a channel not joined (D-116); also through search, file lists and direct links, with no access answered like not found (D-131). Uses the real-Postgres test setup of TOKI-008",
        "size": "M",
        "needs": [
         "070"
@@ -4586,7 +4685,7 @@
       {
        "id": "089",
        "title": "Performance measurement",
-       "scope": "A script that creates 1 million messages and measures the six targets",
+       "scope": "A script that creates 1 million messages and measures the six targets with 200 people online (D-113). Reuses the 200 KB bundle measurement of TOKI-006 and TOKI-007",
        "size": "L",
        "needs": [
         "084"
@@ -4595,7 +4694,7 @@
       {
        "id": "090",
        "title": "12 end-to-end flows",
-       "scope": "Complete at desktop and phone widths",
+       "scope": "The 12 flows follow the journeys accepted on 13 Nov (D-091): an Admin creates the channel (D-084), there is no Owner (D-152), a channel not joined shows no messages (D-116), Sign out (D-158); complete at desktop and phone widths (D-053). Uses the Playwright runner of TOKI-008; the 12 flows are chosen from the journeys as rewritten on 13 Nov 2026",
        "size": "L",
        "needs": [
         "081"
@@ -4686,16 +4785,17 @@
    "id": "I03",
    "slug": "sign-in-by-email-code",
    "milestone": "M2",
-   "want": "Get into Toki with a code sent by email, with no password; the workspace sets itself up the first time",
+   "want": "Get into Toki with a 6-digit code sent by email, with no password; sign out and see where you are signed in; the workspace sets itself up the first time",
    "who": "Member, Admin",
-   "done": "The first Admin is created from the environment; sign-in, sign-out, the 7 error cases and session management all work",
+   "done": "The first Admin is created from the environment; a code from a mail that has no button signs a person in, works for 10 minutes, can be resent after 60 seconds and locks after 5 wrong tries; the 7 error cases, Sign out, the signed-in devices list and the emergency sign-in link all work",
    "tickets": [
     "019",
     "020",
     "021",
     "022",
     "023",
-    "026"
+    "026",
+    "099"
    ],
    "status": "draft"
   },
@@ -4703,13 +4803,14 @@
    "id": "I04",
    "slug": "member-management",
    "milestone": "M2",
-   "want": "Invite people, change roles, deactivate accounts",
-   "who": "Admin, Admin",
-   "done": "An admin invites someone and they get in; permissions by role match the capability table",
+   "want": "Invite people as Member or Admin, invite a deactivated person back, change roles, deactivate accounts",
+   "who": "Admin",
+   "done": "An Admin invites someone, who enters the code from the mail and lands in #general; a deactivated person who is invited again gets the same account back; the last Admin cannot be demoted or deactivated and nobody deactivates themselves; permissions by role match the capability table",
    "tickets": [
     "024",
     "025",
-    "027"
+    "027",
+    "097"
    ],
    "status": "draft"
   },
@@ -4717,9 +4818,9 @@
    "id": "I05",
    "slug": "channels-and-direct-messages",
    "milestone": "M2",
-   "want": "Create, find, join and leave channels; open DMs and group DMs; move between conversations",
-   "who": "Member and above",
-   "done": "Public and private channels can be created, browsed, joined and left; DMs open; the conversation list filters and collapses",
+   "want": "Find, join and leave channels; open DMs and group DMs; move between conversations. An Admin creates channels from the Admin page",
+   "who": "Member, Admin",
+   "done": "An Admin creates public and private channels from the Admin page and a Member cannot; channels are browsed, joined and left, and one that is not joined cannot be read; a DM or a group DM of up to 8 people starts from the + on Direct messages; the conversation list filters and collapses",
    "tickets": [
     "028",
     "029",
@@ -4728,7 +4829,10 @@
     "032",
     "033",
     "034",
-    "035"
+    "035",
+    "098",
+    "100",
+    "101"
    ],
    "status": "draft"
   },
@@ -4777,8 +4881,8 @@
    "slug": "unread-presence-status",
    "milestone": "M4",
    "want": "Know where the new messages are, who is active and who is busy",
-   "who": "Everyone",
-   "done": "Badges agree on two devices; the New divider follows its rule; presence and auto-clearing status work",
+   "who": "Member, Admin",
+   "done": "Badges agree on two devices and in the browser tab title; the New divider follows its rule; presence and auto-clearing status work",
    "tickets": [
     "064",
     "053",
@@ -4794,15 +4898,16 @@
    "slug": "file-sharing",
    "milestone": "M4",
    "want": "Send files and images, and find them again in one place",
-   "who": "Everyone",
-   "done": "Uploads up to 100 MB with thumbnails and link previews; the Files tab and Files section work",
+   "who": "Member, Admin",
+   "done": "Uploads of any file type up to 100 MB, 10 files per message, with thumbnails and link previews; the Files tab and Files section work; Admins are warned when the disk fills",
    "tickets": [
     "058",
     "059",
     "060",
     "061",
     "062",
-    "063"
+    "063",
+    "103"
    ],
    "status": "draft"
   },
@@ -4811,8 +4916,8 @@
    "slug": "search-and-command-palette",
    "milestone": "M4",
    "want": "Find conversations, people and messages; act quickly with Ctrl+K",
-   "who": "Member and above",
-   "done": "Vietnamese typed without diacritics finds text with them; only things the person may see are returned",
+   "who": "Member, Admin",
+   "done": "Vietnamese typed without diacritics finds text with them; only things the person may see are returned, 20 per kind with more on request",
    "tickets": [
     "069",
     "070",
@@ -4826,8 +4931,8 @@
    "slug": "activity-and-later",
    "milestone": "M5",
    "want": "Miss no mention; save a message to deal with later and be reminded",
-   "who": "Member and above",
-   "done": "Mentions, threads and reactions create Activity items; snooze and reminders fire on time",
+   "who": "Member, Admin",
+   "done": "Mentions, replies in followed threads and reactions create Activity items; snooze and reminders fire on time and never offer a time already past",
    "tickets": [
     "065",
     "066",
@@ -4841,14 +4946,15 @@
    "slug": "notifications-and-focus",
    "milestone": "M5",
    "want": "Be told when it matters, and be able to switch it off to concentrate",
-   "who": "Member and above",
-   "done": "A push arrives with the tab closed; all 15 mention situations behave as specified; Pause and Focus hold everything",
+   "who": "Member, Admin",
+   "done": "A push arrives with the tab closed; a mention in a muted conversation still notifies while the person's switch is on; all 15 mention situations behave as specified; Pause and Focus hold everything",
    "tickets": [
     "073",
     "074",
     "075",
     "076",
-    "077"
+    "077",
+    "102"
    ],
    "status": "draft"
   },
@@ -4856,9 +4962,9 @@
    "id": "I13",
    "slug": "preferences-and-people",
    "milestone": "M6",
-   "want": "Adjust looks and notifications to taste; look people up; lack nothing on a phone",
-   "who": "Member and above",
-   "done": "Preferences are saved to the account; People and profiles work; the More sheet has every entry point",
+   "want": "Adjust looks, language and notifications to taste; see signed-in devices and sign out; look people up; lack nothing on a phone",
+   "who": "Member, Admin",
+   "done": "Preferences are saved to the account and apply on every device; the language can be switched between English (the default) and Vietnamese; Sign out and the signed-in devices list work; People and profiles work; the More sheet has every entry point",
    "tickets": [
     "078",
     "079",
@@ -4870,13 +4976,14 @@
    "id": "I14",
    "slug": "language-accessibility-states",
    "milestone": "M6",
-   "want": "A fully Vietnamese interface, usable by keyboard, with a state for every situation",
-   "who": "Everyone",
-   "done": "No string lacks a translation; skeletons, the reconnecting strip, 404 and no-access pages exist",
+   "want": "An interface fully translated in English (the default) and Vietnamese, usable by keyboard, with a state for every situation",
+   "who": "Member, Admin",
+   "done": "No string lacks a translation in either language, and CI fails if one does; skeletons, the offline banner, the shared not-found and no-access page and the update strip exist",
    "tickets": [
     "080",
     "082",
-    "083"
+    "083",
+    "104"
    ],
    "status": "draft"
   },
@@ -4884,13 +4991,12 @@
    "id": "I15",
    "slug": "production-launch",
    "milestone": "M6",
-   "want": "Toki runs on its real domain, safely, and can be restored",
+   "want": "Toki runs on its real domain, safely",
    "who": "Admin and whoever operates the server",
-   "done": "A fresh install follows the guide; a backup is restored; the 6 performance targets and 12 end-to-end flows pass",
+   "done": "A fresh install follows the guide; the 6 performance targets pass with 200 people online; the 12 end-to-end flows pass",
    "tickets": [
     "084",
     "085",
-    "086",
     "087",
     "088",
     "089",
