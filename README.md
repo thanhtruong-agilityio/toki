@@ -49,7 +49,9 @@ All `(planned)`; the spec of each ticket is the source.
 
 - Git and Bash, to clone the repository and run the one existing test.
 - The GitHub CLI (`gh`) with write access to this repository, to open pull requests.
-- Node 22, pnpm and Docker `(planned, TOKI-001 and TOKI-003)`.
+- Node 22. `.nvmrc` pins it; with nvm, run `nvm use` in the repository root. Under another Node major version every pnpm command stops with "This project requires Node.js 22.x".
+- pnpm 12.21.0 through Corepack, which ships with Node 22. Run `corepack enable` once; the version comes from `packageManager` in `package.json`.
+- Docker `(planned, TOKI-003)`.
 
 ## 5. Quick Start
 
@@ -68,7 +70,16 @@ All `(planned)`; the spec of each ticket is the source.
    bash .github/scripts/spec-ready.test.sh
    ```
 
-Installing arrives with TOKI-001; running the apps arrives with TOKI-003 (services), TOKI-004 (server) and TOKI-006 (web). Commands: TBD.
+4. Install the dependencies and type-check all projects, under Node 22.
+
+   ```bash
+   nvm use
+   corepack enable
+   pnpm install
+   pnpm typecheck
+   ```
+
+Running the apps arrives with TOKI-003 (services), TOKI-004 (server) and TOKI-006 (web). Commands: TBD.
 
 ## 6. Project Structure
 
