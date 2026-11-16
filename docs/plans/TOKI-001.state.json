@@ -25,6 +25,15 @@
       "at": "2026-11-16T09:21:11Z",
       "auto": true,
       "stage": "approve"
+    },
+    {
+      "at": "2026-11-16T09:21:34Z",
+      "stage": "check"
+    },
+    {
+      "at": "2026-11-16T09:23:46Z",
+      "auto": true,
+      "stage": "approve"
     }
   ],
   "key": "TOKI-001",
@@ -32,15 +41,15 @@
   "metrics": {},
   "mode": "Auto to PR",
   "plan_approved": true,
-  "plan_hash": "62eab3ea032789c546dc8f472e2733052e85278e5804aee25d114dc199ed4b27",
+  "plan_hash": "6df3b096f119f4c788ed9b8bb66477aa39819f39e3de351215ab90f70c5b0ba1",
   "spec_commit": null,
   "spec_paths": [
     "docs/specs/2026-11-12-monorepo-typescript-setup-design.md"
   ],
-  "stage": "build",
+  "stage": "check",
   "tier": "S",
   "verifier": {
-    "result": null,
-    "round": 0
+    "result": "FAIL",
+    "round": 2
   }
 }
