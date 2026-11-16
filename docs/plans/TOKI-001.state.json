@@ -42,6 +42,10 @@
     {
       "at": "2026-11-16T09:25:17Z",
       "stage": "ship"
+    },
+    {
+      "at": "2026-11-16T09:25:36Z",
+      "stage": "ci"
     }
   ],
   "key": "TOKI-001",
@@ -54,7 +58,7 @@
   "spec_paths": [
     "docs/specs/2026-11-12-monorepo-typescript-setup-design.md"
   ],
-  "stage": "ship",
+  "stage": "ci",
   "tier": "S",
   "verifier": {
     "result": "PASS",
