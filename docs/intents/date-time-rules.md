@@ -3,7 +3,7 @@ Author: Thanh Truong
 
 ## Problem
 Toki shows and checks dates and times in many places: the time of a message, the day dividers in a conversation, the time an Activity item comes back from snooze, the time of a reminder, the time a status clears, the end of Pause and Focus time, a person's local time on the profile.
-The prototype writes these with six separate helper functions and one direct call to the browser's date formatter. They do not agree: one form shows a weekday without a date ("Mon 09:00"), one shows a weekday with a date, one shows a date without a weekday, and none of them ever shows a year or reads a time zone.
+The prototype writes these with many separate helper functions and one direct call to the browser's date formatter. They do not agree: one form shows a weekday without a date ("Mon 09:00"), one shows a weekday with a date, one shows a date without a weekday, and none of them ever shows a year or reads a time zone.
 The decision log fixes the rules (D-073, D-123), but the `shared` package holds no code for them. If every screen and every server route writes its own check and its own format, the rules drift apart again, and the phase 1 measure "'Invalid Date' never appears" (NFR-08) cannot be kept in one place.
 
 ## Proposed outcome
@@ -15,7 +15,7 @@ The builder (Thanh and Claude) can build Activity, Later, status, Pause and Focu
 ## Affected users and systems
 - Users: the builder (one person building with Claude). Indirectly every Member, Admin and Guest, who read the dates and times. Source: Toki Blueprint, intent I02 design-system.
 - Systems: `packages/shared` (created empty by TOKI-001). Later users of the rules: the server (`apps/server`), `packages/client-core` and `packages/ui-web`.
-- Tickets that use the result: TOKI-056 Status, TOKI-057 Profile panel, TOKI-066 Activity screen, TOKI-067 Later, TOKI-076 Pause and Focus time, and every screen that shows the time of a message.
+- Tickets that use the result: TOKI-042 Message component (time of a message, day dividers), TOKI-035 Details panel (creation date of a channel), TOKI-056 Status, TOKI-057 Profile panel, TOKI-063 Files, TOKI-066 Activity screen, TOKI-067 Later, TOKI-076 Pause and Focus time, TOKI-079 People screen. The plan lists none of them as needing TOKI-094; the spec asks for that change.
 
 ## Constraints
 - Belongs to Blueprint intent I02 design-system, whose "done when" includes "the Undo, confirmation and date-rule patterns exist". Source: Toki Blueprint, intent list.
