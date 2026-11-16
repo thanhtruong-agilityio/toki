@@ -47,7 +47,7 @@ old_ids = FIRST + [a["id"] for a in B_EN["assumptions"]] + [q["id"] for q in B_E
 NEW = {o: f"D-{i:03d}" for i, o in enumerate(old_ids, 1)}
 for old, q in RESOLVE.items():
     NEW.setdefault(q, NEW[old])                  # a settling decision is cited by the id of the row it settled
-ID_RE = re.compile(r"\b(OQ\d{1,2}|NR\d{1,2}|FA-\d{2}|FQ-\d{2}|GQ-\d{2}|AS-\d{2}|VQ-\d{2}|Q\d{1,2}[abc]?|G\d{1,2})\b")
+ID_RE = re.compile(r"\b(OQ\d{1,2}|NR\d{1,2}|FA-\d{2}|FQ-\d{2}|GQ-\d{2}|AS-\d{2}|VQ-\d{2}|Q\d{1,3}[abc]?|G\d{1,2})\b")
 sub = lambda s: ID_RE.sub(lambda m: NEW.get(m.group(1), m.group(1)), s)
 
 

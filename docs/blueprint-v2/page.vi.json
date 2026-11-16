@@ -2479,173 +2479,224 @@
   },
   {
    "id": "D-160",
-   "old": "VQ-04",
-   "kind": "q",
+   "old": "VQ-04 · Q90",
+   "kind": "rev",
    "q": "Câu trả lời gửi kèm 'Also send to #name' là một tin nhắn hiển thị ở hai nơi hay là hai tin nhắn, và bản trong channel có làm tăng số chưa đọc của channel và thông báo như tin nhắn thường không?",
    "a": "Là một tin nhắn hiển thị ở cả hai nơi: sửa hoặc xoá sẽ thay đổi cả hai, và trong channel nó được tính như tin nhắn thường (áp dụng số chưa đọc và mức thông báo).",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "'Also send to channel'",
+   "source": "recommended",
+   "note": "Nêu ra là D-160 (D-160) ngày 16/11/2026 khi viết các yêu cầu còn thiếu và rà ticket. Người dùng chấp nhận đề xuất."
   },
   {
    "id": "D-162",
-   "old": "VQ-06",
-   "kind": "q",
+   "old": "VQ-06 · Q91",
+   "kind": "rev",
    "q": "Trên màn hình cảm ứng, người dùng xem ai đã thả reaction bằng cách nào? Tên chỉ hiện khi rê chuột, trong khi quy tắc D-067 cấm tính năng chỉ dùng được bằng hover.",
    "a": "Nhấn giữ chip sẽ mở một danh sách tên nhỏ; chạm nhanh vẫn là thêm hoặc gỡ reaction.",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "Xem ai đã react trên màn hình cảm ứng",
+   "source": "recommended",
+   "note": "Nêu ra là D-162 (D-162) ngày 16/11/2026 khi viết các yêu cầu còn thiếu và rà ticket. Người dùng chấp nhận đề xuất."
   },
   {
    "id": "D-163",
-   "old": "VQ-07",
-   "kind": "q",
+   "old": "VQ-07 · Q92",
+   "kind": "rev",
    "q": "Khi nhiều người thả reaction lên cùng một tin nhắn, tác giả nhận một mục Activity cho mỗi reaction hay một mục cho mỗi tin nhắn?",
    "a": "Một mục cho mỗi tin nhắn, cập nhật theo các tên mới nhất; gỡ reaction thì người đó bị bỏ khỏi mục.",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "Mục Activity cho reaction",
+   "source": "recommended",
+   "note": "Nêu ra là D-163 (D-163) ngày 16/11/2026 khi viết các yêu cầu còn thiếu và rà ticket. Người dùng chấp nhận đề xuất."
   },
   {
    "id": "D-164",
-   "old": "VQ-08",
-   "kind": "q",
+   "old": "VQ-08 · Q93",
+   "kind": "rev",
    "q": "Số tin nhắn được ghim trong một cuộc trò chuyện có giới hạn không?",
    "a": "Không giới hạn trong phase 1.",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "Giới hạn số tin ghim",
+   "source": "recommended",
+   "note": "Nêu ra là D-164 (D-164) ngày 16/11/2026 khi viết các yêu cầu còn thiếu và rà ticket. Người dùng chấp nhận đề xuất."
   },
   {
    "id": "D-165",
-   "old": "VQ-09",
-   "kind": "q",
+   "old": "VQ-09 · Q94",
+   "kind": "rev",
    "q": "Dòng hệ thống '… pinned a message' có làm tăng số chưa đọc hoặc thông báo cho ai không, và khi bỏ ghim có dòng nào không?",
    "a": "Không tăng số chưa đọc và không thông báo, giống dòng 'joined' (D-100); bỏ ghim không có dòng nào.",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "Dòng 'pinned a message'",
+   "source": "recommended",
+   "note": "Nêu ra là D-165 (D-165) ngày 16/11/2026 khi viết các yêu cầu còn thiếu và rà ticket. Người dùng chấp nhận đề xuất."
   },
   {
    "id": "D-166",
-   "old": "VQ-10",
-   "kind": "q",
+   "old": "VQ-10 · Q95",
+   "kind": "rev",
    "q": "Khi tin nhắn đã ghim bị xoá thì ghim đó ra sao, và có ghim được câu trả lời nằm trong thread không?",
    "a": "Tin nhắn bị xoá sẽ rời khỏi tab Pinned. Trong phase 1 chỉ ghim được tin nhắn ở danh sách chính.",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "Ghim: tin bị xoá và reply trong thread",
+   "source": "recommended",
+   "note": "Nêu ra là D-166 (D-166) ngày 16/11/2026 khi viết các yêu cầu còn thiếu và rà ticket. Người dùng chấp nhận đề xuất."
   },
   {
    "id": "D-167",
-   "old": "VQ-11",
-   "kind": "q",
+   "old": "VQ-11 · Q96",
+   "kind": "rev",
    "q": "Những địa chỉ nào trở thành link, link mở theo cách nào, và có khối code nhiều dòng không?",
    "a": "Chỉ địa chỉ http:// và https://, mở trong tab mới; phase 1 không có khối code nhiều dòng.",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "Link và khối code",
+   "source": "recommended",
+   "note": "Nêu ra là D-167 (D-167) ngày 16/11/2026 khi viết các yêu cầu còn thiếu và rà ticket. Người dùng chấp nhận đề xuất."
   },
   {
    "id": "D-168",
-   "old": "VQ-12",
-   "kind": "q",
+   "old": "VQ-12 · Q97",
+   "kind": "rev",
    "q": "Draft có bao gồm các tệp đã tải lên ô soạn tin không? D-130 xoá tệp đã tải lên nhưng không gửi sau 24 giờ.",
    "a": "Draft chỉ gồm văn bản; tệp đính kèm không được khôi phục khi quay lại hay trên thiết bị khác.",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "File trong draft",
+   "source": "recommended",
+   "note": "Nêu ra là D-168 (D-168) ngày 16/11/2026 khi viết các yêu cầu còn thiếu và rà ticket. Người dùng chấp nhận đề xuất."
   },
   {
    "id": "D-170",
-   "old": "VQ-14",
-   "kind": "q",
+   "old": "VQ-14 · Q98",
+   "kind": "rev",
    "q": "Tệp có còn trên trang Files của một người sau khi họ rời channel, và khi channel bị lưu trữ không?",
    "a": "Sau khi rời, tệp của channel đó biến khỏi trang Files của người ấy (D-116: không đọc được channel chưa tham gia). Tệp của channel đã lưu trữ vẫn còn với các thành viên của nó.",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "Trang Files sau khi rời hoặc lưu trữ kênh",
+   "source": "recommended",
+   "note": "Nêu ra là D-170 (D-170) ngày 16/11/2026 khi viết các yêu cầu còn thiếu và rà ticket. Người dùng chấp nhận đề xuất."
   },
   {
    "id": "D-172",
-   "old": "VQ-16",
-   "kind": "q",
+   "old": "VQ-16 · Q99",
+   "kind": "rev",
    "q": "Chữ của status dài tối đa bao nhiêu? Journey F32 ghi 100 ký tự, nhưng chưa có quyết định nào đặt con số này và prototype không giới hạn.",
    "a": "Từ 1 đến 100 ký tự như F32 ghi; ô nhập từ chối ký tự thứ 101.",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "Độ dài status",
+   "source": "recommended",
+   "note": "Nêu ra là D-172 (D-172) ngày 16/11/2026 khi viết các yêu cầu còn thiếu và rà ticket. Người dùng chấp nhận đề xuất."
   },
   {
    "id": "D-174",
-   "old": "VQ-18",
-   "kind": "q",
+   "old": "VQ-18 · Q100",
+   "kind": "rev",
    "q": "Trong cuộc trò chuyện đã mute, trả lời thread và reaction có còn tạo mục Activity và làm tăng badge của Activity không? Các quyết định mới chỉ nói về mention (D-088) và số đếm của chính cuộc trò chuyện (D-103).",
    "a": "Có: các mục vẫn được tạo và tính vào badge của Activity, nhưng không có toast, push hay âm thanh.",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "Activity trong cuộc trò chuyện đã mute",
+   "source": "recommended",
+   "note": "Nêu ra là D-174 (D-174) ngày 16/11/2026 khi viết các yêu cầu còn thiếu và rà ticket. Người dùng chấp nhận đề xuất."
   },
   {
    "id": "D-175",
-   "old": "VQ-19",
-   "kind": "q",
+   "old": "VQ-19 · Q101",
+   "kind": "rev",
    "q": "Giao diện, màu nhấn, mật độ và ngôn ngữ được lưu theo tài khoản và giống nhau trên mọi thiết bị, hay lưu theo từng thiết bị? D-142 mới quyết định cho tùy chọn thông báo; journey F35 ghi là theo tài khoản, còn prototype lưu giao diện trong trình duyệt.",
    "a": "Lưu theo tài khoản và đồng bộ như F35 ghi; với 'Match my device' mỗi thiết bị theo cài đặt sáng hoặc tối của riêng nó.",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "Nơi lưu giao diện và ngôn ngữ",
+   "source": "recommended",
+   "note": "Nêu ra là D-175 (D-175) ngày 16/11/2026 khi viết các yêu cầu còn thiếu và rà ticket. Người dùng chấp nhận đề xuất."
   },
   {
    "id": "D-180",
-   "old": "VQ-24",
-   "kind": "q",
+   "old": "VQ-24 · Q102",
+   "kind": "rev",
    "q": "Mail được gửi bằng ngôn ngữ nào: mail mời tới người chưa có tài khoản, và mail đăng nhập tới thành viên đã chọn tiếng Việt?",
    "a": "Mail mời bằng tiếng Anh; mail đăng nhập theo ngôn ngữ thành viên đã chọn.",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "Ngôn ngữ của mail",
+   "source": "recommended",
+   "note": "Nêu ra là D-180 (D-180) ngày 16/11/2026 khi viết các yêu cầu còn thiếu và rà ticket. Người dùng chấp nhận đề xuất."
   },
   {
    "id": "D-181",
-   "old": "VQ-25",
-   "kind": "q",
+   "old": "VQ-25 · Q103",
+   "kind": "rev",
    "q": "Khi một người đã bị vô hiệu hoá được mời lại (D-094), họ nhận vai trò nào: vai trò trong lời mời mới, hay vai trò cũ của tài khoản?",
    "a": "Vai trò chọn trong lời mời mới.",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "Vai trò khi mời lại",
+   "source": "recommended",
+   "note": "Nêu ra là D-181 (D-181) ngày 16/11/2026 khi viết các yêu cầu còn thiếu và rà ticket. Người dùng chấp nhận đề xuất."
   },
   {
    "id": "D-182",
-   "old": "VQ-26",
-   "kind": "q",
+   "old": "VQ-26 · Q104",
+   "kind": "rev",
    "q": "'Resend' ở một lời mời có tính lại 7 ngày và làm nút Join của mail trước hết tác dụng, hay chỉ gửi lại đúng lời mời đó?",
    "a": "Tính lại 7 ngày; mail trước hết tác dụng.",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "Resend lời mời",
+   "source": "recommended",
+   "note": "Nêu ra là D-182 (D-182) ngày 16/11/2026 khi viết các yêu cầu còn thiếu và rà ticket. Người dùng chấp nhận đề xuất."
   },
   {
    "id": "D-183",
-   "old": "VQ-27",
-   "kind": "q",
+   "old": "VQ-27 · Q105",
+   "kind": "rev",
    "q": "Dấu '+' tạo kênh nằm cạnh 'Busiest channels' trên trang Admin (D-151), nhưng Analytics thuộc phase 5. Ở phase 1 mục đó hiển thị gì?",
    "a": "Một danh sách đơn giản gồm mọi kênh kèm số thành viên, tên là 'Channels'; xếp hạng theo độ sôi nổi đi cùng Analytics.",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "Danh sách Channels trên trang Admin",
+   "source": "recommended",
+   "note": "Nêu ra là D-183 (D-183) ngày 16/11/2026 khi viết các yêu cầu còn thiếu và rà ticket. Người dùng chấp nhận đề xuất."
   },
   {
    "id": "D-186",
-   "old": "VQ-30",
-   "kind": "q",
+   "old": "VQ-30 · Q106",
+   "kind": "rev",
    "q": "Ở phase 1 file tải lên có được quét virus không?",
    "a": "Không quét ở phase 1; file luôn được tải về, không mở trong trang (D-095).",
    "owner": "PO, BE",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "Quét virus",
+   "source": "recommended",
+   "note": "Nêu ra là D-186 (D-186) ngày 16/11/2026 khi viết các yêu cầu còn thiếu và rà ticket. Người dùng chấp nhận đề xuất."
   },
   {
    "id": "D-114",
@@ -3788,7 +3839,7 @@
     "**Giả định, chưa xác nhận (D-127):** Gõ khoảng trắng trong tên kênh thì tự thành gạch nối, chữ hoa thành chữ thường, thay vì báo lỗi.",
     "**Giả định, chưa xác nhận (D-128):** Tính không trùng của tên kênh bao gồm cả kênh đã lưu trữ."
    ],
-   "svg": "<svg viewBox=\"0 0 1116 820\" style=\"max-width:1250px\" role=\"img\" aria-label=\"2.8 Tạo một kênh (Admin)\" font-family=\"inherit\"><defs><marker id=\"fm9\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\"><path d=\"M0 0L10 5L0 10z\" fill=\"currentColor\"/></marker></defs><rect x=\"0\" y=\"0\" width=\"372\" height=\"820\" style=\"fill:var(--surface-2)\" stroke=\"none\"/><text x=\"186\" y=\"23\" font-size=\"11.5\" font-weight=\"700\" letter-spacing=\".08em\" text-anchor=\"middle\" fill=\"currentColor\" opacity=\".75\">NGƯỜI DÙNG</text><rect x=\"372\" y=\"0\" width=\"372\" height=\"820\" style=\"fill:var(--surface)\" stroke=\"none\"/><text x=\"558\" y=\"23\" font-size=\"11.5\" font-weight=\"700\" letter-spacing=\".08em\" text-anchor=\"middle\" fill=\"currentColor\" opacity=\".75\">FRONTEND (ỨNG DỤNG WEB)</text><line x1=\"372\" y1=\"0\" x2=\"372\" y2=\"820\" stroke=\"currentColor\" stroke-width=\"1\" opacity=\".18\"/><rect x=\"744\" y=\"0\" width=\"372\" height=\"820\" style=\"fill:var(--surface-2)\" stroke=\"none\"/><text x=\"930\" y=\"23\" font-size=\"11.5\" font-weight=\"700\" letter-spacing=\".08em\" text-anchor=\"middle\" fill=\"currentColor\" opacity=\".75\">BACKEND (API, JOB, LƯU TRỮ)</text><line x1=\"744\" y1=\"0\" x2=\"744\" y2=\"820\" stroke=\"currentColor\" stroke-width=\"1\" opacity=\".18\"/><line x1=\"0\" y1=\"36\" x2=\"1116\" y2=\"36\" stroke=\"currentColor\" stroke-width=\"1\" opacity=\".18\"/><g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.4\"><line x1=\"319.0\" y1=\"75.0\" x2=\"423.0\" y2=\"75.0\" marker-end=\"url(#fm9)\"/><line x1=\"457.6\" y1=\"102.0\" x2=\"293.9\" y2=\"146.0\" marker-end=\"url(#fm9)\"/><line x1=\"319.0\" y1=\"175.0\" x2=\"419.0\" y2=\"175.0\" marker-end=\"url(#fm9)\"/><line x1=\"558.0\" y1=\"217.0\" x2=\"558.0\" y2=\"246.0\" marker-end=\"url(#fm9)\"/><polyline points=\"691.0,268.0 719.0,268.0 719.0,82.0 693.0,82.0\" stroke-linejoin=\"round\" marker-end=\"url(#fm9)\"/><line x1=\"508.2\" y1=\"201.7\" x2=\"239.9\" y2=\"346.0\" marker-end=\"url(#fm9)\"/><line x1=\"319.0\" y1=\"375.0\" x2=\"423.0\" y2=\"375.0\" marker-end=\"url(#fm9)\"/><line x1=\"691.0\" y1=\"375.0\" x2=\"795.0\" y2=\"375.0\" marker-end=\"url(#fm9)\"/><line x1=\"930.0\" y1=\"402.0\" x2=\"930.0\" y2=\"431.0\" marker-end=\"url(#fm9)\"/><line x1=\"793.0\" y1=\"475.0\" x2=\"693.0\" y2=\"475.0\" marker-end=\"url(#fm9)\"/><line x1=\"930.0\" y1=\"517.0\" x2=\"930.0\" y2=\"531.0\" marker-end=\"url(#fm9)\"/><line x1=\"793.0\" y1=\"575.0\" x2=\"693.0\" y2=\"575.0\" marker-end=\"url(#fm9)\"/><polyline points=\"425.0,568.0 397.0,568.0 397.0,82.0 423.0,82.0\" stroke-linejoin=\"round\" marker-end=\"url(#fm9)\"/><line x1=\"930.0\" y1=\"617.0\" x2=\"930.0\" y2=\"646.0\" marker-end=\"url(#fm9)\"/><line x1=\"797.0\" y1=\"675.0\" x2=\"693.0\" y2=\"675.0\" marker-end=\"url(#fm9)\"/><line x1=\"457.6\" y1=\"702.0\" x2=\"286.4\" y2=\"748.0\" marker-end=\"url(#fm9)\"/></g><g stroke=\"currentColor\" stroke-width=\"1.4\"><rect x=\"55\" y=\"52\" width=\"262\" height=\"46\" rx=\"23\" style=\"fill:var(--surface);stroke:var(--accent);stroke-width:2.5\"/><rect x=\"427\" y=\"50\" width=\"262\" height=\"50\" rx=\"8\" style=\"fill:var(--surface)\"/><rect x=\"55\" y=\"150\" width=\"262\" height=\"50\" rx=\"8\" style=\"fill:var(--surface)\"/><polygon points=\"558,135 693,175 558,215 423,175\" style=\"fill:var(--surface)\"/><rect x=\"427\" y=\"250\" width=\"262\" height=\"50\" rx=\"8\" style=\"fill:var(--surface);stroke:var(--bad);stroke-width:2\"/><rect x=\"55\" y=\"350\" width=\"262\" height=\"50\" rx=\"8\" style=\"fill:var(--surface)\"/><rect x=\"427\" y=\"350\" width=\"262\" height=\"50\" rx=\"8\" style=\"fill:var(--surface)\" stroke-dasharray=\"5 4\"/><rect x=\"799\" y=\"350\" width=\"262\" height=\"50\" rx=\"8\" style=\"fill:var(--surface)\"/><polygon points=\"930,435 1065,475 930,515 795,475\" style=\"fill:var(--surface)\"/><rect x=\"427\" y=\"450\" width=\"262\" height=\"50\" rx=\"8\" style=\"fill:var(--surface);stroke:var(--bad);stroke-width:2\"/><polygon points=\"930,535 1065,575 930,615 795,575\" style=\"fill:var(--surface)\"/><rect x=\"427\" y=\"550\" width=\"262\" height=\"50\" rx=\"8\" style=\"fill:var(--surface);stroke:var(--bad);stroke-width:2\"/><rect x=\"799\" y=\"650\" width=\"262\" height=\"50\" rx=\"8\" style=\"fill:var(--surface)\"/><rect x=\"427\" y=\"650\" width=\"262\" height=\"50\" rx=\"8\" style=\"fill:var(--surface)\"/><rect x=\"55\" y=\"752\" width=\"262\" height=\"46\" rx=\"23\" style=\"fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.6\"/></g><g fill=\"currentColor\" stroke=\"none\" text-anchor=\"middle\"><rect x=\"538.2\" y=\"223.5\" width=\"39.5\" height=\"16\" rx=\"4\" style=\"fill:var(--surface)\" stroke=\"currentColor\" stroke-width=\".5\" stroke-opacity=\".25\"/><text x=\"558.0\" y=\"235.1\" font-size=\"10.5\">không</text><rect x=\"693.4\" y=\"167.0\" width=\"51.3\" height=\"16\" rx=\"4\" style=\"fill:var(--surface)\" stroke=\"currentColor\" stroke-width=\".5\" stroke-opacity=\".25\"/><text x=\"719.0\" y=\"178.6\" font-size=\"10.5\">gõ tiếp</text><rect x=\"403.4\" y=\"244.2\" width=\"21.8\" height=\"16\" rx=\"4\" style=\"fill:var(--surface)\" stroke=\"currentColor\" stroke-width=\".5\" stroke-opacity=\".25\"/><text x=\"414.3\" y=\"255.8\" font-size=\"10.5\">có</text><rect x=\"723.2\" y=\"467.0\" width=\"39.5\" height=\"16\" rx=\"4\" style=\"fill:var(--surface)\" stroke=\"currentColor\" stroke-width=\".5\" stroke-opacity=\".25\"/><text x=\"743.0\" y=\"478.6\" font-size=\"10.5\">không</text><rect x=\"919.1\" y=\"516.0\" width=\"21.8\" height=\"16\" rx=\"4\" style=\"fill:var(--surface)\" stroke=\"currentColor\" stroke-width=\".5\" stroke-opacity=\".25\"/><text x=\"930.0\" y=\"527.6\" font-size=\"10.5\">có</text><rect x=\"732.1\" y=\"567.0\" width=\"21.8\" height=\"16\" rx=\"4\" style=\"fill:var(--surface)\" stroke=\"currentColor\" stroke-width=\".5\" stroke-opacity=\".25\"/><text x=\"743.0\" y=\"578.6\" font-size=\"10.5\">có</text><rect x=\"368.4\" y=\"317.0\" width=\"57.2\" height=\"16\" rx=\"4\" style=\"fill:var(--surface)\" stroke=\"currentColor\" stroke-width=\".5\" stroke-opacity=\".25\"/><text x=\"397.0\" y=\"328.6\" font-size=\"10.5\">tên khác</text><rect x=\"910.2\" y=\"623.5\" width=\"39.5\" height=\"16\" rx=\"4\" style=\"fill:var(--surface)\" stroke=\"currentColor\" stroke-width=\".5\" stroke-opacity=\".25\"/><text x=\"930.0\" y=\"635.1\" font-size=\"10.5\">không</text><text x=\"186\" y=\"72\" font-size=\"12.5\" font-weight=\"600\">Trang Admin: + cạnh Busiest channels</text><text x=\"186\" y=\"87\" font-size=\"10\" opacity=\".75\">chỉ Admin · không có trong prototype</text><text x=\"558\" y=\"72\" font-size=\"12.5\" font-weight=\"600\">Hộp thoại: tên, Private, chủ đề, người</text><text x=\"558\" y=\"87\" font-size=\"10\" opacity=\".75\">Create tắt cho tới khi tên hợp lệ</text><text x=\"186\" y=\"180\" font-size=\"12.5\" font-weight=\"600\">Gõ tên</text><text x=\"558\" y=\"180\" font-size=\"11.5\" font-weight=\"600\">a–z, 0–9, gạch nối, ≤ 80?</text><text x=\"558\" y=\"280\" font-size=\"12.5\" font-weight=\"600\">Thông báo dưới ô ngay khi gõ</text><text x=\"186\" y=\"380\" font-size=\"12.5\" font-weight=\"600\">Bấm Create</text><text x=\"558\" y=\"380\" font-size=\"12.5\" font-weight=\"600\">Nút đang tải; hộp thoại bị khoá</text><text x=\"930\" y=\"372\" font-size=\"12.5\" font-weight=\"600\">POST /conversations</text><text x=\"930\" y=\"387\" font-size=\"10\" opacity=\".75\">{kind: channel, name, private, people}</text><text x=\"930\" y=\"480\" font-size=\"11.5\" font-weight=\"600\">Người gửi là Admin?</text><text x=\"558\" y=\"472\" font-size=\"12.5\" font-weight=\"600\">&#x27;No access&#x27;; hộp thoại đóng</text><text x=\"558\" y=\"487\" font-size=\"10\" opacity=\".75\">403 · Member không bao giờ tới được đây</text><text x=\"930\" y=\"580\" font-size=\"11.5\" font-weight=\"600\">Tên đã có rồi?</text><text x=\"558\" y=\"572\" font-size=\"12.5\" font-weight=\"600\">&#x27;#name already exists&#x27; + Open it</text><text x=\"558\" y=\"587\" font-size=\"10\" opacity=\".75\">hộp thoại giữ nguyên, tên được chọn</text><text x=\"930\" y=\"680\" font-size=\"12.5\" font-weight=\"600\">Tạo kênh; thêm những người được chọn</text><text x=\"558\" y=\"672\" font-size=\"12.5\" font-weight=\"600\">Hộp thoại đóng; kênh mở ra</text><text x=\"558\" y=\"687\" font-size=\"10\" opacity=\".75\">có trong sidebar</text><text x=\"186\" y=\"780\" font-size=\"12.5\" font-weight=\"600\">Ở trong kênh mới</text></g></svg>",
+   "svg": "<svg viewBox=\"0 0 1116 820\" style=\"max-width:1250px\" role=\"img\" aria-label=\"2.8 Tạo một kênh (Admin)\" font-family=\"inherit\"><defs><marker id=\"fm9\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\"><path d=\"M0 0L10 5L0 10z\" fill=\"currentColor\"/></marker></defs><rect x=\"0\" y=\"0\" width=\"372\" height=\"820\" style=\"fill:var(--surface-2)\" stroke=\"none\"/><text x=\"186\" y=\"23\" font-size=\"11.5\" font-weight=\"700\" letter-spacing=\".08em\" text-anchor=\"middle\" fill=\"currentColor\" opacity=\".75\">NGƯỜI DÙNG</text><rect x=\"372\" y=\"0\" width=\"372\" height=\"820\" style=\"fill:var(--surface)\" stroke=\"none\"/><text x=\"558\" y=\"23\" font-size=\"11.5\" font-weight=\"700\" letter-spacing=\".08em\" text-anchor=\"middle\" fill=\"currentColor\" opacity=\".75\">FRONTEND (ỨNG DỤNG WEB)</text><line x1=\"372\" y1=\"0\" x2=\"372\" y2=\"820\" stroke=\"currentColor\" stroke-width=\"1\" opacity=\".18\"/><rect x=\"744\" y=\"0\" width=\"372\" height=\"820\" style=\"fill:var(--surface-2)\" stroke=\"none\"/><text x=\"930\" y=\"23\" font-size=\"11.5\" font-weight=\"700\" letter-spacing=\".08em\" text-anchor=\"middle\" fill=\"currentColor\" opacity=\".75\">BACKEND (API, JOB, LƯU TRỮ)</text><line x1=\"744\" y1=\"0\" x2=\"744\" y2=\"820\" stroke=\"currentColor\" stroke-width=\"1\" opacity=\".18\"/><line x1=\"0\" y1=\"36\" x2=\"1116\" y2=\"36\" stroke=\"currentColor\" stroke-width=\"1\" opacity=\".18\"/><g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.4\"><line x1=\"319.0\" y1=\"75.0\" x2=\"423.0\" y2=\"75.0\" marker-end=\"url(#fm9)\"/><line x1=\"457.6\" y1=\"102.0\" x2=\"293.9\" y2=\"146.0\" marker-end=\"url(#fm9)\"/><line x1=\"319.0\" y1=\"175.0\" x2=\"419.0\" y2=\"175.0\" marker-end=\"url(#fm9)\"/><line x1=\"558.0\" y1=\"217.0\" x2=\"558.0\" y2=\"246.0\" marker-end=\"url(#fm9)\"/><polyline points=\"691.0,268.0 719.0,268.0 719.0,82.0 693.0,82.0\" stroke-linejoin=\"round\" marker-end=\"url(#fm9)\"/><line x1=\"508.2\" y1=\"201.7\" x2=\"239.9\" y2=\"346.0\" marker-end=\"url(#fm9)\"/><line x1=\"319.0\" y1=\"375.0\" x2=\"423.0\" y2=\"375.0\" marker-end=\"url(#fm9)\"/><line x1=\"691.0\" y1=\"375.0\" x2=\"795.0\" y2=\"375.0\" marker-end=\"url(#fm9)\"/><line x1=\"930.0\" y1=\"402.0\" x2=\"930.0\" y2=\"431.0\" marker-end=\"url(#fm9)\"/><line x1=\"793.0\" y1=\"475.0\" x2=\"693.0\" y2=\"475.0\" marker-end=\"url(#fm9)\"/><line x1=\"930.0\" y1=\"517.0\" x2=\"930.0\" y2=\"531.0\" marker-end=\"url(#fm9)\"/><line x1=\"793.0\" y1=\"575.0\" x2=\"693.0\" y2=\"575.0\" marker-end=\"url(#fm9)\"/><polyline points=\"425.0,568.0 397.0,568.0 397.0,82.0 423.0,82.0\" stroke-linejoin=\"round\" marker-end=\"url(#fm9)\"/><line x1=\"930.0\" y1=\"617.0\" x2=\"930.0\" y2=\"646.0\" marker-end=\"url(#fm9)\"/><line x1=\"797.0\" y1=\"675.0\" x2=\"693.0\" y2=\"675.0\" marker-end=\"url(#fm9)\"/><line x1=\"457.6\" y1=\"702.0\" x2=\"286.4\" y2=\"748.0\" marker-end=\"url(#fm9)\"/></g><g stroke=\"currentColor\" stroke-width=\"1.4\"><rect x=\"55\" y=\"52\" width=\"262\" height=\"46\" rx=\"23\" style=\"fill:var(--surface);stroke:var(--accent);stroke-width:2.5\"/><rect x=\"427\" y=\"50\" width=\"262\" height=\"50\" rx=\"8\" style=\"fill:var(--surface)\"/><rect x=\"55\" y=\"150\" width=\"262\" height=\"50\" rx=\"8\" style=\"fill:var(--surface)\"/><polygon points=\"558,135 693,175 558,215 423,175\" style=\"fill:var(--surface)\"/><rect x=\"427\" y=\"250\" width=\"262\" height=\"50\" rx=\"8\" style=\"fill:var(--surface);stroke:var(--bad);stroke-width:2\"/><rect x=\"55\" y=\"350\" width=\"262\" height=\"50\" rx=\"8\" style=\"fill:var(--surface)\"/><rect x=\"427\" y=\"350\" width=\"262\" height=\"50\" rx=\"8\" style=\"fill:var(--surface)\" stroke-dasharray=\"5 4\"/><rect x=\"799\" y=\"350\" width=\"262\" height=\"50\" rx=\"8\" style=\"fill:var(--surface)\"/><polygon points=\"930,435 1065,475 930,515 795,475\" style=\"fill:var(--surface)\"/><rect x=\"427\" y=\"450\" width=\"262\" height=\"50\" rx=\"8\" style=\"fill:var(--surface);stroke:var(--bad);stroke-width:2\"/><polygon points=\"930,535 1065,575 930,615 795,575\" style=\"fill:var(--surface)\"/><rect x=\"427\" y=\"550\" width=\"262\" height=\"50\" rx=\"8\" style=\"fill:var(--surface);stroke:var(--bad);stroke-width:2\"/><rect x=\"799\" y=\"650\" width=\"262\" height=\"50\" rx=\"8\" style=\"fill:var(--surface)\"/><rect x=\"427\" y=\"650\" width=\"262\" height=\"50\" rx=\"8\" style=\"fill:var(--surface)\"/><rect x=\"55\" y=\"752\" width=\"262\" height=\"46\" rx=\"23\" style=\"fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.6\"/></g><g fill=\"currentColor\" stroke=\"none\" text-anchor=\"middle\"><rect x=\"538.2\" y=\"223.5\" width=\"39.5\" height=\"16\" rx=\"4\" style=\"fill:var(--surface)\" stroke=\"currentColor\" stroke-width=\".5\" stroke-opacity=\".25\"/><text x=\"558.0\" y=\"235.1\" font-size=\"10.5\">không</text><rect x=\"693.4\" y=\"167.0\" width=\"51.3\" height=\"16\" rx=\"4\" style=\"fill:var(--surface)\" stroke=\"currentColor\" stroke-width=\".5\" stroke-opacity=\".25\"/><text x=\"719.0\" y=\"178.6\" font-size=\"10.5\">gõ tiếp</text><rect x=\"403.4\" y=\"244.2\" width=\"21.8\" height=\"16\" rx=\"4\" style=\"fill:var(--surface)\" stroke=\"currentColor\" stroke-width=\".5\" stroke-opacity=\".25\"/><text x=\"414.3\" y=\"255.8\" font-size=\"10.5\">có</text><rect x=\"723.2\" y=\"467.0\" width=\"39.5\" height=\"16\" rx=\"4\" style=\"fill:var(--surface)\" stroke=\"currentColor\" stroke-width=\".5\" stroke-opacity=\".25\"/><text x=\"743.0\" y=\"478.6\" font-size=\"10.5\">không</text><rect x=\"919.1\" y=\"516.0\" width=\"21.8\" height=\"16\" rx=\"4\" style=\"fill:var(--surface)\" stroke=\"currentColor\" stroke-width=\".5\" stroke-opacity=\".25\"/><text x=\"930.0\" y=\"527.6\" font-size=\"10.5\">có</text><rect x=\"732.1\" y=\"567.0\" width=\"21.8\" height=\"16\" rx=\"4\" style=\"fill:var(--surface)\" stroke=\"currentColor\" stroke-width=\".5\" stroke-opacity=\".25\"/><text x=\"743.0\" y=\"578.6\" font-size=\"10.5\">có</text><rect x=\"368.4\" y=\"317.0\" width=\"57.2\" height=\"16\" rx=\"4\" style=\"fill:var(--surface)\" stroke=\"currentColor\" stroke-width=\".5\" stroke-opacity=\".25\"/><text x=\"397.0\" y=\"328.6\" font-size=\"10.5\">tên khác</text><rect x=\"910.2\" y=\"623.5\" width=\"39.5\" height=\"16\" rx=\"4\" style=\"fill:var(--surface)\" stroke=\"currentColor\" stroke-width=\".5\" stroke-opacity=\".25\"/><text x=\"930.0\" y=\"635.1\" font-size=\"10.5\">không</text><text x=\"186\" y=\"72\" font-size=\"12.5\" font-weight=\"600\">Trang Admin: + ở danh sách Channels</text><text x=\"186\" y=\"87\" font-size=\"10\" opacity=\".75\">chỉ Admin · không có trong prototype</text><text x=\"558\" y=\"72\" font-size=\"12.5\" font-weight=\"600\">Hộp thoại: tên, Private, chủ đề, người</text><text x=\"558\" y=\"87\" font-size=\"10\" opacity=\".75\">Create tắt cho tới khi tên hợp lệ</text><text x=\"186\" y=\"180\" font-size=\"12.5\" font-weight=\"600\">Gõ tên</text><text x=\"558\" y=\"180\" font-size=\"11.5\" font-weight=\"600\">a–z, 0–9, gạch nối, ≤ 80?</text><text x=\"558\" y=\"280\" font-size=\"12.5\" font-weight=\"600\">Thông báo dưới ô ngay khi gõ</text><text x=\"186\" y=\"380\" font-size=\"12.5\" font-weight=\"600\">Bấm Create</text><text x=\"558\" y=\"380\" font-size=\"12.5\" font-weight=\"600\">Nút đang tải; hộp thoại bị khoá</text><text x=\"930\" y=\"372\" font-size=\"12.5\" font-weight=\"600\">POST /conversations</text><text x=\"930\" y=\"387\" font-size=\"10\" opacity=\".75\">{kind: channel, name, private, people}</text><text x=\"930\" y=\"480\" font-size=\"11.5\" font-weight=\"600\">Người gửi là Admin?</text><text x=\"558\" y=\"472\" font-size=\"12.5\" font-weight=\"600\">&#x27;No access&#x27;; hộp thoại đóng</text><text x=\"558\" y=\"487\" font-size=\"10\" opacity=\".75\">403 · Member không bao giờ tới được đây</text><text x=\"930\" y=\"580\" font-size=\"11.5\" font-weight=\"600\">Tên đã có rồi?</text><text x=\"558\" y=\"572\" font-size=\"12.5\" font-weight=\"600\">&#x27;#name already exists&#x27; + Open it</text><text x=\"558\" y=\"587\" font-size=\"10\" opacity=\".75\">hộp thoại giữ nguyên, tên được chọn</text><text x=\"930\" y=\"680\" font-size=\"12.5\" font-weight=\"600\">Tạo kênh; thêm những người được chọn</text><text x=\"558\" y=\"672\" font-size=\"12.5\" font-weight=\"600\">Hộp thoại đóng; kênh mở ra</text><text x=\"558\" y=\"687\" font-size=\"10\" opacity=\".75\">có trong sidebar</text><text x=\"186\" y=\"780\" font-size=\"12.5\" font-weight=\"600\">Ở trong kênh mới</text></g></svg>",
    "caption": "Chỉ Admin tạo kênh, từ trang Admin. Prototype không có cách nào tạo kênh.",
    "open": [
     "D-127",
@@ -8767,10 +8818,13 @@
     {
      "ref": "D-089",
      "a": "(a) Mỗi thứ có địa chỉ. Back đóng panel bên trước, rồi về nơi trước đó."
+    },
+    {
+     "ref": "D-160",
+     "a": "Là một tin nhắn hiển thị ở cả hai nơi: sửa hoặc xoá sẽ thay đổi cả hai, và trong channel nó được tính như tin nhắn thường (áp dụng số chưa đọc và mức thông báo)."
     }
    ],
    "open": [
-    "D-160",
     "D-161"
    ],
    "screen": "Home: nút 'Reply in thread' trên thanh thao tác của tin nhắn; bảng Thread",
@@ -8946,12 +9000,17 @@
     {
      "ref": "D-091",
      "a": "Đã rà ngày 13/11/2026: 8 hành trình viết lại, 16 sửa, 19 giữ nguyên. Khi bốn lựa chọn ở D-156 tới D-159 đã chốt, các hành trình phase 1 được chấp nhận làm nền."
+    },
+    {
+     "ref": "D-162",
+     "a": "Nhấn giữ chip sẽ mở một danh sách tên nhỏ; chạm nhanh vẫn là thêm hoặc gỡ reaction."
+    },
+    {
+     "ref": "D-163",
+     "a": "Một mục cho mỗi tin nhắn, cập nhật theo các tên mới nhất; gỡ reaction thì người đó bị bỏ khỏi mục."
     }
    ],
-   "open": [
-    "D-162",
-    "D-163"
-   ],
+   "open": [],
    "screen": "Home: nút mặt cười trên thanh thao tác của tin nhắn; các chip reaction dưới tin nhắn",
    "flows": "",
    "rules": "BR-15",
@@ -9050,13 +9109,21 @@
     {
      "ref": "D-069",
      "a": "Hành động hoàn tác được thì làm ngay và hiện toast có nút Hoàn tác trong 5 giây. Hành động không hoàn tác được hoặc ảnh hưởng người khác thì hỏi xác nhận, nêu rõ đối tượng. Không dùng cả hai cho một hành động."
+    },
+    {
+     "ref": "D-164",
+     "a": "Không giới hạn trong phase 1."
+    },
+    {
+     "ref": "D-165",
+     "a": "Không tăng số chưa đọc và không thông báo, giống dòng 'joined' (D-100); bỏ ghim không có dòng nào."
+    },
+    {
+     "ref": "D-166",
+     "a": "Tin nhắn bị xoá sẽ rời khỏi tab Pinned. Trong phase 1 chỉ ghim được tin nhắn ở danh sách chính."
     }
    ],
-   "open": [
-    "D-164",
-    "D-165",
-    "D-166"
-   ],
+   "open": [],
    "screen": "Home: menu More của tin nhắn, mục 'Pin to conversation' / 'Unpin'; tab 'Pinned' của cuộc trò chuyện",
    "flows": "",
    "rules": "BR-20",
@@ -9141,11 +9208,13 @@
     {
      "ref": "D-019",
      "a": "Prototype là nguồn duy nhất; Claude tự quyết chỗ chưa vẽ"
+    },
+    {
+     "ref": "D-167",
+     "a": "Chỉ địa chỉ http:// và https://, mở trong tab mới; phase 1 không có khối code nhiều dòng."
     }
    ],
-   "open": [
-    "D-167"
-   ],
+   "open": [],
    "screen": "Home: thanh công cụ của ô soạn tin (Bold, Italic, Code); nội dung tin nhắn",
    "flows": "",
    "rules": "",
@@ -9222,10 +9291,13 @@
     {
      "ref": "D-091",
      "a": "Đã rà ngày 13/11/2026: 8 hành trình viết lại, 16 sửa, 19 giữ nguyên. Khi bốn lựa chọn ở D-156 tới D-159 đã chốt, các hành trình phase 1 được chấp nhận làm nền."
+    },
+    {
+     "ref": "D-168",
+     "a": "Draft chỉ gồm văn bản; tệp đính kèm không được khôi phục khi quay lại hay trên thiết bị khác."
     }
    ],
    "open": [
-    "D-168",
     "D-169"
    ],
    "screen": "Home: ô soạn tin; nhãn 'Draft' trên một dòng của danh sách cuộc trò chuyện",
@@ -9320,10 +9392,13 @@
     {
      "ref": "D-095",
      "a": "Nhận mọi loại tới 100 MB; file luôn được tải về, không bao giờ chạy trong trình duyệt."
+    },
+    {
+     "ref": "D-170",
+     "a": "Sau khi rời, tệp của channel đó biến khỏi trang Files của người ấy (D-116: không đọc được channel chưa tham gia). Tệp của channel đã lưu trữ vẫn còn với các thành viên của nó."
     }
    ],
    "open": [
-    "D-170",
     "D-171"
    ],
    "screen": "Trang Files; tab 'Files & links' của cuộc trò chuyện; hộp thoại chi tiết tệp",
@@ -9747,11 +9822,13 @@
     {
      "ref": "D-002",
      "a": "Chat lõi, Activity, Later, Files, People, Preferences, command palette"
+    },
+    {
+     "ref": "D-175",
+     "a": "Lưu theo tài khoản và đồng bộ như F35 ghi; với 'Match my device' mỗi thiết bị theo cài đặt sáng hoặc tối của riêng nó."
     }
    ],
-   "open": [
-    "D-175"
-   ],
+   "open": [],
    "screen": "Preferences: Look, Accent, Density, Language",
    "flows": "",
    "rules": "",
@@ -9910,11 +9987,14 @@
     {
      "ref": "D-121",
      "a": "Lần lưu sau cùng thắng và mọi người thấy ngay."
+    },
+    {
+     "ref": "D-172",
+     "a": "Từ 1 đến 100 ký tự như F32 ghi; ô nhập từ chối ký tự thứ 101."
     }
    ],
    "open": [
-    "D-145",
-    "D-172"
+    "D-145"
    ],
    "screen": "Account menu: Set status; Preferences: Your status; Profile panel",
    "flows": "",
@@ -10182,11 +10262,14 @@
     {
      "ref": "D-091",
      "a": "Đã rà ngày 13/11/2026: 8 hành trình viết lại, 16 sửa, 19 giữ nguyên. Khi bốn lựa chọn ở D-156 tới D-159 đã chốt, các hành trình phase 1 được chấp nhận làm nền."
+    },
+    {
+     "ref": "D-174",
+     "a": "Có: các mục vẫn được tạo và tính vào badge của Activity, nhưng không có toast, push hay âm thanh."
     }
    ],
    "open": [
-    "D-143",
-    "D-174"
+    "D-143"
    ],
    "screen": "Details panel: Settings: Mute conversation",
    "flows": "",
@@ -11268,7 +11351,7 @@
       {
        "id": "TOKI-098",
        "title": "Tạo channel từ trang Admin",
-       "scope": "Nút '+' cạnh 'Busiest channels' trên trang Admin mở hộp Create channel (D-151): Name, công tắc Private mặc định tắt, Topic (không bắt buộc, tối đa 250 ký tự), Add people (không bắt buộc) (D-101). Gõ dấu cách trong tên thì thành gạch nối, chữ hoa thành chữ thường (D-127). Lỗi hiện dưới ô nhập; nút Create bị khóa cho tới khi form hợp lệ và trong lúc yêu cầu đang chạy (D-104, D-111); tên đã có thì server từ chối và ô nhập báo rõ (D-115). Đóng khi đã có nội dung thì hỏi có bỏ không (D-070). Channel mới mở ra ngay (D-076). Member không có cách nào mở hộp này (D-084)",
+       "scope": "Nút '+' ở danh sách 'Channels' trên trang Admin mở hộp Create channel (D-151). Ở phase 1 danh sách này hiện mọi kênh kèm số thành viên; xếp hạng theo độ sôi nổi đi cùng Analytics (D-183): Name, công tắc Private mặc định tắt, Topic (không bắt buộc, tối đa 250 ký tự), Add people (không bắt buộc) (D-101). Gõ dấu cách trong tên thì thành gạch nối, chữ hoa thành chữ thường (D-127). Lỗi hiện dưới ô nhập; nút Create bị khóa cho tới khi form hợp lệ và trong lúc yêu cầu đang chạy (D-104, D-111); tên đã có thì server từ chối và ô nhập báo rõ (D-115). Đóng khi đã có nội dung thì hỏi có bỏ không (D-070). Channel mới mở ra ngay (D-076). Member không có cách nào mở hộp này (D-084)",
        "size": "M",
        "spec": null
       },

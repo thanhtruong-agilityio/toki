@@ -2479,173 +2479,224 @@
   },
   {
    "id": "D-160",
-   "old": "VQ-04",
-   "kind": "q",
+   "old": "VQ-04 · Q90",
+   "kind": "rev",
    "q": "A reply sent with 'Also send to #name': is it one message shown in two places or two messages, and does the channel copy raise the channel's unread count and notify like a normal message?",
    "a": "One message shown in both places: editing or deleting it changes both, and it counts in the channel as a normal message (unread count and notification level apply).",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "'Also send to channel'",
+   "source": "recommended",
+   "note": "Raised as D-160 (D-160) on 16 Nov 2026 while writing the missing requirements and reviewing the tickets. The user accepted the proposal."
   },
   {
    "id": "D-162",
-   "old": "VQ-06",
-   "kind": "q",
+   "old": "VQ-06 · Q91",
+   "kind": "rev",
    "q": "How does a person on a touch screen see who reacted? The names appear only on hover, and rule D-067 forbids hover-only features.",
    "a": "A long press on the chip opens a small list of names; a short tap still adds or removes the reaction.",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "Who reacted, on touch screens",
+   "source": "recommended",
+   "note": "Raised as D-162 (D-162) on 16 Nov 2026 while writing the missing requirements and reviewing the tickets. The user accepted the proposal."
   },
   {
    "id": "D-163",
-   "old": "VQ-07",
-   "kind": "q",
+   "old": "VQ-07 · Q92",
+   "kind": "rev",
    "q": "When several people react to the same message, does the author get one Activity item per reaction or one item per message?",
    "a": "One item per message, updated with the latest names; removing a reaction removes that person from the item.",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "Activity items for reactions",
+   "source": "recommended",
+   "note": "Raised as D-163 (D-163) on 16 Nov 2026 while writing the missing requirements and reviewing the tickets. The user accepted the proposal."
   },
   {
    "id": "D-164",
-   "old": "VQ-08",
-   "kind": "q",
+   "old": "VQ-08 · Q93",
+   "kind": "rev",
    "q": "Is there a limit to the number of pinned messages in a conversation?",
    "a": "No limit in phase 1.",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "Limit of pinned messages",
+   "source": "recommended",
+   "note": "Raised as D-164 (D-164) on 16 Nov 2026 while writing the missing requirements and reviewing the tickets. The user accepted the proposal."
   },
   {
    "id": "D-165",
-   "old": "VQ-09",
-   "kind": "q",
+   "old": "VQ-09 · Q94",
+   "kind": "rev",
    "q": "Does the system line '… pinned a message' raise the unread count or notify anyone, and is there a line for unpinning?",
    "a": "No unread count and no notification, like the 'joined' line (D-100); no line for unpinning.",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "The 'pinned a message' line",
+   "source": "recommended",
+   "note": "Raised as D-165 (D-165) on 16 Nov 2026 while writing the missing requirements and reviewing the tickets. The user accepted the proposal."
   },
   {
    "id": "D-166",
-   "old": "VQ-10",
-   "kind": "q",
+   "old": "VQ-10 · Q95",
+   "kind": "rev",
    "q": "What happens to a pin when its message is deleted, and can a reply inside a thread be pinned?",
    "a": "A deleted message leaves the Pinned tab. Only messages in the main list can be pinned in phase 1.",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "Pins: deleted messages and thread replies",
+   "source": "recommended",
+   "note": "Raised as D-166 (D-166) on 16 Nov 2026 while writing the missing requirements and reviewing the tickets. The user accepted the proposal."
   },
   {
    "id": "D-167",
-   "old": "VQ-11",
-   "kind": "q",
+   "old": "VQ-11 · Q96",
+   "kind": "rev",
    "q": "Which addresses become links, how do they open, and is there a multi-line code block?",
    "a": "Only http:// and https:// addresses, opened in a new tab; no multi-line code block in phase 1.",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "Links and code blocks",
+   "source": "recommended",
+   "note": "Raised as D-167 (D-167) on 16 Nov 2026 while writing the missing requirements and reviewing the tickets. The user accepted the proposal."
   },
   {
    "id": "D-168",
-   "old": "VQ-12",
-   "kind": "q",
+   "old": "VQ-12 · Q97",
+   "kind": "rev",
    "q": "Does a draft include files already uploaded to the composer? D-130 deletes an uploaded file that was never sent after 24 hours.",
    "a": "A draft is text only; attached files are not restored on return or on another device.",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "Files in a draft",
+   "source": "recommended",
+   "note": "Raised as D-168 (D-168) on 16 Nov 2026 while writing the missing requirements and reviewing the tickets. The user accepted the proposal."
   },
   {
    "id": "D-170",
-   "old": "VQ-14",
-   "kind": "q",
+   "old": "VQ-14 · Q98",
+   "kind": "rev",
    "q": "Do files stay on a person's Files page after they leave the channel, and when the channel is archived?",
    "a": "After leaving, the channel's files leave that person's Files page (D-116: an unjoined channel cannot be read). Files of an archived channel stay for its members.",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "Files page after leaving or archiving",
+   "source": "recommended",
+   "note": "Raised as D-170 (D-170) on 16 Nov 2026 while writing the missing requirements and reviewing the tickets. The user accepted the proposal."
   },
   {
    "id": "D-172",
-   "old": "VQ-16",
-   "kind": "q",
+   "old": "VQ-16 · Q99",
+   "kind": "rev",
    "q": "How long may a status text be? Journey F32 says 100 characters, but no decision sets it and the prototype has no limit.",
    "a": "1 to 100 characters, as F32 says; the field refuses the 101st character.",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "Status length",
+   "source": "recommended",
+   "note": "Raised as D-172 (D-172) on 16 Nov 2026 while writing the missing requirements and reviewing the tickets. The user accepted the proposal."
   },
   {
    "id": "D-174",
-   "old": "VQ-18",
-   "kind": "q",
+   "old": "VQ-18 · Q100",
+   "kind": "rev",
    "q": "In a muted conversation, do thread replies and reactions still create Activity items and raise the Activity badge? Decisions cover only mentions (D-088) and the conversation's own count (D-103).",
    "a": "Yes: the items are still created and counted in the Activity badge, with no toast, push or sound.",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "Activity in a muted conversation",
+   "source": "recommended",
+   "note": "Raised as D-174 (D-174) on 16 Nov 2026 while writing the missing requirements and reviewing the tickets. The user accepted the proposal."
   },
   {
    "id": "D-175",
-   "old": "VQ-19",
-   "kind": "q",
+   "old": "VQ-19 · Q101",
+   "kind": "rev",
    "q": "Are look, accent, density and language saved to the account and the same on every device, or kept per device? D-142 decides this only for notification preferences; journey F35 says the account, the prototype keeps the look in the browser.",
    "a": "Saved to the account and synced, as F35 says; with 'Match my device' each device follows its own light or dark setting.",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "Where look and language are saved",
+   "source": "recommended",
+   "note": "Raised as D-175 (D-175) on 16 Nov 2026 while writing the missing requirements and reviewing the tickets. The user accepted the proposal."
   },
   {
    "id": "D-180",
-   "old": "VQ-24",
-   "kind": "q",
+   "old": "VQ-24 · Q102",
+   "kind": "rev",
    "q": "In which language is a mail sent: the invitation to a person who has no account yet, and the sign-in mail to a member who chose Vietnamese?",
    "a": "Invitations in English; sign-in mail in the language the member chose.",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "Language of mail",
+   "source": "recommended",
+   "note": "Raised as D-180 (D-180) on 16 Nov 2026 while writing the missing requirements and reviewing the tickets. The user accepted the proposal."
   },
   {
    "id": "D-181",
-   "old": "VQ-25",
-   "kind": "q",
+   "old": "VQ-25 · Q103",
+   "kind": "rev",
    "q": "When a deactivated person is invited again (D-094), which role do they get: the role in the new invitation, or the role the account had?",
    "a": "The role chosen in the new invitation.",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "Role on re-invitation",
+   "source": "recommended",
+   "note": "Raised as D-181 (D-181) on 16 Nov 2026 while writing the missing requirements and reviewing the tickets. The user accepted the proposal."
   },
   {
    "id": "D-182",
-   "old": "VQ-26",
-   "kind": "q",
+   "old": "VQ-26 · Q104",
+   "kind": "rev",
    "q": "Does 'Resend' on an invitation start a new 7 days and stop the Join button of the earlier mail, or send the same invitation again?",
    "a": "A new 7 days; the earlier mail stops working.",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "Resend an invitation",
+   "source": "recommended",
+   "note": "Raised as D-182 (D-182) on 16 Nov 2026 while writing the missing requirements and reviewing the tickets. The user accepted the proposal."
   },
   {
    "id": "D-183",
-   "old": "VQ-27",
-   "kind": "q",
+   "old": "VQ-27 · Q105",
+   "kind": "rev",
    "q": "The '+' that creates a channel sits beside 'Busiest channels' on the Admin page (D-151), but Analytics is phase 5. What does that section show in phase 1?",
    "a": "A plain list of all channels with their member counts, titled 'Channels'; the busiest ranking comes with Analytics.",
    "owner": "PO",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "The Channels list on the Admin page",
+   "source": "recommended",
+   "note": "Raised as D-183 (D-183) on 16 Nov 2026 while writing the missing requirements and reviewing the tickets. The user accepted the proposal."
   },
   {
    "id": "D-186",
-   "old": "VQ-30",
-   "kind": "q",
+   "old": "VQ-30 · Q106",
+   "kind": "rev",
    "q": "Are uploaded files scanned for viruses in phase 1?",
    "a": "No scanning in phase 1; files are always downloaded, never opened in the page (D-095).",
    "owner": "PO, BE",
-   "sev": "M",
-   "status": "Open"
+   "sev": "",
+   "status": "Confirmed",
+   "topic": "Virus scanning",
+   "source": "recommended",
+   "note": "Raised as D-186 (D-186) on 16 Nov 2026 while writing the missing requirements and reviewing the tickets. The user accepted the proposal."
   },
   {
    "id": "D-114",
@@ -3788,7 +3839,7 @@
     "**Assumed, not confirmed (D-127):** Typing a space in a channel name turns it into a hyphen, and capitals into lowercase, instead of showing an error.",
     "**Assumed, not confirmed (D-128):** The uniqueness of a channel name includes archived channels."
    ],
-   "svg": "<svg viewBox=\"0 0 1116 820\" style=\"max-width:1250px\" role=\"img\" aria-label=\"2.8 Create a channel (Admin)\" font-family=\"inherit\"><defs><marker id=\"fm9\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\"><path d=\"M0 0L10 5L0 10z\" fill=\"currentColor\"/></marker></defs><rect x=\"0\" y=\"0\" width=\"372\" height=\"820\" style=\"fill:var(--surface-2)\" stroke=\"none\"/><text x=\"186\" y=\"23\" font-size=\"11.5\" font-weight=\"700\" letter-spacing=\".08em\" text-anchor=\"middle\" fill=\"currentColor\" opacity=\".75\">USER</text><rect x=\"372\" y=\"0\" width=\"372\" height=\"820\" style=\"fill:var(--surface)\" stroke=\"none\"/><text x=\"558\" y=\"23\" font-size=\"11.5\" font-weight=\"700\" letter-spacing=\".08em\" text-anchor=\"middle\" fill=\"currentColor\" opacity=\".75\">FRONTEND (WEB APP)</text><line x1=\"372\" y1=\"0\" x2=\"372\" y2=\"820\" stroke=\"currentColor\" stroke-width=\"1\" opacity=\".18\"/><rect x=\"744\" y=\"0\" width=\"372\" height=\"820\" style=\"fill:var(--surface-2)\" stroke=\"none\"/><text x=\"930\" y=\"23\" font-size=\"11.5\" font-weight=\"700\" letter-spacing=\".08em\" text-anchor=\"middle\" fill=\"currentColor\" opacity=\".75\">BACKEND (API, JOBS, STORAGE)</text><line x1=\"744\" y1=\"0\" x2=\"744\" y2=\"820\" stroke=\"currentColor\" stroke-width=\"1\" opacity=\".18\"/><line x1=\"0\" y1=\"36\" x2=\"1116\" y2=\"36\" stroke=\"currentColor\" stroke-width=\"1\" opacity=\".18\"/><g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.4\"><line x1=\"319.0\" y1=\"75.0\" x2=\"423.0\" y2=\"75.0\" marker-end=\"url(#fm9)\"/><line x1=\"457.6\" y1=\"102.0\" x2=\"293.9\" y2=\"146.0\" marker-end=\"url(#fm9)\"/><line x1=\"319.0\" y1=\"175.0\" x2=\"419.0\" y2=\"175.0\" marker-end=\"url(#fm9)\"/><line x1=\"558.0\" y1=\"217.0\" x2=\"558.0\" y2=\"246.0\" marker-end=\"url(#fm9)\"/><polyline points=\"691.0,268.0 719.0,268.0 719.0,82.0 693.0,82.0\" stroke-linejoin=\"round\" marker-end=\"url(#fm9)\"/><line x1=\"508.2\" y1=\"201.7\" x2=\"239.9\" y2=\"346.0\" marker-end=\"url(#fm9)\"/><line x1=\"319.0\" y1=\"375.0\" x2=\"423.0\" y2=\"375.0\" marker-end=\"url(#fm9)\"/><line x1=\"691.0\" y1=\"375.0\" x2=\"795.0\" y2=\"375.0\" marker-end=\"url(#fm9)\"/><line x1=\"930.0\" y1=\"402.0\" x2=\"930.0\" y2=\"431.0\" marker-end=\"url(#fm9)\"/><line x1=\"793.0\" y1=\"475.0\" x2=\"693.0\" y2=\"475.0\" marker-end=\"url(#fm9)\"/><line x1=\"930.0\" y1=\"517.0\" x2=\"930.0\" y2=\"531.0\" marker-end=\"url(#fm9)\"/><line x1=\"793.0\" y1=\"575.0\" x2=\"693.0\" y2=\"575.0\" marker-end=\"url(#fm9)\"/><polyline points=\"425.0,568.0 397.0,568.0 397.0,82.0 423.0,82.0\" stroke-linejoin=\"round\" marker-end=\"url(#fm9)\"/><line x1=\"930.0\" y1=\"617.0\" x2=\"930.0\" y2=\"646.0\" marker-end=\"url(#fm9)\"/><line x1=\"797.0\" y1=\"675.0\" x2=\"693.0\" y2=\"675.0\" marker-end=\"url(#fm9)\"/><line x1=\"457.6\" y1=\"702.0\" x2=\"286.4\" y2=\"748.0\" marker-end=\"url(#fm9)\"/></g><g stroke=\"currentColor\" stroke-width=\"1.4\"><rect x=\"55\" y=\"52\" width=\"262\" height=\"46\" rx=\"23\" style=\"fill:var(--surface);stroke:var(--accent);stroke-width:2.5\"/><rect x=\"427\" y=\"50\" width=\"262\" height=\"50\" rx=\"8\" style=\"fill:var(--surface)\"/><rect x=\"55\" y=\"150\" width=\"262\" height=\"50\" rx=\"8\" style=\"fill:var(--surface)\"/><polygon points=\"558,135 693,175 558,215 423,175\" style=\"fill:var(--surface)\"/><rect x=\"427\" y=\"250\" width=\"262\" height=\"50\" rx=\"8\" style=\"fill:var(--surface);stroke:var(--bad);stroke-width:2\"/><rect x=\"55\" y=\"350\" width=\"262\" height=\"50\" rx=\"8\" style=\"fill:var(--surface)\"/><rect x=\"427\" y=\"350\" width=\"262\" height=\"50\" rx=\"8\" style=\"fill:var(--surface)\" stroke-dasharray=\"5 4\"/><rect x=\"799\" y=\"350\" width=\"262\" height=\"50\" rx=\"8\" style=\"fill:var(--surface)\"/><polygon points=\"930,435 1065,475 930,515 795,475\" style=\"fill:var(--surface)\"/><rect x=\"427\" y=\"450\" width=\"262\" height=\"50\" rx=\"8\" style=\"fill:var(--surface);stroke:var(--bad);stroke-width:2\"/><polygon points=\"930,535 1065,575 930,615 795,575\" style=\"fill:var(--surface)\"/><rect x=\"427\" y=\"550\" width=\"262\" height=\"50\" rx=\"8\" style=\"fill:var(--surface);stroke:var(--bad);stroke-width:2\"/><rect x=\"799\" y=\"650\" width=\"262\" height=\"50\" rx=\"8\" style=\"fill:var(--surface)\"/><rect x=\"427\" y=\"650\" width=\"262\" height=\"50\" rx=\"8\" style=\"fill:var(--surface)\"/><rect x=\"55\" y=\"752\" width=\"262\" height=\"46\" rx=\"23\" style=\"fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.6\"/></g><g fill=\"currentColor\" stroke=\"none\" text-anchor=\"middle\"><rect x=\"547.1\" y=\"223.5\" width=\"21.8\" height=\"16\" rx=\"4\" style=\"fill:var(--surface)\" stroke=\"currentColor\" stroke-width=\".5\" stroke-opacity=\".25\"/><text x=\"558.0\" y=\"235.1\" font-size=\"10.5\">no</text><rect x=\"678.6\" y=\"167.0\" width=\"80.8\" height=\"16\" rx=\"4\" style=\"fill:var(--surface)\" stroke=\"currentColor\" stroke-width=\".5\" stroke-opacity=\".25\"/><text x=\"719.0\" y=\"178.6\" font-size=\"10.5\">keeps typing</text><rect x=\"400.5\" y=\"244.2\" width=\"27.7\" height=\"16\" rx=\"4\" style=\"fill:var(--surface)\" stroke=\"currentColor\" stroke-width=\".5\" stroke-opacity=\".25\"/><text x=\"414.3\" y=\"255.8\" font-size=\"10.5\">yes</text><rect x=\"732.1\" y=\"467.0\" width=\"21.8\" height=\"16\" rx=\"4\" style=\"fill:var(--surface)\" stroke=\"currentColor\" stroke-width=\".5\" stroke-opacity=\".25\"/><text x=\"743.0\" y=\"478.6\" font-size=\"10.5\">no</text><rect x=\"916.1\" y=\"516.0\" width=\"27.7\" height=\"16\" rx=\"4\" style=\"fill:var(--surface)\" stroke=\"currentColor\" stroke-width=\".5\" stroke-opacity=\".25\"/><text x=\"930.0\" y=\"527.6\" font-size=\"10.5\">yes</text><rect x=\"729.1\" y=\"567.0\" width=\"27.7\" height=\"16\" rx=\"4\" style=\"fill:var(--surface)\" stroke=\"currentColor\" stroke-width=\".5\" stroke-opacity=\".25\"/><text x=\"743.0\" y=\"578.6\" font-size=\"10.5\">yes</text><rect x=\"356.6\" y=\"317.0\" width=\"80.8\" height=\"16\" rx=\"4\" style=\"fill:var(--surface)\" stroke=\"currentColor\" stroke-width=\".5\" stroke-opacity=\".25\"/><text x=\"397.0\" y=\"328.6\" font-size=\"10.5\">another name</text><rect x=\"919.1\" y=\"623.5\" width=\"21.8\" height=\"16\" rx=\"4\" style=\"fill:var(--surface)\" stroke=\"currentColor\" stroke-width=\".5\" stroke-opacity=\".25\"/><text x=\"930.0\" y=\"635.1\" font-size=\"10.5\">no</text><text x=\"186\" y=\"72\" font-size=\"12.5\" font-weight=\"600\">Admin page: + beside Busiest channels</text><text x=\"186\" y=\"87\" font-size=\"10\" opacity=\".75\">Admins only · not in the prototype</text><text x=\"558\" y=\"72\" font-size=\"12.5\" font-weight=\"600\">Dialog: name, Private, topic, people</text><text x=\"558\" y=\"87\" font-size=\"10\" opacity=\".75\">Create disabled until the name is valid</text><text x=\"186\" y=\"180\" font-size=\"12.5\" font-weight=\"600\">Types a name</text><text x=\"558\" y=\"180\" font-size=\"11.5\" font-weight=\"600\">a–z, 0–9, hyphens, ≤ 80?</text><text x=\"558\" y=\"280\" font-size=\"12.5\" font-weight=\"600\">Message under the field as they type</text><text x=\"186\" y=\"380\" font-size=\"12.5\" font-weight=\"600\">Presses Create</text><text x=\"558\" y=\"380\" font-size=\"12.5\" font-weight=\"600\">Button loading; dialog locked</text><text x=\"930\" y=\"372\" font-size=\"12.5\" font-weight=\"600\">POST /conversations</text><text x=\"930\" y=\"387\" font-size=\"10\" opacity=\".75\">{kind: channel, name, private, people}</text><text x=\"930\" y=\"480\" font-size=\"11.5\" font-weight=\"600\">Sender is an Admin?</text><text x=\"558\" y=\"472\" font-size=\"12.5\" font-weight=\"600\">&#x27;No access&#x27;; dialog closes</text><text x=\"558\" y=\"487\" font-size=\"10\" opacity=\".75\">403 · a Member can never get here</text><text x=\"930\" y=\"580\" font-size=\"11.5\" font-weight=\"600\">Name already taken?</text><text x=\"558\" y=\"572\" font-size=\"12.5\" font-weight=\"600\">&#x27;#name already exists&#x27; + Open it</text><text x=\"558\" y=\"587\" font-size=\"10\" opacity=\".75\">dialog stays, name selected</text><text x=\"930\" y=\"680\" font-size=\"12.5\" font-weight=\"600\">Create channel; add the people chosen</text><text x=\"558\" y=\"672\" font-size=\"12.5\" font-weight=\"600\">Dialog closes; channel opens</text><text x=\"558\" y=\"687\" font-size=\"10\" opacity=\".75\">listed in the sidebar</text><text x=\"186\" y=\"780\" font-size=\"12.5\" font-weight=\"600\">In the new channel</text></g></svg>",
+   "svg": "<svg viewBox=\"0 0 1116 820\" style=\"max-width:1250px\" role=\"img\" aria-label=\"2.8 Create a channel (Admin)\" font-family=\"inherit\"><defs><marker id=\"fm9\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\"><path d=\"M0 0L10 5L0 10z\" fill=\"currentColor\"/></marker></defs><rect x=\"0\" y=\"0\" width=\"372\" height=\"820\" style=\"fill:var(--surface-2)\" stroke=\"none\"/><text x=\"186\" y=\"23\" font-size=\"11.5\" font-weight=\"700\" letter-spacing=\".08em\" text-anchor=\"middle\" fill=\"currentColor\" opacity=\".75\">USER</text><rect x=\"372\" y=\"0\" width=\"372\" height=\"820\" style=\"fill:var(--surface)\" stroke=\"none\"/><text x=\"558\" y=\"23\" font-size=\"11.5\" font-weight=\"700\" letter-spacing=\".08em\" text-anchor=\"middle\" fill=\"currentColor\" opacity=\".75\">FRONTEND (WEB APP)</text><line x1=\"372\" y1=\"0\" x2=\"372\" y2=\"820\" stroke=\"currentColor\" stroke-width=\"1\" opacity=\".18\"/><rect x=\"744\" y=\"0\" width=\"372\" height=\"820\" style=\"fill:var(--surface-2)\" stroke=\"none\"/><text x=\"930\" y=\"23\" font-size=\"11.5\" font-weight=\"700\" letter-spacing=\".08em\" text-anchor=\"middle\" fill=\"currentColor\" opacity=\".75\">BACKEND (API, JOBS, STORAGE)</text><line x1=\"744\" y1=\"0\" x2=\"744\" y2=\"820\" stroke=\"currentColor\" stroke-width=\"1\" opacity=\".18\"/><line x1=\"0\" y1=\"36\" x2=\"1116\" y2=\"36\" stroke=\"currentColor\" stroke-width=\"1\" opacity=\".18\"/><g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.4\"><line x1=\"319.0\" y1=\"75.0\" x2=\"423.0\" y2=\"75.0\" marker-end=\"url(#fm9)\"/><line x1=\"457.6\" y1=\"102.0\" x2=\"293.9\" y2=\"146.0\" marker-end=\"url(#fm9)\"/><line x1=\"319.0\" y1=\"175.0\" x2=\"419.0\" y2=\"175.0\" marker-end=\"url(#fm9)\"/><line x1=\"558.0\" y1=\"217.0\" x2=\"558.0\" y2=\"246.0\" marker-end=\"url(#fm9)\"/><polyline points=\"691.0,268.0 719.0,268.0 719.0,82.0 693.0,82.0\" stroke-linejoin=\"round\" marker-end=\"url(#fm9)\"/><line x1=\"508.2\" y1=\"201.7\" x2=\"239.9\" y2=\"346.0\" marker-end=\"url(#fm9)\"/><line x1=\"319.0\" y1=\"375.0\" x2=\"423.0\" y2=\"375.0\" marker-end=\"url(#fm9)\"/><line x1=\"691.0\" y1=\"375.0\" x2=\"795.0\" y2=\"375.0\" marker-end=\"url(#fm9)\"/><line x1=\"930.0\" y1=\"402.0\" x2=\"930.0\" y2=\"431.0\" marker-end=\"url(#fm9)\"/><line x1=\"793.0\" y1=\"475.0\" x2=\"693.0\" y2=\"475.0\" marker-end=\"url(#fm9)\"/><line x1=\"930.0\" y1=\"517.0\" x2=\"930.0\" y2=\"531.0\" marker-end=\"url(#fm9)\"/><line x1=\"793.0\" y1=\"575.0\" x2=\"693.0\" y2=\"575.0\" marker-end=\"url(#fm9)\"/><polyline points=\"425.0,568.0 397.0,568.0 397.0,82.0 423.0,82.0\" stroke-linejoin=\"round\" marker-end=\"url(#fm9)\"/><line x1=\"930.0\" y1=\"617.0\" x2=\"930.0\" y2=\"646.0\" marker-end=\"url(#fm9)\"/><line x1=\"797.0\" y1=\"675.0\" x2=\"693.0\" y2=\"675.0\" marker-end=\"url(#fm9)\"/><line x1=\"457.6\" y1=\"702.0\" x2=\"286.4\" y2=\"748.0\" marker-end=\"url(#fm9)\"/></g><g stroke=\"currentColor\" stroke-width=\"1.4\"><rect x=\"55\" y=\"52\" width=\"262\" height=\"46\" rx=\"23\" style=\"fill:var(--surface);stroke:var(--accent);stroke-width:2.5\"/><rect x=\"427\" y=\"50\" width=\"262\" height=\"50\" rx=\"8\" style=\"fill:var(--surface)\"/><rect x=\"55\" y=\"150\" width=\"262\" height=\"50\" rx=\"8\" style=\"fill:var(--surface)\"/><polygon points=\"558,135 693,175 558,215 423,175\" style=\"fill:var(--surface)\"/><rect x=\"427\" y=\"250\" width=\"262\" height=\"50\" rx=\"8\" style=\"fill:var(--surface);stroke:var(--bad);stroke-width:2\"/><rect x=\"55\" y=\"350\" width=\"262\" height=\"50\" rx=\"8\" style=\"fill:var(--surface)\"/><rect x=\"427\" y=\"350\" width=\"262\" height=\"50\" rx=\"8\" style=\"fill:var(--surface)\" stroke-dasharray=\"5 4\"/><rect x=\"799\" y=\"350\" width=\"262\" height=\"50\" rx=\"8\" style=\"fill:var(--surface)\"/><polygon points=\"930,435 1065,475 930,515 795,475\" style=\"fill:var(--surface)\"/><rect x=\"427\" y=\"450\" width=\"262\" height=\"50\" rx=\"8\" style=\"fill:var(--surface);stroke:var(--bad);stroke-width:2\"/><polygon points=\"930,535 1065,575 930,615 795,575\" style=\"fill:var(--surface)\"/><rect x=\"427\" y=\"550\" width=\"262\" height=\"50\" rx=\"8\" style=\"fill:var(--surface);stroke:var(--bad);stroke-width:2\"/><rect x=\"799\" y=\"650\" width=\"262\" height=\"50\" rx=\"8\" style=\"fill:var(--surface)\"/><rect x=\"427\" y=\"650\" width=\"262\" height=\"50\" rx=\"8\" style=\"fill:var(--surface)\"/><rect x=\"55\" y=\"752\" width=\"262\" height=\"46\" rx=\"23\" style=\"fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.6\"/></g><g fill=\"currentColor\" stroke=\"none\" text-anchor=\"middle\"><rect x=\"547.1\" y=\"223.5\" width=\"21.8\" height=\"16\" rx=\"4\" style=\"fill:var(--surface)\" stroke=\"currentColor\" stroke-width=\".5\" stroke-opacity=\".25\"/><text x=\"558.0\" y=\"235.1\" font-size=\"10.5\">no</text><rect x=\"678.6\" y=\"167.0\" width=\"80.8\" height=\"16\" rx=\"4\" style=\"fill:var(--surface)\" stroke=\"currentColor\" stroke-width=\".5\" stroke-opacity=\".25\"/><text x=\"719.0\" y=\"178.6\" font-size=\"10.5\">keeps typing</text><rect x=\"400.5\" y=\"244.2\" width=\"27.7\" height=\"16\" rx=\"4\" style=\"fill:var(--surface)\" stroke=\"currentColor\" stroke-width=\".5\" stroke-opacity=\".25\"/><text x=\"414.3\" y=\"255.8\" font-size=\"10.5\">yes</text><rect x=\"732.1\" y=\"467.0\" width=\"21.8\" height=\"16\" rx=\"4\" style=\"fill:var(--surface)\" stroke=\"currentColor\" stroke-width=\".5\" stroke-opacity=\".25\"/><text x=\"743.0\" y=\"478.6\" font-size=\"10.5\">no</text><rect x=\"916.1\" y=\"516.0\" width=\"27.7\" height=\"16\" rx=\"4\" style=\"fill:var(--surface)\" stroke=\"currentColor\" stroke-width=\".5\" stroke-opacity=\".25\"/><text x=\"930.0\" y=\"527.6\" font-size=\"10.5\">yes</text><rect x=\"729.1\" y=\"567.0\" width=\"27.7\" height=\"16\" rx=\"4\" style=\"fill:var(--surface)\" stroke=\"currentColor\" stroke-width=\".5\" stroke-opacity=\".25\"/><text x=\"743.0\" y=\"578.6\" font-size=\"10.5\">yes</text><rect x=\"356.6\" y=\"317.0\" width=\"80.8\" height=\"16\" rx=\"4\" style=\"fill:var(--surface)\" stroke=\"currentColor\" stroke-width=\".5\" stroke-opacity=\".25\"/><text x=\"397.0\" y=\"328.6\" font-size=\"10.5\">another name</text><rect x=\"919.1\" y=\"623.5\" width=\"21.8\" height=\"16\" rx=\"4\" style=\"fill:var(--surface)\" stroke=\"currentColor\" stroke-width=\".5\" stroke-opacity=\".25\"/><text x=\"930.0\" y=\"635.1\" font-size=\"10.5\">no</text><text x=\"186\" y=\"72\" font-size=\"12.5\" font-weight=\"600\">Admin page: + on the Channels list</text><text x=\"186\" y=\"87\" font-size=\"10\" opacity=\".75\">Admins only · not in the prototype</text><text x=\"558\" y=\"72\" font-size=\"12.5\" font-weight=\"600\">Dialog: name, Private, topic, people</text><text x=\"558\" y=\"87\" font-size=\"10\" opacity=\".75\">Create disabled until the name is valid</text><text x=\"186\" y=\"180\" font-size=\"12.5\" font-weight=\"600\">Types a name</text><text x=\"558\" y=\"180\" font-size=\"11.5\" font-weight=\"600\">a–z, 0–9, hyphens, ≤ 80?</text><text x=\"558\" y=\"280\" font-size=\"12.5\" font-weight=\"600\">Message under the field as they type</text><text x=\"186\" y=\"380\" font-size=\"12.5\" font-weight=\"600\">Presses Create</text><text x=\"558\" y=\"380\" font-size=\"12.5\" font-weight=\"600\">Button loading; dialog locked</text><text x=\"930\" y=\"372\" font-size=\"12.5\" font-weight=\"600\">POST /conversations</text><text x=\"930\" y=\"387\" font-size=\"10\" opacity=\".75\">{kind: channel, name, private, people}</text><text x=\"930\" y=\"480\" font-size=\"11.5\" font-weight=\"600\">Sender is an Admin?</text><text x=\"558\" y=\"472\" font-size=\"12.5\" font-weight=\"600\">&#x27;No access&#x27;; dialog closes</text><text x=\"558\" y=\"487\" font-size=\"10\" opacity=\".75\">403 · a Member can never get here</text><text x=\"930\" y=\"580\" font-size=\"11.5\" font-weight=\"600\">Name already taken?</text><text x=\"558\" y=\"572\" font-size=\"12.5\" font-weight=\"600\">&#x27;#name already exists&#x27; + Open it</text><text x=\"558\" y=\"587\" font-size=\"10\" opacity=\".75\">dialog stays, name selected</text><text x=\"930\" y=\"680\" font-size=\"12.5\" font-weight=\"600\">Create channel; add the people chosen</text><text x=\"558\" y=\"672\" font-size=\"12.5\" font-weight=\"600\">Dialog closes; channel opens</text><text x=\"558\" y=\"687\" font-size=\"10\" opacity=\".75\">listed in the sidebar</text><text x=\"186\" y=\"780\" font-size=\"12.5\" font-weight=\"600\">In the new channel</text></g></svg>",
    "caption": "Only an Admin creates channels, from the Admin page. The prototype has no way to create one.",
    "open": [
     "D-127",
@@ -8767,10 +8818,13 @@
     {
      "ref": "D-089",
      "a": "(a) Each has an address. Back closes the side panel first, then returns to the previous place."
+    },
+    {
+     "ref": "D-160",
+     "a": "One message shown in both places: editing or deleting it changes both, and it counts in the channel as a normal message (unread count and notification level apply)."
     }
    ],
    "open": [
-    "D-160",
     "D-161"
    ],
    "screen": "Home: message action bar 'Reply in thread'; Thread panel",
@@ -8946,12 +9000,17 @@
     {
      "ref": "D-091",
      "a": "Reviewed on 13 Nov 2026: 8 rewritten, 16 corrected, 19 unchanged. With the four choices in D-156 to D-159 settled, the phase-1 journeys are accepted as the baseline."
+    },
+    {
+     "ref": "D-162",
+     "a": "A long press on the chip opens a small list of names; a short tap still adds or removes the reaction."
+    },
+    {
+     "ref": "D-163",
+     "a": "One item per message, updated with the latest names; removing a reaction removes that person from the item."
     }
    ],
-   "open": [
-    "D-162",
-    "D-163"
-   ],
+   "open": [],
    "screen": "Home: smile button on the message action bar; reaction chips under a message",
    "flows": "",
    "rules": "BR-15",
@@ -9050,13 +9109,21 @@
     {
      "ref": "D-069",
      "a": "A reversible action happens at once and shows a toast with Undo for 5 seconds. An irreversible action, or one that affects other people, asks for confirmation and names its target. Never both for one action."
+    },
+    {
+     "ref": "D-164",
+     "a": "No limit in phase 1."
+    },
+    {
+     "ref": "D-165",
+     "a": "No unread count and no notification, like the 'joined' line (D-100); no line for unpinning."
+    },
+    {
+     "ref": "D-166",
+     "a": "A deleted message leaves the Pinned tab. Only messages in the main list can be pinned in phase 1."
     }
    ],
-   "open": [
-    "D-164",
-    "D-165",
-    "D-166"
-   ],
+   "open": [],
    "screen": "Home: message More menu 'Pin to conversation' / 'Unpin'; 'Pinned' tab of a conversation",
    "flows": "",
    "rules": "BR-20",
@@ -9141,11 +9208,13 @@
     {
      "ref": "D-019",
      "a": "The prototype is the only source; Claude decides what it does not draw"
+    },
+    {
+     "ref": "D-167",
+     "a": "Only http:// and https:// addresses, opened in a new tab; no multi-line code block in phase 1."
     }
    ],
-   "open": [
-    "D-167"
-   ],
+   "open": [],
    "screen": "Home: composer toolbar (Bold, Italic, Code); message text",
    "flows": "",
    "rules": "",
@@ -9222,10 +9291,13 @@
     {
      "ref": "D-091",
      "a": "Reviewed on 13 Nov 2026: 8 rewritten, 16 corrected, 19 unchanged. With the four choices in D-156 to D-159 settled, the phase-1 journeys are accepted as the baseline."
+    },
+    {
+     "ref": "D-168",
+     "a": "A draft is text only; attached files are not restored on return or on another device."
     }
    ],
    "open": [
-    "D-168",
     "D-169"
    ],
    "screen": "Home: composer; 'Draft' label on a row of the conversation list",
@@ -9320,10 +9392,13 @@
     {
      "ref": "D-095",
      "a": "Every type is accepted up to 100 MB; files are always downloaded, never run in the browser."
+    },
+    {
+     "ref": "D-170",
+     "a": "After leaving, the channel's files leave that person's Files page (D-116: an unjoined channel cannot be read). Files of an archived channel stay for its members."
     }
    ],
    "open": [
-    "D-170",
     "D-171"
    ],
    "screen": "Files page; 'Files & links' tab of a conversation; file detail modal",
@@ -9747,11 +9822,13 @@
     {
      "ref": "D-002",
      "a": "Core chat, Activity, Later, Files, People, Preferences, command palette"
+    },
+    {
+     "ref": "D-175",
+     "a": "Saved to the account and synced, as F35 says; with 'Match my device' each device follows its own light or dark setting."
     }
    ],
-   "open": [
-    "D-175"
-   ],
+   "open": [],
    "screen": "Preferences: Look, Accent, Density, Language",
    "flows": "",
    "rules": "",
@@ -9910,11 +9987,14 @@
     {
      "ref": "D-121",
      "a": "The last save wins and everyone sees it at once."
+    },
+    {
+     "ref": "D-172",
+     "a": "1 to 100 characters, as F32 says; the field refuses the 101st character."
     }
    ],
    "open": [
-    "D-145",
-    "D-172"
+    "D-145"
    ],
    "screen": "Account menu: Set status; Preferences: Your status; Profile panel",
    "flows": "",
@@ -10182,11 +10262,14 @@
     {
      "ref": "D-091",
      "a": "Reviewed on 13 Nov 2026: 8 rewritten, 16 corrected, 19 unchanged. With the four choices in D-156 to D-159 settled, the phase-1 journeys are accepted as the baseline."
+    },
+    {
+     "ref": "D-174",
+     "a": "Yes: the items are still created and counted in the Activity badge, with no toast, push or sound."
     }
    ],
    "open": [
-    "D-143",
-    "D-174"
+    "D-143"
    ],
    "screen": "Details panel: Settings: Mute conversation",
    "flows": "",
@@ -11268,7 +11351,7 @@
       {
        "id": "TOKI-098",
        "title": "Create a channel from the Admin page",
-       "scope": "A '+' beside 'Busiest channels' on the Admin page opens the Create channel dialog (D-151): Name, a Private switch off by default, Topic (optional, up to 250 characters), Add people (optional) (D-101). A space typed in the name becomes a hyphen and capitals become lowercase (D-127). Errors show under the field; Create is disabled until the form is valid and while the request runs (D-104, D-111); a name already in use is refused by the server and the field says so (D-115). Closing with content asks whether to discard (D-070). The new channel opens at once (D-076). A Member has no way to open this dialog (D-084)",
+       "scope": "A '+' on the 'Channels' list of the Admin page opens the Create channel dialog (D-151). In phase 1 that list shows every channel with its member count; the busiest ranking comes with Analytics (D-183): Name, a Private switch off by default, Topic (optional, up to 250 characters), Add people (optional) (D-101). A space typed in the name becomes a hyphen and capitals become lowercase (D-127). Errors show under the field; Create is disabled until the form is valid and while the request runs (D-104, D-111); a name already in use is refused by the server and the field says so (D-115). Closing with content asks whether to discard (D-070). The new channel opens at once (D-076). A Member has no way to open this dialog (D-084)",
        "size": "M",
        "spec": null
       },

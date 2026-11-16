@@ -328,7 +328,7 @@ c = Chart("2.8 Create a channel (Admin)||2.8 Tạo một kênh (Admin)",
            "**Validation:** lowercase letters, digits and hyphens, up to 80 characters. The server checks the name and never creates two channels with the same name. Public or private is chosen here and cannot be changed later.||**Kiểm tra:** chữ thường, số và gạch nối, tối đa 80 ký tự. Server kiểm tra tên và không bao giờ tạo hai kênh trùng tên. Công khai hay riêng tư chọn tại đây và sau này không đổi được.",
            "**Errors** show under the field, and Create stays disabled until the form is valid.||**Lỗi** hiện dưới ô nhập, và Create bị tắt cho tới khi form hợp lệ.",
            "**Cancel:** Cancel, Esc or the × asks 'Discard this channel?' if anything was typed; an outside click does nothing.||**Huỷ:** Cancel, Esc hoặc × sẽ hỏi 'Discard this channel?' nếu đã gõ gì đó; bấm ra ngoài thì không có gì xảy ra."])
-c.n("s", U, 0, "Admin page: + beside Busiest channels||Trang Admin: + cạnh Busiest channels", "Admins only · not in the prototype||chỉ Admin · không có trong prototype", "st")
+c.n("s", U, 0, "Admin page: + on the Channels list||Trang Admin: + ở danh sách Channels", "Admins only · not in the prototype||chỉ Admin · không có trong prototype", "st")
 c.n("f_dlg", F, 0, "Dialog: name, Private, topic, people||Hộp thoại: tên, Private, chủ đề, người", "Create disabled until the name is valid||Create tắt cho tới khi tên hợp lệ")
 c.n("u_name", U, 1, "Types a name||Gõ tên")
 c.n("d_fmt", F, 1, "a–z, 0–9, hyphens, ≤ 80?||a–z, 0–9, gạch nối, ≤ 80?", None, "d")

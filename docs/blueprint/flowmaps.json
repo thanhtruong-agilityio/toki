@@ -2559,7 +2559,7 @@
       {
        "id": "s",
        "row": 0,
-       "label": "Admin page: + beside Busiest channels||Trang Admin: + cạnh Busiest channels",
+       "label": "Admin page: + on the Channels list||Trang Admin: + ở danh sách Channels",
        "kind": "start",
        "lane": 0,
        "sub": "Admins only · not in the prototype||chỉ Admin · không có trong prototype"
