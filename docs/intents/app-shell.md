@@ -22,7 +22,7 @@ The shell shows only what phase 1 has. A person on a phone reaches every phase 1
 
 ## Affected users and systems
 - Users: the builder (one person building with Claude). Indirectly every Member and Admin, on every screen and on every window size from a phone to a wide desktop. Source: Toki Blueprint, intent I02 design-system.
-- Systems: `packages/ui-web` (a shell folder, the utility style sheet, the appearance function), `apps/web` (a layout route that mounts the shell, the section list, the page-wide style sheet, `index.html`), the catalogs of `packages/i18n` (a few navigation keys). Readers later: the conversation list (TOKI-033), the screens of M2 to M5, the More sheet (TOKI-092), the account menu (TOKI-099).
+- Systems: `packages/ui-web` (a shell folder, the utility style sheet, the appearance function), `apps/web` (a layout route, defined in code, that mounts the shell, the section list with the rule for who sees which item, the page-wide style sheet, the viewport meta in `index.html`), the catalogs of `packages/i18n` (one navigation key). Readers later: the conversation list (TOKI-033), the screens of M2 to M5, the More sheet (TOKI-092), the account menu (TOKI-099).
 
 ## Constraints
 - Blueprint work area: Design system. Source: Toki Blueprint, ticket TOKI-015.
@@ -31,13 +31,13 @@ The shell shows only what phase 1 has. A person on a phone reaches every phase 1
 - Size: L. Source: Toki Blueprint, ticket TOKI-015.
 - Needs: TOKI-012 and TOKI-013. Source: Toki Blueprint, ticket TOKI-015, Needs column. The specs of TOKI-012 and TOKI-013 hand this ticket the tab row, the badge position on a navigation item, the narrow body text size, `#root`, the utility classes, the search box, the content-area frames and the mounting of the toasts; the shell also uses the icons, the translations, the tokens and the web skeleton.
 - Needed by: TOKI-033 (the conversation list). Source: Toki Blueprint, Needs column.
-- Agreed scope: three layouts, Calm, Focus and narrow under 720 px with bottom tabs. Per D-068: the smallest size is 360 x 560; from 720 to 1099 px side panels overlay the chat; navigation and the tab row scroll; the conversation list is the main area of the sidebar. Source: Toki Blueprint, ticket TOKI-015; D-068.
+- Agreed scope: three layouts, Calm, Focus and narrow under 720 px with bottom tabs. Per D-068: the smallest size is 360 x 560; from 720 to 1099 px side panels overlay the chat; navigation and the tab row scroll; the conversation list is the main area of the sidebar. Source: Toki Blueprint, ticket TOKI-015; technical design, Frontend, "Three layouts, one component set" (the names Calm, Focus and narrow); D-068 (the widths and the rules).
 - No feature is hover-only or desktop-only; every action has an entry point on narrow and touch screens. Source: D-067, requirement NFR-02.
 - Toasts and floating bars never cover the composer or the navigation. Source: D-078, requirement NFR-09.
 - Every searchable or filterable list has an empty state centred in the content area. Source: D-074.
 - Every control is at least 40 px tall on a narrow screen. Source: journey F38, accepted as the baseline in D-091.
 - Every phase 1 screen is checked at 360 x 560, 719, 720, 1099 and 1100 px: nothing clipped, nothing unreachable. Source: requirement NFR-01.
-- Phase 1 has Home, Activity, Later, Files, People, Preferences, the command palette and the Admin page for Admins; Mail, Calendar, Meet, Tasks, the guest portal and the demo bar are later phases or dropped. Source: D-002, D-006, D-007, D-145, Toki Blueprint scope.
+- Phase 1 has Home, Activity, Later, Files, People, Preferences, the command palette and the Admin page for Admins (a Member has no Admin item; journeys F08, F39, FR-25 AC-064); Mail, Calendar, Meet, Tasks, the guest portal and the demo bar are later phases or dropped. Source: D-002, D-006, D-007, D-145, Toki Blueprint scope.
 - Both looks are built, English is the default language and every text is translated. Source: D-018, D-064, requirement NFR-05.
 - Look, accent and density are saved to the account and apply at once; "Match my device" follows the device's light or dark setting. Source: D-175, AC-120, AC-122.
 - The web styling is the prototype's CSS on CSS variables; no Tailwind and no runtime styling library. Source: Toki Blueprint, technical design, Frontend.
@@ -49,5 +49,5 @@ The shell shows only what phase 1 has. A person on a phone reaches every phase 1
 - What does the shell build, and what does it leave to the screens that sit inside it (the conversation list, the conversation header, the panels, the account menu, the strips)?
 - What does "narrow" measure, the window or a frame, and is a window of exactly 720 px narrow?
 - The prototype's rule that places toasts above the bottom bar does not work, and the prototype's frame leaves the navigation clipped at 560 px and the chat squeezed at 800 px. What does the shell build instead?
-- Which navigation items and which bottom tabs exist in phase 1, and what does the bottom bar show where the prototype and journey F38 differ?
+- Which navigation items and which bottom tabs exist in phase 1, what does the bottom bar show where the prototype and journey F38 differ, and who sees the Admin item?
 - Who sets the look, accent and density attributes on the page, and what does the page show before the account has loaded?
