@@ -1,7 +1,7 @@
 {
   "approved_auto": true,
   "base": "main",
-  "branch": "feat/toki-001",
+  "branch": "chore/toki-001-monorepo-typescript-setup",
   "deployed_sha": null,
   "history": [
     {
@@ -46,6 +46,11 @@
     {
       "at": "2026-11-16T09:25:36Z",
       "stage": "ci"
+    },
+    {
+      "at": "2026-11-16T09:29:27Z",
+      "auto": true,
+      "stage": "approve"
     }
   ],
   "key": "TOKI-001",
@@ -53,7 +58,7 @@
   "metrics": {},
   "mode": "Auto to PR",
   "plan_approved": true,
-  "plan_hash": "6df3b096f119f4c788ed9b8bb66477aa39819f39e3de351215ab90f70c5b0ba1",
+  "plan_hash": "bb2b9d1b2f6fcd5f9fc9ef7ac7ceba88a565b9375f8b805ec297f89432026517",
   "spec_commit": "34f266e5ce2675798e2d17e5cfee6ed475032437",
   "spec_paths": [
     "docs/specs/2026-11-12-monorepo-typescript-setup-design.md"
