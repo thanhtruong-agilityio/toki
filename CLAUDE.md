@@ -78,7 +78,7 @@ The `Spec ticket` workflow can also be run by hand on GitHub, for one spec or fo
 
 ## Review on request
 
-A comment that mentions `@reviewer` on an open pull request starts the `PR review` workflow (`.github/workflows/pr-review.yml`), which reviews the pull request with Claude. The review instructions are in `.github/prompts/pr-review.md`. The review posts inline comments and one summary comment that ends with a `<!-- review:{"sha":...} -->` marker. It never approves or merges.
+A comment that mentions `@reviewer` on an open pull request starts the `PR review` workflow (`.github/workflows/pr-review.yml`), which reviews the pull request with Claude. The review instructions are the `prompt` of its last step. The review posts inline comments and one summary comment that ends with a `<!-- review:{"sha":...} -->` marker. It never approves or merges.
 
 Anyone may ask, so the run treats the pull request as untrusted: the workspace is `main`, the head of the pull request is only read under `pr-head/`, and Claude has read and comment tools only. Keep it that way when you change the workflow: do not add a tool that runs code, and do not put text from a comment or a pull request into a `run:` script except through `env:`.
 
