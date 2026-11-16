@@ -646,7 +646,7 @@ BR-01 | Nothing in Toki is readable without a session. Sign-in is the only publi
 BR-02 | Sign-in is by a 6-digit code sent to the member's address: valid 10 minutes, usable once, locked after the 5th wrong try. There is no password. | 2.1 | Q11, Q34, Q36
 BR-03 | At most 5 code requests per address in 15 minutes; Resend code is available after 60 seconds, and a new code cancels the old one. | 2.1, 2.2 | G5, Q35
 BR-04 | A code request gets the same answer whether or not the address is a member. | 2.1 | Technical
-BR-05 | A session lasts 30 days on one device. Whether it renews on use is not decided: FA-15. | 1.2, 2.1, 3.2 | Q11
+BR-05 | A session lasts 30 days on one device. It renews on every use, so 30 days means 30 days without opening Toki (FA-15). | 1.2, 2.1, 3.2 | Q11
 BR-06 | People join only by invitation from an Admin. An invitation lasts 7 days and works once. Its mail carries a 6-digit code; the link alone signs nobody in. There is no welcome step. | 2.2, 2.12 | G4, Q32, Q33
 BR-07 | Every member is in #general; it cannot be left or archived. | 2.2, 2.9 | G1
 BR-08 | With no link, the app opens the conversation last viewed on that device; the first time, #general. | 2.3 | G2
@@ -682,7 +682,7 @@ BR-01 | Không có gì trong Toki đọc được khi chưa có phiên. Đăng n
 BR-02 | Đăng nhập bằng mã 6 số gửi tới địa chỉ của thành viên: hiệu lực 10 phút, dùng một lần, bị khoá sau lần sai thứ 5. Không có mật khẩu. | 2.1 | Q11, Q34, Q36
 BR-03 | Tối đa 5 lần xin mã cho một địa chỉ trong 15 phút; Resend code dùng được sau 60 giây, và mã mới huỷ mã cũ. | 2.1, 2.2 | G5, Q35
 BR-04 | Yêu cầu xin mã nhận cùng một câu trả lời dù địa chỉ có là thành viên hay không. | 2.1 | Technical
-BR-05 | Một phiên kéo dài 30 ngày trên một thiết bị. Có gia hạn khi dùng hay không thì chưa quyết định: FA-15. | 1.2, 2.1, 3.2 | Q11
+BR-05 | Một phiên kéo dài 30 ngày trên một thiết bị. Phiên được gia hạn mỗi lần dùng, nên 30 ngày nghĩa là 30 ngày không mở Toki (FA-15). | 1.2, 2.1, 3.2 | Q11
 BR-06 | Chỉ vào được qua lời mời của Admin. Lời mời có hạn 7 ngày và dùng một lần. Mail mời có mã 6 số; riêng link thì không đăng nhập cho ai. Không có màn hình chào. | 2.2, 2.12 | G4, Q32, Q33
 BR-07 | Mọi thành viên đều ở trong #general; không rời và không lưu trữ được kênh này. | 2.2, 2.9 | G1
 BR-08 | Không có link thì ứng dụng mở cuộc trò chuyện xem gần nhất trên thiết bị đó; lần đầu là #general. | 2.3 | G2

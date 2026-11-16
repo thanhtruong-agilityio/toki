@@ -38,6 +38,9 @@ VQ = [
      "History is kept forever on one server (Q20, Q27); a disk failure without a backup rule loses everything.||Lịch sử được giữ mãi trên một server (Q20, Q27); hỏng đĩa mà không có quy định sao lưu thì mất tất cả.",
      "Nightly backup of database and files to another place, kept 14 days; a restore tested before launch.||Sao lưu hàng đêm database và file sang nơi khác, giữ 14 ngày; thử khôi phục trước khi ra mắt.", "PO, BE", "H"],
 ]
+# requirements and questions added on 16 Nov 2026 (phase-1 features that had no requirement); see frs_added.json
+ADDED = json.loads((HERE / "frs_added.json").read_text(encoding="utf-8"))
+VQ += ADDED["questions"]
 FQ_OWNER = dict(zip([f"FQ-{i:02d}" for i in range(1, 23)],
                     "PO, BE|FE|PO|PO, BE|PO|UX|FE, BE|PO|BE|PO|BE|BE|UX|UX|PO, UX|PO|UX|PO, UX|PO|UX|UX|UX".split("|")))
 FQ_SEV = dict(zip([f"FQ-{i:02d}" for i in range(1, 23)], "H M M M M L M M L L M L H H H M H M H H H M".split()))
@@ -286,6 +289,8 @@ _amend(25, "There is no Owner role. Any Admin changes roles and deactivates anyo
     ("With one Admin left, demoting or deactivating that Admin is refused; nobody can deactivate themselves.||Khi chỉ còn một Admin, hạ vai trò hoặc vô hiệu hoá Admin đó bị từ chối; không ai tự vô hiệu hoá mình được.", [("B", "One Admin: refused. Two Admins: allowed.||Một Admin: bị từ chối. Hai Admin: được."), ("N", "An Admin tries to deactivate themselves: refused.||Một Admin thử tự vô hiệu hoá mình: bị từ chối.")])])
 _amend(27, "A form that has content does not close on an outside click; closing it by a button asks whether to discard. Errors show under the field, and the button stays disabled until the form is valid.||Form đã có nội dung không đóng khi bấm ra ngoài; đóng bằng nút thì hỏi có bỏ không. Lỗi hiện dưới ô nhập, và nút bị tắt cho tới khi form hợp lệ.", "NR4 Q63", "",
        add=[("An invalid field shows its message under the field, and the submit button is disabled until every field is valid.||Ô không hợp lệ hiện thông báo ngay dưới ô, và nút gửi bị tắt cho tới khi mọi ô hợp lệ.", [("N", "Invalid value: message under the field, button disabled.||Giá trị không hợp lệ: thông báo dưới ô, nút bị tắt.")])])
+FR += [(f["area"], f["text"], f["src"], f["open"], f["screen"], f["flows"], f["rules"],
+        [(a["text"], [(t["type"], t["name"]) for t in a["tests"]]) for a in f["acs"]]) for f in ADDED["frs"]]
 DEPENDS = [
     ["The account that sends sign-in and invitation mail||Tài khoản gửi mail đăng nhập và mail mời", "FR-01, FR-04 in any real environment||FR-01, FR-04 ở mọi môi trường thật"],
     ["VQ-01 (review of the written journeys)||VQ-01 (rà các hành trình đã viết)", "Sign out, signed-in devices, and the admin screens of FR-25 and FR-26||Sign out, danh sách thiết bị, và các màn hình quản trị của FR-25, FR-26"],
@@ -354,7 +359,7 @@ OPEN_SEV = {r[0]: r[4] for r in OPEN}
 
 def state(fr):
     ids = fr[3].split()
-    qs = [i for i in ids if not i.startswith("FA-")]
+    qs = [i for i in ids if not i.startswith(("FA-", "AS-"))]
     if any(OPEN_SEV.get(i) in ("C", "H") for i in qs):
         return "B"
     if qs:

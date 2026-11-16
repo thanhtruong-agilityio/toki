@@ -37,7 +37,7 @@
    ]
   ]
  },
- "built": "13 Nov 2026",
+ "built": "16 Nov 2026",
  "overview": {
   "summary": "Toki is an internal team chat for one company: channels, direct messages, threads and files, and later tasks, calendar, video meetings, a guest portal, automations, mail and AI summaries. Each company runs its own copy on its own server.",
   "product": [
@@ -2478,6 +2478,176 @@
    "note": ""
   },
   {
+   "id": "D-160",
+   "old": "VQ-04",
+   "kind": "q",
+   "q": "A reply sent with 'Also send to #name': is it one message shown in two places or two messages, and does the channel copy raise the channel's unread count and notify like a normal message?",
+   "a": "One message shown in both places: editing or deleting it changes both, and it counts in the channel as a normal message (unread count and notification level apply).",
+   "owner": "PO",
+   "sev": "M",
+   "status": "Open"
+  },
+  {
+   "id": "D-162",
+   "old": "VQ-06",
+   "kind": "q",
+   "q": "How does a person on a touch screen see who reacted? The names appear only on hover, and rule D-067 forbids hover-only features.",
+   "a": "A long press on the chip opens a small list of names; a short tap still adds or removes the reaction.",
+   "owner": "PO",
+   "sev": "M",
+   "status": "Open"
+  },
+  {
+   "id": "D-163",
+   "old": "VQ-07",
+   "kind": "q",
+   "q": "When several people react to the same message, does the author get one Activity item per reaction or one item per message?",
+   "a": "One item per message, updated with the latest names; removing a reaction removes that person from the item.",
+   "owner": "PO",
+   "sev": "M",
+   "status": "Open"
+  },
+  {
+   "id": "D-164",
+   "old": "VQ-08",
+   "kind": "q",
+   "q": "Is there a limit to the number of pinned messages in a conversation?",
+   "a": "No limit in phase 1.",
+   "owner": "PO",
+   "sev": "M",
+   "status": "Open"
+  },
+  {
+   "id": "D-165",
+   "old": "VQ-09",
+   "kind": "q",
+   "q": "Does the system line '… pinned a message' raise the unread count or notify anyone, and is there a line for unpinning?",
+   "a": "No unread count and no notification, like the 'joined' line (D-100); no line for unpinning.",
+   "owner": "PO",
+   "sev": "M",
+   "status": "Open"
+  },
+  {
+   "id": "D-166",
+   "old": "VQ-10",
+   "kind": "q",
+   "q": "What happens to a pin when its message is deleted, and can a reply inside a thread be pinned?",
+   "a": "A deleted message leaves the Pinned tab. Only messages in the main list can be pinned in phase 1.",
+   "owner": "PO",
+   "sev": "M",
+   "status": "Open"
+  },
+  {
+   "id": "D-167",
+   "old": "VQ-11",
+   "kind": "q",
+   "q": "Which addresses become links, how do they open, and is there a multi-line code block?",
+   "a": "Only http:// and https:// addresses, opened in a new tab; no multi-line code block in phase 1.",
+   "owner": "PO",
+   "sev": "M",
+   "status": "Open"
+  },
+  {
+   "id": "D-168",
+   "old": "VQ-12",
+   "kind": "q",
+   "q": "Does a draft include files already uploaded to the composer? D-130 deletes an uploaded file that was never sent after 24 hours.",
+   "a": "A draft is text only; attached files are not restored on return or on another device.",
+   "owner": "PO",
+   "sev": "M",
+   "status": "Open"
+  },
+  {
+   "id": "D-170",
+   "old": "VQ-14",
+   "kind": "q",
+   "q": "Do files stay on a person's Files page after they leave the channel, and when the channel is archived?",
+   "a": "After leaving, the channel's files leave that person's Files page (D-116: an unjoined channel cannot be read). Files of an archived channel stay for its members.",
+   "owner": "PO",
+   "sev": "M",
+   "status": "Open"
+  },
+  {
+   "id": "D-172",
+   "old": "VQ-16",
+   "kind": "q",
+   "q": "How long may a status text be? Journey F32 says 100 characters, but no decision sets it and the prototype has no limit.",
+   "a": "1 to 100 characters, as F32 says; the field refuses the 101st character.",
+   "owner": "PO",
+   "sev": "M",
+   "status": "Open"
+  },
+  {
+   "id": "D-174",
+   "old": "VQ-18",
+   "kind": "q",
+   "q": "In a muted conversation, do thread replies and reactions still create Activity items and raise the Activity badge? Decisions cover only mentions (D-088) and the conversation's own count (D-103).",
+   "a": "Yes: the items are still created and counted in the Activity badge, with no toast, push or sound.",
+   "owner": "PO",
+   "sev": "M",
+   "status": "Open"
+  },
+  {
+   "id": "D-175",
+   "old": "VQ-19",
+   "kind": "q",
+   "q": "Are look, accent, density and language saved to the account and the same on every device, or kept per device? D-142 decides this only for notification preferences; journey F35 says the account, the prototype keeps the look in the browser.",
+   "a": "Saved to the account and synced, as F35 says; with 'Match my device' each device follows its own light or dark setting.",
+   "owner": "PO",
+   "sev": "M",
+   "status": "Open"
+  },
+  {
+   "id": "D-180",
+   "old": "VQ-24",
+   "kind": "q",
+   "q": "In which language is a mail sent: the invitation to a person who has no account yet, and the sign-in mail to a member who chose Vietnamese?",
+   "a": "Invitations in English; sign-in mail in the language the member chose.",
+   "owner": "PO",
+   "sev": "M",
+   "status": "Open"
+  },
+  {
+   "id": "D-181",
+   "old": "VQ-25",
+   "kind": "q",
+   "q": "When a deactivated person is invited again (D-094), which role do they get: the role in the new invitation, or the role the account had?",
+   "a": "The role chosen in the new invitation.",
+   "owner": "PO",
+   "sev": "M",
+   "status": "Open"
+  },
+  {
+   "id": "D-182",
+   "old": "VQ-26",
+   "kind": "q",
+   "q": "Does 'Resend' on an invitation start a new 7 days and stop the Join button of the earlier mail, or send the same invitation again?",
+   "a": "A new 7 days; the earlier mail stops working.",
+   "owner": "PO",
+   "sev": "M",
+   "status": "Open"
+  },
+  {
+   "id": "D-183",
+   "old": "VQ-27",
+   "kind": "q",
+   "q": "The '+' that creates a channel sits beside 'Busiest channels' on the Admin page (D-151), but Analytics is phase 5. What does that section show in phase 1?",
+   "a": "A plain list of all channels with their member counts, titled 'Channels'; the busiest ranking comes with Analytics.",
+   "owner": "PO",
+   "sev": "M",
+   "status": "Open"
+  },
+  {
+   "id": "D-186",
+   "old": "VQ-30",
+   "kind": "q",
+   "q": "Are uploaded files scanned for viruses in phase 1?",
+   "a": "No scanning in phase 1; files are always downloaded, never opened in the page (D-095).",
+   "owner": "PO, BE",
+   "sev": "M",
+   "status": "Open"
+  },
+  {
    "id": "D-114",
    "old": "FQ-06 · Q82",
    "kind": "rev",
@@ -2619,6 +2789,156 @@
    "topic": "Data export",
    "source": "deferred",
    "note": ""
+  },
+  {
+   "id": "D-161",
+   "old": "VQ-05",
+   "kind": "q",
+   "q": "Is 'Also send to …' offered in threads inside a DM or group DM? The prototype shows it only in channels.",
+   "a": "Channels only, as in the prototype.",
+   "owner": "PO",
+   "sev": "L",
+   "status": "Open"
+  },
+  {
+   "id": "D-169",
+   "old": "VQ-13",
+   "kind": "q",
+   "q": "How long is a draft kept, and what happens when the same draft is edited on two devices at once?",
+   "a": "Kept until sent or emptied, with no expiry; the last save wins, as for topics (D-121).",
+   "owner": "PO",
+   "sev": "L",
+   "status": "Open"
+  },
+  {
+   "id": "D-171",
+   "old": "VQ-15",
+   "kind": "q",
+   "q": "How many rows does the Files page load at once, and does the chip 'Documents' mean every attached file that is not an image?",
+   "a": "First 50 rows, more on scroll, as decided for people lists (D-109); 'Documents' is every file that is not an image.",
+   "owner": "PO",
+   "sev": "L",
+   "status": "Open"
+  },
+  {
+   "id": "D-173",
+   "old": "VQ-17",
+   "kind": "q",
+   "q": "Rule D-071 requires a filter chip for every kind of Activity item, but the prototype has no chip for 'added to a channel' and account changes. What is that chip called, and does it hold both kinds?",
+   "a": "One chip named 'Other' that holds both kinds, as journey F27 says.",
+   "owner": "PO",
+   "sev": "L",
+   "status": "Open"
+  },
+  {
+   "id": "D-176",
+   "old": "VQ-20",
+   "kind": "q",
+   "q": "What are 'Desktop notifications' and 'Play a sound' set to for a new account? Only the mentions-in-muted switch has a decided default (D-088).",
+   "a": "As the prototype starts: Desktop notifications on, Play a sound off.",
+   "owner": "PO",
+   "sev": "L",
+   "status": "Open"
+  },
+  {
+   "id": "D-177",
+   "old": "VQ-21",
+   "kind": "q",
+   "q": "Does the People search match Vietnamese typed without diacritics, and in what order are the cards listed? D-015 decides diacritics only for Ctrl+K; no decision gives an order.",
+   "a": "Match without diacritics, as Ctrl+K does; cards in alphabetical order of display name.",
+   "owner": "PO",
+   "sev": "L",
+   "status": "Open"
+  },
+  {
+   "id": "D-178",
+   "old": "VQ-22",
+   "kind": "q",
+   "q": "Does 'Sign out' on the current device ask for confirmation? D-158 and F06 state a confirmation only for signing out other devices.",
+   "a": "No confirmation: the person can sign in again with a code, and drafts are saved first.",
+   "owner": "PO",
+   "sev": "L",
+   "status": "Open"
+  },
+  {
+   "id": "D-179",
+   "old": "VQ-23",
+   "kind": "q",
+   "q": "Does a session started from the emergency link last 30 days like any other, and does issuing a new link cancel an earlier unused one?",
+   "a": "A normal 30-day session; a new link cancels the earlier one, as a new code does (D-082).",
+   "owner": "PO",
+   "sev": "L",
+   "status": "Open"
+  },
+  {
+   "id": "D-184",
+   "old": "VQ-28",
+   "kind": "q",
+   "q": "A private channel is archived when its last member leaves, and an Admin restores only a channel they belong to. Who restores a channel with no members?",
+   "a": "Any Admin; the Admin who restores it becomes its member.",
+   "owner": "PO",
+   "sev": "L",
+   "status": "Open"
+  },
+  {
+   "id": "D-185",
+   "old": "VQ-29",
+   "kind": "q",
+   "q": "Where do 'Add people', the Admin's 'Remove from channel' and 'Archive channel' open from?",
+   "a": "All three from the channel's Details panel.",
+   "owner": "UX",
+   "sev": "L",
+   "status": "Open"
+  },
+  {
+   "id": "D-187",
+   "old": "VQ-31",
+   "kind": "q",
+   "q": "In Ctrl+K, exact matches come first. What is the order after that?",
+   "a": "Names that start with the text, then names that contain it; no fuzzy matching in phase 1.",
+   "owner": "PO",
+   "sev": "L",
+   "status": "Open"
+  },
+  {
+   "id": "D-188",
+   "old": "VQ-32",
+   "kind": "q",
+   "q": "Which form of address does the Vietnamese interface use?",
+   "a": "'bạn' everywhere.",
+   "owner": "PO",
+   "sev": "L",
+   "status": "Open"
+  },
+  {
+   "id": "D-189",
+   "old": "VQ-33",
+   "kind": "q",
+   "q": "Do number formats and the names of days and months follow the interface language?",
+   "a": "Yes, they follow the interface language.",
+   "owner": "PO",
+   "sev": "L",
+   "status": "Open"
+  },
+  {
+   "id": "D-190",
+   "old": "VQ-34",
+   "kind": "q",
+   "q": "Is a deployment started automatically when a pull request is merged, or by hand?",
+   "a": "By hand in phase 1, with one command.",
+   "owner": "PO, BE",
+   "sev": "L",
+   "status": "Open"
+  },
+  {
+   "id": "D-191",
+   "old": "VQ-35",
+   "kind": "q",
+   "q": "The disk warning comes at 80% full and uploads stop at 95% (D-106). Which disk is measured, and is the warning shown anywhere besides the Admin page?",
+   "a": "The volume that stores files; on the Admin page only.",
+   "owner": "BE",
+   "sev": "L",
+   "status": "Open"
   },
   {
    "id": "D-125",
@@ -5619,16 +5939,17 @@
    "id": "I03",
    "slug": "sign-in-by-email-code",
    "milestone": "M2",
-   "want": "Get into Toki with a code sent by email, with no password; the workspace sets itself up the first time",
+   "want": "Get into Toki with a 6-digit code sent by email, with no password; sign out and see where you are signed in; the workspace sets itself up the first time",
    "who": "Member, Admin",
-   "done": "The first Admin is created from the environment; sign-in, sign-out, the 7 error cases and session management all work",
+   "done": "The first Admin is created from the environment; a code from a mail that has no button signs a person in, works for 10 minutes, can be resent after 60 seconds and locks after 5 wrong tries; the 7 error cases, Sign out, the signed-in devices list and the emergency sign-in link all work",
    "tickets": [
     "019",
     "020",
     "021",
     "022",
     "023",
-    "026"
+    "026",
+    "099"
    ],
    "status": "draft"
   },
@@ -5636,13 +5957,14 @@
    "id": "I04",
    "slug": "member-management",
    "milestone": "M2",
-   "want": "Invite people, change roles, deactivate accounts",
-   "who": "Admin, Admin",
-   "done": "An admin invites someone and they get in; permissions by role match the capability table",
+   "want": "Invite people as Member or Admin, invite a deactivated person back, change roles, deactivate accounts",
+   "who": "Admin",
+   "done": "An Admin invites someone, who enters the code from the mail and lands in #general; a deactivated person who is invited again gets the same account back; the last Admin cannot be demoted or deactivated and nobody deactivates themselves; permissions by role match the capability table",
    "tickets": [
     "024",
     "025",
-    "027"
+    "027",
+    "097"
    ],
    "status": "draft"
   },
@@ -5650,9 +5972,9 @@
    "id": "I05",
    "slug": "channels-and-direct-messages",
    "milestone": "M2",
-   "want": "Create, find, join and leave channels; open DMs and group DMs; move between conversations",
-   "who": "Member and above",
-   "done": "Public and private channels can be created, browsed, joined and left; DMs open; the conversation list filters and collapses",
+   "want": "Find, join and leave channels; open DMs and group DMs; move between conversations. An Admin creates channels from the Admin page",
+   "who": "Member, Admin",
+   "done": "An Admin creates public and private channels from the Admin page and a Member cannot; channels are browsed, joined and left, and one that is not joined cannot be read; a DM or a group DM of up to 8 people starts from the + on Direct messages; the conversation list filters and collapses",
    "tickets": [
     "028",
     "029",
@@ -5661,7 +5983,10 @@
     "032",
     "033",
     "034",
-    "035"
+    "035",
+    "098",
+    "100",
+    "101"
    ],
    "status": "draft"
   },
@@ -5710,8 +6035,8 @@
    "slug": "unread-presence-status",
    "milestone": "M4",
    "want": "Know where the new messages are, who is active and who is busy",
-   "who": "Everyone",
-   "done": "Badges agree on two devices; the New divider follows its rule; presence and auto-clearing status work",
+   "who": "Member, Admin",
+   "done": "Badges agree on two devices and in the browser tab title; the New divider follows its rule; presence and auto-clearing status work",
    "tickets": [
     "064",
     "053",
@@ -5727,15 +6052,16 @@
    "slug": "file-sharing",
    "milestone": "M4",
    "want": "Send files and images, and find them again in one place",
-   "who": "Everyone",
-   "done": "Uploads up to 100 MB with thumbnails and link previews; the Files tab and Files section work",
+   "who": "Member, Admin",
+   "done": "Uploads of any file type up to 100 MB, 10 files per message, with thumbnails and link previews; the Files tab and Files section work; Admins are warned when the disk fills",
    "tickets": [
     "058",
     "059",
     "060",
     "061",
     "062",
-    "063"
+    "063",
+    "103"
    ],
    "status": "draft"
   },
@@ -5744,8 +6070,8 @@
    "slug": "search-and-command-palette",
    "milestone": "M4",
    "want": "Find conversations, people and messages; act quickly with Ctrl+K",
-   "who": "Member and above",
-   "done": "Vietnamese typed without diacritics finds text with them; only things the person may see are returned",
+   "who": "Member, Admin",
+   "done": "Vietnamese typed without diacritics finds text with them; only things the person may see are returned, 20 per kind with more on request",
    "tickets": [
     "069",
     "070",
@@ -5759,8 +6085,8 @@
    "slug": "activity-and-later",
    "milestone": "M5",
    "want": "Miss no mention; save a message to deal with later and be reminded",
-   "who": "Member and above",
-   "done": "Mentions, threads and reactions create Activity items; snooze and reminders fire on time",
+   "who": "Member, Admin",
+   "done": "Mentions, replies in followed threads and reactions create Activity items; snooze and reminders fire on time and never offer a time already past",
    "tickets": [
     "065",
     "066",
@@ -5774,14 +6100,15 @@
    "slug": "notifications-and-focus",
    "milestone": "M5",
    "want": "Be told when it matters, and be able to switch it off to concentrate",
-   "who": "Member and above",
-   "done": "A push arrives with the tab closed; all 15 mention situations behave as specified; Pause and Focus hold everything",
+   "who": "Member, Admin",
+   "done": "A push arrives with the tab closed; a mention in a muted conversation still notifies while the person's switch is on; all 15 mention situations behave as specified; Pause and Focus hold everything",
    "tickets": [
     "073",
     "074",
     "075",
     "076",
-    "077"
+    "077",
+    "102"
    ],
    "status": "draft"
   },
@@ -5789,9 +6116,9 @@
    "id": "I13",
    "slug": "preferences-and-people",
    "milestone": "M6",
-   "want": "Adjust looks and notifications to taste; look people up; lack nothing on a phone",
-   "who": "Member and above",
-   "done": "Preferences are saved to the account; People and profiles work; the More sheet has every entry point",
+   "want": "Adjust looks, language and notifications to taste; see signed-in devices and sign out; look people up; lack nothing on a phone",
+   "who": "Member, Admin",
+   "done": "Preferences are saved to the account and apply on every device; the language can be switched between English (the default) and Vietnamese; Sign out and the signed-in devices list work; People and profiles work; the More sheet has every entry point",
    "tickets": [
     "078",
     "079",
@@ -5803,13 +6130,14 @@
    "id": "I14",
    "slug": "language-accessibility-states",
    "milestone": "M6",
-   "want": "A fully Vietnamese interface, usable by keyboard, with a state for every situation",
-   "who": "Everyone",
-   "done": "No string lacks a translation; skeletons, the reconnecting strip, 404 and no-access pages exist",
+   "want": "An interface fully translated in English (the default) and Vietnamese, usable by keyboard, with a state for every situation",
+   "who": "Member, Admin",
+   "done": "No string lacks a translation in either language, and CI fails if one does; skeletons, the offline banner, the shared not-found and no-access page and the update strip exist",
    "tickets": [
     "080",
     "082",
-    "083"
+    "083",
+    "104"
    ],
    "status": "draft"
   },
@@ -5817,13 +6145,12 @@
    "id": "I15",
    "slug": "production-launch",
    "milestone": "M6",
-   "want": "Toki runs on its real domain, safely, and can be restored",
+   "want": "Toki runs on its real domain, safely",
    "who": "Admin and whoever operates the server",
-   "done": "A fresh install follows the guide; a backup is restored; the 6 performance targets and 12 end-to-end flows pass",
+   "done": "A fresh install follows the guide; the 6 performance targets pass with 200 people online; the 12 end-to-end flows pass",
    "tickets": [
     "084",
     "085",
-    "086",
     "087",
     "088",
     "089",
@@ -5873,7 +6200,7 @@
   ],
   [
    "BR-05",
-   "A session lasts 30 days on one device. Whether it renews on use is not decided: D-138.",
+   "A session lasts 30 days on one device. It renews on every use, so 30 days means 30 days without opening Toki (D-138).",
    "1.2, 2.1, 3.2",
    "D-011"
   ],
@@ -8419,6 +8746,1584 @@
      ]
     }
    ]
+  },
+  {
+   "id": "FR-33",
+   "area": "Messaging",
+   "text": "A member of a conversation can reply to a message in a thread. The thread opens in a side panel that shows the root message, the number of replies, the replies and its own composer; threads are one level deep. In a channel, ticking 'Also send to #name' also posts the reply as a normal message in the channel.",
+   "decided": [
+    {
+     "ref": "D-017",
+     "a": "As recommended; add @channel, group DMs up to 8, keep 8 fixed emoji"
+    },
+    {
+     "ref": "D-091",
+     "a": "Reviewed on 13 Nov 2026: 8 rewritten, 16 corrected, 19 unchanged. With the four choices in D-156 to D-159 settled, the phase-1 journeys are accepted as the baseline."
+    },
+    {
+     "ref": "D-096",
+     "a": "Yes; the thread stays under the 'Message deleted' line."
+    },
+    {
+     "ref": "D-089",
+     "a": "(a) Each has an address. Back closes the side panel first, then returns to the previous place."
+    }
+   ],
+   "open": [
+    "D-160",
+    "D-161"
+   ],
+   "screen": "Home: message action bar 'Reply in thread'; Thread panel",
+   "flows": "",
+   "rules": "BR-25",
+   "acs": [
+    {
+     "id": "AC-085",
+     "text": "A reply sent in the thread panel appears in that thread and not as a message in the conversation; under the root message a line shows the number of replies and the time of the last one, and pressing it opens the thread. The reply is delivered even when the root message was deleted while it was being written.",
+     "tests": [
+      {
+       "id": "TS-132",
+       "type": "P",
+       "text": "Reply in a thread",
+       "given": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Sam has sent the message 'Build 12 is ready' in #general; it has no replies. Mai is signed in.",
+       "steps": "1. Mai opens #general and presses 'Reply in thread' on Sam's message. 2. In the thread panel Mai leaves 'Also send to #general' unticked, types 'Installing now' and sends. 3. Sam opens #general.",
+       "expect": "The thread panel shows Sam's message, the line '1 reply' and Mai's reply. In #general, Sam sees under his message a line with '1 reply' and 'Last reply' with the time; 'Installing now' is not in the #general message list. Pressing the line opens the same thread."
+      },
+      {
+       "id": "TS-133",
+       "type": "X",
+       "text": "Reply while the root is deleted",
+       "given": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Sam's message 'Build 12 is ready' in #general has one reply from Alex. Mai and Sam are signed in on separate browsers.",
+       "steps": "1. Mai opens the thread and types 'Checking' without sending. 2. Sam deletes his message and confirms. 3. Mai presses Send.",
+       "expect": "Mai's reply is sent. The thread shows the line 'Message deleted' in place of the root, followed by Alex's reply and 'Checking'."
+      }
+     ]
+    },
+    {
+     "id": "AC-086",
+     "text": "In a channel thread the composer has the checkbox 'Also send to #name', unticked when the thread opens. With it ticked the reply appears both in the thread and as a normal message in the channel; with it unticked, only in the thread.",
+     "tests": [
+      {
+       "id": "TS-134",
+       "type": "P",
+       "text": "Also send to channel",
+       "given": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Sam's message 'Build 12 is ready' is in #general. Mai is signed in.",
+       "steps": "1. Mai opens the thread on Sam's message. 2. Mai ticks 'Also send to #general', types 'Tested, works' and sends. 3. Alex opens #general.",
+       "expect": "'Tested, works' is in the thread, and Alex sees it at the bottom of the #general message list as a message from Mai."
+      },
+      {
+       "id": "TS-135",
+       "type": "N",
+       "text": "Checkbox starts unticked",
+       "given": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Mai has just sent a thread reply with 'Also send to #general' ticked. Mai is signed in.",
+       "steps": "1. Mai closes the thread panel. 2. Mai presses 'Reply in thread' on a different message in #general.",
+       "expect": "The checkbox 'Also send to #general' is shown and is not ticked."
+      }
+     ]
+    },
+    {
+     "id": "AC-087",
+     "text": "A reply inside a thread has no 'Reply in thread' action.",
+     "tests": [
+      {
+       "id": "TS-136",
+       "type": "N",
+       "text": "No thread inside a thread",
+       "given": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Sam's message in #general has one reply from Mai. Alex is signed in.",
+       "steps": "1. Alex opens the thread on Sam's message. 2. Alex hovers Mai's reply (narrow screen: taps it) to show its action bar and opens its More menu.",
+       "expect": "Neither the action bar nor the More menu of Mai's reply contains 'Reply in thread'."
+      }
+     ]
+    },
+    {
+     "id": "AC-088",
+     "text": "A thread has its own address that reopens the same thread, and browser Back closes the thread panel before it leaves the conversation.",
+     "tests": [
+      {
+       "id": "TS-137",
+       "type": "P",
+       "text": "Thread address and Back",
+       "given": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Sam's message in #general has one reply. Mai is signed in and has #launch open; #launch is a private channel whose members are Minh (Admin), Sam and Mai; Alex is not a member.",
+       "steps": "1. Mai opens #general, then opens the thread on Sam's message and copies the address from the browser's address bar. 2. Mai presses browser Back once. 3. Mai pastes the copied address into a new tab.",
+       "expect": "After step 2 the thread panel is closed and #general is still shown. After step 3 the new tab shows #general with the same thread open in the panel."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "FR-34",
+   "area": "Notifications",
+   "text": "The author of the root message, everyone who has replied and everyone mentioned in the thread follow it automatically. Each new reply gives every follower except its sender a thread item in Activity, and does not raise the conversation's unread count. There is no control to stop following a thread.",
+   "decided": [
+    {
+     "ref": "D-091",
+     "a": "Reviewed on 13 Nov 2026: 8 rewritten, 16 corrected, 19 unchanged. With the four choices in D-156 to D-159 settled, the phase-1 journeys are accepted as the baseline."
+    },
+    {
+     "ref": "D-119",
+     "a": "No 'Unfollow thread' in phase 1. Threads themselves stay in phase 1."
+    },
+    {
+     "ref": "D-071",
+     "a": "Your own action never notifies you. An Activity item becomes done on its own once the thing it asks for is done. Activity is newest first and has a filter chip for every kind of item."
+    }
+   ],
+   "open": [],
+   "screen": "Activity: 'Threads' chip and thread items; Thread panel",
+   "flows": "",
+   "rules": "BR-15",
+   "acs": [
+    {
+     "id": "AC-089",
+     "text": "A new reply creates one thread item in Activity for the root author, for each earlier replier and for each person mentioned in the thread; the sender of the reply and members who did none of these get no item.",
+     "tests": [
+      {
+       "id": "TS-138",
+       "type": "P",
+       "text": "Root author is told",
+       "given": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Sam's message 'Build 12 is ready' in #general has no replies. Sam's Activity has no unread item.",
+       "steps": "1. Mai, signed in, replies 'Installing now' in the thread on Sam's message. 2. Sam, signed in, opens Activity and presses the 'Threads' chip.",
+       "expect": "Sam's Activity lists exactly one new thread item naming Mai and #general. Mai's Activity has no item for her own reply."
+      },
+      {
+       "id": "TS-139",
+       "type": "P",
+       "text": "Earlier replier is told",
+       "given": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. In #general, Sam's message has one reply, from Mai. Mai's Activity has no unread item.",
+       "steps": "1. Sam, signed in, replies 'Thanks' in the same thread. 2. Mai, signed in, opens Activity.",
+       "expect": "Mai's Activity shows one new thread item for Sam's reply."
+      },
+      {
+       "id": "TS-140",
+       "type": "N",
+       "text": "Non-follower gets nothing",
+       "given": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. In #general, Sam's message has one reply, from Mai. Alex has not replied in that thread and is not mentioned in it. Alex's Activity is empty.",
+       "steps": "1. Sam, signed in, replies 'Thanks' in the thread without mentioning anyone. 2. Alex, signed in, opens Activity.",
+       "expect": "Alex's Activity is still empty and its badge has not changed."
+      }
+     ]
+    },
+    {
+     "id": "AC-090",
+     "text": "A thread reply sent without 'Also send to #name' does not raise the conversation's unread count for anyone.",
+     "tests": [
+      {
+       "id": "TS-141",
+       "type": "N",
+       "text": "Channel count unchanged",
+       "given": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Alex is signed in with another conversation open; the #general row in Alex's list shows no unread count. Sam's message in #general exists.",
+       "steps": "1. Mai, signed in, replies in the thread on Sam's message with 'Also send to #general' unticked. 2. Alex looks at the #general row without opening it.",
+       "expect": "The #general row in Alex's list is not bold and shows no unread count."
+      }
+     ]
+    },
+    {
+     "id": "AC-091",
+     "text": "No screen offers a way to stop following a thread.",
+     "tests": [
+      {
+       "id": "TS-142",
+       "type": "N",
+       "text": "No Unfollow control",
+       "given": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Sam's message in #general has a reply from Mai, so Mai follows the thread and has a thread item in Activity. Mai is signed in.",
+       "steps": "1. Mai opens the thread panel and looks at its header and composer. 2. Mai opens the More menu of the root message and of her reply. 3. Mai opens Activity and looks at the buttons on the thread item.",
+       "expect": "None of these places has a control named 'Unfollow thread' or any other control that stops following the thread."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "FR-35",
+   "area": "Messaging",
+   "text": "A person can react to a message with any of 8 fixed emoji: 👍 ❤️ 🎉 😂 👀 🙏 ✅ 🚀; there is no full emoji picker. Each emoji used shows under the message as a chip with a count; a person can add one of each emoji per message and remove their own. The chip names the people who reacted, and the message's author gets a reaction item in Activity with no toast or push.",
+   "decided": [
+    {
+     "ref": "D-017",
+     "a": "As recommended; add @channel, group DMs up to 8, keep 8 fixed emoji"
+    },
+    {
+     "ref": "D-091",
+     "a": "Reviewed on 13 Nov 2026: 8 rewritten, 16 corrected, 19 unchanged. With the four choices in D-156 to D-159 settled, the phase-1 journeys are accepted as the baseline."
+    }
+   ],
+   "open": [
+    "D-162",
+    "D-163"
+   ],
+   "screen": "Home: smile button on the message action bar; reaction chips under a message",
+   "flows": "",
+   "rules": "BR-15",
+   "acs": [
+    {
+     "id": "AC-092",
+     "text": "The reaction panel offers exactly the 8 emoji 👍 ❤️ 🎉 😂 👀 🙏 ✅ 🚀 and no way to choose any other.",
+     "tests": [
+      {
+       "id": "TS-143",
+       "type": "B",
+       "text": "Exactly 8 emoji",
+       "given": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. #general has a message from Sam. Mai is signed in.",
+       "steps": "1. Mai opens #general and presses the smile button on the action bar of Sam's message. 2. Mai counts the emoji and looks for a search field or a 'more' button in the panel.",
+       "expect": "The panel shows 8 emoji, 👍 ❤️ 🎉 😂 👀 🙏 ✅ 🚀, and has no search field and no control that shows more emoji."
+      }
+     ]
+    },
+    {
+     "id": "AC-093",
+     "text": "Picking an emoji adds a chip with that emoji and a count, marked as the person's own. Pressing one's own chip removes the reaction, and a chip whose count reaches 0 disappears; pressing another person's chip adds the same emoji. A person can hold one of each emoji on a message and several different emoji.",
+     "tests": [
+      {
+       "id": "TS-144",
+       "type": "P",
+       "text": "Add then remove",
+       "given": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Sam's message in #general has no reactions. Mai is signed in.",
+       "steps": "1. Mai presses the smile button on Sam's message and picks 👍. 2. Mai presses the 👍 chip.",
+       "expect": "After step 1 a chip '👍 1' is under the message, outlined as Mai's own. After step 2 the message has no chip."
+      },
+      {
+       "id": "TS-145",
+       "type": "P",
+       "text": "Join another person's reaction",
+       "given": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Sam's message in #general has the chip '👍 1' from Mai. Alex is signed in.",
+       "steps": "1. Alex presses the '👍 1' chip. 2. Mai, signed in on another browser, looks at the message.",
+       "expect": "Both see one chip '👍 2'; no second 👍 chip is created."
+      },
+      {
+       "id": "TS-146",
+       "type": "B",
+       "text": "One of each emoji per person",
+       "given": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Sam's message in #general has the chip '👍 1' from Mai. Mai is signed in.",
+       "steps": "1. Mai opens the reaction panel on the message and picks 🎉. 2. Mai opens the reaction panel again and picks 👍.",
+       "expect": "After step 1 the message has '👍 1' and '🎉 1'. After step 2 the 👍 count has not become 2: the 👍 chip is gone and only '🎉 1' remains."
+      }
+     ]
+    },
+    {
+     "id": "AC-094",
+     "text": "Pointing at a reaction chip shows the names of the people who reacted with that emoji.",
+     "tests": [
+      {
+       "id": "TS-147",
+       "type": "P",
+       "text": "Who reacted",
+       "given": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Sam's message in #general has the chip '👍 2' from Mai and Alex. Minh is signed in on a desktop browser.",
+       "steps": "1. Minh opens #general and holds the pointer over the '👍 2' chip.",
+       "expect": "A tooltip names Mai and Alex and nobody else."
+      }
+     ]
+    },
+    {
+     "id": "AC-095",
+     "text": "A reaction by another person gives the message's author one reaction item in Activity and produces no toast and no push.",
+     "tests": [
+      {
+       "id": "TS-148",
+       "type": "P",
+       "text": "Author gets an Activity item only",
+       "given": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Sam's message in #general has no reactions. Sam is signed in with Toki open on another conversation, push allowed, and no Pause or Focus time running; his Activity has no unread item.",
+       "steps": "1. Mai, signed in, reacts 👍 to Sam's message. 2. Sam watches his screen, then opens Activity and presses the 'Reactions' chip.",
+       "expect": "No toast and no system notification appear for Sam. His Activity lists one new reaction item naming Mai, 👍 and #general."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "FR-36",
+   "area": "Messaging",
+   "text": "A Member or Admin who is in a conversation can pin and unpin any message in it from the message's More menu. A pinned message carries a 'Pinned' label, the conversation shows a system line saying who pinned it, and the Pinned tab lists the conversation's pinned messages, most recently pinned first. Pinning and unpinning happen at once, with Undo for 5 seconds and no confirmation.",
+   "decided": [
+    {
+     "ref": "D-090",
+     "a": "Reviewed row by row and signed off with three columns (Member, Admin, Guest). Changed rows: only an Admin creates channels; an Admin invites with any role, changes roles, and deactivates anyone but the last Admin and themselves; a Member can create automations (phase 5). A Member still adds people to a channel they are in."
+    },
+    {
+     "ref": "D-091",
+     "a": "Reviewed on 13 Nov 2026: 8 rewritten, 16 corrected, 19 unchanged. With the four choices in D-156 to D-159 settled, the phase-1 journeys are accepted as the baseline."
+    },
+    {
+     "ref": "D-061",
+     "a": "One or the other, depending on whether the action can be reversed. See rules D-069 and D-070. Undo: archive an email, mark done, leave a public channel, remove from Later, unpin. Confirm: delete a message, delete an automation, deactivate a member, archive a channel, cancel a Meet."
+    },
+    {
+     "ref": "D-069",
+     "a": "A reversible action happens at once and shows a toast with Undo for 5 seconds. An irreversible action, or one that affects other people, asks for confirmation and names its target. Never both for one action."
+    }
+   ],
+   "open": [
+    "D-164",
+    "D-165",
+    "D-166"
+   ],
+   "screen": "Home: message More menu 'Pin to conversation' / 'Unpin'; 'Pinned' tab of a conversation",
+   "flows": "",
+   "rules": "BR-20",
+   "acs": [
+    {
+     "id": "AC-096",
+     "text": "Any Member or Admin in the conversation can pin a message, their own or another person's. Every member then sees the 'Pinned' label on it, a system line naming who pinned it, and the message in the Pinned tab.",
+     "tests": [
+      {
+       "id": "TS-149",
+       "type": "P",
+       "text": "Member pins another person's message",
+       "given": "#launch is a private channel whose members are Minh (Admin), Sam and Mai; Alex is not a member. Mai has sent 'Launch date: 1 December' in #launch; nothing is pinned there. Sam is signed in.",
+       "steps": "1. Sam opens #launch, opens the More menu of Mai's message and presses 'Pin to conversation'. 2. Minh, signed in on another browser, opens #launch and then its Pinned tab.",
+       "expect": "Minh sees the 'Pinned' label on Mai's message, the system line 'Sam pinned a message' in #launch, and Mai's message as the only entry of the Pinned tab."
+      },
+      {
+       "id": "TS-150",
+       "type": "P",
+       "text": "A member unpins someone else's pin",
+       "given": "#launch is a private channel whose members are Minh (Admin), Sam and Mai; Alex is not a member. Sam has pinned Mai's message 'Launch date: 1 December' in #launch. Mai is signed in.",
+       "steps": "1. Mai opens the More menu of the pinned message. 2. Mai presses 'Unpin' and waits 6 seconds. 3. Mai opens the Pinned tab.",
+       "expect": "The menu offers 'Unpin'. After step 2 the 'Pinned' label is gone, and the Pinned tab shows 'Nothing pinned'."
+      }
+     ]
+    },
+    {
+     "id": "AC-097",
+     "text": "The Pinned tab orders messages by the time they were pinned, newest pin first, and pressing an entry shows that message in the Messages tab.",
+     "tests": [
+      {
+       "id": "TS-151",
+       "type": "P",
+       "text": "Order by pin time",
+       "given": "#launch is a private channel whose members are Minh (Admin), Sam and Mai; Alex is not a member. #launch holds an older message A ('Checklist v1', from Mai) and a newer message B ('Checklist v2', from Minh); nothing is pinned. Sam is signed in.",
+       "steps": "1. Sam pins message B. 2. Sam pins message A. 3. Sam opens the Pinned tab. 4. Sam presses the entry for message B.",
+       "expect": "In step 3 the tab lists A first and B second. After step 4 the Messages tab is shown with message B on screen."
+      }
+     ]
+    },
+    {
+     "id": "AC-098",
+     "text": "Pinning and unpinning take effect at once and show a toast with Undo for 5 seconds; neither asks for confirmation, and Undo puts the message back in its earlier state.",
+     "tests": [
+      {
+       "id": "TS-152",
+       "type": "P",
+       "text": "Undo an unpin",
+       "given": "#launch is a private channel whose members are Minh (Admin), Sam and Mai; Alex is not a member. Mai's message 'Launch date: 1 December' is pinned in #launch. Sam is signed in.",
+       "steps": "1. Sam opens the More menu of the message and presses 'Unpin'. 2. Within 5 seconds Sam presses 'Undo' in the toast. 3. Sam opens the Pinned tab.",
+       "expect": "No confirmation dialog appears in step 1. After step 2 the message carries the 'Pinned' label again and is listed in the Pinned tab."
+      },
+      {
+       "id": "TS-153",
+       "type": "B",
+       "text": "Undo ends after 5 seconds",
+       "given": "#launch is a private channel whose members are Minh (Admin), Sam and Mai; Alex is not a member. Mai's message 'Launch date: 1 December' is in #launch and is not pinned. Sam is signed in.",
+       "steps": "1. Sam opens the More menu of the message and presses 'Pin to conversation'. 2. Sam waits 6 seconds and looks for the toast.",
+       "expect": "A toast with 'Undo' appears right after step 1. After 6 seconds the toast is gone and the message is still pinned."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "FR-37",
+   "area": "Messaging",
+   "text": "The composer toolbar has Bold, Italic and Code; each wraps the selected text in its mark (*, _ or `), and the sent message shows that text as bold, italic or code. A web address in a message becomes a link with a preview card, which the sender can remove. Everything else is shown as plain text exactly as typed, HTML included.",
+   "decided": [
+    {
+     "ref": "D-017",
+     "a": "As recommended; add @channel, group DMs up to 8, keep 8 fixed emoji"
+    },
+    {
+     "ref": "D-014",
+     "a": "(b) MinIO, 100 MB, image thumbnails, link previews"
+    },
+    {
+     "ref": "D-091",
+     "a": "Reviewed on 13 Nov 2026: 8 rewritten, 16 corrected, 19 unchanged. With the four choices in D-156 to D-159 settled, the phase-1 journeys are accepted as the baseline."
+    },
+    {
+     "ref": "D-019",
+     "a": "The prototype is the only source; Claude decides what it does not draw"
+    }
+   ],
+   "open": [
+    "D-167"
+   ],
+   "screen": "Home: composer toolbar (Bold, Italic, Code); message text",
+   "flows": "",
+   "rules": "",
+   "acs": [
+    {
+     "id": "AC-099",
+     "text": "Text between two * shows as bold, between two _ as italic and between two ` as code, whether the marks were typed or added with the toolbar; the marks themselves are not shown in the sent message.",
+     "tests": [
+      {
+       "id": "TS-154",
+       "type": "P",
+       "text": "Bold from the toolbar",
+       "given": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Sam is signed in with #general open and an empty composer.",
+       "steps": "1. Sam types 'ship on Friday' and selects the word 'Friday'. 2. Sam presses Bold in the toolbar. 3. Sam sends the message.",
+       "expect": "After step 2 the composer reads 'ship on *Friday*'. The sent message reads 'ship on Friday' with only 'Friday' in bold and no asterisks."
+      },
+      {
+       "id": "TS-155",
+       "type": "P",
+       "text": "Typed italic and code",
+       "given": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Sam is signed in with #general open; Mai is signed in on another browser with #general open.",
+       "steps": "1. Sam types: run `npm test` and _wait_ for it 2. Sam sends the message.",
+       "expect": "Mai sees 'run npm test and wait for it', with 'npm test' in code style and 'wait' in italic; no backtick or underscore is visible."
+      }
+     ]
+    },
+    {
+     "id": "AC-100",
+     "text": "An address starting with http:// or https:// is shown as a link that opens that address, and a preview card appears under the message; the sender can remove the card with its ×.",
+     "tests": [
+      {
+       "id": "TS-156",
+       "type": "P",
+       "text": "Link and removable preview",
+       "given": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Sam is signed in with #general open; Mai is signed in on another browser. The address https://example.com is reachable from the server.",
+       "steps": "1. Sam sends 'see https://example.com today'. 2. Mai presses the address in the message. 3. Sam waits for the preview card, then presses the × on it.",
+       "expect": "In step 2 the browser opens https://example.com. A preview card appears under the message, and after step 3 neither Sam nor Mai sees the card while the link in the text stays."
+      }
+     ]
+    },
+    {
+     "id": "AC-101",
+     "text": "HTML typed in a message is shown as the characters that were typed: no element is created, no image is loaded and no script runs, for the sender or for anyone else.",
+     "tests": [
+      {
+       "id": "TS-157",
+       "type": "N",
+       "text": "HTML shown as text",
+       "given": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Sam is signed in with #general open; Mai is signed in on another browser with #general open.",
+       "steps": "1. Sam sends exactly: <b>hi</b> <img src=x onerror=alert(1)> 2. Mai looks at the new message.",
+       "expect": "Both see the text '<b>hi</b> <img src=x onerror=alert(1)>' character for character. 'hi' is not bold, no image or broken-image icon is shown, and no dialog opens."
+      },
+      {
+       "id": "TS-158",
+       "type": "X",
+       "text": "HTML inside formatting marks",
+       "given": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Sam is signed in with #general open.",
+       "steps": "1. Sam sends exactly: *<i>now</i>*",
+       "expect": "The message shows '<i>now</i>' in bold, with the angle brackets visible and the word 'now' not in italic."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "FR-38",
+   "area": "Messaging",
+   "text": "Text typed but not sent is kept as a draft for that conversation, and separately for each thread; it is back in the composer when the person returns, on any of their devices. A conversation that has a draft and is not open shows a 'Draft' label in the conversation list. A draft is still there after signing out or after the session ends, and it is cleared when the message is sent.",
+   "decided": [
+    {
+     "ref": "D-017",
+     "a": "As recommended; add @channel, group DMs up to 8, keep 8 fixed emoji"
+    },
+    {
+     "ref": "D-091",
+     "a": "Reviewed on 13 Nov 2026: 8 rewritten, 16 corrected, 19 unchanged. With the four choices in D-156 to D-159 settled, the phase-1 journeys are accepted as the baseline."
+    }
+   ],
+   "open": [
+    "D-168",
+    "D-169"
+   ],
+   "screen": "Home: composer; 'Draft' label on a row of the conversation list",
+   "flows": "",
+   "rules": "",
+   "acs": [
+    {
+     "id": "AC-102",
+     "text": "Leaving a conversation with unsent text keeps that text for that conversation only: the row shows 'Draft' while the conversation is not open, and the text is in the composer on return. Text that is only spaces or line breaks produces no 'Draft' label. A thread's composer keeps its own draft, separate from the conversation's.",
+     "tests": [
+      {
+       "id": "TS-159",
+       "type": "P",
+       "text": "Draft kept per conversation",
+       "given": "#launch is a private channel whose members are Minh (Admin), Sam and Mai; Alex is not a member. Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Sam is signed in with #launch open; both composers are empty.",
+       "steps": "1. Sam types 'Release notes are' in the #launch composer and does not send. 2. Sam opens #general. 3. Sam opens #launch again.",
+       "expect": "After step 2 the #general composer is empty and the #launch row shows 'Draft'. After step 3 the #launch composer contains 'Release notes are' and the row no longer shows 'Draft'."
+      },
+      {
+       "id": "TS-160",
+       "type": "N",
+       "text": "Blank text is not a draft",
+       "given": "#launch is a private channel whose members are Minh (Admin), Sam and Mai; Alex is not a member. Sam is signed in with #launch open and an empty composer.",
+       "steps": "1. Sam types three spaces in the #launch composer. 2. Sam opens #general and looks at the #launch row.",
+       "expect": "The #launch row shows no 'Draft' label."
+      },
+      {
+       "id": "TS-161",
+       "type": "P",
+       "text": "Thread draft is separate",
+       "given": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Mai's message in #general has one reply. Sam is signed in with #general open and an empty composer.",
+       "steps": "1. Sam opens the thread on Mai's message and types 'Will check' in the thread composer without sending. 2. Sam closes the thread panel and looks at the #general composer. 3. Sam opens the same thread again.",
+       "expect": "In step 2 the #general composer is empty. In step 3 the thread composer contains 'Will check'."
+      }
+     ]
+    },
+    {
+     "id": "AC-103",
+     "text": "A draft is saved to the person's account: it appears on their other devices, and it is still in the composer after they sign out and sign in again.",
+     "tests": [
+      {
+       "id": "TS-162",
+       "type": "P",
+       "text": "Draft on a second device",
+       "given": "#launch is a private channel whose members are Minh (Admin), Sam and Mai; Alex is not a member. Sam is signed in on browser A and on browser B; the #launch composer is empty on both.",
+       "steps": "1. On browser A, Sam types 'Release notes are' in #launch and then opens #general. 2. On browser B, Sam opens #launch.",
+       "expect": "On browser B the #launch composer contains 'Release notes are'."
+      },
+      {
+       "id": "TS-163",
+       "type": "P",
+       "text": "Draft survives sign-out",
+       "given": "#launch is a private channel whose members are Minh (Admin), Sam and Mai; Alex is not a member. Sam is signed in on one browser and has typed 'Release notes are' in #launch without sending.",
+       "steps": "1. Sam presses 'Sign out' in the account menu. 2. Sam signs in again with a new code and opens #launch.",
+       "expect": "The #launch composer contains 'Release notes are'."
+      }
+     ]
+    },
+    {
+     "id": "AC-104",
+     "text": "Sending the message clears the draft: the composer is empty and the conversation shows no 'Draft' label afterwards.",
+     "tests": [
+      {
+       "id": "TS-164",
+       "type": "P",
+       "text": "Draft cleared on send",
+       "given": "#launch is a private channel whose members are Minh (Admin), Sam and Mai; Alex is not a member. Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Sam is signed in; the #launch row shows 'Draft' and its draft is 'Release notes are'.",
+       "steps": "1. Sam opens #launch and presses Send. 2. Sam opens #general and looks at the #launch row. 3. Sam opens #launch again.",
+       "expect": "'Release notes are' is sent as a message. The #launch row shows no 'Draft' label, and in step 3 the composer is empty."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "FR-39",
+   "area": "Reading",
+   "text": "The Files page lists every file, image and link from the conversations the person can see, newest first, with a search by file name or sender, the chips All, Images, Documents and Links, and a switch between list and grid. Each conversation's 'Files & links' tab lists the same kind of items for that conversation only. Pressing an item opens its details, with 'Open in conversation', 'Copy link' and 'Download'.",
+   "decided": [
+    {
+     "ref": "D-002",
+     "a": "Core chat, Activity, Later, Files, People, Preferences, command palette"
+    },
+    {
+     "ref": "D-014",
+     "a": "(b) MinIO, 100 MB, image thumbnails, link previews"
+    },
+    {
+     "ref": "D-091",
+     "a": "Reviewed on 13 Nov 2026: 8 rewritten, 16 corrected, 19 unchanged. With the four choices in D-156 to D-159 settled, the phase-1 journeys are accepted as the baseline."
+    },
+    {
+     "ref": "D-095",
+     "a": "Every type is accepted up to 100 MB; files are always downloaded, never run in the browser."
+    }
+   ],
+   "open": [
+    "D-170",
+    "D-171"
+   ],
+   "screen": "Files page; 'Files & links' tab of a conversation; file detail modal",
+   "flows": "",
+   "rules": "BR-09",
+   "acs": [
+    {
+     "id": "AC-105",
+     "text": "A file, image or link sent in a conversation appears at the top of the Files page of every person who can see that conversation, and in that conversation's 'Files & links' tab; the tab shows nothing from other conversations.",
+     "tests": [
+      {
+       "id": "TS-165",
+       "type": "P",
+       "text": "Sent file is listed",
+       "given": "#launch is a private channel whose members are Minh (Admin), Sam and Mai; Alex is not a member. Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. #general already holds the file 'agenda.pdf' sent by Alex. Sam and Mai are signed in.",
+       "steps": "1. Sam sends a message in #launch with the file 'launch-checklist.pdf' attached. 2. Mai opens the Files page. 3. Mai opens #launch and its 'Files & links' tab.",
+       "expect": "In step 2 'launch-checklist.pdf' is the first row, above 'agenda.pdf', and names Sam and #launch. In step 3 the tab lists 'launch-checklist.pdf' and does not list 'agenda.pdf'."
+      },
+      {
+       "id": "TS-166",
+       "type": "N",
+       "text": "Private channel files hidden from outsiders",
+       "given": "#launch is a private channel whose members are Minh (Admin), Sam and Mai; Alex is not a member. Sam has sent 'launch-checklist.pdf' in #launch. Alex is signed in.",
+       "steps": "1. Alex opens the Files page with the chip 'All' selected. 2. Alex types 'launch-checklist' in the Files search field.",
+       "expect": "'launch-checklist.pdf' is not listed in step 1, and step 2 shows 'No files match'."
+      }
+     ]
+    },
+    {
+     "id": "AC-106",
+     "text": "The search field keeps only items whose file name or sender matches the text, and a chip keeps only items of its kind; the two apply together.",
+     "tests": [
+      {
+       "id": "TS-167",
+       "type": "P",
+       "text": "Search by sender",
+       "given": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. #general holds 'agenda.pdf' sent by Alex and 'budget.xlsx' sent by Sam; no other files exist. Mai is signed in.",
+       "steps": "1. Mai opens the Files page and types 'alex' in the search field. 2. Mai clears the field and types 'budget'.",
+       "expect": "Step 1 lists only 'agenda.pdf'. Step 2 lists only 'budget.xlsx'."
+      },
+      {
+       "id": "TS-168",
+       "type": "P",
+       "text": "Filter by kind",
+       "given": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. In #general Sam has sent the image 'screen.png', the file 'budget.xlsx' and a message containing https://example.com; nothing else was shared. Mai is signed in.",
+       "steps": "1. Mai opens the Files page and presses the chip 'Images'. 2. Mai presses 'Documents'. 3. Mai presses 'Links'. 4. Mai presses 'All'.",
+       "expect": "Step 1 lists only 'screen.png'; step 2 only 'budget.xlsx'; step 3 only the link to https://example.com; step 4 lists all three."
+      }
+     ]
+    },
+    {
+     "id": "AC-107",
+     "text": "Pressing a file opens its details: sender, conversation, date and size, with 'Open in conversation', 'Copy link' and 'Download'. 'Open in conversation' shows the message that carries the file, and 'Download' saves the file instead of opening it in the browser.",
+     "tests": [
+      {
+       "id": "TS-169",
+       "type": "P",
+       "text": "File details and jump to message",
+       "given": "#launch is a private channel whose members are Minh (Admin), Sam and Mai; Alex is not a member. Sam has sent 'launch-checklist.pdf' in #launch. Mai is signed in.",
+       "steps": "1. Mai opens the Files page and presses 'launch-checklist.pdf'. 2. Mai presses 'Download'. 3. Mai presses 'Open in conversation'.",
+       "expect": "Step 1 shows Sam, #launch, the date and the size, and the three buttons. Step 2 saves 'launch-checklist.pdf' to the device without displaying it in a browser tab. Step 3 shows #launch with Sam's message that carries the file on screen."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "FR-40",
+   "area": "Notifications",
+   "text": "Activity lists, newest first, what needs the person's attention: mentions, replies in threads they follow, reactions to their messages, being added to a channel, and account changes (role changed, message deleted by an admin). Each item shows whether it is unread; pressing it marks it read and opens the conversation at that message or thread, and 'Mark all read' marks every item read. Filter chips narrow the list to one kind of item, and every kind has a chip.",
+   "decided": [
+    {
+     "ref": "D-071",
+     "a": "Your own action never notifies you. An Activity item becomes done on its own once the thing it asks for is done. Activity is newest first and has a filter chip for every kind of item."
+    },
+    {
+     "ref": "D-091",
+     "a": "Reviewed on 13 Nov 2026: 8 rewritten, 16 corrected, 19 unchanged. With the four choices in D-156 to D-159 settled, the phase-1 journeys are accepted as the baseline."
+    },
+    {
+     "ref": "D-002",
+     "a": "Core chat, Activity, Later, Files, People, Preferences, command palette"
+    }
+   ],
+   "open": [
+    "D-133",
+    "D-173"
+   ],
+   "screen": "Activity",
+   "flows": "",
+   "rules": "BR-15",
+   "acs": [
+    {
+     "id": "AC-108",
+     "text": "Items are listed newest first; each row shows an unread dot, who did it, a sentence, the conversation and the time, and the Activity badge equals the number of unread items.",
+     "tests": [
+      {
+       "id": "TS-170",
+       "type": "P",
+       "text": "Newest item on top",
+       "given": "Sam is signed in and is a member of #general and #launch. Sam's Activity is empty. Sam has one message in #general.",
+       "steps": "1. Minh sends '@Sam please check' in #launch. 2. One minute later Alex adds a reaction to Sam's message in #general. 3. Sam opens Activity.",
+       "expect": "Two rows. The first is Alex's reaction (#general), the second is Minh's mention (#launch). Both have the unread dot. The Activity badge shows 2."
+      }
+     ]
+    },
+    {
+     "id": "AC-109",
+     "text": "Pressing an item marks it read and opens the conversation at that message, or the thread panel for a thread reply. 'Mark all read' marks every item read without removing any.",
+     "tests": [
+      {
+       "id": "TS-171",
+       "type": "P",
+       "text": "Open a thread reply item",
+       "given": "Sam is signed in. Sam wrote a message in #launch and Mai replied to it in its thread. Sam's Activity has that one unread thread item; the badge shows 1.",
+       "steps": "1. Sam opens Activity. 2. Sam presses the row for Mai's reply.",
+       "expect": "#launch opens with the thread panel showing Mai's reply. Back in Activity the row has no unread dot and the Activity badge is gone."
+      },
+      {
+       "id": "TS-172",
+       "type": "P",
+       "text": "Mark all read",
+       "given": "Sam is signed in. Sam's Activity has 3 unread items; the badge shows 3.",
+       "steps": "1. Sam opens Activity. 2. Sam presses 'Mark all read'.",
+       "expect": "The 3 rows are still listed, none has the unread dot, and the Activity badge is gone."
+      }
+     ]
+    },
+    {
+     "id": "AC-110",
+     "text": "The chips All, Mentions, Threads and Reactions each show only items of that kind, and every other kind of item is reachable under a chip of its own besides All.",
+     "tests": [
+      {
+       "id": "TS-173",
+       "type": "P",
+       "text": "Filter by Reactions",
+       "given": "Sam is signed in. Sam's Activity holds one mention from Minh, one thread reply from Mai and one reaction from Alex.",
+       "steps": "1. Sam opens Activity. 2. Sam presses the chip 'Reactions'.",
+       "expect": "Only Alex's reaction row is listed. Pressing 'All' lists the 3 rows again."
+      },
+      {
+       "id": "TS-174",
+       "type": "X",
+       "text": "Added-to-channel item has a chip",
+       "given": "Minh (Admin) and Sam are signed in. Sam is not a member of #launch. Sam's Activity is empty.",
+       "steps": "1. Minh adds Sam to #launch. 2. Sam opens Activity. 3. Sam presses each chip in turn.",
+       "expect": "The item saying Minh added Sam to #launch is listed under 'All' and under exactly one other chip; it is not listed under Mentions, Threads or Reactions."
+      }
+     ]
+    },
+    {
+     "id": "AC-111",
+     "text": "An item is removed when its source message is deleted, and a person's open items for a channel are removed when that person leaves the channel.",
+     "tests": [
+      {
+       "id": "TS-175",
+       "type": "N",
+       "text": "Source message deleted",
+       "given": "Sam is signed in. Minh sent '@Sam please check' in #launch. Sam's Activity has that one unread item; the badge shows 1.",
+       "steps": "1. Minh deletes that message and confirms. 2. Sam looks at Activity.",
+       "expect": "Sam's Activity is empty and the Activity badge is gone."
+      },
+      {
+       "id": "TS-176",
+       "type": "P",
+       "text": "Leaving a channel clears its items",
+       "given": "Sam is signed in and is a member of the public channel #launch. Sam's Activity has one unread mention from #launch and one unread mention from #general; the badge shows 2.",
+       "steps": "1. Sam opens #launch's Details panel and presses Leave channel. 2. Sam waits 6 seconds without pressing Undo. 3. Sam opens Activity.",
+       "expect": "Only the #general mention is listed and the Activity badge shows 1."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "FR-41",
+   "area": "Notifications",
+   "text": "Every Activity item has Done and Snooze. Done removes the item at once and offers Undo for 5 seconds. Snooze takes the item out of the main list until the chosen time, then returns it to the top, unread and labelled 'Back from snooze'.",
+   "decided": [
+    {
+     "ref": "D-061",
+     "a": "One or the other, depending on whether the action can be reversed. See rules D-069 and D-070. Undo: archive an email, mark done, leave a public channel, remove from Later, unpin. Confirm: delete a message, delete an automation, deactivate a member, archive a channel, cancel a Meet."
+    },
+    {
+     "ref": "D-069",
+     "a": "A reversible action happens at once and shows a toast with Undo for 5 seconds. An irreversible action, or one that affects other people, asks for confirmation and names its target. Never both for one action."
+    },
+    {
+     "ref": "D-114",
+     "a": "Hidden; 'In 3 hours' takes its place."
+    },
+    {
+     "ref": "D-053",
+     "a": "All of phase 1. On narrow screens, global search, the account menu, status, Pause and Focus time live in the More sheet; Mark done and Snooze in Activity are always visible. AI summaries exist nowhere in phase 1."
+    },
+    {
+     "ref": "D-091",
+     "a": "Reviewed on 13 Nov 2026: 8 rewritten, 16 corrected, 19 unchanged. With the four choices in D-156 to D-159 settled, the phase-1 journeys are accepted as the baseline."
+    }
+   ],
+   "open": [],
+   "screen": "Activity: Mark done and Snooze buttons on each row",
+   "flows": "",
+   "rules": "BR-20",
+   "acs": [
+    {
+     "id": "AC-112",
+     "text": "Done removes the item without a confirmation and shows a toast with Undo for 5 seconds; Undo puts the item back.",
+     "tests": [
+      {
+       "id": "TS-177",
+       "type": "P",
+       "text": "Done, then Undo",
+       "given": "Sam is signed in. Sam's Activity has one unread mention from Minh in #launch.",
+       "steps": "1. Sam opens Activity. 2. Sam presses Done on the row. 3. Within 5 seconds Sam presses Undo in the toast.",
+       "expect": "After step 2 the row is gone and no confirmation was shown. After step 3 the row is back in the list."
+      },
+      {
+       "id": "TS-178",
+       "type": "B",
+       "text": "Undo is gone after 5 seconds",
+       "given": "Sam is signed in. Sam's Activity has one mention from Minh in #launch.",
+       "steps": "1. Sam presses Done on the row. 2. Sam waits 6 seconds. 3. Sam reloads Activity.",
+       "expect": "After 6 seconds the toast with Undo is no longer on screen, and after the reload the item is still not listed."
+      }
+     ]
+    },
+    {
+     "id": "AC-113",
+     "text": "A snoozed item leaves the main list and is listed under the chip 'Snoozed · n', where n is the number of snoozed items. At the chosen time, or when the person presses Unsnooze, it returns to the main list as unread; when it returns at the chosen time it is at the top with the label 'Back from snooze'.",
+     "tests": [
+      {
+       "id": "TS-179",
+       "type": "P",
+       "text": "Snooze for one hour",
+       "given": "Sam is signed in at 10:00. Sam's Activity has two items: a mention from Minh in #launch and a reaction from Alex in #general. Nothing is snoozed, so there is no 'Snoozed' chip.",
+       "steps": "1. Sam presses Snooze on Minh's mention and chooses 'In 1 hour'. 2. Sam looks at the chip 'All'. 3. Sam presses the chip 'Snoozed · 1'. 4. At 11:00 Sam looks at the chip 'All'.",
+       "expect": "After step 2 only Alex's reaction is listed and a chip 'Snoozed · 1' exists. After step 3 only Minh's mention is listed. After step 4 Minh's mention is the first row, has the unread dot and the label 'Back from snooze', and the 'Snoozed' chip is gone."
+      },
+      {
+       "id": "TS-180",
+       "type": "P",
+       "text": "Unsnooze by hand",
+       "given": "Sam is signed in. Sam's Activity has one item, a mention from Minh in #launch, snoozed until tomorrow 09:00.",
+       "steps": "1. Sam opens Activity and presses the chip 'Snoozed · 1'. 2. Sam presses 'Unsnooze' on the row.",
+       "expect": "The item is listed under 'All' with the unread dot, and the 'Snoozed' chip is gone."
+      }
+     ]
+    },
+    {
+     "id": "AC-114",
+     "text": "The Snooze menu offers 'In 1 hour', 'Today 15:00' and 'Tomorrow 09:00'. A choice that is already past is not offered: after 15:00, 'In 3 hours' takes the place of 'Today 15:00'.",
+     "tests": [
+      {
+       "id": "TS-181",
+       "type": "B",
+       "text": "Snooze menu before 15:00",
+       "given": "Sam is signed in. The time on Sam's device is 14:00. Sam's Activity has one item.",
+       "steps": "1. Sam presses Snooze on the item and reads the menu.",
+       "expect": "The menu lists 'In 1 hour', 'Today 15:00' and 'Tomorrow 09:00'."
+      },
+      {
+       "id": "TS-182",
+       "type": "B",
+       "text": "Snooze menu after 15:00",
+       "given": "Sam is signed in. The time on Sam's device is 15:01. Sam's Activity has one item.",
+       "steps": "1. Sam presses Snooze on the item and reads the menu.",
+       "expect": "The menu does not list 'Today 15:00'; it lists 'In 1 hour', 'In 3 hours' and 'Tomorrow 09:00'."
+      }
+     ]
+    },
+    {
+     "id": "AC-115",
+     "text": "On narrow and touch screens Done and Snooze are visible on every row without hovering.",
+     "tests": [
+      {
+       "id": "TS-183",
+       "type": "X",
+       "text": "Buttons visible at 360 px",
+       "given": "Sam is signed in in a browser window 360 px wide and 560 px tall. Sam's Activity has two items.",
+       "steps": "1. Sam opens Activity from the bottom tabs. 2. Sam looks at the two rows without touching them.",
+       "expect": "Each of the two rows shows a Done button and a Snooze button."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "FR-42",
+   "area": "Shared behaviour",
+   "text": "People lists the active Members and Admins of the workspace as cards: avatar of initials on a colour, presence, name, an Admin label where it applies, job title and local time. A search field filters by name or job title; the first 50 people are shown and more load on scroll. Pressing a card opens that person's Profile panel, where 'Message' opens the DM with them.",
+   "decided": [
+    {
+     "ref": "D-002",
+     "a": "Core chat, Activity, Later, Files, People, Preferences, command palette"
+    },
+    {
+     "ref": "D-090",
+     "a": "Reviewed row by row and signed off with three columns (Member, Admin, Guest). Changed rows: only an Admin creates channels; an Admin invites with any role, changes roles, and deactivates anyone but the last Admin and themselves; a Member can create automations (phase 5). A Member still adds people to a channel they are in."
+    },
+    {
+     "ref": "D-109",
+     "a": "Search field on top, first 50 shown, more on scroll."
+    },
+    {
+     "ref": "D-118",
+     "a": "No; initials on a colour in phase 1."
+    },
+    {
+     "ref": "D-152",
+     "a": "Remove it. Toki has Member and Admin (and Guest in phase 5)."
+    },
+    {
+     "ref": "D-091",
+     "a": "Reviewed on 13 Nov 2026: 8 rewritten, 16 corrected, 19 unchanged. With the four choices in D-156 to D-159 settled, the phase-1 journeys are accepted as the baseline."
+    }
+   ],
+   "open": [
+    "D-144",
+    "D-177"
+   ],
+   "screen": "People; Profile panel",
+   "flows": "",
+   "rules": "",
+   "acs": [
+    {
+     "id": "AC-116",
+     "text": "Every active Member and Admin has one card, the person's own included; an Admin's card carries the label 'Admin' and no card carries 'Owner'. A deactivated person has no card.",
+     "tests": [
+      {
+       "id": "TS-184",
+       "type": "P",
+       "text": "Who is listed",
+       "given": "The workspace has exactly four active people: Minh (Admin), Sam, Mai and Alex (Members). Sam is signed in.",
+       "steps": "1. Sam opens People.",
+       "expect": "Four cards: Minh, Sam, Mai, Alex. Only Minh's card has the label 'Admin'. No card has the label 'Owner'. Each card shows initials on a colour, not a photo."
+      },
+      {
+       "id": "TS-185",
+       "type": "N",
+       "text": "Deactivated person is not listed",
+       "given": "The workspace has Minh (Admin), Sam, Mai and Alex. Minh and Sam are signed in. Sam has People open and sees four cards.",
+       "steps": "1. Minh deactivates Alex on the Admin page and confirms. 2. Sam reloads People.",
+       "expect": "Three cards: Minh, Sam, Mai. Searching 'Alex' shows 'Nobody matches'."
+      }
+     ]
+    },
+    {
+     "id": "AC-117",
+     "text": "Typing in 'Search people' keeps only the people whose name or job title contains the text.",
+     "tests": [
+      {
+       "id": "TS-186",
+       "type": "P",
+       "text": "Search by name",
+       "given": "The workspace has Minh, Sam, Mai and Alex. Sam is signed in and has People open.",
+       "steps": "1. Sam types 'mai' in 'Search people'.",
+       "expect": "Only Mai's card is shown."
+      },
+      {
+       "id": "TS-187",
+       "type": "P",
+       "text": "Search by job title",
+       "given": "The workspace has Minh, Sam, Mai and Alex. Mai's job title is 'Marketing'; nobody else's name or job title contains 'market'. Sam is signed in and has People open.",
+       "steps": "1. Sam types 'market' in 'Search people'.",
+       "expect": "Only Mai's card is shown."
+      }
+     ]
+    },
+    {
+     "id": "AC-118",
+     "text": "With more than 50 people, People shows the first 50 cards and loads the rest on scroll.",
+     "tests": [
+      {
+       "id": "TS-188",
+       "type": "B",
+       "text": "51 people",
+       "given": "The workspace has exactly 51 active people, Sam among them. Sam is signed in.",
+       "steps": "1. Sam opens People and counts the cards without scrolling the list to its end. 2. Sam scrolls to the end of the list and counts again.",
+       "expect": "After step 1 there are 50 cards. After step 2 there are 51 cards."
+      }
+     ]
+    },
+    {
+     "id": "AC-119",
+     "text": "Pressing a card opens the Profile panel with the person's name, job title, presence in words, status if they have one, local time and time zone. 'Message' on another person's profile opens the DM with that person; a person's own profile has no 'Message' button.",
+     "tests": [
+      {
+       "id": "TS-189",
+       "type": "P",
+       "text": "Open a DM from People",
+       "given": "Sam is signed in. Sam and Mai already have a DM that contains the message 'hello Mai'.",
+       "steps": "1. Sam opens People. 2. Sam presses Mai's card. 3. Sam presses 'Message' in the Profile panel.",
+       "expect": "After step 2 the Profile panel shows Mai's name, job title, presence in words, local time and time zone. After step 3 the DM with Mai is open and shows 'hello Mai'; no second DM with Mai appears in Sam's list."
+      },
+      {
+       "id": "TS-190",
+       "type": "X",
+       "text": "Own profile",
+       "given": "Sam is signed in.",
+       "steps": "1. Sam opens People. 2. Sam presses the card with Sam's own name.",
+       "expect": "The Profile panel shows Sam's details and a 'Set status' button; it has no 'Message' button."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "FR-43",
+   "area": "Shared behaviour",
+   "text": "In Preferences a person chooses the look (Calm, Focus, or Match my device) and the interface language (English or Tiếng Việt). A new account is in English. A change of look or language applies to the whole interface at once, without reloading.",
+   "decided": [
+    {
+     "ref": "D-018",
+     "a": "Both Calm and Focus; full vi and en, English by default"
+    },
+    {
+     "ref": "D-064",
+     "a": "All of it, per D-018. CI fails when a string lacks a translation in either language."
+    },
+    {
+     "ref": "D-002",
+     "a": "Core chat, Activity, Later, Files, People, Preferences, command palette"
+    }
+   ],
+   "open": [
+    "D-175"
+   ],
+   "screen": "Preferences: Look, Accent, Density, Language",
+   "flows": "",
+   "rules": "",
+   "acs": [
+    {
+     "id": "AC-120",
+     "text": "Choosing Calm or Focus changes the look at once without a reload; 'Match my device' shows Focus when the device is set to dark and Calm when it is set to light.",
+     "tests": [
+      {
+       "id": "TS-191",
+       "type": "P",
+       "text": "Switch from Calm to Focus",
+       "given": "Sam is signed in. Preferences is open with the look Calm selected.",
+       "steps": "1. Sam presses the card 'Focus'.",
+       "expect": "The interface changes to the dark Focus look immediately; the page does not reload and Preferences stays open with 'Focus' marked as selected."
+      },
+      {
+       "id": "TS-192",
+       "type": "X",
+       "text": "Match my device",
+       "given": "Sam is signed in. Sam's operating system is set to dark mode. Preferences is open with the look Calm selected.",
+       "steps": "1. Sam presses the card 'Match my device'. 2. Sam switches the operating system to light mode and returns to Toki.",
+       "expect": "After step 1 Toki shows the Focus look. After step 2 Toki shows the Calm look."
+      }
+     ]
+    },
+    {
+     "id": "AC-121",
+     "text": "A new account's interface is in English. Choosing Tiếng Việt puts every label of the interface in Vietnamese at once, and choosing English puts them back.",
+     "tests": [
+      {
+       "id": "TS-193",
+       "type": "P",
+       "text": "English by default",
+       "given": "Minh (Admin) has invited Mai. Mai has never signed in. Mai's browser language is Vietnamese.",
+       "steps": "1. Mai accepts the invitation with the code and lands in #general. 2. Mai opens Preferences and reads the Language field.",
+       "expect": "The interface is in English and the Language field shows 'English'."
+      },
+      {
+       "id": "TS-194",
+       "type": "P",
+       "text": "Switch to Tiếng Việt and back",
+       "given": "Sam is signed in. The interface is in English. Preferences is open.",
+       "steps": "1. Sam chooses 'Tiếng Việt' in Language. 2. Without reloading, Sam opens Activity, People and Preferences. 3. Sam chooses 'English' in Language.",
+       "expect": "After step 2 the navigation, headings, buttons and empty states on the three pages are in Vietnamese; people's names and message text are unchanged. After step 3 the same labels are in English again. The page never reloaded."
+      }
+     ]
+    },
+    {
+     "id": "AC-122",
+     "text": "Preferences also offers four accent colours (teal, indigo, clay, violet) and a density of Comfortable or Compact; each applies at once. Density is not offered on a narrow screen.",
+     "tests": [
+      {
+       "id": "TS-195",
+       "type": "P",
+       "text": "Accent and density",
+       "given": "Sam is signed in in a window 1280 px wide. Preferences is open with accent teal and density Comfortable.",
+       "steps": "1. Sam presses the accent 'indigo'. 2. Sam presses 'Compact'.",
+       "expect": "After step 1 the accent colour of buttons and selected items is indigo. After step 2 rows are closer together. Neither step reloads the page."
+      },
+      {
+       "id": "TS-196",
+       "type": "X",
+       "text": "No Density on a narrow screen",
+       "given": "Sam is signed in in a window 360 px wide and 560 px tall.",
+       "steps": "1. Sam opens More and then Preferences. 2. Sam reads the section headings.",
+       "expect": "Look, Accent and Language are present; there is no Density section."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "FR-44",
+   "area": "Notifications",
+   "text": "Preferences has three notification switches: 'Desktop notifications', 'Play a sound' and 'Notify me for @mentions even in muted channels'; the last is on for a new account. The switches belong to the person and apply on every device where they are signed in; only the browser's permission for push is per device.",
+   "decided": [
+    {
+     "ref": "D-016",
+     "a": "Badges, Web Push, sound, per-channel level, mute, Pause, Focus time. Missed-mention email later"
+    },
+    {
+     "ref": "D-088",
+     "a": "(a) A personal switch in Preferences, on by default, as in the prototype."
+    }
+   ],
+   "open": [
+    "D-142",
+    "D-176"
+   ],
+   "screen": "Preferences: Notifications",
+   "flows": "",
+   "rules": "BR-41",
+   "acs": [
+    {
+     "id": "AC-123",
+     "text": "The Notifications section of Preferences shows the three switches and, in phase 1, no switch for email about missed mentions.",
+     "tests": [
+      {
+       "id": "TS-197",
+       "type": "P",
+       "text": "Switches present",
+       "given": "Sam is signed in on a desktop browser.",
+       "steps": "1. Sam opens Preferences. 2. Sam reads the Notifications section.",
+       "expect": "It contains exactly these switches: 'Desktop notifications', 'Play a sound', 'Notify me for @mentions even in muted channels'. There is no 'Email me about missed mentions' switch."
+      }
+     ]
+    },
+    {
+     "id": "AC-124",
+     "text": "For an account that has never changed it, 'Notify me for @mentions even in muted channels' is on.",
+     "tests": [
+      {
+       "id": "TS-198",
+       "type": "P",
+       "text": "On by default",
+       "given": "Minh (Admin) has invited Mai. Mai has just accepted the invitation and has changed no preference.",
+       "steps": "1. Mai opens Preferences. 2. Mai reads the switch 'Notify me for @mentions even in muted channels'.",
+       "expect": "The switch is on."
+      }
+     ]
+    },
+    {
+     "id": "AC-125",
+     "text": "A switch changed on one device has the same state, and the same effect, on the person's other devices.",
+     "tests": [
+      {
+       "id": "TS-199",
+       "type": "X",
+       "text": "Sound switch follows the account",
+       "given": "Sam is signed in on a laptop and on a phone. 'Play a sound' is on. Sam is a member of #launch at the level 'Mentions only'. The phone's volume is up and Toki is open on it, showing #general.",
+       "steps": "1. On the laptop Sam turns 'Play a sound' off in Preferences. 2. On the phone Sam opens Preferences and reads the switch. 3. On the phone Sam goes back to #general. 4. Minh sends '@Sam ping' in #launch.",
+       "expect": "After step 2 'Play a sound' is off on the phone. After step 4 the phone shows the mention toast and plays no sound."
+      },
+      {
+       "id": "TS-200",
+       "type": "X",
+       "text": "Push permission stays per device",
+       "given": "Sam is signed in in browser A, where notifications are allowed for Toki, and in browser B on another computer, where the browser has never been asked. 'Desktop notifications' is on. Toki is closed in both browsers.",
+       "steps": "1. Minh sends '@Sam ping' in #launch. 2. Sam checks both computers for a system notification.",
+       "expect": "The computer with browser A shows a system notification for the mention. The computer with browser B shows none."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "FR-45",
+   "area": "Shared behaviour",
+   "text": "A person sets a status from the account menu, Preferences or their own profile: one of five presets (In a meeting, Focusing, Out for lunch, Commuting, Working remotely) or their own text, optionally with a time after which it clears itself. Others see the status in the DM header, the profile, the mention popup and the People card. Presence cannot be set by hand; to signal busy a person sets a status or starts Focus time.",
+   "decided": [
+    {
+     "ref": "D-091",
+     "a": "Reviewed on 13 Nov 2026: 8 rewritten, 16 corrected, 19 unchanged. With the four choices in D-156 to D-159 settled, the phase-1 journeys are accepted as the baseline."
+    },
+    {
+     "ref": "D-121",
+     "a": "The last save wins and everyone sees it at once."
+    }
+   ],
+   "open": [
+    "D-145",
+    "D-172"
+   ],
+   "screen": "Account menu: Set status; Preferences: Your status; Profile panel",
+   "flows": "",
+   "rules": "",
+   "acs": [
+    {
+     "id": "AC-126",
+     "text": "A saved status, preset or free text, is shown to other people in the person's profile, their People card and the header of a DM with them.",
+     "tests": [
+      {
+       "id": "TS-201",
+       "type": "P",
+       "text": "Preset status seen by another person",
+       "given": "Sam and Mai are signed in. Sam has no status. Sam and Mai have a DM.",
+       "steps": "1. Sam opens the account menu, presses 'Set status' and chooses 'In a meeting'. 2. Mai opens People and reads Sam's card. 3. Mai presses Sam's card and reads the Profile panel. 4. Mai opens the DM with Sam and reads its header.",
+       "expect": "'In a meeting' is shown on Sam's People card, in Sam's Profile panel and in the header of the DM. Sam's account card shows 'In a meeting'."
+      },
+      {
+       "id": "TS-202",
+       "type": "P",
+       "text": "Free-text status in the mention popup",
+       "given": "Sam and Mai are signed in and are members of #launch. Sam has no status.",
+       "steps": "1. Sam opens Preferences, types 'Back at 13:00' in 'Custom status' and presses Save. 2. In #launch Mai types '@sa' in the composer and reads Sam's row in the popup.",
+       "expect": "Sam's row in the mention popup shows 'Back at 13:00'."
+      }
+     ]
+    },
+    {
+     "id": "AC-127",
+     "text": "'Clear after' offers Don't clear, 30 minutes, 1 hour and End of today. At the chosen time the status disappears for everyone and its owner sees the toast 'Your status was cleared'. Pressing Clear, or saving an empty field, removes the status at once.",
+     "tests": [
+      {
+       "id": "TS-203",
+       "type": "B",
+       "text": "Status clears after 30 minutes",
+       "given": "Sam and Mai are signed in. Sam has no status. The time is 10:00.",
+       "steps": "1. Sam opens 'Set status', types 'On a call', reads the 'Clear after' choices, chooses '30 minutes' and saves. 2. At 10:29 Mai reads Sam's People card. 3. At 10:31 Mai reads Sam's People card and Sam looks at Toki.",
+       "expect": "In step 1 the choices are Don't clear, 30 minutes, 1 hour and End of today, and none mentions 20 seconds. At 10:29 the card shows 'On a call'. At 10:31 the card shows no status and Sam has seen the toast 'Your status was cleared'."
+      },
+      {
+       "id": "TS-204",
+       "type": "P",
+       "text": "Clear by hand",
+       "given": "Sam and Mai are signed in. Sam's status is 'Working remotely' with 'Don't clear'.",
+       "steps": "1. Sam opens 'Set status' and presses Clear. 2. Mai opens Sam's profile.",
+       "expect": "Sam's account card no longer shows 'Working remotely', and Sam's profile on Mai's screen shows no status."
+      }
+     ]
+    },
+    {
+     "id": "AC-128",
+     "text": "When a status is saved from two of the person's devices, the last save wins and everyone, both devices included, sees it at once.",
+     "tests": [
+      {
+       "id": "TS-205",
+       "type": "X",
+       "text": "Last save wins",
+       "given": "Sam is signed in on a laptop and on a phone. Mai is signed in and has Sam's profile open. Sam has no status.",
+       "steps": "1. On the laptop Sam saves the status 'Commuting'. 2. On the phone Sam saves the status 'Out for lunch'. 3. Without reloading, Sam looks at the account card on the laptop and Mai looks at Sam's profile.",
+       "expect": "Sam's laptop and Mai's screen both show 'Out for lunch'; 'Commuting' is shown nowhere."
+      }
+     ]
+    },
+    {
+     "id": "AC-129",
+     "text": "No screen lets a person choose their presence by hand.",
+     "tests": [
+      {
+       "id": "TS-206",
+       "type": "N",
+       "text": "No presence picker",
+       "given": "Sam is signed in.",
+       "steps": "1. Sam opens the account menu and reads every entry. 2. Sam opens 'Set status' and reads every control. 3. Sam opens Preferences and reads every control. 4. Sam opens Sam's own profile.",
+       "expect": "None of the four places has a control that sets Sam to Active, Away or Do not disturb. The account menu offers 'Set status' and 'Focus time'."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "FR-46",
+   "area": "Access",
+   "text": "'Sign out' in the account menu (on narrow screens, in the More sheet) ends the session on that device and shows the sign-in page. The other tabs of the same browser are signed out at once; the person's other devices stay signed in.",
+   "decided": [
+    {
+     "ref": "D-158",
+     "a": "Yes: 'Sign out' in the account menu; Preferences lists signed-in devices and can sign out one device or all others."
+    },
+    {
+     "ref": "D-093",
+     "a": "Yes, at once; they share the session."
+    },
+    {
+     "ref": "D-091",
+     "a": "Reviewed on 13 Nov 2026: 8 rewritten, 16 corrected, 19 unchanged. With the four choices in D-156 to D-159 settled, the phase-1 journeys are accepted as the baseline."
+    },
+    {
+     "ref": "D-053",
+     "a": "All of phase 1. On narrow screens, global search, the account menu, status, Pause and Focus time live in the More sheet; Mark done and Snooze in Activity are always visible. AI summaries exist nowhere in phase 1."
+    }
+   ],
+   "open": [
+    "D-178"
+   ],
+   "screen": "not in the prototype",
+   "flows": "",
+   "rules": "BR-01",
+   "acs": [
+    {
+     "id": "AC-130",
+     "text": "After 'Sign out' the device shows the sign-in page, and no address of Toki shows workspace content on it until someone signs in again.",
+     "tests": [
+      {
+       "id": "TS-207",
+       "type": "P",
+       "text": "Sign out from the account menu",
+       "given": "Sam is signed in in a desktop browser with #launch open.",
+       "steps": "1. Sam presses the account card at the bottom of the sidebar. 2. Sam presses 'Sign out'.",
+       "expect": "The sign-in page is shown, with no channel names or messages."
+      },
+      {
+       "id": "TS-208",
+       "type": "N",
+       "text": "Back and direct address after sign out",
+       "given": "Sam has just signed out in a desktop browser; before that Sam had #launch open and copied its address.",
+       "steps": "1. Sam presses the browser's Back button. 2. Sam pastes the address of #launch into the address bar and opens it.",
+       "expect": "Both steps end on the sign-in page; no message of #launch is shown."
+      },
+      {
+       "id": "TS-209",
+       "type": "X",
+       "text": "Sign out on a narrow screen",
+       "given": "Sam is signed in in a window 360 px wide and 560 px tall.",
+       "steps": "1. Sam presses 'More' in the bottom tabs. 2. Sam presses 'Sign out' in the account section of the sheet.",
+       "expect": "The sheet in step 1 contains 'Sign out'. After step 2 the sign-in page is shown."
+      }
+     ]
+    },
+    {
+     "id": "AC-131",
+     "text": "Signing out in one tab signs out every other tab of the same browser at once.",
+     "tests": [
+      {
+       "id": "TS-210",
+       "type": "X",
+       "text": "Two tabs, one browser",
+       "given": "Sam is signed in in one browser with two tabs: tab 1 shows #general, tab 2 shows #launch.",
+       "steps": "1. In tab 1 Sam presses 'Sign out'. 2. Sam switches to tab 2 without reloading it.",
+       "expect": "Tab 2 shows the sign-in page, or a notice that the session has ended with the content covered; no message of #launch can be read or sent from it."
+      }
+     ]
+    },
+    {
+     "id": "AC-132",
+     "text": "Signing out on one device leaves the person signed in on their other devices, and the device that signed out receives no more push notifications for that person.",
+     "tests": [
+      {
+       "id": "TS-211",
+       "type": "X",
+       "text": "Other device stays signed in",
+       "given": "Sam is signed in on a laptop and on a phone; both show #general.",
+       "steps": "1. On the laptop Sam presses 'Sign out'. 2. On the phone Sam sends 'still here' in #general.",
+       "expect": "The phone stays in Toki and 'still here' is delivered to #general."
+      },
+      {
+       "id": "TS-212",
+       "type": "N",
+       "text": "No push after sign out",
+       "given": "Sam is signed in only on a laptop, where push is allowed for Toki and 'Desktop notifications' is on. Sam is a member of #launch.",
+       "steps": "1. Sam presses 'Sign out' and closes the tab. 2. Minh sends '@Sam ping' in #launch. 3. Sam watches the laptop for one minute.",
+       "expect": "The laptop shows no system notification from Toki."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "FR-47",
+   "area": "Access",
+   "text": "Preferences has a 'Signed-in devices' section listing each device where the person is signed in, with its device kind, browser and last use; the current one is labelled 'This device'. The person can sign out one other device, or all other devices at once; each asks for confirmation first.",
+   "decided": [
+    {
+     "ref": "D-158",
+     "a": "Yes: 'Sign out' in the account menu; Preferences lists signed-in devices and can sign out one device or all others."
+    },
+    {
+     "ref": "D-091",
+     "a": "Reviewed on 13 Nov 2026: 8 rewritten, 16 corrected, 19 unchanged. With the four choices in D-156 to D-159 settled, the phase-1 journeys are accepted as the baseline."
+    },
+    {
+     "ref": "D-069",
+     "a": "A reversible action happens at once and shows a toast with Undo for 5 seconds. An irreversible action, or one that affects other people, asks for confirmation and names its target. Never both for one action."
+    }
+   ],
+   "open": [],
+   "screen": "not in the prototype",
+   "flows": "",
+   "rules": "BR-20",
+   "acs": [
+    {
+     "id": "AC-133",
+     "text": "The section has one row per signed-in device showing device kind, browser and last use, and marks the device in use as 'This device'.",
+     "tests": [
+      {
+       "id": "TS-213",
+       "type": "P",
+       "text": "Two devices listed",
+       "given": "Sam is signed in in Chrome on a laptop and in Safari on a phone, and nowhere else.",
+       "steps": "1. On the laptop Sam opens Preferences and reads 'Signed-in devices'.",
+       "expect": "Two rows: one for the laptop with Chrome, labelled 'This device', and one for the phone with Safari. Each row shows a last-use time."
+      }
+     ]
+    },
+    {
+     "id": "AC-134",
+     "text": "'Sign out' beside another device asks for confirmation; after confirming, that device can no longer read or write anything until someone signs in on it again, and its row is gone. Cancelling changes nothing.",
+     "tests": [
+      {
+       "id": "TS-214",
+       "type": "P",
+       "text": "Sign out another device",
+       "given": "Sam is signed in on a laptop and on a phone. The phone shows #launch.",
+       "steps": "1. On the laptop Sam opens Preferences and presses 'Sign out' on the phone's row. 2. Sam confirms. 3. On the phone Sam tries to send 'test' in #launch.",
+       "expect": "Step 1 shows a confirmation that names the phone. After step 2 the phone's row is gone and the laptop is still signed in. In step 3 'test' is not sent; the phone covers the content and asks Sam to sign in again."
+      },
+      {
+       "id": "TS-215",
+       "type": "N",
+       "text": "Cancel the confirmation",
+       "given": "Sam is signed in on a laptop and on a phone. The phone shows #launch.",
+       "steps": "1. On the laptop Sam presses 'Sign out' on the phone's row. 2. Sam presses Cancel. 3. On the phone Sam sends 'test' in #launch.",
+       "expect": "The phone's row is still listed and 'test' is delivered to #launch."
+      }
+     ]
+    },
+    {
+     "id": "AC-135",
+     "text": "'Sign out all other devices' asks for confirmation, then ends the session on every device except the one in use.",
+     "tests": [
+      {
+       "id": "TS-216",
+       "type": "P",
+       "text": "Sign out all other devices",
+       "given": "Sam is signed in on a laptop, a phone and a tablet.",
+       "steps": "1. On the laptop Sam opens Preferences and presses 'Sign out all other devices'. 2. Sam confirms. 3. Sam opens Toki on the phone and on the tablet.",
+       "expect": "After step 2 'Signed-in devices' lists only the row 'This device' and the laptop still shows Preferences. In step 3 the phone and the tablet both ask Sam to sign in and show no workspace content."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "FR-48",
+   "area": "Notifications",
+   "text": "A member can mute a conversation with the 'Mute conversation' switch in its Details panel. A muted conversation is shown grey, with no unread count and no bold, is left out of the Home badge, and produces no toast, push or sound. Mute is personal: nobody else sees it and nobody else's notifications change.",
+   "decided": [
+    {
+     "ref": "D-016",
+     "a": "Badges, Web Push, sound, per-channel level, mute, Pause, Focus time. Missed-mention email later"
+    },
+    {
+     "ref": "D-103",
+     "a": "The level decides toast, push and sound; Mute also hides the unread badge and bold."
+    },
+    {
+     "ref": "D-091",
+     "a": "Reviewed on 13 Nov 2026: 8 rewritten, 16 corrected, 19 unchanged. With the four choices in D-156 to D-159 settled, the phase-1 journeys are accepted as the baseline."
+    }
+   ],
+   "open": [
+    "D-143",
+    "D-174"
+   ],
+   "screen": "Details panel: Settings: Mute conversation",
+   "flows": "",
+   "rules": "BR-41",
+   "acs": [
+    {
+     "id": "AC-136",
+     "text": "While a conversation is muted, a new message without a mention leaves its row grey with no count and no bold, does not raise the Home badge, and produces no toast, push or sound.",
+     "tests": [
+      {
+       "id": "TS-217",
+       "type": "P",
+       "text": "Message in a muted channel",
+       "given": "Sam is signed in with #general open, 'Play a sound' on and no unread messages anywhere. Sam is a member of #launch at the level 'All messages'.",
+       "steps": "1. Sam opens #launch, opens its Details panel and turns 'Mute conversation' on. 2. Sam goes back to #general. 3. Mai sends 'build is ready' in #launch.",
+       "expect": "The #launch row is grey, not bold and has no count. The Home badge does not appear. No toast is shown and no sound plays."
+      },
+      {
+       "id": "TS-218",
+       "type": "P",
+       "text": "Unmute",
+       "given": "Sam is signed in with #general open. Sam has muted #launch, at the level 'All messages'.",
+       "steps": "1. Sam opens #launch's Details panel and turns 'Mute conversation' off. 2. Sam goes back to #general. 3. Mai sends 'second build' in #launch.",
+       "expect": "The #launch row is bold with a count, the Home badge rises, and a toast for Mai's message is shown."
+      }
+     ]
+    },
+    {
+     "id": "AC-137",
+     "text": "Mute differs from the notification level 'Nothing': at 'Nothing' without Mute there is no toast, push or sound, but the unread count and bold stay.",
+     "tests": [
+      {
+       "id": "TS-219",
+       "type": "X",
+       "text": "Level 'Nothing', not muted",
+       "given": "Sam is signed in with #general open and no unread messages. In #launch Sam's notification level is 'Nothing' and 'Mute conversation' is off.",
+       "steps": "1. Mai sends 'build is ready' in #launch.",
+       "expect": "No toast is shown and no sound plays. The #launch row is bold with the count 1 and the Home badge shows 1."
+      }
+     ]
+    },
+    {
+     "id": "AC-138",
+     "text": "One person's Mute changes nothing for anyone else and is shown to nobody else.",
+     "tests": [
+      {
+       "id": "TS-220",
+       "type": "X",
+       "text": "Mute is personal",
+       "given": "Sam and Alex are signed in, both members of #launch at the level 'All messages', both with #general open. Neither has muted #launch.",
+       "steps": "1. Sam turns 'Mute conversation' on for #launch and goes back to #general. 2. Mai sends 'build is ready' in #launch. 3. Alex opens #launch's Details panel and its member list.",
+       "expect": "Alex's #launch row is bold with a count and Alex gets a toast. Alex's 'Mute conversation' switch is off, and nothing in the member list or on Sam's profile shows that Sam muted the channel."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "FR-49",
+   "area": "Access",
+   "text": "When mail cannot be sent, a person with access to the server runs a command with a member's email address; it prints a one-time sign-in link, valid for 10 minutes, that opens Toki as that member. This is the only way to sign in without a code, and every use is written to the server log.",
+   "decided": [
+    {
+     "ref": "D-159",
+     "a": "Yes: a server command prints a link valid 10 minutes for one member; every use is logged. It is the only sign-in without a code."
+    },
+    {
+     "ref": "D-091",
+     "a": "Reviewed on 13 Nov 2026: 8 rewritten, 16 corrected, 19 unchanged. With the four choices in D-156 to D-159 settled, the phase-1 journeys are accepted as the baseline."
+    }
+   ],
+   "open": [
+    "D-179"
+   ],
+   "screen": "not in the prototype",
+   "flows": "",
+   "rules": "BR-02",
+   "acs": [
+    {
+     "id": "AC-139",
+     "text": "Opening the printed link within 10 minutes signs that browser in as the member, without a code, and opens Home.",
+     "tests": [
+      {
+       "id": "TS-221",
+       "type": "P",
+       "text": "Link works within 10 minutes",
+       "given": "Sam is an active Member and is signed in nowhere. The tester has shell access to the server.",
+       "steps": "1. The tester runs the emergency sign-in command with Sam's email address and copies the printed link. 2. Within 10 minutes the link is opened in a browser that has no session.",
+       "expect": "Step 1 prints exactly one link. In step 2 Home opens as Sam; no code was asked for."
+      }
+     ]
+    },
+    {
+     "id": "AC-140",
+     "text": "The link signs nobody in more than 10 minutes after it was printed, or once it has been used.",
+     "tests": [
+      {
+       "id": "TS-222",
+       "type": "B",
+       "text": "Link opened after 11 minutes",
+       "given": "Sam is an active Member. The tester printed an emergency link for Sam 11 minutes ago and it has not been used.",
+       "steps": "1. The link is opened in a browser that has no session.",
+       "expect": "The browser is not signed in and shows no workspace content."
+      },
+      {
+       "id": "TS-223",
+       "type": "N",
+       "text": "Link used a second time",
+       "given": "Sam is an active Member. An emergency link for Sam was printed 2 minutes ago and has just been opened in browser A, which is now signed in as Sam.",
+       "steps": "1. The same link is opened in browser B, which has no session.",
+       "expect": "Browser B is not signed in and shows no workspace content. Browser A stays signed in."
+      }
+     ]
+    },
+    {
+     "id": "AC-141",
+     "text": "The command prints no link for an address that is not a member or that belongs to a deactivated person, and each use of the command is recorded in the server log.",
+     "tests": [
+      {
+       "id": "TS-224",
+       "type": "N",
+       "text": "Unknown and deactivated addresses",
+       "given": "Minh (Admin) has deactivated Alex. No account uses the address nobody@example.com. The tester has shell access to the server.",
+       "steps": "1. The tester runs the command with nobody@example.com. 2. The tester runs the command with Alex's email address.",
+       "expect": "Neither run prints a link; each prints a refusal."
+      },
+      {
+       "id": "TS-225",
+       "type": "P",
+       "text": "Use is logged",
+       "given": "Sam is an active Member. The tester has shell access to the server and can read its log.",
+       "steps": "1. The tester notes the time and runs the command with Sam's email address. 2. The tester reads the server log from that time onward.",
+       "expect": "The log contains an entry for this run that identifies Sam's account and the time."
+      }
+     ]
+    }
+   ]
   }
  ],
  "nfr": [
@@ -8986,13 +10891,23 @@
        "id": "TOKI-095",
        "title": "Set up Claude for the project",
        "scope": "`CLAUDE.md` (what the project is, repository layout, common commands, boundary rules, where documents live); enable the cl plugins and create `docs/intents`, `docs/specs`, `docs/plans`; permissions and hooks in `.claude/settings.json`; move the Blueprint sources into `docs/blueprint/`",
-       "size": "M"
+       "size": "M",
+       "spec": {
+        "state": "pr",
+        "pr": "PR #9",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-096",
        "title": "Set up configuration for each environment",
-       "scope": "An inventory of every environment variable (name, purpose, required or not, default, who supplies it); `.env.example` matching the inventory; the list of values that must come from outside (domain, mail account, VPS, backup storage); how secrets are kept per environment",
-       "size": "M"
+       "scope": "An inventory of every environment variable (name, purpose, required or not, default, who supplies it); `.env.example` matching the inventory; the list of values that must come from outside (domain, mail account, VPS); how secrets are kept per environment",
+       "size": "M",
+       "spec": {
+        "state": "pr",
+        "pr": "PR #10",
+        "fix": "The spec asks for a backup storage value; backup is deferred (D-092)."
+       }
       }
      ]
     },
@@ -9004,49 +10919,89 @@
        "id": "TOKI-001",
        "title": "Set up the pnpm monorepo and TypeScript",
        "scope": "Create `apps/server` and `apps/web`, and the six packages `shared`, `client-core`, `tokens`, `i18n`, `platform`, `ui-web`, with shared TypeScript config. `apps/mobile`, `apps/desktop` and `ui-native` are added in their own phases",
-       "size": "S"
+       "size": "S",
+       "spec": {
+        "state": "merged",
+        "pr": "PR #1",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-002",
        "title": "Lint, format and package boundary rules",
        "scope": "ESLint and Prettier, and the three boundary rules: `client-core` imports no DOM or browser API; server modules do not import each other's internals; `ui-web` does not call platform APIs directly (notifications, storage, service worker, audio) and goes through `platform`. File picking cannot be caught by lint and relies on review",
-       "size": "M"
+       "size": "M",
+       "spec": {
+        "state": "merged",
+        "pr": "PR #2",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-003",
        "title": "Local development environment",
-       "scope": "(1) `infra/docker-compose.dev.yml` runs Postgres, MinIO and Mailpit. (2) Scripts in the root `package.json`: `dev:up` starts the services; `dev:down` stops them and keeps data; four reset scripts: `dev:reset:db` wipes Postgres and re-runs migrations, `dev:reset:files` empties the MinIO bucket, `dev:reset:mail` clears the Mailpit inbox, and `dev:reset` does all three. No reset touches `.env` or the test database, and every reset refuses to run in production. A partial reset can leave references between the three (messages pointing at deleted files, old codes in the inbox); `dev:reset` is the one that returns a clean state",
-       "size": "M"
+       "scope": "(1) `infra/docker-compose.dev.yml` runs Postgres, MinIO and Mailpit. (2) Scripts in the root `package.json`: `dev:up` starts the services; `dev:down` stops them and keeps data; four reset scripts: `dev:reset:db` wipes Postgres and re-runs migrations, `dev:reset:files` empties the MinIO bucket, `dev:reset:mail` clears the Mailpit inbox, and `dev:reset` does all three. No reset touches `.env` or the test database, and every reset refuses to run in production. A partial reset can leave references between the three (messages pointing at deleted files, old codes in the inbox); `dev:reset` is the one that returns a clean state. As specified: `dev:reset:db` only wipes here (TOKI-005 adds the migration step), and `dev:up` creates the development file bucket",
+       "size": "M",
+       "spec": {
+        "state": "pr",
+        "pr": "PR #3",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-004",
-       "title": "Fastify server skeleton",
-       "scope": "Read and validate environment variables, /healthz, structured logs, one error format, the /api/v1 prefix",
-       "size": "M"
+       "title": "Server skeleton",
+       "scope": "Read and validate environment variables, /healthz, structured logs, one error format, the /api/v1 prefix. As specified: also a minimal Vitest setup in `apps/server` and the error response schema in `packages/shared`",
+       "size": "M",
+       "spec": {
+        "state": "pr",
+        "pr": "PR #4",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-005",
-       "title": "Drizzle, migrations and the workspaces table",
-       "scope": "Postgres connection, the migration workflow, the first table",
-       "size": "S"
+       "title": "Database connection, migrations and the workspaces table",
+       "scope": "Postgres connection, the migration workflow, the first table. As specified: also adds the migration step to `dev:reset:db` and chooses the UUIDv7 generator",
+       "size": "S",
+       "spec": {
+        "state": "pr",
+        "pr": "PR #5",
+        "fix": "The spec names an Owner account (TOKI-020); the Owner role was removed (D-152)."
+       }
       },
       {
        "id": "TOKI-006",
-       "title": "Vite + React web skeleton",
-       "scope": "Router, Query, an empty page, dev proxy to the server",
-       "size": "S"
+       "title": "Web app skeleton",
+       "scope": "Router, Query, an empty page, dev proxy to the server. As specified: also a plain not-found view and a 200 KB check on the initial JavaScript",
+       "size": "S",
+       "spec": {
+        "state": "pr",
+        "pr": "PR #6",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-007",
        "title": "CI on GitHub Actions",
        "scope": "Lint, type check, tests, build, bundle size limit",
-       "size": "M"
+       "size": "M",
+       "spec": {
+        "state": "pr",
+        "pr": "PR #7",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-008",
        "title": "Test harness",
-       "scope": "Vitest against a real Postgres, Playwright running one sample test, a controllable clock",
-       "size": "M"
+       "scope": "Vitest against a real Postgres, Playwright running one sample test, a controllable clock. As specified: also the end-to-end job and the Postgres service in CI, and a separate test database",
+       "size": "M",
+       "spec": {
+        "state": "pr",
+        "pr": "PR #8",
+        "fix": "The spec lists the browsers to test as open; they are decided (D-108)."
+       }
       }
      ]
     },
@@ -9058,73 +11013,85 @@
        "id": "TOKI-009",
        "title": "The tokens package",
        "scope": "Calm and Focus palettes, 4 accents, density, radii, shadows; exported as CSS variables and as objects for React Native",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-010",
        "title": "Self-hosted fonts",
        "scope": "Three fonts subset to Latin and Vietnamese, with the main one preloaded",
-       "size": "S"
+       "size": "S",
+       "spec": null
       },
       {
        "id": "TOKI-011",
        "title": "Icon set",
        "scope": "The prototype's roughly 60 icons as components",
-       "size": "S"
+       "size": "S",
+       "spec": null
       },
       {
        "id": "TOKI-018",
        "title": "The platform package",
-       "scope": "Interface for notifications, storage, file picking and sound; the web implementation",
-       "size": "S"
+       "scope": "Interface for notifications, storage, file picking and sound; the web implementation. Its import ban is added to the boundary rules of TOKI-002",
+       "size": "S",
+       "spec": null
       },
       {
        "id": "TOKI-012",
        "title": "Base components, group 1",
-       "scope": "Button, IconButton, Chip, Switch, Field, Select, Tag, Badge; icon-only buttons must have a name, checked by lint (D-075)",
-       "size": "M"
+       "scope": "Button, IconButton, Chip, Switch, Field, Select, Tag, Badge; icon-only buttons must have a name, checked by lint (D-075). The lint rule for icon-only buttons goes into the ESLint config of TOKI-002",
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-013",
        "title": "Base components, group 2",
        "scope": "Avatar, PresenceDot, EmptyState centred in the content area (D-074), Toast placed above the composer with an Undo button (D-069, D-078)",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-014",
        "title": "Overlays",
        "scope": "Menu, Modal, Sheet; focus trapped inside and returned on close, Esc in order, menus usable with arrow keys (D-075)",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-015",
        "title": "AppShell in three layouts",
        "scope": "Calm, Focus, and narrow under 720px with BottomTabs. Per D-068: smallest size 360 × 560; from 720 to 1099px side panels overlay the chat; navigation and the tab row scroll; the conversation list is the main area of the sidebar",
-       "size": "L"
+       "size": "L",
+       "spec": null
       },
       {
        "id": "TOKI-016",
        "title": "Component preview page",
        "scope": "One page listing every component in both looks, for comparison with the prototype",
-       "size": "S"
+       "size": "S",
+       "spec": null
       },
       {
        "id": "TOKI-017",
        "title": "The i18n package",
-       "scope": "Translation framework, English by default, automatic check for missing keys",
-       "size": "S"
+       "scope": "Translation framework, English by default, automatic check for missing keys. Its missing-translation check is added to the CI workflow of TOKI-007",
+       "size": "S",
+       "spec": null
       },
       {
        "id": "TOKI-093",
        "title": "Destructive-action and unsaved-form patterns",
        "scope": "A confirmation dialog that names its target, a 5-second Undo toast, and a guard against closing a form that has content (D-069, D-070)",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-094",
        "title": "Shared date and time rules",
-       "scope": "Validation and formatting in shared: required fields, no past where a future time is needed, the year shown when it differs, one format (D-073)",
-       "size": "S"
+       "scope": "Validation and formatting in shared: required fields, no past where a future time is needed, the year shown when it differs, one format with 24-hour time everywhere (D-073, D-123)",
+       "size": "S",
+       "spec": null
       }
      ]
     }
@@ -9134,7 +11101,7 @@
    "id": "M2",
    "name": "Sign-in, members and conversations",
    "goal": "People can get in and find their way around.",
-   "exit": "The first Admin is created from the environment and invites a member; both sign in with a code; they create, browse and join channels and open DMs.",
+   "exit": "The first Admin is created from the environment and invites a member; both sign in with a code; the Admin creates a channel; both browse and join channels and open DMs.",
    "areas": [
     {
      "name": "Sign-in and members",
@@ -9145,62 +11112,88 @@
       "FR-04",
       "FR-06",
       "FR-25",
-      "FR-26"
+      "FR-26",
+      "FR-46",
+      "FR-47",
+      "FR-49"
      ],
      "tickets": [
       {
        "id": "TOKI-019",
        "title": "Account tables",
        "scope": "users, login_codes, sessions, devices",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-020",
        "title": "First admin from environment variables",
        "scope": "Create the first Admin, the workspace and #general when the database is empty; #general cannot be left or archived (D-034, F01)",
-       "size": "S"
+       "size": "S",
+       "spec": null
       },
       {
        "id": "TOKI-021",
        "title": "Sending mail over SMTP",
-       "scope": "A configurable mail layer, with code and invitation templates in both languages",
-       "size": "M"
+       "scope": "A configurable mail layer (D-027) and two templates in English and Vietnamese: the sign-in mail carries the 6-digit code only, with no button (D-157); the invitation mail names the workspace and the inviter and carries the Join button and a 6-digit code (D-149)",
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-022",
        "title": "Sign-in API",
-       "scope": "Request a code, exchange it for a session, sign out; cookie and token; rate limits; a code is cancelled after 5 wrong tries; at most 5 requests in 15 minutes; the email button signs in directly (D-038, F04, F05)",
-       "size": "L"
+       "scope": "Request a code, exchange it for a session, sign out; cookie and token. A 6-digit code is valid 10 minutes, works once, only for the request that asked for it, and is locked after the 5th wrong try (D-136, D-137). At most 5 requests per email in 15 minutes, a resend only after 60 seconds, and a new code cancels the earlier one (D-038, D-082). The answer is the same whether or not the address is a member (BR-04); a deactivated account is refused after a correct code (F05). A session lasts 30 days and renews on every use (D-011, D-138). Nothing in the mail signs anyone in without the code (D-157). Signing out ends the session for every tab of that browser at once (D-093)",
+       "size": "L",
+       "spec": null
       },
       {
        "id": "TOKI-023",
        "title": "Sign-in screens",
-       "scope": "Enter email, enter code, 7 error cases, expired session, the first-time welcome screen (F03, F04, F05, F07)",
-       "size": "M"
+       "scope": "Enter email; the 'Check your email' step with the 6-digit field, the line 'The code works for 10 minutes', 'Use a different email' and 'Resend code' enabled after 60 seconds (D-082, D-136); the 7 error cases of F05, with the tries left and the locked code (D-137); the 'Your session has ended' screen (F07). Errors show under the field (D-104). There is no welcome screen (D-083)",
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-027",
        "title": "Shared permission functions",
        "scope": "Member and Admin rules in shared, used by both server and client",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-024",
        "title": "Member management (API)",
-       "scope": "Invite, resend, revoke, change role, deactivate, reactivate. Invitations expire after 7 days; the last Admin cannot be demoted or deactivated (D-037, D-039, F02, F40, F41)",
-       "size": "M"
+       "scope": "Invite with the role Member or Admin (D-153), up to 50 addresses per batch (D-134); each address reports its own result and those already sent stay when mail fails (D-099); resend and revoke; an invitation lasts 7 days and works once (D-037). A deactivated person can be invited again (D-094). Change role, deactivate, reactivate: deactivation ends every session at once (BR-29); nobody deactivates themselves; the last Admin cannot be demoted or deactivated (D-153). The server refuses every request from a Member (D-090), ignores a repeat of the same request (D-111) and records each action: who, what, to whom, when (D-110)",
+       "size": "L",
+       "spec": null
       },
       {
        "id": "TOKI-025",
        "title": "Admin page",
-       "scope": "Member list, statuses, management actions",
-       "size": "M"
+       "scope": "Opens only for Admins; a Member sees 'You do not have access to this page' (D-090). Member table with name, email, role, status (Invited, Active, Deactivated) and last active; search, a status chip with a total for each status, the first 50 rows and more on scroll (D-109). 'Invite members': several addresses, role Member or Admin with Member by default, each row showing 'Invited' or 'Mail not sent' with Resend (D-153, D-099); Revoke asks for confirmation. Row menu: Change role, Deactivate, Reactivate, each with a confirmation that names the person (D-061, D-069); the entries are locked, with the reason, on the Admin's own row and on the last Admin (D-153)",
+       "size": "L",
+       "spec": null
       },
       {
        "id": "TOKI-026",
-       "title": "Sessions and emergency access",
-       "scope": "See and revoke your own sessions; a server command that issues a one-time sign-in link",
-       "size": "S"
+       "title": "Sessions and emergency access (server)",
+       "scope": "List your own sessions with device kind, browser and last use; sign out one device or all others; a session ended this way is refused on its next request (D-158, F07). A server command prints a one-time sign-in link valid 10 minutes for one member, refuses an address that is not in the workspace or is deactivated, and logs every use (D-159)",
+       "size": "S",
+       "spec": null
+      },
+      {
+       "id": "TOKI-097",
+       "title": "Accept an invitation",
+       "scope": "Join in the mail opens the code step with the email filled in; the link alone signs nobody in (D-149). The code is valid 10 minutes; 'Resend code' sends a new one after 60 seconds and cancels the old one (D-136, D-082); the 5th wrong try locks it (D-137). On success the person is in #general and lands there, with no welcome step (D-083, D-034); the display name is the part of the email before @ (D-150); a deactivated person gets the same account back with its history and channels (D-094). Pages for an expired, a revoked and an unrecognised invitation; a used one leads to sign-in (D-081). A person signed in as someone else is asked before anything changes (D-080)",
+       "size": "M",
+       "spec": null
+      },
+      {
+       "id": "TOKI-099",
+       "title": "Account menu, Sign out and signed-in devices (screens)",
+       "scope": "The account card's menu: Set status, Pause notifications, Focus time, Preferences, Sign out; an entry appears when its own ticket is built. 'Sign out' in the account menu, and in the More sheet on narrow screens (D-158, D-067). A 'Signed-in devices' section in Preferences: each row shows the device kind, browser and last use, and the current one is labelled 'This device'; 'Sign out' beside another device and 'Sign out all other devices', each asking for confirmation (D-158, D-069)",
+       "size": "S",
+       "spec": null
       }
      ]
     },
@@ -9220,49 +11213,78 @@
        "id": "TOKI-028",
        "title": "Conversation tables",
        "scope": "conversations, conversation_members, the DM de-duplication key",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-029",
        "title": "Channel API",
-       "scope": "Create, browse, join, leave, edit topic and description, add people, archive. Leaving a private channel says an invitation is needed; the last member leaving archives it (D-051). Every write requires membership (D-077). Names are lowercase letters, digits and hyphens, up to 80 characters, unique; any member can edit the topic; admins can remove people from channels they are in (D-040, D-041, D-047)",
-       "size": "L"
+       "scope": "Create (Admin only; a Member's request is refused, D-084, D-090), browse, join, leave, edit topic and description, add people, remove people, archive and restore. Names are lowercase letters, digits and hyphens, up to 80 characters; the server never creates two channels with one name, also when two requests arrive together and against archived channels (D-040, D-115, D-128); topic up to 250 characters (D-101); public or private is fixed and there is no rename (D-040, D-105). A channel that is not joined cannot be read, and joining gives the full history (D-116, D-029). Every write requires membership (D-077). Any member edits the topic and adds people (D-041, D-090); an Admin removes people and archives only where a member, never in #general (D-085, D-047, D-034). A private channel is rejoined only when a member adds the person back, and the last member leaving archives it (D-051)",
+       "size": "L",
+       "spec": null
       },
       {
        "id": "TOKI-030",
        "title": "DM and group DM API",
        "scope": "Open a DM, create a group of up to 8; groups cannot gain or lose people (D-045, F25)",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-031",
        "title": "Bootstrap endpoint",
        "scope": "One call returning yourself, the workspace, members, conversations, unread counts and the current event number",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-032",
        "title": "client-core: API client and conversation store",
-       "scope": "A client typed from the shared schemas; the list already grouped and filtered",
-       "size": "M"
+       "scope": "A client typed from the shared schemas; the list already grouped and filtered. Uses the error schema built in TOKI-004",
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-033",
        "title": "Conversation list",
-       "scope": "Starred, Channels, Direct messages groups; collapse; All, Unread, Mentions filters; search",
-       "size": "M"
+       "scope": "Starred, Channels, Direct messages groups; collapse; All, Unread, Mentions filters; search by name. The Direct messages heading has a '+' that starts a DM or a group: on hover on desktop, always visible on touch and narrow screens (D-086, D-154); there is no pencil icon (D-155). A '+ Browse channels' row closes the list; nothing in the list creates a channel (D-084). A filter that matches nothing shows its own empty state (D-074). Each conversation has its own address, and Back closes an open panel first (D-089)",
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-034",
-       "title": "Three modals",
-       "scope": "New message, Browse channels, Create channel",
-       "size": "M"
+       "title": "Browse channels and the people picker",
+       "scope": "Browse channels: search, name, topic and member count, 'Join' or 'Open', an 'Archived' label, the first 50 and more on scroll (D-109), 'No channels match' centred (D-074); a channel that is not joined shows no messages, here or from a link, only its name and topic with Join (D-116); no button creates a channel (D-084). The picker opened by the '+' on Direct messages: a people search showing the first 50 (D-109); each person pressed becomes a removable chip; Start opens the DM for one chip or a group DM for more; a person beyond 8, counting yourself, is refused (D-086, D-017)",
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-035",
        "title": "Conversation header and Details panel",
-       "scope": "Name, topic, members, notification level, mute, star, leave. Defaults: Mentions only for channels, All messages for DMs (D-046, F24)",
-       "size": "M"
+       "scope": "Name, topic, members, notification level, mute, star, leave. Defaults: Mentions only for channels, All messages for DMs (D-046). Mute also hides the unread badge and bold; the level 'Nothing' only stops toast, push and sound (D-103). Any member edits the topic and description in place; the name cannot be changed (D-105). Leaving a public channel happens at once with Undo for 5 seconds; leaving a private channel asks for confirmation that says a member must invite you back, with no Undo (D-156, D-061); the last member is told the channel will be archived (D-051); #general has no Leave (D-034)",
+       "size": "M",
+       "spec": null
+      },
+      {
+       "id": "TOKI-098",
+       "title": "Create a channel from the Admin page",
+       "scope": "A '+' beside 'Busiest channels' on the Admin page opens the Create channel dialog (D-151): Name, a Private switch off by default, Topic (optional, up to 250 characters), Add people (optional) (D-101). A space typed in the name becomes a hyphen and capitals become lowercase (D-127). Errors show under the field; Create is disabled until the form is valid and while the request runs (D-104, D-111); a name already in use is refused by the server and the field says so (D-115). Closing with content asks whether to discard (D-070). The new channel opens at once (D-076). A Member has no way to open this dialog (D-084)",
+       "size": "M",
+       "spec": null
+      },
+      {
+       "id": "TOKI-100",
+       "title": "Add and remove people in a channel (screens)",
+       "scope": "Add people: a search that lists only people not yet in the channel, the first 50 shown and more on scroll (D-109); choose one or more and press Add; any member can do it, in private channels too (D-090). Remove a person: offered only to an Admin who is a member of the channel, never in #general, with a confirmation that names the person (D-085, D-047, D-069)",
+       "size": "S",
+       "spec": null
+      },
+      {
+       "id": "TOKI-101",
+       "title": "Archive and restore a channel (screens)",
+       "scope": "Archive: offered only to an Admin who is a member, never for #general (D-047, D-034); the confirmation names the channel and its member count (D-061, D-069). Afterwards the channel leaves everyone's list, its composer is replaced by 'This channel has been archived' and its history stays readable (D-029). Browse channels shows it with an 'Archived' label and gives Admins a 'Restore' button (F26)",
+       "size": "S",
+       "spec": null
       }
      ]
     }
@@ -9287,56 +11309,65 @@
       {
        "id": "TOKI-036",
        "title": "messages and events tables",
-       "scope": "UUIDv7, pagination indexes, a numbered event log",
-       "size": "M"
+       "scope": "UUIDv7, pagination indexes, a numbered event log. Reuses the UUIDv7 generator chosen in TOKI-005",
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-037",
        "title": "Message API",
        "scope": "Idempotent send, paged loading, loading around one message; up to 10,000 characters and 10 files per message (D-042)",
-       "size": "L"
+       "size": "L",
+       "spec": null
       },
       {
        "id": "TOKI-038",
        "title": "WebSocket gateway",
        "scope": "Authentication, the map of who listens to which conversation, events pushed to the right people",
-       "size": "L"
+       "size": "L",
+       "spec": null
       },
       {
        "id": "TOKI-039",
        "title": "Reconnect",
        "scope": "Growing retry delay, fetching what was missed, a full reload after a long absence",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-040",
        "title": "client-core: sync engine",
-       "scope": "Apply events to the cache, optimistic send, retry failed messages",
-       "size": "L"
+       "scope": "Apply events to the cache; optimistic send. A message sent offline waits and sends itself when the connection returns; once online there is one automatic try, then the message is marked 'Not sent' for a manual Retry or Delete (D-097, D-079). A waiting message is kept in the browser across a reload and dropped when someone else signs in there (D-132). A request with no answer after 10 seconds counts as failed (D-126)",
+       "size": "L",
+       "spec": null
       },
       {
        "id": "TOKI-041",
        "title": "Virtualised message list",
        "scope": "Reverse scroll, stick to bottom, hold position when loading older messages, a New messages button; opens at the New divider when there are unread messages (D-052)",
-       "size": "L"
+       "size": "L",
+       "spec": null
       },
       {
        "id": "TOKI-042",
        "title": "Message component",
-       "scope": "Avatar, name, time, grouping within 5 minutes, day dividers; system lines for join, leave, add, pin and channel creation (F10, F21 to F23)",
-       "size": "M"
+       "scope": "Avatar, name, 24-hour time (D-123), grouping within 5 minutes, day dividers. Send states beside the time: faded until confirmed, 'Waiting to send', and a red 'Not sent' with Retry and Delete, where Delete asks nothing (D-087). Grey system lines for join, leave, add, pin and channel creation, including a newcomer joining #general; a system line raises no unread count and no notification (D-100)",
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-043",
        "title": "Composer",
        "scope": "Enter sends, Shift+Enter makes a new line, no send while composing a Vietnamese word, auto-grow, local draft",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-044",
        "title": "Typing indicator",
        "scope": "A typing signal over WebSocket that clears itself",
-       "size": "S"
+       "size": "S",
+       "spec": null
       }
      ]
     },
@@ -9344,62 +11375,77 @@
      "name": "Chat features",
      "frs": [
       "FR-14",
-      "FR-17"
+      "FR-17",
+      "FR-33",
+      "FR-34",
+      "FR-35",
+      "FR-36",
+      "FR-37",
+      "FR-38"
      ],
      "tickets": [
       {
        "id": "TOKI-045",
        "title": "Threads",
-       "scope": "API, followers, thread panel, Also send to channel, a link to the thread",
-       "size": "L"
+       "scope": "API, thread panel, Also send to channel. One level deep. The root author, everyone who replied and everyone mentioned follow the thread automatically; there is no 'Unfollow thread' (D-119). When the root is deleted the thread stays under a 'Message deleted' line, and a reply being written is still sent (D-013, D-096). Each thread has its own address; Back closes the panel first (D-089). From 720 to 1099px the panel overlays the chat (D-068)",
+       "size": "L",
+       "spec": null
       },
       {
        "id": "TOKI-046",
        "title": "Reactions",
        "scope": "8 fixed emoji, add and remove, the list of who reacted",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-047",
        "title": "Edit and delete",
        "scope": "Edit in place, the edited label, soft delete that keeps the thread, confirmation before deleting; a deleted message's files leave storage; an admin deleting someone's message shows a distinct line and tells the author (D-043, D-049, F16, F42)",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-048",
        "title": "Pins and the Pinned tab",
        "scope": "Pin, unpin, the pinned list",
-       "size": "S"
+       "size": "S",
+       "spec": null
       },
       {
        "id": "TOKI-049",
        "title": "Text formatting",
        "scope": "Bold, italic, code, links; safe rendering with no raw HTML",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-050",
        "title": "Mentions",
-       "scope": "People and @channel, a suggestion popup that matches with or without diacritics, a tinted background on messages that mention you; only conversation members are suggested (D-058); any member can use @channel, with confirmation in channels of 20 or more (D-041, F12)",
-       "size": "M"
+       "scope": "People and @channel, a suggestion popup that matches with or without diacritics, a tinted background on messages that mention you; only conversation members are suggested (D-058); a name typed for someone outside the conversation notifies nobody and offers the sender 'Add them' (D-135); any member can use @channel, with confirmation in channels of 20 or more (D-041)",
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-051",
        "title": "Synced drafts",
        "scope": "Drafts per conversation and thread, synced across devices, the Draft label",
-       "size": "S"
+       "size": "S",
+       "spec": null
       },
       {
        "id": "TOKI-052",
        "title": "Message action bar",
        "scope": "Hover on desktop, tap on narrow screens, the More menu, copy",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-081",
        "title": "Prototype seed data",
-       "scope": "A `dev:seed` script that loads the prototype's sample workspace: Hugepig Studio, 8 people, the sample channels, DMs, messages, threads, reactions and pins. Used for development after a reset and by the end-to-end tests. Sample files and images join the seed in TOKI-063, once file storage exists",
-       "size": "M"
+       "scope": "A `dev:seed` script that loads the prototype's sample workspace: Hugepig Studio, 8 people with the roles Member and Admin only (D-152), the sample channels, DMs, messages, threads, reactions and pins. Used for development after a reset and by the end-to-end tests; it never runs in production, which starts with #general only (D-031, D-147). Sample files and images join the seed in TOKI-063, once file storage exists",
+       "size": "M",
+       "spec": null
       }
      ]
     }
@@ -9419,7 +11465,8 @@
        "id": "TOKI-064",
        "title": "Background job queue",
        "scope": "pg-boss, the worker process, retries on failure",
-       "size": "M"
+       "size": "M",
+       "spec": null
       }
      ]
     },
@@ -9427,82 +11474,102 @@
      "name": "Unread and presence",
      "frs": [
       "FR-08",
-      "FR-32"
+      "FR-32",
+      "FR-45"
      ],
      "tickets": [
       {
        "id": "TOKI-053",
        "title": "Read pointer",
-       "scope": "Unread counts synced across devices. Read when the conversation is open, the window is in use and the list is at the bottom (D-052)",
-       "size": "L"
+       "scope": "Unread counts per conversation, synced across devices. Read when the conversation is open, the window is in use and the list is at the bottom (D-052). Grey system lines such as 'Minh joined' raise no count (D-100); thread replies do not raise the channel's count (F14); leaving a channel clears its count (D-133); nobody sees who has read a message (D-048)",
+       "size": "L",
+       "spec": null
       },
       {
        "id": "TOKI-054",
        "title": "New divider, badges, filters",
-       "scope": "The New divider anchored to the first unread message, never drifting, gone on the next open (D-052); badges in the list and navigation; Unread and Mentions filters",
-       "size": "M"
+       "scope": "The New divider anchored to the first unread message, never drifting, gone on the next open (D-052); badges in the list and navigation, the Home badge counting unmuted conversations only (F08); a muted conversation shows no count and no bold (D-103) but keeps the @ dot while the person's switch for mentions in muted conversations is on (D-088); the browser tab title reads '(3) Toki' for mentions and DMs and shows a dot for anything else (D-122); Unread and Mentions filters",
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-055",
        "title": "Presence",
        "scope": "Active, Away after 5 minutes without activity, Do not disturb during Focus; no separate Offline; batched updates (D-036, F34)",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-056",
        "title": "Status",
        "scope": "Set a status, presets, clear on a timer; saving empty clears it",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-057",
        "title": "Profile panel",
-       "scope": "Name, job title, presence, status, local time with the time zone as a UTC offset, a Message button",
-       "size": "S"
+       "scope": "Initials avatar on a colour, no picture (D-118); name, job title, presence, status, local time from the time zone the person set, shown with a UTC offset (D-144); a Message button; a deactivated person is labelled 'Deactivated' and has no Message button (F41); your own profile has Set status and Edit profile (F31)",
+       "size": "S",
+       "spec": null
       }
      ]
     },
     {
      "name": "Files",
      "frs": [
-      "FR-10"
+      "FR-10",
+      "FR-39"
      ],
      "tickets": [
       {
        "id": "TOKI-058",
        "title": "File storage",
-       "scope": "files and attachments tables; signed URLs for upload and download; permission checks",
-       "size": "L"
+       "scope": "files and attachments tables on MinIO (D-014); signed URLs for upload and download; only people who can see the conversation can open its files; every file type accepted up to 100 MB, checked on the server, always downloaded and never run in the browser (D-095); a file uploaded but never sent is deleted after 24 hours (D-130). The development bucket already exists (TOKI-003); this ticket does not create it",
+       "size": "L",
+       "spec": null
       },
       {
        "id": "TOKI-059",
        "title": "Attachments in the composer",
-       "scope": "Pick, drag and drop, paste an image, progress, the over-100-MB error",
-       "size": "M"
+       "scope": "Pick, drag and drop, paste an image; one card per file with progress, remove and Retry; up to 10 files per message (D-042); the over-100-MB error (D-014); Send waits until every file has uploaded (F18); uploading is blocked while offline, with the reason (D-060)",
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-060",
        "title": "Image thumbnails",
        "scope": "A worker creates thumbnails and updates the message when done",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-061",
        "title": "Link previews",
        "scope": "A worker fetches title and description and refuses internal addresses; the sender can remove the card (F12)",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-062",
        "title": "Attachment cards and viewer modal",
-       "scope": "File, image and link cards; the detail modal; copy link",
-       "size": "M"
+       "scope": "File, image and link cards; the detail modal with Open in conversation, Copy link and Download; a file is always downloaded, never run in the browser (D-095); a file link opens only for people who can see its conversation (F18)",
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-063",
        "title": "Files tab and Files section",
        "scope": "Filter by kind, search, list and grid views; adds the prototype's sample files and images to the seed data",
-       "size": "M"
+       "size": "M",
+       "spec": null
+      },
+      {
+       "id": "TOKI-103",
+       "title": "Disk-space warning and upload refusal",
+       "scope": "No quota. When the disk is 80% full Admins see a warning on the Admin page; at 95% uploads are refused with the reason while messaging keeps working (D-106)",
+       "size": "S",
+       "spec": null
       }
      ]
     },
@@ -9516,25 +11583,29 @@
        "id": "TOKI-069",
        "title": "Vietnamese search index",
        "scope": "A search column with diacritics removed, and a GIN index",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-070",
        "title": "Search API",
-       "scope": "Conversations, people, messages; only results the person may see",
-       "size": "M"
+       "scope": "Conversations, people, messages; Vietnamese matches with or without diacritics (D-015); 20 results per kind, more on request (D-112); messages only from conversations the person belongs to, and private channels never returned to outsiders (D-116, D-051); deactivated people are not listed (F41)",
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-071",
        "title": "Command palette",
-       "scope": "Ctrl+K, arrow keys, grouped results, quick actions; ranking: exact match, word-start, contains, then fuzzy. Quick actions as listed in F29",
-       "size": "M"
+       "scope": "Ctrl+K, arrow keys; results grouped as conversations, people, commands, then messages, 20 per group with more on request (D-112); ranking: exact match, word-start, contains, then fuzzy; quick actions as listed in F29, with 'Create channel' offered to Admins only (D-084, D-151); on narrow screens opened from the search field on Home and from the More sheet (D-053)",
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-072",
        "title": "Search inside a conversation",
        "scope": "A search field in the header that filters messages",
-       "size": "S"
+       "size": "S",
+       "spec": null
       }
      ]
     }
@@ -9550,32 +11621,38 @@
      "name": "Activity and Later",
      "frs": [
       "FR-14",
-      "FR-24"
+      "FR-24",
+      "FR-40",
+      "FR-41"
      ],
      "tickets": [
       {
        "id": "TOKI-065",
        "title": "Activity (server)",
-       "scope": "Create items from mentions, replies in followed threads and reactions; API and events. Never notify the actor; newest first; items complete themselves when the work is done (D-071). Adds an Other kind: added to a channel, role changed, message deleted by an admin (F27). Implements all 15 situations of the 'When you are mentioned' table",
-       "size": "L"
+       "scope": "Create items from mentions, replies in threads the person follows, and reactions; API and events. The root author, repliers and people mentioned follow a thread automatically; there is no Unfollow (D-119). Never notify the actor; newest first; items complete themselves when the work is done (D-071); an item is removed when its source message is deleted or the mention edited out (F13); leaving a channel clears that person's open items for it (D-133). An Other kind: added to a channel, role changed, message deleted by an admin (D-049, F27). Implements all 15 situations of the 'When you are mentioned' table, including a mention in a muted conversation (D-088)",
+       "size": "L",
+       "spec": null
       },
       {
        "id": "TOKI-066",
        "title": "Activity screen",
-       "scope": "A filter chip for every kind, Done with Undo, Snooze, Mark all read; action buttons always visible on touch devices (D-067). Snooze times: in 1 hour, today 15:00, tomorrow 09:00 (F27)",
-       "size": "M"
+       "scope": "A filter chip for every kind, each count equal to the rows shown (D-071, D-074); Done with a 5-second Undo (D-069), Snooze, Mark all read; Done and Snooze always visible on touch devices (D-067, D-053). Snooze times: In 1 hour, Today 15:00, Tomorrow 09:00; a choice already past is hidden and 'In 3 hours' takes its place (D-114)",
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-067",
        "title": "Later",
-       "scope": "Save a message, In progress and Completed, set a reminder that fires on time; a replacement row when the source message was deleted, with the count still matching (D-074). Reminder times match snooze times (F28)",
-       "size": "M"
+       "scope": "Save a message, In progress and Completed, set a reminder that fires on time and must be in the future (D-073); a reminder due during Pause or Focus is held (D-072); a replacement row when the source message was deleted, with the count still matching (D-074); removing from Later offers Undo (D-061). Reminder times match snooze times, with 'In 3 hours' replacing a choice already past (D-114)",
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-068",
        "title": "Jump to message",
        "scope": "From Activity, Later and search to the exact message, with a flash",
-       "size": "S"
+       "size": "S",
+       "spec": null
       }
      ]
     },
@@ -9584,38 +11661,52 @@
      "frs": [
       "FR-15",
       "FR-16",
-      "FR-18"
+      "FR-18",
+      "FR-44",
+      "FR-48"
      ],
      "tickets": [
       {
        "id": "TOKI-073",
        "title": "Notification decision engine",
-       "scope": "Who is notified, from channel level, mute, Pause, Focus, and whether the app is open",
-       "size": "L"
+       "scope": "Who gets a toast, push or sound, from: the conversation's level, by default 'Mentions only' for channels and 'All messages' for DMs (D-046); Mute, where a mention still notifies while the person's own switch is on, on by default (D-088, D-103); Pause and Focus (D-072); and whether that conversation is on screen (F36). Your own action never notifies you (D-071); people outside the conversation are not notified (D-058)",
+       "size": "L",
+       "spec": null
       },
       {
        "id": "TOKI-074",
        "title": "Web Push",
-       "scope": "VAPID keys, service worker, device registration, a click that opens the right conversation; the notification shows sender, conversation and the start of the message; a card offering notifications on first visit (D-044, F36)",
-       "size": "L"
+       "scope": "VAPID keys, a service worker used for push only (D-030), device registration with a test notification, a click that opens Toki at that message; the notification shows sender, conversation and the start of the message (D-044); a card offering notifications on first visit, the browser asked only after Turn on (F36); on iPhone push works only once Toki is added to the Home Screen (D-108); signing out removes that device's registration (D-158). Adds the VAPID keys to the configuration list and `.env.example` of TOKI-096",
+       "size": "L",
+       "spec": null
       },
       {
        "id": "TOKI-075",
        "title": "Sound and in-app notifications",
        "scope": "A toast for messages in other conversations, and a sound",
-       "size": "S"
+       "size": "S",
+       "spec": null
       },
       {
        "id": "TOKI-076",
        "title": "Pause and Focus time",
        "scope": "API, a job that ends it on time, the status strip, a summary of what arrived. Holds every notification including reminders; starting Focus again extends it; ending restores the earlier status (D-072)",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-077",
        "title": "PWA",
        "scope": "Manifest, icons, install to the home screen",
-       "size": "S"
+       "size": "S",
+       "spec": null
+      },
+      {
+       "id": "TOKI-102",
+       "title": "Notification preferences (server)",
+       "scope": "Per-account switches read by the decision engine: Desktop notifications, Play a sound, and 'Notify me for @mentions even in muted channels', on by default (D-088); one set for the person on every device, only the browser's push permission is per device (D-142); API and events",
+       "size": "S",
+       "spec": null
       }
      ]
     }
@@ -9625,51 +11716,66 @@
    "id": "M6",
    "name": "Polish and launch",
    "goal": "Ready for the company to use.",
-   "exit": "Every phase 1 acceptance criterion passes, and Toki runs on its real domain with backups.",
+   "exit": "Every phase 1 acceptance criterion passes, and Toki runs on its real domain.",
    "areas": [
     {
      "name": "Preferences, People and polish",
      "frs": [
       "FR-28",
       "FR-29",
-      "FR-30"
+      "FR-30",
+      "FR-42",
+      "FR-43"
      ],
      "tickets": [
       {
        "id": "TOKI-078",
        "title": "Preferences screen",
-       "scope": "Look, accent, density, notifications, Pause, status, language; saved to the account",
-       "size": "M"
+       "scope": "Look (Calm, Focus, Match my device), accent, density; notification switches including 'Notify me for @mentions even in muted channels', on by default (D-088); Pause, status; language: English by default or Tiếng Việt, switching the whole interface at once (D-018); profile: display name of 1 to 80 characters (D-033), job title, time zone (D-144), no picture upload (D-118); the 'Signed-in devices' list with sign out of one device or of all others, after confirmation (D-158); saved to the account and applied on every device (D-142)",
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-079",
        "title": "People screen",
-       "scope": "Directory, search, presence, local time, role",
-       "size": "S"
+       "scope": "Directory of active people as cards: initials avatar (D-118), presence, name, an Admin label where it applies (no Owner, D-152), job title, local time (D-144); search by name or job title; the first 50 shown, more on scroll (D-109); deactivated people are not listed (F41); the 'Nobody matches' empty state (D-074)",
+       "size": "S",
+       "spec": null
       },
       {
        "id": "TOKI-080",
        "title": "Full translation",
-       "scope": "Every string in vi and en; dates, times and numbers by language and time zone",
-       "size": "M"
+       "scope": "Every string in English (the default) and Vietnamese (D-018); CI fails when a string lacks a translation in either language (D-064); 24-hour time everywhere (D-123); one date format across the app, with the year shown when it is not the current year (D-073); times shown in the person's time zone",
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-082",
        "title": "Extra states",
-       "scope": "Loading skeletons, the reconnecting strip, 404, no access; while disconnected, writes are blocked with an explanation and only messages wait to resend (D-079)",
-       "size": "M"
+       "scope": "Loading skeletons; the banner 'Offline: showing saved messages' for the whole time offline, with no reconnecting state and no toast when the connection returns (D-102); one shared page for not found and no access (D-131); a request with no answer after 10 seconds shows Retry (D-126); while disconnected, writes are blocked with an explanation and only messages wait to resend (D-079). Replaces the plain not-found view of TOKI-006; the server's 404 and 500 format comes from TOKI-004",
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-083",
        "title": "Accessibility pass",
        "scope": "Keyboard, labels, focus, reduced motion",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-092",
        "title": "Entry points on narrow screens",
-       "scope": "A More sheet with global search, the account menu, status, Pause and Focus time, so the phone lacks nothing (D-067, D-053); the sheet closes as soon as a destination is chosen (GAP-39)",
-       "size": "M"
+       "scope": "A More sheet with Search, People, Preferences, Admin (Admins only) and an account section with Set status, Pause notifications, Focus time and Sign out (D-158), so the phone lacks nothing (D-067, D-053); the sheet closes as soon as a destination is chosen (GAP-39)",
+       "size": "M",
+       "spec": null
+      },
+      {
+       "id": "TOKI-104",
+       "title": "Update-available strip",
+       "scope": "When a new version is deployed an open app shows the strip 'Update available · Reload'; the reload is forced only when the server says the page is too old (D-107)",
+       "size": "S",
+       "spec": null
       }
      ]
     },
@@ -9681,49 +11787,50 @@
        "id": "TOKI-084",
        "title": "Production image and Compose",
        "scope": "Dockerfile, Compose, Caddyfile, automatic TLS",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-085",
        "title": "Automated deploy",
        "scope": "Build the image on merge, deploy, run migrations, roll back",
-       "size": "M"
-      },
-      {
-       "id": "TOKI-086",
-       "title": "Backup and restore",
-       "scope": "A nightly script, encrypted, pushed off-site, with a restore rehearsal",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-087",
        "title": "Installation guide",
-       "scope": "Step-by-step instructions and .env.example",
-       "size": "S"
+       "scope": "Step-by-step instructions and .env.example: SMTP settings (D-027), the first Admin from server configuration (D-028), and the server command that prints a one-time sign-in link when mail cannot be sent (D-159); no backup steps in this phase (D-092). Points to the `.env.example` built in TOKI-096; it does not write a second one",
+       "size": "S",
+       "spec": null
       },
       {
        "id": "TOKI-088",
        "title": "Access-control test suite",
-       "scope": "Every endpoint against a person without access",
-       "size": "M"
+       "scope": "Every endpoint against a person without access: signed out; a Member on admin requests and on creating a channel (D-090, D-084); anyone, an Admin included, outside a private channel or DM (D-047); the messages of a channel not joined (D-116); also through search, file lists and direct links, with no access answered like not found (D-131). Uses the real-Postgres test setup of TOKI-008",
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-089",
        "title": "Performance measurement",
-       "scope": "A script that creates 1 million messages and measures the six targets",
-       "size": "L"
+       "scope": "A script that creates 1 million messages and measures the six targets with 200 people online (D-113). Reuses the 200 KB bundle measurement of TOKI-006 and TOKI-007",
+       "size": "L",
+       "spec": null
       },
       {
        "id": "TOKI-090",
        "title": "12 end-to-end flows",
-       "scope": "Complete at desktop and phone widths",
-       "size": "L"
+       "scope": "The 12 flows follow the journeys accepted on 13 Nov (D-091): an Admin creates the channel (D-084), there is no Owner (D-152), a channel not joined shows no messages (D-116), Sign out (D-158); complete at desktop and phone widths (D-053). Uses the Playwright runner of TOKI-008; the 12 flows are chosen from the journeys as rewritten on 13 Nov 2026",
+       "size": "L",
+       "spec": null
       },
       {
        "id": "TOKI-091",
        "title": "Security review",
        "scope": "Headers, cookies, rate limits, dependencies",
-       "size": "M"
+       "size": "M",
+       "spec": null
       }
      ]
     }

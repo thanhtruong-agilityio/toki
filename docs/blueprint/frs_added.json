@@ -1,0 +1,1239 @@
+{
+ "note": "Requirements added on 16 Nov 2026 for phase-1 features that had none, and the questions raised while writing them and while reviewing the tickets.",
+ "frs": [
+  {
+   "feature": "threads",
+   "area": "MS",
+   "text": "A member of a conversation can reply to a message in a thread. The thread opens in a side panel that shows the root message, the number of replies, the replies and its own composer; threads are one level deep. In a channel, ticking 'Also send to #name' also posts the reply as a normal message in the channel.||Thành viên của một cuộc trò chuyện có thể trả lời một tin nhắn trong thread. Thread mở ở bảng bên, gồm tin nhắn gốc, số câu trả lời, các câu trả lời và ô soạn tin riêng; thread chỉ có một cấp. Trong channel, khi tick 'Also send to #name' thì câu trả lời cũng được đăng như một tin nhắn thường trong channel.",
+   "src": "Q17 Q85 Q59 Q49",
+   "open": "VQ-04 VQ-05",
+   "screen": "Home: message action bar 'Reply in thread'; Thread panel||Home: nút 'Reply in thread' trên thanh thao tác của tin nhắn; bảng Thread",
+   "flows": "",
+   "rules": "BR-25",
+   "evidence": "Button aria-label 'Reply in thread' (shown only in the main list, ctx==='main'); threadHtml(): root message, 'N replies' divider, replies, composer 'Reply in thread'; checkbox 'Also send to #name' (composerHtml option also, set only when c.type==='channel'); line under the root: avatars, 'N replies', 'Last reply hh:mm' (data-action openthread).",
+   "acs": [
+    {
+     "text": "A reply sent in the thread panel appears in that thread and not as a message in the conversation; under the root message a line shows the number of replies and the time of the last one, and pressing it opens the thread. The reply is delivered even when the root message was deleted while it was being written.||Câu trả lời gửi từ bảng thread xuất hiện trong thread đó và không xuất hiện như một tin nhắn trong cuộc trò chuyện; dưới tin nhắn gốc có một dòng ghi số câu trả lời và giờ của câu trả lời cuối, bấm vào dòng đó sẽ mở thread. Câu trả lời vẫn được gửi kể cả khi tin nhắn gốc bị xoá trong lúc người dùng đang viết.",
+     "tests": [
+      {
+       "type": "P",
+       "name": "Reply in a thread||Trả lời trong thread",
+       "detail": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Sam has sent the message 'Build 12 is ready' in #general; it has no replies. Mai is signed in. ## 1. Mai opens #general and presses 'Reply in thread' on Sam's message. 2. In the thread panel Mai leaves 'Also send to #general' unticked, types 'Installing now' and sends. 3. Sam opens #general. ## The thread panel shows Sam's message, the line '1 reply' and Mai's reply. In #general, Sam sees under his message a line with '1 reply' and 'Last reply' with the time; 'Installing now' is not in the #general message list. Pressing the line opens the same thread.||Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Sam đã gửi tin nhắn 'Build 12 is ready' trong #general; tin này chưa có câu trả lời. Mai đang đăng nhập. ## 1. Mai mở #general và bấm 'Reply in thread' trên tin nhắn của Sam. 2. Trong bảng thread, Mai để trống ô 'Also send to #general', gõ 'Installing now' rồi gửi. 3. Sam mở #general. ## Bảng thread hiển thị tin nhắn của Sam, dòng '1 reply' và câu trả lời của Mai. Trong #general, Sam thấy dưới tin nhắn của mình một dòng '1 reply' và 'Last reply' kèm giờ; 'Installing now' không nằm trong danh sách tin nhắn của #general. Bấm vào dòng đó mở đúng thread này."
+      },
+      {
+       "type": "X",
+       "name": "Reply while the root is deleted||Trả lời khi tin gốc bị xoá",
+       "detail": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Sam's message 'Build 12 is ready' in #general has one reply from Alex. Mai and Sam are signed in on separate browsers. ## 1. Mai opens the thread and types 'Checking' without sending. 2. Sam deletes his message and confirms. 3. Mai presses Send. ## Mai's reply is sent. The thread shows the line 'Message deleted' in place of the root, followed by Alex's reply and 'Checking'.||Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Tin nhắn 'Build 12 is ready' của Sam trong #general có một câu trả lời của Alex. Mai và Sam đăng nhập trên hai trình duyệt khác nhau. ## 1. Mai mở thread và gõ 'Checking' nhưng chưa gửi. 2. Sam xoá tin nhắn của mình và xác nhận. 3. Mai bấm Send. ## Câu trả lời của Mai được gửi. Thread hiển thị dòng 'Message deleted' ở vị trí tin gốc, tiếp theo là câu trả lời của Alex và 'Checking'."
+      }
+     ]
+    },
+    {
+     "text": "In a channel thread the composer has the checkbox 'Also send to #name', unticked when the thread opens. With it ticked the reply appears both in the thread and as a normal message in the channel; with it unticked, only in the thread.||Trong thread của một channel, ô soạn tin có ô tick 'Also send to #name', mặc định không tick khi mở thread. Khi tick, câu trả lời xuất hiện cả trong thread lẫn trong channel như một tin nhắn thường; khi không tick, chỉ xuất hiện trong thread.",
+     "tests": [
+      {
+       "type": "P",
+       "name": "Also send to channel||Gửi kèm vào channel",
+       "detail": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Sam's message 'Build 12 is ready' is in #general. Mai is signed in. ## 1. Mai opens the thread on Sam's message. 2. Mai ticks 'Also send to #general', types 'Tested, works' and sends. 3. Alex opens #general. ## 'Tested, works' is in the thread, and Alex sees it at the bottom of the #general message list as a message from Mai.||Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Tin nhắn 'Build 12 is ready' của Sam có trong #general. Mai đang đăng nhập. ## 1. Mai mở thread trên tin nhắn của Sam. 2. Mai tick 'Also send to #general', gõ 'Tested, works' rồi gửi. 3. Alex mở #general. ## 'Tested, works' có trong thread, và Alex thấy nó ở cuối danh sách tin nhắn của #general dưới dạng tin nhắn của Mai."
+      },
+      {
+       "type": "N",
+       "name": "Checkbox starts unticked||Ô tick mặc định bỏ trống",
+       "detail": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Mai has just sent a thread reply with 'Also send to #general' ticked. Mai is signed in. ## 1. Mai closes the thread panel. 2. Mai presses 'Reply in thread' on a different message in #general. ## The checkbox 'Also send to #general' is shown and is not ticked.||Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Mai vừa gửi một câu trả lời trong thread với 'Also send to #general' được tick. Mai đang đăng nhập. ## 1. Mai đóng bảng thread. 2. Mai bấm 'Reply in thread' trên một tin nhắn khác trong #general. ## Ô tick 'Also send to #general' có hiển thị và đang không được tick."
+      }
+     ]
+    },
+    {
+     "text": "A reply inside a thread has no 'Reply in thread' action.||Câu trả lời nằm trong thread không có thao tác 'Reply in thread'.",
+     "tests": [
+      {
+       "type": "N",
+       "name": "No thread inside a thread||Không có thread lồng trong thread",
+       "detail": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Sam's message in #general has one reply from Mai. Alex is signed in. ## 1. Alex opens the thread on Sam's message. 2. Alex hovers Mai's reply (narrow screen: taps it) to show its action bar and opens its More menu. ## Neither the action bar nor the More menu of Mai's reply contains 'Reply in thread'.||Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Tin nhắn của Sam trong #general có một câu trả lời của Mai. Alex đang đăng nhập. ## 1. Alex mở thread trên tin nhắn của Sam. 2. Alex rê chuột lên câu trả lời của Mai (màn hình hẹp: chạm vào) để hiện thanh thao tác và mở menu More. ## Cả thanh thao tác lẫn menu More của câu trả lời của Mai đều không có 'Reply in thread'."
+      }
+     ]
+    },
+    {
+     "text": "A thread has its own address that reopens the same thread, and browser Back closes the thread panel before it leaves the conversation.||Mỗi thread có địa chỉ riêng, mở lại đúng thread đó; nút Back của trình duyệt đóng bảng thread trước rồi mới rời cuộc trò chuyện.",
+     "tests": [
+      {
+       "type": "P",
+       "name": "Thread address and Back||Địa chỉ của thread và nút Back",
+       "detail": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Sam's message in #general has one reply. Mai is signed in and has #launch open; #launch is a private channel whose members are Minh (Admin), Sam and Mai; Alex is not a member. ## 1. Mai opens #general, then opens the thread on Sam's message and copies the address from the browser's address bar. 2. Mai presses browser Back once. 3. Mai pastes the copied address into a new tab. ## After step 2 the thread panel is closed and #general is still shown. After step 3 the new tab shows #general with the same thread open in the panel.||Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Tin nhắn của Sam trong #general có một câu trả lời. Mai đang đăng nhập và đang mở #launch; #launch là channel riêng tư có các thành viên Minh (Admin), Sam và Mai; Alex không phải thành viên. ## 1. Mai mở #general, rồi mở thread trên tin nhắn của Sam và sao chép địa chỉ trên thanh địa chỉ của trình duyệt. 2. Mai bấm Back của trình duyệt một lần. 3. Mai dán địa chỉ đã sao chép vào một tab mới. ## Sau bước 2, bảng thread đóng và #general vẫn đang hiển thị. Sau bước 3, tab mới hiển thị #general với đúng thread đó đang mở trong bảng bên."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "feature": "threads",
+   "area": "NT",
+   "text": "The author of the root message, everyone who has replied and everyone mentioned in the thread follow it automatically. Each new reply gives every follower except its sender a thread item in Activity, and does not raise the conversation's unread count. There is no control to stop following a thread.||Tác giả của tin nhắn gốc, mọi người đã trả lời và mọi người được nhắc tên trong thread tự động theo dõi thread đó. Mỗi câu trả lời mới tạo một mục thread trong Activity cho từng người theo dõi, trừ người gửi, và không làm tăng số tin chưa đọc của cuộc trò chuyện. Không có nút nào để ngừng theo dõi một thread.",
+   "src": "Q85 Q75 NR5",
+   "open": "",
+   "screen": "Activity: 'Threads' chip and thread items; Thread panel||Activity: chip 'Threads' và các mục thread; bảng Thread",
+   "flows": "",
+   "rules": "BR-15",
+   "evidence": "Activity sample items of type 'thread' with the text 'replied in a thread you follow: …'; Activity filter chip 'Threads'; no element containing 'Unfollow' or 'follow' as a control anywhere in the prototype.",
+   "acs": [
+    {
+     "text": "A new reply creates one thread item in Activity for the root author, for each earlier replier and for each person mentioned in the thread; the sender of the reply and members who did none of these get no item.||Một câu trả lời mới tạo một mục thread trong Activity cho tác giả tin gốc, cho từng người đã trả lời trước đó và cho từng người được nhắc tên trong thread; người gửi câu trả lời và những thành viên không thuộc các nhóm trên không nhận mục nào.",
+     "tests": [
+      {
+       "type": "P",
+       "name": "Root author is told||Tác giả tin gốc được báo",
+       "detail": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Sam's message 'Build 12 is ready' in #general has no replies. Sam's Activity has no unread item. ## 1. Mai, signed in, replies 'Installing now' in the thread on Sam's message. 2. Sam, signed in, opens Activity and presses the 'Threads' chip. ## Sam's Activity lists exactly one new thread item naming Mai and #general. Mai's Activity has no item for her own reply.||Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Tin nhắn 'Build 12 is ready' của Sam trong #general chưa có câu trả lời. Activity của Sam không có mục chưa đọc. ## 1. Mai, đang đăng nhập, trả lời 'Installing now' trong thread trên tin nhắn của Sam. 2. Sam, đang đăng nhập, mở Activity và bấm chip 'Threads'. ## Activity của Sam có đúng một mục thread mới, ghi tên Mai và #general. Activity của Mai không có mục nào cho câu trả lời của chính cô."
+      },
+      {
+       "type": "P",
+       "name": "Earlier replier is told||Người đã trả lời trước được báo",
+       "detail": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. In #general, Sam's message has one reply, from Mai. Mai's Activity has no unread item. ## 1. Sam, signed in, replies 'Thanks' in the same thread. 2. Mai, signed in, opens Activity. ## Mai's Activity shows one new thread item for Sam's reply.||Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Trong #general, tin nhắn của Sam có một câu trả lời, của Mai. Activity của Mai không có mục chưa đọc. ## 1. Sam, đang đăng nhập, trả lời 'Thanks' trong cùng thread. 2. Mai, đang đăng nhập, mở Activity. ## Activity của Mai có một mục thread mới cho câu trả lời của Sam."
+      },
+      {
+       "type": "N",
+       "name": "Non-follower gets nothing||Người không theo dõi không nhận gì",
+       "detail": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. In #general, Sam's message has one reply, from Mai. Alex has not replied in that thread and is not mentioned in it. Alex's Activity is empty. ## 1. Sam, signed in, replies 'Thanks' in the thread without mentioning anyone. 2. Alex, signed in, opens Activity. ## Alex's Activity is still empty and its badge has not changed.||Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Trong #general, tin nhắn của Sam có một câu trả lời, của Mai. Alex chưa trả lời trong thread đó và không được nhắc tên trong đó. Activity của Alex đang trống. ## 1. Sam, đang đăng nhập, trả lời 'Thanks' trong thread, không nhắc tên ai. 2. Alex, đang đăng nhập, mở Activity. ## Activity của Alex vẫn trống và badge của nó không đổi."
+      }
+     ]
+    },
+    {
+     "text": "A thread reply sent without 'Also send to #name' does not raise the conversation's unread count for anyone.||Câu trả lời trong thread được gửi mà không tick 'Also send to #name' không làm tăng số tin chưa đọc của cuộc trò chuyện với bất kỳ ai.",
+     "tests": [
+      {
+       "type": "N",
+       "name": "Channel count unchanged||Số chưa đọc của channel không đổi",
+       "detail": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Alex is signed in with another conversation open; the #general row in Alex's list shows no unread count. Sam's message in #general exists. ## 1. Mai, signed in, replies in the thread on Sam's message with 'Also send to #general' unticked. 2. Alex looks at the #general row without opening it. ## The #general row in Alex's list is not bold and shows no unread count.||Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Alex đang đăng nhập và đang mở một cuộc trò chuyện khác; dòng #general trong danh sách của Alex không có số chưa đọc. Trong #general có tin nhắn của Sam. ## 1. Mai, đang đăng nhập, trả lời trong thread trên tin nhắn của Sam, không tick 'Also send to #general'. 2. Alex nhìn dòng #general mà không mở nó. ## Dòng #general trong danh sách của Alex không in đậm và không có số chưa đọc."
+      }
+     ]
+    },
+    {
+     "text": "No screen offers a way to stop following a thread.||Không màn hình nào có cách để ngừng theo dõi một thread.",
+     "tests": [
+      {
+       "type": "N",
+       "name": "No Unfollow control||Không có nút Unfollow",
+       "detail": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Sam's message in #general has a reply from Mai, so Mai follows the thread and has a thread item in Activity. Mai is signed in. ## 1. Mai opens the thread panel and looks at its header and composer. 2. Mai opens the More menu of the root message and of her reply. 3. Mai opens Activity and looks at the buttons on the thread item. ## None of these places has a control named 'Unfollow thread' or any other control that stops following the thread.||Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Tin nhắn của Sam trong #general có một câu trả lời của Mai, nên Mai đang theo dõi thread và có một mục thread trong Activity. Mai đang đăng nhập. ## 1. Mai mở bảng thread và xem phần tiêu đề và ô soạn tin. 2. Mai mở menu More của tin nhắn gốc và của câu trả lời của mình. 3. Mai mở Activity và xem các nút trên mục thread. ## Không nơi nào trong số này có nút 'Unfollow thread' hay bất kỳ nút nào khác để ngừng theo dõi thread."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "feature": "reactions",
+   "area": "MS",
+   "text": "A person can react to a message with any of 8 fixed emoji: 👍 ❤️ 🎉 😂 👀 🙏 ✅ 🚀; there is no full emoji picker. Each emoji used shows under the message as a chip with a count; a person can add one of each emoji per message and remove their own. The chip names the people who reacted, and the message's author gets a reaction item in Activity with no toast or push.||Người dùng có thể thả cảm xúc lên một tin nhắn bằng một trong 8 emoji cố định: 👍 ❤️ 🎉 😂 👀 🙏 ✅ 🚀; không có bảng chọn emoji đầy đủ. Mỗi emoji đã dùng hiện dưới tin nhắn thành một chip kèm số đếm; mỗi người thêm được một lần cho mỗi emoji trên một tin nhắn và gỡ được reaction của chính mình. Chip cho biết tên những người đã thả, và tác giả tin nhắn nhận một mục reaction trong Activity, không có toast hay push.",
+   "src": "Q17 Q85",
+   "open": "VQ-06 VQ-07",
+   "screen": "Home: smile button on the message action bar; reaction chips under a message||Home: nút mặt cười trên thanh thao tác của tin nhắn; các chip reaction dưới tin nhắn",
+   "flows": "",
+   "rules": "BR-15",
+   "evidence": "const REACTIONS=['👍','❤️','🎉','😂','👀','🙏','✅','🚀']; emoji menu (data-action rxpick); chip button class 'rx' with count, aria-pressed for your own, title = first names of those who reacted; toggleRx() adds or removes the signed-in person; Activity sample item 'reacted 👍 to your message in #design-crit'.",
+   "acs": [
+    {
+     "text": "The reaction panel offers exactly the 8 emoji 👍 ❤️ 🎉 😂 👀 🙏 ✅ 🚀 and no way to choose any other.||Bảng reaction có đúng 8 emoji 👍 ❤️ 🎉 😂 👀 🙏 ✅ 🚀 và không có cách nào chọn emoji khác.",
+     "tests": [
+      {
+       "type": "B",
+       "name": "Exactly 8 emoji||Đúng 8 emoji",
+       "detail": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. #general has a message from Sam. Mai is signed in. ## 1. Mai opens #general and presses the smile button on the action bar of Sam's message. 2. Mai counts the emoji and looks for a search field or a 'more' button in the panel. ## The panel shows 8 emoji, 👍 ❤️ 🎉 😂 👀 🙏 ✅ 🚀, and has no search field and no control that shows more emoji.||Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. #general có một tin nhắn của Sam. Mai đang đăng nhập. ## 1. Mai mở #general và bấm nút mặt cười trên thanh thao tác của tin nhắn của Sam. 2. Mai đếm số emoji và tìm ô tìm kiếm hoặc nút 'more' trong bảng. ## Bảng hiển thị 8 emoji, 👍 ❤️ 🎉 😂 👀 🙏 ✅ 🚀, không có ô tìm kiếm và không có nút nào để hiện thêm emoji."
+      }
+     ]
+    },
+    {
+     "text": "Picking an emoji adds a chip with that emoji and a count, marked as the person's own. Pressing one's own chip removes the reaction, and a chip whose count reaches 0 disappears; pressing another person's chip adds the same emoji. A person can hold one of each emoji on a message and several different emoji.||Chọn một emoji sẽ thêm một chip có emoji đó kèm số đếm, được đánh dấu là của chính người đó. Bấm vào chip của mình sẽ gỡ reaction, chip có số đếm về 0 thì biến mất; bấm vào chip của người khác sẽ thêm cùng emoji đó. Trên một tin nhắn, mỗi người giữ được một lần cho mỗi emoji và có thể dùng nhiều emoji khác nhau.",
+     "tests": [
+      {
+       "type": "P",
+       "name": "Add then remove||Thêm rồi gỡ",
+       "detail": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Sam's message in #general has no reactions. Mai is signed in. ## 1. Mai presses the smile button on Sam's message and picks 👍. 2. Mai presses the 👍 chip. ## After step 1 a chip '👍 1' is under the message, outlined as Mai's own. After step 2 the message has no chip.||Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Tin nhắn của Sam trong #general chưa có reaction. Mai đang đăng nhập. ## 1. Mai bấm nút mặt cười trên tin nhắn của Sam và chọn 👍. 2. Mai bấm vào chip 👍. ## Sau bước 1, dưới tin nhắn có chip '👍 1', được viền để đánh dấu là của Mai. Sau bước 2, tin nhắn không còn chip nào."
+      },
+      {
+       "type": "P",
+       "name": "Join another person's reaction||Thả cùng emoji với người khác",
+       "detail": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Sam's message in #general has the chip '👍 1' from Mai. Alex is signed in. ## 1. Alex presses the '👍 1' chip. 2. Mai, signed in on another browser, looks at the message. ## Both see one chip '👍 2'; no second 👍 chip is created.||Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Tin nhắn của Sam trong #general có chip '👍 1' của Mai. Alex đang đăng nhập. ## 1. Alex bấm vào chip '👍 1'. 2. Mai, đăng nhập trên trình duyệt khác, xem tin nhắn. ## Cả hai thấy một chip '👍 2'; không có chip 👍 thứ hai được tạo ra."
+      },
+      {
+       "type": "B",
+       "name": "One of each emoji per person||Mỗi người một lần cho mỗi emoji",
+       "detail": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Sam's message in #general has the chip '👍 1' from Mai. Mai is signed in. ## 1. Mai opens the reaction panel on the message and picks 🎉. 2. Mai opens the reaction panel again and picks 👍. ## After step 1 the message has '👍 1' and '🎉 1'. After step 2 the 👍 count has not become 2: the 👍 chip is gone and only '🎉 1' remains.||Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Tin nhắn của Sam trong #general có chip '👍 1' của Mai. Mai đang đăng nhập. ## 1. Mai mở bảng reaction trên tin nhắn và chọn 🎉. 2. Mai mở lại bảng reaction và chọn 👍. ## Sau bước 1, tin nhắn có '👍 1' và '🎉 1'. Sau bước 2, số đếm 👍 không thành 2: chip 👍 biến mất và chỉ còn '🎉 1'."
+      }
+     ]
+    },
+    {
+     "text": "Pointing at a reaction chip shows the names of the people who reacted with that emoji.||Rê chuột lên một chip reaction sẽ hiện tên những người đã thả emoji đó.",
+     "tests": [
+      {
+       "type": "P",
+       "name": "Who reacted||Ai đã thả cảm xúc",
+       "detail": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Sam's message in #general has the chip '👍 2' from Mai and Alex. Minh is signed in on a desktop browser. ## 1. Minh opens #general and holds the pointer over the '👍 2' chip. ## A tooltip names Mai and Alex and nobody else.||Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Tin nhắn của Sam trong #general có chip '👍 2' của Mai và Alex. Minh đang đăng nhập trên trình duyệt máy tính. ## 1. Minh mở #general và giữ con trỏ trên chip '👍 2'. ## Một tooltip hiện tên Mai và Alex, không có ai khác."
+      }
+     ]
+    },
+    {
+     "text": "A reaction by another person gives the message's author one reaction item in Activity and produces no toast and no push.||Khi người khác thả reaction, tác giả tin nhắn nhận một mục reaction trong Activity, không có toast và không có push.",
+     "tests": [
+      {
+       "type": "P",
+       "name": "Author gets an Activity item only||Tác giả chỉ nhận mục Activity",
+       "detail": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Sam's message in #general has no reactions. Sam is signed in with Toki open on another conversation, push allowed, and no Pause or Focus time running; his Activity has no unread item. ## 1. Mai, signed in, reacts 👍 to Sam's message. 2. Sam watches his screen, then opens Activity and presses the 'Reactions' chip. ## No toast and no system notification appear for Sam. His Activity lists one new reaction item naming Mai, 👍 and #general.||Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Tin nhắn của Sam trong #general chưa có reaction. Sam đang đăng nhập, mở Toki ở một cuộc trò chuyện khác, đã cho phép push, không bật Pause hay Focus time; Activity của Sam không có mục chưa đọc. ## 1. Mai, đang đăng nhập, thả 👍 lên tin nhắn của Sam. 2. Sam quan sát màn hình, sau đó mở Activity và bấm chip 'Reactions'. ## Sam không thấy toast hay thông báo hệ thống nào. Activity của Sam có một mục reaction mới ghi tên Mai, 👍 và #general."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "feature": "pins",
+   "area": "MS",
+   "text": "A Member or Admin who is in a conversation can pin and unpin any message in it from the message's More menu. A pinned message carries a 'Pinned' label, the conversation shows a system line saying who pinned it, and the Pinned tab lists the conversation's pinned messages, most recently pinned first. Pinning and unpinning happen at once, with Undo for 5 seconds and no confirmation.||Member hoặc Admin là thành viên của một cuộc trò chuyện có thể ghim và bỏ ghim bất kỳ tin nhắn nào trong đó từ menu More của tin nhắn. Tin nhắn đã ghim có nhãn 'Pinned', cuộc trò chuyện hiện một dòng hệ thống cho biết ai đã ghim, và tab Pinned liệt kê các tin nhắn đã ghim của cuộc trò chuyện, tin ghim gần nhất ở trên cùng. Ghim và bỏ ghim có hiệu lực ngay, kèm Undo trong 5 giây và không hỏi xác nhận.",
+   "src": "Q50 Q85 OQ12 NR3",
+   "open": "VQ-08 VQ-09 VQ-10",
+   "screen": "Home: message More menu 'Pin to conversation' / 'Unpin'; 'Pinned' tab of a conversation||Home: menu More của tin nhắn, mục 'Pin to conversation' / 'Unpin'; tab 'Pinned' của cuộc trò chuyện",
+   "flows": "",
+   "rules": "BR-20",
+   "evidence": "More menu item 'Pin to conversation' / 'Unpin' (case 'pin' toggles m.pinned, toasts 'Pinned to conversation' / 'Unpinned'); label 'Pinned' with a pin icon beside the time in the message header; conversation tab 'Pinned' with the empty state 'Nothing pinned · Pin a decision or a link so people can find it later.' The prototype's toast has no Undo and there is no system line; both come from the accepted journey F17.",
+   "acs": [
+    {
+     "text": "Any Member or Admin in the conversation can pin a message, their own or another person's. Every member then sees the 'Pinned' label on it, a system line naming who pinned it, and the message in the Pinned tab.||Mọi Member hoặc Admin trong cuộc trò chuyện đều ghim được tin nhắn, của mình hay của người khác. Khi đó mọi thành viên thấy nhãn 'Pinned' trên tin nhắn, một dòng hệ thống ghi tên người ghim, và tin nhắn đó trong tab Pinned.",
+     "tests": [
+      {
+       "type": "P",
+       "name": "Member pins another person's message||Member ghim tin nhắn của người khác",
+       "detail": "#launch is a private channel whose members are Minh (Admin), Sam and Mai; Alex is not a member. Mai has sent 'Launch date: 1 December' in #launch; nothing is pinned there. Sam is signed in. ## 1. Sam opens #launch, opens the More menu of Mai's message and presses 'Pin to conversation'. 2. Minh, signed in on another browser, opens #launch and then its Pinned tab. ## Minh sees the 'Pinned' label on Mai's message, the system line 'Sam pinned a message' in #launch, and Mai's message as the only entry of the Pinned tab.||#launch là channel riêng tư có các thành viên Minh (Admin), Sam và Mai; Alex không phải thành viên. Mai đã gửi 'Launch date: 1 December' trong #launch; ở đó chưa có tin nào được ghim. Sam đang đăng nhập. ## 1. Sam mở #launch, mở menu More của tin nhắn của Mai và bấm 'Pin to conversation'. 2. Minh, đăng nhập trên trình duyệt khác, mở #launch rồi mở tab Pinned. ## Minh thấy nhãn 'Pinned' trên tin nhắn của Mai, dòng hệ thống 'Sam pinned a message' trong #launch, và tin nhắn của Mai là mục duy nhất trong tab Pinned."
+      },
+      {
+       "type": "P",
+       "name": "A member unpins someone else's pin||Thành viên bỏ ghim tin do người khác ghim",
+       "detail": "#launch is a private channel whose members are Minh (Admin), Sam and Mai; Alex is not a member. Sam has pinned Mai's message 'Launch date: 1 December' in #launch. Mai is signed in. ## 1. Mai opens the More menu of the pinned message. 2. Mai presses 'Unpin' and waits 6 seconds. 3. Mai opens the Pinned tab. ## The menu offers 'Unpin'. After step 2 the 'Pinned' label is gone, and the Pinned tab shows 'Nothing pinned'.||#launch là channel riêng tư có các thành viên Minh (Admin), Sam và Mai; Alex không phải thành viên. Sam đã ghim tin nhắn 'Launch date: 1 December' của Mai trong #launch. Mai đang đăng nhập. ## 1. Mai mở menu More của tin nhắn đã ghim. 2. Mai bấm 'Unpin' và chờ 6 giây. 3. Mai mở tab Pinned. ## Menu có mục 'Unpin'. Sau bước 2, nhãn 'Pinned' biến mất, và tab Pinned hiển thị 'Nothing pinned'."
+      }
+     ]
+    },
+    {
+     "text": "The Pinned tab orders messages by the time they were pinned, newest pin first, and pressing an entry shows that message in the Messages tab.||Tab Pinned xếp tin nhắn theo thời điểm được ghim, tin ghim mới nhất ở trên cùng; bấm vào một mục sẽ hiện tin nhắn đó trong tab Messages.",
+     "tests": [
+      {
+       "type": "P",
+       "name": "Order by pin time||Xếp theo thời điểm ghim",
+       "detail": "#launch is a private channel whose members are Minh (Admin), Sam and Mai; Alex is not a member. #launch holds an older message A ('Checklist v1', from Mai) and a newer message B ('Checklist v2', from Minh); nothing is pinned. Sam is signed in. ## 1. Sam pins message B. 2. Sam pins message A. 3. Sam opens the Pinned tab. 4. Sam presses the entry for message B. ## In step 3 the tab lists A first and B second. After step 4 the Messages tab is shown with message B on screen.||#launch là channel riêng tư có các thành viên Minh (Admin), Sam và Mai; Alex không phải thành viên. #launch có tin nhắn A cũ hơn ('Checklist v1', của Mai) và tin nhắn B mới hơn ('Checklist v2', của Minh); chưa có tin nào được ghim. Sam đang đăng nhập. ## 1. Sam ghim tin nhắn B. 2. Sam ghim tin nhắn A. 3. Sam mở tab Pinned. 4. Sam bấm vào mục của tin nhắn B. ## Ở bước 3, tab liệt kê A trước rồi đến B. Sau bước 4, tab Messages hiển thị với tin nhắn B trên màn hình."
+      }
+     ]
+    },
+    {
+     "text": "Pinning and unpinning take effect at once and show a toast with Undo for 5 seconds; neither asks for confirmation, and Undo puts the message back in its earlier state.||Ghim và bỏ ghim có hiệu lực ngay và hiện toast có Undo trong 5 giây; cả hai đều không hỏi xác nhận, và Undo đưa tin nhắn về trạng thái trước đó.",
+     "tests": [
+      {
+       "type": "P",
+       "name": "Undo an unpin||Undo việc bỏ ghim",
+       "detail": "#launch is a private channel whose members are Minh (Admin), Sam and Mai; Alex is not a member. Mai's message 'Launch date: 1 December' is pinned in #launch. Sam is signed in. ## 1. Sam opens the More menu of the message and presses 'Unpin'. 2. Within 5 seconds Sam presses 'Undo' in the toast. 3. Sam opens the Pinned tab. ## No confirmation dialog appears in step 1. After step 2 the message carries the 'Pinned' label again and is listed in the Pinned tab.||#launch là channel riêng tư có các thành viên Minh (Admin), Sam và Mai; Alex không phải thành viên. Tin nhắn 'Launch date: 1 December' của Mai đang được ghim trong #launch. Sam đang đăng nhập. ## 1. Sam mở menu More của tin nhắn và bấm 'Unpin'. 2. Trong vòng 5 giây, Sam bấm 'Undo' trên toast. 3. Sam mở tab Pinned. ## Ở bước 1 không có hộp thoại xác nhận nào. Sau bước 2, tin nhắn lại có nhãn 'Pinned' và có trong tab Pinned."
+      },
+      {
+       "type": "B",
+       "name": "Undo ends after 5 seconds||Undo hết hạn sau 5 giây",
+       "detail": "#launch is a private channel whose members are Minh (Admin), Sam and Mai; Alex is not a member. Mai's message 'Launch date: 1 December' is in #launch and is not pinned. Sam is signed in. ## 1. Sam opens the More menu of the message and presses 'Pin to conversation'. 2. Sam waits 6 seconds and looks for the toast. ## A toast with 'Undo' appears right after step 1. After 6 seconds the toast is gone and the message is still pinned.||#launch là channel riêng tư có các thành viên Minh (Admin), Sam và Mai; Alex không phải thành viên. Tin nhắn 'Launch date: 1 December' của Mai có trong #launch và chưa được ghim. Sam đang đăng nhập. ## 1. Sam mở menu More của tin nhắn và bấm 'Pin to conversation'. 2. Sam chờ 6 giây rồi tìm toast. ## Ngay sau bước 1 có toast kèm 'Undo'. Sau 6 giây, toast biến mất và tin nhắn vẫn đang được ghim."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "feature": "formatting",
+   "area": "MS",
+   "text": "The composer toolbar has Bold, Italic and Code; each wraps the selected text in its mark (*, _ or `), and the sent message shows that text as bold, italic or code. A web address in a message becomes a link with a preview card, which the sender can remove. Everything else is shown as plain text exactly as typed, HTML included.||Thanh công cụ của ô soạn tin có Bold, Italic và Code; mỗi nút bọc đoạn văn bản đang chọn bằng ký hiệu tương ứng (*, _ hoặc `), và tin nhắn đã gửi hiển thị đoạn đó ở dạng in đậm, in nghiêng hoặc code. Địa chỉ web trong tin nhắn trở thành link kèm thẻ xem trước, người gửi có thể gỡ thẻ này. Mọi nội dung khác được hiển thị dưới dạng văn bản thuần đúng như đã gõ, kể cả HTML.",
+   "src": "Q17 Q14 Q85 Q19",
+   "open": "VQ-11",
+   "screen": "Home: composer toolbar (Bold, Italic, Code); message text||Home: thanh công cụ của ô soạn tin (Bold, Italic, Code); nội dung tin nhắn",
+   "flows": "",
+   "rules": "",
+   "evidence": "Toolbar buttons aria-label 'Bold', 'Italic', 'Code' (data-action fmt, data-f '*', '_', '`'; case 'fmt' wraps the selection); rich(): escapes the text first (esc), then turns `x` into code, *x* into bold, _x_ into italic and http(s):// addresses into a styled link. The prototype's link is not clickable and has no preview card; those come from the accepted journey F12.",
+   "acs": [
+    {
+     "text": "Text between two * shows as bold, between two _ as italic and between two ` as code, whether the marks were typed or added with the toolbar; the marks themselves are not shown in the sent message.||Văn bản nằm giữa hai dấu * hiển thị in đậm, giữa hai dấu _ hiển thị in nghiêng và giữa hai dấu ` hiển thị dạng code, dù ký hiệu được gõ tay hay thêm bằng thanh công cụ; bản thân các ký hiệu không hiện trong tin nhắn đã gửi.",
+     "tests": [
+      {
+       "type": "P",
+       "name": "Bold from the toolbar||In đậm bằng thanh công cụ",
+       "detail": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Sam is signed in with #general open and an empty composer. ## 1. Sam types 'ship on Friday' and selects the word 'Friday'. 2. Sam presses Bold in the toolbar. 3. Sam sends the message. ## After step 2 the composer reads 'ship on *Friday*'. The sent message reads 'ship on Friday' with only 'Friday' in bold and no asterisks.||Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Sam đang đăng nhập, mở #general, ô soạn tin đang trống. ## 1. Sam gõ 'ship on Friday' và chọn từ 'Friday'. 2. Sam bấm Bold trên thanh công cụ. 3. Sam gửi tin nhắn. ## Sau bước 2, ô soạn tin có nội dung 'ship on *Friday*'. Tin nhắn đã gửi có nội dung 'ship on Friday', chỉ 'Friday' in đậm và không có dấu sao."
+      },
+      {
+       "type": "P",
+       "name": "Typed italic and code||Gõ tay in nghiêng và code",
+       "detail": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Sam is signed in with #general open; Mai is signed in on another browser with #general open. ## 1. Sam types: run `npm test` and _wait_ for it 2. Sam sends the message. ## Mai sees 'run npm test and wait for it', with 'npm test' in code style and 'wait' in italic; no backtick or underscore is visible.||Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Sam đang đăng nhập và mở #general; Mai đăng nhập trên trình duyệt khác và cũng mở #general. ## 1. Sam gõ: run `npm test` and _wait_ for it 2. Sam gửi tin nhắn. ## Mai thấy 'run npm test and wait for it', trong đó 'npm test' ở dạng code và 'wait' in nghiêng; không thấy dấu ` hay dấu _ nào."
+      }
+     ]
+    },
+    {
+     "text": "An address starting with http:// or https:// is shown as a link that opens that address, and a preview card appears under the message; the sender can remove the card with its ×.||Địa chỉ bắt đầu bằng http:// hoặc https:// được hiển thị thành link mở đúng địa chỉ đó, và một thẻ xem trước xuất hiện dưới tin nhắn; người gửi có thể gỡ thẻ bằng nút ×.",
+     "tests": [
+      {
+       "type": "P",
+       "name": "Link and removable preview||Link và thẻ xem trước gỡ được",
+       "detail": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Sam is signed in with #general open; Mai is signed in on another browser. The address https://example.com is reachable from the server. ## 1. Sam sends 'see https://example.com today'. 2. Mai presses the address in the message. 3. Sam waits for the preview card, then presses the × on it. ## In step 2 the browser opens https://example.com. A preview card appears under the message, and after step 3 neither Sam nor Mai sees the card while the link in the text stays.||Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Sam đang đăng nhập và mở #general; Mai đăng nhập trên trình duyệt khác. Địa chỉ https://example.com truy cập được từ máy chủ. ## 1. Sam gửi 'see https://example.com today'. 2. Mai bấm vào địa chỉ trong tin nhắn. 3. Sam chờ thẻ xem trước hiện ra rồi bấm nút × trên thẻ. ## Ở bước 2, trình duyệt mở https://example.com. Một thẻ xem trước xuất hiện dưới tin nhắn, và sau bước 3 cả Sam lẫn Mai đều không còn thấy thẻ, còn link trong nội dung vẫn giữ nguyên."
+      }
+     ]
+    },
+    {
+     "text": "HTML typed in a message is shown as the characters that were typed: no element is created, no image is loaded and no script runs, for the sender or for anyone else.||HTML gõ trong tin nhắn được hiển thị đúng như các ký tự đã gõ: không phần tử nào được tạo, không ảnh nào được tải và không script nào chạy, với cả người gửi lẫn mọi người khác.",
+     "tests": [
+      {
+       "type": "N",
+       "name": "HTML shown as text||HTML hiển thị dạng văn bản",
+       "detail": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Sam is signed in with #general open; Mai is signed in on another browser with #general open. ## 1. Sam sends exactly: <b>hi</b> <img src=x onerror=alert(1)> 2. Mai looks at the new message. ## Both see the text '<b>hi</b> <img src=x onerror=alert(1)>' character for character. 'hi' is not bold, no image or broken-image icon is shown, and no dialog opens.||Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Sam đang đăng nhập và mở #general; Mai đăng nhập trên trình duyệt khác và cũng mở #general. ## 1. Sam gửi đúng nội dung: <b>hi</b> <img src=x onerror=alert(1)> 2. Mai xem tin nhắn mới. ## Cả hai thấy đúng từng ký tự '<b>hi</b> <img src=x onerror=alert(1)>'. Chữ 'hi' không in đậm, không có ảnh hay biểu tượng ảnh lỗi, và không có hộp thoại nào mở ra."
+      },
+      {
+       "type": "X",
+       "name": "HTML inside formatting marks||HTML nằm trong ký hiệu định dạng",
+       "detail": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Sam is signed in with #general open. ## 1. Sam sends exactly: *<i>now</i>* ## The message shows '<i>now</i>' in bold, with the angle brackets visible and the word 'now' not in italic.||Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Sam đang đăng nhập và mở #general. ## 1. Sam gửi đúng nội dung: *<i>now</i>* ## Tin nhắn hiển thị '<i>now</i>' in đậm, các dấu ngoặc nhọn vẫn nhìn thấy và chữ 'now' không in nghiêng."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "feature": "drafts",
+   "area": "MS",
+   "text": "Text typed but not sent is kept as a draft for that conversation, and separately for each thread; it is back in the composer when the person returns, on any of their devices. A conversation that has a draft and is not open shows a 'Draft' label in the conversation list. A draft is still there after signing out or after the session ends, and it is cleared when the message is sent.||Văn bản đã gõ nhưng chưa gửi được giữ lại thành draft của cuộc trò chuyện đó, và riêng cho từng thread; khi người dùng quay lại, trên bất kỳ thiết bị nào của họ, văn bản có sẵn trong ô soạn tin. Cuộc trò chuyện có draft mà không đang mở sẽ có nhãn 'Draft' trong danh sách cuộc trò chuyện. Draft vẫn còn sau khi đăng xuất hoặc khi phiên kết thúc, và được xoá khi tin nhắn được gửi.",
+   "src": "Q17 Q85",
+   "open": "VQ-12 VQ-13",
+   "screen": "Home: composer; 'Draft' label on a row of the conversation list||Home: ô soạn tin; nhãn 'Draft' trên một dòng của danh sách cuộc trò chuyện",
+   "flows": "",
+   "rules": "",
+   "evidence": "D.drafts keyed 'c:<conversation>' and 't:<root message>'; the composer textarea is filled from D.drafts[key]; conversation row shows <span class=\"draft\">Draft</span> when the draft is not blank and the conversation is not the open one; sendKey() empties the draft. Sync across devices and survival of sign-out come from the accepted journeys F06, F07 and F11.",
+   "acs": [
+    {
+     "text": "Leaving a conversation with unsent text keeps that text for that conversation only: the row shows 'Draft' while the conversation is not open, and the text is in the composer on return. Text that is only spaces or line breaks produces no 'Draft' label. A thread's composer keeps its own draft, separate from the conversation's.||Rời một cuộc trò chuyện khi còn văn bản chưa gửi thì văn bản đó được giữ riêng cho cuộc trò chuyện ấy: dòng của nó hiện 'Draft' khi cuộc trò chuyện không đang mở, và văn bản có sẵn trong ô soạn tin khi quay lại. Văn bản chỉ gồm dấu cách hoặc xuống dòng không tạo nhãn 'Draft'. Ô soạn tin của thread giữ draft riêng, tách khỏi draft của cuộc trò chuyện.",
+     "tests": [
+      {
+       "type": "P",
+       "name": "Draft kept per conversation||Draft giữ theo từng cuộc trò chuyện",
+       "detail": "#launch is a private channel whose members are Minh (Admin), Sam and Mai; Alex is not a member. Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Sam is signed in with #launch open; both composers are empty. ## 1. Sam types 'Release notes are' in the #launch composer and does not send. 2. Sam opens #general. 3. Sam opens #launch again. ## After step 2 the #general composer is empty and the #launch row shows 'Draft'. After step 3 the #launch composer contains 'Release notes are' and the row no longer shows 'Draft'.||#launch là channel riêng tư có các thành viên Minh (Admin), Sam và Mai; Alex không phải thành viên. Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Sam đang đăng nhập và mở #launch; cả hai ô soạn tin đều trống. ## 1. Sam gõ 'Release notes are' vào ô soạn tin của #launch và không gửi. 2. Sam mở #general. 3. Sam mở lại #launch. ## Sau bước 2, ô soạn tin của #general trống và dòng #launch hiện 'Draft'. Sau bước 3, ô soạn tin của #launch có 'Release notes are' và dòng này không còn hiện 'Draft'."
+      },
+      {
+       "type": "N",
+       "name": "Blank text is not a draft||Văn bản trống không phải draft",
+       "detail": "#launch is a private channel whose members are Minh (Admin), Sam and Mai; Alex is not a member. Sam is signed in with #launch open and an empty composer. ## 1. Sam types three spaces in the #launch composer. 2. Sam opens #general and looks at the #launch row. ## The #launch row shows no 'Draft' label.||#launch là channel riêng tư có các thành viên Minh (Admin), Sam và Mai; Alex không phải thành viên. Sam đang đăng nhập, mở #launch, ô soạn tin đang trống. ## 1. Sam gõ ba dấu cách vào ô soạn tin của #launch. 2. Sam mở #general và nhìn dòng #launch. ## Dòng #launch không có nhãn 'Draft'."
+      },
+      {
+       "type": "P",
+       "name": "Thread draft is separate||Draft của thread tách riêng",
+       "detail": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Mai's message in #general has one reply. Sam is signed in with #general open and an empty composer. ## 1. Sam opens the thread on Mai's message and types 'Will check' in the thread composer without sending. 2. Sam closes the thread panel and looks at the #general composer. 3. Sam opens the same thread again. ## In step 2 the #general composer is empty. In step 3 the thread composer contains 'Will check'.||Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Tin nhắn của Mai trong #general có một câu trả lời. Sam đang đăng nhập, mở #general, ô soạn tin đang trống. ## 1. Sam mở thread trên tin nhắn của Mai và gõ 'Will check' vào ô soạn tin của thread, không gửi. 2. Sam đóng bảng thread và nhìn ô soạn tin của #general. 3. Sam mở lại đúng thread đó. ## Ở bước 2, ô soạn tin của #general trống. Ở bước 3, ô soạn tin của thread có 'Will check'."
+      }
+     ]
+    },
+    {
+     "text": "A draft is saved to the person's account: it appears on their other devices, and it is still in the composer after they sign out and sign in again.||Draft được lưu vào tài khoản của người dùng: nó xuất hiện trên các thiết bị khác của họ, và vẫn còn trong ô soạn tin sau khi họ đăng xuất rồi đăng nhập lại.",
+     "tests": [
+      {
+       "type": "P",
+       "name": "Draft on a second device||Draft trên thiết bị thứ hai",
+       "detail": "#launch is a private channel whose members are Minh (Admin), Sam and Mai; Alex is not a member. Sam is signed in on browser A and on browser B; the #launch composer is empty on both. ## 1. On browser A, Sam types 'Release notes are' in #launch and then opens #general. 2. On browser B, Sam opens #launch. ## On browser B the #launch composer contains 'Release notes are'.||#launch là channel riêng tư có các thành viên Minh (Admin), Sam và Mai; Alex không phải thành viên. Sam đang đăng nhập trên trình duyệt A và trình duyệt B; ô soạn tin của #launch trống trên cả hai. ## 1. Trên trình duyệt A, Sam gõ 'Release notes are' trong #launch rồi mở #general. 2. Trên trình duyệt B, Sam mở #launch. ## Trên trình duyệt B, ô soạn tin của #launch có 'Release notes are'."
+      },
+      {
+       "type": "P",
+       "name": "Draft survives sign-out||Draft còn sau khi đăng xuất",
+       "detail": "#launch is a private channel whose members are Minh (Admin), Sam and Mai; Alex is not a member. Sam is signed in on one browser and has typed 'Release notes are' in #launch without sending. ## 1. Sam presses 'Sign out' in the account menu. 2. Sam signs in again with a new code and opens #launch. ## The #launch composer contains 'Release notes are'.||#launch là channel riêng tư có các thành viên Minh (Admin), Sam và Mai; Alex không phải thành viên. Sam đang đăng nhập trên một trình duyệt và đã gõ 'Release notes are' trong #launch nhưng chưa gửi. ## 1. Sam bấm 'Sign out' trong menu tài khoản. 2. Sam đăng nhập lại bằng mã mới và mở #launch. ## Ô soạn tin của #launch có 'Release notes are'."
+      }
+     ]
+    },
+    {
+     "text": "Sending the message clears the draft: the composer is empty and the conversation shows no 'Draft' label afterwards.||Gửi tin nhắn sẽ xoá draft: sau đó ô soạn tin trống và cuộc trò chuyện không còn nhãn 'Draft'.",
+     "tests": [
+      {
+       "type": "P",
+       "name": "Draft cleared on send||Draft được xoá khi gửi",
+       "detail": "#launch is a private channel whose members are Minh (Admin), Sam and Mai; Alex is not a member. Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. Sam is signed in; the #launch row shows 'Draft' and its draft is 'Release notes are'. ## 1. Sam opens #launch and presses Send. 2. Sam opens #general and looks at the #launch row. 3. Sam opens #launch again. ## 'Release notes are' is sent as a message. The #launch row shows no 'Draft' label, and in step 3 the composer is empty.||#launch là channel riêng tư có các thành viên Minh (Admin), Sam và Mai; Alex không phải thành viên. Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Sam đang đăng nhập; dòng #launch hiện 'Draft' và draft của nó là 'Release notes are'. ## 1. Sam mở #launch và bấm Send. 2. Sam mở #general và nhìn dòng #launch. 3. Sam mở lại #launch. ## 'Release notes are' được gửi thành tin nhắn. Dòng #launch không có nhãn 'Draft', và ở bước 3 ô soạn tin trống."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "feature": "files",
+   "area": "RD",
+   "text": "The Files page lists every file, image and link from the conversations the person can see, newest first, with a search by file name or sender, the chips All, Images, Documents and Links, and a switch between list and grid. Each conversation's 'Files & links' tab lists the same kind of items for that conversation only. Pressing an item opens its details, with 'Open in conversation', 'Copy link' and 'Download'.||Trang Files liệt kê mọi tệp, ảnh và link từ các cuộc trò chuyện mà người dùng xem được, mới nhất ở trên cùng, có tìm kiếm theo tên tệp hoặc người gửi, các chip All, Images, Documents và Links, và nút chuyển giữa dạng danh sách và dạng lưới. Tab 'Files & links' của mỗi cuộc trò chuyện liệt kê cùng loại mục đó nhưng chỉ của cuộc trò chuyện ấy. Bấm vào một mục sẽ mở phần chi tiết, có 'Open in conversation', 'Copy link' và 'Download'.",
+   "src": "Q2 Q14 Q85 Q58",
+   "open": "VQ-14 VQ-15",
+   "screen": "Files page; 'Files & links' tab of a conversation; file detail modal||Trang Files; tab 'Files & links' của cuộc trò chuyện; hộp thoại chi tiết tệp",
+   "flows": "",
+   "rules": "BR-09",
+   "evidence": "filesHtml(): search field (S.fileQ, matches name or sender), chips 'All', 'Images', 'Documents', 'Links' (data-action filefilter), list/grid switch (aria-label 'Grid view'), empty state 'No files match' with 'Clear filters'; allFiles() gathers attachments and links from messages; fileRow shows sender · conversation · day · size; conversation tab 'Files & links' filters allFiles() by conversation, empty text 'No files or links yet'; file modal (S.modal type 'file').",
+   "acs": [
+    {
+     "text": "A file, image or link sent in a conversation appears at the top of the Files page of every person who can see that conversation, and in that conversation's 'Files & links' tab; the tab shows nothing from other conversations.||Tệp, ảnh hoặc link được gửi trong một cuộc trò chuyện sẽ xuất hiện ở đầu trang Files của mọi người xem được cuộc trò chuyện đó, và trong tab 'Files & links' của chính cuộc trò chuyện; tab này không hiển thị mục nào của cuộc trò chuyện khác.",
+     "tests": [
+      {
+       "type": "P",
+       "name": "Sent file is listed||Tệp đã gửi được liệt kê",
+       "detail": "#launch is a private channel whose members are Minh (Admin), Sam and Mai; Alex is not a member. Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. #general already holds the file 'agenda.pdf' sent by Alex. Sam and Mai are signed in. ## 1. Sam sends a message in #launch with the file 'launch-checklist.pdf' attached. 2. Mai opens the Files page. 3. Mai opens #launch and its 'Files & links' tab. ## In step 2 'launch-checklist.pdf' is the first row, above 'agenda.pdf', and names Sam and #launch. In step 3 the tab lists 'launch-checklist.pdf' and does not list 'agenda.pdf'.||#launch là channel riêng tư có các thành viên Minh (Admin), Sam và Mai; Alex không phải thành viên. Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. #general đã có tệp 'agenda.pdf' do Alex gửi. Sam và Mai đang đăng nhập. ## 1. Sam gửi một tin nhắn trong #launch có đính kèm tệp 'launch-checklist.pdf'. 2. Mai mở trang Files. 3. Mai mở #launch rồi mở tab 'Files & links'. ## Ở bước 2, 'launch-checklist.pdf' là dòng đầu tiên, nằm trên 'agenda.pdf', có ghi tên Sam và #launch. Ở bước 3, tab liệt kê 'launch-checklist.pdf' và không liệt kê 'agenda.pdf'."
+      },
+      {
+       "type": "N",
+       "name": "Private channel files hidden from outsiders||Tệp của channel riêng tư không hiện với người ngoài",
+       "detail": "#launch is a private channel whose members are Minh (Admin), Sam and Mai; Alex is not a member. Sam has sent 'launch-checklist.pdf' in #launch. Alex is signed in. ## 1. Alex opens the Files page with the chip 'All' selected. 2. Alex types 'launch-checklist' in the Files search field. ## 'launch-checklist.pdf' is not listed in step 1, and step 2 shows 'No files match'.||#launch là channel riêng tư có các thành viên Minh (Admin), Sam và Mai; Alex không phải thành viên. Sam đã gửi 'launch-checklist.pdf' trong #launch. Alex đang đăng nhập. ## 1. Alex mở trang Files với chip 'All' đang chọn. 2. Alex gõ 'launch-checklist' vào ô tìm kiếm của Files. ## Ở bước 1 không có 'launch-checklist.pdf', và bước 2 hiển thị 'No files match'."
+      }
+     ]
+    },
+    {
+     "text": "The search field keeps only items whose file name or sender matches the text, and a chip keeps only items of its kind; the two apply together.||Ô tìm kiếm chỉ giữ lại các mục có tên tệp hoặc người gửi khớp với văn bản đã gõ, và mỗi chip chỉ giữ lại các mục thuộc loại của nó; hai điều kiện này áp dụng đồng thời.",
+     "tests": [
+      {
+       "type": "P",
+       "name": "Search by sender||Tìm theo người gửi",
+       "detail": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. #general holds 'agenda.pdf' sent by Alex and 'budget.xlsx' sent by Sam; no other files exist. Mai is signed in. ## 1. Mai opens the Files page and types 'alex' in the search field. 2. Mai clears the field and types 'budget'. ## Step 1 lists only 'agenda.pdf'. Step 2 lists only 'budget.xlsx'.||Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. #general có 'agenda.pdf' do Alex gửi và 'budget.xlsx' do Sam gửi; không có tệp nào khác. Mai đang đăng nhập. ## 1. Mai mở trang Files và gõ 'alex' vào ô tìm kiếm. 2. Mai xoá ô tìm kiếm rồi gõ 'budget'. ## Bước 1 chỉ liệt kê 'agenda.pdf'. Bước 2 chỉ liệt kê 'budget.xlsx'."
+      },
+      {
+       "type": "P",
+       "name": "Filter by kind||Lọc theo loại",
+       "detail": "Sam, Mai and Alex (Members) and Minh (Admin) are members of #general. In #general Sam has sent the image 'screen.png', the file 'budget.xlsx' and a message containing https://example.com; nothing else was shared. Mai is signed in. ## 1. Mai opens the Files page and presses the chip 'Images'. 2. Mai presses 'Documents'. 3. Mai presses 'Links'. 4. Mai presses 'All'. ## Step 1 lists only 'screen.png'; step 2 only 'budget.xlsx'; step 3 only the link to https://example.com; step 4 lists all three.||Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Trong #general, Sam đã gửi ảnh 'screen.png', tệp 'budget.xlsx' và một tin nhắn có https://example.com; không có gì khác được chia sẻ. Mai đang đăng nhập. ## 1. Mai mở trang Files và bấm chip 'Images'. 2. Mai bấm 'Documents'. 3. Mai bấm 'Links'. 4. Mai bấm 'All'. ## Bước 1 chỉ liệt kê 'screen.png'; bước 2 chỉ 'budget.xlsx'; bước 3 chỉ link tới https://example.com; bước 4 liệt kê cả ba."
+      }
+     ]
+    },
+    {
+     "text": "Pressing a file opens its details: sender, conversation, date and size, with 'Open in conversation', 'Copy link' and 'Download'. 'Open in conversation' shows the message that carries the file, and 'Download' saves the file instead of opening it in the browser.||Bấm vào một tệp sẽ mở phần chi tiết: người gửi, cuộc trò chuyện, ngày và dung lượng, kèm 'Open in conversation', 'Copy link' và 'Download'. 'Open in conversation' hiện tin nhắn chứa tệp đó, và 'Download' lưu tệp về máy thay vì mở trong trình duyệt.",
+     "tests": [
+      {
+       "type": "P",
+       "name": "File details and jump to message||Chi tiết tệp và nhảy tới tin nhắn",
+       "detail": "#launch is a private channel whose members are Minh (Admin), Sam and Mai; Alex is not a member. Sam has sent 'launch-checklist.pdf' in #launch. Mai is signed in. ## 1. Mai opens the Files page and presses 'launch-checklist.pdf'. 2. Mai presses 'Download'. 3. Mai presses 'Open in conversation'. ## Step 1 shows Sam, #launch, the date and the size, and the three buttons. Step 2 saves 'launch-checklist.pdf' to the device without displaying it in a browser tab. Step 3 shows #launch with Sam's message that carries the file on screen.||#launch là channel riêng tư có các thành viên Minh (Admin), Sam và Mai; Alex không phải thành viên. Sam đã gửi 'launch-checklist.pdf' trong #launch. Mai đang đăng nhập. ## 1. Mai mở trang Files và bấm 'launch-checklist.pdf'. 2. Mai bấm 'Download'. 3. Mai bấm 'Open in conversation'. ## Bước 1 hiển thị Sam, #launch, ngày, dung lượng và ba nút. Bước 2 lưu 'launch-checklist.pdf' về thiết bị, không hiển thị tệp trong tab trình duyệt. Bước 3 hiển thị #launch với tin nhắn của Sam chứa tệp đó trên màn hình."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "feature": "activity",
+   "area": "NT",
+   "text": "Activity lists, newest first, what needs the person's attention: mentions, replies in threads they follow, reactions to their messages, being added to a channel, and account changes (role changed, message deleted by an admin). Each item shows whether it is unread; pressing it marks it read and opens the conversation at that message or thread, and 'Mark all read' marks every item read. Filter chips narrow the list to one kind of item, and every kind has a chip.||Activity liệt kê những việc cần người dùng chú ý, mới nhất ở trên: mention, trả lời trong thread họ đang theo dõi, reaction vào tin nhắn của họ, được thêm vào channel, và thay đổi về tài khoản (đổi vai trò, tin nhắn bị Admin xóa). Mỗi mục cho biết đã đọc hay chưa; bấm vào mục thì mục thành đã đọc và mở cuộc trò chuyện đúng tại tin nhắn hoặc thread đó, còn 'Mark all read' đánh dấu mọi mục là đã đọc. Các chip lọc thu danh sách về một loại mục, và loại nào cũng có chip.",
+   "src": "NR5 Q85 Q2",
+   "open": "FA-10 VQ-17",
+   "screen": "Activity||Activity",
+   "flows": "",
+   "rules": "BR-15",
+   "evidence": "activityHtml(): 'Mark all read' button, chips All / Mentions / Threads / Reactions, row with unread dot (aria-label Unread/Read), actor, text, conversation, time; action 'openact' sets unread=false and opens the conversation or thread; nav badge = actUnread(). The prototype has no chip for 'added to a channel' or account changes.",
+   "acs": [
+    {
+     "text": "Items are listed newest first; each row shows an unread dot, who did it, a sentence, the conversation and the time, and the Activity badge equals the number of unread items.||Các mục xếp mới nhất ở trên; mỗi dòng có chấm chưa đọc, người thực hiện, một câu mô tả, cuộc trò chuyện và thời gian, và badge của Activity bằng số mục chưa đọc.",
+     "tests": [
+      {
+       "type": "P",
+       "name": "Newest item on top||Mục mới nhất nằm trên cùng",
+       "detail": "Sam is signed in and is a member of #general and #launch. Sam's Activity is empty. Sam has one message in #general. ## 1. Minh sends '@Sam please check' in #launch. 2. One minute later Alex adds a reaction to Sam's message in #general. 3. Sam opens Activity. ## Two rows. The first is Alex's reaction (#general), the second is Minh's mention (#launch). Both have the unread dot. The Activity badge shows 2.||Sam đã đăng nhập, là thành viên của #general và #launch. Activity của Sam đang trống. Sam có một tin nhắn trong #general. ## 1. Minh gửi '@Sam please check' trong #launch. 2. Một phút sau Alex thả reaction vào tin nhắn của Sam trong #general. 3. Sam mở Activity. ## Có hai dòng. Dòng đầu là reaction của Alex (#general), dòng hai là mention của Minh (#launch). Cả hai có chấm chưa đọc. Badge của Activity hiện 2."
+      }
+     ]
+    },
+    {
+     "text": "Pressing an item marks it read and opens the conversation at that message, or the thread panel for a thread reply. 'Mark all read' marks every item read without removing any.||Bấm vào một mục thì mục thành đã đọc và mở cuộc trò chuyện tại đúng tin nhắn đó, hoặc mở thread panel nếu là trả lời trong thread. 'Mark all read' đánh dấu mọi mục là đã đọc mà không xóa mục nào.",
+     "tests": [
+      {
+       "type": "P",
+       "name": "Open a thread reply item||Mở mục trả lời trong thread",
+       "detail": "Sam is signed in. Sam wrote a message in #launch and Mai replied to it in its thread. Sam's Activity has that one unread thread item; the badge shows 1. ## 1. Sam opens Activity. 2. Sam presses the row for Mai's reply. ## #launch opens with the thread panel showing Mai's reply. Back in Activity the row has no unread dot and the Activity badge is gone.||Sam đã đăng nhập. Sam đã viết một tin nhắn trong #launch và Mai trả lời trong thread của tin đó. Activity của Sam có đúng một mục thread chưa đọc; badge hiện 1. ## 1. Sam mở Activity. 2. Sam bấm vào dòng trả lời của Mai. ## #launch mở ra cùng thread panel đang hiện câu trả lời của Mai. Quay lại Activity, dòng đó không còn chấm chưa đọc và badge của Activity biến mất."
+      },
+      {
+       "type": "P",
+       "name": "Mark all read||Mark all read",
+       "detail": "Sam is signed in. Sam's Activity has 3 unread items; the badge shows 3. ## 1. Sam opens Activity. 2. Sam presses 'Mark all read'. ## The 3 rows are still listed, none has the unread dot, and the Activity badge is gone.||Sam đã đăng nhập. Activity của Sam có 3 mục chưa đọc; badge hiện 3. ## 1. Sam mở Activity. 2. Sam bấm 'Mark all read'. ## 3 dòng vẫn còn trong danh sách, không dòng nào còn chấm chưa đọc, và badge của Activity biến mất."
+      }
+     ]
+    },
+    {
+     "text": "The chips All, Mentions, Threads and Reactions each show only items of that kind, and every other kind of item is reachable under a chip of its own besides All.||Các chip All, Mentions, Threads và Reactions chỉ hiện các mục thuộc loại đó, và mọi loại mục còn lại đều xem được dưới một chip riêng ngoài All.",
+     "tests": [
+      {
+       "type": "P",
+       "name": "Filter by Reactions||Lọc theo Reactions",
+       "detail": "Sam is signed in. Sam's Activity holds one mention from Minh, one thread reply from Mai and one reaction from Alex. ## 1. Sam opens Activity. 2. Sam presses the chip 'Reactions'. ## Only Alex's reaction row is listed. Pressing 'All' lists the 3 rows again.||Sam đã đăng nhập. Activity của Sam có một mention từ Minh, một trả lời thread từ Mai và một reaction từ Alex. ## 1. Sam mở Activity. 2. Sam bấm chip 'Reactions'. ## Chỉ còn dòng reaction của Alex. Bấm 'All' thì cả 3 dòng hiện lại."
+      },
+      {
+       "type": "X",
+       "name": "Added-to-channel item has a chip||Mục 'được thêm vào channel' có chip riêng",
+       "detail": "Minh (Admin) and Sam are signed in. Sam is not a member of #launch. Sam's Activity is empty. ## 1. Minh adds Sam to #launch. 2. Sam opens Activity. 3. Sam presses each chip in turn. ## The item saying Minh added Sam to #launch is listed under 'All' and under exactly one other chip; it is not listed under Mentions, Threads or Reactions.||Minh (Admin) và Sam đã đăng nhập. Sam chưa là thành viên của #launch. Activity của Sam đang trống. ## 1. Minh thêm Sam vào #launch. 2. Sam mở Activity. 3. Sam bấm lần lượt từng chip. ## Mục báo Minh đã thêm Sam vào #launch hiện dưới 'All' và dưới đúng một chip khác; mục này không hiện dưới Mentions, Threads hay Reactions."
+      }
+     ]
+    },
+    {
+     "text": "An item is removed when its source message is deleted, and a person's open items for a channel are removed when that person leaves the channel.||Một mục bị gỡ khi tin nhắn gốc của nó bị xóa, và các mục còn mở của một người về một channel bị gỡ khi người đó rời channel.",
+     "tests": [
+      {
+       "type": "N",
+       "name": "Source message deleted||Tin nhắn gốc bị xóa",
+       "detail": "Sam is signed in. Minh sent '@Sam please check' in #launch. Sam's Activity has that one unread item; the badge shows 1. ## 1. Minh deletes that message and confirms. 2. Sam looks at Activity. ## Sam's Activity is empty and the Activity badge is gone.||Sam đã đăng nhập. Minh đã gửi '@Sam please check' trong #launch. Activity của Sam có đúng một mục chưa đọc đó; badge hiện 1. ## 1. Minh xóa tin nhắn đó và xác nhận. 2. Sam xem Activity. ## Activity của Sam trống và badge của Activity biến mất."
+      },
+      {
+       "type": "P",
+       "name": "Leaving a channel clears its items||Rời channel thì các mục của channel đó được gỡ",
+       "detail": "Sam is signed in and is a member of the public channel #launch. Sam's Activity has one unread mention from #launch and one unread mention from #general; the badge shows 2. ## 1. Sam opens #launch's Details panel and presses Leave channel. 2. Sam waits 6 seconds without pressing Undo. 3. Sam opens Activity. ## Only the #general mention is listed and the Activity badge shows 1.||Sam đã đăng nhập và là thành viên của channel công khai #launch. Activity của Sam có một mention chưa đọc từ #launch và một mention chưa đọc từ #general; badge hiện 2. ## 1. Sam mở Details panel của #launch và bấm Leave channel. 2. Sam chờ 6 giây, không bấm Undo. 3. Sam mở Activity. ## Chỉ còn mention từ #general và badge của Activity hiện 1."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "feature": "activity",
+   "area": "NT",
+   "text": "Every Activity item has Done and Snooze. Done removes the item at once and offers Undo for 5 seconds. Snooze takes the item out of the main list until the chosen time, then returns it to the top, unread and labelled 'Back from snooze'.||Mỗi mục trong Activity có Done và Snooze. Done gỡ mục ngay lập tức và cho Undo trong 5 giây. Snooze đưa mục ra khỏi danh sách chính cho đến giờ đã chọn, rồi trả mục về đầu danh sách ở trạng thái chưa đọc, kèm nhãn 'Back from snooze'.",
+   "src": "OQ12 NR3 Q82 OQ4 Q85",
+   "open": "",
+   "screen": "Activity: Mark done and Snooze buttons on each row||Activity: nút Mark done và Snooze trên mỗi dòng",
+   "flows": "",
+   "rules": "BR-20",
+   "evidence": "Row buttons aria-label 'Mark done' and 'Snooze' (actions 'actdone', 'snoozemenu'); menu 'Snooze until' with In 1 hour / Today 15:00 (only while 15:00 is ahead) / Tomorrow 09:00; chip 'Snoozed · n'; 'Unsnooze' button; label 'Back from snooze'; toast 'Snoozed until …'. The prototype's Done has no Undo toast.",
+   "acs": [
+    {
+     "text": "Done removes the item without a confirmation and shows a toast with Undo for 5 seconds; Undo puts the item back.||Done gỡ mục mà không hỏi xác nhận và hiện toast có Undo trong 5 giây; Undo đưa mục trở lại.",
+     "tests": [
+      {
+       "type": "P",
+       "name": "Done, then Undo||Done rồi Undo",
+       "detail": "Sam is signed in. Sam's Activity has one unread mention from Minh in #launch. ## 1. Sam opens Activity. 2. Sam presses Done on the row. 3. Within 5 seconds Sam presses Undo in the toast. ## After step 2 the row is gone and no confirmation was shown. After step 3 the row is back in the list.||Sam đã đăng nhập. Activity của Sam có một mention chưa đọc từ Minh trong #launch. ## 1. Sam mở Activity. 2. Sam bấm Done trên dòng đó. 3. Trong vòng 5 giây Sam bấm Undo trên toast. ## Sau bước 2 dòng đó biến mất và không có hộp xác nhận nào hiện ra. Sau bước 3 dòng đó trở lại danh sách."
+      },
+      {
+       "type": "B",
+       "name": "Undo is gone after 5 seconds||Hết 5 giây thì không còn Undo",
+       "detail": "Sam is signed in. Sam's Activity has one mention from Minh in #launch. ## 1. Sam presses Done on the row. 2. Sam waits 6 seconds. 3. Sam reloads Activity. ## After 6 seconds the toast with Undo is no longer on screen, and after the reload the item is still not listed.||Sam đã đăng nhập. Activity của Sam có một mention từ Minh trong #launch. ## 1. Sam bấm Done trên dòng đó. 2. Sam chờ 6 giây. 3. Sam tải lại Activity. ## Sau 6 giây toast có Undo không còn trên màn hình, và sau khi tải lại mục đó vẫn không có trong danh sách."
+      }
+     ]
+    },
+    {
+     "text": "A snoozed item leaves the main list and is listed under the chip 'Snoozed · n', where n is the number of snoozed items. At the chosen time, or when the person presses Unsnooze, it returns to the main list as unread; when it returns at the chosen time it is at the top with the label 'Back from snooze'.||Mục đã snooze rời danh sách chính và nằm dưới chip 'Snoozed · n', trong đó n là số mục đang snooze. Đến giờ đã chọn, hoặc khi người dùng bấm Unsnooze, mục trở lại danh sách chính ở trạng thái chưa đọc; khi tự trở lại đúng giờ thì mục nằm trên cùng kèm nhãn 'Back from snooze'.",
+     "tests": [
+      {
+       "type": "P",
+       "name": "Snooze for one hour||Snooze một giờ",
+       "detail": "Sam is signed in at 10:00. Sam's Activity has two items: a mention from Minh in #launch and a reaction from Alex in #general. Nothing is snoozed, so there is no 'Snoozed' chip. ## 1. Sam presses Snooze on Minh's mention and chooses 'In 1 hour'. 2. Sam looks at the chip 'All'. 3. Sam presses the chip 'Snoozed · 1'. 4. At 11:00 Sam looks at the chip 'All'. ## After step 2 only Alex's reaction is listed and a chip 'Snoozed · 1' exists. After step 3 only Minh's mention is listed. After step 4 Minh's mention is the first row, has the unread dot and the label 'Back from snooze', and the 'Snoozed' chip is gone.||Sam đã đăng nhập lúc 10:00. Activity của Sam có hai mục: một mention từ Minh trong #launch và một reaction từ Alex trong #general. Chưa có mục nào snooze nên không có chip 'Snoozed'. ## 1. Sam bấm Snooze trên mention của Minh và chọn 'In 1 hour'. 2. Sam xem chip 'All'. 3. Sam bấm chip 'Snoozed · 1'. 4. Lúc 11:00 Sam xem chip 'All'. ## Sau bước 2 chỉ còn reaction của Alex và có chip 'Snoozed · 1'. Sau bước 3 chỉ có mention của Minh. Sau bước 4 mention của Minh là dòng đầu tiên, có chấm chưa đọc và nhãn 'Back from snooze', còn chip 'Snoozed' biến mất."
+      },
+      {
+       "type": "P",
+       "name": "Unsnooze by hand||Unsnooze bằng tay",
+       "detail": "Sam is signed in. Sam's Activity has one item, a mention from Minh in #launch, snoozed until tomorrow 09:00. ## 1. Sam opens Activity and presses the chip 'Snoozed · 1'. 2. Sam presses 'Unsnooze' on the row. ## The item is listed under 'All' with the unread dot, and the 'Snoozed' chip is gone.||Sam đã đăng nhập. Activity của Sam có một mục, là mention từ Minh trong #launch, đang snooze đến 09:00 ngày mai. ## 1. Sam mở Activity và bấm chip 'Snoozed · 1'. 2. Sam bấm 'Unsnooze' trên dòng đó. ## Mục đó hiện dưới 'All' kèm chấm chưa đọc, và chip 'Snoozed' biến mất."
+      }
+     ]
+    },
+    {
+     "text": "The Snooze menu offers 'In 1 hour', 'Today 15:00' and 'Tomorrow 09:00'. A choice that is already past is not offered: after 15:00, 'In 3 hours' takes the place of 'Today 15:00'.||Menu Snooze có 'In 1 hour', 'Today 15:00' và 'Tomorrow 09:00'. Lựa chọn đã qua giờ thì không được đưa ra: sau 15:00, 'In 3 hours' thay cho 'Today 15:00'.",
+     "tests": [
+      {
+       "type": "B",
+       "name": "Snooze menu before 15:00||Menu Snooze trước 15:00",
+       "detail": "Sam is signed in. The time on Sam's device is 14:00. Sam's Activity has one item. ## 1. Sam presses Snooze on the item and reads the menu. ## The menu lists 'In 1 hour', 'Today 15:00' and 'Tomorrow 09:00'.||Sam đã đăng nhập. Giờ trên thiết bị của Sam là 14:00. Activity của Sam có một mục. ## 1. Sam bấm Snooze trên mục đó và đọc menu. ## Menu có 'In 1 hour', 'Today 15:00' và 'Tomorrow 09:00'."
+      },
+      {
+       "type": "B",
+       "name": "Snooze menu after 15:00||Menu Snooze sau 15:00",
+       "detail": "Sam is signed in. The time on Sam's device is 15:01. Sam's Activity has one item. ## 1. Sam presses Snooze on the item and reads the menu. ## The menu does not list 'Today 15:00'; it lists 'In 1 hour', 'In 3 hours' and 'Tomorrow 09:00'.||Sam đã đăng nhập. Giờ trên thiết bị của Sam là 15:01. Activity của Sam có một mục. ## 1. Sam bấm Snooze trên mục đó và đọc menu. ## Menu không có 'Today 15:00'; menu có 'In 1 hour', 'In 3 hours' và 'Tomorrow 09:00'."
+      }
+     ]
+    },
+    {
+     "text": "On narrow and touch screens Done and Snooze are visible on every row without hovering.||Trên màn hình hẹp và màn hình cảm ứng, Done và Snooze luôn hiện trên mỗi dòng mà không cần rê chuột.",
+     "tests": [
+      {
+       "type": "X",
+       "name": "Buttons visible at 360 px||Nút hiện ở độ rộng 360 px",
+       "detail": "Sam is signed in in a browser window 360 px wide and 560 px tall. Sam's Activity has two items. ## 1. Sam opens Activity from the bottom tabs. 2. Sam looks at the two rows without touching them. ## Each of the two rows shows a Done button and a Snooze button.||Sam đã đăng nhập trong cửa sổ trình duyệt rộng 360 px, cao 560 px. Activity của Sam có hai mục. ## 1. Sam mở Activity từ thanh tab dưới cùng. 2. Sam nhìn hai dòng mà không chạm vào. ## Mỗi dòng trong hai dòng đều hiện nút Done và nút Snooze."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "feature": "people",
+   "area": "SH",
+   "text": "People lists the active Members and Admins of the workspace as cards: avatar of initials on a colour, presence, name, an Admin label where it applies, job title and local time. A search field filters by name or job title; the first 50 people are shown and more load on scroll. Pressing a card opens that person's Profile panel, where 'Message' opens the DM with them.||People liệt kê các Member và Admin đang hoạt động của workspace dưới dạng thẻ: avatar là chữ cái đầu trên nền màu, presence, tên, nhãn Admin nếu có, chức danh và giờ địa phương. Ô tìm kiếm lọc theo tên hoặc chức danh; 50 người đầu tiên hiện trước, cuộn xuống thì tải thêm. Bấm vào thẻ sẽ mở Profile panel của người đó, tại đó 'Message' mở DM với họ.",
+   "src": "Q2 Q50 Q64 Q79 Q43 Q85",
+   "open": "AS-04 VQ-21",
+   "screen": "People; Profile panel||People; Profile panel",
+   "flows": "",
+   "rules": "",
+   "evidence": "peopleHtml(): field 'Search people' matching name + title, cards (.pcard) with avatar, name, role tag, title, presence dot and word, clock + localTime(); empty state 'Nobody matches · Try a name or a job title.'; card action 'profile' opens profileHtml() with 'Message' (action 'msgperson' → openDm) and, on the person's own profile, 'Set status' instead. The prototype tags one person 'Owner'; that role was removed.",
+   "acs": [
+    {
+     "text": "Every active Member and Admin has one card, the person's own included; an Admin's card carries the label 'Admin' and no card carries 'Owner'. A deactivated person has no card.||Mỗi Member và Admin đang hoạt động có một thẻ, kể cả chính người đang xem; thẻ của Admin có nhãn 'Admin' và không thẻ nào có nhãn 'Owner'. Người đã bị vô hiệu hóa không có thẻ.",
+     "tests": [
+      {
+       "type": "P",
+       "name": "Who is listed||Ai có trong danh sách",
+       "detail": "The workspace has exactly four active people: Minh (Admin), Sam, Mai and Alex (Members). Sam is signed in. ## 1. Sam opens People. ## Four cards: Minh, Sam, Mai, Alex. Only Minh's card has the label 'Admin'. No card has the label 'Owner'. Each card shows initials on a colour, not a photo.||Workspace có đúng bốn người đang hoạt động: Minh (Admin), Sam, Mai và Alex (Member). Sam đã đăng nhập. ## 1. Sam mở People. ## Có bốn thẻ: Minh, Sam, Mai, Alex. Chỉ thẻ của Minh có nhãn 'Admin'. Không thẻ nào có nhãn 'Owner'. Mỗi thẻ hiện chữ cái đầu trên nền màu, không phải ảnh."
+      },
+      {
+       "type": "N",
+       "name": "Deactivated person is not listed||Người bị vô hiệu hóa không có trong danh sách",
+       "detail": "The workspace has Minh (Admin), Sam, Mai and Alex. Minh and Sam are signed in. Sam has People open and sees four cards. ## 1. Minh deactivates Alex on the Admin page and confirms. 2. Sam reloads People. ## Three cards: Minh, Sam, Mai. Searching 'Alex' shows 'Nobody matches'.||Workspace có Minh (Admin), Sam, Mai và Alex. Minh và Sam đã đăng nhập. Sam đang mở People và thấy bốn thẻ. ## 1. Minh vô hiệu hóa Alex trên trang Admin và xác nhận. 2. Sam tải lại People. ## Có ba thẻ: Minh, Sam, Mai. Tìm 'Alex' thì hiện 'Nobody matches'."
+      }
+     ]
+    },
+    {
+     "text": "Typing in 'Search people' keeps only the people whose name or job title contains the text.||Gõ vào 'Search people' thì chỉ còn những người có tên hoặc chức danh chứa đoạn chữ đó.",
+     "tests": [
+      {
+       "type": "P",
+       "name": "Search by name||Tìm theo tên",
+       "detail": "The workspace has Minh, Sam, Mai and Alex. Sam is signed in and has People open. ## 1. Sam types 'mai' in 'Search people'. ## Only Mai's card is shown.||Workspace có Minh, Sam, Mai và Alex. Sam đã đăng nhập và đang mở People. ## 1. Sam gõ 'mai' vào 'Search people'. ## Chỉ còn thẻ của Mai."
+      },
+      {
+       "type": "P",
+       "name": "Search by job title||Tìm theo chức danh",
+       "detail": "The workspace has Minh, Sam, Mai and Alex. Mai's job title is 'Marketing'; nobody else's name or job title contains 'market'. Sam is signed in and has People open. ## 1. Sam types 'market' in 'Search people'. ## Only Mai's card is shown.||Workspace có Minh, Sam, Mai và Alex. Chức danh của Mai là 'Marketing'; không ai khác có tên hay chức danh chứa 'market'. Sam đã đăng nhập và đang mở People. ## 1. Sam gõ 'market' vào 'Search people'. ## Chỉ còn thẻ của Mai."
+      }
+     ]
+    },
+    {
+     "text": "With more than 50 people, People shows the first 50 cards and loads the rest on scroll.||Khi có hơn 50 người, People hiện 50 thẻ đầu tiên và tải phần còn lại khi cuộn.",
+     "tests": [
+      {
+       "type": "B",
+       "name": "51 people||51 người",
+       "detail": "The workspace has exactly 51 active people, Sam among them. Sam is signed in. ## 1. Sam opens People and counts the cards without scrolling the list to its end. 2. Sam scrolls to the end of the list and counts again. ## After step 1 there are 50 cards. After step 2 there are 51 cards.||Workspace có đúng 51 người đang hoạt động, trong đó có Sam. Sam đã đăng nhập. ## 1. Sam mở People và đếm số thẻ khi chưa cuộn đến cuối danh sách. 2. Sam cuộn đến cuối danh sách và đếm lại. ## Sau bước 1 có 50 thẻ. Sau bước 2 có 51 thẻ."
+      }
+     ]
+    },
+    {
+     "text": "Pressing a card opens the Profile panel with the person's name, job title, presence in words, status if they have one, local time and time zone. 'Message' on another person's profile opens the DM with that person; a person's own profile has no 'Message' button.||Bấm vào thẻ sẽ mở Profile panel với tên, chức danh, presence bằng chữ, status nếu có, giờ địa phương và múi giờ của người đó. 'Message' trên profile của người khác mở DM với người đó; profile của chính mình không có nút 'Message'.",
+     "tests": [
+      {
+       "type": "P",
+       "name": "Open a DM from People||Mở DM từ People",
+       "detail": "Sam is signed in. Sam and Mai already have a DM that contains the message 'hello Mai'. ## 1. Sam opens People. 2. Sam presses Mai's card. 3. Sam presses 'Message' in the Profile panel. ## After step 2 the Profile panel shows Mai's name, job title, presence in words, local time and time zone. After step 3 the DM with Mai is open and shows 'hello Mai'; no second DM with Mai appears in Sam's list.||Sam đã đăng nhập. Sam và Mai đã có một DM chứa tin nhắn 'hello Mai'. ## 1. Sam mở People. 2. Sam bấm thẻ của Mai. 3. Sam bấm 'Message' trong Profile panel. ## Sau bước 2 Profile panel hiện tên, chức danh, presence bằng chữ, giờ địa phương và múi giờ của Mai. Sau bước 3 DM với Mai mở ra và có 'hello Mai'; danh sách của Sam không xuất hiện DM thứ hai với Mai."
+      },
+      {
+       "type": "X",
+       "name": "Own profile||Profile của chính mình",
+       "detail": "Sam is signed in. ## 1. Sam opens People. 2. Sam presses the card with Sam's own name. ## The Profile panel shows Sam's details and a 'Set status' button; it has no 'Message' button.||Sam đã đăng nhập. ## 1. Sam mở People. 2. Sam bấm thẻ mang tên của chính Sam. ## Profile panel hiện thông tin của Sam và nút 'Set status'; không có nút 'Message'."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "feature": "preferences",
+   "area": "SH",
+   "text": "In Preferences a person chooses the look (Calm, Focus, or Match my device) and the interface language (English or Tiếng Việt). A new account is in English. A change of look or language applies to the whole interface at once, without reloading.||Trong Preferences, người dùng chọn giao diện (Calm, Focus, hoặc Match my device) và ngôn ngữ giao diện (English hoặc Tiếng Việt). Tài khoản mới dùng tiếng Anh. Đổi giao diện hay ngôn ngữ thì toàn bộ giao diện đổi theo ngay, không cần tải lại.",
+   "src": "Q18 OQ15 Q2",
+   "open": "VQ-19",
+   "screen": "Preferences: Look, Accent, Density, Language||Preferences: Look, Accent, Density, Language",
+   "flows": "",
+   "rules": "",
+   "evidence": "prefsHtml(): 'Look' cards Calm ('Light, airy, comfortable'), Focus ('Dark, compact, dense'), Match my device ('Currently …'); 'Accent' swatches teal / indigo / clay / violet; 'Density' Comfortable / Compact (not rendered when isPhone()); 'Language' select English / Tiếng Việt with lang:'en' as the initial value; effLook() maps a dark device to Focus and a light one to Calm. In the prototype only the navigation labels are translated.",
+   "acs": [
+    {
+     "text": "Choosing Calm or Focus changes the look at once without a reload; 'Match my device' shows Focus when the device is set to dark and Calm when it is set to light.||Chọn Calm hoặc Focus thì giao diện đổi ngay, không tải lại; 'Match my device' hiện Focus khi thiết bị đặt chế độ tối và Calm khi đặt chế độ sáng.",
+     "tests": [
+      {
+       "type": "P",
+       "name": "Switch from Calm to Focus||Đổi từ Calm sang Focus",
+       "detail": "Sam is signed in. Preferences is open with the look Calm selected. ## 1. Sam presses the card 'Focus'. ## The interface changes to the dark Focus look immediately; the page does not reload and Preferences stays open with 'Focus' marked as selected.||Sam đã đăng nhập. Preferences đang mở, giao diện đang chọn là Calm. ## 1. Sam bấm thẻ 'Focus'. ## Giao diện chuyển ngay sang Focus (nền tối); trang không tải lại và Preferences vẫn mở với 'Focus' được đánh dấu đang chọn."
+      },
+      {
+       "type": "X",
+       "name": "Match my device||Match my device",
+       "detail": "Sam is signed in. Sam's operating system is set to dark mode. Preferences is open with the look Calm selected. ## 1. Sam presses the card 'Match my device'. 2. Sam switches the operating system to light mode and returns to Toki. ## After step 1 Toki shows the Focus look. After step 2 Toki shows the Calm look.||Sam đã đăng nhập. Hệ điều hành của Sam đang ở chế độ tối. Preferences đang mở, giao diện đang chọn là Calm. ## 1. Sam bấm thẻ 'Match my device'. 2. Sam đổi hệ điều hành sang chế độ sáng rồi quay lại Toki. ## Sau bước 1 Toki hiện giao diện Focus. Sau bước 2 Toki hiện giao diện Calm."
+      }
+     ]
+    },
+    {
+     "text": "A new account's interface is in English. Choosing Tiếng Việt puts every label of the interface in Vietnamese at once, and choosing English puts them back.||Giao diện của tài khoản mới là tiếng Anh. Chọn Tiếng Việt thì mọi nhãn của giao diện chuyển ngay sang tiếng Việt, chọn English thì chuyển lại.",
+     "tests": [
+      {
+       "type": "P",
+       "name": "English by default||Mặc định là tiếng Anh",
+       "detail": "Minh (Admin) has invited Mai. Mai has never signed in. Mai's browser language is Vietnamese. ## 1. Mai accepts the invitation with the code and lands in #general. 2. Mai opens Preferences and reads the Language field. ## The interface is in English and the Language field shows 'English'.||Minh (Admin) đã mời Mai. Mai chưa từng đăng nhập. Ngôn ngữ trình duyệt của Mai là tiếng Việt. ## 1. Mai nhận lời mời bằng mã và vào #general. 2. Mai mở Preferences và đọc ô Language. ## Giao diện bằng tiếng Anh và ô Language hiện 'English'."
+      },
+      {
+       "type": "P",
+       "name": "Switch to Tiếng Việt and back||Đổi sang Tiếng Việt rồi đổi lại",
+       "detail": "Sam is signed in. The interface is in English. Preferences is open. ## 1. Sam chooses 'Tiếng Việt' in Language. 2. Without reloading, Sam opens Activity, People and Preferences. 3. Sam chooses 'English' in Language. ## After step 2 the navigation, headings, buttons and empty states on the three pages are in Vietnamese; people's names and message text are unchanged. After step 3 the same labels are in English again. The page never reloaded.||Sam đã đăng nhập. Giao diện đang là tiếng Anh. Preferences đang mở. ## 1. Sam chọn 'Tiếng Việt' ở Language. 2. Không tải lại, Sam mở Activity, People và Preferences. 3. Sam chọn 'English' ở Language. ## Sau bước 2 thanh điều hướng, tiêu đề, nút và trạng thái trống trên ba trang đều bằng tiếng Việt; tên người và nội dung tin nhắn giữ nguyên. Sau bước 3 các nhãn đó trở lại tiếng Anh. Trang không hề tải lại."
+      }
+     ]
+    },
+    {
+     "text": "Preferences also offers four accent colours (teal, indigo, clay, violet) and a density of Comfortable or Compact; each applies at once. Density is not offered on a narrow screen.||Preferences còn có bốn màu nhấn (teal, indigo, clay, violet) và mật độ Comfortable hoặc Compact; mỗi lựa chọn áp dụng ngay. Trên màn hình hẹp không có mục Density.",
+     "tests": [
+      {
+       "type": "P",
+       "name": "Accent and density||Màu nhấn và mật độ",
+       "detail": "Sam is signed in in a window 1280 px wide. Preferences is open with accent teal and density Comfortable. ## 1. Sam presses the accent 'indigo'. 2. Sam presses 'Compact'. ## After step 1 the accent colour of buttons and selected items is indigo. After step 2 rows are closer together. Neither step reloads the page.||Sam đã đăng nhập trong cửa sổ rộng 1280 px. Preferences đang mở với màu nhấn teal và mật độ Comfortable. ## 1. Sam bấm màu nhấn 'indigo'. 2. Sam bấm 'Compact'. ## Sau bước 1 màu nhấn của nút và mục đang chọn là indigo. Sau bước 2 các dòng sát nhau hơn. Không bước nào làm trang tải lại."
+      },
+      {
+       "type": "X",
+       "name": "No Density on a narrow screen||Màn hình hẹp không có Density",
+       "detail": "Sam is signed in in a window 360 px wide and 560 px tall. ## 1. Sam opens More and then Preferences. 2. Sam reads the section headings. ## Look, Accent and Language are present; there is no Density section.||Sam đã đăng nhập trong cửa sổ rộng 360 px, cao 560 px. ## 1. Sam mở More rồi mở Preferences. 2. Sam đọc các tiêu đề mục. ## Có Look, Accent và Language; không có mục Density."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "feature": "preferences",
+   "area": "NT",
+   "text": "Preferences has three notification switches: 'Desktop notifications', 'Play a sound' and 'Notify me for @mentions even in muted channels'; the last is on for a new account. The switches belong to the person and apply on every device where they are signed in; only the browser's permission for push is per device.||Preferences có ba công tắc thông báo: 'Desktop notifications', 'Play a sound' và 'Notify me for @mentions even in muted channels'; công tắc cuối bật sẵn với tài khoản mới. Các công tắc thuộc về người dùng và áp dụng trên mọi thiết bị họ đăng nhập; chỉ quyền push của trình duyệt là theo từng thiết bị.",
+   "src": "Q16 Q48",
+   "open": "AS-02 VQ-20",
+   "screen": "Preferences: Notifications||Preferences: Notifications",
+   "flows": "",
+   "rules": "BR-41",
+   "evidence": "prefsHtml(): heading 'Notifications' with switches 'Desktop notifications' ('Push notifications' on the phone layout), 'Play a sound', 'Email me about missed mentions', 'Notify me for @mentions even in muted channels'; initial state n:{desktop:true,sound:false,email:true,mentions:true}; action 'prefsw' toggles one switch.",
+   "acs": [
+    {
+     "text": "The Notifications section of Preferences shows the three switches and, in phase 1, no switch for email about missed mentions.||Mục Notifications của Preferences có ba công tắc và, ở phase 1, không có công tắc gửi email về mention bị lỡ.",
+     "tests": [
+      {
+       "type": "P",
+       "name": "Switches present||Có đủ công tắc",
+       "detail": "Sam is signed in on a desktop browser. ## 1. Sam opens Preferences. 2. Sam reads the Notifications section. ## It contains exactly these switches: 'Desktop notifications', 'Play a sound', 'Notify me for @mentions even in muted channels'. There is no 'Email me about missed mentions' switch.||Sam đã đăng nhập trên trình duyệt máy tính. ## 1. Sam mở Preferences. 2. Sam đọc mục Notifications. ## Mục này có đúng các công tắc: 'Desktop notifications', 'Play a sound', 'Notify me for @mentions even in muted channels'. Không có công tắc 'Email me about missed mentions'."
+      }
+     ]
+    },
+    {
+     "text": "For an account that has never changed it, 'Notify me for @mentions even in muted channels' is on.||Với tài khoản chưa từng đổi, 'Notify me for @mentions even in muted channels' đang bật.",
+     "tests": [
+      {
+       "type": "P",
+       "name": "On by default||Bật sẵn",
+       "detail": "Minh (Admin) has invited Mai. Mai has just accepted the invitation and has changed no preference. ## 1. Mai opens Preferences. 2. Mai reads the switch 'Notify me for @mentions even in muted channels'. ## The switch is on.||Minh (Admin) đã mời Mai. Mai vừa nhận lời mời và chưa đổi tùy chọn nào. ## 1. Mai mở Preferences. 2. Mai đọc công tắc 'Notify me for @mentions even in muted channels'. ## Công tắc đang bật."
+      }
+     ]
+    },
+    {
+     "text": "A switch changed on one device has the same state, and the same effect, on the person's other devices.||Công tắc đổi trên một thiết bị có cùng trạng thái, và cùng tác dụng, trên các thiết bị khác của người đó.",
+     "tests": [
+      {
+       "type": "X",
+       "name": "Sound switch follows the account||Công tắc âm thanh đi theo tài khoản",
+       "detail": "Sam is signed in on a laptop and on a phone. 'Play a sound' is on. Sam is a member of #launch at the level 'Mentions only'. The phone's volume is up and Toki is open on it, showing #general. ## 1. On the laptop Sam turns 'Play a sound' off in Preferences. 2. On the phone Sam opens Preferences and reads the switch. 3. On the phone Sam goes back to #general. 4. Minh sends '@Sam ping' in #launch. ## After step 2 'Play a sound' is off on the phone. After step 4 the phone shows the mention toast and plays no sound.||Sam đã đăng nhập trên laptop và trên điện thoại. 'Play a sound' đang bật. Sam là thành viên của #launch ở mức 'Mentions only'. Điện thoại đang bật âm lượng và đang mở Toki ở #general. ## 1. Trên laptop, Sam tắt 'Play a sound' trong Preferences. 2. Trên điện thoại, Sam mở Preferences và đọc công tắc. 3. Trên điện thoại, Sam quay lại #general. 4. Minh gửi '@Sam ping' trong #launch. ## Sau bước 2 'Play a sound' đang tắt trên điện thoại. Sau bước 4 điện thoại hiện toast mention và không phát âm thanh."
+      },
+      {
+       "type": "X",
+       "name": "Push permission stays per device||Quyền push vẫn theo từng thiết bị",
+       "detail": "Sam is signed in in browser A, where notifications are allowed for Toki, and in browser B on another computer, where the browser has never been asked. 'Desktop notifications' is on. Toki is closed in both browsers. ## 1. Minh sends '@Sam ping' in #launch. 2. Sam checks both computers for a system notification. ## The computer with browser A shows a system notification for the mention. The computer with browser B shows none.||Sam đã đăng nhập ở trình duyệt A, nơi đã cho phép thông báo với Toki, và ở trình duyệt B trên một máy khác, nơi trình duyệt chưa từng được hỏi quyền. 'Desktop notifications' đang bật. Toki đang đóng ở cả hai trình duyệt. ## 1. Minh gửi '@Sam ping' trong #launch. 2. Sam kiểm tra thông báo hệ thống trên cả hai máy. ## Máy có trình duyệt A hiện thông báo hệ thống về mention. Máy có trình duyệt B không hiện gì."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "feature": "status",
+   "area": "SH",
+   "text": "A person sets a status from the account menu, Preferences or their own profile: one of five presets (In a meeting, Focusing, Out for lunch, Commuting, Working remotely) or their own text, optionally with a time after which it clears itself. Others see the status in the DM header, the profile, the mention popup and the People card. Presence cannot be set by hand; to signal busy a person sets a status or starts Focus time.||Người dùng đặt status từ account menu, Preferences hoặc profile của chính mình: một trong năm mẫu có sẵn (In a meeting, Focusing, Out for lunch, Commuting, Working remotely) hoặc chữ tự nhập, có thể kèm thời điểm status tự xóa. Người khác thấy status ở tiêu đề DM, profile, popup mention và thẻ trong People. Presence không đặt bằng tay được; để báo bận, người dùng đặt status hoặc bật Focus time.",
+   "src": "Q85 Q78",
+   "open": "AS-05 VQ-16",
+   "screen": "Account menu: Set status; Preferences: Your status; Profile panel||Account menu: Set status; Preferences: Your status; Profile panel",
+   "flows": "",
+   "rules": "",
+   "evidence": "Modal 'Set your status' and Preferences 'Your status': preset chips, field 'Custom status', select 'Clear status after' (Don't clear / 30 minutes / 1 hour / End of today, plus a demo-only 20 seconds), Save and Clear; toasts 'Status saved · clears …', 'Status cleared', 'Your status was cleared'; account card shows the status text; profileHtml() shows the status card; own profile has 'Set status'. No control anywhere sets presence.",
+   "acs": [
+    {
+     "text": "A saved status, preset or free text, is shown to other people in the person's profile, their People card and the header of a DM with them.||Status đã lưu, dù là mẫu có sẵn hay chữ tự nhập, hiện cho người khác ở profile của người đó, thẻ của họ trong People và tiêu đề DM với họ.",
+     "tests": [
+      {
+       "type": "P",
+       "name": "Preset status seen by another person||Người khác thấy status mẫu",
+       "detail": "Sam and Mai are signed in. Sam has no status. Sam and Mai have a DM. ## 1. Sam opens the account menu, presses 'Set status' and chooses 'In a meeting'. 2. Mai opens People and reads Sam's card. 3. Mai presses Sam's card and reads the Profile panel. 4. Mai opens the DM with Sam and reads its header. ## 'In a meeting' is shown on Sam's People card, in Sam's Profile panel and in the header of the DM. Sam's account card shows 'In a meeting'.||Sam và Mai đã đăng nhập. Sam chưa có status. Sam và Mai có một DM. ## 1. Sam mở account menu, bấm 'Set status' và chọn 'In a meeting'. 2. Mai mở People và đọc thẻ của Sam. 3. Mai bấm thẻ của Sam và đọc Profile panel. 4. Mai mở DM với Sam và đọc tiêu đề. ## 'In a meeting' hiện trên thẻ của Sam trong People, trong Profile panel của Sam và ở tiêu đề DM. Account card của Sam hiện 'In a meeting'."
+      },
+      {
+       "type": "P",
+       "name": "Free-text status in the mention popup||Status tự nhập trong popup mention",
+       "detail": "Sam and Mai are signed in and are members of #launch. Sam has no status. ## 1. Sam opens Preferences, types 'Back at 13:00' in 'Custom status' and presses Save. 2. In #launch Mai types '@sa' in the composer and reads Sam's row in the popup. ## Sam's row in the mention popup shows 'Back at 13:00'.||Sam và Mai đã đăng nhập và là thành viên của #launch. Sam chưa có status. ## 1. Sam mở Preferences, gõ 'Back at 13:00' vào 'Custom status' và bấm Save. 2. Trong #launch, Mai gõ '@sa' vào composer và đọc dòng của Sam trong popup. ## Dòng của Sam trong popup mention hiện 'Back at 13:00'."
+      }
+     ]
+    },
+    {
+     "text": "'Clear after' offers Don't clear, 30 minutes, 1 hour and End of today. At the chosen time the status disappears for everyone and its owner sees the toast 'Your status was cleared'. Pressing Clear, or saving an empty field, removes the status at once.||'Clear after' có các lựa chọn Don't clear, 30 minutes, 1 hour và End of today. Đến giờ đã chọn, status biến mất với mọi người và chủ status thấy toast 'Your status was cleared'. Bấm Clear, hoặc lưu khi ô trống, sẽ xóa status ngay.",
+     "tests": [
+      {
+       "type": "B",
+       "name": "Status clears after 30 minutes||Status tự xóa sau 30 phút",
+       "detail": "Sam and Mai are signed in. Sam has no status. The time is 10:00. ## 1. Sam opens 'Set status', types 'On a call', reads the 'Clear after' choices, chooses '30 minutes' and saves. 2. At 10:29 Mai reads Sam's People card. 3. At 10:31 Mai reads Sam's People card and Sam looks at Toki. ## In step 1 the choices are Don't clear, 30 minutes, 1 hour and End of today, and none mentions 20 seconds. At 10:29 the card shows 'On a call'. At 10:31 the card shows no status and Sam has seen the toast 'Your status was cleared'.||Sam và Mai đã đăng nhập. Sam chưa có status. Bây giờ là 10:00. ## 1. Sam mở 'Set status', gõ 'On a call', đọc các lựa chọn 'Clear after', chọn '30 minutes' và lưu. 2. Lúc 10:29 Mai đọc thẻ của Sam trong People. 3. Lúc 10:31 Mai đọc thẻ của Sam trong People và Sam nhìn vào Toki. ## Ở bước 1 các lựa chọn là Don't clear, 30 minutes, 1 hour và End of today, không có lựa chọn nào nhắc đến 20 giây. Lúc 10:29 thẻ hiện 'On a call'. Lúc 10:31 thẻ không còn status và Sam đã thấy toast 'Your status was cleared'."
+      },
+      {
+       "type": "P",
+       "name": "Clear by hand||Xóa bằng tay",
+       "detail": "Sam and Mai are signed in. Sam's status is 'Working remotely' with 'Don't clear'. ## 1. Sam opens 'Set status' and presses Clear. 2. Mai opens Sam's profile. ## Sam's account card no longer shows 'Working remotely', and Sam's profile on Mai's screen shows no status.||Sam và Mai đã đăng nhập. Status của Sam là 'Working remotely' với 'Don't clear'. ## 1. Sam mở 'Set status' và bấm Clear. 2. Mai mở profile của Sam. ## Account card của Sam không còn hiện 'Working remotely', và profile của Sam trên màn hình của Mai không có status."
+      }
+     ]
+    },
+    {
+     "text": "When a status is saved from two of the person's devices, the last save wins and everyone, both devices included, sees it at once.||Khi status được lưu từ hai thiết bị của cùng một người, lần lưu sau cùng thắng và mọi người, kể cả hai thiết bị đó, thấy ngay.",
+     "tests": [
+      {
+       "type": "X",
+       "name": "Last save wins||Lần lưu sau cùng thắng",
+       "detail": "Sam is signed in on a laptop and on a phone. Mai is signed in and has Sam's profile open. Sam has no status. ## 1. On the laptop Sam saves the status 'Commuting'. 2. On the phone Sam saves the status 'Out for lunch'. 3. Without reloading, Sam looks at the account card on the laptop and Mai looks at Sam's profile. ## Sam's laptop and Mai's screen both show 'Out for lunch'; 'Commuting' is shown nowhere.||Sam đã đăng nhập trên laptop và trên điện thoại. Mai đã đăng nhập và đang mở profile của Sam. Sam chưa có status. ## 1. Trên laptop, Sam lưu status 'Commuting'. 2. Trên điện thoại, Sam lưu status 'Out for lunch'. 3. Không tải lại, Sam nhìn account card trên laptop và Mai nhìn profile của Sam. ## Laptop của Sam và màn hình của Mai đều hiện 'Out for lunch'; không nơi nào còn hiện 'Commuting'."
+      }
+     ]
+    },
+    {
+     "text": "No screen lets a person choose their presence by hand.||Không màn hình nào cho người dùng tự chọn presence bằng tay.",
+     "tests": [
+      {
+       "type": "N",
+       "name": "No presence picker||Không có chỗ chọn presence",
+       "detail": "Sam is signed in. ## 1. Sam opens the account menu and reads every entry. 2. Sam opens 'Set status' and reads every control. 3. Sam opens Preferences and reads every control. 4. Sam opens Sam's own profile. ## None of the four places has a control that sets Sam to Active, Away or Do not disturb. The account menu offers 'Set status' and 'Focus time'.||Sam đã đăng nhập. ## 1. Sam mở account menu và đọc mọi mục. 2. Sam mở 'Set status' và đọc mọi điều khiển. 3. Sam mở Preferences và đọc mọi điều khiển. 4. Sam mở profile của chính mình. ## Không nơi nào trong bốn nơi có điều khiển để đặt Sam thành Active, Away hay Do not disturb. Account menu có 'Set status' và 'Focus time'."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "feature": "sign-out",
+   "area": "AC",
+   "text": "'Sign out' in the account menu (on narrow screens, in the More sheet) ends the session on that device and shows the sign-in page. The other tabs of the same browser are signed out at once; the person's other devices stay signed in.||'Sign out' trong account menu (trên màn hình hẹp là trong bảng More) kết thúc phiên trên thiết bị đó và hiện trang đăng nhập. Các tab khác của cùng trình duyệt bị đăng xuất ngay; các thiết bị khác của người đó vẫn giữ đăng nhập.",
+   "src": "Q88 Q53 Q85 OQ4",
+   "open": "VQ-22",
+   "screen": "not in the prototype||không có trong prototype",
+   "flows": "",
+   "rules": "BR-01",
+   "evidence": "The prototype has no Sign out: the account menu (action 'usermenu') holds Set status, Pause notifications, Focus time and Preferences only. Decided in Q88; journey F06.",
+   "acs": [
+    {
+     "text": "After 'Sign out' the device shows the sign-in page, and no address of Toki shows workspace content on it until someone signs in again.||Sau 'Sign out', thiết bị hiện trang đăng nhập, và không địa chỉ nào của Toki hiện nội dung workspace trên thiết bị đó cho đến khi có người đăng nhập lại.",
+     "tests": [
+      {
+       "type": "P",
+       "name": "Sign out from the account menu||Sign out từ account menu",
+       "detail": "Sam is signed in in a desktop browser with #launch open. ## 1. Sam presses the account card at the bottom of the sidebar. 2. Sam presses 'Sign out'. ## The sign-in page is shown, with no channel names or messages.||Sam đã đăng nhập trên trình duyệt máy tính và đang mở #launch. ## 1. Sam bấm account card ở cuối sidebar. 2. Sam bấm 'Sign out'. ## Trang đăng nhập hiện ra, không có tên channel hay tin nhắn nào."
+      },
+      {
+       "type": "N",
+       "name": "Back and direct address after sign out||Bấm Back và mở địa chỉ trực tiếp sau khi Sign out",
+       "detail": "Sam has just signed out in a desktop browser; before that Sam had #launch open and copied its address. ## 1. Sam presses the browser's Back button. 2. Sam pastes the address of #launch into the address bar and opens it. ## Both steps end on the sign-in page; no message of #launch is shown.||Sam vừa Sign out trên trình duyệt máy tính; trước đó Sam mở #launch và đã sao chép địa chỉ của nó. ## 1. Sam bấm nút Back của trình duyệt. 2. Sam dán địa chỉ của #launch vào thanh địa chỉ và mở. ## Cả hai bước đều dừng ở trang đăng nhập; không tin nhắn nào của #launch hiện ra."
+      },
+      {
+       "type": "X",
+       "name": "Sign out on a narrow screen||Sign out trên màn hình hẹp",
+       "detail": "Sam is signed in in a window 360 px wide and 560 px tall. ## 1. Sam presses 'More' in the bottom tabs. 2. Sam presses 'Sign out' in the account section of the sheet. ## The sheet in step 1 contains 'Sign out'. After step 2 the sign-in page is shown.||Sam đã đăng nhập trong cửa sổ rộng 360 px, cao 560 px. ## 1. Sam bấm 'More' trên thanh tab dưới cùng. 2. Sam bấm 'Sign out' trong phần tài khoản của bảng. ## Bảng ở bước 1 có 'Sign out'. Sau bước 2 trang đăng nhập hiện ra."
+      }
+     ]
+    },
+    {
+     "text": "Signing out in one tab signs out every other tab of the same browser at once.||Sign out ở một tab sẽ đăng xuất ngay mọi tab khác của cùng trình duyệt.",
+     "tests": [
+      {
+       "type": "X",
+       "name": "Two tabs, one browser||Hai tab, một trình duyệt",
+       "detail": "Sam is signed in in one browser with two tabs: tab 1 shows #general, tab 2 shows #launch. ## 1. In tab 1 Sam presses 'Sign out'. 2. Sam switches to tab 2 without reloading it. ## Tab 2 shows the sign-in page, or a notice that the session has ended with the content covered; no message of #launch can be read or sent from it.||Sam đã đăng nhập trong một trình duyệt với hai tab: tab 1 hiện #general, tab 2 hiện #launch. ## 1. Ở tab 1, Sam bấm 'Sign out'. 2. Sam chuyển sang tab 2 mà không tải lại. ## Tab 2 hiện trang đăng nhập, hoặc thông báo phiên đã kết thúc và nội dung bị che; không đọc hay gửi được tin nhắn nào của #launch từ tab đó."
+      }
+     ]
+    },
+    {
+     "text": "Signing out on one device leaves the person signed in on their other devices, and the device that signed out receives no more push notifications for that person.||Sign out trên một thiết bị không làm người đó bị đăng xuất ở các thiết bị khác, và thiết bị đã Sign out không còn nhận push của người đó nữa.",
+     "tests": [
+      {
+       "type": "X",
+       "name": "Other device stays signed in||Thiết bị khác vẫn đăng nhập",
+       "detail": "Sam is signed in on a laptop and on a phone; both show #general. ## 1. On the laptop Sam presses 'Sign out'. 2. On the phone Sam sends 'still here' in #general. ## The phone stays in Toki and 'still here' is delivered to #general.||Sam đã đăng nhập trên laptop và trên điện thoại; cả hai đang hiện #general. ## 1. Trên laptop, Sam bấm 'Sign out'. 2. Trên điện thoại, Sam gửi 'still here' trong #general. ## Điện thoại vẫn ở trong Toki và 'still here' được gửi tới #general."
+      },
+      {
+       "type": "N",
+       "name": "No push after sign out||Không còn push sau khi Sign out",
+       "detail": "Sam is signed in only on a laptop, where push is allowed for Toki and 'Desktop notifications' is on. Sam is a member of #launch. ## 1. Sam presses 'Sign out' and closes the tab. 2. Minh sends '@Sam ping' in #launch. 3. Sam watches the laptop for one minute. ## The laptop shows no system notification from Toki.||Sam chỉ đăng nhập trên một laptop, nơi đã cho phép push với Toki và 'Desktop notifications' đang bật. Sam là thành viên của #launch. ## 1. Sam bấm 'Sign out' và đóng tab. 2. Minh gửi '@Sam ping' trong #launch. 3. Sam theo dõi laptop trong một phút. ## Laptop không hiện thông báo hệ thống nào từ Toki."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "feature": "signed-in-devices",
+   "area": "AC",
+   "text": "Preferences has a 'Signed-in devices' section listing each device where the person is signed in, with its device kind, browser and last use; the current one is labelled 'This device'. The person can sign out one other device, or all other devices at once; each asks for confirmation first.||Preferences có mục 'Signed-in devices' liệt kê từng thiết bị mà người dùng đang đăng nhập, kèm loại thiết bị, trình duyệt và lần dùng gần nhất; thiết bị hiện tại có nhãn 'This device'. Người dùng có thể đăng xuất một thiết bị khác, hoặc tất cả thiết bị khác cùng lúc; mỗi thao tác đều hỏi xác nhận trước.",
+   "src": "Q88 Q85 NR3",
+   "open": "",
+   "screen": "not in the prototype||không có trong prototype",
+   "flows": "",
+   "rules": "BR-20",
+   "evidence": "The prototype's Preferences (prefsHtml) has no 'Signed-in devices' section. Decided in Q88; journey F06 and F07.",
+   "acs": [
+    {
+     "text": "The section has one row per signed-in device showing device kind, browser and last use, and marks the device in use as 'This device'.||Mục này có một dòng cho mỗi thiết bị đang đăng nhập, hiện loại thiết bị, trình duyệt và lần dùng gần nhất, và đánh dấu thiết bị đang dùng là 'This device'.",
+     "tests": [
+      {
+       "type": "P",
+       "name": "Two devices listed||Liệt kê hai thiết bị",
+       "detail": "Sam is signed in in Chrome on a laptop and in Safari on a phone, and nowhere else. ## 1. On the laptop Sam opens Preferences and reads 'Signed-in devices'. ## Two rows: one for the laptop with Chrome, labelled 'This device', and one for the phone with Safari. Each row shows a last-use time.||Sam đang đăng nhập bằng Chrome trên laptop và Safari trên điện thoại, không ở đâu khác. ## 1. Trên laptop, Sam mở Preferences và đọc 'Signed-in devices'. ## Có hai dòng: một dòng cho laptop với Chrome, có nhãn 'This device', và một dòng cho điện thoại với Safari. Mỗi dòng hiện thời điểm dùng gần nhất."
+      }
+     ]
+    },
+    {
+     "text": "'Sign out' beside another device asks for confirmation; after confirming, that device can no longer read or write anything until someone signs in on it again, and its row is gone. Cancelling changes nothing.||'Sign out' bên cạnh một thiết bị khác sẽ hỏi xác nhận; sau khi xác nhận, thiết bị đó không đọc hay ghi được gì cho đến khi có người đăng nhập lại trên đó, và dòng của nó biến mất. Hủy thì không có gì thay đổi.",
+     "tests": [
+      {
+       "type": "P",
+       "name": "Sign out another device||Đăng xuất một thiết bị khác",
+       "detail": "Sam is signed in on a laptop and on a phone. The phone shows #launch. ## 1. On the laptop Sam opens Preferences and presses 'Sign out' on the phone's row. 2. Sam confirms. 3. On the phone Sam tries to send 'test' in #launch. ## Step 1 shows a confirmation that names the phone. After step 2 the phone's row is gone and the laptop is still signed in. In step 3 'test' is not sent; the phone covers the content and asks Sam to sign in again.||Sam đã đăng nhập trên laptop và trên điện thoại. Điện thoại đang hiện #launch. ## 1. Trên laptop, Sam mở Preferences và bấm 'Sign out' ở dòng của điện thoại. 2. Sam xác nhận. 3. Trên điện thoại, Sam thử gửi 'test' trong #launch. ## Bước 1 hiện hộp xác nhận có nêu tên điện thoại. Sau bước 2 dòng của điện thoại biến mất và laptop vẫn đăng nhập. Ở bước 3 'test' không được gửi; điện thoại che nội dung và yêu cầu Sam đăng nhập lại."
+      },
+      {
+       "type": "N",
+       "name": "Cancel the confirmation||Hủy hộp xác nhận",
+       "detail": "Sam is signed in on a laptop and on a phone. The phone shows #launch. ## 1. On the laptop Sam presses 'Sign out' on the phone's row. 2. Sam presses Cancel. 3. On the phone Sam sends 'test' in #launch. ## The phone's row is still listed and 'test' is delivered to #launch.||Sam đã đăng nhập trên laptop và trên điện thoại. Điện thoại đang hiện #launch. ## 1. Trên laptop, Sam bấm 'Sign out' ở dòng của điện thoại. 2. Sam bấm Cancel. 3. Trên điện thoại, Sam gửi 'test' trong #launch. ## Dòng của điện thoại vẫn còn và 'test' được gửi tới #launch."
+      }
+     ]
+    },
+    {
+     "text": "'Sign out all other devices' asks for confirmation, then ends the session on every device except the one in use.||'Sign out all other devices' hỏi xác nhận, rồi kết thúc phiên trên mọi thiết bị trừ thiết bị đang dùng.",
+     "tests": [
+      {
+       "type": "P",
+       "name": "Sign out all other devices||Đăng xuất mọi thiết bị khác",
+       "detail": "Sam is signed in on a laptop, a phone and a tablet. ## 1. On the laptop Sam opens Preferences and presses 'Sign out all other devices'. 2. Sam confirms. 3. Sam opens Toki on the phone and on the tablet. ## After step 2 'Signed-in devices' lists only the row 'This device' and the laptop still shows Preferences. In step 3 the phone and the tablet both ask Sam to sign in and show no workspace content.||Sam đã đăng nhập trên laptop, điện thoại và máy tính bảng. ## 1. Trên laptop, Sam mở Preferences và bấm 'Sign out all other devices'. 2. Sam xác nhận. 3. Sam mở Toki trên điện thoại và trên máy tính bảng. ## Sau bước 2 'Signed-in devices' chỉ còn dòng 'This device' và laptop vẫn đang hiện Preferences. Ở bước 3 cả điện thoại và máy tính bảng đều yêu cầu Sam đăng nhập và không hiện nội dung workspace nào."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "feature": "mute",
+   "area": "NT",
+   "text": "A member can mute a conversation with the 'Mute conversation' switch in its Details panel. A muted conversation is shown grey, with no unread count and no bold, is left out of the Home badge, and produces no toast, push or sound. Mute is personal: nobody else sees it and nobody else's notifications change.||Thành viên có thể tắt tiếng một cuộc trò chuyện bằng công tắc 'Mute conversation' trong Details panel của nó. Cuộc trò chuyện đã mute hiện màu xám, không có số chưa đọc và không in đậm, không tính vào badge của Home, và không tạo toast, push hay âm thanh. Mute là của riêng từng người: không ai khác thấy và thông báo của người khác không đổi.",
+   "src": "Q16 Q62 Q85",
+   "open": "AS-03 VQ-18",
+   "screen": "Details panel: Settings: Mute conversation||Details panel: Settings: Mute conversation",
+   "flows": "",
+   "rules": "BR-41",
+   "evidence": "Details panel, heading 'Settings': switch 'Mute conversation' (action 'mute' toggles c.muted and redraws the side panel, the conversation list and the navigation). The prototype does not draw the grey row.",
+   "acs": [
+    {
+     "text": "While a conversation is muted, a new message without a mention leaves its row grey with no count and no bold, does not raise the Home badge, and produces no toast, push or sound.||Khi cuộc trò chuyện đang mute, tin nhắn mới không có mention vẫn để dòng của nó màu xám, không số đếm, không in đậm, không làm tăng badge của Home, và không tạo toast, push hay âm thanh.",
+     "tests": [
+      {
+       "type": "P",
+       "name": "Message in a muted channel||Tin nhắn trong channel đã mute",
+       "detail": "Sam is signed in with #general open, 'Play a sound' on and no unread messages anywhere. Sam is a member of #launch at the level 'All messages'. ## 1. Sam opens #launch, opens its Details panel and turns 'Mute conversation' on. 2. Sam goes back to #general. 3. Mai sends 'build is ready' in #launch. ## The #launch row is grey, not bold and has no count. The Home badge does not appear. No toast is shown and no sound plays.||Sam đã đăng nhập, đang mở #general, 'Play a sound' đang bật và không có tin chưa đọc ở đâu. Sam là thành viên của #launch ở mức 'All messages'. ## 1. Sam mở #launch, mở Details panel và bật 'Mute conversation'. 2. Sam quay lại #general. 3. Mai gửi 'build is ready' trong #launch. ## Dòng #launch màu xám, không in đậm và không có số đếm. Badge của Home không xuất hiện. Không có toast và không có âm thanh."
+      },
+      {
+       "type": "P",
+       "name": "Unmute||Bỏ mute",
+       "detail": "Sam is signed in with #general open. Sam has muted #launch, at the level 'All messages'. ## 1. Sam opens #launch's Details panel and turns 'Mute conversation' off. 2. Sam goes back to #general. 3. Mai sends 'second build' in #launch. ## The #launch row is bold with a count, the Home badge rises, and a toast for Mai's message is shown.||Sam đã đăng nhập, đang mở #general. Sam đã mute #launch, ở mức 'All messages'. ## 1. Sam mở Details panel của #launch và tắt 'Mute conversation'. 2. Sam quay lại #general. 3. Mai gửi 'second build' trong #launch. ## Dòng #launch in đậm kèm số đếm, badge của Home tăng, và có toast cho tin nhắn của Mai."
+      }
+     ]
+    },
+    {
+     "text": "Mute differs from the notification level 'Nothing': at 'Nothing' without Mute there is no toast, push or sound, but the unread count and bold stay.||Mute khác với mức thông báo 'Nothing': ở mức 'Nothing' mà không Mute thì không có toast, push hay âm thanh, nhưng số chưa đọc và chữ in đậm vẫn còn.",
+     "tests": [
+      {
+       "type": "X",
+       "name": "Level 'Nothing', not muted||Mức 'Nothing', không mute",
+       "detail": "Sam is signed in with #general open and no unread messages. In #launch Sam's notification level is 'Nothing' and 'Mute conversation' is off. ## 1. Mai sends 'build is ready' in #launch. ## No toast is shown and no sound plays. The #launch row is bold with the count 1 and the Home badge shows 1.||Sam đã đăng nhập, đang mở #general và không có tin chưa đọc. Trong #launch, mức thông báo của Sam là 'Nothing' và 'Mute conversation' đang tắt. ## 1. Mai gửi 'build is ready' trong #launch. ## Không có toast và không có âm thanh. Dòng #launch in đậm với số đếm 1 và badge của Home hiện 1."
+      }
+     ]
+    },
+    {
+     "text": "One person's Mute changes nothing for anyone else and is shown to nobody else.||Mute của một người không thay đổi gì với người khác và không hiện cho ai khác.",
+     "tests": [
+      {
+       "type": "X",
+       "name": "Mute is personal||Mute là của riêng từng người",
+       "detail": "Sam and Alex are signed in, both members of #launch at the level 'All messages', both with #general open. Neither has muted #launch. ## 1. Sam turns 'Mute conversation' on for #launch and goes back to #general. 2. Mai sends 'build is ready' in #launch. 3. Alex opens #launch's Details panel and its member list. ## Alex's #launch row is bold with a count and Alex gets a toast. Alex's 'Mute conversation' switch is off, and nothing in the member list or on Sam's profile shows that Sam muted the channel.||Sam và Alex đã đăng nhập, đều là thành viên của #launch ở mức 'All messages', đều đang mở #general. Chưa ai mute #launch. ## 1. Sam bật 'Mute conversation' cho #launch rồi quay lại #general. 2. Mai gửi 'build is ready' trong #launch. 3. Alex mở Details panel của #launch và danh sách thành viên. ## Dòng #launch của Alex in đậm kèm số đếm và Alex nhận toast. Công tắc 'Mute conversation' của Alex đang tắt, và không gì trong danh sách thành viên hay trên profile của Sam cho thấy Sam đã mute channel."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "feature": "emergency-sign-in-link",
+   "area": "AC",
+   "text": "When mail cannot be sent, a person with access to the server runs a command with a member's email address; it prints a one-time sign-in link, valid for 10 minutes, that opens Toki as that member. This is the only way to sign in without a code, and every use is written to the server log.||Khi không gửi được mail, người có quyền truy cập máy chủ chạy một lệnh kèm địa chỉ email của một thành viên; lệnh in ra một link đăng nhập dùng một lần, có hiệu lực 10 phút, mở Toki dưới tên thành viên đó. Đây là cách đăng nhập duy nhất không cần mã, và mỗi lần dùng đều được ghi vào log của máy chủ.",
+   "src": "Q89 Q85",
+   "open": "VQ-23",
+   "screen": "not in the prototype||không có trong prototype",
+   "flows": "",
+   "rules": "BR-02",
+   "evidence": "Nothing in the prototype: it is a server command. Decided in Q89; journey F43.",
+   "acs": [
+    {
+     "text": "Opening the printed link within 10 minutes signs that browser in as the member, without a code, and opens Home.||Mở link vừa in trong vòng 10 phút sẽ đăng nhập trình duyệt đó dưới tên thành viên, không cần mã, và mở Home.",
+     "tests": [
+      {
+       "type": "P",
+       "name": "Link works within 10 minutes||Link dùng được trong 10 phút",
+       "detail": "Sam is an active Member and is signed in nowhere. The tester has shell access to the server. ## 1. The tester runs the emergency sign-in command with Sam's email address and copies the printed link. 2. Within 10 minutes the link is opened in a browser that has no session. ## Step 1 prints exactly one link. In step 2 Home opens as Sam; no code was asked for.||Sam là Member đang hoạt động và chưa đăng nhập ở đâu. Người kiểm thử có quyền shell trên máy chủ. ## 1. Người kiểm thử chạy lệnh đăng nhập khẩn cấp với địa chỉ email của Sam và sao chép link được in ra. 2. Trong vòng 10 phút, mở link đó trong một trình duyệt chưa có phiên. ## Bước 1 in ra đúng một link. Ở bước 2 Home mở ra dưới tên Sam; không bị hỏi mã."
+      }
+     ]
+    },
+    {
+     "text": "The link signs nobody in more than 10 minutes after it was printed, or once it has been used.||Link không đăng nhập được cho ai khi đã quá 10 phút kể từ lúc in ra, hoặc khi đã được dùng một lần.",
+     "tests": [
+      {
+       "type": "B",
+       "name": "Link opened after 11 minutes||Mở link sau 11 phút",
+       "detail": "Sam is an active Member. The tester printed an emergency link for Sam 11 minutes ago and it has not been used. ## 1. The link is opened in a browser that has no session. ## The browser is not signed in and shows no workspace content.||Sam là Member đang hoạt động. Người kiểm thử đã in link khẩn cấp cho Sam cách đây 11 phút và link chưa được dùng. ## 1. Mở link đó trong một trình duyệt chưa có phiên. ## Trình duyệt không được đăng nhập và không hiện nội dung workspace nào."
+      },
+      {
+       "type": "N",
+       "name": "Link used a second time||Dùng link lần thứ hai",
+       "detail": "Sam is an active Member. An emergency link for Sam was printed 2 minutes ago and has just been opened in browser A, which is now signed in as Sam. ## 1. The same link is opened in browser B, which has no session. ## Browser B is not signed in and shows no workspace content. Browser A stays signed in.||Sam là Member đang hoạt động. Link khẩn cấp cho Sam được in cách đây 2 phút và vừa được mở ở trình duyệt A, nơi hiện đang đăng nhập dưới tên Sam. ## 1. Mở cùng link đó ở trình duyệt B, nơi chưa có phiên. ## Trình duyệt B không được đăng nhập và không hiện nội dung workspace nào. Trình duyệt A vẫn đăng nhập."
+      }
+     ]
+    },
+    {
+     "text": "The command prints no link for an address that is not a member or that belongs to a deactivated person, and each use of the command is recorded in the server log.||Lệnh không in link cho địa chỉ không phải thành viên hoặc thuộc về người đã bị vô hiệu hóa, và mỗi lần dùng lệnh đều được ghi vào log của máy chủ.",
+     "tests": [
+      {
+       "type": "N",
+       "name": "Unknown and deactivated addresses||Địa chỉ lạ và địa chỉ đã bị vô hiệu hóa",
+       "detail": "Minh (Admin) has deactivated Alex. No account uses the address nobody@example.com. The tester has shell access to the server. ## 1. The tester runs the command with nobody@example.com. 2. The tester runs the command with Alex's email address. ## Neither run prints a link; each prints a refusal.||Minh (Admin) đã vô hiệu hóa Alex. Không tài khoản nào dùng địa chỉ nobody@example.com. Người kiểm thử có quyền shell trên máy chủ. ## 1. Người kiểm thử chạy lệnh với nobody@example.com. 2. Người kiểm thử chạy lệnh với địa chỉ email của Alex. ## Không lần chạy nào in ra link; mỗi lần in ra lời từ chối."
+      },
+      {
+       "type": "P",
+       "name": "Use is logged||Lần dùng được ghi log",
+       "detail": "Sam is an active Member. The tester has shell access to the server and can read its log. ## 1. The tester notes the time and runs the command with Sam's email address. 2. The tester reads the server log from that time onward. ## The log contains an entry for this run that identifies Sam's account and the time.||Sam là Member đang hoạt động. Người kiểm thử có quyền shell trên máy chủ và đọc được log. ## 1. Người kiểm thử ghi lại thời điểm và chạy lệnh với địa chỉ email của Sam. 2. Người kiểm thử đọc log của máy chủ từ thời điểm đó trở đi. ## Log có một dòng cho lần chạy này, xác định được tài khoản của Sam và thời điểm."
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "questions": [
+  [
+   "VQ-04",
+   "A reply sent with 'Also send to #name': is it one message shown in two places or two messages, and does the channel copy raise the channel's unread count and notify like a normal message?||Câu trả lời gửi kèm 'Also send to #name' là một tin nhắn hiển thị ở hai nơi hay là hai tin nhắn, và bản trong channel có làm tăng số chưa đọc của channel và thông báo như tin nhắn thường không?",
+   "The requirement on threads.||Yêu cầu về thread.",
+   "One message shown in both places: editing or deleting it changes both, and it counts in the channel as a normal message (unread count and notification level apply).||Là một tin nhắn hiển thị ở cả hai nơi: sửa hoặc xoá sẽ thay đổi cả hai, và trong channel nó được tính như tin nhắn thường (áp dụng số chưa đọc và mức thông báo).",
+   "PO",
+   "M"
+  ],
+  [
+   "VQ-05",
+   "Is 'Also send to …' offered in threads inside a DM or group DM? The prototype shows it only in channels.||'Also send to …' có xuất hiện trong thread của DM hoặc group DM không? Prototype chỉ hiển thị nó trong channel.",
+   "The requirement on threads.||Yêu cầu về thread.",
+   "Channels only, as in the prototype.||Chỉ trong channel, như prototype.",
+   "PO",
+   "L"
+  ],
+  [
+   "VQ-06",
+   "How does a person on a touch screen see who reacted? The names appear only on hover, and rule NR1 forbids hover-only features.||Trên màn hình cảm ứng, người dùng xem ai đã thả reaction bằng cách nào? Tên chỉ hiện khi rê chuột, trong khi quy tắc NR1 cấm tính năng chỉ dùng được bằng hover.",
+   "The requirement on reactions.||Yêu cầu về reaction.",
+   "A long press on the chip opens a small list of names; a short tap still adds or removes the reaction.||Nhấn giữ chip sẽ mở một danh sách tên nhỏ; chạm nhanh vẫn là thêm hoặc gỡ reaction.",
+   "PO",
+   "M"
+  ],
+  [
+   "VQ-07",
+   "When several people react to the same message, does the author get one Activity item per reaction or one item per message?||Khi nhiều người thả reaction lên cùng một tin nhắn, tác giả nhận một mục Activity cho mỗi reaction hay một mục cho mỗi tin nhắn?",
+   "The requirement on reactions.||Yêu cầu về reaction.",
+   "One item per message, updated with the latest names; removing a reaction removes that person from the item.||Một mục cho mỗi tin nhắn, cập nhật theo các tên mới nhất; gỡ reaction thì người đó bị bỏ khỏi mục.",
+   "PO",
+   "M"
+  ],
+  [
+   "VQ-08",
+   "Is there a limit to the number of pinned messages in a conversation?||Số tin nhắn được ghim trong một cuộc trò chuyện có giới hạn không?",
+   "The requirement on pins.||Yêu cầu về ghim tin.",
+   "No limit in phase 1.||Không giới hạn trong phase 1.",
+   "PO",
+   "M"
+  ],
+  [
+   "VQ-09",
+   "Does the system line '… pinned a message' raise the unread count or notify anyone, and is there a line for unpinning?||Dòng hệ thống '… pinned a message' có làm tăng số chưa đọc hoặc thông báo cho ai không, và khi bỏ ghim có dòng nào không?",
+   "The requirement on pins.||Yêu cầu về ghim tin.",
+   "No unread count and no notification, like the 'joined' line (Q55); no line for unpinning.||Không tăng số chưa đọc và không thông báo, giống dòng 'joined' (Q55); bỏ ghim không có dòng nào.",
+   "PO",
+   "M"
+  ],
+  [
+   "VQ-10",
+   "What happens to a pin when its message is deleted, and can a reply inside a thread be pinned?||Khi tin nhắn đã ghim bị xoá thì ghim đó ra sao, và có ghim được câu trả lời nằm trong thread không?",
+   "The requirement on pins.||Yêu cầu về ghim tin.",
+   "A deleted message leaves the Pinned tab. Only messages in the main list can be pinned in phase 1.||Tin nhắn bị xoá sẽ rời khỏi tab Pinned. Trong phase 1 chỉ ghim được tin nhắn ở danh sách chính.",
+   "PO",
+   "M"
+  ],
+  [
+   "VQ-11",
+   "Which addresses become links, how do they open, and is there a multi-line code block?||Những địa chỉ nào trở thành link, link mở theo cách nào, và có khối code nhiều dòng không?",
+   "The requirement on message formatting.||Yêu cầu về định dạng tin.",
+   "Only http:// and https:// addresses, opened in a new tab; no multi-line code block in phase 1.||Chỉ địa chỉ http:// và https://, mở trong tab mới; phase 1 không có khối code nhiều dòng.",
+   "PO",
+   "M"
+  ],
+  [
+   "VQ-12",
+   "Does a draft include files already uploaded to the composer? FA-07 deletes an uploaded file that was never sent after 24 hours.||Draft có bao gồm các tệp đã tải lên ô soạn tin không? FA-07 xoá tệp đã tải lên nhưng không gửi sau 24 giờ.",
+   "The requirement on drafts.||Yêu cầu về bản nháp.",
+   "A draft is text only; attached files are not restored on return or on another device.||Draft chỉ gồm văn bản; tệp đính kèm không được khôi phục khi quay lại hay trên thiết bị khác.",
+   "PO",
+   "M"
+  ],
+  [
+   "VQ-13",
+   "How long is a draft kept, and what happens when the same draft is edited on two devices at once?||Draft được giữ trong bao lâu, và điều gì xảy ra khi cùng một draft được sửa trên hai thiết bị cùng lúc?",
+   "The requirement on drafts.||Yêu cầu về bản nháp.",
+   "Kept until sent or emptied, with no expiry; the last save wins, as for topics (Q78).||Giữ cho đến khi gửi hoặc xoá trống, không hết hạn; bản lưu sau cùng thắng, như với topic (Q78).",
+   "PO",
+   "L"
+  ],
+  [
+   "VQ-14",
+   "Do files stay on a person's Files page after they leave the channel, and when the channel is archived?||Tệp có còn trên trang Files của một người sau khi họ rời channel, và khi channel bị lưu trữ không?",
+   "The requirement on the Files page.||Yêu cầu về trang Files.",
+   "After leaving, the channel's files leave that person's Files page (Q74: an unjoined channel cannot be read). Files of an archived channel stay for its members.||Sau khi rời, tệp của channel đó biến khỏi trang Files của người ấy (Q74: không đọc được channel chưa tham gia). Tệp của channel đã lưu trữ vẫn còn với các thành viên của nó.",
+   "PO",
+   "M"
+  ],
+  [
+   "VQ-15",
+   "How many rows does the Files page load at once, and does the chip 'Documents' mean every attached file that is not an image?||Trang Files tải bao nhiêu dòng mỗi lần, và chip 'Documents' có nghĩa là mọi tệp đính kèm không phải ảnh không?",
+   "The requirement on the Files page.||Yêu cầu về trang Files.",
+   "First 50 rows, more on scroll, as decided for people lists (Q64); 'Documents' is every file that is not an image.||50 dòng đầu, cuộn để tải thêm, như đã quyết định cho danh sách người (Q64); 'Documents' là mọi tệp không phải ảnh.",
+   "PO",
+   "L"
+  ],
+  [
+   "VQ-16",
+   "How long may a status text be? Journey F32 says 100 characters, but no decision sets it and the prototype has no limit.||Chữ của status dài tối đa bao nhiêu? Journey F32 ghi 100 ký tự, nhưng chưa có quyết định nào đặt con số này và prototype không giới hạn.",
+   "The requirement on status.||Yêu cầu về trạng thái.",
+   "1 to 100 characters, as F32 says; the field refuses the 101st character.||Từ 1 đến 100 ký tự như F32 ghi; ô nhập từ chối ký tự thứ 101.",
+   "PO",
+   "M"
+  ],
+  [
+   "VQ-17",
+   "Rule NR5 requires a filter chip for every kind of Activity item, but the prototype has no chip for 'added to a channel' and account changes. What is that chip called, and does it hold both kinds?||Quy tắc NR5 yêu cầu mỗi loại mục trong Activity có một chip lọc, nhưng prototype không có chip cho 'được thêm vào channel' và thay đổi tài khoản. Chip đó tên gì, và có gộp cả hai loại không?",
+   "The requirement on Activity.||Yêu cầu về Activity.",
+   "One chip named 'Other' that holds both kinds, as journey F27 says.||Một chip tên 'Other' gộp cả hai loại, như journey F27 ghi.",
+   "PO",
+   "L"
+  ],
+  [
+   "VQ-18",
+   "In a muted conversation, do thread replies and reactions still create Activity items and raise the Activity badge? Decisions cover only mentions (Q48) and the conversation's own count (Q62).||Trong cuộc trò chuyện đã mute, trả lời thread và reaction có còn tạo mục Activity và làm tăng badge của Activity không? Các quyết định mới chỉ nói về mention (Q48) và số đếm của chính cuộc trò chuyện (Q62).",
+   "The requirement on Mute.||Yêu cầu về Mute.",
+   "Yes: the items are still created and counted in the Activity badge, with no toast, push or sound.||Có: các mục vẫn được tạo và tính vào badge của Activity, nhưng không có toast, push hay âm thanh.",
+   "PO",
+   "M"
+  ],
+  [
+   "VQ-19",
+   "Are look, accent, density and language saved to the account and the same on every device, or kept per device? AS-02 decides this only for notification preferences; journey F35 says the account, the prototype keeps the look in the browser.||Giao diện, màu nhấn, mật độ và ngôn ngữ được lưu theo tài khoản và giống nhau trên mọi thiết bị, hay lưu theo từng thiết bị? AS-02 mới quyết định cho tùy chọn thông báo; journey F35 ghi là theo tài khoản, còn prototype lưu giao diện trong trình duyệt.",
+   "The requirement on Preferences.||Yêu cầu về Preferences.",
+   "Saved to the account and synced, as F35 says; with 'Match my device' each device follows its own light or dark setting.||Lưu theo tài khoản và đồng bộ như F35 ghi; với 'Match my device' mỗi thiết bị theo cài đặt sáng hoặc tối của riêng nó.",
+   "PO",
+   "M"
+  ],
+  [
+   "VQ-20",
+   "What are 'Desktop notifications' and 'Play a sound' set to for a new account? Only the mentions-in-muted switch has a decided default (Q48).||Với tài khoản mới, 'Desktop notifications' và 'Play a sound' đang bật hay tắt? Mới chỉ có công tắc mention trong cuộc trò chuyện đã mute là có mặc định được quyết định (Q48).",
+   "The requirement on Preferences.||Yêu cầu về Preferences.",
+   "As the prototype starts: Desktop notifications on, Play a sound off.||Như trạng thái ban đầu của prototype: Desktop notifications bật, Play a sound tắt.",
+   "PO",
+   "L"
+  ],
+  [
+   "VQ-21",
+   "Does the People search match Vietnamese typed without diacritics, and in what order are the cards listed? Q15 decides diacritics only for Ctrl+K; no decision gives an order.||Ô tìm kiếm của People có khớp tiếng Việt gõ không dấu không, và các thẻ xếp theo thứ tự nào? Q15 mới quyết định chuyện dấu cho Ctrl+K; chưa có quyết định nào về thứ tự.",
+   "The requirement on People.||Yêu cầu về People.",
+   "Match without diacritics, as Ctrl+K does; cards in alphabetical order of display name.||Khớp cả khi gõ không dấu như Ctrl+K; các thẻ xếp theo thứ tự chữ cái của tên hiển thị.",
+   "PO",
+   "L"
+  ],
+  [
+   "VQ-22",
+   "Does 'Sign out' on the current device ask for confirmation? Q88 and F06 state a confirmation only for signing out other devices.||'Sign out' trên thiết bị hiện tại có hỏi xác nhận không? Q88 và F06 chỉ nêu hộp xác nhận khi đăng xuất thiết bị khác.",
+   "The requirement on Sign out.||Yêu cầu về Sign out.",
+   "No confirmation: the person can sign in again with a code, and drafts are saved first.||Không hỏi xác nhận: người dùng có thể đăng nhập lại bằng mã, và bản nháp được lưu trước đó.",
+   "PO",
+   "L"
+  ],
+  [
+   "VQ-23",
+   "Does a session started from the emergency link last 30 days like any other, and does issuing a new link cancel an earlier unused one?||Phiên bắt đầu từ link khẩn cấp có kéo dài 30 ngày như mọi phiên khác không, và in link mới có hủy link cũ chưa dùng không?",
+   "The requirement on the emergency sign-in link.||Yêu cầu về link đăng nhập khẩn cấp.",
+   "A normal 30-day session; a new link cancels the earlier one, as a new code does (Q35).||Phiên 30 ngày bình thường; link mới hủy link trước đó, giống như mã mới hủy mã cũ (Q35).",
+   "PO",
+   "L"
+  ],
+  [
+   "VQ-24",
+   "In which language is a mail sent: the invitation to a person who has no account yet, and the sign-in mail to a member who chose Vietnamese?||Mail được gửi bằng ngôn ngữ nào: mail mời tới người chưa có tài khoản, và mail đăng nhập tới thành viên đã chọn tiếng Việt?",
+   "TOKI-021 Sending mail. Q18 sets English as the default of the interface only.||TOKI-021 Gửi mail. Q18 chỉ đặt tiếng Anh làm mặc định của giao diện.",
+   "Invitations in English; sign-in mail in the language the member chose.||Mail mời bằng tiếng Anh; mail đăng nhập theo ngôn ngữ thành viên đã chọn.",
+   "PO",
+   "M"
+  ],
+  [
+   "VQ-25",
+   "When a deactivated person is invited again (Q52), which role do they get: the role in the new invitation, or the role the account had?||Khi một người đã bị vô hiệu hoá được mời lại (Q52), họ nhận vai trò nào: vai trò trong lời mời mới, hay vai trò cũ của tài khoản?",
+   "TOKI-024 Member management.||TOKI-024 Quản lý thành viên.",
+   "The role chosen in the new invitation.||Vai trò chọn trong lời mời mới.",
+   "PO",
+   "M"
+  ],
+  [
+   "VQ-26",
+   "Does 'Resend' on an invitation start a new 7 days and stop the Join button of the earlier mail, or send the same invitation again?||'Resend' ở một lời mời có tính lại 7 ngày và làm nút Join của mail trước hết tác dụng, hay chỉ gửi lại đúng lời mời đó?",
+   "TOKI-024 Member management.||TOKI-024 Quản lý thành viên.",
+   "A new 7 days; the earlier mail stops working.||Tính lại 7 ngày; mail trước hết tác dụng.",
+   "PO",
+   "M"
+  ],
+  [
+   "VQ-27",
+   "The '+' that creates a channel sits beside 'Busiest channels' on the Admin page (Q41), but Analytics is phase 5. What does that section show in phase 1?||Dấu '+' tạo kênh nằm cạnh 'Busiest channels' trên trang Admin (Q41), nhưng Analytics thuộc phase 5. Ở phase 1 mục đó hiển thị gì?",
+   "TOKI-098 Create a channel from the Admin page.||TOKI-098 Tạo kênh từ trang Admin.",
+   "A plain list of all channels with their member counts, titled 'Channels'; the busiest ranking comes with Analytics.||Một danh sách đơn giản gồm mọi kênh kèm số thành viên, tên là 'Channels'; xếp hạng theo độ sôi nổi đi cùng Analytics.",
+   "PO",
+   "M"
+  ],
+  [
+   "VQ-28",
+   "A private channel is archived when its last member leaves, and an Admin restores only a channel they belong to. Who restores a channel with no members?||Kênh riêng tư được lưu trữ khi thành viên cuối rời đi, và Admin chỉ khôi phục kênh mình là thành viên. Ai khôi phục kênh không còn thành viên nào?",
+   "TOKI-029 Channel API, TOKI-101 Archive and restore.||TOKI-029 Channel API, TOKI-101 Lưu trữ và khôi phục.",
+   "Any Admin; the Admin who restores it becomes its member.||Admin nào cũng được; Admin khôi phục trở thành thành viên của kênh.",
+   "PO",
+   "L"
+  ],
+  [
+   "VQ-29",
+   "Where do 'Add people', the Admin's 'Remove from channel' and 'Archive channel' open from?||'Add people', 'Remove from channel' của Admin và 'Archive channel' mở từ đâu?",
+   "TOKI-100 and TOKI-101: the written journeys do not name the entry point.||TOKI-100 và TOKI-101: các hành trình đã viết không nêu điểm vào.",
+   "All three from the channel's Details panel.||Cả ba từ panel Details của kênh.",
+   "UX",
+   "L"
+  ],
+  [
+   "VQ-30",
+   "Are uploaded files scanned for viruses in phase 1?||Ở phase 1 file tải lên có được quét virus không?",
+   "TOKI-058 File storage. Q58 accepts every file type but says nothing about scanning.||TOKI-058 Lưu trữ file. Q58 nhận mọi loại file nhưng không nói gì về quét.",
+   "No scanning in phase 1; files are always downloaded, never opened in the page (Q58).||Không quét ở phase 1; file luôn được tải về, không mở trong trang (Q58).",
+   "PO, BE",
+   "M"
+  ],
+  [
+   "VQ-31",
+   "In Ctrl+K, exact matches come first. What is the order after that?||Trong Ctrl+K, kết quả khớp chính xác đứng đầu. Sau đó xếp theo thứ tự nào?",
+   "TOKI-071 Command palette.||TOKI-071 Command palette.",
+   "Names that start with the text, then names that contain it; no fuzzy matching in phase 1.||Tên bắt đầu bằng chữ đã gõ, rồi tên có chứa chữ đó; không khớp gần đúng ở phase 1.",
+   "PO",
+   "L"
+  ],
+  [
+   "VQ-32",
+   "Which form of address does the Vietnamese interface use?||Giao diện tiếng Việt xưng hô thế nào?",
+   "TOKI-080 Full translation.||TOKI-080 Dịch toàn bộ.",
+   "'bạn' everywhere.||Dùng 'bạn' ở mọi chỗ.",
+   "PO",
+   "L"
+  ],
+  [
+   "VQ-33",
+   "Do number formats and the names of days and months follow the interface language?||Định dạng số và tên thứ, tên tháng có theo ngôn ngữ giao diện không?",
+   "TOKI-080 Full translation, TOKI-094 Date and time rules.||TOKI-080 Dịch toàn bộ, TOKI-094 Quy tắc ngày giờ.",
+   "Yes, they follow the interface language.||Có, theo ngôn ngữ giao diện.",
+   "PO",
+   "L"
+  ],
+  [
+   "VQ-34",
+   "Is a deployment started automatically when a pull request is merged, or by hand?||Việc deploy tự chạy khi merge pull request, hay do người khởi động?",
+   "TOKI-085 Automated deploy.||TOKI-085 Deploy tự động.",
+   "By hand in phase 1, with one command.||Do người khởi động ở phase 1, bằng một lệnh.",
+   "PO, BE",
+   "L"
+  ],
+  [
+   "VQ-35",
+   "The disk warning comes at 80% full and uploads stop at 95% (Q73). Which disk is measured, and is the warning shown anywhere besides the Admin page?||Cảnh báo đĩa hiện ở mức đầy 80% và ngừng nhận file ở 95% (Q73). Đo đĩa nào, và cảnh báo có hiện ở đâu ngoài trang Admin không?",
+   "TOKI-103 Disk-space warning.||TOKI-103 Cảnh báo dung lượng đĩa.",
+   "The volume that stores files; on the Admin page only.||Ổ chứa file; chỉ trên trang Admin.",
+   "BE",
+   "L"
+  ]
+ ]
+}

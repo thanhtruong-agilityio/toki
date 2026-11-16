@@ -37,7 +37,7 @@
    ]
   ]
  },
- "built": "13/11/2026",
+ "built": "16/11/2026",
  "overview": {
   "summary": "Toki là ứng dụng chat nội bộ cho một công ty: kênh, tin nhắn riêng, thread và file; về sau thêm công việc, lịch, họp video, cổng cho khách, tự động hóa, mail và tóm tắt bằng AI. Mỗi công ty tự chạy một bản trên server của mình.",
   "product": [
@@ -2478,6 +2478,176 @@
    "note": ""
   },
   {
+   "id": "D-160",
+   "old": "VQ-04",
+   "kind": "q",
+   "q": "Câu trả lời gửi kèm 'Also send to #name' là một tin nhắn hiển thị ở hai nơi hay là hai tin nhắn, và bản trong channel có làm tăng số chưa đọc của channel và thông báo như tin nhắn thường không?",
+   "a": "Là một tin nhắn hiển thị ở cả hai nơi: sửa hoặc xoá sẽ thay đổi cả hai, và trong channel nó được tính như tin nhắn thường (áp dụng số chưa đọc và mức thông báo).",
+   "owner": "PO",
+   "sev": "M",
+   "status": "Open"
+  },
+  {
+   "id": "D-162",
+   "old": "VQ-06",
+   "kind": "q",
+   "q": "Trên màn hình cảm ứng, người dùng xem ai đã thả reaction bằng cách nào? Tên chỉ hiện khi rê chuột, trong khi quy tắc D-067 cấm tính năng chỉ dùng được bằng hover.",
+   "a": "Nhấn giữ chip sẽ mở một danh sách tên nhỏ; chạm nhanh vẫn là thêm hoặc gỡ reaction.",
+   "owner": "PO",
+   "sev": "M",
+   "status": "Open"
+  },
+  {
+   "id": "D-163",
+   "old": "VQ-07",
+   "kind": "q",
+   "q": "Khi nhiều người thả reaction lên cùng một tin nhắn, tác giả nhận một mục Activity cho mỗi reaction hay một mục cho mỗi tin nhắn?",
+   "a": "Một mục cho mỗi tin nhắn, cập nhật theo các tên mới nhất; gỡ reaction thì người đó bị bỏ khỏi mục.",
+   "owner": "PO",
+   "sev": "M",
+   "status": "Open"
+  },
+  {
+   "id": "D-164",
+   "old": "VQ-08",
+   "kind": "q",
+   "q": "Số tin nhắn được ghim trong một cuộc trò chuyện có giới hạn không?",
+   "a": "Không giới hạn trong phase 1.",
+   "owner": "PO",
+   "sev": "M",
+   "status": "Open"
+  },
+  {
+   "id": "D-165",
+   "old": "VQ-09",
+   "kind": "q",
+   "q": "Dòng hệ thống '… pinned a message' có làm tăng số chưa đọc hoặc thông báo cho ai không, và khi bỏ ghim có dòng nào không?",
+   "a": "Không tăng số chưa đọc và không thông báo, giống dòng 'joined' (D-100); bỏ ghim không có dòng nào.",
+   "owner": "PO",
+   "sev": "M",
+   "status": "Open"
+  },
+  {
+   "id": "D-166",
+   "old": "VQ-10",
+   "kind": "q",
+   "q": "Khi tin nhắn đã ghim bị xoá thì ghim đó ra sao, và có ghim được câu trả lời nằm trong thread không?",
+   "a": "Tin nhắn bị xoá sẽ rời khỏi tab Pinned. Trong phase 1 chỉ ghim được tin nhắn ở danh sách chính.",
+   "owner": "PO",
+   "sev": "M",
+   "status": "Open"
+  },
+  {
+   "id": "D-167",
+   "old": "VQ-11",
+   "kind": "q",
+   "q": "Những địa chỉ nào trở thành link, link mở theo cách nào, và có khối code nhiều dòng không?",
+   "a": "Chỉ địa chỉ http:// và https://, mở trong tab mới; phase 1 không có khối code nhiều dòng.",
+   "owner": "PO",
+   "sev": "M",
+   "status": "Open"
+  },
+  {
+   "id": "D-168",
+   "old": "VQ-12",
+   "kind": "q",
+   "q": "Draft có bao gồm các tệp đã tải lên ô soạn tin không? D-130 xoá tệp đã tải lên nhưng không gửi sau 24 giờ.",
+   "a": "Draft chỉ gồm văn bản; tệp đính kèm không được khôi phục khi quay lại hay trên thiết bị khác.",
+   "owner": "PO",
+   "sev": "M",
+   "status": "Open"
+  },
+  {
+   "id": "D-170",
+   "old": "VQ-14",
+   "kind": "q",
+   "q": "Tệp có còn trên trang Files của một người sau khi họ rời channel, và khi channel bị lưu trữ không?",
+   "a": "Sau khi rời, tệp của channel đó biến khỏi trang Files của người ấy (D-116: không đọc được channel chưa tham gia). Tệp của channel đã lưu trữ vẫn còn với các thành viên của nó.",
+   "owner": "PO",
+   "sev": "M",
+   "status": "Open"
+  },
+  {
+   "id": "D-172",
+   "old": "VQ-16",
+   "kind": "q",
+   "q": "Chữ của status dài tối đa bao nhiêu? Journey F32 ghi 100 ký tự, nhưng chưa có quyết định nào đặt con số này và prototype không giới hạn.",
+   "a": "Từ 1 đến 100 ký tự như F32 ghi; ô nhập từ chối ký tự thứ 101.",
+   "owner": "PO",
+   "sev": "M",
+   "status": "Open"
+  },
+  {
+   "id": "D-174",
+   "old": "VQ-18",
+   "kind": "q",
+   "q": "Trong cuộc trò chuyện đã mute, trả lời thread và reaction có còn tạo mục Activity và làm tăng badge của Activity không? Các quyết định mới chỉ nói về mention (D-088) và số đếm của chính cuộc trò chuyện (D-103).",
+   "a": "Có: các mục vẫn được tạo và tính vào badge của Activity, nhưng không có toast, push hay âm thanh.",
+   "owner": "PO",
+   "sev": "M",
+   "status": "Open"
+  },
+  {
+   "id": "D-175",
+   "old": "VQ-19",
+   "kind": "q",
+   "q": "Giao diện, màu nhấn, mật độ và ngôn ngữ được lưu theo tài khoản và giống nhau trên mọi thiết bị, hay lưu theo từng thiết bị? D-142 mới quyết định cho tùy chọn thông báo; journey F35 ghi là theo tài khoản, còn prototype lưu giao diện trong trình duyệt.",
+   "a": "Lưu theo tài khoản và đồng bộ như F35 ghi; với 'Match my device' mỗi thiết bị theo cài đặt sáng hoặc tối của riêng nó.",
+   "owner": "PO",
+   "sev": "M",
+   "status": "Open"
+  },
+  {
+   "id": "D-180",
+   "old": "VQ-24",
+   "kind": "q",
+   "q": "Mail được gửi bằng ngôn ngữ nào: mail mời tới người chưa có tài khoản, và mail đăng nhập tới thành viên đã chọn tiếng Việt?",
+   "a": "Mail mời bằng tiếng Anh; mail đăng nhập theo ngôn ngữ thành viên đã chọn.",
+   "owner": "PO",
+   "sev": "M",
+   "status": "Open"
+  },
+  {
+   "id": "D-181",
+   "old": "VQ-25",
+   "kind": "q",
+   "q": "Khi một người đã bị vô hiệu hoá được mời lại (D-094), họ nhận vai trò nào: vai trò trong lời mời mới, hay vai trò cũ của tài khoản?",
+   "a": "Vai trò chọn trong lời mời mới.",
+   "owner": "PO",
+   "sev": "M",
+   "status": "Open"
+  },
+  {
+   "id": "D-182",
+   "old": "VQ-26",
+   "kind": "q",
+   "q": "'Resend' ở một lời mời có tính lại 7 ngày và làm nút Join của mail trước hết tác dụng, hay chỉ gửi lại đúng lời mời đó?",
+   "a": "Tính lại 7 ngày; mail trước hết tác dụng.",
+   "owner": "PO",
+   "sev": "M",
+   "status": "Open"
+  },
+  {
+   "id": "D-183",
+   "old": "VQ-27",
+   "kind": "q",
+   "q": "Dấu '+' tạo kênh nằm cạnh 'Busiest channels' trên trang Admin (D-151), nhưng Analytics thuộc phase 5. Ở phase 1 mục đó hiển thị gì?",
+   "a": "Một danh sách đơn giản gồm mọi kênh kèm số thành viên, tên là 'Channels'; xếp hạng theo độ sôi nổi đi cùng Analytics.",
+   "owner": "PO",
+   "sev": "M",
+   "status": "Open"
+  },
+  {
+   "id": "D-186",
+   "old": "VQ-30",
+   "kind": "q",
+   "q": "Ở phase 1 file tải lên có được quét virus không?",
+   "a": "Không quét ở phase 1; file luôn được tải về, không mở trong trang (D-095).",
+   "owner": "PO, BE",
+   "sev": "M",
+   "status": "Open"
+  },
+  {
    "id": "D-114",
    "old": "FQ-06 · Q82",
    "kind": "rev",
@@ -2619,6 +2789,156 @@
    "topic": "Xuất dữ liệu",
    "source": "deferred",
    "note": ""
+  },
+  {
+   "id": "D-161",
+   "old": "VQ-05",
+   "kind": "q",
+   "q": "'Also send to …' có xuất hiện trong thread của DM hoặc group DM không? Prototype chỉ hiển thị nó trong channel.",
+   "a": "Chỉ trong channel, như prototype.",
+   "owner": "PO",
+   "sev": "L",
+   "status": "Open"
+  },
+  {
+   "id": "D-169",
+   "old": "VQ-13",
+   "kind": "q",
+   "q": "Draft được giữ trong bao lâu, và điều gì xảy ra khi cùng một draft được sửa trên hai thiết bị cùng lúc?",
+   "a": "Giữ cho đến khi gửi hoặc xoá trống, không hết hạn; bản lưu sau cùng thắng, như với topic (D-121).",
+   "owner": "PO",
+   "sev": "L",
+   "status": "Open"
+  },
+  {
+   "id": "D-171",
+   "old": "VQ-15",
+   "kind": "q",
+   "q": "Trang Files tải bao nhiêu dòng mỗi lần, và chip 'Documents' có nghĩa là mọi tệp đính kèm không phải ảnh không?",
+   "a": "50 dòng đầu, cuộn để tải thêm, như đã quyết định cho danh sách người (D-109); 'Documents' là mọi tệp không phải ảnh.",
+   "owner": "PO",
+   "sev": "L",
+   "status": "Open"
+  },
+  {
+   "id": "D-173",
+   "old": "VQ-17",
+   "kind": "q",
+   "q": "Quy tắc D-071 yêu cầu mỗi loại mục trong Activity có một chip lọc, nhưng prototype không có chip cho 'được thêm vào channel' và thay đổi tài khoản. Chip đó tên gì, và có gộp cả hai loại không?",
+   "a": "Một chip tên 'Other' gộp cả hai loại, như journey F27 ghi.",
+   "owner": "PO",
+   "sev": "L",
+   "status": "Open"
+  },
+  {
+   "id": "D-176",
+   "old": "VQ-20",
+   "kind": "q",
+   "q": "Với tài khoản mới, 'Desktop notifications' và 'Play a sound' đang bật hay tắt? Mới chỉ có công tắc mention trong cuộc trò chuyện đã mute là có mặc định được quyết định (D-088).",
+   "a": "Như trạng thái ban đầu của prototype: Desktop notifications bật, Play a sound tắt.",
+   "owner": "PO",
+   "sev": "L",
+   "status": "Open"
+  },
+  {
+   "id": "D-177",
+   "old": "VQ-21",
+   "kind": "q",
+   "q": "Ô tìm kiếm của People có khớp tiếng Việt gõ không dấu không, và các thẻ xếp theo thứ tự nào? D-015 mới quyết định chuyện dấu cho Ctrl+K; chưa có quyết định nào về thứ tự.",
+   "a": "Khớp cả khi gõ không dấu như Ctrl+K; các thẻ xếp theo thứ tự chữ cái của tên hiển thị.",
+   "owner": "PO",
+   "sev": "L",
+   "status": "Open"
+  },
+  {
+   "id": "D-178",
+   "old": "VQ-22",
+   "kind": "q",
+   "q": "'Sign out' trên thiết bị hiện tại có hỏi xác nhận không? D-158 và F06 chỉ nêu hộp xác nhận khi đăng xuất thiết bị khác.",
+   "a": "Không hỏi xác nhận: người dùng có thể đăng nhập lại bằng mã, và bản nháp được lưu trước đó.",
+   "owner": "PO",
+   "sev": "L",
+   "status": "Open"
+  },
+  {
+   "id": "D-179",
+   "old": "VQ-23",
+   "kind": "q",
+   "q": "Phiên bắt đầu từ link khẩn cấp có kéo dài 30 ngày như mọi phiên khác không, và in link mới có hủy link cũ chưa dùng không?",
+   "a": "Phiên 30 ngày bình thường; link mới hủy link trước đó, giống như mã mới hủy mã cũ (D-082).",
+   "owner": "PO",
+   "sev": "L",
+   "status": "Open"
+  },
+  {
+   "id": "D-184",
+   "old": "VQ-28",
+   "kind": "q",
+   "q": "Kênh riêng tư được lưu trữ khi thành viên cuối rời đi, và Admin chỉ khôi phục kênh mình là thành viên. Ai khôi phục kênh không còn thành viên nào?",
+   "a": "Admin nào cũng được; Admin khôi phục trở thành thành viên của kênh.",
+   "owner": "PO",
+   "sev": "L",
+   "status": "Open"
+  },
+  {
+   "id": "D-185",
+   "old": "VQ-29",
+   "kind": "q",
+   "q": "'Add people', 'Remove from channel' của Admin và 'Archive channel' mở từ đâu?",
+   "a": "Cả ba từ panel Details của kênh.",
+   "owner": "UX",
+   "sev": "L",
+   "status": "Open"
+  },
+  {
+   "id": "D-187",
+   "old": "VQ-31",
+   "kind": "q",
+   "q": "Trong Ctrl+K, kết quả khớp chính xác đứng đầu. Sau đó xếp theo thứ tự nào?",
+   "a": "Tên bắt đầu bằng chữ đã gõ, rồi tên có chứa chữ đó; không khớp gần đúng ở phase 1.",
+   "owner": "PO",
+   "sev": "L",
+   "status": "Open"
+  },
+  {
+   "id": "D-188",
+   "old": "VQ-32",
+   "kind": "q",
+   "q": "Giao diện tiếng Việt xưng hô thế nào?",
+   "a": "Dùng 'bạn' ở mọi chỗ.",
+   "owner": "PO",
+   "sev": "L",
+   "status": "Open"
+  },
+  {
+   "id": "D-189",
+   "old": "VQ-33",
+   "kind": "q",
+   "q": "Định dạng số và tên thứ, tên tháng có theo ngôn ngữ giao diện không?",
+   "a": "Có, theo ngôn ngữ giao diện.",
+   "owner": "PO",
+   "sev": "L",
+   "status": "Open"
+  },
+  {
+   "id": "D-190",
+   "old": "VQ-34",
+   "kind": "q",
+   "q": "Việc deploy tự chạy khi merge pull request, hay do người khởi động?",
+   "a": "Do người khởi động ở phase 1, bằng một lệnh.",
+   "owner": "PO, BE",
+   "sev": "L",
+   "status": "Open"
+  },
+  {
+   "id": "D-191",
+   "old": "VQ-35",
+   "kind": "q",
+   "q": "Cảnh báo đĩa hiện ở mức đầy 80% và ngừng nhận file ở 95% (D-106). Đo đĩa nào, và cảnh báo có hiện ở đâu ngoài trang Admin không?",
+   "a": "Ổ chứa file; chỉ trên trang Admin.",
+   "owner": "BE",
+   "sev": "L",
+   "status": "Open"
   },
   {
    "id": "D-125",
@@ -5619,16 +5939,17 @@
    "id": "I03",
    "slug": "sign-in-by-email-code",
    "milestone": "M2",
-   "want": "Vào Toki bằng mã gửi qua email, không mật khẩu; workspace tự khởi tạo lần đầu",
+   "want": "Vào Toki bằng mã 6 số gửi qua email, không mật khẩu; đăng xuất và xem mình đang đăng nhập ở đâu; workspace tự khởi tạo lần đầu",
    "who": "Member, Admin",
-   "done": "Admin đầu tiên được tạo từ môi trường; đăng nhập, đăng xuất, 7 trường hợp lỗi và quản lý phiên đều chạy",
+   "done": "Admin đầu tiên được tạo từ môi trường; mã trong thư không có nút đăng nhập được, có hiệu lực 10 phút, gửi lại được sau 60 giây và bị khóa sau 5 lần sai; 7 trường hợp lỗi, Sign out, danh sách thiết bị đã đăng nhập và link đăng nhập khẩn cấp đều chạy",
    "tickets": [
     "019",
     "020",
     "021",
     "022",
     "023",
-    "026"
+    "026",
+    "099"
    ],
    "status": "draft"
   },
@@ -5636,13 +5957,14 @@
    "id": "I04",
    "slug": "member-management",
    "milestone": "M2",
-   "want": "Mời người, đổi vai trò, vô hiệu hóa tài khoản",
-   "who": "Admin, Admin",
-   "done": "Admin mời một người và người đó vào được; quyền theo vai trò khớp bảng quyền",
+   "want": "Mời người với role Member hoặc Admin, mời lại người đã bị vô hiệu hóa, đổi role, vô hiệu hóa tài khoản",
+   "who": "Admin",
+   "done": "Admin mời một người, người đó nhập mã trong thư và vào thẳng #general; người đã bị vô hiệu hóa được mời lại thì nhận lại đúng tài khoản cũ; Admin cuối cùng không bị hạ role hay vô hiệu hóa và không ai tự vô hiệu hóa mình; quyền theo role khớp bảng quyền",
    "tickets": [
     "024",
     "025",
-    "027"
+    "027",
+    "097"
    ],
    "status": "draft"
   },
@@ -5650,9 +5972,9 @@
    "id": "I05",
    "slug": "channels-and-direct-messages",
    "milestone": "M2",
-   "want": "Tạo, tìm, tham gia, rời kênh; mở DM và group DM; di chuyển giữa các hội thoại",
-   "who": "Member trở lên",
-   "done": "Tạo, duyệt, tham gia và rời được kênh công khai lẫn riêng tư; mở được DM; danh sách hội thoại lọc và gập được",
+   "want": "Tìm, join và rời channel; mở DM và group DM; di chuyển giữa các hội thoại. Admin tạo channel từ trang Admin",
+   "who": "Member, Admin",
+   "done": "Admin tạo được channel công khai lẫn riêng tư từ trang Admin, còn Member thì không; browse, join và rời được channel, channel chưa join thì không đọc được; DM hoặc group DM tới 8 người mở từ nút + ở Direct messages; danh sách hội thoại lọc và gập được",
    "tickets": [
     "028",
     "029",
@@ -5661,7 +5983,10 @@
     "032",
     "033",
     "034",
-    "035"
+    "035",
+    "098",
+    "100",
+    "101"
    ],
    "status": "draft"
   },
@@ -5710,8 +6035,8 @@
    "slug": "unread-presence-status",
    "milestone": "M4",
    "want": "Biết chỗ nào có tin mới, ai đang hoạt động, ai đang bận",
-   "who": "Mọi người dùng",
-   "done": "Badge khớp trên hai thiết bị; vạch New đúng quy tắc; presence và status tự xóa hoạt động",
+   "who": "Member, Admin",
+   "done": "Badge khớp trên hai thiết bị và trên tiêu đề tab trình duyệt; vạch New đúng quy tắc; presence và status tự xóa hoạt động",
    "tickets": [
     "064",
     "053",
@@ -5727,15 +6052,16 @@
    "slug": "file-sharing",
    "milestone": "M4",
    "want": "Gửi file và ảnh, và tìm lại chúng ở một chỗ",
-   "who": "Mọi người dùng",
-   "done": "Tải lên tới 100 MB, có thumbnail và link preview; tab Files và mục Files chạy",
+   "who": "Member, Admin",
+   "done": "Tải lên mọi loại file tới 100 MB, 10 file mỗi tin, có thumbnail và link preview; tab Files và mục Files chạy; Admin được cảnh báo khi đĩa sắp đầy",
    "tickets": [
     "058",
     "059",
     "060",
     "061",
     "062",
-    "063"
+    "063",
+    "103"
    ],
    "status": "draft"
   },
@@ -5744,8 +6070,8 @@
    "slug": "search-and-command-palette",
    "milestone": "M4",
    "want": "Tìm hội thoại, người, tin nhắn; làm nhanh bằng Ctrl+K",
-   "who": "Member trở lên",
-   "done": "Gõ tiếng Việt không dấu ra kết quả có dấu; chỉ trả về thứ người đó có quyền xem",
+   "who": "Member, Admin",
+   "done": "Gõ tiếng Việt không dấu ra kết quả có dấu; chỉ trả về thứ người đó có quyền xem, 20 kết quả mỗi loại và xem thêm khi yêu cầu",
    "tickets": [
     "069",
     "070",
@@ -5759,8 +6085,8 @@
    "slug": "activity-and-later",
    "milestone": "M5",
    "want": "Không bỏ sót mention; lưu tin để xử lý sau và được nhắc",
-   "who": "Member trở lên",
-   "done": "Mention, thread và reaction tạo mục Activity; hoãn và reminder bắn đúng giờ",
+   "who": "Member, Admin",
+   "done": "Mention, reply trong thread đang theo dõi và reaction tạo mục Activity; hoãn và reminder bắn đúng giờ và không bao giờ đưa ra mốc đã qua",
    "tickets": [
     "065",
     "066",
@@ -5774,14 +6100,15 @@
    "slug": "notifications-and-focus",
    "milestone": "M5",
    "want": "Được báo khi cần, và tắt được khi muốn tập trung",
-   "who": "Member trở lên",
-   "done": "Push tới khi đã đóng tab; cả 15 tình huống khi được nhắc chạy đúng; Pause và Focus giữ lại mọi thứ",
+   "who": "Member, Admin",
+   "done": "Push tới khi đã đóng tab; mention trong hội thoại đã mute vẫn báo khi công tắc của người đó đang bật; cả 15 tình huống khi được nhắc chạy đúng; Pause và Focus giữ lại mọi thứ",
    "tickets": [
     "073",
     "074",
     "075",
     "076",
-    "077"
+    "077",
+    "102"
    ],
    "status": "draft"
   },
@@ -5789,9 +6116,9 @@
    "id": "I13",
    "slug": "preferences-and-people",
    "milestone": "M6",
-   "want": "Chỉnh giao diện và thông báo theo ý mình; tra danh bạ; trên điện thoại không thiếu gì",
-   "who": "Member trở lên",
-   "done": "Tùy chọn lưu theo tài khoản; People và hồ sơ chạy; sheet More có đủ điểm vào",
+   "want": "Chỉnh giao diện, ngôn ngữ và thông báo theo ý mình; xem các thiết bị đang đăng nhập và đăng xuất; tra danh bạ; trên điện thoại không thiếu gì",
+   "who": "Member, Admin",
+   "done": "Tùy chọn lưu theo tài khoản và áp dụng trên mọi thiết bị; đổi được ngôn ngữ giữa English (mặc định) và tiếng Việt; Sign out và danh sách thiết bị đang đăng nhập chạy; People và hồ sơ chạy; sheet More có đủ điểm vào",
    "tickets": [
     "078",
     "079",
@@ -5803,13 +6130,14 @@
    "id": "I14",
    "slug": "language-accessibility-states",
    "milestone": "M6",
-   "want": "Giao diện tiếng Việt đầy đủ, dùng được bằng bàn phím, có trạng thái cho mọi tình huống",
-   "who": "Mọi người dùng",
-   "done": "Không chuỗi nào thiếu bản dịch; có khung xương, dải kết nối lại, trang 404 và trang không có quyền",
+   "want": "Giao diện dịch đầy đủ ở English (mặc định) và tiếng Việt, dùng được bằng bàn phím, có trạng thái cho mọi tình huống",
+   "who": "Member, Admin",
+   "done": "Không chuỗi nào thiếu bản dịch ở cả hai ngôn ngữ, thiếu thì CI báo lỗi; có khung xương, banner offline, trang chung cho không tìm thấy và không có quyền, và dải báo có bản cập nhật",
    "tickets": [
     "080",
     "082",
-    "083"
+    "083",
+    "104"
    ],
    "status": "draft"
   },
@@ -5817,13 +6145,12 @@
    "id": "I15",
    "slug": "production-launch",
    "milestone": "M6",
-   "want": "Toki chạy trên tên miền thật, an toàn, và khôi phục được",
+   "want": "Toki chạy trên tên miền thật, an toàn",
    "who": "Admin và người vận hành server",
-   "done": "Cài mới theo đúng tài liệu; khôi phục được một bản backup; đạt 6 mục tiêu hiệu năng và 12 luồng end-to-end",
+   "done": "Cài mới theo đúng tài liệu; đạt 6 mục tiêu hiệu năng với 200 người online; 12 luồng end-to-end chạy đúng",
    "tickets": [
     "084",
     "085",
-    "086",
     "087",
     "088",
     "089",
@@ -5873,7 +6200,7 @@
   ],
   [
    "BR-05",
-   "Một phiên kéo dài 30 ngày trên một thiết bị. Có gia hạn khi dùng hay không thì chưa quyết định: D-138.",
+   "Một phiên kéo dài 30 ngày trên một thiết bị. Phiên được gia hạn mỗi lần dùng, nên 30 ngày nghĩa là 30 ngày không mở Toki (D-138).",
    "1.2, 2.1, 3.2",
    "D-011"
   ],
@@ -8419,6 +8746,1584 @@
      ]
     }
    ]
+  },
+  {
+   "id": "FR-33",
+   "area": "Nhắn tin",
+   "text": "Thành viên của một cuộc trò chuyện có thể trả lời một tin nhắn trong thread. Thread mở ở bảng bên, gồm tin nhắn gốc, số câu trả lời, các câu trả lời và ô soạn tin riêng; thread chỉ có một cấp. Trong channel, khi tick 'Also send to #name' thì câu trả lời cũng được đăng như một tin nhắn thường trong channel.",
+   "decided": [
+    {
+     "ref": "D-017",
+     "a": "Như đề xuất; thêm @channel, group DM tới 8 người, giữ 8 emoji cố định"
+    },
+    {
+     "ref": "D-091",
+     "a": "Đã rà ngày 13/11/2026: 8 hành trình viết lại, 16 sửa, 19 giữ nguyên. Khi bốn lựa chọn ở D-156 tới D-159 đã chốt, các hành trình phase 1 được chấp nhận làm nền."
+    },
+    {
+     "ref": "D-096",
+     "a": "Có; thread vẫn nằm dưới dòng 'Message deleted'."
+    },
+    {
+     "ref": "D-089",
+     "a": "(a) Mỗi thứ có địa chỉ. Back đóng panel bên trước, rồi về nơi trước đó."
+    }
+   ],
+   "open": [
+    "D-160",
+    "D-161"
+   ],
+   "screen": "Home: nút 'Reply in thread' trên thanh thao tác của tin nhắn; bảng Thread",
+   "flows": "",
+   "rules": "BR-25",
+   "acs": [
+    {
+     "id": "AC-085",
+     "text": "Câu trả lời gửi từ bảng thread xuất hiện trong thread đó và không xuất hiện như một tin nhắn trong cuộc trò chuyện; dưới tin nhắn gốc có một dòng ghi số câu trả lời và giờ của câu trả lời cuối, bấm vào dòng đó sẽ mở thread. Câu trả lời vẫn được gửi kể cả khi tin nhắn gốc bị xoá trong lúc người dùng đang viết.",
+     "tests": [
+      {
+       "id": "TS-132",
+       "type": "P",
+       "text": "Trả lời trong thread",
+       "given": "Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Sam đã gửi tin nhắn 'Build 12 is ready' trong #general; tin này chưa có câu trả lời. Mai đang đăng nhập.",
+       "steps": "1. Mai mở #general và bấm 'Reply in thread' trên tin nhắn của Sam. 2. Trong bảng thread, Mai để trống ô 'Also send to #general', gõ 'Installing now' rồi gửi. 3. Sam mở #general.",
+       "expect": "Bảng thread hiển thị tin nhắn của Sam, dòng '1 reply' và câu trả lời của Mai. Trong #general, Sam thấy dưới tin nhắn của mình một dòng '1 reply' và 'Last reply' kèm giờ; 'Installing now' không nằm trong danh sách tin nhắn của #general. Bấm vào dòng đó mở đúng thread này."
+      },
+      {
+       "id": "TS-133",
+       "type": "X",
+       "text": "Trả lời khi tin gốc bị xoá",
+       "given": "Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Tin nhắn 'Build 12 is ready' của Sam trong #general có một câu trả lời của Alex. Mai và Sam đăng nhập trên hai trình duyệt khác nhau.",
+       "steps": "1. Mai mở thread và gõ 'Checking' nhưng chưa gửi. 2. Sam xoá tin nhắn của mình và xác nhận. 3. Mai bấm Send.",
+       "expect": "Câu trả lời của Mai được gửi. Thread hiển thị dòng 'Message deleted' ở vị trí tin gốc, tiếp theo là câu trả lời của Alex và 'Checking'."
+      }
+     ]
+    },
+    {
+     "id": "AC-086",
+     "text": "Trong thread của một channel, ô soạn tin có ô tick 'Also send to #name', mặc định không tick khi mở thread. Khi tick, câu trả lời xuất hiện cả trong thread lẫn trong channel như một tin nhắn thường; khi không tick, chỉ xuất hiện trong thread.",
+     "tests": [
+      {
+       "id": "TS-134",
+       "type": "P",
+       "text": "Gửi kèm vào channel",
+       "given": "Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Tin nhắn 'Build 12 is ready' của Sam có trong #general. Mai đang đăng nhập.",
+       "steps": "1. Mai mở thread trên tin nhắn của Sam. 2. Mai tick 'Also send to #general', gõ 'Tested, works' rồi gửi. 3. Alex mở #general.",
+       "expect": "'Tested, works' có trong thread, và Alex thấy nó ở cuối danh sách tin nhắn của #general dưới dạng tin nhắn của Mai."
+      },
+      {
+       "id": "TS-135",
+       "type": "N",
+       "text": "Ô tick mặc định bỏ trống",
+       "given": "Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Mai vừa gửi một câu trả lời trong thread với 'Also send to #general' được tick. Mai đang đăng nhập.",
+       "steps": "1. Mai đóng bảng thread. 2. Mai bấm 'Reply in thread' trên một tin nhắn khác trong #general.",
+       "expect": "Ô tick 'Also send to #general' có hiển thị và đang không được tick."
+      }
+     ]
+    },
+    {
+     "id": "AC-087",
+     "text": "Câu trả lời nằm trong thread không có thao tác 'Reply in thread'.",
+     "tests": [
+      {
+       "id": "TS-136",
+       "type": "N",
+       "text": "Không có thread lồng trong thread",
+       "given": "Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Tin nhắn của Sam trong #general có một câu trả lời của Mai. Alex đang đăng nhập.",
+       "steps": "1. Alex mở thread trên tin nhắn của Sam. 2. Alex rê chuột lên câu trả lời của Mai (màn hình hẹp: chạm vào) để hiện thanh thao tác và mở menu More.",
+       "expect": "Cả thanh thao tác lẫn menu More của câu trả lời của Mai đều không có 'Reply in thread'."
+      }
+     ]
+    },
+    {
+     "id": "AC-088",
+     "text": "Mỗi thread có địa chỉ riêng, mở lại đúng thread đó; nút Back của trình duyệt đóng bảng thread trước rồi mới rời cuộc trò chuyện.",
+     "tests": [
+      {
+       "id": "TS-137",
+       "type": "P",
+       "text": "Địa chỉ của thread và nút Back",
+       "given": "Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Tin nhắn của Sam trong #general có một câu trả lời. Mai đang đăng nhập và đang mở #launch; #launch là channel riêng tư có các thành viên Minh (Admin), Sam và Mai; Alex không phải thành viên.",
+       "steps": "1. Mai mở #general, rồi mở thread trên tin nhắn của Sam và sao chép địa chỉ trên thanh địa chỉ của trình duyệt. 2. Mai bấm Back của trình duyệt một lần. 3. Mai dán địa chỉ đã sao chép vào một tab mới.",
+       "expect": "Sau bước 2, bảng thread đóng và #general vẫn đang hiển thị. Sau bước 3, tab mới hiển thị #general với đúng thread đó đang mở trong bảng bên."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "FR-34",
+   "area": "Thông báo",
+   "text": "Tác giả của tin nhắn gốc, mọi người đã trả lời và mọi người được nhắc tên trong thread tự động theo dõi thread đó. Mỗi câu trả lời mới tạo một mục thread trong Activity cho từng người theo dõi, trừ người gửi, và không làm tăng số tin chưa đọc của cuộc trò chuyện. Không có nút nào để ngừng theo dõi một thread.",
+   "decided": [
+    {
+     "ref": "D-091",
+     "a": "Đã rà ngày 13/11/2026: 8 hành trình viết lại, 16 sửa, 19 giữ nguyên. Khi bốn lựa chọn ở D-156 tới D-159 đã chốt, các hành trình phase 1 được chấp nhận làm nền."
+    },
+    {
+     "ref": "D-119",
+     "a": "Phase 1 không có 'Unfollow thread'. Bản thân thread vẫn thuộc phase 1."
+    },
+    {
+     "ref": "D-071",
+     "a": "Hành động của chính mình không tạo thông báo cho mình. Mục Activity tự chuyển thành đã xong khi việc nó nhắc tới đã được làm. Activity xếp mới nhất trước và có chip lọc cho mọi loại mục."
+    }
+   ],
+   "open": [],
+   "screen": "Activity: chip 'Threads' và các mục thread; bảng Thread",
+   "flows": "",
+   "rules": "BR-15",
+   "acs": [
+    {
+     "id": "AC-089",
+     "text": "Một câu trả lời mới tạo một mục thread trong Activity cho tác giả tin gốc, cho từng người đã trả lời trước đó và cho từng người được nhắc tên trong thread; người gửi câu trả lời và những thành viên không thuộc các nhóm trên không nhận mục nào.",
+     "tests": [
+      {
+       "id": "TS-138",
+       "type": "P",
+       "text": "Tác giả tin gốc được báo",
+       "given": "Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Tin nhắn 'Build 12 is ready' của Sam trong #general chưa có câu trả lời. Activity của Sam không có mục chưa đọc.",
+       "steps": "1. Mai, đang đăng nhập, trả lời 'Installing now' trong thread trên tin nhắn của Sam. 2. Sam, đang đăng nhập, mở Activity và bấm chip 'Threads'.",
+       "expect": "Activity của Sam có đúng một mục thread mới, ghi tên Mai và #general. Activity của Mai không có mục nào cho câu trả lời của chính cô."
+      },
+      {
+       "id": "TS-139",
+       "type": "P",
+       "text": "Người đã trả lời trước được báo",
+       "given": "Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Trong #general, tin nhắn của Sam có một câu trả lời, của Mai. Activity của Mai không có mục chưa đọc.",
+       "steps": "1. Sam, đang đăng nhập, trả lời 'Thanks' trong cùng thread. 2. Mai, đang đăng nhập, mở Activity.",
+       "expect": "Activity của Mai có một mục thread mới cho câu trả lời của Sam."
+      },
+      {
+       "id": "TS-140",
+       "type": "N",
+       "text": "Người không theo dõi không nhận gì",
+       "given": "Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Trong #general, tin nhắn của Sam có một câu trả lời, của Mai. Alex chưa trả lời trong thread đó và không được nhắc tên trong đó. Activity của Alex đang trống.",
+       "steps": "1. Sam, đang đăng nhập, trả lời 'Thanks' trong thread, không nhắc tên ai. 2. Alex, đang đăng nhập, mở Activity.",
+       "expect": "Activity của Alex vẫn trống và badge của nó không đổi."
+      }
+     ]
+    },
+    {
+     "id": "AC-090",
+     "text": "Câu trả lời trong thread được gửi mà không tick 'Also send to #name' không làm tăng số tin chưa đọc của cuộc trò chuyện với bất kỳ ai.",
+     "tests": [
+      {
+       "id": "TS-141",
+       "type": "N",
+       "text": "Số chưa đọc của channel không đổi",
+       "given": "Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Alex đang đăng nhập và đang mở một cuộc trò chuyện khác; dòng #general trong danh sách của Alex không có số chưa đọc. Trong #general có tin nhắn của Sam.",
+       "steps": "1. Mai, đang đăng nhập, trả lời trong thread trên tin nhắn của Sam, không tick 'Also send to #general'. 2. Alex nhìn dòng #general mà không mở nó.",
+       "expect": "Dòng #general trong danh sách của Alex không in đậm và không có số chưa đọc."
+      }
+     ]
+    },
+    {
+     "id": "AC-091",
+     "text": "Không màn hình nào có cách để ngừng theo dõi một thread.",
+     "tests": [
+      {
+       "id": "TS-142",
+       "type": "N",
+       "text": "Không có nút Unfollow",
+       "given": "Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Tin nhắn của Sam trong #general có một câu trả lời của Mai, nên Mai đang theo dõi thread và có một mục thread trong Activity. Mai đang đăng nhập.",
+       "steps": "1. Mai mở bảng thread và xem phần tiêu đề và ô soạn tin. 2. Mai mở menu More của tin nhắn gốc và của câu trả lời của mình. 3. Mai mở Activity và xem các nút trên mục thread.",
+       "expect": "Không nơi nào trong số này có nút 'Unfollow thread' hay bất kỳ nút nào khác để ngừng theo dõi thread."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "FR-35",
+   "area": "Nhắn tin",
+   "text": "Người dùng có thể thả cảm xúc lên một tin nhắn bằng một trong 8 emoji cố định: 👍 ❤️ 🎉 😂 👀 🙏 ✅ 🚀; không có bảng chọn emoji đầy đủ. Mỗi emoji đã dùng hiện dưới tin nhắn thành một chip kèm số đếm; mỗi người thêm được một lần cho mỗi emoji trên một tin nhắn và gỡ được reaction của chính mình. Chip cho biết tên những người đã thả, và tác giả tin nhắn nhận một mục reaction trong Activity, không có toast hay push.",
+   "decided": [
+    {
+     "ref": "D-017",
+     "a": "Như đề xuất; thêm @channel, group DM tới 8 người, giữ 8 emoji cố định"
+    },
+    {
+     "ref": "D-091",
+     "a": "Đã rà ngày 13/11/2026: 8 hành trình viết lại, 16 sửa, 19 giữ nguyên. Khi bốn lựa chọn ở D-156 tới D-159 đã chốt, các hành trình phase 1 được chấp nhận làm nền."
+    }
+   ],
+   "open": [
+    "D-162",
+    "D-163"
+   ],
+   "screen": "Home: nút mặt cười trên thanh thao tác của tin nhắn; các chip reaction dưới tin nhắn",
+   "flows": "",
+   "rules": "BR-15",
+   "acs": [
+    {
+     "id": "AC-092",
+     "text": "Bảng reaction có đúng 8 emoji 👍 ❤️ 🎉 😂 👀 🙏 ✅ 🚀 và không có cách nào chọn emoji khác.",
+     "tests": [
+      {
+       "id": "TS-143",
+       "type": "B",
+       "text": "Đúng 8 emoji",
+       "given": "Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. #general có một tin nhắn của Sam. Mai đang đăng nhập.",
+       "steps": "1. Mai mở #general và bấm nút mặt cười trên thanh thao tác của tin nhắn của Sam. 2. Mai đếm số emoji và tìm ô tìm kiếm hoặc nút 'more' trong bảng.",
+       "expect": "Bảng hiển thị 8 emoji, 👍 ❤️ 🎉 😂 👀 🙏 ✅ 🚀, không có ô tìm kiếm và không có nút nào để hiện thêm emoji."
+      }
+     ]
+    },
+    {
+     "id": "AC-093",
+     "text": "Chọn một emoji sẽ thêm một chip có emoji đó kèm số đếm, được đánh dấu là của chính người đó. Bấm vào chip của mình sẽ gỡ reaction, chip có số đếm về 0 thì biến mất; bấm vào chip của người khác sẽ thêm cùng emoji đó. Trên một tin nhắn, mỗi người giữ được một lần cho mỗi emoji và có thể dùng nhiều emoji khác nhau.",
+     "tests": [
+      {
+       "id": "TS-144",
+       "type": "P",
+       "text": "Thêm rồi gỡ",
+       "given": "Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Tin nhắn của Sam trong #general chưa có reaction. Mai đang đăng nhập.",
+       "steps": "1. Mai bấm nút mặt cười trên tin nhắn của Sam và chọn 👍. 2. Mai bấm vào chip 👍.",
+       "expect": "Sau bước 1, dưới tin nhắn có chip '👍 1', được viền để đánh dấu là của Mai. Sau bước 2, tin nhắn không còn chip nào."
+      },
+      {
+       "id": "TS-145",
+       "type": "P",
+       "text": "Thả cùng emoji với người khác",
+       "given": "Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Tin nhắn của Sam trong #general có chip '👍 1' của Mai. Alex đang đăng nhập.",
+       "steps": "1. Alex bấm vào chip '👍 1'. 2. Mai, đăng nhập trên trình duyệt khác, xem tin nhắn.",
+       "expect": "Cả hai thấy một chip '👍 2'; không có chip 👍 thứ hai được tạo ra."
+      },
+      {
+       "id": "TS-146",
+       "type": "B",
+       "text": "Mỗi người một lần cho mỗi emoji",
+       "given": "Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Tin nhắn của Sam trong #general có chip '👍 1' của Mai. Mai đang đăng nhập.",
+       "steps": "1. Mai mở bảng reaction trên tin nhắn và chọn 🎉. 2. Mai mở lại bảng reaction và chọn 👍.",
+       "expect": "Sau bước 1, tin nhắn có '👍 1' và '🎉 1'. Sau bước 2, số đếm 👍 không thành 2: chip 👍 biến mất và chỉ còn '🎉 1'."
+      }
+     ]
+    },
+    {
+     "id": "AC-094",
+     "text": "Rê chuột lên một chip reaction sẽ hiện tên những người đã thả emoji đó.",
+     "tests": [
+      {
+       "id": "TS-147",
+       "type": "P",
+       "text": "Ai đã thả cảm xúc",
+       "given": "Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Tin nhắn của Sam trong #general có chip '👍 2' của Mai và Alex. Minh đang đăng nhập trên trình duyệt máy tính.",
+       "steps": "1. Minh mở #general và giữ con trỏ trên chip '👍 2'.",
+       "expect": "Một tooltip hiện tên Mai và Alex, không có ai khác."
+      }
+     ]
+    },
+    {
+     "id": "AC-095",
+     "text": "Khi người khác thả reaction, tác giả tin nhắn nhận một mục reaction trong Activity, không có toast và không có push.",
+     "tests": [
+      {
+       "id": "TS-148",
+       "type": "P",
+       "text": "Tác giả chỉ nhận mục Activity",
+       "given": "Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Tin nhắn của Sam trong #general chưa có reaction. Sam đang đăng nhập, mở Toki ở một cuộc trò chuyện khác, đã cho phép push, không bật Pause hay Focus time; Activity của Sam không có mục chưa đọc.",
+       "steps": "1. Mai, đang đăng nhập, thả 👍 lên tin nhắn của Sam. 2. Sam quan sát màn hình, sau đó mở Activity và bấm chip 'Reactions'.",
+       "expect": "Sam không thấy toast hay thông báo hệ thống nào. Activity của Sam có một mục reaction mới ghi tên Mai, 👍 và #general."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "FR-36",
+   "area": "Nhắn tin",
+   "text": "Member hoặc Admin là thành viên của một cuộc trò chuyện có thể ghim và bỏ ghim bất kỳ tin nhắn nào trong đó từ menu More của tin nhắn. Tin nhắn đã ghim có nhãn 'Pinned', cuộc trò chuyện hiện một dòng hệ thống cho biết ai đã ghim, và tab Pinned liệt kê các tin nhắn đã ghim của cuộc trò chuyện, tin ghim gần nhất ở trên cùng. Ghim và bỏ ghim có hiệu lực ngay, kèm Undo trong 5 giây và không hỏi xác nhận.",
+   "decided": [
+    {
+     "ref": "D-090",
+     "a": "Đã rà từng dòng và duyệt với ba cột (Member, Admin, Guest). Các dòng đổi: chỉ Admin tạo kênh; Admin mời với vai trò nào cũng được, đổi vai trò, và vô hiệu hoá bất kỳ ai trừ Admin cuối cùng và chính mình; Member tạo được automation (phase 5). Member vẫn thêm được người vào kênh mình đang ở."
+    },
+    {
+     "ref": "D-091",
+     "a": "Đã rà ngày 13/11/2026: 8 hành trình viết lại, 16 sửa, 19 giữ nguyên. Khi bốn lựa chọn ở D-156 tới D-159 đã chốt, các hành trình phase 1 được chấp nhận làm nền."
+    },
+    {
+     "ref": "D-061",
+     "a": "Một trong hai, tùy hành động có hoàn tác được không. Quy tắc D-069 và D-070. Hoàn tác: lưu trữ email, Mark done, rời channel công khai, bỏ lưu Later, bỏ pin. Xác nhận: xóa tin, xóa automation, vô hiệu hóa thành viên, lưu trữ channel, hủy Meet."
+    },
+    {
+     "ref": "D-069",
+     "a": "Hành động hoàn tác được thì làm ngay và hiện toast có nút Hoàn tác trong 5 giây. Hành động không hoàn tác được hoặc ảnh hưởng người khác thì hỏi xác nhận, nêu rõ đối tượng. Không dùng cả hai cho một hành động."
+    }
+   ],
+   "open": [
+    "D-164",
+    "D-165",
+    "D-166"
+   ],
+   "screen": "Home: menu More của tin nhắn, mục 'Pin to conversation' / 'Unpin'; tab 'Pinned' của cuộc trò chuyện",
+   "flows": "",
+   "rules": "BR-20",
+   "acs": [
+    {
+     "id": "AC-096",
+     "text": "Mọi Member hoặc Admin trong cuộc trò chuyện đều ghim được tin nhắn, của mình hay của người khác. Khi đó mọi thành viên thấy nhãn 'Pinned' trên tin nhắn, một dòng hệ thống ghi tên người ghim, và tin nhắn đó trong tab Pinned.",
+     "tests": [
+      {
+       "id": "TS-149",
+       "type": "P",
+       "text": "Member ghim tin nhắn của người khác",
+       "given": "#launch là channel riêng tư có các thành viên Minh (Admin), Sam và Mai; Alex không phải thành viên. Mai đã gửi 'Launch date: 1 December' trong #launch; ở đó chưa có tin nào được ghim. Sam đang đăng nhập.",
+       "steps": "1. Sam mở #launch, mở menu More của tin nhắn của Mai và bấm 'Pin to conversation'. 2. Minh, đăng nhập trên trình duyệt khác, mở #launch rồi mở tab Pinned.",
+       "expect": "Minh thấy nhãn 'Pinned' trên tin nhắn của Mai, dòng hệ thống 'Sam pinned a message' trong #launch, và tin nhắn của Mai là mục duy nhất trong tab Pinned."
+      },
+      {
+       "id": "TS-150",
+       "type": "P",
+       "text": "Thành viên bỏ ghim tin do người khác ghim",
+       "given": "#launch là channel riêng tư có các thành viên Minh (Admin), Sam và Mai; Alex không phải thành viên. Sam đã ghim tin nhắn 'Launch date: 1 December' của Mai trong #launch. Mai đang đăng nhập.",
+       "steps": "1. Mai mở menu More của tin nhắn đã ghim. 2. Mai bấm 'Unpin' và chờ 6 giây. 3. Mai mở tab Pinned.",
+       "expect": "Menu có mục 'Unpin'. Sau bước 2, nhãn 'Pinned' biến mất, và tab Pinned hiển thị 'Nothing pinned'."
+      }
+     ]
+    },
+    {
+     "id": "AC-097",
+     "text": "Tab Pinned xếp tin nhắn theo thời điểm được ghim, tin ghim mới nhất ở trên cùng; bấm vào một mục sẽ hiện tin nhắn đó trong tab Messages.",
+     "tests": [
+      {
+       "id": "TS-151",
+       "type": "P",
+       "text": "Xếp theo thời điểm ghim",
+       "given": "#launch là channel riêng tư có các thành viên Minh (Admin), Sam và Mai; Alex không phải thành viên. #launch có tin nhắn A cũ hơn ('Checklist v1', của Mai) và tin nhắn B mới hơn ('Checklist v2', của Minh); chưa có tin nào được ghim. Sam đang đăng nhập.",
+       "steps": "1. Sam ghim tin nhắn B. 2. Sam ghim tin nhắn A. 3. Sam mở tab Pinned. 4. Sam bấm vào mục của tin nhắn B.",
+       "expect": "Ở bước 3, tab liệt kê A trước rồi đến B. Sau bước 4, tab Messages hiển thị với tin nhắn B trên màn hình."
+      }
+     ]
+    },
+    {
+     "id": "AC-098",
+     "text": "Ghim và bỏ ghim có hiệu lực ngay và hiện toast có Undo trong 5 giây; cả hai đều không hỏi xác nhận, và Undo đưa tin nhắn về trạng thái trước đó.",
+     "tests": [
+      {
+       "id": "TS-152",
+       "type": "P",
+       "text": "Undo việc bỏ ghim",
+       "given": "#launch là channel riêng tư có các thành viên Minh (Admin), Sam và Mai; Alex không phải thành viên. Tin nhắn 'Launch date: 1 December' của Mai đang được ghim trong #launch. Sam đang đăng nhập.",
+       "steps": "1. Sam mở menu More của tin nhắn và bấm 'Unpin'. 2. Trong vòng 5 giây, Sam bấm 'Undo' trên toast. 3. Sam mở tab Pinned.",
+       "expect": "Ở bước 1 không có hộp thoại xác nhận nào. Sau bước 2, tin nhắn lại có nhãn 'Pinned' và có trong tab Pinned."
+      },
+      {
+       "id": "TS-153",
+       "type": "B",
+       "text": "Undo hết hạn sau 5 giây",
+       "given": "#launch là channel riêng tư có các thành viên Minh (Admin), Sam và Mai; Alex không phải thành viên. Tin nhắn 'Launch date: 1 December' của Mai có trong #launch và chưa được ghim. Sam đang đăng nhập.",
+       "steps": "1. Sam mở menu More của tin nhắn và bấm 'Pin to conversation'. 2. Sam chờ 6 giây rồi tìm toast.",
+       "expect": "Ngay sau bước 1 có toast kèm 'Undo'. Sau 6 giây, toast biến mất và tin nhắn vẫn đang được ghim."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "FR-37",
+   "area": "Nhắn tin",
+   "text": "Thanh công cụ của ô soạn tin có Bold, Italic và Code; mỗi nút bọc đoạn văn bản đang chọn bằng ký hiệu tương ứng (*, _ hoặc `), và tin nhắn đã gửi hiển thị đoạn đó ở dạng in đậm, in nghiêng hoặc code. Địa chỉ web trong tin nhắn trở thành link kèm thẻ xem trước, người gửi có thể gỡ thẻ này. Mọi nội dung khác được hiển thị dưới dạng văn bản thuần đúng như đã gõ, kể cả HTML.",
+   "decided": [
+    {
+     "ref": "D-017",
+     "a": "Như đề xuất; thêm @channel, group DM tới 8 người, giữ 8 emoji cố định"
+    },
+    {
+     "ref": "D-014",
+     "a": "(b) MinIO, 100 MB, thumbnail ảnh, link preview"
+    },
+    {
+     "ref": "D-091",
+     "a": "Đã rà ngày 13/11/2026: 8 hành trình viết lại, 16 sửa, 19 giữ nguyên. Khi bốn lựa chọn ở D-156 tới D-159 đã chốt, các hành trình phase 1 được chấp nhận làm nền."
+    },
+    {
+     "ref": "D-019",
+     "a": "Prototype là nguồn duy nhất; Claude tự quyết chỗ chưa vẽ"
+    }
+   ],
+   "open": [
+    "D-167"
+   ],
+   "screen": "Home: thanh công cụ của ô soạn tin (Bold, Italic, Code); nội dung tin nhắn",
+   "flows": "",
+   "rules": "",
+   "acs": [
+    {
+     "id": "AC-099",
+     "text": "Văn bản nằm giữa hai dấu * hiển thị in đậm, giữa hai dấu _ hiển thị in nghiêng và giữa hai dấu ` hiển thị dạng code, dù ký hiệu được gõ tay hay thêm bằng thanh công cụ; bản thân các ký hiệu không hiện trong tin nhắn đã gửi.",
+     "tests": [
+      {
+       "id": "TS-154",
+       "type": "P",
+       "text": "In đậm bằng thanh công cụ",
+       "given": "Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Sam đang đăng nhập, mở #general, ô soạn tin đang trống.",
+       "steps": "1. Sam gõ 'ship on Friday' và chọn từ 'Friday'. 2. Sam bấm Bold trên thanh công cụ. 3. Sam gửi tin nhắn.",
+       "expect": "Sau bước 2, ô soạn tin có nội dung 'ship on *Friday*'. Tin nhắn đã gửi có nội dung 'ship on Friday', chỉ 'Friday' in đậm và không có dấu sao."
+      },
+      {
+       "id": "TS-155",
+       "type": "P",
+       "text": "Gõ tay in nghiêng và code",
+       "given": "Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Sam đang đăng nhập và mở #general; Mai đăng nhập trên trình duyệt khác và cũng mở #general.",
+       "steps": "1. Sam gõ: run `npm test` and _wait_ for it 2. Sam gửi tin nhắn.",
+       "expect": "Mai thấy 'run npm test and wait for it', trong đó 'npm test' ở dạng code và 'wait' in nghiêng; không thấy dấu ` hay dấu _ nào."
+      }
+     ]
+    },
+    {
+     "id": "AC-100",
+     "text": "Địa chỉ bắt đầu bằng http:// hoặc https:// được hiển thị thành link mở đúng địa chỉ đó, và một thẻ xem trước xuất hiện dưới tin nhắn; người gửi có thể gỡ thẻ bằng nút ×.",
+     "tests": [
+      {
+       "id": "TS-156",
+       "type": "P",
+       "text": "Link và thẻ xem trước gỡ được",
+       "given": "Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Sam đang đăng nhập và mở #general; Mai đăng nhập trên trình duyệt khác. Địa chỉ https://example.com truy cập được từ máy chủ.",
+       "steps": "1. Sam gửi 'see https://example.com today'. 2. Mai bấm vào địa chỉ trong tin nhắn. 3. Sam chờ thẻ xem trước hiện ra rồi bấm nút × trên thẻ.",
+       "expect": "Ở bước 2, trình duyệt mở https://example.com. Một thẻ xem trước xuất hiện dưới tin nhắn, và sau bước 3 cả Sam lẫn Mai đều không còn thấy thẻ, còn link trong nội dung vẫn giữ nguyên."
+      }
+     ]
+    },
+    {
+     "id": "AC-101",
+     "text": "HTML gõ trong tin nhắn được hiển thị đúng như các ký tự đã gõ: không phần tử nào được tạo, không ảnh nào được tải và không script nào chạy, với cả người gửi lẫn mọi người khác.",
+     "tests": [
+      {
+       "id": "TS-157",
+       "type": "N",
+       "text": "HTML hiển thị dạng văn bản",
+       "given": "Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Sam đang đăng nhập và mở #general; Mai đăng nhập trên trình duyệt khác và cũng mở #general.",
+       "steps": "1. Sam gửi đúng nội dung: <b>hi</b> <img src=x onerror=alert(1)> 2. Mai xem tin nhắn mới.",
+       "expect": "Cả hai thấy đúng từng ký tự '<b>hi</b> <img src=x onerror=alert(1)>'. Chữ 'hi' không in đậm, không có ảnh hay biểu tượng ảnh lỗi, và không có hộp thoại nào mở ra."
+      },
+      {
+       "id": "TS-158",
+       "type": "X",
+       "text": "HTML nằm trong ký hiệu định dạng",
+       "given": "Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Sam đang đăng nhập và mở #general.",
+       "steps": "1. Sam gửi đúng nội dung: *<i>now</i>*",
+       "expect": "Tin nhắn hiển thị '<i>now</i>' in đậm, các dấu ngoặc nhọn vẫn nhìn thấy và chữ 'now' không in nghiêng."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "FR-38",
+   "area": "Nhắn tin",
+   "text": "Văn bản đã gõ nhưng chưa gửi được giữ lại thành draft của cuộc trò chuyện đó, và riêng cho từng thread; khi người dùng quay lại, trên bất kỳ thiết bị nào của họ, văn bản có sẵn trong ô soạn tin. Cuộc trò chuyện có draft mà không đang mở sẽ có nhãn 'Draft' trong danh sách cuộc trò chuyện. Draft vẫn còn sau khi đăng xuất hoặc khi phiên kết thúc, và được xoá khi tin nhắn được gửi.",
+   "decided": [
+    {
+     "ref": "D-017",
+     "a": "Như đề xuất; thêm @channel, group DM tới 8 người, giữ 8 emoji cố định"
+    },
+    {
+     "ref": "D-091",
+     "a": "Đã rà ngày 13/11/2026: 8 hành trình viết lại, 16 sửa, 19 giữ nguyên. Khi bốn lựa chọn ở D-156 tới D-159 đã chốt, các hành trình phase 1 được chấp nhận làm nền."
+    }
+   ],
+   "open": [
+    "D-168",
+    "D-169"
+   ],
+   "screen": "Home: ô soạn tin; nhãn 'Draft' trên một dòng của danh sách cuộc trò chuyện",
+   "flows": "",
+   "rules": "",
+   "acs": [
+    {
+     "id": "AC-102",
+     "text": "Rời một cuộc trò chuyện khi còn văn bản chưa gửi thì văn bản đó được giữ riêng cho cuộc trò chuyện ấy: dòng của nó hiện 'Draft' khi cuộc trò chuyện không đang mở, và văn bản có sẵn trong ô soạn tin khi quay lại. Văn bản chỉ gồm dấu cách hoặc xuống dòng không tạo nhãn 'Draft'. Ô soạn tin của thread giữ draft riêng, tách khỏi draft của cuộc trò chuyện.",
+     "tests": [
+      {
+       "id": "TS-159",
+       "type": "P",
+       "text": "Draft giữ theo từng cuộc trò chuyện",
+       "given": "#launch là channel riêng tư có các thành viên Minh (Admin), Sam và Mai; Alex không phải thành viên. Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Sam đang đăng nhập và mở #launch; cả hai ô soạn tin đều trống.",
+       "steps": "1. Sam gõ 'Release notes are' vào ô soạn tin của #launch và không gửi. 2. Sam mở #general. 3. Sam mở lại #launch.",
+       "expect": "Sau bước 2, ô soạn tin của #general trống và dòng #launch hiện 'Draft'. Sau bước 3, ô soạn tin của #launch có 'Release notes are' và dòng này không còn hiện 'Draft'."
+      },
+      {
+       "id": "TS-160",
+       "type": "N",
+       "text": "Văn bản trống không phải draft",
+       "given": "#launch là channel riêng tư có các thành viên Minh (Admin), Sam và Mai; Alex không phải thành viên. Sam đang đăng nhập, mở #launch, ô soạn tin đang trống.",
+       "steps": "1. Sam gõ ba dấu cách vào ô soạn tin của #launch. 2. Sam mở #general và nhìn dòng #launch.",
+       "expect": "Dòng #launch không có nhãn 'Draft'."
+      },
+      {
+       "id": "TS-161",
+       "type": "P",
+       "text": "Draft của thread tách riêng",
+       "given": "Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Tin nhắn của Mai trong #general có một câu trả lời. Sam đang đăng nhập, mở #general, ô soạn tin đang trống.",
+       "steps": "1. Sam mở thread trên tin nhắn của Mai và gõ 'Will check' vào ô soạn tin của thread, không gửi. 2. Sam đóng bảng thread và nhìn ô soạn tin của #general. 3. Sam mở lại đúng thread đó.",
+       "expect": "Ở bước 2, ô soạn tin của #general trống. Ở bước 3, ô soạn tin của thread có 'Will check'."
+      }
+     ]
+    },
+    {
+     "id": "AC-103",
+     "text": "Draft được lưu vào tài khoản của người dùng: nó xuất hiện trên các thiết bị khác của họ, và vẫn còn trong ô soạn tin sau khi họ đăng xuất rồi đăng nhập lại.",
+     "tests": [
+      {
+       "id": "TS-162",
+       "type": "P",
+       "text": "Draft trên thiết bị thứ hai",
+       "given": "#launch là channel riêng tư có các thành viên Minh (Admin), Sam và Mai; Alex không phải thành viên. Sam đang đăng nhập trên trình duyệt A và trình duyệt B; ô soạn tin của #launch trống trên cả hai.",
+       "steps": "1. Trên trình duyệt A, Sam gõ 'Release notes are' trong #launch rồi mở #general. 2. Trên trình duyệt B, Sam mở #launch.",
+       "expect": "Trên trình duyệt B, ô soạn tin của #launch có 'Release notes are'."
+      },
+      {
+       "id": "TS-163",
+       "type": "P",
+       "text": "Draft còn sau khi đăng xuất",
+       "given": "#launch là channel riêng tư có các thành viên Minh (Admin), Sam và Mai; Alex không phải thành viên. Sam đang đăng nhập trên một trình duyệt và đã gõ 'Release notes are' trong #launch nhưng chưa gửi.",
+       "steps": "1. Sam bấm 'Sign out' trong menu tài khoản. 2. Sam đăng nhập lại bằng mã mới và mở #launch.",
+       "expect": "Ô soạn tin của #launch có 'Release notes are'."
+      }
+     ]
+    },
+    {
+     "id": "AC-104",
+     "text": "Gửi tin nhắn sẽ xoá draft: sau đó ô soạn tin trống và cuộc trò chuyện không còn nhãn 'Draft'.",
+     "tests": [
+      {
+       "id": "TS-164",
+       "type": "P",
+       "text": "Draft được xoá khi gửi",
+       "given": "#launch là channel riêng tư có các thành viên Minh (Admin), Sam và Mai; Alex không phải thành viên. Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Sam đang đăng nhập; dòng #launch hiện 'Draft' và draft của nó là 'Release notes are'.",
+       "steps": "1. Sam mở #launch và bấm Send. 2. Sam mở #general và nhìn dòng #launch. 3. Sam mở lại #launch.",
+       "expect": "'Release notes are' được gửi thành tin nhắn. Dòng #launch không có nhãn 'Draft', và ở bước 3 ô soạn tin trống."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "FR-39",
+   "area": "Đọc",
+   "text": "Trang Files liệt kê mọi tệp, ảnh và link từ các cuộc trò chuyện mà người dùng xem được, mới nhất ở trên cùng, có tìm kiếm theo tên tệp hoặc người gửi, các chip All, Images, Documents và Links, và nút chuyển giữa dạng danh sách và dạng lưới. Tab 'Files & links' của mỗi cuộc trò chuyện liệt kê cùng loại mục đó nhưng chỉ của cuộc trò chuyện ấy. Bấm vào một mục sẽ mở phần chi tiết, có 'Open in conversation', 'Copy link' và 'Download'.",
+   "decided": [
+    {
+     "ref": "D-002",
+     "a": "Chat lõi, Activity, Later, Files, People, Preferences, command palette"
+    },
+    {
+     "ref": "D-014",
+     "a": "(b) MinIO, 100 MB, thumbnail ảnh, link preview"
+    },
+    {
+     "ref": "D-091",
+     "a": "Đã rà ngày 13/11/2026: 8 hành trình viết lại, 16 sửa, 19 giữ nguyên. Khi bốn lựa chọn ở D-156 tới D-159 đã chốt, các hành trình phase 1 được chấp nhận làm nền."
+    },
+    {
+     "ref": "D-095",
+     "a": "Nhận mọi loại tới 100 MB; file luôn được tải về, không bao giờ chạy trong trình duyệt."
+    }
+   ],
+   "open": [
+    "D-170",
+    "D-171"
+   ],
+   "screen": "Trang Files; tab 'Files & links' của cuộc trò chuyện; hộp thoại chi tiết tệp",
+   "flows": "",
+   "rules": "BR-09",
+   "acs": [
+    {
+     "id": "AC-105",
+     "text": "Tệp, ảnh hoặc link được gửi trong một cuộc trò chuyện sẽ xuất hiện ở đầu trang Files của mọi người xem được cuộc trò chuyện đó, và trong tab 'Files & links' của chính cuộc trò chuyện; tab này không hiển thị mục nào của cuộc trò chuyện khác.",
+     "tests": [
+      {
+       "id": "TS-165",
+       "type": "P",
+       "text": "Tệp đã gửi được liệt kê",
+       "given": "#launch là channel riêng tư có các thành viên Minh (Admin), Sam và Mai; Alex không phải thành viên. Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. #general đã có tệp 'agenda.pdf' do Alex gửi. Sam và Mai đang đăng nhập.",
+       "steps": "1. Sam gửi một tin nhắn trong #launch có đính kèm tệp 'launch-checklist.pdf'. 2. Mai mở trang Files. 3. Mai mở #launch rồi mở tab 'Files & links'.",
+       "expect": "Ở bước 2, 'launch-checklist.pdf' là dòng đầu tiên, nằm trên 'agenda.pdf', có ghi tên Sam và #launch. Ở bước 3, tab liệt kê 'launch-checklist.pdf' và không liệt kê 'agenda.pdf'."
+      },
+      {
+       "id": "TS-166",
+       "type": "N",
+       "text": "Tệp của channel riêng tư không hiện với người ngoài",
+       "given": "#launch là channel riêng tư có các thành viên Minh (Admin), Sam và Mai; Alex không phải thành viên. Sam đã gửi 'launch-checklist.pdf' trong #launch. Alex đang đăng nhập.",
+       "steps": "1. Alex mở trang Files với chip 'All' đang chọn. 2. Alex gõ 'launch-checklist' vào ô tìm kiếm của Files.",
+       "expect": "Ở bước 1 không có 'launch-checklist.pdf', và bước 2 hiển thị 'No files match'."
+      }
+     ]
+    },
+    {
+     "id": "AC-106",
+     "text": "Ô tìm kiếm chỉ giữ lại các mục có tên tệp hoặc người gửi khớp với văn bản đã gõ, và mỗi chip chỉ giữ lại các mục thuộc loại của nó; hai điều kiện này áp dụng đồng thời.",
+     "tests": [
+      {
+       "id": "TS-167",
+       "type": "P",
+       "text": "Tìm theo người gửi",
+       "given": "Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. #general có 'agenda.pdf' do Alex gửi và 'budget.xlsx' do Sam gửi; không có tệp nào khác. Mai đang đăng nhập.",
+       "steps": "1. Mai mở trang Files và gõ 'alex' vào ô tìm kiếm. 2. Mai xoá ô tìm kiếm rồi gõ 'budget'.",
+       "expect": "Bước 1 chỉ liệt kê 'agenda.pdf'. Bước 2 chỉ liệt kê 'budget.xlsx'."
+      },
+      {
+       "id": "TS-168",
+       "type": "P",
+       "text": "Lọc theo loại",
+       "given": "Sam, Mai, Alex (Member) và Minh (Admin) đều là thành viên của #general. Trong #general, Sam đã gửi ảnh 'screen.png', tệp 'budget.xlsx' và một tin nhắn có https://example.com; không có gì khác được chia sẻ. Mai đang đăng nhập.",
+       "steps": "1. Mai mở trang Files và bấm chip 'Images'. 2. Mai bấm 'Documents'. 3. Mai bấm 'Links'. 4. Mai bấm 'All'.",
+       "expect": "Bước 1 chỉ liệt kê 'screen.png'; bước 2 chỉ 'budget.xlsx'; bước 3 chỉ link tới https://example.com; bước 4 liệt kê cả ba."
+      }
+     ]
+    },
+    {
+     "id": "AC-107",
+     "text": "Bấm vào một tệp sẽ mở phần chi tiết: người gửi, cuộc trò chuyện, ngày và dung lượng, kèm 'Open in conversation', 'Copy link' và 'Download'. 'Open in conversation' hiện tin nhắn chứa tệp đó, và 'Download' lưu tệp về máy thay vì mở trong trình duyệt.",
+     "tests": [
+      {
+       "id": "TS-169",
+       "type": "P",
+       "text": "Chi tiết tệp và nhảy tới tin nhắn",
+       "given": "#launch là channel riêng tư có các thành viên Minh (Admin), Sam và Mai; Alex không phải thành viên. Sam đã gửi 'launch-checklist.pdf' trong #launch. Mai đang đăng nhập.",
+       "steps": "1. Mai mở trang Files và bấm 'launch-checklist.pdf'. 2. Mai bấm 'Download'. 3. Mai bấm 'Open in conversation'.",
+       "expect": "Bước 1 hiển thị Sam, #launch, ngày, dung lượng và ba nút. Bước 2 lưu 'launch-checklist.pdf' về thiết bị, không hiển thị tệp trong tab trình duyệt. Bước 3 hiển thị #launch với tin nhắn của Sam chứa tệp đó trên màn hình."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "FR-40",
+   "area": "Thông báo",
+   "text": "Activity liệt kê những việc cần người dùng chú ý, mới nhất ở trên: mention, trả lời trong thread họ đang theo dõi, reaction vào tin nhắn của họ, được thêm vào channel, và thay đổi về tài khoản (đổi vai trò, tin nhắn bị Admin xóa). Mỗi mục cho biết đã đọc hay chưa; bấm vào mục thì mục thành đã đọc và mở cuộc trò chuyện đúng tại tin nhắn hoặc thread đó, còn 'Mark all read' đánh dấu mọi mục là đã đọc. Các chip lọc thu danh sách về một loại mục, và loại nào cũng có chip.",
+   "decided": [
+    {
+     "ref": "D-071",
+     "a": "Hành động của chính mình không tạo thông báo cho mình. Mục Activity tự chuyển thành đã xong khi việc nó nhắc tới đã được làm. Activity xếp mới nhất trước và có chip lọc cho mọi loại mục."
+    },
+    {
+     "ref": "D-091",
+     "a": "Đã rà ngày 13/11/2026: 8 hành trình viết lại, 16 sửa, 19 giữ nguyên. Khi bốn lựa chọn ở D-156 tới D-159 đã chốt, các hành trình phase 1 được chấp nhận làm nền."
+    },
+    {
+     "ref": "D-002",
+     "a": "Chat lõi, Activity, Later, Files, People, Preferences, command palette"
+    }
+   ],
+   "open": [
+    "D-133",
+    "D-173"
+   ],
+   "screen": "Activity",
+   "flows": "",
+   "rules": "BR-15",
+   "acs": [
+    {
+     "id": "AC-108",
+     "text": "Các mục xếp mới nhất ở trên; mỗi dòng có chấm chưa đọc, người thực hiện, một câu mô tả, cuộc trò chuyện và thời gian, và badge của Activity bằng số mục chưa đọc.",
+     "tests": [
+      {
+       "id": "TS-170",
+       "type": "P",
+       "text": "Mục mới nhất nằm trên cùng",
+       "given": "Sam đã đăng nhập, là thành viên của #general và #launch. Activity của Sam đang trống. Sam có một tin nhắn trong #general.",
+       "steps": "1. Minh gửi '@Sam please check' trong #launch. 2. Một phút sau Alex thả reaction vào tin nhắn của Sam trong #general. 3. Sam mở Activity.",
+       "expect": "Có hai dòng. Dòng đầu là reaction của Alex (#general), dòng hai là mention của Minh (#launch). Cả hai có chấm chưa đọc. Badge của Activity hiện 2."
+      }
+     ]
+    },
+    {
+     "id": "AC-109",
+     "text": "Bấm vào một mục thì mục thành đã đọc và mở cuộc trò chuyện tại đúng tin nhắn đó, hoặc mở thread panel nếu là trả lời trong thread. 'Mark all read' đánh dấu mọi mục là đã đọc mà không xóa mục nào.",
+     "tests": [
+      {
+       "id": "TS-171",
+       "type": "P",
+       "text": "Mở mục trả lời trong thread",
+       "given": "Sam đã đăng nhập. Sam đã viết một tin nhắn trong #launch và Mai trả lời trong thread của tin đó. Activity của Sam có đúng một mục thread chưa đọc; badge hiện 1.",
+       "steps": "1. Sam mở Activity. 2. Sam bấm vào dòng trả lời của Mai.",
+       "expect": "#launch mở ra cùng thread panel đang hiện câu trả lời của Mai. Quay lại Activity, dòng đó không còn chấm chưa đọc và badge của Activity biến mất."
+      },
+      {
+       "id": "TS-172",
+       "type": "P",
+       "text": "Mark all read",
+       "given": "Sam đã đăng nhập. Activity của Sam có 3 mục chưa đọc; badge hiện 3.",
+       "steps": "1. Sam mở Activity. 2. Sam bấm 'Mark all read'.",
+       "expect": "3 dòng vẫn còn trong danh sách, không dòng nào còn chấm chưa đọc, và badge của Activity biến mất."
+      }
+     ]
+    },
+    {
+     "id": "AC-110",
+     "text": "Các chip All, Mentions, Threads và Reactions chỉ hiện các mục thuộc loại đó, và mọi loại mục còn lại đều xem được dưới một chip riêng ngoài All.",
+     "tests": [
+      {
+       "id": "TS-173",
+       "type": "P",
+       "text": "Lọc theo Reactions",
+       "given": "Sam đã đăng nhập. Activity của Sam có một mention từ Minh, một trả lời thread từ Mai và một reaction từ Alex.",
+       "steps": "1. Sam mở Activity. 2. Sam bấm chip 'Reactions'.",
+       "expect": "Chỉ còn dòng reaction của Alex. Bấm 'All' thì cả 3 dòng hiện lại."
+      },
+      {
+       "id": "TS-174",
+       "type": "X",
+       "text": "Mục 'được thêm vào channel' có chip riêng",
+       "given": "Minh (Admin) và Sam đã đăng nhập. Sam chưa là thành viên của #launch. Activity của Sam đang trống.",
+       "steps": "1. Minh thêm Sam vào #launch. 2. Sam mở Activity. 3. Sam bấm lần lượt từng chip.",
+       "expect": "Mục báo Minh đã thêm Sam vào #launch hiện dưới 'All' và dưới đúng một chip khác; mục này không hiện dưới Mentions, Threads hay Reactions."
+      }
+     ]
+    },
+    {
+     "id": "AC-111",
+     "text": "Một mục bị gỡ khi tin nhắn gốc của nó bị xóa, và các mục còn mở của một người về một channel bị gỡ khi người đó rời channel.",
+     "tests": [
+      {
+       "id": "TS-175",
+       "type": "N",
+       "text": "Tin nhắn gốc bị xóa",
+       "given": "Sam đã đăng nhập. Minh đã gửi '@Sam please check' trong #launch. Activity của Sam có đúng một mục chưa đọc đó; badge hiện 1.",
+       "steps": "1. Minh xóa tin nhắn đó và xác nhận. 2. Sam xem Activity.",
+       "expect": "Activity của Sam trống và badge của Activity biến mất."
+      },
+      {
+       "id": "TS-176",
+       "type": "P",
+       "text": "Rời channel thì các mục của channel đó được gỡ",
+       "given": "Sam đã đăng nhập và là thành viên của channel công khai #launch. Activity của Sam có một mention chưa đọc từ #launch và một mention chưa đọc từ #general; badge hiện 2.",
+       "steps": "1. Sam mở Details panel của #launch và bấm Leave channel. 2. Sam chờ 6 giây, không bấm Undo. 3. Sam mở Activity.",
+       "expect": "Chỉ còn mention từ #general và badge của Activity hiện 1."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "FR-41",
+   "area": "Thông báo",
+   "text": "Mỗi mục trong Activity có Done và Snooze. Done gỡ mục ngay lập tức và cho Undo trong 5 giây. Snooze đưa mục ra khỏi danh sách chính cho đến giờ đã chọn, rồi trả mục về đầu danh sách ở trạng thái chưa đọc, kèm nhãn 'Back from snooze'.",
+   "decided": [
+    {
+     "ref": "D-061",
+     "a": "Một trong hai, tùy hành động có hoàn tác được không. Quy tắc D-069 và D-070. Hoàn tác: lưu trữ email, Mark done, rời channel công khai, bỏ lưu Later, bỏ pin. Xác nhận: xóa tin, xóa automation, vô hiệu hóa thành viên, lưu trữ channel, hủy Meet."
+    },
+    {
+     "ref": "D-069",
+     "a": "Hành động hoàn tác được thì làm ngay và hiện toast có nút Hoàn tác trong 5 giây. Hành động không hoàn tác được hoặc ảnh hưởng người khác thì hỏi xác nhận, nêu rõ đối tượng. Không dùng cả hai cho một hành động."
+    },
+    {
+     "ref": "D-114",
+     "a": "Ẩn; 'In 3 hours' thế chỗ."
+    },
+    {
+     "ref": "D-053",
+     "a": "Toàn bộ tính năng phase 1. Trên khung hẹp: tìm kiếm toàn cục, menu tài khoản, status, Pause và Focus time nằm trong sheet More; nút Mark done và Snooze ở Activity luôn hiện. Tóm tắt bằng AI không có ở phase 1 trên bất kỳ nền tảng nào."
+    },
+    {
+     "ref": "D-091",
+     "a": "Đã rà ngày 13/11/2026: 8 hành trình viết lại, 16 sửa, 19 giữ nguyên. Khi bốn lựa chọn ở D-156 tới D-159 đã chốt, các hành trình phase 1 được chấp nhận làm nền."
+    }
+   ],
+   "open": [],
+   "screen": "Activity: nút Mark done và Snooze trên mỗi dòng",
+   "flows": "",
+   "rules": "BR-20",
+   "acs": [
+    {
+     "id": "AC-112",
+     "text": "Done gỡ mục mà không hỏi xác nhận và hiện toast có Undo trong 5 giây; Undo đưa mục trở lại.",
+     "tests": [
+      {
+       "id": "TS-177",
+       "type": "P",
+       "text": "Done rồi Undo",
+       "given": "Sam đã đăng nhập. Activity của Sam có một mention chưa đọc từ Minh trong #launch.",
+       "steps": "1. Sam mở Activity. 2. Sam bấm Done trên dòng đó. 3. Trong vòng 5 giây Sam bấm Undo trên toast.",
+       "expect": "Sau bước 2 dòng đó biến mất và không có hộp xác nhận nào hiện ra. Sau bước 3 dòng đó trở lại danh sách."
+      },
+      {
+       "id": "TS-178",
+       "type": "B",
+       "text": "Hết 5 giây thì không còn Undo",
+       "given": "Sam đã đăng nhập. Activity của Sam có một mention từ Minh trong #launch.",
+       "steps": "1. Sam bấm Done trên dòng đó. 2. Sam chờ 6 giây. 3. Sam tải lại Activity.",
+       "expect": "Sau 6 giây toast có Undo không còn trên màn hình, và sau khi tải lại mục đó vẫn không có trong danh sách."
+      }
+     ]
+    },
+    {
+     "id": "AC-113",
+     "text": "Mục đã snooze rời danh sách chính và nằm dưới chip 'Snoozed · n', trong đó n là số mục đang snooze. Đến giờ đã chọn, hoặc khi người dùng bấm Unsnooze, mục trở lại danh sách chính ở trạng thái chưa đọc; khi tự trở lại đúng giờ thì mục nằm trên cùng kèm nhãn 'Back from snooze'.",
+     "tests": [
+      {
+       "id": "TS-179",
+       "type": "P",
+       "text": "Snooze một giờ",
+       "given": "Sam đã đăng nhập lúc 10:00. Activity của Sam có hai mục: một mention từ Minh trong #launch và một reaction từ Alex trong #general. Chưa có mục nào snooze nên không có chip 'Snoozed'.",
+       "steps": "1. Sam bấm Snooze trên mention của Minh và chọn 'In 1 hour'. 2. Sam xem chip 'All'. 3. Sam bấm chip 'Snoozed · 1'. 4. Lúc 11:00 Sam xem chip 'All'.",
+       "expect": "Sau bước 2 chỉ còn reaction của Alex và có chip 'Snoozed · 1'. Sau bước 3 chỉ có mention của Minh. Sau bước 4 mention của Minh là dòng đầu tiên, có chấm chưa đọc và nhãn 'Back from snooze', còn chip 'Snoozed' biến mất."
+      },
+      {
+       "id": "TS-180",
+       "type": "P",
+       "text": "Unsnooze bằng tay",
+       "given": "Sam đã đăng nhập. Activity của Sam có một mục, là mention từ Minh trong #launch, đang snooze đến 09:00 ngày mai.",
+       "steps": "1. Sam mở Activity và bấm chip 'Snoozed · 1'. 2. Sam bấm 'Unsnooze' trên dòng đó.",
+       "expect": "Mục đó hiện dưới 'All' kèm chấm chưa đọc, và chip 'Snoozed' biến mất."
+      }
+     ]
+    },
+    {
+     "id": "AC-114",
+     "text": "Menu Snooze có 'In 1 hour', 'Today 15:00' và 'Tomorrow 09:00'. Lựa chọn đã qua giờ thì không được đưa ra: sau 15:00, 'In 3 hours' thay cho 'Today 15:00'.",
+     "tests": [
+      {
+       "id": "TS-181",
+       "type": "B",
+       "text": "Menu Snooze trước 15:00",
+       "given": "Sam đã đăng nhập. Giờ trên thiết bị của Sam là 14:00. Activity của Sam có một mục.",
+       "steps": "1. Sam bấm Snooze trên mục đó và đọc menu.",
+       "expect": "Menu có 'In 1 hour', 'Today 15:00' và 'Tomorrow 09:00'."
+      },
+      {
+       "id": "TS-182",
+       "type": "B",
+       "text": "Menu Snooze sau 15:00",
+       "given": "Sam đã đăng nhập. Giờ trên thiết bị của Sam là 15:01. Activity của Sam có một mục.",
+       "steps": "1. Sam bấm Snooze trên mục đó và đọc menu.",
+       "expect": "Menu không có 'Today 15:00'; menu có 'In 1 hour', 'In 3 hours' và 'Tomorrow 09:00'."
+      }
+     ]
+    },
+    {
+     "id": "AC-115",
+     "text": "Trên màn hình hẹp và màn hình cảm ứng, Done và Snooze luôn hiện trên mỗi dòng mà không cần rê chuột.",
+     "tests": [
+      {
+       "id": "TS-183",
+       "type": "X",
+       "text": "Nút hiện ở độ rộng 360 px",
+       "given": "Sam đã đăng nhập trong cửa sổ trình duyệt rộng 360 px, cao 560 px. Activity của Sam có hai mục.",
+       "steps": "1. Sam mở Activity từ thanh tab dưới cùng. 2. Sam nhìn hai dòng mà không chạm vào.",
+       "expect": "Mỗi dòng trong hai dòng đều hiện nút Done và nút Snooze."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "FR-42",
+   "area": "Hành vi chung",
+   "text": "People liệt kê các Member và Admin đang hoạt động của workspace dưới dạng thẻ: avatar là chữ cái đầu trên nền màu, presence, tên, nhãn Admin nếu có, chức danh và giờ địa phương. Ô tìm kiếm lọc theo tên hoặc chức danh; 50 người đầu tiên hiện trước, cuộn xuống thì tải thêm. Bấm vào thẻ sẽ mở Profile panel của người đó, tại đó 'Message' mở DM với họ.",
+   "decided": [
+    {
+     "ref": "D-002",
+     "a": "Chat lõi, Activity, Later, Files, People, Preferences, command palette"
+    },
+    {
+     "ref": "D-090",
+     "a": "Đã rà từng dòng và duyệt với ba cột (Member, Admin, Guest). Các dòng đổi: chỉ Admin tạo kênh; Admin mời với vai trò nào cũng được, đổi vai trò, và vô hiệu hoá bất kỳ ai trừ Admin cuối cùng và chính mình; Member tạo được automation (phase 5). Member vẫn thêm được người vào kênh mình đang ở."
+    },
+    {
+     "ref": "D-109",
+     "a": "Ô tìm ở trên, hiện 50 người đầu, cuộn để tải thêm."
+    },
+    {
+     "ref": "D-118",
+     "a": "Không; phase 1 dùng chữ cái đầu trên nền màu."
+    },
+    {
+     "ref": "D-152",
+     "a": "Bỏ. Toki có Member và Admin (và Guest ở phase 5)."
+    },
+    {
+     "ref": "D-091",
+     "a": "Đã rà ngày 13/11/2026: 8 hành trình viết lại, 16 sửa, 19 giữ nguyên. Khi bốn lựa chọn ở D-156 tới D-159 đã chốt, các hành trình phase 1 được chấp nhận làm nền."
+    }
+   ],
+   "open": [
+    "D-144",
+    "D-177"
+   ],
+   "screen": "People; Profile panel",
+   "flows": "",
+   "rules": "",
+   "acs": [
+    {
+     "id": "AC-116",
+     "text": "Mỗi Member và Admin đang hoạt động có một thẻ, kể cả chính người đang xem; thẻ của Admin có nhãn 'Admin' và không thẻ nào có nhãn 'Owner'. Người đã bị vô hiệu hóa không có thẻ.",
+     "tests": [
+      {
+       "id": "TS-184",
+       "type": "P",
+       "text": "Ai có trong danh sách",
+       "given": "Workspace có đúng bốn người đang hoạt động: Minh (Admin), Sam, Mai và Alex (Member). Sam đã đăng nhập.",
+       "steps": "1. Sam mở People.",
+       "expect": "Có bốn thẻ: Minh, Sam, Mai, Alex. Chỉ thẻ của Minh có nhãn 'Admin'. Không thẻ nào có nhãn 'Owner'. Mỗi thẻ hiện chữ cái đầu trên nền màu, không phải ảnh."
+      },
+      {
+       "id": "TS-185",
+       "type": "N",
+       "text": "Người bị vô hiệu hóa không có trong danh sách",
+       "given": "Workspace có Minh (Admin), Sam, Mai và Alex. Minh và Sam đã đăng nhập. Sam đang mở People và thấy bốn thẻ.",
+       "steps": "1. Minh vô hiệu hóa Alex trên trang Admin và xác nhận. 2. Sam tải lại People.",
+       "expect": "Có ba thẻ: Minh, Sam, Mai. Tìm 'Alex' thì hiện 'Nobody matches'."
+      }
+     ]
+    },
+    {
+     "id": "AC-117",
+     "text": "Gõ vào 'Search people' thì chỉ còn những người có tên hoặc chức danh chứa đoạn chữ đó.",
+     "tests": [
+      {
+       "id": "TS-186",
+       "type": "P",
+       "text": "Tìm theo tên",
+       "given": "Workspace có Minh, Sam, Mai và Alex. Sam đã đăng nhập và đang mở People.",
+       "steps": "1. Sam gõ 'mai' vào 'Search people'.",
+       "expect": "Chỉ còn thẻ của Mai."
+      },
+      {
+       "id": "TS-187",
+       "type": "P",
+       "text": "Tìm theo chức danh",
+       "given": "Workspace có Minh, Sam, Mai và Alex. Chức danh của Mai là 'Marketing'; không ai khác có tên hay chức danh chứa 'market'. Sam đã đăng nhập và đang mở People.",
+       "steps": "1. Sam gõ 'market' vào 'Search people'.",
+       "expect": "Chỉ còn thẻ của Mai."
+      }
+     ]
+    },
+    {
+     "id": "AC-118",
+     "text": "Khi có hơn 50 người, People hiện 50 thẻ đầu tiên và tải phần còn lại khi cuộn.",
+     "tests": [
+      {
+       "id": "TS-188",
+       "type": "B",
+       "text": "51 người",
+       "given": "Workspace có đúng 51 người đang hoạt động, trong đó có Sam. Sam đã đăng nhập.",
+       "steps": "1. Sam mở People và đếm số thẻ khi chưa cuộn đến cuối danh sách. 2. Sam cuộn đến cuối danh sách và đếm lại.",
+       "expect": "Sau bước 1 có 50 thẻ. Sau bước 2 có 51 thẻ."
+      }
+     ]
+    },
+    {
+     "id": "AC-119",
+     "text": "Bấm vào thẻ sẽ mở Profile panel với tên, chức danh, presence bằng chữ, status nếu có, giờ địa phương và múi giờ của người đó. 'Message' trên profile của người khác mở DM với người đó; profile của chính mình không có nút 'Message'.",
+     "tests": [
+      {
+       "id": "TS-189",
+       "type": "P",
+       "text": "Mở DM từ People",
+       "given": "Sam đã đăng nhập. Sam và Mai đã có một DM chứa tin nhắn 'hello Mai'.",
+       "steps": "1. Sam mở People. 2. Sam bấm thẻ của Mai. 3. Sam bấm 'Message' trong Profile panel.",
+       "expect": "Sau bước 2 Profile panel hiện tên, chức danh, presence bằng chữ, giờ địa phương và múi giờ của Mai. Sau bước 3 DM với Mai mở ra và có 'hello Mai'; danh sách của Sam không xuất hiện DM thứ hai với Mai."
+      },
+      {
+       "id": "TS-190",
+       "type": "X",
+       "text": "Profile của chính mình",
+       "given": "Sam đã đăng nhập.",
+       "steps": "1. Sam mở People. 2. Sam bấm thẻ mang tên của chính Sam.",
+       "expect": "Profile panel hiện thông tin của Sam và nút 'Set status'; không có nút 'Message'."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "FR-43",
+   "area": "Hành vi chung",
+   "text": "Trong Preferences, người dùng chọn giao diện (Calm, Focus, hoặc Match my device) và ngôn ngữ giao diện (English hoặc Tiếng Việt). Tài khoản mới dùng tiếng Anh. Đổi giao diện hay ngôn ngữ thì toàn bộ giao diện đổi theo ngay, không cần tải lại.",
+   "decided": [
+    {
+     "ref": "D-018",
+     "a": "Cả Calm và Focus; dịch đủ vi và en, mặc định tiếng Anh"
+    },
+    {
+     "ref": "D-064",
+     "a": "Toàn bộ, theo D-018. CI báo lỗi khi một chuỗi thiếu bản dịch ở một trong hai ngôn ngữ."
+    },
+    {
+     "ref": "D-002",
+     "a": "Chat lõi, Activity, Later, Files, People, Preferences, command palette"
+    }
+   ],
+   "open": [
+    "D-175"
+   ],
+   "screen": "Preferences: Look, Accent, Density, Language",
+   "flows": "",
+   "rules": "",
+   "acs": [
+    {
+     "id": "AC-120",
+     "text": "Chọn Calm hoặc Focus thì giao diện đổi ngay, không tải lại; 'Match my device' hiện Focus khi thiết bị đặt chế độ tối và Calm khi đặt chế độ sáng.",
+     "tests": [
+      {
+       "id": "TS-191",
+       "type": "P",
+       "text": "Đổi từ Calm sang Focus",
+       "given": "Sam đã đăng nhập. Preferences đang mở, giao diện đang chọn là Calm.",
+       "steps": "1. Sam bấm thẻ 'Focus'.",
+       "expect": "Giao diện chuyển ngay sang Focus (nền tối); trang không tải lại và Preferences vẫn mở với 'Focus' được đánh dấu đang chọn."
+      },
+      {
+       "id": "TS-192",
+       "type": "X",
+       "text": "Match my device",
+       "given": "Sam đã đăng nhập. Hệ điều hành của Sam đang ở chế độ tối. Preferences đang mở, giao diện đang chọn là Calm.",
+       "steps": "1. Sam bấm thẻ 'Match my device'. 2. Sam đổi hệ điều hành sang chế độ sáng rồi quay lại Toki.",
+       "expect": "Sau bước 1 Toki hiện giao diện Focus. Sau bước 2 Toki hiện giao diện Calm."
+      }
+     ]
+    },
+    {
+     "id": "AC-121",
+     "text": "Giao diện của tài khoản mới là tiếng Anh. Chọn Tiếng Việt thì mọi nhãn của giao diện chuyển ngay sang tiếng Việt, chọn English thì chuyển lại.",
+     "tests": [
+      {
+       "id": "TS-193",
+       "type": "P",
+       "text": "Mặc định là tiếng Anh",
+       "given": "Minh (Admin) đã mời Mai. Mai chưa từng đăng nhập. Ngôn ngữ trình duyệt của Mai là tiếng Việt.",
+       "steps": "1. Mai nhận lời mời bằng mã và vào #general. 2. Mai mở Preferences và đọc ô Language.",
+       "expect": "Giao diện bằng tiếng Anh và ô Language hiện 'English'."
+      },
+      {
+       "id": "TS-194",
+       "type": "P",
+       "text": "Đổi sang Tiếng Việt rồi đổi lại",
+       "given": "Sam đã đăng nhập. Giao diện đang là tiếng Anh. Preferences đang mở.",
+       "steps": "1. Sam chọn 'Tiếng Việt' ở Language. 2. Không tải lại, Sam mở Activity, People và Preferences. 3. Sam chọn 'English' ở Language.",
+       "expect": "Sau bước 2 thanh điều hướng, tiêu đề, nút và trạng thái trống trên ba trang đều bằng tiếng Việt; tên người và nội dung tin nhắn giữ nguyên. Sau bước 3 các nhãn đó trở lại tiếng Anh. Trang không hề tải lại."
+      }
+     ]
+    },
+    {
+     "id": "AC-122",
+     "text": "Preferences còn có bốn màu nhấn (teal, indigo, clay, violet) và mật độ Comfortable hoặc Compact; mỗi lựa chọn áp dụng ngay. Trên màn hình hẹp không có mục Density.",
+     "tests": [
+      {
+       "id": "TS-195",
+       "type": "P",
+       "text": "Màu nhấn và mật độ",
+       "given": "Sam đã đăng nhập trong cửa sổ rộng 1280 px. Preferences đang mở với màu nhấn teal và mật độ Comfortable.",
+       "steps": "1. Sam bấm màu nhấn 'indigo'. 2. Sam bấm 'Compact'.",
+       "expect": "Sau bước 1 màu nhấn của nút và mục đang chọn là indigo. Sau bước 2 các dòng sát nhau hơn. Không bước nào làm trang tải lại."
+      },
+      {
+       "id": "TS-196",
+       "type": "X",
+       "text": "Màn hình hẹp không có Density",
+       "given": "Sam đã đăng nhập trong cửa sổ rộng 360 px, cao 560 px.",
+       "steps": "1. Sam mở More rồi mở Preferences. 2. Sam đọc các tiêu đề mục.",
+       "expect": "Có Look, Accent và Language; không có mục Density."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "FR-44",
+   "area": "Thông báo",
+   "text": "Preferences có ba công tắc thông báo: 'Desktop notifications', 'Play a sound' và 'Notify me for @mentions even in muted channels'; công tắc cuối bật sẵn với tài khoản mới. Các công tắc thuộc về người dùng và áp dụng trên mọi thiết bị họ đăng nhập; chỉ quyền push của trình duyệt là theo từng thiết bị.",
+   "decided": [
+    {
+     "ref": "D-016",
+     "a": "Badge, Web Push, âm thanh, mức theo channel, mute, Pause, Focus time. Thư báo lỡ mention để sau"
+    },
+    {
+     "ref": "D-088",
+     "a": "(a) Một công tắc cá nhân trong Preferences, mặc định bật, như prototype."
+    }
+   ],
+   "open": [
+    "D-142",
+    "D-176"
+   ],
+   "screen": "Preferences: Notifications",
+   "flows": "",
+   "rules": "BR-41",
+   "acs": [
+    {
+     "id": "AC-123",
+     "text": "Mục Notifications của Preferences có ba công tắc và, ở phase 1, không có công tắc gửi email về mention bị lỡ.",
+     "tests": [
+      {
+       "id": "TS-197",
+       "type": "P",
+       "text": "Có đủ công tắc",
+       "given": "Sam đã đăng nhập trên trình duyệt máy tính.",
+       "steps": "1. Sam mở Preferences. 2. Sam đọc mục Notifications.",
+       "expect": "Mục này có đúng các công tắc: 'Desktop notifications', 'Play a sound', 'Notify me for @mentions even in muted channels'. Không có công tắc 'Email me about missed mentions'."
+      }
+     ]
+    },
+    {
+     "id": "AC-124",
+     "text": "Với tài khoản chưa từng đổi, 'Notify me for @mentions even in muted channels' đang bật.",
+     "tests": [
+      {
+       "id": "TS-198",
+       "type": "P",
+       "text": "Bật sẵn",
+       "given": "Minh (Admin) đã mời Mai. Mai vừa nhận lời mời và chưa đổi tùy chọn nào.",
+       "steps": "1. Mai mở Preferences. 2. Mai đọc công tắc 'Notify me for @mentions even in muted channels'.",
+       "expect": "Công tắc đang bật."
+      }
+     ]
+    },
+    {
+     "id": "AC-125",
+     "text": "Công tắc đổi trên một thiết bị có cùng trạng thái, và cùng tác dụng, trên các thiết bị khác của người đó.",
+     "tests": [
+      {
+       "id": "TS-199",
+       "type": "X",
+       "text": "Công tắc âm thanh đi theo tài khoản",
+       "given": "Sam đã đăng nhập trên laptop và trên điện thoại. 'Play a sound' đang bật. Sam là thành viên của #launch ở mức 'Mentions only'. Điện thoại đang bật âm lượng và đang mở Toki ở #general.",
+       "steps": "1. Trên laptop, Sam tắt 'Play a sound' trong Preferences. 2. Trên điện thoại, Sam mở Preferences và đọc công tắc. 3. Trên điện thoại, Sam quay lại #general. 4. Minh gửi '@Sam ping' trong #launch.",
+       "expect": "Sau bước 2 'Play a sound' đang tắt trên điện thoại. Sau bước 4 điện thoại hiện toast mention và không phát âm thanh."
+      },
+      {
+       "id": "TS-200",
+       "type": "X",
+       "text": "Quyền push vẫn theo từng thiết bị",
+       "given": "Sam đã đăng nhập ở trình duyệt A, nơi đã cho phép thông báo với Toki, và ở trình duyệt B trên một máy khác, nơi trình duyệt chưa từng được hỏi quyền. 'Desktop notifications' đang bật. Toki đang đóng ở cả hai trình duyệt.",
+       "steps": "1. Minh gửi '@Sam ping' trong #launch. 2. Sam kiểm tra thông báo hệ thống trên cả hai máy.",
+       "expect": "Máy có trình duyệt A hiện thông báo hệ thống về mention. Máy có trình duyệt B không hiện gì."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "FR-45",
+   "area": "Hành vi chung",
+   "text": "Người dùng đặt status từ account menu, Preferences hoặc profile của chính mình: một trong năm mẫu có sẵn (In a meeting, Focusing, Out for lunch, Commuting, Working remotely) hoặc chữ tự nhập, có thể kèm thời điểm status tự xóa. Người khác thấy status ở tiêu đề DM, profile, popup mention và thẻ trong People. Presence không đặt bằng tay được; để báo bận, người dùng đặt status hoặc bật Focus time.",
+   "decided": [
+    {
+     "ref": "D-091",
+     "a": "Đã rà ngày 13/11/2026: 8 hành trình viết lại, 16 sửa, 19 giữ nguyên. Khi bốn lựa chọn ở D-156 tới D-159 đã chốt, các hành trình phase 1 được chấp nhận làm nền."
+    },
+    {
+     "ref": "D-121",
+     "a": "Lần lưu sau cùng thắng và mọi người thấy ngay."
+    }
+   ],
+   "open": [
+    "D-145",
+    "D-172"
+   ],
+   "screen": "Account menu: Set status; Preferences: Your status; Profile panel",
+   "flows": "",
+   "rules": "",
+   "acs": [
+    {
+     "id": "AC-126",
+     "text": "Status đã lưu, dù là mẫu có sẵn hay chữ tự nhập, hiện cho người khác ở profile của người đó, thẻ của họ trong People và tiêu đề DM với họ.",
+     "tests": [
+      {
+       "id": "TS-201",
+       "type": "P",
+       "text": "Người khác thấy status mẫu",
+       "given": "Sam và Mai đã đăng nhập. Sam chưa có status. Sam và Mai có một DM.",
+       "steps": "1. Sam mở account menu, bấm 'Set status' và chọn 'In a meeting'. 2. Mai mở People và đọc thẻ của Sam. 3. Mai bấm thẻ của Sam và đọc Profile panel. 4. Mai mở DM với Sam và đọc tiêu đề.",
+       "expect": "'In a meeting' hiện trên thẻ của Sam trong People, trong Profile panel của Sam và ở tiêu đề DM. Account card của Sam hiện 'In a meeting'."
+      },
+      {
+       "id": "TS-202",
+       "type": "P",
+       "text": "Status tự nhập trong popup mention",
+       "given": "Sam và Mai đã đăng nhập và là thành viên của #launch. Sam chưa có status.",
+       "steps": "1. Sam mở Preferences, gõ 'Back at 13:00' vào 'Custom status' và bấm Save. 2. Trong #launch, Mai gõ '@sa' vào composer và đọc dòng của Sam trong popup.",
+       "expect": "Dòng của Sam trong popup mention hiện 'Back at 13:00'."
+      }
+     ]
+    },
+    {
+     "id": "AC-127",
+     "text": "'Clear after' có các lựa chọn Don't clear, 30 minutes, 1 hour và End of today. Đến giờ đã chọn, status biến mất với mọi người và chủ status thấy toast 'Your status was cleared'. Bấm Clear, hoặc lưu khi ô trống, sẽ xóa status ngay.",
+     "tests": [
+      {
+       "id": "TS-203",
+       "type": "B",
+       "text": "Status tự xóa sau 30 phút",
+       "given": "Sam và Mai đã đăng nhập. Sam chưa có status. Bây giờ là 10:00.",
+       "steps": "1. Sam mở 'Set status', gõ 'On a call', đọc các lựa chọn 'Clear after', chọn '30 minutes' và lưu. 2. Lúc 10:29 Mai đọc thẻ của Sam trong People. 3. Lúc 10:31 Mai đọc thẻ của Sam trong People và Sam nhìn vào Toki.",
+       "expect": "Ở bước 1 các lựa chọn là Don't clear, 30 minutes, 1 hour và End of today, không có lựa chọn nào nhắc đến 20 giây. Lúc 10:29 thẻ hiện 'On a call'. Lúc 10:31 thẻ không còn status và Sam đã thấy toast 'Your status was cleared'."
+      },
+      {
+       "id": "TS-204",
+       "type": "P",
+       "text": "Xóa bằng tay",
+       "given": "Sam và Mai đã đăng nhập. Status của Sam là 'Working remotely' với 'Don't clear'.",
+       "steps": "1. Sam mở 'Set status' và bấm Clear. 2. Mai mở profile của Sam.",
+       "expect": "Account card của Sam không còn hiện 'Working remotely', và profile của Sam trên màn hình của Mai không có status."
+      }
+     ]
+    },
+    {
+     "id": "AC-128",
+     "text": "Khi status được lưu từ hai thiết bị của cùng một người, lần lưu sau cùng thắng và mọi người, kể cả hai thiết bị đó, thấy ngay.",
+     "tests": [
+      {
+       "id": "TS-205",
+       "type": "X",
+       "text": "Lần lưu sau cùng thắng",
+       "given": "Sam đã đăng nhập trên laptop và trên điện thoại. Mai đã đăng nhập và đang mở profile của Sam. Sam chưa có status.",
+       "steps": "1. Trên laptop, Sam lưu status 'Commuting'. 2. Trên điện thoại, Sam lưu status 'Out for lunch'. 3. Không tải lại, Sam nhìn account card trên laptop và Mai nhìn profile của Sam.",
+       "expect": "Laptop của Sam và màn hình của Mai đều hiện 'Out for lunch'; không nơi nào còn hiện 'Commuting'."
+      }
+     ]
+    },
+    {
+     "id": "AC-129",
+     "text": "Không màn hình nào cho người dùng tự chọn presence bằng tay.",
+     "tests": [
+      {
+       "id": "TS-206",
+       "type": "N",
+       "text": "Không có chỗ chọn presence",
+       "given": "Sam đã đăng nhập.",
+       "steps": "1. Sam mở account menu và đọc mọi mục. 2. Sam mở 'Set status' và đọc mọi điều khiển. 3. Sam mở Preferences và đọc mọi điều khiển. 4. Sam mở profile của chính mình.",
+       "expect": "Không nơi nào trong bốn nơi có điều khiển để đặt Sam thành Active, Away hay Do not disturb. Account menu có 'Set status' và 'Focus time'."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "FR-46",
+   "area": "Truy cập",
+   "text": "'Sign out' trong account menu (trên màn hình hẹp là trong bảng More) kết thúc phiên trên thiết bị đó và hiện trang đăng nhập. Các tab khác của cùng trình duyệt bị đăng xuất ngay; các thiết bị khác của người đó vẫn giữ đăng nhập.",
+   "decided": [
+    {
+     "ref": "D-158",
+     "a": "Có: 'Sign out' trong menu tài khoản; Preferences liệt kê các thiết bị đã đăng nhập và đăng xuất được một thiết bị hoặc mọi thiết bị khác."
+    },
+    {
+     "ref": "D-093",
+     "a": "Có, ngay lập tức; chúng dùng chung phiên."
+    },
+    {
+     "ref": "D-091",
+     "a": "Đã rà ngày 13/11/2026: 8 hành trình viết lại, 16 sửa, 19 giữ nguyên. Khi bốn lựa chọn ở D-156 tới D-159 đã chốt, các hành trình phase 1 được chấp nhận làm nền."
+    },
+    {
+     "ref": "D-053",
+     "a": "Toàn bộ tính năng phase 1. Trên khung hẹp: tìm kiếm toàn cục, menu tài khoản, status, Pause và Focus time nằm trong sheet More; nút Mark done và Snooze ở Activity luôn hiện. Tóm tắt bằng AI không có ở phase 1 trên bất kỳ nền tảng nào."
+    }
+   ],
+   "open": [
+    "D-178"
+   ],
+   "screen": "không có trong prototype",
+   "flows": "",
+   "rules": "BR-01",
+   "acs": [
+    {
+     "id": "AC-130",
+     "text": "Sau 'Sign out', thiết bị hiện trang đăng nhập, và không địa chỉ nào của Toki hiện nội dung workspace trên thiết bị đó cho đến khi có người đăng nhập lại.",
+     "tests": [
+      {
+       "id": "TS-207",
+       "type": "P",
+       "text": "Sign out từ account menu",
+       "given": "Sam đã đăng nhập trên trình duyệt máy tính và đang mở #launch.",
+       "steps": "1. Sam bấm account card ở cuối sidebar. 2. Sam bấm 'Sign out'.",
+       "expect": "Trang đăng nhập hiện ra, không có tên channel hay tin nhắn nào."
+      },
+      {
+       "id": "TS-208",
+       "type": "N",
+       "text": "Bấm Back và mở địa chỉ trực tiếp sau khi Sign out",
+       "given": "Sam vừa Sign out trên trình duyệt máy tính; trước đó Sam mở #launch và đã sao chép địa chỉ của nó.",
+       "steps": "1. Sam bấm nút Back của trình duyệt. 2. Sam dán địa chỉ của #launch vào thanh địa chỉ và mở.",
+       "expect": "Cả hai bước đều dừng ở trang đăng nhập; không tin nhắn nào của #launch hiện ra."
+      },
+      {
+       "id": "TS-209",
+       "type": "X",
+       "text": "Sign out trên màn hình hẹp",
+       "given": "Sam đã đăng nhập trong cửa sổ rộng 360 px, cao 560 px.",
+       "steps": "1. Sam bấm 'More' trên thanh tab dưới cùng. 2. Sam bấm 'Sign out' trong phần tài khoản của bảng.",
+       "expect": "Bảng ở bước 1 có 'Sign out'. Sau bước 2 trang đăng nhập hiện ra."
+      }
+     ]
+    },
+    {
+     "id": "AC-131",
+     "text": "Sign out ở một tab sẽ đăng xuất ngay mọi tab khác của cùng trình duyệt.",
+     "tests": [
+      {
+       "id": "TS-210",
+       "type": "X",
+       "text": "Hai tab, một trình duyệt",
+       "given": "Sam đã đăng nhập trong một trình duyệt với hai tab: tab 1 hiện #general, tab 2 hiện #launch.",
+       "steps": "1. Ở tab 1, Sam bấm 'Sign out'. 2. Sam chuyển sang tab 2 mà không tải lại.",
+       "expect": "Tab 2 hiện trang đăng nhập, hoặc thông báo phiên đã kết thúc và nội dung bị che; không đọc hay gửi được tin nhắn nào của #launch từ tab đó."
+      }
+     ]
+    },
+    {
+     "id": "AC-132",
+     "text": "Sign out trên một thiết bị không làm người đó bị đăng xuất ở các thiết bị khác, và thiết bị đã Sign out không còn nhận push của người đó nữa.",
+     "tests": [
+      {
+       "id": "TS-211",
+       "type": "X",
+       "text": "Thiết bị khác vẫn đăng nhập",
+       "given": "Sam đã đăng nhập trên laptop và trên điện thoại; cả hai đang hiện #general.",
+       "steps": "1. Trên laptop, Sam bấm 'Sign out'. 2. Trên điện thoại, Sam gửi 'still here' trong #general.",
+       "expect": "Điện thoại vẫn ở trong Toki và 'still here' được gửi tới #general."
+      },
+      {
+       "id": "TS-212",
+       "type": "N",
+       "text": "Không còn push sau khi Sign out",
+       "given": "Sam chỉ đăng nhập trên một laptop, nơi đã cho phép push với Toki và 'Desktop notifications' đang bật. Sam là thành viên của #launch.",
+       "steps": "1. Sam bấm 'Sign out' và đóng tab. 2. Minh gửi '@Sam ping' trong #launch. 3. Sam theo dõi laptop trong một phút.",
+       "expect": "Laptop không hiện thông báo hệ thống nào từ Toki."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "FR-47",
+   "area": "Truy cập",
+   "text": "Preferences có mục 'Signed-in devices' liệt kê từng thiết bị mà người dùng đang đăng nhập, kèm loại thiết bị, trình duyệt và lần dùng gần nhất; thiết bị hiện tại có nhãn 'This device'. Người dùng có thể đăng xuất một thiết bị khác, hoặc tất cả thiết bị khác cùng lúc; mỗi thao tác đều hỏi xác nhận trước.",
+   "decided": [
+    {
+     "ref": "D-158",
+     "a": "Có: 'Sign out' trong menu tài khoản; Preferences liệt kê các thiết bị đã đăng nhập và đăng xuất được một thiết bị hoặc mọi thiết bị khác."
+    },
+    {
+     "ref": "D-091",
+     "a": "Đã rà ngày 13/11/2026: 8 hành trình viết lại, 16 sửa, 19 giữ nguyên. Khi bốn lựa chọn ở D-156 tới D-159 đã chốt, các hành trình phase 1 được chấp nhận làm nền."
+    },
+    {
+     "ref": "D-069",
+     "a": "Hành động hoàn tác được thì làm ngay và hiện toast có nút Hoàn tác trong 5 giây. Hành động không hoàn tác được hoặc ảnh hưởng người khác thì hỏi xác nhận, nêu rõ đối tượng. Không dùng cả hai cho một hành động."
+    }
+   ],
+   "open": [],
+   "screen": "không có trong prototype",
+   "flows": "",
+   "rules": "BR-20",
+   "acs": [
+    {
+     "id": "AC-133",
+     "text": "Mục này có một dòng cho mỗi thiết bị đang đăng nhập, hiện loại thiết bị, trình duyệt và lần dùng gần nhất, và đánh dấu thiết bị đang dùng là 'This device'.",
+     "tests": [
+      {
+       "id": "TS-213",
+       "type": "P",
+       "text": "Liệt kê hai thiết bị",
+       "given": "Sam đang đăng nhập bằng Chrome trên laptop và Safari trên điện thoại, không ở đâu khác.",
+       "steps": "1. Trên laptop, Sam mở Preferences và đọc 'Signed-in devices'.",
+       "expect": "Có hai dòng: một dòng cho laptop với Chrome, có nhãn 'This device', và một dòng cho điện thoại với Safari. Mỗi dòng hiện thời điểm dùng gần nhất."
+      }
+     ]
+    },
+    {
+     "id": "AC-134",
+     "text": "'Sign out' bên cạnh một thiết bị khác sẽ hỏi xác nhận; sau khi xác nhận, thiết bị đó không đọc hay ghi được gì cho đến khi có người đăng nhập lại trên đó, và dòng của nó biến mất. Hủy thì không có gì thay đổi.",
+     "tests": [
+      {
+       "id": "TS-214",
+       "type": "P",
+       "text": "Đăng xuất một thiết bị khác",
+       "given": "Sam đã đăng nhập trên laptop và trên điện thoại. Điện thoại đang hiện #launch.",
+       "steps": "1. Trên laptop, Sam mở Preferences và bấm 'Sign out' ở dòng của điện thoại. 2. Sam xác nhận. 3. Trên điện thoại, Sam thử gửi 'test' trong #launch.",
+       "expect": "Bước 1 hiện hộp xác nhận có nêu tên điện thoại. Sau bước 2 dòng của điện thoại biến mất và laptop vẫn đăng nhập. Ở bước 3 'test' không được gửi; điện thoại che nội dung và yêu cầu Sam đăng nhập lại."
+      },
+      {
+       "id": "TS-215",
+       "type": "N",
+       "text": "Hủy hộp xác nhận",
+       "given": "Sam đã đăng nhập trên laptop và trên điện thoại. Điện thoại đang hiện #launch.",
+       "steps": "1. Trên laptop, Sam bấm 'Sign out' ở dòng của điện thoại. 2. Sam bấm Cancel. 3. Trên điện thoại, Sam gửi 'test' trong #launch.",
+       "expect": "Dòng của điện thoại vẫn còn và 'test' được gửi tới #launch."
+      }
+     ]
+    },
+    {
+     "id": "AC-135",
+     "text": "'Sign out all other devices' hỏi xác nhận, rồi kết thúc phiên trên mọi thiết bị trừ thiết bị đang dùng.",
+     "tests": [
+      {
+       "id": "TS-216",
+       "type": "P",
+       "text": "Đăng xuất mọi thiết bị khác",
+       "given": "Sam đã đăng nhập trên laptop, điện thoại và máy tính bảng.",
+       "steps": "1. Trên laptop, Sam mở Preferences và bấm 'Sign out all other devices'. 2. Sam xác nhận. 3. Sam mở Toki trên điện thoại và trên máy tính bảng.",
+       "expect": "Sau bước 2 'Signed-in devices' chỉ còn dòng 'This device' và laptop vẫn đang hiện Preferences. Ở bước 3 cả điện thoại và máy tính bảng đều yêu cầu Sam đăng nhập và không hiện nội dung workspace nào."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "FR-48",
+   "area": "Thông báo",
+   "text": "Thành viên có thể tắt tiếng một cuộc trò chuyện bằng công tắc 'Mute conversation' trong Details panel của nó. Cuộc trò chuyện đã mute hiện màu xám, không có số chưa đọc và không in đậm, không tính vào badge của Home, và không tạo toast, push hay âm thanh. Mute là của riêng từng người: không ai khác thấy và thông báo của người khác không đổi.",
+   "decided": [
+    {
+     "ref": "D-016",
+     "a": "Badge, Web Push, âm thanh, mức theo channel, mute, Pause, Focus time. Thư báo lỡ mention để sau"
+    },
+    {
+     "ref": "D-103",
+     "a": "Mức quyết định toast, push và âm thanh; Mute còn ẩn cả huy hiệu chưa đọc và chữ đậm."
+    },
+    {
+     "ref": "D-091",
+     "a": "Đã rà ngày 13/11/2026: 8 hành trình viết lại, 16 sửa, 19 giữ nguyên. Khi bốn lựa chọn ở D-156 tới D-159 đã chốt, các hành trình phase 1 được chấp nhận làm nền."
+    }
+   ],
+   "open": [
+    "D-143",
+    "D-174"
+   ],
+   "screen": "Details panel: Settings: Mute conversation",
+   "flows": "",
+   "rules": "BR-41",
+   "acs": [
+    {
+     "id": "AC-136",
+     "text": "Khi cuộc trò chuyện đang mute, tin nhắn mới không có mention vẫn để dòng của nó màu xám, không số đếm, không in đậm, không làm tăng badge của Home, và không tạo toast, push hay âm thanh.",
+     "tests": [
+      {
+       "id": "TS-217",
+       "type": "P",
+       "text": "Tin nhắn trong channel đã mute",
+       "given": "Sam đã đăng nhập, đang mở #general, 'Play a sound' đang bật và không có tin chưa đọc ở đâu. Sam là thành viên của #launch ở mức 'All messages'.",
+       "steps": "1. Sam mở #launch, mở Details panel và bật 'Mute conversation'. 2. Sam quay lại #general. 3. Mai gửi 'build is ready' trong #launch.",
+       "expect": "Dòng #launch màu xám, không in đậm và không có số đếm. Badge của Home không xuất hiện. Không có toast và không có âm thanh."
+      },
+      {
+       "id": "TS-218",
+       "type": "P",
+       "text": "Bỏ mute",
+       "given": "Sam đã đăng nhập, đang mở #general. Sam đã mute #launch, ở mức 'All messages'.",
+       "steps": "1. Sam mở Details panel của #launch và tắt 'Mute conversation'. 2. Sam quay lại #general. 3. Mai gửi 'second build' trong #launch.",
+       "expect": "Dòng #launch in đậm kèm số đếm, badge của Home tăng, và có toast cho tin nhắn của Mai."
+      }
+     ]
+    },
+    {
+     "id": "AC-137",
+     "text": "Mute khác với mức thông báo 'Nothing': ở mức 'Nothing' mà không Mute thì không có toast, push hay âm thanh, nhưng số chưa đọc và chữ in đậm vẫn còn.",
+     "tests": [
+      {
+       "id": "TS-219",
+       "type": "X",
+       "text": "Mức 'Nothing', không mute",
+       "given": "Sam đã đăng nhập, đang mở #general và không có tin chưa đọc. Trong #launch, mức thông báo của Sam là 'Nothing' và 'Mute conversation' đang tắt.",
+       "steps": "1. Mai gửi 'build is ready' trong #launch.",
+       "expect": "Không có toast và không có âm thanh. Dòng #launch in đậm với số đếm 1 và badge của Home hiện 1."
+      }
+     ]
+    },
+    {
+     "id": "AC-138",
+     "text": "Mute của một người không thay đổi gì với người khác và không hiện cho ai khác.",
+     "tests": [
+      {
+       "id": "TS-220",
+       "type": "X",
+       "text": "Mute là của riêng từng người",
+       "given": "Sam và Alex đã đăng nhập, đều là thành viên của #launch ở mức 'All messages', đều đang mở #general. Chưa ai mute #launch.",
+       "steps": "1. Sam bật 'Mute conversation' cho #launch rồi quay lại #general. 2. Mai gửi 'build is ready' trong #launch. 3. Alex mở Details panel của #launch và danh sách thành viên.",
+       "expect": "Dòng #launch của Alex in đậm kèm số đếm và Alex nhận toast. Công tắc 'Mute conversation' của Alex đang tắt, và không gì trong danh sách thành viên hay trên profile của Sam cho thấy Sam đã mute channel."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "FR-49",
+   "area": "Truy cập",
+   "text": "Khi không gửi được mail, người có quyền truy cập máy chủ chạy một lệnh kèm địa chỉ email của một thành viên; lệnh in ra một link đăng nhập dùng một lần, có hiệu lực 10 phút, mở Toki dưới tên thành viên đó. Đây là cách đăng nhập duy nhất không cần mã, và mỗi lần dùng đều được ghi vào log của máy chủ.",
+   "decided": [
+    {
+     "ref": "D-159",
+     "a": "Có: một lệnh trên server in ra link có hiệu lực 10 phút cho một thành viên; mỗi lần dùng đều ghi log. Đây là cách đăng nhập duy nhất không cần mã."
+    },
+    {
+     "ref": "D-091",
+     "a": "Đã rà ngày 13/11/2026: 8 hành trình viết lại, 16 sửa, 19 giữ nguyên. Khi bốn lựa chọn ở D-156 tới D-159 đã chốt, các hành trình phase 1 được chấp nhận làm nền."
+    }
+   ],
+   "open": [
+    "D-179"
+   ],
+   "screen": "không có trong prototype",
+   "flows": "",
+   "rules": "BR-02",
+   "acs": [
+    {
+     "id": "AC-139",
+     "text": "Mở link vừa in trong vòng 10 phút sẽ đăng nhập trình duyệt đó dưới tên thành viên, không cần mã, và mở Home.",
+     "tests": [
+      {
+       "id": "TS-221",
+       "type": "P",
+       "text": "Link dùng được trong 10 phút",
+       "given": "Sam là Member đang hoạt động và chưa đăng nhập ở đâu. Người kiểm thử có quyền shell trên máy chủ.",
+       "steps": "1. Người kiểm thử chạy lệnh đăng nhập khẩn cấp với địa chỉ email của Sam và sao chép link được in ra. 2. Trong vòng 10 phút, mở link đó trong một trình duyệt chưa có phiên.",
+       "expect": "Bước 1 in ra đúng một link. Ở bước 2 Home mở ra dưới tên Sam; không bị hỏi mã."
+      }
+     ]
+    },
+    {
+     "id": "AC-140",
+     "text": "Link không đăng nhập được cho ai khi đã quá 10 phút kể từ lúc in ra, hoặc khi đã được dùng một lần.",
+     "tests": [
+      {
+       "id": "TS-222",
+       "type": "B",
+       "text": "Mở link sau 11 phút",
+       "given": "Sam là Member đang hoạt động. Người kiểm thử đã in link khẩn cấp cho Sam cách đây 11 phút và link chưa được dùng.",
+       "steps": "1. Mở link đó trong một trình duyệt chưa có phiên.",
+       "expect": "Trình duyệt không được đăng nhập và không hiện nội dung workspace nào."
+      },
+      {
+       "id": "TS-223",
+       "type": "N",
+       "text": "Dùng link lần thứ hai",
+       "given": "Sam là Member đang hoạt động. Link khẩn cấp cho Sam được in cách đây 2 phút và vừa được mở ở trình duyệt A, nơi hiện đang đăng nhập dưới tên Sam.",
+       "steps": "1. Mở cùng link đó ở trình duyệt B, nơi chưa có phiên.",
+       "expect": "Trình duyệt B không được đăng nhập và không hiện nội dung workspace nào. Trình duyệt A vẫn đăng nhập."
+      }
+     ]
+    },
+    {
+     "id": "AC-141",
+     "text": "Lệnh không in link cho địa chỉ không phải thành viên hoặc thuộc về người đã bị vô hiệu hóa, và mỗi lần dùng lệnh đều được ghi vào log của máy chủ.",
+     "tests": [
+      {
+       "id": "TS-224",
+       "type": "N",
+       "text": "Địa chỉ lạ và địa chỉ đã bị vô hiệu hóa",
+       "given": "Minh (Admin) đã vô hiệu hóa Alex. Không tài khoản nào dùng địa chỉ nobody@example.com. Người kiểm thử có quyền shell trên máy chủ.",
+       "steps": "1. Người kiểm thử chạy lệnh với nobody@example.com. 2. Người kiểm thử chạy lệnh với địa chỉ email của Alex.",
+       "expect": "Không lần chạy nào in ra link; mỗi lần in ra lời từ chối."
+      },
+      {
+       "id": "TS-225",
+       "type": "P",
+       "text": "Lần dùng được ghi log",
+       "given": "Sam là Member đang hoạt động. Người kiểm thử có quyền shell trên máy chủ và đọc được log.",
+       "steps": "1. Người kiểm thử ghi lại thời điểm và chạy lệnh với địa chỉ email của Sam. 2. Người kiểm thử đọc log của máy chủ từ thời điểm đó trở đi.",
+       "expect": "Log có một dòng cho lần chạy này, xác định được tài khoản của Sam và thời điểm."
+      }
+     ]
+    }
+   ]
   }
  ],
  "nfr": [
@@ -8986,13 +10891,23 @@
        "id": "TOKI-095",
        "title": "Set up Claude cho project",
        "scope": "`CLAUDE.md` (dự án là gì, cấu trúc repo, lệnh thường dùng, quy tắc ranh giới, nơi đặt tài liệu); bật plugin cl và tạo `docs/intents`, `docs/specs`, `docs/plans`; quyền và hook trong `.claude/settings.json`; đưa nguồn Blueprint vào `docs/blueprint/`",
-       "size": "M"
+       "size": "M",
+       "spec": {
+        "state": "pr",
+        "pr": "PR #9",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-096",
        "title": "Set up config cho từng môi trường",
-       "scope": "Bảng kê mọi biến môi trường (tên, mục đích, bắt buộc hay không, mặc định, ai cung cấp); `.env.example` khớp với bảng kê; danh sách giá trị phải lấy từ bên ngoài (tên miền, tài khoản gửi thư, VPS, kho backup); cách giữ bí mật ở từng môi trường",
-       "size": "M"
+       "scope": "Bảng kê mọi biến môi trường (tên, mục đích, bắt buộc hay không, mặc định, ai cung cấp); `.env.example` khớp với bảng kê; danh sách giá trị phải lấy từ bên ngoài (tên miền, tài khoản gửi thư, VPS); cách giữ bí mật ở từng môi trường",
+       "size": "M",
+       "spec": {
+        "state": "pr",
+        "pr": "PR #10",
+        "fix": "Spec yêu cầu giá trị cho kho backup; backup đã hoãn (D-092)."
+       }
       }
      ]
     },
@@ -9004,49 +10919,89 @@
        "id": "TOKI-001",
        "title": "Khởi tạo monorepo pnpm và TypeScript",
        "scope": "Tạo `apps/server` và `apps/web`, cùng sáu package `shared`, `client-core`, `tokens`, `i18n`, `platform`, `ui-web`, với cấu hình TypeScript dùng chung. `apps/mobile`, `apps/desktop` và `ui-native` được thêm ở phase của chúng",
-       "size": "S"
+       "size": "S",
+       "spec": {
+        "state": "merged",
+        "pr": "PR #1",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-002",
        "title": "Lint, format và quy tắc ranh giới package",
        "scope": "ESLint và Prettier, cùng ba quy tắc ranh giới: `client-core` không import DOM hay API trình duyệt; module server không import nội bộ của nhau; `ui-web` không gọi thẳng API nền tảng (thông báo, lưu trữ, service worker, âm thanh) mà đi qua `platform`. Việc chọn file không bắt được bằng lint, dựa vào review",
-       "size": "M"
+       "size": "M",
+       "spec": {
+        "state": "merged",
+        "pr": "PR #2",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-003",
        "title": "Môi trường dev cục bộ",
-       "scope": "(1) `infra/docker-compose.dev.yml` chạy Postgres, MinIO và Mailpit. (2) Các script trong `package.json` gốc: `dev:up` bật các dịch vụ; `dev:down` tắt và giữ dữ liệu; bốn script reset: `dev:reset:db` xóa Postgres rồi chạy lại migration, `dev:reset:files` làm trống bucket MinIO, `dev:reset:mail` xóa hộp thư Mailpit, và `dev:reset` làm cả ba. Không lệnh reset nào đụng `.env` hay database của bộ test, và mọi lệnh reset từ chối chạy ở production. Reset từng phần có thể để lại tham chiếu giữa ba thứ (tin nhắn trỏ tới file đã xóa, mã cũ trong hộp thư); `dev:reset` là lệnh đưa về trạng thái sạch",
-       "size": "M"
+       "scope": "(1) `infra/docker-compose.dev.yml` chạy Postgres, MinIO và Mailpit. (2) Các script trong `package.json` gốc: `dev:up` bật các dịch vụ; `dev:down` tắt và giữ dữ liệu; bốn script reset: `dev:reset:db` xóa Postgres rồi chạy lại migration, `dev:reset:files` làm trống bucket MinIO, `dev:reset:mail` xóa hộp thư Mailpit, và `dev:reset` làm cả ba. Không lệnh reset nào đụng `.env` hay database của bộ test, và mọi lệnh reset từ chối chạy ở production. Reset từng phần có thể để lại tham chiếu giữa ba thứ (tin nhắn trỏ tới file đã xóa, mã cũ trong hộp thư); `dev:reset` là lệnh đưa về trạng thái sạch. Theo spec: `dev:reset:db` ở đây chỉ xoá dữ liệu (TOKI-005 thêm bước chạy migration), và `dev:up` tạo bucket file cho môi trường dev",
+       "size": "M",
+       "spec": {
+        "state": "pr",
+        "pr": "PR #3",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-004",
-       "title": "Khung server Fastify",
-       "scope": "Đọc và kiểm tra biến môi trường, /healthz, log có cấu trúc, định dạng lỗi thống nhất, tiền tố /api/v1",
-       "size": "M"
+       "title": "Khung server",
+       "scope": "Đọc và kiểm tra biến môi trường, /healthz, log có cấu trúc, định dạng lỗi thống nhất, tiền tố /api/v1. Theo spec: thêm cấu hình Vitest tối thiểu trong `apps/server` và schema phản hồi lỗi trong `packages/shared`",
+       "size": "M",
+       "spec": {
+        "state": "pr",
+        "pr": "PR #4",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-005",
-       "title": "Drizzle, migration và bảng workspaces",
-       "scope": "Kết nối Postgres, quy trình migration, bảng đầu tiên",
-       "size": "S"
+       "title": "Kết nối database, migration và bảng workspaces",
+       "scope": "Kết nối Postgres, quy trình migration, bảng đầu tiên. Theo spec: thêm bước chạy migration vào `dev:reset:db` và chọn bộ sinh UUIDv7",
+       "size": "S",
+       "spec": {
+        "state": "pr",
+        "pr": "PR #5",
+        "fix": "Spec nhắc tới tài khoản Owner (TOKI-020); vai trò Owner đã bỏ (D-152)."
+       }
       },
       {
        "id": "TOKI-006",
-       "title": "Khung web Vite + React",
-       "scope": "Router, Query, trang trống, proxy tới server khi dev",
-       "size": "S"
+       "title": "Khung ứng dụng web",
+       "scope": "Router, Query, trang trống, proxy tới server khi dev. Theo spec: thêm trang not-found đơn giản và kiểm tra 200 KB cho JavaScript ban đầu",
+       "size": "S",
+       "spec": {
+        "state": "pr",
+        "pr": "PR #6",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-007",
        "title": "CI trên GitHub Actions",
        "scope": "Lint, kiểm tra kiểu, test, build, giới hạn kích thước bundle",
-       "size": "M"
+       "size": "M",
+       "spec": {
+        "state": "pr",
+        "pr": "PR #7",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-008",
        "title": "Khung test",
-       "scope": "Vitest chạy với Postgres thật, Playwright chạy được một test mẫu, đồng hồ điều khiển được",
-       "size": "M"
+       "scope": "Vitest chạy với Postgres thật, Playwright chạy được một test mẫu, đồng hồ điều khiển được. Theo spec: thêm job end-to-end và dịch vụ Postgres trong CI, cùng một database riêng cho test",
+       "size": "M",
+       "spec": {
+        "state": "pr",
+        "pr": "PR #8",
+        "fix": "Spec ghi danh sách trình duyệt cần test là còn mở; đã có quyết định (D-108)."
+       }
       }
      ]
     },
@@ -9058,73 +11013,85 @@
        "id": "TOKI-009",
        "title": "Package tokens",
        "scope": "Bảng màu Calm và Focus, 4 accent, density, bo góc, bóng; xuất CSS variables và object cho React Native",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-010",
        "title": "Font tự host",
        "scope": "Ba font, cắt gọn còn Latin và tiếng Việt, tải trước font chính",
-       "size": "S"
+       "size": "S",
+       "spec": null
       },
       {
        "id": "TOKI-011",
        "title": "Bộ icon",
        "scope": "Khoảng 60 icon của prototype thành component",
-       "size": "S"
+       "size": "S",
+       "spec": null
       },
       {
        "id": "TOKI-018",
        "title": "Package platform",
-       "scope": "Interface thông báo, lưu trữ, chọn file, âm thanh; bản cài cho web",
-       "size": "S"
+       "scope": "Interface thông báo, lưu trữ, chọn file, âm thanh; bản cài cho web. Lệnh cấm import của nó được thêm vào quy tắc ranh giới của TOKI-002",
+       "size": "S",
+       "spec": null
       },
       {
        "id": "TOKI-012",
        "title": "Component nền, nhóm 1",
-       "scope": "Button, IconButton, Chip, Switch, Field, Select, Tag, Badge; nút chỉ có icon bắt buộc có tên, lint kiểm tra (D-075)",
-       "size": "M"
+       "scope": "Button, IconButton, Chip, Switch, Field, Select, Tag, Badge; nút chỉ có icon bắt buộc có tên, lint kiểm tra (D-075). Quy tắc lint cho nút chỉ có icon được thêm vào cấu hình ESLint của TOKI-002",
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-013",
        "title": "Component nền, nhóm 2",
        "scope": "Avatar, PresenceDot, EmptyState đặt giữa vùng nội dung (D-074), Toast nằm trên composer và có nút Hoàn tác (D-069, D-078)",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-014",
        "title": "Lớp phủ",
        "scope": "Menu, Modal, Sheet; giữ focus bên trong, trả focus khi đóng, Esc theo thứ tự, menu dùng được phím mũi tên (D-075)",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-015",
        "title": "AppShell ba bố cục",
        "scope": "Calm, Focus, khung hẹp dưới 720px với BottomTabs. Theo D-068: nhỏ nhất 360 × 560; từ 720 tới 1099px panel phụ phủ lên chat; thanh điều hướng và hàng tab cuộn được; danh sách hội thoại là vùng chính của thanh bên",
-       "size": "L"
+       "size": "L",
+       "spec": null
       },
       {
        "id": "TOKI-016",
        "title": "Trang xem thử component",
        "scope": "Một trang liệt kê mọi component ở cả hai look để so với prototype",
-       "size": "S"
+       "size": "S",
+       "spec": null
       },
       {
        "id": "TOKI-017",
        "title": "Package i18n",
-       "scope": "Khung dịch, en mặc định, kiểm tra tự động khóa thiếu bản dịch",
-       "size": "S"
+       "scope": "Khung dịch, en mặc định, kiểm tra tự động khóa thiếu bản dịch. Bước kiểm tra thiếu bản dịch được thêm vào workflow CI của TOKI-007",
+       "size": "S",
+       "spec": null
       },
       {
        "id": "TOKI-093",
        "title": "Mẫu hành động phá hủy và form đang dở",
        "scope": "Hộp xác nhận nêu rõ đối tượng, toast Hoàn tác 5 giây, chặn đóng form đã có nội dung (D-069, D-070)",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-094",
        "title": "Quy tắc ngày giờ dùng chung",
-       "scope": "Kiểm tra và định dạng ngày giờ trong shared: trường bắt buộc, không nhận quá khứ khi cần tương lai, hiện năm khi khác năm hiện tại, một định dạng thống nhất (D-073)",
-       "size": "S"
+       "scope": "Kiểm tra và định dạng ngày giờ trong shared: trường bắt buộc, không nhận quá khứ khi cần tương lai, hiện năm khi khác năm hiện tại, một định dạng thống nhất với giờ 24h ở mọi nơi (D-073, D-123)",
+       "size": "S",
+       "spec": null
       }
      ]
     }
@@ -9134,7 +11101,7 @@
    "id": "M2",
    "name": "Đăng nhập, thành viên và hội thoại",
    "goal": "Mọi người vào được và tìm được đường đi.",
-   "exit": "Admin đầu tiên được tạo từ môi trường và mời một thành viên; cả hai đăng nhập bằng mã; họ tạo, duyệt, tham gia kênh và mở DM.",
+   "exit": "Admin đầu tiên được tạo từ môi trường và mời một thành viên; cả hai đăng nhập bằng mã; Admin tạo một kênh; cả hai duyệt, tham gia kênh và mở DM.",
    "areas": [
     {
      "name": "Đăng nhập và thành viên",
@@ -9145,62 +11112,88 @@
       "FR-04",
       "FR-06",
       "FR-25",
-      "FR-26"
+      "FR-26",
+      "FR-46",
+      "FR-47",
+      "FR-49"
      ],
      "tickets": [
       {
        "id": "TOKI-019",
        "title": "Bảng tài khoản",
        "scope": "users, login_codes, sessions, devices",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-020",
        "title": "Admin khởi tạo từ biến môi trường",
        "scope": "Tạo Admin, workspace và kênh #general khi database trống; #general không rời và không lưu trữ được (D-034, F01)",
-       "size": "S"
+       "size": "S",
+       "spec": null
       },
       {
        "id": "TOKI-021",
        "title": "Gửi thư qua SMTP",
-       "scope": "Lớp gửi thư cấu hình được, mẫu thư mã đăng nhập và lời mời bằng hai ngôn ngữ",
-       "size": "M"
+       "scope": "Lớp gửi thư cấu hình được (D-027) và hai mẫu thư bằng tiếng Anh và tiếng Việt: thư đăng nhập chỉ có mã 6 số, không có nút (D-157); thư mời nêu tên workspace và người mời, có nút Join và mã 6 số (D-149)",
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-022",
        "title": "API đăng nhập",
-       "scope": "Xin mã, đổi mã lấy phiên, đăng xuất; cookie và token; giới hạn tần suất; hủy mã sau 5 lần sai; tối đa 5 lần xin mã trong 15 phút; nút trong thư đăng nhập thẳng (D-038, F04, F05)",
-       "size": "L"
+       "scope": "Xin mã, đổi mã lấy phiên, đăng xuất; cookie và token. Mã 6 số có hiệu lực 10 phút, dùng một lần, chỉ cho đúng lần xin mã đó, và bị khóa sau lần nhập sai thứ 5 (D-136, D-137). Tối đa 5 lần xin mã cho một email trong 15 phút, gửi lại chỉ sau 60 giây, mã mới hủy mã cũ (D-038, D-082). Câu trả lời giống nhau dù địa chỉ có phải thành viên hay không (BR-04); tài khoản đã vô hiệu hóa bị từ chối sau khi nhập đúng mã (F05). Phiên kéo dài 30 ngày và gia hạn mỗi lần dùng (D-011, D-138). Không gì trong thư đăng nhập được nếu thiếu mã (D-157). Đăng xuất kết thúc phiên ở mọi tab của trình duyệt đó ngay lập tức (D-093)",
+       "size": "L",
+       "spec": null
       },
       {
        "id": "TOKI-023",
        "title": "Màn hình đăng nhập",
-       "scope": "Nhập email, nhập mã, 7 trường hợp lỗi, phiên hết hạn, màn hình chào lần đầu cho người mới (F03, F04, F05, F07)",
-       "size": "M"
+       "scope": "Nhập email; bước 'Check your email' với ô 6 số, dòng 'The code works for 10 minutes', 'Use a different email' và nút 'Resend code' bật sau 60 giây (D-082, D-136); 7 trường hợp lỗi của F05, có số lần thử còn lại và mã bị khóa (D-137); màn hình 'Your session has ended' (F07). Lỗi hiện ngay dưới ô nhập (D-104). Không có màn hình chào (D-083)",
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-027",
        "title": "Hàm quyền dùng chung",
        "scope": "Quy tắc Member, Admin trong shared, dùng ở cả server và client",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-024",
        "title": "Quản lý thành viên (API)",
-       "scope": "Mời, mời lại, thu hồi, đổi role, vô hiệu hóa, kích hoạt lại. Lời mời hết hạn sau 7 ngày; Admin cuối cùng không bị hạ vai trò hay vô hiệu hóa (D-037, D-039, F02, F40, F41)",
-       "size": "M"
+       "scope": "Mời với role Member hoặc Admin (D-153), tối đa 50 địa chỉ mỗi đợt (D-134); mỗi địa chỉ báo kết quả riêng, và khi gửi thư lỗi giữa chừng thì các lời mời đã gửi vẫn giữ (D-099); gửi lại và thu hồi; lời mời có hiệu lực 7 ngày và dùng một lần (D-037). Người đã bị vô hiệu hóa vẫn mời lại được (D-094). Đổi role, vô hiệu hóa, kích hoạt lại: vô hiệu hóa kết thúc mọi phiên ngay lập tức (BR-29); không ai tự vô hiệu hóa mình; Admin cuối cùng không bị hạ role hay vô hiệu hóa (D-153). Server từ chối mọi yêu cầu từ Member (D-090), bỏ qua yêu cầu lặp lại (D-111) và ghi lại từng thao tác: ai, làm gì, với ai, khi nào (D-110)",
+       "size": "L",
+       "spec": null
       },
       {
        "id": "TOKI-025",
        "title": "Trang Admin",
-       "scope": "Danh sách thành viên, trạng thái, các thao tác quản lý",
-       "size": "M"
+       "scope": "Chỉ Admin mở được; Member thấy 'You do not have access to this page' (D-090). Bảng thành viên gồm tên, email, role, trạng thái (Invited, Active, Deactivated) và lần hoạt động gần nhất; ô tìm, chip lọc theo trạng thái kèm tổng số, hiện 50 dòng đầu và tải thêm khi cuộn (D-109). 'Invite members': nhiều địa chỉ, role Member hoặc Admin, mặc định Member, mỗi dòng hiện 'Invited' hoặc 'Mail not sent' kèm Resend (D-153, D-099); Revoke hỏi xác nhận. Menu trên mỗi dòng: Change role, Deactivate, Reactivate, mỗi thao tác có hộp xác nhận nêu tên người đó (D-061, D-069); các mục bị khóa, kèm lý do, ở dòng của chính Admin và ở Admin cuối cùng (D-153)",
+       "size": "L",
+       "spec": null
       },
       {
        "id": "TOKI-026",
-       "title": "Phiên và lối thoát hiểm",
-       "scope": "Xem và thu hồi phiên của mình; lệnh trên server tạo link đăng nhập khẩn cấp",
-       "size": "S"
+       "title": "Phiên và lối thoát hiểm (server)",
+       "scope": "Liệt kê các phiên của mình kèm loại thiết bị, trình duyệt và lần dùng gần nhất; đăng xuất một thiết bị hoặc mọi thiết bị khác; phiên bị kết thúc kiểu này sẽ bị từ chối ở yêu cầu kế tiếp (D-158, F07). Lệnh trên server in ra link đăng nhập dùng một lần, có hiệu lực 10 phút cho một thành viên, từ chối địa chỉ không thuộc workspace hoặc đã bị vô hiệu hóa, và ghi log mỗi lần dùng (D-159)",
+       "size": "S",
+       "spec": null
+      },
+      {
+       "id": "TOKI-097",
+       "title": "Nhận lời mời",
+       "scope": "Nút Join trong thư mở bước nhập mã với email điền sẵn; chỉ có link thì không đăng nhập được (D-149). Mã có hiệu lực 10 phút; 'Resend code' gửi mã mới sau 60 giây và hủy mã cũ (D-136, D-082); lần nhập sai thứ 5 khóa mã (D-137). Thành công thì người đó đã ở trong #general và vào thẳng đó, không có bước chào (D-083, D-034); tên hiển thị là phần trước @ của email (D-150); người đã bị vô hiệu hóa nhận lại đúng tài khoản cũ cùng lịch sử và các channel (D-094). Có trang cho lời mời hết hạn, bị thu hồi và không nhận ra; lời mời đã dùng thì dẫn về trang đăng nhập (D-081). Người đang đăng nhập bằng tài khoản khác được hỏi trước khi có gì thay đổi (D-080)",
+       "size": "M",
+       "spec": null
+      },
+      {
+       "id": "TOKI-099",
+       "title": "Menu tài khoản, Sign out và các thiết bị đã đăng nhập (màn hình)",
+       "scope": "Menu của thẻ tài khoản: Set status, Pause notifications, Focus time, Preferences, Sign out; mỗi mục xuất hiện khi ticket của nó được làm. 'Sign out' trong menu tài khoản, và trong sheet More trên khung hẹp (D-158, D-067). Mục 'Signed-in devices' trong Preferences: mỗi dòng hiện loại thiết bị, trình duyệt và lần dùng gần nhất, thiết bị hiện tại có nhãn 'This device'; nút 'Sign out' cạnh từng thiết bị khác và 'Sign out all other devices', mỗi nút đều hỏi xác nhận (D-158, D-069)",
+       "size": "S",
+       "spec": null
       }
      ]
     },
@@ -9220,49 +11213,78 @@
        "id": "TOKI-028",
        "title": "Bảng hội thoại",
        "scope": "conversations, conversation_members, khóa chống trùng DM",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-029",
        "title": "API channel",
-       "scope": "Tạo, browse, join, leave, sửa topic và mô tả, thêm người, lưu trữ. Rời channel riêng tư báo rõ cần được mời lại; người cuối rời thì channel được lưu trữ (D-051). Mọi thao tác ghi đòi là thành viên (D-077). Tên kênh chữ thường, số, gạch nối, tối đa 80 ký tự, không trùng; mọi thành viên sửa được topic; Admin gỡ được người khỏi kênh mình tham gia (D-040, D-041, D-047)",
-       "size": "L"
+       "scope": "Tạo (chỉ Admin; yêu cầu từ Member bị từ chối, D-084, D-090), browse, join, leave, sửa topic và mô tả, thêm người, gỡ người, lưu trữ và khôi phục. Tên channel gồm chữ thường, số, gạch nối, tối đa 80 ký tự; server không bao giờ tạo hai channel trùng tên, kể cả khi hai yêu cầu tới cùng lúc và kể cả trùng với channel đã lưu trữ (D-040, D-115, D-128); topic tối đa 250 ký tự (D-101); công khai hay riêng tư là cố định và không đổi tên được (D-040, D-105). Channel chưa join thì không đọc được, join xong thấy toàn bộ lịch sử (D-116, D-029). Mọi thao tác ghi đòi là thành viên (D-077). Mọi thành viên sửa được topic và thêm được người (D-041, D-090); Admin chỉ gỡ người và lưu trữ ở channel mình tham gia, không bao giờ ở #general (D-085, D-047, D-034). Rời channel riêng tư thì chỉ quay lại được khi một thành viên thêm lại, và người cuối cùng rời thì channel được lưu trữ (D-051)",
+       "size": "L",
+       "spec": null
       },
       {
        "id": "TOKI-030",
        "title": "API DM và group DM",
        "scope": "Mở DM, tạo group tới 8 người; group không thêm bớt người được (D-045, F25)",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-031",
        "title": "Endpoint khởi động",
        "scope": "Một lần gọi trả về mình, workspace, thành viên, hội thoại, unread, số thứ tự sự kiện",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-032",
        "title": "client-core: API client và store hội thoại",
-       "scope": "Client có kiểu từ schema dùng chung; danh sách đã nhóm và lọc",
-       "size": "M"
+       "scope": "Client có kiểu từ schema dùng chung; danh sách đã nhóm và lọc. Dùng schema lỗi đã làm ở TOKI-004",
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-033",
        "title": "Danh sách hội thoại",
-       "scope": "Nhóm Starred, Channels, Direct messages; gập mở; lọc All, Unread, Mentions; tìm",
-       "size": "M"
+       "scope": "Nhóm Starred, Channels, Direct messages; gập mở; lọc All, Unread, Mentions; tìm theo tên. Tiêu đề Direct messages có nút '+' để mở DM hoặc group: hiện khi hover trên máy tính, luôn hiện trên màn hình cảm ứng và khung hẹp (D-086, D-154); không còn icon bút chì (D-155). Dòng '+ Browse channels' nằm cuối danh sách; không có gì trong danh sách tạo được channel (D-084). Bộ lọc không khớp gì thì hiện trạng thái trống riêng (D-074). Mỗi cuộc trò chuyện có địa chỉ riêng, và Back đóng panel đang mở trước (D-089)",
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-034",
-       "title": "Ba modal",
-       "scope": "New message, Browse channels, Create channel",
-       "size": "M"
+       "title": "Browse channels và ô chọn người",
+       "scope": "Browse channels: tìm, tên, topic và số thành viên, nút 'Join' hoặc 'Open', nhãn 'Archived', hiện 50 channel đầu và tải thêm khi cuộn (D-109), 'No channels match' đặt giữa (D-074); channel chưa join thì không hiện tin nhắn nào, ở đây hay khi mở từ link, chỉ có tên và topic kèm nút Join (D-116); không có nút tạo channel (D-084). Ô chọn người mở từ nút '+' ở Direct messages: tìm người, hiện 50 người đầu (D-109); mỗi người được bấm thành một chip gỡ được; Start mở DM nếu có một chip, tạo group DM nếu nhiều hơn; người vượt quá 8, tính cả mình, bị từ chối (D-086, D-017)",
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-035",
        "title": "Header hội thoại và panel Details",
-       "scope": "Tên, topic, thành viên, mức thông báo, mute, star, leave. Mặc định: kênh là Chỉ khi được nhắc, DM là Mọi tin nhắn (D-046, F24)",
-       "size": "M"
+       "scope": "Tên, topic, thành viên, mức thông báo, mute, star, leave. Mặc định: channel là Mentions only, DM là All messages (D-046). Mute còn ẩn cả badge chưa đọc và chữ đậm; mức 'Nothing' chỉ tắt toast, push và âm thanh (D-103). Mọi thành viên sửa được topic và mô tả ngay tại chỗ; tên không đổi được (D-105). Rời channel công khai thì rời ngay, có Hoàn tác trong 5 giây; rời channel riêng tư thì hỏi xác nhận, nói rõ phải có thành viên mời lại, và không có Hoàn tác (D-156, D-061); người cuối cùng được báo channel sẽ bị lưu trữ (D-051); #general không có nút Leave (D-034)",
+       "size": "M",
+       "spec": null
+      },
+      {
+       "id": "TOKI-098",
+       "title": "Tạo channel từ trang Admin",
+       "scope": "Nút '+' cạnh 'Busiest channels' trên trang Admin mở hộp Create channel (D-151): Name, công tắc Private mặc định tắt, Topic (không bắt buộc, tối đa 250 ký tự), Add people (không bắt buộc) (D-101). Gõ dấu cách trong tên thì thành gạch nối, chữ hoa thành chữ thường (D-127). Lỗi hiện dưới ô nhập; nút Create bị khóa cho tới khi form hợp lệ và trong lúc yêu cầu đang chạy (D-104, D-111); tên đã có thì server từ chối và ô nhập báo rõ (D-115). Đóng khi đã có nội dung thì hỏi có bỏ không (D-070). Channel mới mở ra ngay (D-076). Member không có cách nào mở hộp này (D-084)",
+       "size": "M",
+       "spec": null
+      },
+      {
+       "id": "TOKI-100",
+       "title": "Thêm và gỡ người trong channel (màn hình)",
+       "scope": "Thêm người: ô tìm chỉ liệt kê người chưa ở trong channel, hiện 50 người đầu và tải thêm khi cuộn (D-109); chọn một hoặc nhiều người rồi bấm Add; mọi thành viên đều làm được, kể cả ở channel riêng tư (D-090). Gỡ người: chỉ hiện với Admin là thành viên của channel, không bao giờ ở #general, có hộp xác nhận nêu tên người bị gỡ (D-085, D-047, D-069)",
+       "size": "S",
+       "spec": null
+      },
+      {
+       "id": "TOKI-101",
+       "title": "Lưu trữ và khôi phục channel (màn hình)",
+       "scope": "Lưu trữ: chỉ hiện với Admin là thành viên, không bao giờ với #general (D-047, D-034); hộp xác nhận nêu tên channel và số thành viên (D-061, D-069). Sau đó channel rời khỏi danh sách của mọi người, composer được thay bằng dòng 'This channel has been archived' và lịch sử vẫn đọc được (D-029). Browse channels hiện channel đó với nhãn 'Archived' và có nút 'Restore' cho Admin (F26)",
+       "size": "S",
+       "spec": null
       }
      ]
     }
@@ -9287,56 +11309,65 @@
       {
        "id": "TOKI-036",
        "title": "Bảng messages và events",
-       "scope": "UUIDv7, chỉ mục phân trang, nhật ký sự kiện có số thứ tự",
-       "size": "M"
+       "scope": "UUIDv7, chỉ mục phân trang, nhật ký sự kiện có số thứ tự. Dùng lại bộ sinh UUIDv7 đã chọn ở TOKI-005",
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-037",
        "title": "API tin nhắn",
        "scope": "Gửi không trùng, tải theo trang, tải quanh một tin; một tin tối đa 10.000 ký tự và 10 file (D-042)",
-       "size": "L"
+       "size": "L",
+       "spec": null
       },
       {
        "id": "TOKI-038",
        "title": "Cổng WebSocket",
        "scope": "Xác thực, bảng ai nghe hội thoại nào, đẩy sự kiện đúng người",
-       "size": "L"
+       "size": "L",
+       "spec": null
       },
       {
        "id": "TOKI-039",
        "title": "Kết nối lại",
        "scope": "Thử lại tăng dần, lấy phần thiếu, tải lại khi vắng quá lâu",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-040",
        "title": "client-core: bộ đồng bộ",
-       "scope": "Áp sự kiện vào cache, gửi lạc quan, thử lại tin lỗi",
-       "size": "L"
+       "scope": "Áp sự kiện vào cache; gửi lạc quan. Tin gửi lúc offline sẽ chờ và tự gửi khi có kết nối lại; khi đã online thì tự thử một lần, sau đó tin được đánh dấu 'Not sent' để người dùng Retry hoặc Delete (D-097, D-079). Tin đang chờ được giữ trong trình duyệt qua lần tải lại trang, và bị bỏ khi người khác đăng nhập trên trình duyệt đó (D-132). Yêu cầu không có phản hồi sau 10 giây tính là lỗi (D-126)",
+       "size": "L",
+       "spec": null
       },
       {
        "id": "TOKI-041",
        "title": "Danh sách tin ảo hóa",
        "scope": "Cuộn ngược, bám đáy, giữ vị trí khi tải tin cũ, nút Tin mới; mở tại vạch New khi có tin chưa đọc (D-052)",
-       "size": "L"
+       "size": "L",
+       "spec": null
       },
       {
        "id": "TOKI-042",
        "title": "Component tin nhắn",
-       "scope": "Avatar, tên, giờ, gộp nhóm trong 5 phút, vạch ngày; dòng hệ thống cho tham gia, rời, thêm người, ghim, tạo kênh (F10, F21 tới F23)",
-       "size": "M"
+       "scope": "Avatar, tên, giờ theo dạng 24h (D-123), gộp nhóm trong 5 phút, vạch ngày. Trạng thái gửi nằm cạnh giờ: mờ cho tới khi server xác nhận, 'Waiting to send', và 'Not sent' màu đỏ kèm Retry và Delete, trong đó Delete không hỏi lại (D-087). Dòng hệ thống màu xám cho join, leave, thêm người, pin và tạo channel, kể cả khi người mới vào #general; dòng hệ thống không làm tăng số chưa đọc và không tạo thông báo (D-100)",
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-043",
        "title": "Composer",
        "scope": "Enter gửi, Shift+Enter xuống dòng, không gửi khi đang gõ dở tiếng Việt, tự giãn, nháp cục bộ",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-044",
        "title": "Typing indicator",
        "scope": "Tín hiệu đang gõ qua WebSocket, tự tắt",
-       "size": "S"
+       "size": "S",
+       "spec": null
       }
      ]
     },
@@ -9344,62 +11375,77 @@
      "name": "Tính năng chat",
      "frs": [
       "FR-14",
-      "FR-17"
+      "FR-17",
+      "FR-33",
+      "FR-34",
+      "FR-35",
+      "FR-36",
+      "FR-37",
+      "FR-38"
      ],
      "tickets": [
       {
        "id": "TOKI-045",
        "title": "Thread",
-       "scope": "API, người theo dõi, panel thread, Also send to channel, link tới thread",
-       "size": "L"
+       "scope": "API, panel thread, Also send to channel. Chỉ một cấp. Tác giả tin gốc, mọi người đã trả lời và mọi người được nhắc tự động theo dõi thread; không có 'Unfollow thread' (D-119). Khi tin gốc bị xóa, thread vẫn nằm dưới dòng 'Message deleted', và câu trả lời đang viết dở vẫn gửi được (D-013, D-096). Mỗi thread có địa chỉ riêng; Back đóng panel trước (D-089). Từ 720 tới 1099px panel phủ lên chat (D-068)",
+       "size": "L",
+       "spec": null
       },
       {
        "id": "TOKI-046",
        "title": "Reaction",
        "scope": "8 emoji cố định, thêm bỏ, danh sách người đã thả",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-047",
        "title": "Sửa và xóa",
        "scope": "Sửa tại chỗ, nhãn đã sửa, xóa mềm giữ thread, xác nhận trước khi xóa; file của tin bị xóa cũng bị gỡ khỏi kho; Admin xóa tin người khác thì hiện dòng riêng và tác giả được báo (D-043, D-049, F16, F42)",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-048",
        "title": "Pin và tab Pinned",
        "scope": "Pin, bỏ pin, danh sách đã pin",
-       "size": "S"
+       "size": "S",
+       "spec": null
       },
       {
        "id": "TOKI-049",
        "title": "Định dạng chữ",
        "scope": "Bold, italic, code, link; hiển thị an toàn, không chèn HTML thô",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-050",
        "title": "Mention",
-       "scope": "Nhắc người và @channel, popup gợi ý có dấu lẫn không dấu, tô nền tin nhắc mình; chỉ gợi ý thành viên của hội thoại (D-058); mọi thành viên dùng được @channel, kênh từ 20 người thì hỏi xác nhận (D-041, F12)",
-       "size": "M"
+       "scope": "Nhắc người và @channel, popup gợi ý khớp cả có dấu lẫn không dấu, tô nền tin nhắc mình; chỉ gợi ý thành viên của hội thoại (D-058); gõ tên người ngoài hội thoại thì không ai được báo và người gửi được gợi ý 'Add them' (D-135); mọi thành viên dùng được @channel, channel từ 20 người thì hỏi xác nhận (D-041)",
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-051",
        "title": "Nháp đồng bộ",
        "scope": "Nháp theo hội thoại và thread, đồng bộ giữa thiết bị, nhãn Draft",
-       "size": "S"
+       "size": "S",
+       "spec": null
       },
       {
        "id": "TOKI-052",
        "title": "Thanh hành động của tin",
        "scope": "Hover trên máy tính, chạm trên khung hẹp, menu More, copy",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-081",
        "title": "Seed dữ liệu prototype",
-       "scope": "Script `dev:seed` nạp workspace mẫu của prototype: Hugepig Studio, 8 người, các kênh, DM, tin nhắn, thread, reaction và tin ghim mẫu. Dùng cho dev sau khi reset và cho các test end-to-end. File và ảnh mẫu được thêm vào seed ở TOKI-063, khi đã có kho file",
-       "size": "M"
+       "scope": "Script `dev:seed` nạp workspace mẫu của prototype: Hugepig Studio, 8 người chỉ với role Member và Admin (D-152), các channel, DM, tin nhắn, thread, reaction và tin ghim mẫu. Dùng cho dev sau khi reset và cho các test end-to-end; không bao giờ chạy ở production, nơi chỉ có sẵn #general (D-031, D-147). File và ảnh mẫu được thêm vào seed ở TOKI-063, khi đã có kho file",
+       "size": "M",
+       "spec": null
       }
      ]
     }
@@ -9419,7 +11465,8 @@
        "id": "TOKI-064",
        "title": "Hàng đợi việc nền",
        "scope": "pg-boss, tiến trình worker, thử lại khi lỗi",
-       "size": "M"
+       "size": "M",
+       "spec": null
       }
      ]
     },
@@ -9427,82 +11474,102 @@
      "name": "Unread và presence",
      "frs": [
       "FR-08",
-      "FR-32"
+      "FR-32",
+      "FR-45"
      ],
      "tickets": [
       {
        "id": "TOKI-053",
        "title": "Con trỏ đã đọc",
-       "scope": "Đếm unread, đồng bộ giữa thiết bị. Đã đọc khi hội thoại đang mở, cửa sổ đang được dùng và đã ở cuối danh sách (D-052)",
-       "size": "L"
+       "scope": "Đếm unread theo từng hội thoại, đồng bộ giữa thiết bị. Đã đọc khi hội thoại đang mở, cửa sổ đang được dùng và đã ở cuối danh sách (D-052). Dòng hệ thống màu xám như 'Minh joined' không làm tăng số đếm (D-100); reply trong thread không làm tăng số đếm của channel (F14); rời channel thì xóa số đếm của channel đó (D-133); không ai thấy người khác đã đọc tin hay chưa (D-048)",
+       "size": "L",
+       "spec": null
       },
       {
        "id": "TOKI-054",
        "title": "Vạch New, badge, bộ lọc",
-       "scope": "Vạch New neo theo tin chưa đọc đầu tiên, không trôi, biến mất ở lần mở kế tiếp (D-052); badge ở danh sách và điều hướng; lọc Unread và Mentions",
-       "size": "M"
+       "scope": "Vạch New neo theo tin chưa đọc đầu tiên, không trôi, biến mất ở lần mở kế tiếp (D-052); badge ở danh sách và điều hướng, badge Home chỉ đếm các hội thoại không mute (F08); hội thoại đã mute không hiện số đếm, không in đậm (D-103) nhưng vẫn giữ chấm @ khi công tắc mention trong hội thoại đã mute của người đó đang bật (D-088); tiêu đề tab trình duyệt hiện '(3) Toki' cho mention và DM, và một dấu chấm cho các tin khác (D-122); lọc Unread và Mentions",
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-055",
        "title": "Presence",
        "scope": "Đang hoạt động, Vắng mặt sau 5 phút không thao tác, Không làm phiền khi Focus; không có Offline riêng; gom nhóm cập nhật (D-036, F34)",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-056",
        "title": "Status",
        "scope": "Đặt status, mẫu có sẵn, tự xóa theo giờ; lưu rỗng nghĩa là xóa status",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-057",
        "title": "Panel Profile",
-       "scope": "Tên, chức danh, presence, status, giờ địa phương kèm múi giờ dạng UTC, nút Message",
-       "size": "S"
+       "scope": "Avatar là chữ cái đầu trên nền màu, không có ảnh (D-118); tên, chức danh, presence, status, giờ địa phương tính theo múi giờ người đó đã đặt, kèm múi giờ dạng UTC (D-144); nút Message; người đã bị vô hiệu hóa mang nhãn 'Deactivated' và không có nút Message (F41); hồ sơ của chính mình có Set status và Edit profile (F31)",
+       "size": "S",
+       "spec": null
       }
      ]
     },
     {
      "name": "File",
      "frs": [
-      "FR-10"
+      "FR-10",
+      "FR-39"
      ],
      "tickets": [
       {
        "id": "TOKI-058",
        "title": "Kho file",
-       "scope": "Bảng files và attachments; URL ký sẵn để tải lên và tải về; kiểm tra quyền",
-       "size": "L"
+       "scope": "Bảng files và attachments trên MinIO (D-014); URL ký sẵn để tải lên và tải về; chỉ người xem được hội thoại mới mở được file của nó; nhận mọi loại file tới 100 MB, server kiểm tra lại, file luôn được tải về chứ không chạy trong trình duyệt (D-095); file đã tải lên mà không gửi thì bị xóa sau 24 giờ (D-130). Bucket cho môi trường dev đã có (TOKI-003); ticket này không tạo lại",
+       "size": "L",
+       "spec": null
       },
       {
        "id": "TOKI-059",
        "title": "Đính kèm trong composer",
-       "scope": "Chọn, kéo thả, dán ảnh, tiến trình, lỗi quá 100 MB",
-       "size": "M"
+       "scope": "Chọn, kéo thả, dán ảnh; mỗi file một thẻ có tiến trình, nút gỡ và Retry; tối đa 10 file mỗi tin (D-042); lỗi quá 100 MB (D-014); chỉ gửi được khi mọi file đã tải xong (F18); khi mất kết nối thì chặn tải lên và nói rõ lý do (D-060)",
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-060",
        "title": "Thumbnail ảnh",
        "scope": "Worker tạo ảnh thu nhỏ, cập nhật tin khi xong",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-061",
        "title": "Link preview",
        "scope": "Worker tải tiêu đề và mô tả, chặn địa chỉ nội bộ; người gửi gỡ được thẻ xem trước (F12)",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-062",
        "title": "Thẻ đính kèm và modal xem",
-       "scope": "Thẻ file, ảnh, link; modal chi tiết; copy link",
-       "size": "M"
+       "scope": "Thẻ file, ảnh, link; modal chi tiết có Open in conversation, Copy link và Download; file luôn được tải về chứ không chạy trong trình duyệt (D-095); link tới file chỉ mở được với người xem được hội thoại chứa nó (F18)",
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-063",
        "title": "Tab Files và section Files",
        "scope": "Lọc theo loại, tìm, xem dạng danh sách và lưới; thêm file và ảnh mẫu của prototype vào dữ liệu seed",
-       "size": "M"
+       "size": "M",
+       "spec": null
+      },
+      {
+       "id": "TOKI-103",
+       "title": "Cảnh báo đầy đĩa và từ chối tải lên",
+       "scope": "Không có hạn mức. Khi đĩa đầy 80% thì Admin thấy cảnh báo ở trang Admin; tới 95% thì từ chối tải lên kèm lý do, nhắn tin vẫn chạy bình thường (D-106)",
+       "size": "S",
+       "spec": null
       }
      ]
     },
@@ -9516,25 +11583,29 @@
        "id": "TOKI-069",
        "title": "Chỉ mục tìm kiếm tiếng Việt",
        "scope": "Cột tìm kiếm đã bỏ dấu, chỉ mục GIN",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-070",
        "title": "API tìm kiếm",
-       "scope": "Hội thoại, người, tin nhắn; chỉ trả kết quả có quyền xem",
-       "size": "M"
+       "scope": "Hội thoại, người, tin nhắn; tiếng Việt khớp cả khi gõ có dấu lẫn không dấu (D-015); 20 kết quả mỗi loại, xem thêm khi yêu cầu (D-112); chỉ trả tin trong hội thoại người đó là thành viên, private channel không bao giờ hiện với người ngoài (D-116, D-051); không liệt kê người đã bị vô hiệu hóa (F41)",
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-071",
        "title": "Command palette",
-       "scope": "Ctrl+K, phím mũi tên, nhóm kết quả, các lệnh nhanh; xếp hạng: khớp chính xác, khớp đầu từ, chứa từ khóa, rồi khớp gần đúng. Lệnh nhanh theo danh sách ở F29",
-       "size": "M"
+       "scope": "Ctrl+K, phím mũi tên; kết quả theo nhóm: hội thoại, người, lệnh, rồi tin nhắn, 20 mỗi nhóm, xem thêm khi yêu cầu (D-112); xếp hạng: khớp chính xác, khớp đầu từ, chứa từ khóa, rồi khớp gần đúng; lệnh nhanh theo danh sách ở F29, 'Create channel' chỉ hiện với Admin (D-084, D-151); trên khung hẹp mở từ ô tìm ở Home và từ sheet More (D-053)",
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-072",
        "title": "Tìm trong hội thoại",
        "scope": "Ô tìm ở header, lọc tin theo từ khóa",
-       "size": "S"
+       "size": "S",
+       "spec": null
       }
      ]
     }
@@ -9550,32 +11621,38 @@
      "name": "Activity và Later",
      "frs": [
       "FR-14",
-      "FR-24"
+      "FR-24",
+      "FR-40",
+      "FR-41"
      ],
      "tickets": [
       {
        "id": "TOKI-065",
        "title": "Activity (server)",
-       "scope": "Tạo mục từ mention, reply trong thread theo dõi, reaction; API và sự kiện. Không báo cho chính người làm; xếp mới nhất trước; mục tự xong khi việc đã làm (D-071). Thêm loại Khác: được thêm vào kênh, đổi vai trò, tin bị quản trị viên xóa (F27). Cài đặt đủ 15 tình huống của bảng Khi bạn được nhắc",
-       "size": "L"
+       "scope": "Tạo mục từ mention, reply trong thread người đó đang theo dõi, reaction; API và sự kiện. Người viết tin gốc, người đã reply và người được nhắc tự động theo dõi thread; không có Unfollow (D-119). Không báo cho chính người làm; xếp mới nhất trước; mục tự xong khi việc đã làm (D-071); mục bị gỡ khi tin gốc bị xóa hoặc mention bị sửa bỏ (F13); rời channel thì xóa các mục đang mở của người đó trong channel ấy (D-133). Loại Khác: được thêm vào channel, đổi vai trò, tin bị Admin xóa (D-049, F27). Cài đặt đủ 15 tình huống của bảng Khi bạn được nhắc, gồm cả mention trong hội thoại đã mute (D-088)",
+       "size": "L",
+       "spec": null
       },
       {
        "id": "TOKI-066",
        "title": "Màn hình Activity",
-       "scope": "Chip lọc cho mọi loại mục, đánh dấu xong có Hoàn tác, snooze, Mark all read; nút hành động luôn hiện trên thiết bị chạm (D-067). Mốc hoãn: 1 giờ nữa, 15:00 hôm nay, 9:00 sáng mai (F27)",
-       "size": "M"
+       "scope": "Chip lọc cho mọi loại mục, số trên chip bằng số dòng đang hiện (D-071, D-074); đánh dấu xong có Hoàn tác trong 5 giây (D-069), snooze, Mark all read; Done và Snooze luôn hiện trên thiết bị chạm (D-067, D-053). Mốc hoãn: 1 giờ nữa, 15:00 hôm nay, 9:00 sáng mai; mốc đã qua thì ẩn đi và 'In 3 hours' thế chỗ (D-114)",
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-067",
        "title": "Later",
-       "scope": "Lưu tin, In progress và Completed, đặt reminder, bắn đúng giờ; tin gốc bị xóa thì hiện dòng thay thế và số đếm vẫn khớp (D-074). Mốc nhắc giống mốc hoãn (F28)",
-       "size": "M"
+       "scope": "Lưu tin, In progress và Completed, đặt reminder bắn đúng giờ và phải ở tương lai (D-073); reminder tới hạn trong lúc Pause hoặc Focus thì được giữ lại (D-072); tin gốc bị xóa thì hiện dòng thay thế và số đếm vẫn khớp (D-074); gỡ khỏi Later có Hoàn tác (D-061). Mốc nhắc giống mốc hoãn, mốc đã qua thì 'In 3 hours' thế chỗ (D-114)",
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-068",
        "title": "Nhảy tới tin",
        "scope": "Từ Activity, Later, tìm kiếm tới đúng tin và nháy sáng",
-       "size": "S"
+       "size": "S",
+       "spec": null
       }
      ]
     },
@@ -9584,38 +11661,52 @@
      "frs": [
       "FR-15",
       "FR-16",
-      "FR-18"
+      "FR-18",
+      "FR-44",
+      "FR-48"
      ],
      "tickets": [
       {
        "id": "TOKI-073",
        "title": "Bộ quyết định thông báo",
-       "scope": "Ai được báo, dựa trên mức theo channel, mute, Pause, Focus, đang mở app hay không",
-       "size": "L"
+       "scope": "Ai nhận toast, push hay âm báo, dựa trên: mức thông báo của hội thoại, mặc định 'Mentions only' cho channel và 'All messages' cho DM (D-046); mute, trong đó mention vẫn báo khi công tắc riêng của người đó đang bật, mặc định bật (D-088, D-103); Pause và Focus (D-072); và hội thoại đó có đang hiện trên màn hình hay không (F36). Việc mình tự làm không bao giờ báo cho mình (D-071); người ngoài hội thoại không được báo (D-058)",
+       "size": "L",
+       "spec": null
       },
       {
        "id": "TOKI-074",
        "title": "Web Push",
-       "scope": "Khóa VAPID, service worker, đăng ký thiết bị, bấm thông báo mở đúng hội thoại; thông báo hiện tên người gửi, tên hội thoại và đoạn đầu của tin; thẻ hỏi bật thông báo ở lần đầu (D-044, F36)",
-       "size": "L"
+       "scope": "Khóa VAPID, service worker chỉ dùng cho push (D-030), đăng ký thiết bị kèm một thông báo thử, bấm thông báo mở Toki tại đúng tin đó; thông báo hiện tên người gửi, tên hội thoại và đoạn đầu của tin (D-044); thẻ hỏi bật thông báo ở lần đầu, chỉ hỏi quyền trình duyệt sau khi bấm Turn on (F36); trên iPhone push chỉ chạy khi Toki đã được thêm vào màn hình chính (D-108); đăng xuất thì gỡ đăng ký push của thiết bị đó (D-158). Thêm khoá VAPID vào bảng kê cấu hình và `.env.example` của TOKI-096",
+       "size": "L",
+       "spec": null
       },
       {
        "id": "TOKI-075",
        "title": "Âm thanh và thông báo trong app",
        "scope": "Toast khi có tin ở hội thoại khác, âm báo",
-       "size": "S"
+       "size": "S",
+       "spec": null
       },
       {
        "id": "TOKI-076",
        "title": "Pause và Focus time",
        "scope": "API, việc nền kết thúc đúng giờ, dải trạng thái, tổng kết những gì đã đến. Giữ lại mọi thông báo kể cả reminder; bật Focus lần nữa thì gia hạn; kết thúc thì trả lại status cũ (D-072)",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-077",
        "title": "PWA",
        "scope": "Manifest, icon, cài lên màn hình chính",
-       "size": "S"
+       "size": "S",
+       "spec": null
+      },
+      {
+       "id": "TOKI-102",
+       "title": "Tùy chọn thông báo (server)",
+       "scope": "Các công tắc theo tài khoản mà bộ quyết định thông báo đọc: Desktop notifications, Play a sound, và 'Notify me for @mentions even in muted channels', mặc định bật (D-088); một bộ cho mỗi người trên mọi thiết bị, chỉ quyền push của trình duyệt là theo thiết bị (D-142); API và sự kiện",
+       "size": "S",
+       "spec": null
       }
      ]
     }
@@ -9625,51 +11716,66 @@
    "id": "M6",
    "name": "Hoàn thiện và ra mắt",
    "goal": "Sẵn sàng cho công ty dùng.",
-   "exit": "Mọi tiêu chí nghiệm thu phase 1 đạt, và Toki chạy trên tên miền thật, có backup.",
+   "exit": "Mọi tiêu chí nghiệm thu phase 1 đạt, và Toki chạy trên tên miền thật.",
    "areas": [
     {
      "name": "Preferences, People, hoàn thiện",
      "frs": [
       "FR-28",
       "FR-29",
-      "FR-30"
+      "FR-30",
+      "FR-42",
+      "FR-43"
      ],
      "tickets": [
       {
        "id": "TOKI-078",
        "title": "Màn hình Preferences",
-       "scope": "Look, accent, density, thông báo, Pause, status, ngôn ngữ; lưu theo tài khoản",
-       "size": "M"
+       "scope": "Look (Calm, Focus, Match my device), accent, density; các công tắc thông báo, gồm 'Notify me for @mentions even in muted channels', mặc định bật (D-088); Pause, status; ngôn ngữ: English mặc định hoặc Tiếng Việt, đổi là cả giao diện đổi ngay (D-018); hồ sơ: tên hiển thị 1 tới 80 ký tự (D-033), chức danh, múi giờ (D-144), không tải ảnh đại diện (D-118); danh sách 'Signed-in devices', đăng xuất một thiết bị hoặc mọi thiết bị khác, có hỏi xác nhận (D-158); lưu theo tài khoản và áp dụng trên mọi thiết bị (D-142)",
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-079",
        "title": "Màn hình People",
-       "scope": "Danh bạ, tìm, presence, giờ địa phương, role",
-       "size": "S"
+       "scope": "Danh bạ những người đang hoạt động, dạng thẻ: avatar chữ cái đầu (D-118), presence, tên, nhãn Admin nếu có (không có Owner, D-152), chức danh, giờ địa phương (D-144); tìm theo tên hoặc chức danh; hiện 50 người đầu, cuộn để tải thêm (D-109); không liệt kê người đã bị vô hiệu hóa (F41); trạng thái rỗng 'Nobody matches' (D-074)",
+       "size": "S",
+       "spec": null
       },
       {
        "id": "TOKI-080",
        "title": "Dịch đủ hai ngôn ngữ",
-       "scope": "Mọi chuỗi vi và en; ngày giờ và số theo ngôn ngữ và múi giờ",
-       "size": "M"
+       "scope": "Mọi chuỗi có bản English (mặc định) và tiếng Việt (D-018); CI báo lỗi khi một chuỗi thiếu bản dịch ở một trong hai ngôn ngữ (D-064); giờ dạng 24 giờ ở mọi nơi (D-123); một định dạng ngày cho cả app, hiện năm khi không phải năm hiện tại (D-073); giờ hiện theo múi giờ của người dùng",
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-082",
        "title": "Các trạng thái bổ sung",
-       "scope": "Khung xương khi tải, dải kết nối lại, 404, không có quyền; khi mất kết nối thì chặn thao tác ghi kèm lời giải thích, riêng tin nhắn chờ gửi lại (D-079)",
-       "size": "M"
+       "scope": "Khung xương khi tải; banner 'Offline: showing saved messages' suốt lúc mất kết nối, không có trạng thái đang kết nối lại và không có toast khi có mạng lại (D-102); một trang chung cho không tìm thấy và không có quyền (D-131); yêu cầu không có phản hồi sau 10 giây thì hiện Retry (D-126); khi mất kết nối thì chặn thao tác ghi kèm lời giải thích, riêng tin nhắn chờ gửi lại (D-079). Thay trang not-found đơn giản của TOKI-006; định dạng 404 và 500 phía server lấy từ TOKI-004",
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-083",
        "title": "Rà soát khả năng tiếp cận",
        "scope": "Bàn phím, nhãn, focus, giảm chuyển động",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-092",
        "title": "Điểm vào trên khung hẹp",
-       "scope": "Sheet More có tìm kiếm toàn cục, menu tài khoản, status, Pause và Focus time, để điện thoại không thiếu tính năng nào (D-067, D-053); sheet đóng ngay khi chọn một đích đến (GAP-39)",
-       "size": "M"
+       "scope": "Sheet More có Search, People, Preferences, Admin (chỉ Admin thấy) và phần tài khoản gồm Set status, Pause notifications, Focus time và Sign out (D-158), để điện thoại không thiếu tính năng nào (D-067, D-053); sheet đóng ngay khi chọn một đích đến (GAP-39)",
+       "size": "M",
+       "spec": null
+      },
+      {
+       "id": "TOKI-104",
+       "title": "Dải báo có bản cập nhật",
+       "scope": "Khi có phiên bản mới được deploy, app đang mở hiện dải 'Update available · Reload'; chỉ bắt buộc tải lại khi server báo trang đã quá cũ (D-107)",
+       "size": "S",
+       "spec": null
       }
      ]
     },
@@ -9681,49 +11787,50 @@
        "id": "TOKI-084",
        "title": "Image và Compose production",
        "scope": "Dockerfile, Compose, Caddyfile, TLS tự động",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-085",
        "title": "Deploy tự động",
        "scope": "Build image khi merge, deploy, chạy migration, rollback",
-       "size": "M"
-      },
-      {
-       "id": "TOKI-086",
-       "title": "Backup và khôi phục",
-       "scope": "Script hằng đêm, mã hóa, đẩy ra ngoài, diễn tập khôi phục",
-       "size": "M"
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-087",
        "title": "Tài liệu cài đặt",
-       "scope": "Hướng dẫn từng bước và .env.example",
-       "size": "S"
+       "scope": "Hướng dẫn từng bước và .env.example: cấu hình SMTP (D-027), Admin đầu tiên tạo từ cấu hình server (D-028), và lệnh trên server in ra link đăng nhập một lần khi không gửi được thư (D-159); phase này chưa có bước backup (D-092). Trỏ tới `.env.example` đã làm ở TOKI-096; không viết bản thứ hai",
+       "size": "S",
+       "spec": null
       },
       {
        "id": "TOKI-088",
        "title": "Bộ test quyền truy cập",
-       "scope": "Mọi endpoint với người không có quyền",
-       "size": "M"
+       "scope": "Mọi endpoint với người không có quyền: chưa đăng nhập; Member gọi các yêu cầu quản trị và tạo channel (D-090, D-084); bất kỳ ai, kể cả Admin, ở ngoài một private channel hoặc DM (D-047); tin nhắn của channel chưa tham gia (D-116); kể cả qua tìm kiếm, danh sách file và link trực tiếp, không có quyền được trả lời giống không tìm thấy (D-131). Dùng bộ test chạy Postgres thật của TOKI-008",
+       "size": "M",
+       "spec": null
       },
       {
        "id": "TOKI-089",
        "title": "Đo hiệu năng",
-       "scope": "Script tạo 1 triệu tin, đo sáu chỉ số mục tiêu",
-       "size": "L"
+       "scope": "Script tạo 1 triệu tin, đo sáu chỉ số mục tiêu với 200 người đang online (D-113). Dùng lại phép đo bundle 200 KB của TOKI-006 và TOKI-007",
+       "size": "L",
+       "spec": null
       },
       {
        "id": "TOKI-090",
        "title": "12 luồng end-to-end",
-       "scope": "Hoàn chỉnh ở khung rộng và khung điện thoại",
-       "size": "L"
+       "scope": "12 luồng đi theo các hành trình đã chốt ngày 13/11 (D-091): Admin tạo channel (D-084), không có Owner (D-152), channel chưa tham gia không hiện tin (D-116), Sign out (D-158); hoàn chỉnh ở khung rộng và khung điện thoại (D-053). Dùng runner Playwright của TOKI-008; 12 luồng được chọn từ các hành trình đã viết lại ngày 13/11/2026",
+       "size": "L",
+       "spec": null
       },
       {
        "id": "TOKI-091",
        "title": "Rà soát bảo mật",
        "scope": "Header, cookie, giới hạn tần suất, phụ thuộc",
-       "size": "M"
+       "size": "M",
+       "spec": null
       }
      ]
     }

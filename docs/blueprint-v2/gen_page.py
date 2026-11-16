@@ -41,8 +41,9 @@ RESOLVE = FM.RESOLVE          # an earlier open question or assumption -> the de
 SETTLING = set(RESOLVE.values())
 FIRST = [d["id"] for d in B_EN["decisions"] if int(re.sub(r"\D", "", d["id"])) <= 31]      # the decisions that had ids before 13 Nov
 LATER = [d["id"] for d in B_EN["decisions"] if d["id"] not in FIRST and d["id"] not in SETTLING]
+ADDED_Q = [q[0] for q in GV.ADDED["questions"]]      # questions added later take ids after every existing one, so no id moves
 old_ids = FIRST + [a["id"] for a in B_EN["assumptions"]] + [q["id"] for q in B_EN["questions"]] + \
-          [r["id"] for r in B_EN["rules"]] + [r[0] for r in GV.OPEN] + [r[0] for r in GV.FA_ROWS] + [a[0] for a in GA.A] + LATER
+          [r["id"] for r in B_EN["rules"]] + [r[0] for r in GV.OPEN if r[0] not in ADDED_Q] + [r[0] for r in GV.FA_ROWS] + [a[0] for a in GA.A] + LATER + ADDED_Q
 NEW = {o: f"D-{i:03d}" for i, o in enumerate(old_ids, 1)}
 for old, q in RESOLVE.items():
     NEW.setdefault(q, NEW[old])                  # a settling decision is cited by the id of the row it settled
@@ -91,10 +92,10 @@ CHANGES = [
 ]
 
 # area of the v1 plan -> the requirements it builds (area level; ticket level is the next step)
-AREA_FR = {"Sign-in and members": "FR-01 FR-02 FR-03 FR-04 FR-06 FR-25 FR-26", "Conversations": "FR-05 FR-07 FR-19 FR-20 FR-21 FR-22 FR-23",
-           "Messages and realtime": "FR-09 FR-11 FR-12 FR-13 FR-27", "Chat features": "FR-14 FR-17", "Unread and presence": "FR-08 FR-32",
-           "Files": "FR-10", "Search": "FR-31", "Activity and Later": "FR-14 FR-24", "Notifications": "FR-15 FR-16 FR-18",
-           "Preferences, People and polish": "FR-28 FR-29 FR-30"}
+AREA_FR = {"Sign-in and members": "FR-01 FR-02 FR-03 FR-04 FR-06 FR-25 FR-26 FR-46 FR-47 FR-49", "Conversations": "FR-05 FR-07 FR-19 FR-20 FR-21 FR-22 FR-23",
+           "Messages and realtime": "FR-09 FR-11 FR-12 FR-13 FR-27", "Chat features": "FR-14 FR-17 FR-33 FR-34 FR-35 FR-36 FR-37 FR-38",
+           "Unread and presence": "FR-08 FR-32 FR-45", "Files": "FR-10 FR-39", "Search": "FR-31", "Activity and Later": "FR-14 FR-24 FR-40 FR-41",
+           "Notifications": "FR-15 FR-16 FR-18 FR-44 FR-48", "Preferences, People and polish": "FR-28 FR-29 FR-30 FR-42 FR-43"}
 
 
 def build(lang):
@@ -183,7 +184,7 @@ def build(lang):
         areas = []
         for a, a_en in zip(m["areas"], m_en["areas"]):
             areas.append(dict(name=a["name"], frs=AREA_FR.get(a_en["name"], "").split(),
-                              tickets=[dict(id=B["meta"].get("ticketPrefix", "") + t["id"], title=t["title"], scope=t["scope"], size=t["size"]) for t in a["tickets"]]))
+                              tickets=[dict(id=B["meta"].get("ticketPrefix", "") + t["id"], title=t["title"], scope=t["scope"], size=t["size"], spec=t.get("spec")) for t in a["tickets"]]))
         milestones.append(dict(id=m["id"], name=m["name"], goal=m["goal"], exit=m["exit"], areas=areas))
 
     out = dict(
@@ -192,7 +193,7 @@ def build(lang):
         writtenNote=en("Drafted by Claude under Q19 and reviewed against the decisions on 13 Nov 2026: 8 journeys rewritten, 16 corrected, 19 unchanged. The phase-1 journeys are accepted as the baseline (Q85).||Do Claude soạn theo Q19 và đã được rà đối chiếu với các quyết định ngày 13/11/2026: 8 hành trình viết lại, 16 sửa, 19 giữ nguyên. Các hành trình phase 1 được chấp nhận làm nền (Q85)."),
         changes=dict(title=en("How this page was reorganised on 13 Nov 2026||Trang này được sắp xếp lại thế nào ngày 13/11/2026"),
                      head=en(["Before||Trước đây", "Now||Bây giờ", "Why||Vì sao"]), rows=[en(r) for r in CHANGES]),
-        built="13 Nov 2026" if lang == "en" else "13/11/2026", overview=B["overview"], counts=dict(actions=151),
+        built="16 Nov 2026" if lang == "en" else "16/11/2026", overview=B["overview"], counts=dict(actions=151),
         screens=[dict(name=en(s[0]), purpose=en(s[1]), actions=en(s[2]), phase=en(s[3])) for s in GA.SCREENS],
         findings=findings, dupes=en(GV.DUPES), conflicts=en(GV.CONFLICTS), depends=en(GV.DEPENDS),
         decisions=dec, charts=charts,

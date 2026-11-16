@@ -222,3 +222,7 @@ for _a, _b in (("Lan (Owner)", "Lan (Admin)"), ("Three people are signed in: a M
                ("Ba người đang đăng nhập: một Member, một Admin, một Owner.", "Hai người đang đăng nhập: một Member và một Admin."), ("Không ai trong ba người có", "Không ai trong hai người có"),
                ("no access by any route", "no access by any route")):
     DETAILS[:] = [d.replace(_a, _b) for d in DETAILS]
+
+# the tests of the requirements added on 16 Nov 2026 (frs_added.json), in the same order
+import json as _json, pathlib as _pathlib
+DETAILS += [t["detail"] for f in _json.loads((_pathlib.Path(__file__).parent / "frs_added.json").read_text(encoding="utf-8"))["frs"] for a in f["acs"] for t in a["tests"]]
