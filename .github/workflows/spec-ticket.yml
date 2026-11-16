@@ -1,0 +1,74 @@
+name: Spec ticket
+
+# When a pull request that changes an intent or a spec is merged into main, each
+# spec it touches gets its ticket: created when missing, and moved to the
+# "accepted" status. A spec with an open question or concern gets no ticket; the
+# pull request gets a comment that lists what is open.
+# Run it by hand to give a ticket to specs that were merged before this workflow.
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+    paths:
+      - "docs/specs/**"
+      - "docs/intents/**"
+  workflow_dispatch:
+    inputs:
+      spec:
+        description: "Path of one spec file. Empty: every file in docs/specs."
+        required: false
+        default: ""
+      dry_run:
+        description: "Print the changes without making them."
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: spec-ticket
+  cancel-in-progress: false
+
+jobs:
+  ticket:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Check the readiness rule on this runner
+        run: bash .github/scripts/spec-ready.test.sh
+
+      - name: Give each merged spec its ticket
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          ONE_SPEC: ${{ inputs.spec }}
+          DRY_RUN: ${{ inputs.dry_run && '1' || '' }}
+        run: |
+          set -euo pipefail
+          if [ -n "$PR_NUMBER" ]; then
+            changed=$(gh pr view "$PR_NUMBER" --json files --jq '.files[].path')
+            specs=$(printf '%s\n' "$changed" | grep -E '^docs/specs/.*\.md$' || true)
+            # A change to an intent alone still concerns the spec that names it.
+            for intent in $(printf '%s\n' "$changed" | grep -E '^docs/intents/.*\.md$' || true); do
+              specs="$specs
+          $(grep -lE "^Intent:[[:space:]]*$intent([[:space:]]|\$)" docs/specs/*.md 2>/dev/null || true)"
+            done
+          elif [ -n "$ONE_SPEC" ]; then
+            specs="$ONE_SPEC"
+          else
+            specs=$(ls docs/specs/*.md)
+          fi
+          printf '%s\n' "$specs" | sed 's/^[[:space:]]*//' | sort -u | while IFS= read -r spec; do
+            [ -n "$spec" ] || continue
+            if [ ! -f "$spec" ]; then echo "skip $spec: not on main"; continue; fi
+            bash .github/scripts/spec-ticket.sh "$spec" "$PR_NUMBER" < /dev/null
+          done
