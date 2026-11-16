@@ -1,0 +1,12 @@
+{
+  "name": "toki",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.21.0",
+  "engines": { "node": "22.x" },
+  "scripts": {
+    "typecheck": "pnpm -r run typecheck",
+    "dev": "pnpm -r --parallel --if-present run dev"
+  },
+  "devDependencies": { "typescript": "7.0.2" }
+}

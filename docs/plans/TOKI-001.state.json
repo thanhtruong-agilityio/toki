@@ -1,5 +1,5 @@
 {
-  "approved_auto": false,
+  "approved_auto": true,
   "base": "main",
   "branch": "feat/toki-001",
   "deployed_sha": null,
@@ -11,19 +11,28 @@
     {
       "at": "2026-11-16T09:16:25Z",
       "stage": "plan"
+    },
+    {
+      "at": "2026-11-16T09:17:22Z",
+      "auto": true,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-16T09:18:10Z",
+      "stage": "build"
     }
   ],
   "key": "TOKI-001",
   "main_sha": "a246ca0918f4971b8425bbcd9d982188e2639377",
   "metrics": {},
-  "mode": null,
-  "plan_approved": false,
-  "plan_hash": null,
+  "mode": "Auto to PR",
+  "plan_approved": true,
+  "plan_hash": "1313d1baecde3812593e467fa84a773636f9dfebadbcf707cd43730639dce0ee",
   "spec_commit": null,
   "spec_paths": [
     "docs/specs/2026-11-12-monorepo-typescript-setup-design.md"
   ],
-  "stage": "plan",
+  "stage": "build",
   "tier": "S",
   "verifier": {
     "result": null,
