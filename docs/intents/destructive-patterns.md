@@ -12,7 +12,7 @@ Source: Toki Blueprint, ticket TOKI-093; decisions D-061, D-069, D-070; requirem
 There is one confirmation dialog. It names the thing it acts on (the channel, the person, the device), has a cancel button that has first focus, and shows a danger or a primary confirm button.
 There is one helper that runs a reversible action at once and shows the Toast with an Undo button for 5 seconds. Pressing Undo reverses the action. The helper does not run, and does not offer Undo for, an action while the connection is down; it says why.
 There is one guard for a form that has content. An outside press does nothing, the close button and the form's own Cancel button ask whether to discard, and a form with no content closes at once.
-There is one list of every phase 1 action that is destructive or irreversible, with the pattern each one uses, the decision behind it and the ticket that builds the screen. The code cannot give one action both patterns. The ticket builds the patterns and the list, and none of the screens that call them.
+There is one list of every phase 1 action that is destructive or irreversible, with the pattern each one uses, the decision behind it and the ticket that builds the screen. A call site that goes through the two helpers cannot give one action both patterns. The ticket builds the patterns and the list, and none of the screens that call them.
 The words of the Undo button, the Cancel button and the discard question are texts in both languages.
 
 ## Affected users and systems
@@ -37,6 +37,6 @@ The words of the Undo button, the Cancel button and the discard question are tex
 - Does Esc on a form that has content ask whether to discard, like its close button? D-070 names only the outside click and the close button.
 - Does the browser's Back button close an open dialog? D-089 says only that Back closes a side panel first.
 - What is the wording of each confirmation, of the discard question and of the offline explanation, in English and in Vietnamese? The prototype holds only two confirmation lines and one Undo toast.
-- Is the confirmation a dialog or the line under the message that the prototype and the journeys for deleting a message and leaving a channel draw?
+- Is the confirmation a dialog or the inline line that the prototype draws for deleting a message and for leaving a channel, and that journey F16 draws for deleting a message?
 - What happens when Undo is pressed while the connection is down? The Toast spec hands this to this ticket.
 - Which phase 1 actions are reversible and which are not, and which ticket builds each one?
