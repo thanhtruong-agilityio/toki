@@ -1,9 +1,9 @@
 name: Spec ticket
 
 # When a pull request that changes an intent or a spec is merged into main, each
-# spec it touches gets its ticket: created when missing, and moved to the
-# "accepted" status. A spec with an open question or concern gets no ticket; the
-# pull request gets a comment that lists what is open.
+# spec it touches gets its ticket, created when missing. A spec with no open
+# question or concern puts the ticket in the "accepted" status. A spec with one
+# puts it in the "blocked" status, with a comment that lists what is open.
 # Run it by hand to give a ticket to specs that were merged before this workflow.
 
 on:
