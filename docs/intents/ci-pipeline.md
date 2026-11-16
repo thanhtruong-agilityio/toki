@@ -25,7 +25,7 @@ When this is done, the "CI is green" part of the M1 exit check and of the I01 do
 - Milestone: M1, Foundation and design system.
 - Size: M (about one working session with Claude).
 - Needs: TOKI-002 (Lint, format and package boundary rules).
-- Needed by: TOKI-085 (Automated deploy, M6). Source: Toki Blueprint, ticket list, Needs column.
+- Needed by: TOKI-085 (Automated deploy, M6), and TOKI-008 after the decision of 2026-11-12. Source: Toki Blueprint, ticket list, Needs column.
 - Belongs to Blueprint intent I01 repo-foundation, alongside TOKI-001 to TOKI-008.
 
 ## Open questions
