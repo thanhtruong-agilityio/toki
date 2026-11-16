@@ -66,9 +66,23 @@ bash .github/scripts/spec-ready.sh docs/specs/<file>.md
 # It reads the issues first: needs jq, network access and an authenticated gh.
 # It prints "left alone" and no DRY-RUN line when the ticket needs no change.
 DRY_RUN=1 bash .github/scripts/spec-ticket.sh docs/specs/<file>.md
+
+# Test the rule that reads a review request from a comment
+bash .github/scripts/review-request.test.sh
+
+# Read one comment: exit 0 when it mentions @reviewer, exit 1 when it does not ask for a review
+printf '%s' '@reviewer' | bash .github/scripts/review-request.sh
 ```
 
-The workflow can also be run by hand on GitHub, for one spec or for all, with a `dry_run` input.
+The `Spec ticket` workflow can also be run by hand on GitHub, for one spec or for all, with a `dry_run` input.
+
+## Review on request
+
+A comment that mentions `@reviewer` on an open pull request starts the `PR review` workflow (`.github/workflows/pr-review.yml`), which reviews the pull request with Claude. The review instructions are the `prompt` of its last step. The review posts inline comments and one summary comment that ends with a `<!-- review:{"sha":...} -->` marker. It never approves or merges.
+
+Anyone may ask, so the run treats the pull request as untrusted: the workspace is `main`, the head of the pull request is only read under `pr-head/`, and Claude has read and comment tools only. Keep it that way when you change the workflow: do not add a tool that runs code, and do not put text from a comment or a pull request into a `run:` script except through `env:`.
+
+The workflow needs the repository secret `CLAUDE_CODE_OAUTH_TOKEN`. Like every `issue_comment` workflow, it runs the version on `main`, not the one on the pull request.
 
 ## Claude configuration
 
