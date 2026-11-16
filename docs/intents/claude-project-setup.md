@@ -2,7 +2,7 @@
 Author: Thanh Truong
 
 ## Problem
-Toki is built by one person working with Claude. The repository is only partly set up for Claude. `main` has `CLAUDE.md` with the working agreements and the advisor rule, `.claude/settings.json` with the cl plugins, a model, an advisor model and permission rules, the PR template, `docs/definition-of-done.md` and `docs/ticket-config.yml` (PR #11, #13, #14). It has no description of the project, layout, commands, boundary rules or document locations, no `docs/plans`, and no Blueprint sources. Until the rest is set up, the project context and the agreed process have to be explained again in each Claude session.
+Toki is built by one person working with Claude. The repository is only partly set up for Claude. `main` has `CLAUDE.md` with the working agreements and the advisor rule, `.claude/settings.json` with the cl plugins, a model, an advisor model and permission rules, the PR template, `docs/definition-of-done.md` and `docs/ticket-config.yml` (PR #11, #13, #14). It has no description of the project, layout, commands, boundary rules or document locations, and no `docs/plans`. Until the rest is set up, the project context and the agreed process have to be explained again in each Claude session.
 Source: Toki Blueprint, intent I16 (Want) and Status; the state of `main` on 2026-11-16.
 
 ## Proposed outcome
@@ -29,13 +29,13 @@ Source: Toki Blueprint, intent I16 (Want, Done).
   - `CLAUDE.md` covers what the project is, the repository layout, common commands, the boundary rules and where documents live.
   - The cl plugins are enabled, and `docs/intents`, `docs/specs` and `docs/plans` exist.
   - Permissions and hooks are set in `.claude/settings.json`.
-  - The Blueprint sources are moved into `docs/blueprint/`.
 - The Blueprint intent list and ticket list are drafts awaiting review. No GitHub issue exists for TOKI-095 yet (checked 2026-11-16). Source: Toki Blueprint, Status; `gh issue list`.
 
 ## Open questions
-The Blueprint lists nothing open for TOKI-095. The spec found these gaps; the intent does not answer them (details in the spec, Areas of concern):
-- Which permission rules and hooks beyond those already on `main` are wanted. Blocks R12. Owner: BA.
-- Whether the Blueprint sources are delivered by PR #12 and whether `docs/blueprint-v2/` stays a second folder. Blocks R13. Owner: BA.
-- Whether "one ticket per branch" replaces the decision "one PR per task group". Owner: BA.
-- How many fresh-session runs prove "unprompted". Owner: BA.
-- Whether the definition-of-done items "a test" and "CI is green" apply to this ticket. Owner: BA.
+The Blueprint lists nothing open for TOKI-095. The spec found these gaps. All were answered on 2026-11-16 (details in the spec, Areas of concern). Open: none.
+- Which permission rules and hooks beyond those already on `main` are wanted. Answered: none; the PR #13 settings and the cl-core plugin hooks are enough. Decided by Thanh (Thanh Truong, lead, as product owner) on 2026-11-16.
+- Whether the Blueprint sources are delivered, and where. Answered: they are not pushed to `main`; PR #12 is out of scope and the Blueprint stays an external source outside the repository. The scope item "Blueprint sources moved into `docs/blueprint/`" is dropped. Decided by Thanh on 2026-11-16.
+- Whether "one ticket per branch" replaces the decision "one PR per task group". Answered: yes; D-023 is replaced by the `CLAUDE.md` rule on `main`. Decided by Thanh on 2026-11-16.
+- How many fresh-session runs prove "unprompted". Answered: one run per condition (plugins off, and plugins on). Decided by Thanh on 2026-11-16.
+- Whether the definition-of-done items "a test" and "CI is green" apply to this ticket. Answered: the written check steps run on the PR branch before the merge count as the test, with one named exception in the PR; the CI item is waived until TOKI-007 exists. Decided by Thanh on 2026-11-16.
+- Who removes the "planned" marks in `CLAUDE.md`. Answered: TOKI-095 itself; the delivering specs do not carry that line. Decided by Thanh on 2026-11-16.
