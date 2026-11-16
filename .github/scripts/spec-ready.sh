@@ -4,10 +4,10 @@
 # Ready means all of:
 #   - the spec has a `Ticket:` line and an `Intent:` line, and the intent file exists;
 #   - no line of "Open questions from the intent" says "Not answered" without
-#     carrying the question forward to a numbered concern;
+#     carrying the question forward to a numbered concern that exists;
 #   - every item of "Areas of concern" records a decision ("Decided", "Answered",
 #     "Accepted" or "Settled") after its last open marker ("Not decided",
-#     "Not answered", "not a decision").
+#     "Not answered", "not a decision", "Still open").
 # Prints one "- " line per gap and one "note:" line per assumption (notes do not block). Exit 0: ready. Exit 1: gaps. Exit 2: wrong usage.
 set -uo pipefail
 
@@ -34,20 +34,24 @@ fi
 
 [ -n "$(section "Requirements" | tr -d '[:space:]')" ] || gap "the spec has no Requirements section"
 
-# Open questions: "Not answered" is fine only when the line hands over to a concern.
-while IFS= read -r line; do
-  [[ "$line" =~ ^[[:space:]]*-[[:space:]] ]] || continue
-  printf '%s' "$line" | grep -qi 'not answered' || continue
-  printf '%s' "$line" | grep -qiE 'concern [0-9]+' && continue
-  gap "open question not answered: $(short "${line#*- }")"
-done <<< "$(section "Open questions")"
-
 # Areas of concern: one item per numbered line; following lines belong to the item.
 concerns=$(section "Areas of concern" | awk '
   /^[0-9]+\. / { if (item != "") print item; item = $0; next }
   /^[ \t]*$/ { next }
   item != "" { item = item " " $0 }
   END { if (item != "") print item }')
+# Open questions: "Not answered" is fine only when the line hands over to a concern.
+while IFS= read -r line; do
+  [[ "$line" =~ ^[[:space:]]*-[[:space:]] ]] || continue
+  printf '%s' "$line" | grep -qi 'not answered' || continue
+  ref=$(printf '%s' "$line" | grep -oiE 'concern [0-9]+' | head -1 | grep -oE '[0-9]+' || true)
+  if [ -z "$ref" ]; then
+    gap "open question not answered: $(short "${line#*- }")"
+  elif ! printf '%s\n' "$concerns" | grep -q "^$ref\. "; then
+    gap "open question carried forward to concern $ref, which does not exist: $(short "${line#*- }")"
+  fi
+done <<< "$(section "Open questions")"
+
 # An item is settled when its last decision word comes after its last open marker,
 # so "X is not decided. ... Decided: Y." is settled and "Decided: Y. Not decided: Z." is open.
 verdicts=$(printf '%s\n' "$concerns" | awk '
@@ -59,7 +63,7 @@ verdicts=$(printf '%s\n' "$concerns" | awk '
   /^[0-9]+\. / {
     n = $0; sub(/\..*/, "", n)
     text = $0; sub(/^[0-9]+\. /, "", text)
-    open = lastpos(tolower($0), "not decided|not answered|not a decision")
+    open = lastpos(tolower($0), "not decided|not answered|not a decision|still open")
     s = $0; gsub(/Answered in part/, "answered in part", s)  # not a decision by itself
     done = lastpos(s, "Decided|Answered|Accepted|Settled")
     if (open == 0 && done == 0) print "none\t" n "\t" text

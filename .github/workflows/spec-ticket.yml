@@ -42,6 +42,9 @@ jobs:
         with:
           ref: main
 
+      - name: Check the readiness rule on this runner
+        run: bash .github/scripts/spec-ready.test.sh
+
       - name: Give each merged spec its ticket
         env:
           GH_TOKEN: ${{ github.token }}
@@ -67,5 +70,5 @@ jobs:
           printf '%s\n' "$specs" | sed 's/^[[:space:]]*//' | sort -u | while IFS= read -r spec; do
             [ -n "$spec" ] || continue
             if [ ! -f "$spec" ]; then echo "skip $spec: not on main"; continue; fi
-            bash .github/scripts/spec-ticket.sh "$spec" "$PR_NUMBER"
+            bash .github/scripts/spec-ticket.sh "$spec" "$PR_NUMBER" < /dev/null
           done

@@ -60,6 +60,7 @@ fi
 key=$(sed -n 's/^Ticket:[[:space:]]*\([A-Za-z0-9_-]*\).*/\1/p' "$spec" | head -1)
 intent=$(sed -n 's/^Intent:[[:space:]]*\([^[:space:]]*\).*/\1/p' "$spec" | head -1)
 name=$(sed -n 's/^# \(Intent:[[:space:]]*\)\{0,1\}//p' "$intent" | head -1)
+[ -n "$name" ] || name=$(sed -n 's/^# //p' "$spec" | head -1)  # intent without a title line
 title="$name ($key)"
 
 accepted=$(status_name accepted); accepted="${accepted:-Ready for Dev}"
