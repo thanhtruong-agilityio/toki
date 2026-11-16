@@ -2824,6 +2824,159 @@
    "decision": "Có: một lệnh trên server in ra link có hiệu lực 10 phút cho một thành viên; mỗi lần dùng đều ghi log. Đây là cách đăng nhập duy nhất không cần mã.",
    "source": "recommended",
    "note": "Phát hiện khi rà các hành trình đã viết ngày 13/11/2026."
+  },
+  {
+   "id": "Q90",
+   "topic": "'Also send to channel'",
+   "question": "Câu trả lời gửi kèm 'Also send to #name' là một tin nhắn hiển thị ở hai nơi hay là hai tin nhắn, và bản trong channel có làm tăng số chưa đọc của channel và thông báo như tin nhắn thường không?",
+   "options": "",
+   "decision": "Là một tin nhắn hiển thị ở cả hai nơi: sửa hoặc xoá sẽ thay đổi cả hai, và trong channel nó được tính như tin nhắn thường (áp dụng số chưa đọc và mức thông báo).",
+   "source": "recommended",
+   "note": "Nêu ra là D-160 (VQ-04) ngày 16/11/2026 khi viết các yêu cầu còn thiếu và rà ticket. Người dùng chấp nhận đề xuất."
+  },
+  {
+   "id": "Q91",
+   "topic": "Xem ai đã react trên màn hình cảm ứng",
+   "question": "Trên màn hình cảm ứng, người dùng xem ai đã thả reaction bằng cách nào? Tên chỉ hiện khi rê chuột, trong khi quy tắc NR1 cấm tính năng chỉ dùng được bằng hover.",
+   "options": "",
+   "decision": "Nhấn giữ chip sẽ mở một danh sách tên nhỏ; chạm nhanh vẫn là thêm hoặc gỡ reaction.",
+   "source": "recommended",
+   "note": "Nêu ra là D-162 (VQ-06) ngày 16/11/2026 khi viết các yêu cầu còn thiếu và rà ticket. Người dùng chấp nhận đề xuất."
+  },
+  {
+   "id": "Q92",
+   "topic": "Mục Activity cho reaction",
+   "question": "Khi nhiều người thả reaction lên cùng một tin nhắn, tác giả nhận một mục Activity cho mỗi reaction hay một mục cho mỗi tin nhắn?",
+   "options": "",
+   "decision": "Một mục cho mỗi tin nhắn, cập nhật theo các tên mới nhất; gỡ reaction thì người đó bị bỏ khỏi mục.",
+   "source": "recommended",
+   "note": "Nêu ra là D-163 (VQ-07) ngày 16/11/2026 khi viết các yêu cầu còn thiếu và rà ticket. Người dùng chấp nhận đề xuất."
+  },
+  {
+   "id": "Q93",
+   "topic": "Giới hạn số tin ghim",
+   "question": "Số tin nhắn được ghim trong một cuộc trò chuyện có giới hạn không?",
+   "options": "",
+   "decision": "Không giới hạn trong phase 1.",
+   "source": "recommended",
+   "note": "Nêu ra là D-164 (VQ-08) ngày 16/11/2026 khi viết các yêu cầu còn thiếu và rà ticket. Người dùng chấp nhận đề xuất."
+  },
+  {
+   "id": "Q94",
+   "topic": "Dòng 'pinned a message'",
+   "question": "Dòng hệ thống '… pinned a message' có làm tăng số chưa đọc hoặc thông báo cho ai không, và khi bỏ ghim có dòng nào không?",
+   "options": "",
+   "decision": "Không tăng số chưa đọc và không thông báo, giống dòng 'joined' (Q55); bỏ ghim không có dòng nào.",
+   "source": "recommended",
+   "note": "Nêu ra là D-165 (VQ-09) ngày 16/11/2026 khi viết các yêu cầu còn thiếu và rà ticket. Người dùng chấp nhận đề xuất."
+  },
+  {
+   "id": "Q95",
+   "topic": "Ghim: tin bị xoá và reply trong thread",
+   "question": "Khi tin nhắn đã ghim bị xoá thì ghim đó ra sao, và có ghim được câu trả lời nằm trong thread không?",
+   "options": "",
+   "decision": "Tin nhắn bị xoá sẽ rời khỏi tab Pinned. Trong phase 1 chỉ ghim được tin nhắn ở danh sách chính.",
+   "source": "recommended",
+   "note": "Nêu ra là D-166 (VQ-10) ngày 16/11/2026 khi viết các yêu cầu còn thiếu và rà ticket. Người dùng chấp nhận đề xuất."
+  },
+  {
+   "id": "Q96",
+   "topic": "Link và khối code",
+   "question": "Những địa chỉ nào trở thành link, link mở theo cách nào, và có khối code nhiều dòng không?",
+   "options": "",
+   "decision": "Chỉ địa chỉ http:// và https://, mở trong tab mới; phase 1 không có khối code nhiều dòng.",
+   "source": "recommended",
+   "note": "Nêu ra là D-167 (VQ-11) ngày 16/11/2026 khi viết các yêu cầu còn thiếu và rà ticket. Người dùng chấp nhận đề xuất."
+  },
+  {
+   "id": "Q97",
+   "topic": "File trong draft",
+   "question": "Draft có bao gồm các tệp đã tải lên ô soạn tin không? FA-07 xoá tệp đã tải lên nhưng không gửi sau 24 giờ.",
+   "options": "",
+   "decision": "Draft chỉ gồm văn bản; tệp đính kèm không được khôi phục khi quay lại hay trên thiết bị khác.",
+   "source": "recommended",
+   "note": "Nêu ra là D-168 (VQ-12) ngày 16/11/2026 khi viết các yêu cầu còn thiếu và rà ticket. Người dùng chấp nhận đề xuất."
+  },
+  {
+   "id": "Q98",
+   "topic": "Trang Files sau khi rời hoặc lưu trữ kênh",
+   "question": "Tệp có còn trên trang Files của một người sau khi họ rời channel, và khi channel bị lưu trữ không?",
+   "options": "",
+   "decision": "Sau khi rời, tệp của channel đó biến khỏi trang Files của người ấy (Q74: không đọc được channel chưa tham gia). Tệp của channel đã lưu trữ vẫn còn với các thành viên của nó.",
+   "source": "recommended",
+   "note": "Nêu ra là D-170 (VQ-14) ngày 16/11/2026 khi viết các yêu cầu còn thiếu và rà ticket. Người dùng chấp nhận đề xuất."
+  },
+  {
+   "id": "Q99",
+   "topic": "Độ dài status",
+   "question": "Chữ của status dài tối đa bao nhiêu? Journey F32 ghi 100 ký tự, nhưng chưa có quyết định nào đặt con số này và prototype không giới hạn.",
+   "options": "",
+   "decision": "Từ 1 đến 100 ký tự như F32 ghi; ô nhập từ chối ký tự thứ 101.",
+   "source": "recommended",
+   "note": "Nêu ra là D-172 (VQ-16) ngày 16/11/2026 khi viết các yêu cầu còn thiếu và rà ticket. Người dùng chấp nhận đề xuất."
+  },
+  {
+   "id": "Q100",
+   "topic": "Activity trong cuộc trò chuyện đã mute",
+   "question": "Trong cuộc trò chuyện đã mute, trả lời thread và reaction có còn tạo mục Activity và làm tăng badge của Activity không? Các quyết định mới chỉ nói về mention (Q48) và số đếm của chính cuộc trò chuyện (Q62).",
+   "options": "",
+   "decision": "Có: các mục vẫn được tạo và tính vào badge của Activity, nhưng không có toast, push hay âm thanh.",
+   "source": "recommended",
+   "note": "Nêu ra là D-174 (VQ-18) ngày 16/11/2026 khi viết các yêu cầu còn thiếu và rà ticket. Người dùng chấp nhận đề xuất."
+  },
+  {
+   "id": "Q101",
+   "topic": "Nơi lưu giao diện và ngôn ngữ",
+   "question": "Giao diện, màu nhấn, mật độ và ngôn ngữ được lưu theo tài khoản và giống nhau trên mọi thiết bị, hay lưu theo từng thiết bị? AS-02 mới quyết định cho tùy chọn thông báo; journey F35 ghi là theo tài khoản, còn prototype lưu giao diện trong trình duyệt.",
+   "options": "",
+   "decision": "Lưu theo tài khoản và đồng bộ như F35 ghi; với 'Match my device' mỗi thiết bị theo cài đặt sáng hoặc tối của riêng nó.",
+   "source": "recommended",
+   "note": "Nêu ra là D-175 (VQ-19) ngày 16/11/2026 khi viết các yêu cầu còn thiếu và rà ticket. Người dùng chấp nhận đề xuất."
+  },
+  {
+   "id": "Q102",
+   "topic": "Ngôn ngữ của mail",
+   "question": "Mail được gửi bằng ngôn ngữ nào: mail mời tới người chưa có tài khoản, và mail đăng nhập tới thành viên đã chọn tiếng Việt?",
+   "options": "",
+   "decision": "Mail mời bằng tiếng Anh; mail đăng nhập theo ngôn ngữ thành viên đã chọn.",
+   "source": "recommended",
+   "note": "Nêu ra là D-180 (VQ-24) ngày 16/11/2026 khi viết các yêu cầu còn thiếu và rà ticket. Người dùng chấp nhận đề xuất."
+  },
+  {
+   "id": "Q103",
+   "topic": "Vai trò khi mời lại",
+   "question": "Khi một người đã bị vô hiệu hoá được mời lại (Q52), họ nhận vai trò nào: vai trò trong lời mời mới, hay vai trò cũ của tài khoản?",
+   "options": "",
+   "decision": "Vai trò chọn trong lời mời mới.",
+   "source": "recommended",
+   "note": "Nêu ra là D-181 (VQ-25) ngày 16/11/2026 khi viết các yêu cầu còn thiếu và rà ticket. Người dùng chấp nhận đề xuất."
+  },
+  {
+   "id": "Q104",
+   "topic": "Resend lời mời",
+   "question": "'Resend' ở một lời mời có tính lại 7 ngày và làm nút Join của mail trước hết tác dụng, hay chỉ gửi lại đúng lời mời đó?",
+   "options": "",
+   "decision": "Tính lại 7 ngày; mail trước hết tác dụng.",
+   "source": "recommended",
+   "note": "Nêu ra là D-182 (VQ-26) ngày 16/11/2026 khi viết các yêu cầu còn thiếu và rà ticket. Người dùng chấp nhận đề xuất."
+  },
+  {
+   "id": "Q105",
+   "topic": "Danh sách Channels trên trang Admin",
+   "question": "Dấu '+' tạo kênh nằm cạnh 'Busiest channels' trên trang Admin (Q41), nhưng Analytics thuộc phase 5. Ở phase 1 mục đó hiển thị gì?",
+   "options": "",
+   "decision": "Một danh sách đơn giản gồm mọi kênh kèm số thành viên, tên là 'Channels'; xếp hạng theo độ sôi nổi đi cùng Analytics.",
+   "source": "recommended",
+   "note": "Nêu ra là D-183 (VQ-27) ngày 16/11/2026 khi viết các yêu cầu còn thiếu và rà ticket. Người dùng chấp nhận đề xuất."
+  },
+  {
+   "id": "Q106",
+   "topic": "Quét virus",
+   "question": "Ở phase 1 file tải lên có được quét virus không?",
+   "options": "",
+   "decision": "Không quét ở phase 1; file luôn được tải về, không mở trong trang (Q58).",
+   "source": "recommended",
+   "note": "Nêu ra là D-186 (VQ-30) ngày 16/11/2026 khi viết các yêu cầu còn thiếu và rà ticket. Người dùng chấp nhận đề xuất."
   }
  ],
  "questions": [

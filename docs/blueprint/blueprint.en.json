@@ -2710,6 +2710,159 @@
    "decision": "Yes: a server command prints a link valid 10 minutes for one member; every use is logged. It is the only sign-in without a code.",
    "source": "recommended",
    "note": "Found while reviewing the written journeys on 13 Nov 2026."
+  },
+  {
+   "id": "Q90",
+   "topic": "'Also send to channel'",
+   "question": "A reply sent with 'Also send to #name': is it one message shown in two places or two messages, and does the channel copy raise the channel's unread count and notify like a normal message?",
+   "options": "",
+   "decision": "One message shown in both places: editing or deleting it changes both, and it counts in the channel as a normal message (unread count and notification level apply).",
+   "source": "recommended",
+   "note": "Raised as D-160 (VQ-04) on 16 Nov 2026 while writing the missing requirements and reviewing the tickets. The user accepted the proposal."
+  },
+  {
+   "id": "Q91",
+   "topic": "Who reacted, on touch screens",
+   "question": "How does a person on a touch screen see who reacted? The names appear only on hover, and rule NR1 forbids hover-only features.",
+   "options": "",
+   "decision": "A long press on the chip opens a small list of names; a short tap still adds or removes the reaction.",
+   "source": "recommended",
+   "note": "Raised as D-162 (VQ-06) on 16 Nov 2026 while writing the missing requirements and reviewing the tickets. The user accepted the proposal."
+  },
+  {
+   "id": "Q92",
+   "topic": "Activity items for reactions",
+   "question": "When several people react to the same message, does the author get one Activity item per reaction or one item per message?",
+   "options": "",
+   "decision": "One item per message, updated with the latest names; removing a reaction removes that person from the item.",
+   "source": "recommended",
+   "note": "Raised as D-163 (VQ-07) on 16 Nov 2026 while writing the missing requirements and reviewing the tickets. The user accepted the proposal."
+  },
+  {
+   "id": "Q93",
+   "topic": "Limit of pinned messages",
+   "question": "Is there a limit to the number of pinned messages in a conversation?",
+   "options": "",
+   "decision": "No limit in phase 1.",
+   "source": "recommended",
+   "note": "Raised as D-164 (VQ-08) on 16 Nov 2026 while writing the missing requirements and reviewing the tickets. The user accepted the proposal."
+  },
+  {
+   "id": "Q94",
+   "topic": "The 'pinned a message' line",
+   "question": "Does the system line '… pinned a message' raise the unread count or notify anyone, and is there a line for unpinning?",
+   "options": "",
+   "decision": "No unread count and no notification, like the 'joined' line (Q55); no line for unpinning.",
+   "source": "recommended",
+   "note": "Raised as D-165 (VQ-09) on 16 Nov 2026 while writing the missing requirements and reviewing the tickets. The user accepted the proposal."
+  },
+  {
+   "id": "Q95",
+   "topic": "Pins: deleted messages and thread replies",
+   "question": "What happens to a pin when its message is deleted, and can a reply inside a thread be pinned?",
+   "options": "",
+   "decision": "A deleted message leaves the Pinned tab. Only messages in the main list can be pinned in phase 1.",
+   "source": "recommended",
+   "note": "Raised as D-166 (VQ-10) on 16 Nov 2026 while writing the missing requirements and reviewing the tickets. The user accepted the proposal."
+  },
+  {
+   "id": "Q96",
+   "topic": "Links and code blocks",
+   "question": "Which addresses become links, how do they open, and is there a multi-line code block?",
+   "options": "",
+   "decision": "Only http:// and https:// addresses, opened in a new tab; no multi-line code block in phase 1.",
+   "source": "recommended",
+   "note": "Raised as D-167 (VQ-11) on 16 Nov 2026 while writing the missing requirements and reviewing the tickets. The user accepted the proposal."
+  },
+  {
+   "id": "Q97",
+   "topic": "Files in a draft",
+   "question": "Does a draft include files already uploaded to the composer? FA-07 deletes an uploaded file that was never sent after 24 hours.",
+   "options": "",
+   "decision": "A draft is text only; attached files are not restored on return or on another device.",
+   "source": "recommended",
+   "note": "Raised as D-168 (VQ-12) on 16 Nov 2026 while writing the missing requirements and reviewing the tickets. The user accepted the proposal."
+  },
+  {
+   "id": "Q98",
+   "topic": "Files page after leaving or archiving",
+   "question": "Do files stay on a person's Files page after they leave the channel, and when the channel is archived?",
+   "options": "",
+   "decision": "After leaving, the channel's files leave that person's Files page (Q74: an unjoined channel cannot be read). Files of an archived channel stay for its members.",
+   "source": "recommended",
+   "note": "Raised as D-170 (VQ-14) on 16 Nov 2026 while writing the missing requirements and reviewing the tickets. The user accepted the proposal."
+  },
+  {
+   "id": "Q99",
+   "topic": "Status length",
+   "question": "How long may a status text be? Journey F32 says 100 characters, but no decision sets it and the prototype has no limit.",
+   "options": "",
+   "decision": "1 to 100 characters, as F32 says; the field refuses the 101st character.",
+   "source": "recommended",
+   "note": "Raised as D-172 (VQ-16) on 16 Nov 2026 while writing the missing requirements and reviewing the tickets. The user accepted the proposal."
+  },
+  {
+   "id": "Q100",
+   "topic": "Activity in a muted conversation",
+   "question": "In a muted conversation, do thread replies and reactions still create Activity items and raise the Activity badge? Decisions cover only mentions (Q48) and the conversation's own count (Q62).",
+   "options": "",
+   "decision": "Yes: the items are still created and counted in the Activity badge, with no toast, push or sound.",
+   "source": "recommended",
+   "note": "Raised as D-174 (VQ-18) on 16 Nov 2026 while writing the missing requirements and reviewing the tickets. The user accepted the proposal."
+  },
+  {
+   "id": "Q101",
+   "topic": "Where look and language are saved",
+   "question": "Are look, accent, density and language saved to the account and the same on every device, or kept per device? AS-02 decides this only for notification preferences; journey F35 says the account, the prototype keeps the look in the browser.",
+   "options": "",
+   "decision": "Saved to the account and synced, as F35 says; with 'Match my device' each device follows its own light or dark setting.",
+   "source": "recommended",
+   "note": "Raised as D-175 (VQ-19) on 16 Nov 2026 while writing the missing requirements and reviewing the tickets. The user accepted the proposal."
+  },
+  {
+   "id": "Q102",
+   "topic": "Language of mail",
+   "question": "In which language is a mail sent: the invitation to a person who has no account yet, and the sign-in mail to a member who chose Vietnamese?",
+   "options": "",
+   "decision": "Invitations in English; sign-in mail in the language the member chose.",
+   "source": "recommended",
+   "note": "Raised as D-180 (VQ-24) on 16 Nov 2026 while writing the missing requirements and reviewing the tickets. The user accepted the proposal."
+  },
+  {
+   "id": "Q103",
+   "topic": "Role on re-invitation",
+   "question": "When a deactivated person is invited again (Q52), which role do they get: the role in the new invitation, or the role the account had?",
+   "options": "",
+   "decision": "The role chosen in the new invitation.",
+   "source": "recommended",
+   "note": "Raised as D-181 (VQ-25) on 16 Nov 2026 while writing the missing requirements and reviewing the tickets. The user accepted the proposal."
+  },
+  {
+   "id": "Q104",
+   "topic": "Resend an invitation",
+   "question": "Does 'Resend' on an invitation start a new 7 days and stop the Join button of the earlier mail, or send the same invitation again?",
+   "options": "",
+   "decision": "A new 7 days; the earlier mail stops working.",
+   "source": "recommended",
+   "note": "Raised as D-182 (VQ-26) on 16 Nov 2026 while writing the missing requirements and reviewing the tickets. The user accepted the proposal."
+  },
+  {
+   "id": "Q105",
+   "topic": "The Channels list on the Admin page",
+   "question": "The '+' that creates a channel sits beside 'Busiest channels' on the Admin page (Q41), but Analytics is phase 5. What does that section show in phase 1?",
+   "options": "",
+   "decision": "A plain list of all channels with their member counts, titled 'Channels'; the busiest ranking comes with Analytics.",
+   "source": "recommended",
+   "note": "Raised as D-183 (VQ-27) on 16 Nov 2026 while writing the missing requirements and reviewing the tickets. The user accepted the proposal."
+  },
+  {
+   "id": "Q106",
+   "topic": "Virus scanning",
+   "question": "Are uploaded files scanned for viruses in phase 1?",
+   "options": "",
+   "decision": "No scanning in phase 1; files are always downloaded, never opened in the page (Q58).",
+   "source": "recommended",
+   "note": "Raised as D-186 (VQ-30) on 16 Nov 2026 while writing the missing requirements and reviewing the tickets. The user accepted the proposal."
   }
  ],
  "questions": [
