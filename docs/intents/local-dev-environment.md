@@ -38,7 +38,7 @@ Later tickets can rely on these services being available locally.
 - Secrets live in `.env`, never in git. Source: Toki Blueprint, technical design (infrastructure).
 - Milestone: M1 Foundation and design system. The M1 exit check includes "pnpm dev runs".
 - Size: M (about one working session with Claude).
-- Needs: TOKI-001 (pnpm monorepo and TypeScript).
+- Needs: TOKI-001 (pnpm monorepo and TypeScript) and TOKI-096 (decision of 2026-11-12).
 - Needed by: TOKI-005 (Drizzle, migrations and the workspaces table).
 - Belongs to Blueprint intent I01 repo-foundation, alongside TOKI-001 to TOKI-008.
 
