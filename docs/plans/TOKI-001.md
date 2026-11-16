@@ -23,7 +23,7 @@ There is no test runner yet (TOKI-008), so each test is a command run by hand, a
 | R5 | 1, 2 | `tsconfig.base.json` has the four options; `grep -L '"extends"'` over the eight project `tsconfig.json` prints nothing; `grep -lE '"(strict\|target\|module\|moduleResolution)"'` prints nothing |
 | R6 | 2 | `pnpm typecheck` -> exit 0, eight projects run |
 | R7 | 2 | per project: add `const x: number = "a";` to `src/index.ts`, `pnpm typecheck` -> non-zero and names the project and `src/index.ts`; revert |
-| R8 | 1 | `.nvmrc` is `22`; under Node 24 `pnpm install` -> unsupported engine error, non-zero |
+| R8 | 1 | `.nvmrc` is `22`; `engines.node` is `22.x`; under Node 24 `pnpm install` -> exit 1 with `ERR_PNPM_BAD_RUNTIME_VERSION` ("This project requires Node.js 22.x") |
 | R9 | 1 | `pnpm --version` -> `12.21.0`; `git ls-files` has `pnpm-lock.yaml`, no `package-lock.json`, no `yarn.lock` |
 | R10 | 2 | per app: add `import {} from "@toki/shared";`, `pnpm typecheck` -> exit 0; revert |
 | R11 | 1 | `git check-ignore .env .env.local` prints both; `git check-ignore .env.example` prints nothing; after install and typecheck `git status --porcelain` is empty |
@@ -45,6 +45,9 @@ Files (create): `package.json`, `pnpm-workspace.yaml`, `tsconfig.base.json`, `.n
   "type": "module",
   "packageManager": "pnpm@12.21.0",
   "engines": { "node": "22.x" },
+  "devEngines": {
+    "runtime": { "name": "node", "version": "22.x", "onFail": "error" }
+  },
   "scripts": {
     "typecheck": "pnpm -r run typecheck",
     "dev": "pnpm -r --parallel --if-present run dev"
@@ -84,7 +87,9 @@ dist
 !.env.example
 ```
 
-No `.npmrc` (spec, Design). Commit: `chore(repo): add the pnpm workspace root (TOKI-001)`.
+No `.npmrc` (spec, Design).
+
+Deviation from the spec, decided by Thanh Truong on 2026-11-16: the spec's Design says the Node pin "needs no extra setting", but pnpm 12.21.0 only warns on a root `engines.node` mismatch and exits 0. `devEngines.runtime` with `onFail: error` makes `pnpm install` stop, and checks only this repository's runtime, not the `engines` of dependencies (the reason the spec rejects `engine-strict`). `engines.node` stays as R8 requires. Commit: `chore(repo): add the pnpm workspace root (TOKI-001)`.
 
 ### Step 2: the eight projects
 
