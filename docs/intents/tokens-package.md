@@ -12,7 +12,7 @@ A person's choice of look (Calm or Focus), accent (teal, indigo, clay, violet) a
 The builder (Thanh and Claude) can start the base components without opening the prototype to look up a value.
 
 ## Affected users and systems
-- Users: the builder (one person building with Claude). Indirectly every Member, Admin and Guest, who see the two looks. Source: Toki Blueprint, intent I02 design-system.
+- Users: the builder (one person building with Claude). Indirectly every user, who sees the two looks. Source: Toki Blueprint, intent I02 design-system ("The builder; indirectly every user").
 - Systems: `packages/tokens` (created empty by TOKI-001). Later readers of it: `packages/ui-web` and `apps/web` now, `packages/ui-native` and `apps/mobile` in phase 3.
 - The base components (TOKI-012, TOKI-013) use the result of this ticket.
 
@@ -24,9 +24,9 @@ The builder (Thanh and Claude) can start the base components without opening the
 - Needs: TOKI-001 (Set up the pnpm monorepo and TypeScript). Source: Toki Blueprint, ticket TOKI-009, Needs column.
 - Needed by: TOKI-012 and TOKI-013 (base components) directly. Source: Toki Blueprint, ticket list, Needs column.
 - Agreed scope: Calm and Focus palettes, 4 accents, density, radii, shadows; exported as CSS variables and as objects for React Native. Source: Toki Blueprint, ticket TOKI-009.
-- The values come from the prototype; none is invented. Source: Toki Blueprint, intent I02 ("matches the prototype").
+- The values come from the prototype; none is invented. Derived from Toki Blueprint, intent I02: it asks that every base component "matches the prototype", which a changed or added value would break. I02 does not state this rule in these words.
 - Phase 1 builds both looks, Calm and Focus. Source: D-018, NFR-05.
-- The accents are teal, indigo, clay and violet; the densities are Comfortable and Compact; each applies at once, without a reload. Source: FR-43, AC-122.
+- The accents are teal, indigo, clay and violet; the densities are Comfortable and Compact; each applies at once (Source: FR-43, AC-122) and without a reload of the page (Source: TS-195). The look also changes at once without a reload (Source: AC-120).
 - "Match my device" shows Focus when the device is set to dark and Calm when it is set to light. Source: FR-43, AC-120, D-175.
 - The web styling is the prototype's CSS carried over almost intact, on CSS variables; no Tailwind and no runtime styling library. Source: Toki Blueprint, technical design, Frontend.
 - The `tokens` package is shared by the web app, the phone app and the desktop app. Source: Toki Blueprint, technical design, code structure and reuse table.
