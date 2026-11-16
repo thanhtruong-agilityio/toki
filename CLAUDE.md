@@ -4,7 +4,9 @@
 - Commits follow Conventional Commits with a lowercase subject. PRs follow `.github/pull_request_template.md`.
 - Tickets are done per `docs/definition-of-done.md`.
 - Never paste client secrets or customer data into any AI tool. AI output is a proposal until it has been run.
-- Ask before every push, merge, branch deletion and deploy.
+- Push to your own ticket branch and open its pull request without asking.
+- Never merge a pull request and never force-push; merging is done by a person on GitHub.
+- Ask before every branch deletion and deploy.
 - Start work with `/cl-core:ticket <ticket>`.
 
 ## Advisor
