@@ -4332,7 +4332,7 @@
       {
        "id": "098",
        "title": "Tạo channel từ trang Admin",
-       "scope": "Nút '+' cạnh 'Busiest channels' trên trang Admin mở hộp Create channel (D-151): Name, công tắc Private mặc định tắt, Topic (không bắt buộc, tối đa 250 ký tự), Add people (không bắt buộc) (D-101). Gõ dấu cách trong tên thì thành gạch nối, chữ hoa thành chữ thường (D-127). Lỗi hiện dưới ô nhập; nút Create bị khóa cho tới khi form hợp lệ và trong lúc yêu cầu đang chạy (D-104, D-111); tên đã có thì server từ chối và ô nhập báo rõ (D-115). Đóng khi đã có nội dung thì hỏi có bỏ không (D-070). Channel mới mở ra ngay (D-076). Member không có cách nào mở hộp này (D-084)",
+       "scope": "Nút '+' ở danh sách 'Channels' trên trang Admin mở hộp Create channel (D-151). Ở phase 1 danh sách này hiện mọi kênh kèm số thành viên; xếp hạng theo độ sôi nổi đi cùng Analytics (D-183): Name, công tắc Private mặc định tắt, Topic (không bắt buộc, tối đa 250 ký tự), Add people (không bắt buộc) (D-101). Gõ dấu cách trong tên thì thành gạch nối, chữ hoa thành chữ thường (D-127). Lỗi hiện dưới ô nhập; nút Create bị khóa cho tới khi form hợp lệ và trong lúc yêu cầu đang chạy (D-104, D-111); tên đã có thì server từ chối và ô nhập báo rõ (D-115). Đóng khi đã có nội dung thì hỏi có bỏ không (D-070). Channel mới mở ra ngay (D-076). Member không có cách nào mở hộp này (D-084)",
        "size": "M",
        "needs": []
       },

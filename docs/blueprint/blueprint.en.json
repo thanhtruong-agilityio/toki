@@ -4218,7 +4218,7 @@
       {
        "id": "098",
        "title": "Create a channel from the Admin page",
-       "scope": "A '+' beside 'Busiest channels' on the Admin page opens the Create channel dialog (D-151): Name, a Private switch off by default, Topic (optional, up to 250 characters), Add people (optional) (D-101). A space typed in the name becomes a hyphen and capitals become lowercase (D-127). Errors show under the field; Create is disabled until the form is valid and while the request runs (D-104, D-111); a name already in use is refused by the server and the field says so (D-115). Closing with content asks whether to discard (D-070). The new channel opens at once (D-076). A Member has no way to open this dialog (D-084)",
+       "scope": "A '+' on the 'Channels' list of the Admin page opens the Create channel dialog (D-151). In phase 1 that list shows every channel with its member count; the busiest ranking comes with Analytics (D-183): Name, a Private switch off by default, Topic (optional, up to 250 characters), Add people (optional) (D-101). A space typed in the name becomes a hyphen and capitals become lowercase (D-127). Errors show under the field; Create is disabled until the form is valid and while the request runs (D-104, D-111); a name already in use is refused by the server and the field says so (D-115). Closing with content asks whether to discard (D-070). The new channel opens at once (D-076). A Member has no way to open this dialog (D-084)",
        "size": "M",
        "needs": []
       },
