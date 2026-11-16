@@ -3867,7 +3867,7 @@
    "id": "M1",
    "name": "Nền tảng và design system",
    "goal": "Dự án được thiết lập cho Claude, cấu hình cần có đã rõ, và repo, công cụ cùng mọi component nền đã tồn tại, để các màn hình sau là lắp ghép chứ không phải phát minh.",
-   "exit": "pnpm dev chạy, CI xanh, và trang xem thử component khớp prototype ở Calm và Focus trên cả ba bố cục.",
+   "exit": "pnpm dev chạy, CI xanh, và trang xem thử component qua bài test trên trình duyệt (tên class của prototype, màu đã tính ở cả hai giao diện, màu nhấn, mật độ, các mốc 719 và 720 px, font đã nạp, không cuộn ngang ở 360, 900 và 1280 px) và bản so mắt với prototype được ghi trong pull request.",
    "areas": [
     {
      "name": "Thiết lập dự án",
@@ -3991,7 +3991,7 @@
       {
        "id": "007",
        "title": "CI trên GitHub Actions",
-       "scope": "Lint, kiểm tra kiểu, test, build, giới hạn kích thước bundle",
+       "scope": "Lint, kiểm tra kiểu, test, build, giới hạn kích thước bundle. Chạy sáu kiểm tra: kiểm tra i18n của TOKI-017 là job thứ sáu.",
        "size": "M",
        "needs": [
         "002"
@@ -4005,7 +4005,7 @@
       {
        "id": "008",
        "title": "Khung test",
-       "scope": "Vitest chạy với Postgres thật, Playwright chạy được một test mẫu, đồng hồ điều khiển được. Theo spec: thêm job end-to-end và dịch vụ Postgres trong CI, cùng một database riêng cho test",
+       "scope": "Vitest chạy với Postgres thật, Playwright chạy được một test mẫu, đồng hồ điều khiển được. Theo spec: thêm job end-to-end và dịch vụ Postgres trong CI, cùng một database riêng cho test. Đồng hồ `now()` trả về mili giây epoch; nêu lệnh máy chủ web cho `pnpm test:e2e`; đưa `ui-web` vào danh sách dự án Vitest.",
        "size": "M",
        "needs": [
         "005",
@@ -4031,7 +4031,12 @@
        "needs": [
         "001"
        ],
-       "open": "Cấu trúc file nguồn của token"
+       "open": "Cấu trúc file nguồn của token",
+       "spec": {
+        "state": "pr",
+        "pr": "PR #15",
+        "fix": ""
+       }
       },
       {
        "id": "010",
@@ -4040,101 +4045,181 @@
        "size": "S",
        "needs": [
         "006"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #25",
+        "fix": ""
+       }
       },
       {
        "id": "011",
        "title": "Bộ icon",
-       "scope": "Khoảng 60 icon của prototype thành component",
+       "scope": "Khoảng 60 icon của prototype thành component. 43 icon, không phải 'khoảng 60': phần còn lại chỉ được vẽ bởi tính năng sau phase 1 hoặc chưa bao giờ được vẽ.",
        "size": "S",
        "needs": [
         "006"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #29",
+        "fix": ""
+       }
       },
       {
        "id": "018",
        "title": "Package platform",
-       "scope": "Interface thông báo, lưu trữ, chọn file, âm thanh; bản cài cho web. Lệnh cấm import của nó được thêm vào quy tắc ranh giới của TOKI-002",
+       "scope": "Interface thông báo, lưu trữ, chọn file, âm thanh; bản cài cho web. Lệnh cấm import của nó được thêm vào quy tắc ranh giới của TOKI-002. Lệnh cấm import bản cài đặt web, kèm mẫu kiểm, được thêm vào quy tắc ranh giới của TOKI-002.",
        "size": "S",
        "needs": [
-        "001"
-       ]
+        "001",
+        "002",
+        "006",
+        "008"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #21",
+        "fix": ""
+       }
       },
       {
        "id": "012",
        "title": "Component nền, nhóm 1",
-       "scope": "Button, IconButton, Chip, Switch, Field, Select, Tag, Badge; nút chỉ có icon bắt buộc có tên, lint kiểm tra (NR9). Quy tắc lint cho nút chỉ có icon được thêm vào cấu hình ESLint của TOKI-002",
+       "scope": "Button, IconButton, Chip, Switch, Field, Select, Tag, Badge; nút chỉ có icon bắt buộc có tên, lint kiểm tra (NR9). Quy tắc lint cho nút chỉ có icon được thêm vào cấu hình ESLint của TOKI-002. Sở hữu quy tắc `font: inherit` cho điều khiển form, `.ic{flex:none}`, và hợp đồng mà các ticket `ui-web` khác theo (thư mục, `forwardRef`, cách dựng test, `componentExamples`).",
        "size": "M",
        "needs": [
+        "002",
         "009",
+        "010",
+        "011",
         "018"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #33",
+        "fix": ""
+       }
       },
       {
        "id": "013",
        "title": "Component nền, nhóm 2",
-       "scope": "Avatar, PresenceDot, EmptyState đặt giữa vùng nội dung (NR8), Toast nằm trên composer và có nút Hoàn tác (NR3, NR12)",
+       "scope": "Avatar, PresenceDot, EmptyState đặt giữa vùng nội dung (NR8), Toast nằm trên composer và có nút Hoàn tác (NR3, NR12). Toast, bộ đếm 5 giây và `useToastAnchor`; hàm Undo thuộc TOKI-093.",
        "size": "M",
        "needs": [
         "009",
-        "018"
-       ]
+        "012"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #31",
+        "fix": ""
+       }
       },
       {
        "id": "014",
        "title": "Lớp phủ",
-       "scope": "Menu, Modal, Sheet; giữ focus bên trong, trả focus khi đóng, Esc theo thứ tự, menu dùng được phím mũi tên (NR9)",
+       "scope": "Menu, Modal, Sheet; giữ focus bên trong, trả focus khi đóng, Esc theo thứ tự, menu dùng được phím mũi tên (NR9). Các lớp chỉ báo `escape`, `outside` hoặc `close` và không tự đóng; phần quyết định là chặn đóng của TOKI-093.",
        "size": "M",
        "needs": [
         "012"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #38",
+        "fix": ""
+       }
       },
       {
        "id": "015",
        "title": "AppShell ba bố cục",
-       "scope": "Calm, Focus, khung hẹp dưới 720px với BottomTabs. Theo NR2: nhỏ nhất 360 × 560; từ 720 tới 1099px panel phụ phủ lên chat; thanh điều hướng và hàng tab cuộn được; danh sách hội thoại là vùng chính của thanh bên",
+       "scope": "Calm, Focus, khung hẹp dưới 720px với BottomTabs. Theo NR2: nhỏ nhất 360 × 560; từ 720 tới 1099px panel phụ phủ lên chat; thanh điều hướng và hàng tab cuộn được; danh sách hội thoại là vùng chính của thanh bên. Còn sở hữu `.tab`, cỡ chữ 15 px ở màn hình hẹp (cần xác nhận), việc gắn điểm neo toast, thẻ tài khoản dạng nút kích hoạt, hàm đặt thuộc tính giao diện, và quy tắc vai trò cho các mục.",
        "size": "L",
        "needs": [
+        "006",
+        "008",
+        "009",
+        "010",
+        "011",
         "012",
-        "013"
-       ]
+        "013",
+        "017",
+        "023"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #41",
+        "fix": ""
+       }
       },
       {
        "id": "016",
        "title": "Trang xem thử component",
-       "scope": "Một trang liệt kê mọi component ở cả hai look để so với prototype",
+       "scope": "Một trang liệt kê mọi component ở cả hai look để so với prototype. Một điểm vào Vite thứ hai `preview.html`, không đưa vào bản build production.",
        "size": "S",
        "needs": [
-        "012"
-       ]
+        "006",
+        "007",
+        "008",
+        "009",
+        "010",
+        "011",
+        "012",
+        "013",
+        "014"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #36",
+        "fix": ""
+       }
       },
       {
        "id": "017",
        "title": "Package i18n",
-       "scope": "Khung dịch, en mặc định, kiểm tra tự động khóa thiếu bản dịch. Bước kiểm tra thiếu bản dịch được thêm vào workflow CI của TOKI-007",
+       "scope": "Khung dịch, en mặc định, kiểm tra tự động khóa thiếu bản dịch. Bước kiểm tra thiếu bản dịch được thêm vào workflow CI của TOKI-007. Kiểm tra thiếu bản dịch là job tên `i18n`; còn sở hữu `nav.*` (14 khoá).",
        "size": "S",
        "needs": [
-        "001"
-       ]
+        "001",
+        "002",
+        "007"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #22",
+        "fix": ""
+       }
       },
       {
        "id": "093",
        "title": "Mẫu hành động phá hủy và form đang dở",
-       "scope": "Hộp xác nhận nêu rõ đối tượng, toast Hoàn tác 5 giây, chặn đóng form đã có nội dung (NR3, NR4)",
+       "scope": "Hộp xác nhận nêu rõ đối tượng, toast Hoàn tác 5 giây, chặn đóng form đã có nội dung (NR3, NR4). Xây hàm Undo, hộp xác nhận và chặn đóng form trên Toast của TOKI-013 và các lớp của TOKI-014; chỗ gọi thuộc các ticket có ghi nó là phụ thuộc.",
        "size": "M",
        "needs": [
+        "012",
         "013",
-        "014"
-       ]
+        "014",
+        "017"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #56",
+        "fix": ""
+       }
       },
       {
        "id": "094",
        "title": "Quy tắc ngày giờ dùng chung",
-       "scope": "Kiểm tra và định dạng ngày giờ trong shared: trường bắt buộc, không nhận quá khứ khi cần tương lai, hiện năm khi khác năm hiện tại, một định dạng thống nhất với giờ 24h ở mọi nơi (D-073, D-123)",
+       "scope": "Kiểm tra và định dạng ngày giờ trong shared: trường bắt buộc, không nhận quá khứ khi cần tương lai, hiện năm khi khác năm hiện tại, một định dạng thống nhất với giờ 24h ở mọi nơi (D-073, D-123). Dựng cả chuỗi ngày với tên tiếng Anh trong `names.ts` và nhận mã ngôn ngữ; múi giờ và vị trí của năm là câu hỏi còn mở.",
        "size": "S",
        "needs": [
         "001"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #27",
+        "fix": ""
+       }
       }
      ]
     }
@@ -4173,7 +4258,8 @@
        "scope": "Lớp gửi thư cấu hình được (D-027) và hai mẫu thư bằng tiếng Anh và tiếng Việt: thư đăng nhập chỉ có mã 6 số, không có nút (D-157); thư mời nêu tên workspace và người mời, có nút Join và mã 6 số (D-149)",
        "size": "M",
        "needs": [
-        "004"
+        "004",
+        "017"
        ],
        "open": "Nội dung và giao diện thư"
       },
@@ -4185,17 +4271,29 @@
        "needs": [
         "019",
         "021"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #17",
+        "fix": ""
+       }
       },
       {
        "id": "023",
        "title": "Màn hình đăng nhập",
-       "scope": "Nhập email; bước 'Check your email' với ô 6 số, dòng 'The code works for 10 minutes', 'Use a different email' và nút 'Resend code' bật sau 60 giây (D-082, D-136); 7 trường hợp lỗi của F05, có số lần thử còn lại và mã bị khóa (D-137); màn hình 'Your session has ended' (F07). Lỗi hiện ngay dưới ô nhập (D-104). Không có màn hình chào (D-083)",
+       "scope": "Nhập email; bước 'Check your email' với ô 6 số, dòng 'The code works for 10 minutes', 'Use a different email' và nút 'Resend code' bật sau 60 giây (D-082, D-136); 7 trường hợp lỗi của F05, có số lần thử còn lại và mã bị khóa (D-137); màn hình 'Your session has ended' (F07). Lỗi hiện ngay dưới ô nhập (D-104). Không có màn hình chào (D-083). Sở hữu trạng thái phiên trong client-core phản ứng khi request trả về chưa xác thực; tín hiệu giữa các tab khi Sign out thuộc TOKI-099.",
        "size": "M",
        "needs": [
+        "006",
         "014",
+        "017",
         "022"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #19",
+        "fix": ""
+       }
       },
       {
        "id": "027",
@@ -4222,7 +4320,8 @@
        "scope": "Chỉ Admin mở được; Member thấy 'You do not have access to this page' (D-090). Bảng thành viên gồm tên, email, role, trạng thái (Invited, Active, Deactivated) và lần hoạt động gần nhất; ô tìm, chip lọc theo trạng thái kèm tổng số, hiện 50 dòng đầu và tải thêm khi cuộn (D-109). 'Invite members': nhiều địa chỉ, role Member hoặc Admin, mặc định Member, mỗi dòng hiện 'Invited' hoặc 'Mail not sent' kèm Resend (D-153, D-099); Revoke hỏi xác nhận. Menu trên mỗi dòng: Change role, Deactivate, Reactivate, mỗi thao tác có hộp xác nhận nêu tên người đó (D-061, D-069); các mục bị khóa, kèm lý do, ở dòng của chính Admin và ở Admin cuối cùng (D-153)",
        "size": "L",
        "needs": [
-        "024"
+        "024",
+        "093"
        ]
       },
       {
@@ -4244,9 +4343,13 @@
       {
        "id": "099",
        "title": "Menu tài khoản, Sign out và các thiết bị đã đăng nhập (màn hình)",
-       "scope": "Menu của thẻ tài khoản: Set status, Pause notifications, Focus time, Preferences, Sign out; mỗi mục xuất hiện khi ticket của nó được làm. 'Sign out' trong menu tài khoản, và trong sheet More trên khung hẹp (D-158, D-067). Mục 'Signed-in devices' trong Preferences: mỗi dòng hiện loại thiết bị, trình duyệt và lần dùng gần nhất, thiết bị hiện tại có nhãn 'This device'; nút 'Sign out' cạnh từng thiết bị khác và 'Sign out all other devices', mỗi nút đều hỏi xác nhận (D-158, D-069)",
+       "scope": "Menu của thẻ tài khoản: Set status, Pause notifications, Focus time, Preferences, Sign out; mỗi mục xuất hiện khi ticket của nó được làm. 'Sign out' trong menu tài khoản, và trong sheet More trên khung hẹp (D-158, D-067). Mục 'Signed-in devices' trong Preferences: mỗi dòng hiện loại thiết bị, trình duyệt và lần dùng gần nhất, thiết bị hiện tại có nhãn 'This device'; nút 'Sign out' cạnh từng thiết bị khác và 'Sign out all other devices', mỗi nút đều hỏi xác nhận (D-158, D-069). Sở hữu nội dung menu tài khoản và hiện Menu trên nút kích hoạt của shell; sở hữu tín hiệu giữa các tab khi Sign out, lời gọi sign-out, và hộp xác nhận khi đăng xuất thiết bị khác.",
        "size": "S",
-       "needs": []
+       "needs": [
+        "014",
+        "015",
+        "093"
+       ]
       }
      ]
     },
@@ -4268,8 +4371,8 @@
        "scope": "Tạo (chỉ Admin; yêu cầu từ Member bị từ chối, D-084, D-090), browse, join, leave, sửa topic và mô tả, thêm người, gỡ người, lưu trữ và khôi phục. Tên channel gồm chữ thường, số, gạch nối, tối đa 80 ký tự; server không bao giờ tạo hai channel trùng tên, kể cả khi hai yêu cầu tới cùng lúc và kể cả trùng với channel đã lưu trữ (D-040, D-115, D-128); topic tối đa 250 ký tự (D-101); công khai hay riêng tư là cố định và không đổi tên được (D-040, D-105). Channel chưa join thì không đọc được, join xong thấy toàn bộ lịch sử (D-116, D-029). Mọi thao tác ghi đòi là thành viên (D-077). Mọi thành viên sửa được topic và thêm được người (D-041, D-090); Admin chỉ gỡ người và lưu trữ ở channel mình tham gia, không bao giờ ở #general (D-085, D-047, D-034). Rời channel riêng tư thì chỉ quay lại được khi một thành viên thêm lại, và người cuối cùng rời thì channel được lưu trữ (D-051)",
        "size": "L",
        "needs": [
-        "028",
-        "027"
+        "027",
+        "028"
        ]
       },
       {
@@ -4317,16 +4420,19 @@
        "size": "M",
        "needs": [
         "014",
-        "032"
+        "032",
+        "093"
        ]
       },
       {
        "id": "035",
        "title": "Header hội thoại và panel Details",
-       "scope": "Tên, topic, thành viên, mức thông báo, mute, star, leave. Mặc định: channel là Mentions only, DM là All messages (D-046). Mute còn ẩn cả badge chưa đọc và chữ đậm; mức 'Nothing' chỉ tắt toast, push và âm thanh (D-103). Mọi thành viên sửa được topic và mô tả ngay tại chỗ; tên không đổi được (D-105). Rời channel công khai thì rời ngay, có Hoàn tác trong 5 giây; rời channel riêng tư thì hỏi xác nhận, nói rõ phải có thành viên mời lại, và không có Hoàn tác (D-156, D-061); người cuối cùng được báo channel sẽ bị lưu trữ (D-051); #general không có nút Leave (D-034)",
+       "scope": "Tên, topic, thành viên, mức thông báo, mute, star, leave. Mặc định: channel là Mentions only, DM là All messages (D-046). Mute còn ẩn cả badge chưa đọc và chữ đậm; mức 'Nothing' chỉ tắt toast, push và âm thanh (D-103). Mọi thành viên sửa được topic và mô tả ngay tại chỗ; tên không đổi được (D-105). Rời channel công khai thì rời ngay, có Hoàn tác trong 5 giây; rời channel riêng tư thì hỏi xác nhận, nói rõ phải có thành viên mời lại, và không có Hoàn tác (D-156, D-061); người cuối cùng được báo channel sẽ bị lưu trữ (D-051); #general không có nút Leave (D-034). Sở hữu việc nút Back đóng panel đang mở trước khi rời cuộc trò chuyện (D-089).",
        "size": "M",
        "needs": [
-        "033"
+        "033",
+        "093",
+        "094"
        ]
       },
       {
@@ -4334,21 +4440,27 @@
        "title": "Tạo channel từ trang Admin",
        "scope": "Nút '+' ở danh sách 'Channels' trên trang Admin mở hộp Create channel (D-151). Ở phase 1 danh sách này hiện mọi kênh kèm số thành viên; xếp hạng theo độ sôi nổi đi cùng Analytics (D-183): Name, công tắc Private mặc định tắt, Topic (không bắt buộc, tối đa 250 ký tự), Add people (không bắt buộc) (D-101). Gõ dấu cách trong tên thì thành gạch nối, chữ hoa thành chữ thường (D-127). Lỗi hiện dưới ô nhập; nút Create bị khóa cho tới khi form hợp lệ và trong lúc yêu cầu đang chạy (D-104, D-111); tên đã có thì server từ chối và ô nhập báo rõ (D-115). Đóng khi đã có nội dung thì hỏi có bỏ không (D-070). Channel mới mở ra ngay (D-076). Member không có cách nào mở hộp này (D-084)",
        "size": "M",
-       "needs": []
+       "needs": [
+        "093"
+       ]
       },
       {
        "id": "100",
        "title": "Thêm và gỡ người trong channel (màn hình)",
        "scope": "Thêm người: ô tìm chỉ liệt kê người chưa ở trong channel, hiện 50 người đầu và tải thêm khi cuộn (D-109); chọn một hoặc nhiều người rồi bấm Add; mọi thành viên đều làm được, kể cả ở channel riêng tư (D-090). Gỡ người: chỉ hiện với Admin là thành viên của channel, không bao giờ ở #general, có hộp xác nhận nêu tên người bị gỡ (D-085, D-047, D-069)",
        "size": "S",
-       "needs": []
+       "needs": [
+        "093"
+       ]
       },
       {
        "id": "101",
        "title": "Lưu trữ và khôi phục channel (màn hình)",
        "scope": "Lưu trữ: chỉ hiện với Admin là thành viên, không bao giờ với #general (D-047, D-034); hộp xác nhận nêu tên channel và số thành viên (D-061, D-069). Sau đó channel rời khỏi danh sách của mọi người, composer được thay bằng dòng 'This channel has been archived' và lịch sử vẫn đọc được (D-029). Browse channels hiện channel đó với nhãn 'Archived' và có nút 'Restore' cho Admin (F26)",
        "size": "S",
-       "needs": []
+       "needs": [
+        "093"
+       ]
       }
      ]
     }
@@ -4423,16 +4535,19 @@
       {
        "id": "042",
        "title": "Component tin nhắn",
-       "scope": "Avatar, tên, giờ theo dạng 24h (D-123), gộp nhóm trong 5 phút, vạch ngày. Trạng thái gửi nằm cạnh giờ: mờ cho tới khi server xác nhận, 'Waiting to send', và 'Not sent' màu đỏ kèm Retry và Delete, trong đó Delete không hỏi lại (D-087). Dòng hệ thống màu xám cho join, leave, thêm người, pin và tạo channel, kể cả khi người mới vào #general; dòng hệ thống không làm tăng số chưa đọc và không tạo thông báo (D-100)",
+       "scope": "Avatar, tên, giờ theo dạng 24h (D-123), gộp nhóm trong 5 phút, vạch ngày. Trạng thái gửi nằm cạnh giờ: mờ cho tới khi server xác nhận, 'Waiting to send', và 'Not sent' màu đỏ kèm Retry và Delete, trong đó Delete không hỏi lại (D-087). Dòng hệ thống màu xám cho join, leave, thêm người, pin và tạo channel, kể cả khi người mới vào #general; dòng hệ thống không làm tăng số chưa đọc và không tạo thông báo (D-100). Thêm khoá `common` cho Hôm nay, Ngày mai, Hôm qua và đoạn nối chuyển chúng cho bộ định dạng ngày.",
        "size": "M",
        "needs": [
-        "041"
+        "017",
+        "041",
+        "093",
+        "094"
        ]
       },
       {
        "id": "043",
        "title": "Composer",
-       "scope": "Enter gửi, Shift+Enter xuống dòng, không gửi khi đang gõ dở tiếng Việt, tự giãn, nháp cục bộ",
+       "scope": "Enter gửi, Shift+Enter xuống dòng, không gửi khi đang gõ dở tiếng Việt, tự giãn, nháp cục bộ. Đăng ký ô soạn tin với điểm neo toast của TOKI-013.",
        "size": "M",
        "needs": [
         "040"
@@ -4455,7 +4570,7 @@
       {
        "id": "045",
        "title": "Thread",
-       "scope": "API, panel thread, Also send to channel. Chỉ một cấp. Tác giả tin gốc, mọi người đã trả lời và mọi người được nhắc tự động theo dõi thread; không có 'Unfollow thread' (D-119). Khi tin gốc bị xóa, thread vẫn nằm dưới dòng 'Message deleted', và câu trả lời đang viết dở vẫn gửi được (D-013, D-096). Mỗi thread có địa chỉ riêng; Back đóng panel trước (D-089). Từ 720 tới 1099px panel phủ lên chat (D-068)",
+       "scope": "API, panel thread, Also send to channel. Chỉ một cấp. Tác giả tin gốc, mọi người đã trả lời và mọi người được nhắc tự động theo dõi thread; không có 'Unfollow thread' (D-119). Khi tin gốc bị xóa, thread vẫn nằm dưới dòng 'Message deleted', và câu trả lời đang viết dở vẫn gửi được (D-013, D-096). Mỗi thread có địa chỉ riêng; Back đóng panel trước (D-089). Từ 720 tới 1099px panel phủ lên chat (D-068). Sở hữu `.tlink`.",
        "size": "L",
        "needs": [
         "040"
@@ -4476,7 +4591,8 @@
        "scope": "Sửa tại chỗ, nhãn đã sửa, xóa mềm giữ thread, xác nhận trước khi xóa; file của tin bị xóa cũng bị gỡ khỏi kho; Admin xóa tin người khác thì hiện dòng riêng và tác giả được báo (G10, G16, F16, F42)",
        "size": "M",
        "needs": [
-        "040"
+        "040",
+        "093"
        ]
       },
       {
@@ -4485,13 +4601,14 @@
        "scope": "Pin, bỏ pin, danh sách đã pin",
        "size": "S",
        "needs": [
-        "040"
+        "040",
+        "093"
        ]
       },
       {
        "id": "049",
        "title": "Định dạng chữ",
-       "scope": "Bold, italic, code, link; hiển thị an toàn, không chèn HTML thô",
+       "scope": "Bold, italic, code, link; hiển thị an toàn, không chèn HTML thô. Sở hữu `.lnk`.",
        "size": "M",
        "needs": [
         "042"
@@ -4503,7 +4620,8 @@
        "scope": "Nhắc người và @channel, popup gợi ý khớp cả có dấu lẫn không dấu, tô nền tin nhắc mình; chỉ gợi ý thành viên của hội thoại (D-058); gõ tên người ngoài hội thoại thì không ai được báo và người gửi được gợi ý 'Add them' (D-135); mọi thành viên dùng được @channel, channel từ 20 người thì hỏi xác nhận (D-041)",
        "size": "M",
        "needs": [
-        "043"
+        "043",
+        "093"
        ]
       },
       {
@@ -4595,16 +4713,19 @@
        "scope": "Đặt status, mẫu có sẵn, tự xóa theo giờ; lưu rỗng nghĩa là xóa status",
        "size": "M",
        "needs": [
-        "064"
+        "064",
+        "093",
+        "094"
        ]
       },
       {
        "id": "057",
        "title": "Panel Profile",
-       "scope": "Avatar là chữ cái đầu trên nền màu, không có ảnh (D-118); tên, chức danh, presence, status, giờ địa phương tính theo múi giờ người đó đã đặt, kèm múi giờ dạng UTC (D-144); nút Message; người đã bị vô hiệu hóa mang nhãn 'Deactivated' và không có nút Message (F41); hồ sơ của chính mình có Set status và Edit profile (F31)",
+       "scope": "Avatar là chữ cái đầu trên nền màu, không có ảnh (D-118); tên, chức danh, presence, status, giờ địa phương tính theo múi giờ người đó đã đặt, kèm múi giờ dạng UTC (D-144); nút Message; người đã bị vô hiệu hóa mang nhãn 'Deactivated' và không có nút Message (F41); hồ sơ của chính mình có Set status và Edit profile (F31). Sở hữu việc nút Back đóng panel hồ sơ (D-089).",
        "size": "S",
        "needs": [
-        "055"
+        "055",
+        "094"
        ]
       }
      ]
@@ -4625,7 +4746,7 @@
       {
        "id": "059",
        "title": "Đính kèm trong composer",
-       "scope": "Chọn, kéo thả, dán ảnh; mỗi file một thẻ có tiến trình, nút gỡ và Retry; tối đa 10 file mỗi tin (D-042); lỗi quá 100 MB (D-014); chỉ gửi được khi mọi file đã tải xong (F18); khi mất kết nối thì chặn tải lên và nói rõ lý do (D-060)",
+       "scope": "Chọn, kéo thả, dán ảnh; mỗi file một thẻ có tiến trình, nút gỡ và Retry; tối đa 10 file mỗi tin (D-042); lỗi quá 100 MB (D-014); chỉ gửi được khi mọi file đã tải xong (F18); khi mất kết nối thì chặn tải lên và nói rõ lý do (D-060). Sở hữu `.fchip`.",
        "size": "M",
        "needs": [
         "043",
@@ -4654,9 +4775,10 @@
       {
        "id": "062",
        "title": "Thẻ đính kèm và modal xem",
-       "scope": "Thẻ file, ảnh, link; modal chi tiết có Open in conversation, Copy link và Download; file luôn được tải về chứ không chạy trong trình duyệt (D-095); link tới file chỉ mở được với người xem được hội thoại chứa nó (F18)",
+       "scope": "Thẻ file, ảnh, link; modal chi tiết có Open in conversation, Copy link và Download; file luôn được tải về chứ không chạy trong trình duyệt (D-095); link tới file chỉ mở được với người xem được hội thoại chứa nó (F18). Sở hữu `.card` và `.fic`.",
        "size": "M",
        "needs": [
+        "049",
         "058"
        ]
       },
@@ -4667,7 +4789,8 @@
        "size": "M",
        "needs": [
         "062",
-        "081"
+        "081",
+        "094"
        ]
       },
       {
@@ -4749,7 +4872,10 @@
        "scope": "Chip lọc cho mọi loại mục, số trên chip bằng số dòng đang hiện (D-071, D-074); đánh dấu xong có Hoàn tác trong 5 giây (D-069), snooze, Mark all read; Done và Snooze luôn hiện trên thiết bị chạm (D-067, D-053). Mốc hoãn: 1 giờ nữa, 15:00 hôm nay, 9:00 sáng mai; mốc đã qua thì ẩn đi và 'In 3 hours' thế chỗ (D-114)",
        "size": "M",
        "needs": [
-        "065"
+        "017",
+        "065",
+        "093",
+        "094"
        ]
       },
       {
@@ -4758,7 +4884,9 @@
        "scope": "Lưu tin, In progress và Completed, đặt reminder bắn đúng giờ và phải ở tương lai (D-073); reminder tới hạn trong lúc Pause hoặc Focus thì được giữ lại (D-072); tin gốc bị xóa thì hiện dòng thay thế và số đếm vẫn khớp (D-074); gỡ khỏi Later có Hoàn tác (D-061). Mốc nhắc giống mốc hoãn, mốc đã qua thì 'In 3 hours' thế chỗ (D-114)",
        "size": "M",
        "needs": [
-        "064"
+        "064",
+        "093",
+        "094"
        ]
       },
       {
@@ -4787,7 +4915,7 @@
       {
        "id": "074",
        "title": "Web Push",
-       "scope": "Khóa VAPID, service worker chỉ dùng cho push (D-030), đăng ký thiết bị kèm một thông báo thử, bấm thông báo mở Toki tại đúng tin đó; thông báo hiện tên người gửi, tên hội thoại và đoạn đầu của tin (D-044); thẻ hỏi bật thông báo ở lần đầu, chỉ hỏi quyền trình duyệt sau khi bấm Turn on (F36); trên iPhone push chỉ chạy khi Toki đã được thêm vào màn hình chính (D-108); đăng xuất thì gỡ đăng ký push của thiết bị đó (D-158). Thêm khoá VAPID vào bảng kê cấu hình và `.env.example` của TOKI-096",
+       "scope": "Khóa VAPID, service worker chỉ dùng cho push (D-030), đăng ký thiết bị kèm một thông báo thử, bấm thông báo mở Toki tại đúng tin đó; thông báo hiện tên người gửi, tên hội thoại và đoạn đầu của tin (D-044); thẻ hỏi bật thông báo ở lần đầu, chỉ hỏi quyền trình duyệt sau khi bấm Turn on (F36); trên iPhone push chỉ chạy khi Toki đã được thêm vào màn hình chính (D-108); đăng xuất thì gỡ đăng ký push của thiết bị đó (D-158). Thêm khoá VAPID vào bảng kê cấu hình và `.env.example` của TOKI-096. Sở hữu việc nhận biết iPhone và thêm khoá VAPID vào bảng kê cấu hình.",
        "size": "L",
        "needs": [
         "073"
@@ -4796,7 +4924,7 @@
       {
        "id": "075",
        "title": "Âm thanh và thông báo trong app",
-       "scope": "Toast khi có tin ở hội thoại khác, âm báo",
+       "scope": "Toast khi có tin ở hội thoại khác, âm báo. Sở hữu việc mở khoá âm thanh ở Safari.",
        "size": "S",
        "needs": [
         "073"
@@ -4809,7 +4937,8 @@
        "size": "M",
        "needs": [
         "064",
-        "073"
+        "073",
+        "082"
        ]
       },
       {
@@ -4844,9 +4973,10 @@
       {
        "id": "078",
        "title": "Màn hình Preferences",
-       "scope": "Look (Calm, Focus, Match my device), accent, density; các công tắc thông báo, gồm 'Notify me for @mentions even in muted channels', mặc định bật (D-088); Pause, status; ngôn ngữ: English mặc định hoặc Tiếng Việt, đổi là cả giao diện đổi ngay (D-018); hồ sơ: tên hiển thị 1 tới 80 ký tự (D-033), chức danh, múi giờ (D-144), không tải ảnh đại diện (D-118); danh sách 'Signed-in devices', đăng xuất một thiết bị hoặc mọi thiết bị khác, có hỏi xác nhận (D-158); lưu theo tài khoản và áp dụng trên mọi thiết bị (D-142)",
+       "scope": "Look (Calm, Focus, Match my device), accent, density; các công tắc thông báo, gồm 'Notify me for @mentions even in muted channels', mặc định bật (D-088); Pause, status; ngôn ngữ: English mặc định hoặc Tiếng Việt, đổi là cả giao diện đổi ngay (D-018); hồ sơ: tên hiển thị 1 tới 80 ký tự (D-033), chức danh, múi giờ (D-144), không tải ảnh đại diện (D-118); danh sách 'Signed-in devices', đăng xuất một thiết bị hoặc mọi thiết bị khác, có hỏi xác nhận (D-158); lưu theo tài khoản và áp dụng trên mọi thiết bị (D-142). Sở hữu giao diện lần vẽ đầu khi giao diện đã lưu khác cài đặt thiết bị.",
        "size": "M",
        "needs": [
+        "017",
         "056",
         "076"
        ]
@@ -4857,7 +4987,8 @@
        "scope": "Danh bạ những người đang hoạt động, dạng thẻ: avatar chữ cái đầu (D-118), presence, tên, nhãn Admin nếu có (không có Owner, D-152), chức danh, giờ địa phương (D-144); tìm theo tên hoặc chức danh; hiện 50 người đầu, cuộn để tải thêm (D-109); không liệt kê người đã bị vô hiệu hóa (F41); trạng thái rỗng 'Nobody matches' (D-074)",
        "size": "S",
        "needs": [
-        "055"
+        "055",
+        "094"
        ]
       },
       {
@@ -4873,10 +5004,11 @@
       {
        "id": "082",
        "title": "Các trạng thái bổ sung",
-       "scope": "Khung xương khi tải; banner 'Offline: showing saved messages' suốt lúc mất kết nối, không có trạng thái đang kết nối lại và không có toast khi có mạng lại (D-102); một trang chung cho không tìm thấy và không có quyền (D-131); yêu cầu không có phản hồi sau 10 giây thì hiện Retry (D-126); khi mất kết nối thì chặn thao tác ghi kèm lời giải thích, riêng tin nhắn chờ gửi lại (D-079). Thay trang not-found đơn giản của TOKI-006; định dạng 404 và 500 phía server lấy từ TOKI-004",
+       "scope": "Khung xương khi tải; banner 'Offline: showing saved messages' suốt lúc mất kết nối, không có trạng thái đang kết nối lại và không có toast khi có mạng lại (D-102); một trang chung cho không tìm thấy và không có quyền (D-131); yêu cầu không có phản hồi sau 10 giây thì hiện Retry (D-126); khi mất kết nối thì chặn thao tác ghi kèm lời giải thích, riêng tin nhắn chờ gửi lại (D-079). Thay trang not-found đơn giản của TOKI-006; định dạng 404 và 500 phía server lấy từ TOKI-004. Gọi `setConnectionCheck` của TOKI-093 với trạng thái kết nối thật; sở hữu `.strip`.",
        "size": "M",
        "needs": [
-        "040"
+        "040",
+        "093"
        ]
       },
       {
@@ -4894,6 +5026,7 @@
        "scope": "Sheet More có Search, People, Preferences, Admin (chỉ Admin thấy) và phần tài khoản gồm Set status, Pause notifications, Focus time và Sign out (D-158), để điện thoại không thiếu tính năng nào (D-067, D-053); sheet đóng ngay khi chọn một đích đến (GAP-39)",
        "size": "M",
        "needs": [
+        "015",
         "071",
         "076"
        ]
@@ -4903,7 +5036,9 @@
        "title": "Dải báo có bản cập nhật",
        "scope": "Khi có phiên bản mới được deploy, app đang mở hiện dải 'Update available · Reload'; chỉ bắt buộc tải lại khi server báo trang đã quá cũ (D-107)",
        "size": "S",
-       "needs": []
+       "needs": [
+        "082"
+       ]
       }
      ]
     },
@@ -4925,8 +5060,8 @@
        "scope": "Build image khi merge, deploy, chạy migration, rollback",
        "size": "M",
        "needs": [
-        "084",
-        "007"
+        "007",
+        "084"
        ],
        "open": "Deploy tự động hay bấm tay"
       },

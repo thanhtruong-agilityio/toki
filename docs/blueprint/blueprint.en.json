@@ -3753,7 +3753,7 @@
    "id": "M1",
    "name": "Foundation and design system",
    "goal": "The project is set up for Claude, its configuration is known, and the repository, tooling and every base component exist, so later screens are assembled rather than invented.",
-   "exit": "pnpm dev runs, CI is green, and the component preview page matches the prototype in Calm and Focus at all three layouts.",
+   "exit": "pnpm dev runs, CI is green, and the component preview page passes its browser test (prototype class names, resolved colours in both looks, accent, density, the 719 and 720 px rules, fonts loaded, no sideways scroll at 360, 900 and 1280 px) and its by-eye comparison with the prototype is recorded in the pull request.",
    "areas": [
     {
      "name": "Project setup",
@@ -3877,7 +3877,7 @@
       {
        "id": "007",
        "title": "CI on GitHub Actions",
-       "scope": "Lint, type check, tests, build, bundle size limit",
+       "scope": "Lint, type check, tests, build, bundle size limit. Runs six checks: the i18n check of TOKI-017 is a sixth job.",
        "size": "M",
        "needs": [
         "002"
@@ -3891,7 +3891,7 @@
       {
        "id": "008",
        "title": "Test harness",
-       "scope": "Vitest against a real Postgres, Playwright running one sample test, a controllable clock. As specified: also the end-to-end job and the Postgres service in CI, and a separate test database",
+       "scope": "Vitest against a real Postgres, Playwright running one sample test, a controllable clock. As specified: also the end-to-end job and the Postgres service in CI, and a separate test database. The clock `now()` returns epoch milliseconds; names the web-server command for `pnpm test:e2e`; lists `ui-web` in its Vitest projects.",
        "size": "M",
        "needs": [
         "005",
@@ -3917,7 +3917,12 @@
        "needs": [
         "001"
        ],
-       "open": "The structure of the token source file"
+       "open": "The structure of the token source file",
+       "spec": {
+        "state": "pr",
+        "pr": "PR #15",
+        "fix": ""
+       }
       },
       {
        "id": "010",
@@ -3926,101 +3931,181 @@
        "size": "S",
        "needs": [
         "006"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #25",
+        "fix": ""
+       }
       },
       {
        "id": "011",
        "title": "Icon set",
-       "scope": "The prototype's roughly 60 icons as components",
+       "scope": "The prototype's roughly 60 icons as components. 43 icons, not 'roughly 60': the rest are drawn only by features after phase 1 or never drawn.",
        "size": "S",
        "needs": [
         "006"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #29",
+        "fix": ""
+       }
       },
       {
        "id": "018",
        "title": "The platform package",
-       "scope": "Interface for notifications, storage, file picking and sound; the web implementation. Its import ban is added to the boundary rules of TOKI-002",
+       "scope": "Interface for notifications, storage, file picking and sound; the web implementation. Its import ban is added to the boundary rules of TOKI-002. The ban on importing the web implementation, with its fixture, goes into the boundary rules of TOKI-002.",
        "size": "S",
        "needs": [
-        "001"
-       ]
+        "001",
+        "002",
+        "006",
+        "008"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #21",
+        "fix": ""
+       }
       },
       {
        "id": "012",
        "title": "Base components, group 1",
-       "scope": "Button, IconButton, Chip, Switch, Field, Select, Tag, Badge; icon-only buttons must have a name, checked by lint (NR9). The lint rule for icon-only buttons goes into the ESLint config of TOKI-002",
+       "scope": "Button, IconButton, Chip, Switch, Field, Select, Tag, Badge; icon-only buttons must have a name, checked by lint (NR9). The lint rule for icon-only buttons goes into the ESLint config of TOKI-002. Owns the `font: inherit` rule for form controls, `.ic{flex:none}`, and the contract the other `ui-web` tickets follow (folder layout, `forwardRef`, test set-up, `componentExamples`).",
        "size": "M",
        "needs": [
+        "002",
         "009",
+        "010",
+        "011",
         "018"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #33",
+        "fix": ""
+       }
       },
       {
        "id": "013",
        "title": "Base components, group 2",
-       "scope": "Avatar, PresenceDot, EmptyState centred in the content area (NR8), Toast placed above the composer with an Undo button (NR3, NR12)",
+       "scope": "Avatar, PresenceDot, EmptyState centred in the content area (NR8), Toast placed above the composer with an Undo button (NR3, NR12). Toast, its 5 s timer and `useToastAnchor`; the Undo helper itself is TOKI-093.",
        "size": "M",
        "needs": [
         "009",
-        "018"
-       ]
+        "012"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #31",
+        "fix": ""
+       }
       },
       {
        "id": "014",
        "title": "Overlays",
-       "scope": "Menu, Modal, Sheet; focus trapped inside and returned on close, Esc in order, menus usable with arrow keys (NR9)",
+       "scope": "Menu, Modal, Sheet; focus trapped inside and returned on close, Esc in order, menus usable with arrow keys (NR9). Layers report `escape`, `outside` or `close` and never close themselves; the guard that decides is TOKI-093.",
        "size": "M",
        "needs": [
         "012"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #38",
+        "fix": ""
+       }
       },
       {
        "id": "015",
        "title": "AppShell in three layouts",
-       "scope": "Calm, Focus, and narrow under 720px with BottomTabs. Per NR2: smallest size 360 × 560; from 720 to 1099px side panels overlay the chat; navigation and the tab row scroll; the conversation list is the main area of the sidebar",
+       "scope": "Calm, Focus, and narrow under 720px with BottomTabs. Per NR2: smallest size 360 × 560; from 720 to 1099px side panels overlay the chat; navigation and the tab row scroll; the conversation list is the main area of the sidebar. Also owns `.tab`, the 15 px narrow body size (to be confirmed), the toast anchor mount, the account card as a trigger button, the look-attribute function, and role rules for sections.",
        "size": "L",
        "needs": [
+        "006",
+        "008",
+        "009",
+        "010",
+        "011",
         "012",
-        "013"
-       ]
+        "013",
+        "017",
+        "023"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #41",
+        "fix": ""
+       }
       },
       {
        "id": "016",
        "title": "Component preview page",
-       "scope": "One page listing every component in both looks, for comparison with the prototype",
+       "scope": "One page listing every component in both looks, for comparison with the prototype. A second Vite entry `preview.html`, kept out of the production build.",
        "size": "S",
        "needs": [
-        "012"
-       ]
+        "006",
+        "007",
+        "008",
+        "009",
+        "010",
+        "011",
+        "012",
+        "013",
+        "014"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #36",
+        "fix": ""
+       }
       },
       {
        "id": "017",
        "title": "The i18n package",
-       "scope": "Translation framework, English by default, automatic check for missing keys. Its missing-translation check is added to the CI workflow of TOKI-007",
+       "scope": "Translation framework, English by default, automatic check for missing keys. Its missing-translation check is added to the CI workflow of TOKI-007. The missing-translation check is a job named `i18n`; also owns `nav.*` (14 keys).",
        "size": "S",
        "needs": [
-        "001"
-       ]
+        "001",
+        "002",
+        "007"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #22",
+        "fix": ""
+       }
       },
       {
        "id": "093",
        "title": "Destructive-action and unsaved-form patterns",
-       "scope": "A confirmation dialog that names its target, a 5-second Undo toast, and a guard against closing a form that has content (NR3, NR4)",
+       "scope": "A confirmation dialog that names its target, a 5-second Undo toast, and a guard against closing a form that has content (NR3, NR4). Builds the Undo helper, the confirmation dialog and the form guard on the Toast of TOKI-013 and the layers of TOKI-014; the call sites belong to the tickets that name it as a need.",
        "size": "M",
        "needs": [
+        "012",
         "013",
-        "014"
-       ]
+        "014",
+        "017"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #56",
+        "fix": ""
+       }
       },
       {
        "id": "094",
        "title": "Shared date and time rules",
-       "scope": "Validation and formatting in shared: required fields, no past where a future time is needed, the year shown when it differs, one format with 24-hour time everywhere (D-073, D-123)",
+       "scope": "Validation and formatting in shared: required fields, no past where a future time is needed, the year shown when it differs, one format with 24-hour time everywhere (D-073, D-123). Builds the whole date string with English names in `names.ts` and takes a language code; time zone and the year position are open questions.",
        "size": "S",
        "needs": [
         "001"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #27",
+        "fix": ""
+       }
       }
      ]
     }
@@ -4059,7 +4144,8 @@
        "scope": "A configurable mail layer (D-027) and two templates in English and Vietnamese: the sign-in mail carries the 6-digit code only, with no button (D-157); the invitation mail names the workspace and the inviter and carries the Join button and a 6-digit code (D-149)",
        "size": "M",
        "needs": [
-        "004"
+        "004",
+        "017"
        ],
        "open": "The wording and look of the emails"
       },
@@ -4071,17 +4157,29 @@
        "needs": [
         "019",
         "021"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #17",
+        "fix": ""
+       }
       },
       {
        "id": "023",
        "title": "Sign-in screens",
-       "scope": "Enter email; the 'Check your email' step with the 6-digit field, the line 'The code works for 10 minutes', 'Use a different email' and 'Resend code' enabled after 60 seconds (D-082, D-136); the 7 error cases of F05, with the tries left and the locked code (D-137); the 'Your session has ended' screen (F07). Errors show under the field (D-104). There is no welcome screen (D-083)",
+       "scope": "Enter email; the 'Check your email' step with the 6-digit field, the line 'The code works for 10 minutes', 'Use a different email' and 'Resend code' enabled after 60 seconds (D-082, D-136); the 7 error cases of F05, with the tries left and the locked code (D-137); the 'Your session has ended' screen (F07). Errors show under the field (D-104). There is no welcome screen (D-083). Owns the session state in client-core that reacts when a request comes back unauthenticated; the cross-tab signal on Sign out is TOKI-099.",
        "size": "M",
        "needs": [
+        "006",
         "014",
+        "017",
         "022"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #19",
+        "fix": ""
+       }
       },
       {
        "id": "027",
@@ -4108,7 +4206,8 @@
        "scope": "Opens only for Admins; a Member sees 'You do not have access to this page' (D-090). Member table with name, email, role, status (Invited, Active, Deactivated) and last active; search, a status chip with a total for each status, the first 50 rows and more on scroll (D-109). 'Invite members': several addresses, role Member or Admin with Member by default, each row showing 'Invited' or 'Mail not sent' with Resend (D-153, D-099); Revoke asks for confirmation. Row menu: Change role, Deactivate, Reactivate, each with a confirmation that names the person (D-061, D-069); the entries are locked, with the reason, on the Admin's own row and on the last Admin (D-153)",
        "size": "L",
        "needs": [
-        "024"
+        "024",
+        "093"
        ]
       },
       {
@@ -4130,9 +4229,13 @@
       {
        "id": "099",
        "title": "Account menu, Sign out and signed-in devices (screens)",
-       "scope": "The account card's menu: Set status, Pause notifications, Focus time, Preferences, Sign out; an entry appears when its own ticket is built. 'Sign out' in the account menu, and in the More sheet on narrow screens (D-158, D-067). A 'Signed-in devices' section in Preferences: each row shows the device kind, browser and last use, and the current one is labelled 'This device'; 'Sign out' beside another device and 'Sign out all other devices', each asking for confirmation (D-158, D-069)",
+       "scope": "The account card's menu: Set status, Pause notifications, Focus time, Preferences, Sign out; an entry appears when its own ticket is built. 'Sign out' in the account menu, and in the More sheet on narrow screens (D-158, D-067). A 'Signed-in devices' section in Preferences: each row shows the device kind, browser and last use, and the current one is labelled 'This device'; 'Sign out' beside another device and 'Sign out all other devices', each asking for confirmation (D-158, D-069). Owns the account menu content and renders the Menu on the shell's trigger; owns the cross-tab signal on Sign out and the sign-out call; and the confirmation for signing out other devices.",
        "size": "S",
-       "needs": []
+       "needs": [
+        "014",
+        "015",
+        "093"
+       ]
       }
      ]
     },
@@ -4154,8 +4257,8 @@
        "scope": "Create (Admin only; a Member's request is refused, D-084, D-090), browse, join, leave, edit topic and description, add people, remove people, archive and restore. Names are lowercase letters, digits and hyphens, up to 80 characters; the server never creates two channels with one name, also when two requests arrive together and against archived channels (D-040, D-115, D-128); topic up to 250 characters (D-101); public or private is fixed and there is no rename (D-040, D-105). A channel that is not joined cannot be read, and joining gives the full history (D-116, D-029). Every write requires membership (D-077). Any member edits the topic and adds people (D-041, D-090); an Admin removes people and archives only where a member, never in #general (D-085, D-047, D-034). A private channel is rejoined only when a member adds the person back, and the last member leaving archives it (D-051)",
        "size": "L",
        "needs": [
-        "028",
-        "027"
+        "027",
+        "028"
        ]
       },
       {
@@ -4203,16 +4306,19 @@
        "size": "M",
        "needs": [
         "014",
-        "032"
+        "032",
+        "093"
        ]
       },
       {
        "id": "035",
        "title": "Conversation header and Details panel",
-       "scope": "Name, topic, members, notification level, mute, star, leave. Defaults: Mentions only for channels, All messages for DMs (D-046). Mute also hides the unread badge and bold; the level 'Nothing' only stops toast, push and sound (D-103). Any member edits the topic and description in place; the name cannot be changed (D-105). Leaving a public channel happens at once with Undo for 5 seconds; leaving a private channel asks for confirmation that says a member must invite you back, with no Undo (D-156, D-061); the last member is told the channel will be archived (D-051); #general has no Leave (D-034)",
+       "scope": "Name, topic, members, notification level, mute, star, leave. Defaults: Mentions only for channels, All messages for DMs (D-046). Mute also hides the unread badge and bold; the level 'Nothing' only stops toast, push and sound (D-103). Any member edits the topic and description in place; the name cannot be changed (D-105). Leaving a public channel happens at once with Undo for 5 seconds; leaving a private channel asks for confirmation that says a member must invite you back, with no Undo (D-156, D-061); the last member is told the channel will be archived (D-051); #general has no Leave (D-034). Owns Back closing an open panel before leaving the conversation (D-089).",
        "size": "M",
        "needs": [
-        "033"
+        "033",
+        "093",
+        "094"
        ]
       },
       {
@@ -4220,21 +4326,27 @@
        "title": "Create a channel from the Admin page",
        "scope": "A '+' on the 'Channels' list of the Admin page opens the Create channel dialog (D-151). In phase 1 that list shows every channel with its member count; the busiest ranking comes with Analytics (D-183): Name, a Private switch off by default, Topic (optional, up to 250 characters), Add people (optional) (D-101). A space typed in the name becomes a hyphen and capitals become lowercase (D-127). Errors show under the field; Create is disabled until the form is valid and while the request runs (D-104, D-111); a name already in use is refused by the server and the field says so (D-115). Closing with content asks whether to discard (D-070). The new channel opens at once (D-076). A Member has no way to open this dialog (D-084)",
        "size": "M",
-       "needs": []
+       "needs": [
+        "093"
+       ]
       },
       {
        "id": "100",
        "title": "Add and remove people in a channel (screens)",
        "scope": "Add people: a search that lists only people not yet in the channel, the first 50 shown and more on scroll (D-109); choose one or more and press Add; any member can do it, in private channels too (D-090). Remove a person: offered only to an Admin who is a member of the channel, never in #general, with a confirmation that names the person (D-085, D-047, D-069)",
        "size": "S",
-       "needs": []
+       "needs": [
+        "093"
+       ]
       },
       {
        "id": "101",
        "title": "Archive and restore a channel (screens)",
        "scope": "Archive: offered only to an Admin who is a member, never for #general (D-047, D-034); the confirmation names the channel and its member count (D-061, D-069). Afterwards the channel leaves everyone's list, its composer is replaced by 'This channel has been archived' and its history stays readable (D-029). Browse channels shows it with an 'Archived' label and gives Admins a 'Restore' button (F26)",
        "size": "S",
-       "needs": []
+       "needs": [
+        "093"
+       ]
       }
      ]
     }
@@ -4309,16 +4421,19 @@
       {
        "id": "042",
        "title": "Message component",
-       "scope": "Avatar, name, 24-hour time (D-123), grouping within 5 minutes, day dividers. Send states beside the time: faded until confirmed, 'Waiting to send', and a red 'Not sent' with Retry and Delete, where Delete asks nothing (D-087). Grey system lines for join, leave, add, pin and channel creation, including a newcomer joining #general; a system line raises no unread count and no notification (D-100)",
+       "scope": "Avatar, name, 24-hour time (D-123), grouping within 5 minutes, day dividers. Send states beside the time: faded until confirmed, 'Waiting to send', and a red 'Not sent' with Retry and Delete, where Delete asks nothing (D-087). Grey system lines for join, leave, add, pin and channel creation, including a newcomer joining #general; a system line raises no unread count and no notification (D-100). Adds the `common` keys for Today, Tomorrow and Yesterday and the glue that passes them to the date formatter.",
        "size": "M",
        "needs": [
-        "041"
+        "017",
+        "041",
+        "093",
+        "094"
        ]
       },
       {
        "id": "043",
        "title": "Composer",
-       "scope": "Enter sends, Shift+Enter makes a new line, no send while composing a Vietnamese word, auto-grow, local draft",
+       "scope": "Enter sends, Shift+Enter makes a new line, no send while composing a Vietnamese word, auto-grow, local draft. Registers the composer with the toast anchor of TOKI-013.",
        "size": "M",
        "needs": [
         "040"
@@ -4341,7 +4456,7 @@
       {
        "id": "045",
        "title": "Threads",
-       "scope": "API, thread panel, Also send to channel. One level deep. The root author, everyone who replied and everyone mentioned follow the thread automatically; there is no 'Unfollow thread' (D-119). When the root is deleted the thread stays under a 'Message deleted' line, and a reply being written is still sent (D-013, D-096). Each thread has its own address; Back closes the panel first (D-089). From 720 to 1099px the panel overlays the chat (D-068)",
+       "scope": "API, thread panel, Also send to channel. One level deep. The root author, everyone who replied and everyone mentioned follow the thread automatically; there is no 'Unfollow thread' (D-119). When the root is deleted the thread stays under a 'Message deleted' line, and a reply being written is still sent (D-013, D-096). Each thread has its own address; Back closes the panel first (D-089). From 720 to 1099px the panel overlays the chat (D-068). Owns `.tlink`.",
        "size": "L",
        "needs": [
         "040"
@@ -4362,7 +4477,8 @@
        "scope": "Edit in place, the edited label, soft delete that keeps the thread, confirmation before deleting; a deleted message's files leave storage; an admin deleting someone's message shows a distinct line and tells the author (G10, G16, F16, F42)",
        "size": "M",
        "needs": [
-        "040"
+        "040",
+        "093"
        ]
       },
       {
@@ -4371,13 +4487,14 @@
        "scope": "Pin, unpin, the pinned list",
        "size": "S",
        "needs": [
-        "040"
+        "040",
+        "093"
        ]
       },
       {
        "id": "049",
        "title": "Text formatting",
-       "scope": "Bold, italic, code, links; safe rendering with no raw HTML",
+       "scope": "Bold, italic, code, links; safe rendering with no raw HTML. Owns `.lnk`.",
        "size": "M",
        "needs": [
         "042"
@@ -4389,7 +4506,8 @@
        "scope": "People and @channel, a suggestion popup that matches with or without diacritics, a tinted background on messages that mention you; only conversation members are suggested (D-058); a name typed for someone outside the conversation notifies nobody and offers the sender 'Add them' (D-135); any member can use @channel, with confirmation in channels of 20 or more (D-041)",
        "size": "M",
        "needs": [
-        "043"
+        "043",
+        "093"
        ]
       },
       {
@@ -4481,16 +4599,19 @@
        "scope": "Set a status, presets, clear on a timer; saving empty clears it",
        "size": "M",
        "needs": [
-        "064"
+        "064",
+        "093",
+        "094"
        ]
       },
       {
        "id": "057",
        "title": "Profile panel",
-       "scope": "Initials avatar on a colour, no picture (D-118); name, job title, presence, status, local time from the time zone the person set, shown with a UTC offset (D-144); a Message button; a deactivated person is labelled 'Deactivated' and has no Message button (F41); your own profile has Set status and Edit profile (F31)",
+       "scope": "Initials avatar on a colour, no picture (D-118); name, job title, presence, status, local time from the time zone the person set, shown with a UTC offset (D-144); a Message button; a deactivated person is labelled 'Deactivated' and has no Message button (F41); your own profile has Set status and Edit profile (F31). Owns Back closing the profile panel (D-089).",
        "size": "S",
        "needs": [
-        "055"
+        "055",
+        "094"
        ]
       }
      ]
@@ -4511,7 +4632,7 @@
       {
        "id": "059",
        "title": "Attachments in the composer",
-       "scope": "Pick, drag and drop, paste an image; one card per file with progress, remove and Retry; up to 10 files per message (D-042); the over-100-MB error (D-014); Send waits until every file has uploaded (F18); uploading is blocked while offline, with the reason (D-060)",
+       "scope": "Pick, drag and drop, paste an image; one card per file with progress, remove and Retry; up to 10 files per message (D-042); the over-100-MB error (D-014); Send waits until every file has uploaded (F18); uploading is blocked while offline, with the reason (D-060). Owns `.fchip`.",
        "size": "M",
        "needs": [
         "043",
@@ -4540,9 +4661,10 @@
       {
        "id": "062",
        "title": "Attachment cards and viewer modal",
-       "scope": "File, image and link cards; the detail modal with Open in conversation, Copy link and Download; a file is always downloaded, never run in the browser (D-095); a file link opens only for people who can see its conversation (F18)",
+       "scope": "File, image and link cards; the detail modal with Open in conversation, Copy link and Download; a file is always downloaded, never run in the browser (D-095); a file link opens only for people who can see its conversation (F18). Owns `.card` and `.fic`.",
        "size": "M",
        "needs": [
+        "049",
         "058"
        ]
       },
@@ -4553,7 +4675,8 @@
        "size": "M",
        "needs": [
         "062",
-        "081"
+        "081",
+        "094"
        ]
       },
       {
@@ -4635,7 +4758,10 @@
        "scope": "A filter chip for every kind, each count equal to the rows shown (D-071, D-074); Done with a 5-second Undo (D-069), Snooze, Mark all read; Done and Snooze always visible on touch devices (D-067, D-053). Snooze times: In 1 hour, Today 15:00, Tomorrow 09:00; a choice already past is hidden and 'In 3 hours' takes its place (D-114)",
        "size": "M",
        "needs": [
-        "065"
+        "017",
+        "065",
+        "093",
+        "094"
        ]
       },
       {
@@ -4644,7 +4770,9 @@
        "scope": "Save a message, In progress and Completed, set a reminder that fires on time and must be in the future (D-073); a reminder due during Pause or Focus is held (D-072); a replacement row when the source message was deleted, with the count still matching (D-074); removing from Later offers Undo (D-061). Reminder times match snooze times, with 'In 3 hours' replacing a choice already past (D-114)",
        "size": "M",
        "needs": [
-        "064"
+        "064",
+        "093",
+        "094"
        ]
       },
       {
@@ -4673,7 +4801,7 @@
       {
        "id": "074",
        "title": "Web Push",
-       "scope": "VAPID keys, a service worker used for push only (D-030), device registration with a test notification, a click that opens Toki at that message; the notification shows sender, conversation and the start of the message (D-044); a card offering notifications on first visit, the browser asked only after Turn on (F36); on iPhone push works only once Toki is added to the Home Screen (D-108); signing out removes that device's registration (D-158). Adds the VAPID keys to the configuration list and `.env.example` of TOKI-096",
+       "scope": "VAPID keys, a service worker used for push only (D-030), device registration with a test notification, a click that opens Toki at that message; the notification shows sender, conversation and the start of the message (D-044); a card offering notifications on first visit, the browser asked only after Turn on (F36); on iPhone push works only once Toki is added to the Home Screen (D-108); signing out removes that device's registration (D-158). Adds the VAPID keys to the configuration list and `.env.example` of TOKI-096. Owns iPhone detection and adds the VAPID keys to the configuration list.",
        "size": "L",
        "needs": [
         "073"
@@ -4682,7 +4810,7 @@
       {
        "id": "075",
        "title": "Sound and in-app notifications",
-       "scope": "A toast for messages in other conversations, and a sound",
+       "scope": "A toast for messages in other conversations, and a sound. Owns the Safari sound unlock.",
        "size": "S",
        "needs": [
         "073"
@@ -4695,7 +4823,8 @@
        "size": "M",
        "needs": [
         "064",
-        "073"
+        "073",
+        "082"
        ]
       },
       {
@@ -4730,9 +4859,10 @@
       {
        "id": "078",
        "title": "Preferences screen",
-       "scope": "Look (Calm, Focus, Match my device), accent, density; notification switches including 'Notify me for @mentions even in muted channels', on by default (D-088); Pause, status; language: English by default or Tiếng Việt, switching the whole interface at once (D-018); profile: display name of 1 to 80 characters (D-033), job title, time zone (D-144), no picture upload (D-118); the 'Signed-in devices' list with sign out of one device or of all others, after confirmation (D-158); saved to the account and applied on every device (D-142)",
+       "scope": "Look (Calm, Focus, Match my device), accent, density; notification switches including 'Notify me for @mentions even in muted channels', on by default (D-088); Pause, status; language: English by default or Tiếng Việt, switching the whole interface at once (D-018); profile: display name of 1 to 80 characters (D-033), job title, time zone (D-144), no picture upload (D-118); the 'Signed-in devices' list with sign out of one device or of all others, after confirmation (D-158); saved to the account and applied on every device (D-142). Owns the first-paint look when the saved look differs from the device setting.",
        "size": "M",
        "needs": [
+        "017",
         "056",
         "076"
        ]
@@ -4743,7 +4873,8 @@
        "scope": "Directory of active people as cards: initials avatar (D-118), presence, name, an Admin label where it applies (no Owner, D-152), job title, local time (D-144); search by name or job title; the first 50 shown, more on scroll (D-109); deactivated people are not listed (F41); the 'Nobody matches' empty state (D-074)",
        "size": "S",
        "needs": [
-        "055"
+        "055",
+        "094"
        ]
       },
       {
@@ -4759,10 +4890,11 @@
       {
        "id": "082",
        "title": "Extra states",
-       "scope": "Loading skeletons; the banner 'Offline: showing saved messages' for the whole time offline, with no reconnecting state and no toast when the connection returns (D-102); one shared page for not found and no access (D-131); a request with no answer after 10 seconds shows Retry (D-126); while disconnected, writes are blocked with an explanation and only messages wait to resend (D-079). Replaces the plain not-found view of TOKI-006; the server's 404 and 500 format comes from TOKI-004",
+       "scope": "Loading skeletons; the banner 'Offline: showing saved messages' for the whole time offline, with no reconnecting state and no toast when the connection returns (D-102); one shared page for not found and no access (D-131); a request with no answer after 10 seconds shows Retry (D-126); while disconnected, writes are blocked with an explanation and only messages wait to resend (D-079). Replaces the plain not-found view of TOKI-006; the server's 404 and 500 format comes from TOKI-004. Calls `setConnectionCheck` of TOKI-093 with the real connection state; owns `.strip`.",
        "size": "M",
        "needs": [
-        "040"
+        "040",
+        "093"
        ]
       },
       {
@@ -4780,6 +4912,7 @@
        "scope": "A More sheet with Search, People, Preferences, Admin (Admins only) and an account section with Set status, Pause notifications, Focus time and Sign out (D-158), so the phone lacks nothing (D-067, D-053); the sheet closes as soon as a destination is chosen (GAP-39)",
        "size": "M",
        "needs": [
+        "015",
         "071",
         "076"
        ]
@@ -4789,7 +4922,9 @@
        "title": "Update-available strip",
        "scope": "When a new version is deployed an open app shows the strip 'Update available · Reload'; the reload is forced only when the server says the page is too old (D-107)",
        "size": "S",
-       "needs": []
+       "needs": [
+        "082"
+       ]
       }
      ]
     },
@@ -4811,8 +4946,8 @@
        "scope": "Build the image on merge, deploy, run migrations, roll back",
        "size": "M",
        "needs": [
-        "084",
-        "007"
+        "007",
+        "084"
        ],
        "open": "Automatic deploy or a manual trigger"
       },
