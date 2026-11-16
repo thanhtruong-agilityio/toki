@@ -38,6 +38,7 @@ The server refuses every other request that comes without a valid session.
 - A session lasts 30 days on one device and renews on every use, so 30 days means 30 days without opening Toki. Source: D-011, D-138, BR-05, FR-03.
 - A session on one device does not sign in another device. Source: FR-03, AC-008.
 - Nothing in Toki is readable without a session; sign-in is the only public page. Source: BR-01, FR-03.
+- The sign-in card shows the workspace name to a person with no session. Source: journeys F01 and F04, accepted as the baseline by D-091; D-081.
 - The sign-in mail carries the 6-digit code only, with no button; nothing in the mail signs anyone in without the code. Source: D-157.
 - The sign-in mail is written in the language the member chose. Source: D-180.
 - Signing out ends the session on that device; the other tabs of the same browser are signed out at once because they share the session; the person's other devices stay signed in. Source: D-093, D-158, FR-46.
@@ -50,6 +51,6 @@ The server refuses every other request that comes without a valid session.
 ## Open questions
 - An address with an unused invitation (account state "Invited") asks for a code on the normal sign-in page. Is a code sent? The decision log does not say.
 - The sign-in mail cannot be sent (the mail server is down). Is the person told? Telling them would reveal that the address is a member (BR-04). The log decides this only for invitations (D-099).
-- The limit of 5 requests in 15 minutes is per email address (D-038). Is there also a limit per network address or for the whole server? Without one, anyone who knows a member's address can use up that member's 5 requests. The log does not say.
+- The limit of 5 requests in 15 minutes is per email address (D-038). Is there also a limit per network address or for the whole server? Without one, anyone who knows a member's address can use up that member's 5 requests, and can keep guessing codes, 5 tries on each new code. The log does not say.
 - Do code requests made through "Resend code" on an invitation (TOKI-097) count toward the same 5 requests in 15 minutes as sign-in requests for that address? The log does not say.
-- The sign-in page shows the workspace name (journeys F01, F04) before anyone is signed in. Which ticket supplies that name to a page with no session? No ticket scope names it.
+- The sign-in page shows the workspace name (journeys F01, F04) before anyone is signed in. Which ticket supplies that name to a page with no session? No ticket scope names it. Answered in the spec: this ticket, by a public read of the name only.
