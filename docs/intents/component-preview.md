@@ -11,7 +11,7 @@ Source: Toki Blueprint, plan (ticket TOKI-016, milestone M1 and its done-when li
 The builder (Thanh and Claude) opens one page in development and sees every component, every icon, the fonts and the tokens, in Calm or Focus, in any accent and density, at the width of the browser window.
 The page lists, for each component, the places in the prototype to compare it with, so that the comparison is done on named states and not on a general impression.
 Some of the comparison is automatic and runs in CI: the page lists everything, nothing on it fails, and the colours, sizes and narrow-screen rules that the specs fix are the ones the browser draws. The rest is done by eye and recorded in the pull request. The spec says what each kind of check proves and what it does not.
-The page is a tool for the builder and does not reach the people who use Toki.
+Proposed, pending the first open question: the page is a tool for the builder and does not reach the people who use Toki.
 
 ## Affected users and systems
 - The builder (one person building with Claude). Source: Toki Blueprint, intent I02 design-system ("The builder; indirectly every user").
@@ -20,10 +20,10 @@ The page is a tool for the builder and does not reach the people who use Toki.
 
 ## Constraints
 - One page that lists every component in both looks, for comparison with the prototype. Source: Toki Blueprint, ticket TOKI-016.
-- Milestone M1 Foundation and design system. Its exit check includes "the component preview page matches the prototype in Calm and Focus at all three layouts". The three layouts are Calm, Focus and narrow under 720 px (D-068). Source: Toki Blueprint, plan, milestone M1 and intent I02.
+- Milestone M1 Foundation and design system. Its exit check includes "the component preview page matches the prototype in Calm and Focus at all three layouts". The three layouts are Calm, Focus and narrow under 720 px (technical design, Frontend, "Three layouts, one component set"; D-068 gives the widths: one pane under 720 px, side panels overlay the chat from 720 to 1099 px, three columns from 1100 px). Source: Toki Blueprint, plan, milestone M1 and intent I02.
 - The prototype is the only design source (D-019). Where it draws nothing, Claude decides; those states cannot be compared with the prototype.
 - Size: S (about half a working session with Claude). Source: Toki Blueprint, ticket TOKI-016.
-- Needs TOKI-012 (base components, group 1); the specs of TOKI-012 and TOKI-013 say it also needs TOKI-013. Source: Toki Blueprint, plan; specs of TOKI-012 and TOKI-013.
+- Needs TOKI-012 (base components, group 1); the spec of TOKI-013 (concern 9) says it also needs TOKI-013, and later TOKI-014 and TOKI-015; the spec of TOKI-012 only lists TOKI-016 under "Needed by". Source: Toki Blueprint, plan; specs of TOKI-012 and TOKI-013.
 - English is the default interface language and every interface text goes through i18n (D-018, D-064).
 - Demo-only controls never ship (D-145). That decision is about the prototype's demo bar; no decision says whether a builder's page ships.
 - No component holds a text of its own; examples carry demo words that are test data. Source: spec of TOKI-012 (R3, Examples).
