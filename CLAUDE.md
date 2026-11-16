@@ -70,19 +70,19 @@ DRY_RUN=1 bash .github/scripts/spec-ticket.sh docs/specs/<file>.md
 # Test the rule that reads a review request from a comment
 bash .github/scripts/review-request.test.sh
 
-# Read one comment: exit 0 and "auto", "ultra" or "standard"; exit 1 when it does not ask for a review
-printf '%s' '@reviewer ultra' | bash .github/scripts/review-request.sh
+# Read one comment: exit 0 when it mentions @reviewer, exit 1 when it does not ask for a review
+printf '%s' '@reviewer' | bash .github/scripts/review-request.sh
 ```
 
 The `Spec ticket` workflow can also be run by hand on GitHub, for one spec or for all, with a `dry_run` input.
 
 ## Review on request
 
-A comment that mentions `@reviewer` on an open pull request starts the `PR review` workflow (`.github/workflows/pr-review.yml`). `@reviewer ultra` or `@reviewer standard` fixes the depth. With `@reviewer` alone, a first short run reads the pull request and decides: ultra for a hard one (subagents on Opus, each blocker checked a second time), standard for the rest (one pass on Sonnet). The review instructions are in `.github/prompts/pr-review.md`. The review posts inline comments and one summary comment that ends with a `<!-- review:{"sha":...} -->` marker; a commit that has the marker is not reviewed again unless the comment names a depth. It never approves or merges.
+A comment that mentions `@reviewer` on an open pull request starts the `PR review` workflow (`.github/workflows/pr-review.yml`), which reviews the pull request with Claude. The review instructions are in `.github/prompts/pr-review.md`. The review posts inline comments and one summary comment that ends with a `<!-- review:{"sha":...} -->` marker. It never approves or merges.
 
 Anyone may ask, so the run treats the pull request as untrusted: the workspace is `main`, the head of the pull request is only read under `pr-head/`, and Claude has read and comment tools only. Keep it that way when you change the workflow: do not add a tool that runs code, and do not put text from a comment or a pull request into a `run:` script except through `env:`.
 
-The workflow needs one repository secret, `ANTHROPIC_API_KEY` or `CLAUDE_CODE_OAUTH_TOKEN`. Like every `issue_comment` workflow, it runs the version on `main`, not the one on the pull request.
+The workflow needs the repository secret `CLAUDE_CODE_OAUTH_TOKEN`. Like every `issue_comment` workflow, it runs the version on `main`, not the one on the pull request.
 
 ## Claude configuration
 
