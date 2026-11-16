@@ -14,5 +14,31 @@
     "cl-lead@cl": true
   },
   "model": "claude-sonnet-5-5",
-  "advisorModel": "opus"
+  "advisorModel": "opus",
+  "permissions": {
+    "allow": [
+      "Bash(git fetch:*)",
+      "Bash(git switch:*)",
+      "Bash(git checkout -b:*)",
+      "Bash(git worktree:*)",
+      "Bash(git push:*)",
+      "Bash(gh pr create:*)",
+      "Bash(gh pr view:*)",
+      "Bash(gh pr list:*)",
+      "Bash(gh pr diff:*)",
+      "Bash(gh pr checks:*)",
+      "Bash(gh pr comment:*)",
+      "Bash(gh pr review:*)",
+      "Bash(gh pr edit:*)",
+      "Bash(gh issue:*)"
+    ],
+    "deny": [
+      "Bash(gh pr merge:*)",
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
+      "Bash(git branch -D:*)",
+      "Bash(git push github --delete:*)",
+      "Bash(git push origin --delete:*)"
+    ]
+  }
 }
