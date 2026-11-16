@@ -2,6 +2,7 @@
 
 Date: 2026-11-16 · Status: draft for review
 Intent: docs/intents/overlays.md (Thanh Truong)
+Ticket: TOKI-014
 
 ## Goal
 The builder (Thanh and Claude) needs the three layers of the prototype as components before the screens that open them are built: the Menu that opens from a button, the Modal (a centred dialog) and the Sheet (the panel that rises from the bottom edge of a phone, the More sheet).
