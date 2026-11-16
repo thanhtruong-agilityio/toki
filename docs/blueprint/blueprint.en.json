@@ -4019,7 +4019,7 @@
       {
        "id": "015",
        "title": "AppShell in three layouts",
-       "scope": "Calm, Focus, and narrow under 720px with BottomTabs. Per NR2: smallest size 360 × 560; from 720 to 1099px side panels overlay the chat; navigation and the tab row scroll; the conversation list is the main area of the sidebar. Also owns `.tab`, the 15 px narrow body size (to be confirmed), the toast anchor mount, the account card as a trigger button, the look-attribute function, and role rules for sections.",
+       "scope": "Calm, Focus, and narrow under 720px with BottomTabs. Per NR2: smallest size 360 × 560; from 720 to 1099px side panels overlay the chat; navigation and the tab row scroll; the conversation list is the main area of the sidebar. Also owns `.tab`, the 15 px narrow body size (to be confirmed), the toast anchor mount, the account card as a trigger button, the look-attribute function, and role rules for sections. The shell's `/` test needs a session from TOKI-023, which is in M2: either that test moves to TOKI-023 or the shell test uses a fake session (to decide).",
        "size": "L",
        "needs": [
         "006",
@@ -4029,8 +4029,7 @@
         "011",
         "012",
         "013",
-        "017",
-        "023"
+        "017"
        ],
        "spec": {
         "state": "pr",
@@ -4819,12 +4818,11 @@
       {
        "id": "076",
        "title": "Pause and Focus time",
-       "scope": "API, a job that ends it on time, the status strip, a summary of what arrived. Holds every notification including reminders; starting Focus again extends it; ending restores the earlier status (NR6)",
+       "scope": "API, a job that ends it on time, the status strip, a summary of what arrived. Holds every notification including reminders; starting Focus again extends it; ending restores the earlier status (NR6). Its banner uses `.strip`, owned by TOKI-082 in M6: either the owner moves to an M5 ticket or this ticket builds the class (to decide).",
        "size": "M",
        "needs": [
         "064",
-        "073",
-        "082"
+        "073"
        ]
       },
       {

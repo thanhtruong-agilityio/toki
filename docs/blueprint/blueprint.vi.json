@@ -4133,7 +4133,7 @@
       {
        "id": "015",
        "title": "AppShell ba bố cục",
-       "scope": "Calm, Focus, khung hẹp dưới 720px với BottomTabs. Theo NR2: nhỏ nhất 360 × 560; từ 720 tới 1099px panel phụ phủ lên chat; thanh điều hướng và hàng tab cuộn được; danh sách hội thoại là vùng chính của thanh bên. Còn sở hữu `.tab`, cỡ chữ 15 px ở màn hình hẹp (cần xác nhận), việc gắn điểm neo toast, thẻ tài khoản dạng nút kích hoạt, hàm đặt thuộc tính giao diện, và quy tắc vai trò cho các mục.",
+       "scope": "Calm, Focus, khung hẹp dưới 720px với BottomTabs. Theo NR2: nhỏ nhất 360 × 560; từ 720 tới 1099px panel phụ phủ lên chat; thanh điều hướng và hàng tab cuộn được; danh sách hội thoại là vùng chính của thanh bên. Còn sở hữu `.tab`, cỡ chữ 15 px ở màn hình hẹp (cần xác nhận), việc gắn điểm neo toast, thẻ tài khoản dạng nút kích hoạt, hàm đặt thuộc tính giao diện, và quy tắc vai trò cho các mục. Bài test `/` của shell cần một phiên từ TOKI-023, ở M2: hoặc bài test đó chuyển sang TOKI-023, hoặc test của shell dùng phiên giả (cần quyết).",
        "size": "L",
        "needs": [
         "006",
@@ -4143,8 +4143,7 @@
         "011",
         "012",
         "013",
-        "017",
-        "023"
+        "017"
        ],
        "spec": {
         "state": "pr",
@@ -4933,12 +4932,11 @@
       {
        "id": "076",
        "title": "Pause và Focus time",
-       "scope": "API, việc nền kết thúc đúng giờ, dải trạng thái, tổng kết những gì đã đến. Giữ lại mọi thông báo kể cả reminder; bật Focus lần nữa thì gia hạn; kết thúc thì trả lại status cũ (NR6)",
+       "scope": "API, việc nền kết thúc đúng giờ, dải trạng thái, tổng kết những gì đã đến. Giữ lại mọi thông báo kể cả reminder; bật Focus lần nữa thì gia hạn; kết thúc thì trả lại status cũ (NR6). Banner của nó dùng `.strip`, do TOKI-082 ở M6 sở hữu: hoặc chuyển chủ sang ticket ở M5, hoặc ticket này tự dựng class (cần quyết).",
        "size": "M",
        "needs": [
         "064",
-        "073",
-        "082"
+        "073"
        ]
       },
       {
