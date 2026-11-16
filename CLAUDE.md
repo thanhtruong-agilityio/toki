@@ -73,3 +73,5 @@ The workflow can also be run by hand on GitHub, for one spec or for all, with a 
 ## Claude configuration
 
 `.claude/settings.json` enables the `cl-core`, `cl-dev`, `cl-ba-qa` and `cl-lead` plugins from the `cl` marketplace, and sets the advisor model. It denies `gh pr merge`, force-push, `git branch -D` and the deletion of a remote branch; do not work around a denied command.
+
+A `Stop` hook runs `.claude/hooks/notify-stop.sh`, which shows a desktop notification when Claude finishes a turn (`osascript` on macOS, `notify-send` on Linux, nothing elsewhere). It runs in the background and always exits 0.
