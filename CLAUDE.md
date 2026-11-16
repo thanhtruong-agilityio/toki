@@ -7,7 +7,7 @@
 - Push to your own ticket branch and open its pull request without asking.
 - Never merge a pull request and never force-push; merging is done by a person on GitHub.
 - Ask before every branch deletion and deploy.
-- Start work with `/cl-core:ticket <ticket>`.
+- Start work with `/cl-core:ticket <ticket>`. The exception is an unattended run the user started (many intents, specs or review fixes in parallel): do not stop at confirmation gates there; record each choice you made and each question you could not answer in the pull request, and report them at the end.
 
 ## Advisor
 
