@@ -179,6 +179,30 @@ importers:
         specifier: 7.0.2
         version: 7.0.2
 
+  apps/server:
+    dependencies:
+      '@toki/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
+
+  apps/web:
+    dependencies:
+      '@toki/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
+
+  packages/client-core: {}
+
+  packages/i18n: {}
+
+  packages/platform: {}
+
+  packages/shared: {}
+
+  packages/tokens: {}
+
+  packages/ui-web: {}
+
 packages:
 
   '@typescript/typescript-aix-ppc64@7.0.2':
