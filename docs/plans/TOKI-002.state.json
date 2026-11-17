@@ -1,7 +1,7 @@
 {
   "approved_auto": false,
   "base": "github/main",
-  "branch": "chore/toki-002-lint-format-boundary-rules",
+  "branch": "chore/toki-002-lint-format-boundary-rules-reland",
   "deployed_sha": null,
   "history": [
     {
@@ -33,6 +33,11 @@
     {
       "at": "2026-11-17T01:48:29Z",
       "stage": "ship"
+    },
+    {
+      "at": "2026-11-17T02:15:53Z",
+      "auto": false,
+      "stage": "approve"
     }
   ],
   "key": "TOKI-002",
@@ -40,7 +45,7 @@
   "metrics": {},
   "mode": "Auto to PR",
   "plan_approved": true,
-  "plan_hash": "0bcd3c2ccab283aa8127913870ce59d8df91054266dd198ac9e8d22b7aef7eb0",
+  "plan_hash": "8c35bb5bdd8aa11d859e06036d431318a50dc05ca9e88b284df779cb1646565c",
   "spec_commit": "e7094ef4acd726925b1796218d3b1a983f20dfd1",
   "spec_paths": [
     "docs/specs/2026-11-12-lint-format-boundary-rules-design.md"
