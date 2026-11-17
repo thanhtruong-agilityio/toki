@@ -116,7 +116,7 @@ A 409 means the screen was out of date; the client reloads the channel (D-131).
 apps/server/src/modules/conversations/
 ├─ channels.ts       the functions behind the routes, the locks, archivesWhenEmptied
 ├─ channel-routes.ts the eleven routes
-├─ browse.ts         the browse query, cursor, summaries (listChannelSummariesOfUser)
+├─ browse.ts         the browse query, cursor, summaries
 ├─ changes.ts        recordChange and the change types (R16)
 └─ *.test.ts, *.db.test.ts
 apps/server/src/modules/members/           getAccountsByIds (R19)
