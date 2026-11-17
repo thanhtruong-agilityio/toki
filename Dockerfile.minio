@@ -1,0 +1,52 @@
+# MinIO for development, built from the upstream source.
+#
+# MinIO no longer publishes container images: minio/minio is gone from Docker Hub
+# and quay.io refuses anonymous pulls. The source repositories are still public
+# (archived), so this file builds the server and the `mc` client from a pinned
+# release tag and checks the commit each tag points to.
+#
+# Each build step removes the Go caches and the checkout it used, so the build
+# leaves about 200 MB behind instead of several GB. It still needs about 3 GB of
+# free Docker disk while it runs, and network access to github.com and the Go
+# module proxy.
+#
+# To move to another release, change the tag and its commit together, here and in
+# the image tag of docker-compose.dev.yml.
+
+FROM golang:1.24.13-alpine AS build
+RUN apk add --no-cache git
+
+ARG MINIO_RELEASE=RELEASE.2025-10-15T17-29-55Z
+ARG MINIO_COMMIT=9e49d5e7a648f00e26f2246f4dc28e6b07f8c84a
+ARG MC_RELEASE=RELEASE.2025-08-13T08-35-41Z
+ARG MC_COMMIT=7394ce0dd2a80935aded936b09fa12cbb3cb8096
+
+ENV CGO_ENABLED=0 GOTOOLCHAIN=local
+
+# Turns RELEASE.2025-10-15T17-29-55Z into 2025-10-15T17:29:55Z, the form the
+# upstream gen-ldflags.go script takes as the version.
+RUN printf '%s\n' '#!/bin/sh' \
+    'echo "$1" | sed -E "s/^RELEASE\.([0-9-]+)T([0-9]+)-([0-9]+)-([0-9]+)Z$/\1T\2:\3:\4Z/"' \
+    > /usr/local/bin/release-version && chmod +x /usr/local/bin/release-version
+
+WORKDIR /src/minio
+RUN git clone --depth 1 --branch "$MINIO_RELEASE" https://github.com/minio/minio.git . \
+    && test "$(git rev-parse HEAD)" = "$MINIO_COMMIT" \
+    && LDFLAGS="$(MINIO_RELEASE=RELEASE go run buildscripts/gen-ldflags.go "$(release-version "$MINIO_RELEASE")")" \
+    && go build -tags kqueue -trimpath --ldflags "$LDFLAGS" -o /out/minio . \
+    && go clean -cache -modcache && rm -rf /src/minio
+
+WORKDIR /src/mc
+RUN git clone --depth 1 --branch "$MC_RELEASE" https://github.com/minio/mc.git . \
+    && test "$(git rev-parse HEAD)" = "$MC_COMMIT" \
+    && LDFLAGS="$(MC_RELEASE=RELEASE go run buildscripts/gen-ldflags.go "$(release-version "$MC_RELEASE")")" \
+    && go build -tags kqueue -trimpath --ldflags "$LDFLAGS" -o /out/mc . \
+    && go clean -cache -modcache && rm -rf /src/mc
+
+FROM alpine:3.22
+RUN apk add --no-cache ca-certificates
+COPY --from=build /out/minio /out/mc /usr/local/bin/
+VOLUME ["/data"]
+EXPOSE 9000 9001
+ENTRYPOINT ["minio"]
+CMD ["server", "/data", "--console-address", ":9001"]

@@ -1,0 +1,67 @@
+{
+  "approved_auto": true,
+  "base": "main",
+  "branch": "feat/toki-003-local-dev-environment",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-17T01:39:59Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-17T01:58:18Z",
+      "stage": "plan"
+    },
+    {
+      "at": "2026-11-17T01:58:18Z",
+      "auto": true,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-17T01:58:18Z",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-17T02:19:19Z",
+      "stage": "check"
+    },
+    {
+      "at": "2026-11-17T02:20:34Z",
+      "auto": true,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-17T02:21:18Z",
+      "auto": true,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-17T02:22:09Z",
+      "stage": "drift"
+    },
+    {
+      "at": "2026-11-17T02:22:10Z",
+      "stage": "ship"
+    },
+    {
+      "at": "2026-11-17T02:27:20Z",
+      "stage": "ci"
+    }
+  ],
+  "key": "TOKI-003",
+  "main_sha": "a246ca0918f4971b8425bbcd9d982188e2639377",
+  "metrics": {},
+  "mode": "Auto to PR",
+  "plan_approved": true,
+  "plan_hash": "befc55fe7bed54049716c71e8631bd6db6a1b136f153d5530d41d7cc1b9a7519",
+  "spec_commit": null,
+  "spec_paths": [
+    "docs/specs/2026-11-12-local-dev-environment-design.md"
+  ],
+  "stage": "ci",
+  "tier": "M",
+  "verifier": {
+    "result": "PASS",
+    "round": 3
+  }
+}

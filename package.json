@@ -16,6 +16,12 @@
   "scripts": {
     "typecheck": "pnpm -r run typecheck",
     "dev": "pnpm -r --parallel --if-present run dev",
+    "dev:up": "bash scripts/up.sh",
+    "dev:down": "bash scripts/down.sh",
+    "dev:reset": "bash scripts/reset.sh",
+    "dev:reset:db": "bash scripts/reset-db.sh",
+    "dev:reset:files": "bash scripts/reset-files.sh",
+    "dev:reset:mail": "bash scripts/reset-mail.sh",
     "lint": "eslint . --max-warnings 0",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
