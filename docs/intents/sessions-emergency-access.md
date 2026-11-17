@@ -15,7 +15,7 @@ A person with access to the server runs one command with a member's email addres
 - The operator of an installation, who has shell access to the server, for the emergency command. Source: journey F43, FR-49.
 - Systems: the Toki server (`apps/server`, the `auth` module) and the data contracts in `packages/shared`.
 - Uses: the `sessions` table (TOKI-019) and the sign-in API (TOKI-022): the session check, the functions that create and end sessions, and the session cookie.
-- Used by: the Preferences section "Signed-in devices" and the sign-out confirmation (TOKI-099), the Admin page's "last active" column (TOKI-025, through the last use per person), and the web page that opens the emergency link (no owner in the plan yet).
+- Used by: the Preferences section "Signed-in devices" and the sign-out confirmation (TOKI-099), the Admin page's "last active" column (TOKI-025, through the last use per person, which TOKI-024 provides), and the web page that opens the emergency link (built in this ticket, see its spec).
 
 ## Constraints
 - Belongs to Blueprint intent I03 sign-in-by-email-code, alongside TOKI-019, 020, 021, 022, 023 and 099. Source: Toki Blueprint, intent list.
