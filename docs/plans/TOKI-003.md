@@ -11,6 +11,8 @@
 ### Files
 ```
 package.json                       six dev:* scripts, each `bash infra/dev/<name>.sh`
+docs/plans/TOKI-003.md             this plan
+docs/plans/TOKI-003.state.json     the state file of the dev flow, written by `dev-state`
 infra/
 ├─ docker-compose.dev.yml          name: toki-dev; postgres, minio, mailpit; one named volume each
 ├─ minio/Dockerfile                builds MinIO and mc from the upstream source at a pinned release
@@ -55,7 +57,7 @@ All scripts are Bash and run under the Bash 3.2 that macOS ships.
 
 ## Choices made in this run
 
-1. **TOKI-096 is not built. This departs from a decision of the lead** (concern 4: TOKI-096 goes first). The spec says TOKI-096 goes first and names every variable (concern 4, R17); `main` has no inventory and no `.env.example`. This ticket uses the names below, kept in one place each (the compose file and the top of `lib.sh` / `guard.sh`). `DATABASE_URL` and `TEST_DATABASE_URL` are not read here. R17 stays pending until TOKI-096 lands; TOKI-096 either adopts these names or this ticket's files are renamed. This ticket does not create the inventory or `.env.example`. `NODE_ENV` is the name most likely to change: other tools (Vite, Vitest) set it themselves.
+1. **TOKI-096 is not built. This departs from a decision of the lead** (concern 4: TOKI-096 goes first). The spec says TOKI-096 goes first and names every variable (concern 4, R17); `main` has no inventory and no `.env.example`. This ticket uses the names below. They appear in three files only: the compose file, `guard.sh` (`NODE_ENV`, `POSTGRES_DB`, `POSTGRES_TEST_DB`) and `lib.sh` (`MINIO_BUCKET`); a rename touches those three and the smoke test. `DATABASE_URL` and `TEST_DATABASE_URL` are not read here. R17 stays pending until TOKI-096 lands; TOKI-096 either adopts these names or this ticket's files are renamed. This ticket does not create the inventory or `.env.example`. `NODE_ENV` is the name most likely to change: other tools (Vite, Vitest) set it themselves.
 
    | Value (TOKI-096 category) | Name used |
    | :-- | :-- |
@@ -76,7 +78,7 @@ All scripts are Bash and run under the Bash 3.2 that macOS ships.
 
 ## Advisor
 
-Consulted once on this design (Opus, 2026-11-17). Adopted: bucket name validation, SQL through standard input, `-T` on every `compose exec`, `--check` stops before the bucket lookup, refusal judged by message and not only by exit status, probes that fail on their own error, the second-database marker in the smoke test, `compose ps -a` for R2, set-but-empty counts as set, the Go and Alpine images pinned to a release. Not adopted: also refusing a development database name that ends in `_test` or that matches `TEST_DATABASE_URL`; the spec defines the rule by `POSTGRES_TEST_DB` only (R24), so this goes to the pull request as a suggestion.
+Consulted once on this design (Opus, 2026-11-17). Adopted: bucket name validation, SQL through standard input, `-T` on every `compose exec`, `--check` stops before the bucket lookup, refusal judged by message and not only by exit status, probes that fail on their own error, the second-database marker in the smoke test, `compose ps -a` for R2, set-but-empty counts as set, the Go image pinned to a release and the Alpine base to its 3.22 series (digest pins were not taken). Not adopted: also refusing a development database name that ends in `_test` or that matches `TEST_DATABASE_URL`; the spec defines the rule by `POSTGRES_TEST_DB` only (R24), so this goes to the pull request as a suggestion.
 
 ## AC -> step -> test
 
