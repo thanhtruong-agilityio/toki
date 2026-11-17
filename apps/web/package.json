@@ -6,6 +6,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@toki/shared": "workspace:*"
+    "@toki/shared": "workspace:*",
+    "left-pad": "1.3.0"
   }
 }
