@@ -31,7 +31,7 @@ A repeat of the same request, for example a double press of Create, changes noth
 - Any member adds people, in private channels too; only an Admin removes people, only in a channel they belong to, never from #general. Source: D-090, D-085, D-047.
 - Only an Admin who is a member archives and restores, never #general. Source: D-047, D-034, F26.
 - #general cannot be left or archived. Source: D-034.
-- A private channel is rejoined only when a member adds the person back; leaving a public channel can be undone for 5 seconds; the last member leaving a private channel archives it. Source: D-051, D-069, D-156.
+- A private channel is rejoined only when a member adds the person back; leaving a public channel can be undone for 5 seconds; the last member leaving a private channel archives it. Source: D-051 (rejoin and last member), D-069 (Undo of a public leave), D-156 (no Undo for a private leave).
 - A repeat of the same request is ignored. Source: D-111.
 - Private channels never appear in Browse for outsiders; "no access" and "not found" are answered the same way. Source: D-051, BR-10.
 - First 50 rows and more on scroll for lists. Source: D-109.
