@@ -13,6 +13,9 @@ UP_HINT="Run \`pnpm dev:up\` first."
 
 cd "$REPO_ROOT" || exit 1
 
+# Plain byte order for patterns such as [A-Za-z], whatever the locale is.
+export LC_ALL=C
+
 say() { printf '%s\n' "$*"; }
 fail() { printf '%s\n' "$*" >&2; }
 

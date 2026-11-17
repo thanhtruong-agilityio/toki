@@ -42,6 +42,10 @@
     {
       "at": "2026-11-17T02:22:10Z",
       "stage": "ship"
+    },
+    {
+      "at": "2026-11-17T02:27:20Z",
+      "stage": "ci"
     }
   ],
   "key": "TOKI-003",
@@ -54,7 +58,7 @@
   "spec_paths": [
     "docs/specs/2026-11-12-local-dev-environment-design.md"
   ],
-  "stage": "ship",
+  "stage": "ci",
   "tier": "M",
   "verifier": {
     "result": "PASS",
