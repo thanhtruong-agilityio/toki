@@ -76,10 +76,6 @@ printf '%s' '@reviewer' | bash .github/scripts/review-request.sh
 # Lint the whole repository (ESLint; a warning fails too), under Node 22
 pnpm lint
 
-# Prove that each of the three boundary rules still fires on its fixture
-# (tools/lint-fixtures/); it names the fixture and the line when one does not
-pnpm lint:boundaries
-
 # Check the format (Prettier), or rewrite badly formatted files
 pnpm format:check
 pnpm format

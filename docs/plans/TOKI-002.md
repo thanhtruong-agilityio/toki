@@ -94,6 +94,10 @@ tools/
 - One `pnpm format` pass over the existing files, in its own commit, layout only.
 - `README.md` (Quick Start, Testing) and the Commands section of `CLAUDE.md` get the four commands.
 
+## Change of 2026-11-17: no fixtures
+
+The spec was changed (concern 13, pull request "spec: drop the lint fixtures and the boundary check script"): the permanent fixture test is dropped. Everything in this plan about `tools/lint-fixtures/`, `check.mjs`, `pnpm lint:boundaries` and the fixture-based tests, mutation sweeps and real-path probes describes the first build and no longer applies; those files were removed. What stays: the three rules and their local rule files in `tools/lint-rules/`, the dependencies, Prettier, and the documents. R11 and R15 are now checked by hand once (violating line per banned item, `eslint --print-config` on the real paths), and the results go in the pull request. The root scripts are `lint`, `format` and `format:check`.
+
 ## AC -> step -> test
 
 No test runner yet (TOKI-008). The fixtures are the tests; the rest are commands run by hand under Node 22 in this worktree, as the spec's Testing section says.

@@ -1,6 +1,5 @@
 // The one ESLint configuration of the repository: ignores, base style, and
 // the three package boundary rules. A boundary is changed only here.
-// tools/lint-fixtures/check.mjs (pnpm lint:boundaries) proves each rule.
 import js from "@eslint/js";
 import prettier from "eslint-config-prettier";
 import globals from "globals";
@@ -31,7 +30,7 @@ const portableSrc = "packages/{client-core,shared,i18n,tokens}/src";
 // all of them. Every other global (window, document, localStorage, ...) is an
 // error, so a browser global that nobody thought to list still fails.
 // globalThis is left out on purpose: it reaches every browser global.
-// A global is added only here, and in tools/lint-fixtures/check.mjs.
+// A global is added only here.
 const allowedGlobals = {
   ...globals.es2022,
   globalThis: "off",
@@ -89,15 +88,8 @@ const platformProperties = [
 
 export default tseslint.config(
   {
-    // Build output, and the fixture folders: they hold violations on purpose
-    // and are linted by check.mjs only. check.mjs itself is linted.
-    ignores: [
-      "**/node_modules/",
-      "**/dist/",
-      "**/build/",
-      "**/coverage/",
-      "tools/lint-fixtures/*/",
-    ],
+    // Build output.
+    ignores: ["**/node_modules/", "**/dist/", "**/build/", "**/coverage/"],
   },
   js.configs.recommended,
   tseslint.configs.recommended,
@@ -113,10 +105,7 @@ export default tseslint.config(
     // Rule 1: client-core, and the packages it imports, touch no DOM or
     // browser API. Test files and package-root configuration files are
     // outside the block.
-    files: [
-      `${portableSrc}/**/${sourceFiles}`,
-      "tools/lint-fixtures/client-core/**",
-    ],
+    files: [`${portableSrc}/**/${sourceFiles}`],
     ignores: [testFiles],
     linterOptions: { noInlineConfig: true },
     languageOptions: { ecmaVersion: 2022, globals: allowedGlobals },
@@ -159,10 +148,7 @@ export default tseslint.config(
     // (index.ts), never each other's internals or tables. The same holds for
     // a file outside modules/ (for example the database client), so it cannot
     // pass a module's tables on to another module.
-    files: [
-      `apps/server/src/**/${sourceFiles}`,
-      "tools/lint-fixtures/server-modules/**",
-    ],
+    files: [`apps/server/src/**/${sourceFiles}`],
     linterOptions: { noInlineConfig: true },
     plugins: { toki },
     rules: {
@@ -171,10 +157,9 @@ export default tseslint.config(
         {
           // Absolute folders, so the rule gives the same result when ESLint
           // starts in a package folder (an editor, pnpm --filter).
-          modulesDirs: [
-            "apps/server/src/modules",
-            "tools/lint-fixtures/server-modules/modules",
-          ].map((dir) => path.join(import.meta.dirname, dir)),
+          modulesDirs: ["apps/server/src/modules"].map((dir) =>
+            path.join(import.meta.dirname, dir),
+          ),
         },
       ],
     },
@@ -185,10 +170,7 @@ export default tseslint.config(
     // File picking in ui-web is not checked by lint and relies on review: an
     // <input type="file"> cannot be told apart from any other input here.
     // Reaching an API through a renamed copy of window also relies on review.
-    files: [
-      `packages/ui-web/src/**/${sourceFiles}`,
-      "tools/lint-fixtures/ui-web/**",
-    ],
+    files: [`packages/ui-web/src/**/${sourceFiles}`],
     ignores: [testFiles],
     linterOptions: { noInlineConfig: true },
     plugins: { toki },

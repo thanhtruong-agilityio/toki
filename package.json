@@ -17,7 +17,6 @@
     "typecheck": "pnpm -r run typecheck",
     "dev": "pnpm -r --parallel --if-present run dev",
     "lint": "eslint . --max-warnings 0",
-    "lint:boundaries": "node tools/lint-fixtures/check.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },

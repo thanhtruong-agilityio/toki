@@ -79,11 +79,10 @@ None of these boxes runs yet; `apps/web` and `apps/server` are empty projects.
    pnpm typecheck
    ```
 
-5. Run the lint and format checks. All three exit 0 on a clean checkout.
+5. Run the lint and format checks. Both exit 0 on a clean checkout.
 
    ```bash
    pnpm lint
-   pnpm lint:boundaries
    pnpm format:check
    ```
 
@@ -108,9 +107,7 @@ Running the apps arrives with TOKI-003 (services), TOKI-004 (server) and TOKI-00
 ├─ apps/                         server and web (empty projects)
 ├─ packages/                     shared, client-core, tokens, i18n, platform, ui-web (empty projects)
 ├─ eslint.config.js              lint style and the three package boundary rules
-├─ tools/
-│  ├─ lint-rules/                the three local ESLint rules the boundaries use
-│  └─ lint-fixtures/             one fixture per boundary rule, and check.mjs that runs them
+├─ tools/lint-rules/             the three local ESLint rules the boundaries use
 ├─ e2e/                          Playwright end-to-end tests (planned, TOKI-008)
 └─ infra/                        development Compose file and scripts (planned, TOKI-003)
 ```
@@ -127,14 +124,13 @@ Lint and format have four commands, run from the repository root:
 
 ```bash
 pnpm lint             # ESLint over the whole repository; a warning fails too
-pnpm lint:boundaries  # proves that each boundary rule still fires on its fixture
 pnpm format:check     # Prettier in check mode
 pnpm format           # rewrites badly formatted files
 ```
 
 `eslint.config.js` holds three boundary rules as lint errors:
 
-- `client-core`, `shared`, `i18n` and `tokens` use only the globals of an allow list and import nothing that needs the DOM, so React Native can reuse them. To use a new global there, add it to the allow list in `eslint.config.js` and to the copy in `tools/lint-fixtures/check.mjs`. A type is not a global: the types that go with the allowed globals (`RequestInit`, `MessageEvent`) pass, and only the DOM types `Window`, `Document`, `Element` and every `HTML...` or `SVG...` type are an error.
+- `client-core`, `shared`, `i18n` and `tokens` use only the globals of an allow list and import nothing that needs the DOM, so React Native can reuse them. To use a new global there, add it to the allow list in `eslint.config.js`. A type is not a global: the types that go with the allowed globals (`RequestInit`, `MessageEvent`) pass, and only the DOM types `Window`, `Document`, `Element` and every `HTML...` or `SVG...` type are an error.
 - A file in `apps/server/src` imports a server module (`src/modules/<name>/`) only through its `index.ts`, unless the file is inside that same module.
 - `ui-web` does not use the notification, storage, service worker or audio APIs directly; it goes through `platform`.
 
