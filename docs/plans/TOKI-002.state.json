@@ -1,0 +1,64 @@
+{
+  "approved_auto": false,
+  "base": "github/main",
+  "branch": "chore/toki-002-lint-format-boundary-rules-reland",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-17T01:32:25Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-17T01:44:12Z",
+      "stage": "plan"
+    },
+    {
+      "at": "2026-11-17T01:44:13Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-17T01:44:13Z",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-17T01:47:21Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-17T01:47:21Z",
+      "stage": "check"
+    },
+    {
+      "at": "2026-11-17T01:48:29Z",
+      "stage": "ship"
+    },
+    {
+      "at": "2026-11-17T02:15:53Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-17T07:42:43Z",
+      "auto": false,
+      "stage": "approve"
+    }
+  ],
+  "key": "TOKI-002",
+  "main_sha": "c4bd72181fbab40a4f1221d8df073b73ed63d8fd",
+  "metrics": {},
+  "mode": "Auto to PR",
+  "plan_approved": true,
+  "plan_hash": "42682fcfec56a99332dd2cda4bdc160a3013985263c35816d4247b6d03c0c9d7",
+  "spec_commit": "e7094ef4acd726925b1796218d3b1a983f20dfd1",
+  "spec_paths": [
+    "docs/specs/2026-11-12-lint-format-boundary-rules-design.md"
+  ],
+  "stage": "ship",
+  "tier": "M",
+  "verifier": {
+    "result": "PASS",
+    "round": 1
+  }
+}
