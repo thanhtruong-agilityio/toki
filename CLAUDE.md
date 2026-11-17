@@ -66,6 +66,19 @@ An advisor model (Opus) is configured for this repository. Consult it:
 
 Say in one line what you are asking it. If its guidance conflicts with the code or the test output, say so instead of following it blindly.
 
+## Never do
+
+What Claude must not do in this repository, collected from rules that already exist. Each line names its source.
+
+1. Merge a pull request, force-push, or push to `main`, `master`, `develop` or `release/*`. Source: Working agreements above.
+2. Commit a secret or a `.env` file. Source: `docs/environment-config.md` ("Secrets live in `.env`, never in git") and `.gitignore`.
+3. Import a file of another server module other than its public entry file `index.ts`. Source: lint rule `toki/module-entry`; `docs/specs/2026-11-12-server-skeleton-design.md`, R17.
+4. Use a DOM or browser API in `client-core`, `shared`, `i18n` or `tokens`. Source: lint rule `toki/client-core-globals`.
+5. Use the notification, storage, service worker or audio API directly in `ui-web`, instead of going through `platform`. Source: lint rule `toki/platform-apis`.
+6. Add a tool that runs code to the `PR review` workflow, or put text from a comment or a pull request into a `run:` script other than through `env:`. Source: Review on request below.
+7. Hard-code a tracker status name instead of the logical keys of `docs/ticket-config.yml`. Source: From a requirement to a ticket below.
+8. Work around a command that `.claude/settings.json` denies. Source: Claude configuration below.
+
 ## State of the repository
 
 The repository is built ticket by ticket, starting from workflow files and documents only. The pnpm workspace, the two apps and the six packages arrive with TOKI-001, and each later foundation ticket adds its own folders and commands. Check the tree for what exists; a folder or command named in a spec may not be built yet. The ticket that adds a command also adds it to the Commands section below.
@@ -107,6 +120,9 @@ bash .github/scripts/spec-ready.sh docs/specs/<file>.md
 # It reads the issues first: needs jq, network access and an authenticated gh.
 # It prints "left alone" and no DRY-RUN line when the ticket needs no change.
 DRY_RUN=1 bash .github/scripts/spec-ticket.sh docs/specs/<file>.md
+
+# Test the Claude hooks (branch slug, lock file, format): feeds each hook a tool call and checks the exit code
+bash .claude/hooks/hooks.test.sh
 
 # Test the rule that reads a review request from a comment
 bash .github/scripts/review-request.test.sh
@@ -207,3 +223,5 @@ The workflow needs the repository secret `CLAUDE_CODE_OAUTH_TOKEN`. Like every `
 `.claude/settings.json` enables the `cl-core`, `cl-dev`, `cl-ba-qa` and `cl-lead` plugins from the `cl` marketplace, and sets the advisor model. It denies `gh pr merge`, force-push, `git branch -D` and the deletion of a remote branch; do not work around a denied command.
 
 A `Stop` hook runs `.claude/hooks/notify-on-finish.sh`, which shows a desktop notification when Claude finishes a turn (`osascript` on macOS, `notify-send` on Linux, nothing elsewhere). It runs in the background and always exits 0.
+
+Three more hooks run in this repository: `.claude/hooks/check-branch-slug.sh` refuses `git push` and `gh pr create` from a branch with no slug (for example `feat/toki-002`; rename it first), `.claude/hooks/block-lockfile-edit.sh` refuses an Edit or Write of `pnpm-lock.yaml` (not a change made through the shell), and `.claude/hooks/format-after-edit.sh` runs Prettier on a file after an edit and never fails the call. Rules that load by area are in `.claude/rules/` (`server`, `web`, `packages`, `typescript`, `specs`, `workflows`), and the project command `/spec-check` checks a spec before its pull request.

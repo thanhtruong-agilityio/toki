@@ -1,0 +1,64 @@
+{
+  "approved_auto": false,
+  "base": "main",
+  "branch": "chore/toki-105-claude-rules-and-hooks",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-17T09:26:48Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-17T09:26:58Z",
+      "stage": "explore"
+    },
+    {
+      "at": "2026-11-17T09:27:40Z",
+      "stage": "plan"
+    },
+    {
+      "at": "2026-11-17T09:27:56Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-17T09:27:56Z",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-17T09:31:26Z",
+      "stage": "check"
+    },
+    {
+      "at": "2026-11-17T09:32:16Z",
+      "stage": "drift"
+    },
+    {
+      "at": "2026-11-17T09:33:08Z",
+      "stage": "ship"
+    },
+    {
+      "at": "2026-11-17T09:33:49Z",
+      "stage": "ci"
+    }
+  ],
+  "key": "TOKI-105",
+  "main_sha": "a246ca0918f4971b8425bbcd9d982188e2639377",
+  "metrics": {
+    "step": "hooks"
+  },
+  "mode": "Auto to PR",
+  "plan_approved": true,
+  "plan_hash": "b942f7f46da88aa8e97f6b4afe4fdcae52469421c2165dfd71abc46d7ee5d87a",
+  "pr": 100,
+  "spec_commit": "a9c7c31c7bb2fa6f8be1da9dc7ceec9d2345c87d",
+  "spec_paths": [
+    "docs/specs/2026-11-17-claude-rules-and-hooks-design.md"
+  ],
+  "stage": "ci",
+  "tier": "M",
+  "verifier": {
+    "result": "PASS",
+    "round": 2
+  }
+}
