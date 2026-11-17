@@ -31,9 +31,9 @@ Source: Toki Blueprint, intent I17 ("Who") and ticket TOKI-004.
 - This file holds no secret and no real credential value.
 
 ## Open questions
-1. Which account sends sign-in emails? Left open in the Blueprint, to be decided before the phase 1 deploy. Suggested there: a company Google account.
-2. Which VPS provider and region? Left open in the Blueprint, to be decided before the phase 1 deploy.
+1. Which account sends sign-in emails? Left open in the Blueprint, which suggests a company Google account. Answered: Thanh Truong's own Gmail account, set through the SMTP environment variables; no committed file holds the address or the password. Decided by Thanh (Thanh Truong, lead, as product owner) on 2026-11-17.
+2. Which VPS provider and region? Left open in the Blueprint. Accepted as an external value, owner Thanh Truong, chosen before the phase 1 deploy. Accepted by Thanh on 2026-11-17.
 3. Which environments are in scope? The Blueprint names development and production only.
-4. Who are the named owners of the production values? The Blueprint asks for an owner per value but names none.
-5. What are the domain and the backup storage? The ticket lists both as values from outside; the Blueprint gives no value or owner.
+4. Who are the named owners of the production values? Answered: Thanh Truong for every production value of the first installation; rows that differ per installation name the role "the operator of that installation". Decided by Thanh on 2026-11-17.
+5. What are the domain and the backup storage? Answered: the domain is accepted as an external value, owner Thanh Truong, chosen before the phase 1 deploy; backup storage is dropped from this work because backup is deferred to a later phase (Blueprint decision D-092). Decided by Thanh on 2026-11-17.
 6. Can this ticket close while questions 1 and 2 are open, given that neither blocks phase 1?
