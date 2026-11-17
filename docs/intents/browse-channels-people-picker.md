@@ -10,7 +10,7 @@ Source: Toki Blueprint, ticket TOKI-034; decisions D-017, D-074, D-084, D-086, D
 ## Proposed outcome
 A person can press "Browse channels" and see every public channel, and the private channels they are in, with its name, topic and member count. They can search, scroll for more beyond the first 50, press "Join" on a channel they are not in or "Open" on one they are in, and see an "Archived" label on a channel that is archived. A search with no result says so, centred in the list. Nothing in the dialog creates a channel.
 A person who opens the address of a public channel they have not joined sees its name and topic and a "Join" button, and no message.
-A person can press the "+" on "Direct messages", search the people of the workspace (the first 50, more on scroll), press a person to add a chip with their name, remove a chip, and press "Start": one chip opens the direct message with that person, two to seven chips open a group. A person beyond the 8th, counting the person who starts, is refused with a message. Closing the picker with people chosen asks whether to discard.
+A person can press the "+" on "Direct messages", search the people of the workspace (the first 50, more on scroll), press a person to add a chip with their name, remove a chip, and press "Start": one chip opens the direct message with that person, two to seven chips open a group. An 8th chip, which would be the 9th person counting the person who starts, is refused with a message. Closing the picker with people chosen asks whether to discard.
 Both dialogs work with a keyboard and a touch screen and show correctly from 360 x 560 upwards, in English and in Vietnamese.
 
 ## Affected users and systems
