@@ -5,8 +5,8 @@ import { describe, expect, it } from "vitest";
 
 // Starts the real main.ts with Node directly, not through pnpm, so every
 // stdout line is the server's own (R6). Fake values only.
-const entry = new URL("./main.ts", import.meta.url).pathname;
-const cwd = new URL("..", import.meta.url).pathname;
+const entry = new URL("../main.ts", import.meta.url).pathname;
+const cwd = new URL("../..", import.meta.url).pathname;
 
 async function freePort() {
   return new Promise<number>((resolve) => {

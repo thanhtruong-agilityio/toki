@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { ConfigError, configVariableNames, loadConfig } from "./config.js";
+import { ConfigError, configVariableNames, loadConfig } from "../config.js";
 
 const valid = {
   NODE_ENV: "development",
@@ -85,7 +85,7 @@ describe("loadConfig", () => {
 describe("configuration names and .env.example (R13)", () => {
   it("every name the schema reads is in .env.example", () => {
     const example = readFileSync(
-      new URL("../../../.env.example", import.meta.url),
+      new URL("../../../../.env.example", import.meta.url),
       "utf8",
     );
     const listed = new Set(

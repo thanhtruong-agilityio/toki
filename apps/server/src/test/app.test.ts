@@ -2,9 +2,9 @@ import { ErrorResponseSchema } from "@toki/shared";
 import { Writable } from "node:stream";
 import { describe, expect, it } from "vitest";
 import { z } from "zod";
-import { buildApp } from "./app.js";
-import type { Config } from "./config.js";
-import { AppError } from "./errors.js";
+import { buildApp } from "../app.js";
+import type { Config } from "../config.js";
+import { AppError } from "../errors.js";
 
 const config: Config = {
   server: {
