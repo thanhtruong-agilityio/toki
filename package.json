@@ -3,13 +3,31 @@
   "private": true,
   "type": "module",
   "packageManager": "pnpm@12.21.0",
-  "engines": { "node": "22.x" },
+  "engines": {
+    "node": "22.x"
+  },
   "devEngines": {
-    "runtime": { "name": "node", "version": "22.x", "onFail": "error" }
+    "runtime": {
+      "name": "node",
+      "version": "22.x",
+      "onFail": "error"
+    }
   },
   "scripts": {
     "typecheck": "pnpm -r run typecheck",
-    "dev": "pnpm -r --parallel --if-present run dev"
+    "dev": "pnpm -r --parallel --if-present run dev",
+    "lint": "eslint . --max-warnings 0",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
-  "devDependencies": { "typescript": "7.0.2" }
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@typescript/native": "npm:typescript@7.0.2",
+    "eslint": "10.15.0",
+    "eslint-config-prettier": "10.1.8",
+    "globals": "17.14.0",
+    "prettier": "3.10.1",
+    "typescript": "npm:@typescript/typescript6@6.0.2",
+    "typescript-eslint": "8.72.2"
+  }
 }

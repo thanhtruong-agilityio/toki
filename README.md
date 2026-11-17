@@ -38,7 +38,7 @@ None of these boxes runs yet; `apps/web` and `apps/server` are empty projects.
 `(planned)` unless marked as in place; the spec of each ticket is the source.
 
 - Node 22, pnpm workspace, TypeScript (TOKI-001, in place)
-- ESLint, Prettier (TOKI-002)
+- ESLint, Prettier and three package boundary rules (TOKI-002, in place)
 - Docker Compose with Postgres, MinIO and Mailpit for development (TOKI-003)
 - Fastify (TOKI-004), Drizzle migrations on Postgres (TOKI-005)
 - Vite, React, TanStack Router, TanStack Query (TOKI-006)
@@ -79,6 +79,13 @@ None of these boxes runs yet; `apps/web` and `apps/server` are empty projects.
    pnpm typecheck
    ```
 
+5. Run the lint and format checks. Both exit 0 on a clean checkout.
+
+   ```bash
+   pnpm lint
+   pnpm format:check
+   ```
+
 Running the apps arrives with TOKI-003 (services), TOKI-004 (server) and TOKI-006 (web). Commands: TBD.
 
 ## 6. Project Structure
@@ -99,6 +106,8 @@ Running the apps arrives with TOKI-003 (services), TOKI-004 (server) and TOKI-00
 │  └─ ticket-config.yml          tracker, statuses, labels, thresholds
 ├─ apps/                         server and web (empty projects)
 ├─ packages/                     shared, client-core, tokens, i18n, platform, ui-web (empty projects)
+├─ eslint.config.js              lint style and the three package boundary rules
+├─ tools/lint-rules/             the three local ESLint rules the boundaries use
 ├─ e2e/                          Playwright end-to-end tests (planned, TOKI-008)
 └─ infra/                        development Compose file and scripts (planned, TOKI-003)
 ```
@@ -110,6 +119,24 @@ One test exists today, for the script that decides whether a spec has open point
 ```bash
 bash .github/scripts/spec-ready.test.sh
 ```
+
+Lint and format have four commands, run from the repository root:
+
+```bash
+pnpm lint             # ESLint over the whole repository; a warning fails too
+pnpm format:check     # Prettier in check mode
+pnpm format           # rewrites badly formatted files
+```
+
+`eslint.config.js` holds three boundary rules as lint errors:
+
+- `client-core`, `shared`, `i18n` and `tokens` use only the globals of an allow list and import nothing that needs the DOM, so React Native can reuse them. To use a new global there, add it to the allow list in `eslint.config.js`. A type is not a global: the types that go with the allowed globals (`RequestInit`, `MessageEvent`) pass, and only the DOM types `Window`, `Document`, `Element` and every `HTML...` or `SVG...` type are an error.
+- A file in `apps/server/src` imports a server module (`src/modules/<name>/`) only through its `index.ts`, unless the file is inside that same module.
+- `ui-web` does not use the notification, storage, service worker or audio APIs directly; it goes through `platform`.
+
+The rules hold for every source file under `src/` of those folders (`.ts`, `.tsx`, `.mts`, `.cts`, `.js`, `.jsx`, `.mjs`, `.cjs`); test files (`*.test.*`) are outside the first and the third rule. An `eslint-disable` comment has no effect in those paths and is itself a failure; a boundary changes only in `eslint.config.js`. Lint cannot check file picking in `ui-web`, a raw SQL query against another module's table, a DOM type outside the named ones, or a renamed copy of `window`; those rely on review.
+
+Lint runs on the TypeScript 6 API, because `typescript-eslint` cannot load TypeScript 7 yet: in the root `package.json` the name `typescript` is an alias of `@typescript/typescript6`, and `@typescript/native` is TypeScript 7, which still provides `tsc` for `pnpm typecheck`. An editor that uses the workspace TypeScript version therefore runs 6.0 for its language service; `pnpm typecheck` is the reference.
 
 The test harness for the apps (Vitest against a real Postgres, Playwright) and the CI checks are `(planned, TOKI-008 and TOKI-007)`. [`docs/definition-of-done.md`](docs/definition-of-done.md) requires a test for every change and green CI.
 
