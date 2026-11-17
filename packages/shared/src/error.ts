@@ -21,6 +21,9 @@ export const ErrorCodes = {
   badRequest: "bad_request",
   payloadTooLarge: "payload_too_large",
   unsupportedMediaType: "unsupported_media_type",
+  unauthorized: "unauthorized",
+  forbidden: "forbidden",
+  tooManyRequests: "too_many_requests",
 } as const;
 
 export type ErrorCode = (typeof ErrorCodes)[keyof typeof ErrorCodes];

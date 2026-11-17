@@ -32,8 +32,12 @@ const badRequest = body(ErrorCodes.badRequest, "The request is malformed.");
 
 // Status of an error that Fastify raises itself -> the code and message.
 const framework: Record<number, [string, string]> = {
+  401: [ErrorCodes.unauthorized, "Authentication is required."],
+  403: [ErrorCodes.forbidden, "Access to this resource is not allowed."],
+  404: [ErrorCodes.notFound, "No such route."],
   413: [ErrorCodes.payloadTooLarge, "The request body is too large."],
   415: [ErrorCodes.unsupportedMediaType, "The content type is not supported."],
+  429: [ErrorCodes.tooManyRequests, "Too many requests."],
 };
 
 function validationFailed(

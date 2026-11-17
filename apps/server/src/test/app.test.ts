@@ -59,6 +59,12 @@ async function setup(level: Config["server"]["logLevel"] = "info") {
         { schema: { querystring: { type: "object", required: ["x"] } } },
         async () => ({ ok: true }),
       );
+      scope.get("/status/:code", async (request) => {
+        const code = Number((request.params as { code: string }).code);
+        throw Object.assign(new Error("raised by a plugin"), {
+          statusCode: code,
+        });
+      });
       scope.post("/echo", async (request) => ({ body: request.body }));
     },
   });
@@ -158,6 +164,23 @@ describe("error format (R8, R9, R12)", () => {
     expect(media.statusCode).toBe(415);
     expectErrorBody(media.body, "unsupported_media_type");
   });
+
+  it.each([
+    [401, "unauthorized"],
+    [403, "forbidden"],
+    [404, "not_found"],
+    [429, "too_many_requests"],
+    [418, "bad_request"],
+  ])(
+    "a %i raised by a plugin keeps its status and gets %s (concern 19)",
+    async (status, code) => {
+      const { app } = await setup();
+      const response = await app.inject({ url: `/api/v1/status/${status}` });
+      expect(response.statusCode).toBe(status);
+      expectErrorBody(response.body, code);
+      expect(response.body).not.toContain("raised by a plugin");
+    },
+  );
 
   it("malformed URL: 400 bad_request in the one format", async () => {
     const { app } = await setup();
