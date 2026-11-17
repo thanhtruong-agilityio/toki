@@ -108,8 +108,9 @@ Running the apps arrives with TOKI-004 (server) and TOKI-006 (web). Commands: TB
 ├─ apps/                         server and web (empty projects)
 ├─ packages/                     shared, client-core, tokens, i18n, platform, ui-web (empty projects)
 ├─ e2e/                          Playwright end-to-end tests (planned, TOKI-008)
+├─ docker-compose.dev.yml        Postgres, MinIO and Mailpit for development (TOKI-003)
 ├─ Dockerfile.minio              builds MinIO for development (TOKI-003)
-└─ scripts/                      development Compose file and dev scripts (TOKI-003)
+└─ scripts/                      dev:up, dev:down, the reset scripts and their smoke test (TOKI-003)
 ```
 
 ## 7. Testing

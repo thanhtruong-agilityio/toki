@@ -87,8 +87,8 @@ pnpm dev:reset:files
 pnpm dev:reset:mail
 
 # Test the reset scripts. Part 1 (the guard) needs no Docker; part 2 needs the services up
-# and WIPES the development data. Run it whenever a script in scripts/dev/ changes.
-bash scripts/dev/smoke.test.sh
+# and WIPES the development data. Run it whenever a script in scripts/ changes.
+bash scripts/smoke.test.sh
 ```
 
 The `Spec ticket` workflow can also be run by hand on GitHub, for one spec or for all, with a `dry_run` input.

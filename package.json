@@ -10,12 +10,12 @@
   "scripts": {
     "typecheck": "pnpm -r run typecheck",
     "dev": "pnpm -r --parallel --if-present run dev",
-    "dev:up": "bash scripts/dev/up.sh",
-    "dev:down": "bash scripts/dev/down.sh",
-    "dev:reset": "bash scripts/dev/reset.sh",
-    "dev:reset:db": "bash scripts/dev/reset-db.sh",
-    "dev:reset:files": "bash scripts/dev/reset-files.sh",
-    "dev:reset:mail": "bash scripts/dev/reset-mail.sh"
+    "dev:up": "bash scripts/up.sh",
+    "dev:down": "bash scripts/down.sh",
+    "dev:reset": "bash scripts/reset.sh",
+    "dev:reset:db": "bash scripts/reset-db.sh",
+    "dev:reset:files": "bash scripts/reset-files.sh",
+    "dev:reset:mail": "bash scripts/reset-mail.sh"
   },
   "devDependencies": { "typescript": "7.0.2" }
 }

@@ -4,7 +4,7 @@
 
 set -u
 
-# shellcheck source=scripts/dev/lib.sh
+# shellcheck source=scripts/lib.sh
 . "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 
 require_docker || exit 1

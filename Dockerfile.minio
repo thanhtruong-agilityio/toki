@@ -11,7 +11,7 @@
 # module proxy.
 #
 # To move to another release, change the tag and its commit together, here and in
-# the image tag of scripts/docker-compose.dev.yml.
+# the image tag of docker-compose.dev.yml.
 
 FROM golang:1.24.13-alpine AS build
 RUN apk add --no-cache git

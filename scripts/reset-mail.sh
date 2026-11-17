@@ -8,9 +8,9 @@
 
 set -u
 
-# shellcheck source=scripts/dev/lib.sh
+# shellcheck source=scripts/lib.sh
 . "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
-# shellcheck source=scripts/dev/guard.sh
+# shellcheck source=scripts/guard.sh
 . "$DEV_DIR/guard.sh"
 
 guard_development "$ENV_FILE" || exit 1

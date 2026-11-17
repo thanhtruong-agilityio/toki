@@ -10,20 +10,19 @@
 
 ### Files
 ```
-Dockerfile.minio                   builds MinIO and mc from the upstream source at a pinned release (beside CLAUDE.md)
+Dockerfile.minio                   builds MinIO and mc from the upstream source at a pinned release
 Dockerfile.minio.dockerignore      keeps the build context empty
-package.json                       six dev:* scripts, each `bash scripts/dev/<name>.sh`
+docker-compose.dev.yml             name: toki-dev; postgres, minio, mailpit; one named volume each
+package.json                       six dev:* scripts, each `bash scripts/<name>.sh`
 docs/plans/TOKI-003.md             this plan
 docs/plans/TOKI-003.state.json     the state file of the dev flow, written by `dev-state`
 scripts/
-├─ docker-compose.dev.yml          name: toki-dev; postgres, minio, mailpit; one named volume each
-└─ dev/
-   ├─ lib.sh                       shared helpers: repo root, .env reader, compose wrapper, Docker and service checks
-   ├─ guard.sh                     the shared guard: environment name (R10) and database names (R24)
-   ├─ up.sh  down.sh               dev:up, dev:down
-   ├─ reset-db.sh  reset-files.sh  reset-mail.sh     one entry point per store
-   ├─ reset.sh                     dev:reset: preflight, then the three entry points
-   └─ smoke.test.sh                the R30 smoke test
+├─ lib.sh                          shared helpers: repo root, .env reader, compose wrapper, Docker and service checks
+├─ guard.sh                        the shared guard: environment name (R10) and database names (R24)
+├─ up.sh  down.sh                  dev:up, dev:down
+├─ reset-db.sh  reset-files.sh  reset-mail.sh     one entry point per store
+├─ reset.sh                        dev:reset: preflight, then the three entry points
+└─ smoke.test.sh                   the R30 smoke test
 ```
 All scripts are Bash and run under the Bash 3.2 that macOS ships.
 
@@ -36,7 +35,7 @@ All scripts are Bash and run under the Bash 3.2 that macOS ships.
 
 ### Scripts
 - `lib.sh`:
-  - `cd` to the repository root; `compose()` is `docker compose -p toki-dev --env-file .env -f scripts/docker-compose.dev.yml "$@"` (R18); the project name is pinned, so `COMPOSE_PROJECT_NAME` cannot point a script at another project.
+  - `cd` to the repository root; `compose()` is `docker compose -p toki-dev --env-file .env -f docker-compose.dev.yml "$@"` (R18); the project name is pinned, so `COMPOSE_PROJECT_NAME` cannot point a script at another project.
   - `env_file_get FILE NAME` reads one value from an env file without sourcing it (last assignment wins; a byte order mark, optional `export`, spaces around `=`, `:` in place of `=`, quotes and inline comments handled). `env_file_is_simple FILE` fails when a quoted value is not closed on its line.
   - `cfg NAME` returns the shell value when the variable is set, else the `.env` value, the same precedence Compose uses.
   - `require_docker` (R29), `require_service NAME` (R21: the service of project `toki-dev` must be running, else "run `pnpm dev:up` first").
@@ -54,7 +53,7 @@ All scripts are Bash and run under the Bash 3.2 that macOS ships.
 - No script prompts (R28), writes `.env` (R11) or prints a credential. Credentials never leave the containers: `psql` uses the local socket, `mc` reads the root user and password from the container's own environment.
 
 ### Smoke test (R30)
-`scripts/dev/smoke.test.sh`, run directly with the services up. Part 1 needs no Docker: `env_file_get`, `guard_development` (the six cases of R10 against a temporary file, never `.env`) and `guard_database_names`. Part 2: writes a marker row, file and mail; creates a second database with a marker table as a stand-in for the test database (R12); runs each reset with the environment name exported as `production` and as an unknown value and expects the guard's own refusal message with all markers intact; runs each reset and checks it empties only its own store; runs `reset.sh` last; compares the checksum of `.env` before and after. Every probe stops the test on its own error, so an error is never read as "empty".
+`scripts/smoke.test.sh`, run directly with the services up. Part 1 needs no Docker: `env_file_get`, `guard_development` (the six cases of R10 against a temporary file, never `.env`) and `guard_database_names`. Part 2: writes a marker row, file and mail; creates a second database with a marker table as a stand-in for the test database (R12); runs each reset with the environment name exported as `production` and as an unknown value and expects the guard's own refusal message with all markers intact; runs each reset and checks it empties only its own store; runs `reset.sh` last; compares the checksum of `.env` before and after. Every probe stops the test on its own error, so an error is never read as "empty".
 
 ## Choices made in this run
 
@@ -83,7 +82,7 @@ Consulted once on this design (Opus, 2026-11-17). Adopted: bucket name validatio
 
 ## AC -> step -> test
 
-"smoke" is `bash scripts/dev/smoke.test.sh`; "hand" is the check command of the requirement, run once, output in the pull request.
+"smoke" is `bash scripts/smoke.test.sh`; "hand" is the check command of the requirement, run once, output in the pull request.
 
 | AC | Step | Test |
 | :-- | :-- | :-- |
