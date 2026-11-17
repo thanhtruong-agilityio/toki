@@ -38,6 +38,11 @@
       "at": "2026-11-17T02:15:53Z",
       "auto": false,
       "stage": "approve"
+    },
+    {
+      "at": "2026-11-17T07:42:43Z",
+      "auto": false,
+      "stage": "approve"
     }
   ],
   "key": "TOKI-002",
@@ -45,7 +50,7 @@
   "metrics": {},
   "mode": "Auto to PR",
   "plan_approved": true,
-  "plan_hash": "8c35bb5bdd8aa11d859e06036d431318a50dc05ca9e88b284df779cb1646565c",
+  "plan_hash": "42682fcfec56a99332dd2cda4bdc160a3013985263c35816d4247b6d03c0c9d7",
   "spec_commit": "e7094ef4acd726925b1796218d3b1a983f20dfd1",
   "spec_paths": [
     "docs/specs/2026-11-12-lint-format-boundary-rules-design.md"
