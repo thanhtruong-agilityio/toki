@@ -5,22 +5,23 @@ Author: Thanh Truong
 Toki is built around conversations: channels (public or private), direct messages and group direct messages.
 The database has no table for them yet, and nothing records who belongs to a conversation.
 Every rule that decides who may read or write a conversation depends on membership, so the tables have to exist before the channel and direct-message APIs, the bootstrap call and the messages table can be built.
-Several rules are easy to break when only application code holds them: channel names must be unique even when two requests arrive together, a direct message between the same people must never exist twice, a group is limited to 8 people, and #general must stay a public, active channel.
+Several rules are easy to break when only application code holds them: channel names must be unique even when two requests arrive together, a direct message between the same people must never exist twice, a group is limited to 8 people and never gains or loses people, and #general must stay a public, active channel.
 
 ## Proposed outcome
 Two tables, `conversations` and `conversation_members`, exist in the database and are created by a migration.
 A channel has a name, a topic, a description, a public or private flag and an archive time; a direct message or group direct message has no name and carries a key built from its members, so the same set of people always leads to the same conversation.
 A membership row says that a person belongs to a conversation and holds that person's own notification level, mute and star.
-The rules the database can hold itself (name format and uniqueness, topic length, one #general, one direct message per set of people, kind and privacy fixed after creation) are held by the tables.
+The rules the database can hold itself (name format and uniqueness, topic length, one #general, one direct message per set of people with a sorted key and member rows that match it, a group of at most 8 whose people never change, kind and privacy fixed after creation, no deleting a conversation) are held by the tables. The rules that need a person's role or a count of members, such as who may create a channel, the archive when the last member leaves and refusing a guest in a direct message, stay with the requests of the later tickets.
+Other modules read membership and the facts of a conversation through the functions of the module, not through its tables.
 The later tickets that create, list and read conversations build on these tables instead of defining their own.
 
 ## Affected users and systems
 - Members and Admins, who see the effects through the channel and direct-message tickets that build on this one: channels, DMs, group DMs, #general, notification level, mute and star.
-- The server app (`apps/server`): a new `conversations` module with its table definitions and two small functions.
-- The shared package (`packages/shared`): the limits for names, topics and groups, so the server and the web app use the same numbers.
+- The server app (`apps/server`): a new `conversations` module with its table definitions, the function that builds a direct-message key and the reads of membership and conversation facts.
+- The shared package (`packages/shared`): the limits for names, topics and groups and the notification levels, so the server and the web app use the same values.
 - The database and its migrations (TOKI-005).
 - The account tables (TOKI-019), which hold the people a membership points to.
-- Later tickets that use the tables: the channel API (TOKI-029), the DM API (TOKI-030), the bootstrap call (TOKI-031) and the messages table (TOKI-036).
+- Later tickets that use the tables: the channel API (TOKI-029), the DM API (TOKI-030), the bootstrap call (TOKI-031), the messages table (TOKI-036), the first-Admin set-up (TOKI-020), accepting an invitation (TOKI-097) and the read pointer (TOKI-053).
 
 ## Constraints
 - Channel names use lowercase letters, digits and hyphens, up to 80 characters, and are unique; uniqueness includes archived channels and holds when two requests arrive at the same moment. Source: Toki Blueprint, decisions D-040, D-115, D-128.
@@ -36,7 +37,7 @@ The later tickets that create, list and read conversations build on these tables
 - Every table carries `workspace_id` to keep a path to multi-tenant; IDs are UUIDv7. Source: Toki Blueprint, data model notes, D-004.
 - Server modules call each other only through public interfaces, never each other's tables. Source: Toki Blueprint, boundary rules.
 - Milestone: M2 "Sign-in, members and conversations". Size: M. Source: Toki Blueprint, ticket TOKI-028.
-- Needs: TOKI-019 (Account tables). Needed by: TOKI-029, TOKI-030 and TOKI-036; the bootstrap call (TOKI-031) needs it through them. Source: Toki Blueprint, ticket list, Needs column.
+- Needs: TOKI-019 (Account tables). Needed by: TOKI-029, TOKI-030 and TOKI-036; the bootstrap call (TOKI-031) needs it through them. TOKI-020, TOKI-097 and TOKI-053 also write these tables and need it, which the plan does not yet say (spec, Plan changes). Source: Toki Blueprint, ticket list, Needs column.
 - Belongs to Blueprint intent I05 channels-and-direct-messages.
 
 ## Open questions
