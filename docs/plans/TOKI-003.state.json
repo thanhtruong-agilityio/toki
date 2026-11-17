@@ -1,25 +1,38 @@
 {
-  "approved_auto": false,
+  "approved_auto": true,
   "base": "main",
-  "branch": "feat/toki-003",
+  "branch": "feat/toki-003-local-dev-environment",
   "deployed_sha": null,
   "history": [
     {
       "at": "2026-11-17T01:39:59Z",
       "stage": "pick"
+    },
+    {
+      "at": "2026-11-17T01:58:18Z",
+      "stage": "plan"
+    },
+    {
+      "at": "2026-11-17T01:58:18Z",
+      "auto": true,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-17T01:58:18Z",
+      "stage": "build"
     }
   ],
   "key": "TOKI-003",
   "main_sha": "a246ca0918f4971b8425bbcd9d982188e2639377",
   "metrics": {},
-  "mode": null,
-  "plan_approved": false,
-  "plan_hash": null,
+  "mode": "Auto to PR",
+  "plan_approved": true,
+  "plan_hash": "12334f33ddf6cca36983f61cee7f2ab6fb85c04f1ec65dab010ce5d70b6d44c9",
   "spec_commit": null,
   "spec_paths": [
     "docs/specs/2026-11-12-local-dev-environment-design.md"
   ],
-  "stage": "pick",
+  "stage": "build",
   "tier": "M",
   "verifier": {
     "result": null,

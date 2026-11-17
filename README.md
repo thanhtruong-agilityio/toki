@@ -79,7 +79,15 @@ None of these boxes runs yet; `apps/web` and `apps/server` are empty projects.
    pnpm typecheck
    ```
 
-Running the apps arrives with TOKI-003 (services), TOKI-004 (server) and TOKI-006 (web). Commands: TBD.
+5. Start the services Toki needs for development: Postgres, MinIO and Mailpit. This needs Docker and a `.env` in the repository root. The first run builds the MinIO image from source, which takes a few minutes and about 3 GB of free Docker disk.
+
+   ```bash
+   pnpm dev:up
+   ```
+
+   `pnpm dev:down` stops them and keeps their data. `pnpm dev:reset` wipes the development database, the stored files and the caught mail; `pnpm dev:reset:db`, `pnpm dev:reset:files` and `pnpm dev:reset:mail` wipe one of them. A reset runs only when `NODE_ENV` is `development`.
+
+Running the apps arrives with TOKI-004 (server) and TOKI-006 (web). Commands: TBD.
 
 ## 6. Project Structure
 

@@ -9,7 +9,13 @@
   },
   "scripts": {
     "typecheck": "pnpm -r run typecheck",
-    "dev": "pnpm -r --parallel --if-present run dev"
+    "dev": "pnpm -r --parallel --if-present run dev",
+    "dev:up": "bash infra/dev/up.sh",
+    "dev:down": "bash infra/dev/down.sh",
+    "dev:reset": "bash infra/dev/reset.sh",
+    "dev:reset:db": "bash infra/dev/reset-db.sh",
+    "dev:reset:files": "bash infra/dev/reset-files.sh",
+    "dev:reset:mail": "bash infra/dev/reset-mail.sh"
   },
   "devDependencies": { "typescript": "7.0.2" }
 }

@@ -72,6 +72,23 @@ bash .github/scripts/review-request.test.sh
 
 # Read one comment: exit 0 when it mentions @reviewer, exit 1 when it does not ask for a review
 printf '%s' '@reviewer' | bash .github/scripts/review-request.sh
+
+# Start Postgres, MinIO and Mailpit and wait until all three are healthy (needs Docker and a root .env).
+# The first run builds the MinIO image from source: a few minutes and about 3 GB of free Docker disk.
+pnpm dev:up
+
+# Stop the three services; their data stays in the named volumes
+pnpm dev:down
+
+# Wipe development data: all three stores, or one. Each refuses unless NODE_ENV is development.
+pnpm dev:reset
+pnpm dev:reset:db
+pnpm dev:reset:files
+pnpm dev:reset:mail
+
+# Test the reset scripts. Part 1 (the guard) needs no Docker; part 2 needs the services up
+# and WIPES the development data. Run it whenever a script in infra/dev/ changes.
+bash infra/dev/smoke.test.sh
 ```
 
 The `Spec ticket` workflow can also be run by hand on GitHub, for one spec or for all, with a `dry_run` input.
