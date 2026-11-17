@@ -16,7 +16,7 @@ The answers of the channel and direct-message requests are not the same shape as
 ## Affected users and systems
 - Members and Admins: the sidebar list, Browse channels, the people picker and the conversation header read from this store (journeys "Open the app: the Home view", "The conversation list").
 - `packages/client-core` (new code), `packages/shared` (read only: the schemas of the bootstrap, channel and direct-message requests and the error schema), and a small wiring file in `apps/web`.
-- The tickets that build on it: the conversation list (TOKI-033), Browse channels and the people picker (TOKI-034), the conversation header and Details panel (TOKI-035), the sync engine (TOKI-040), the read pointer (TOKI-053) and the sign-in screens (TOKI-023), whose session state must hear every unauthenticated answer.
+- The tickets that build on it: the conversation list (TOKI-033), Browse channels and the people picker (TOKI-034), the conversation header and Details panel (TOKI-035), the sync engine (TOKI-040), the read pointer (TOKI-053) and the sign-in screens (TOKI-023), whose session state must hear every unauthenticated answer. Screens that call routes with no typed method go through the client's `request`, with an optional extra header and a longer timeout for one call (the Admin page, TOKI-025; the devices section, TOKI-099), and Sign out (TOKI-099) and the Join page (TOKI-097) reset the store.
 
 ## Constraints
 - `client-core` touches no DOM or browser API, so React Native can reuse it. Source: Toki Blueprint, technical design, boundary rules; TOKI-002 rule 1 (an allow list of globals).
