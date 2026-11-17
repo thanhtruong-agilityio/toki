@@ -99,7 +99,7 @@ check "R9 file that does not exist" 0 "" $s "$(write_json "$fdir/nothing.ts")" "
 check "R9 not JSON" 0 "" $s "not json" "$repo"
 
 # R10: no absolute path in the three scripts
-if grep -nE '/Users/|/home/' "$here"/check-branch-slug.sh "$here"/block-lockfile-edit.sh "$here"/format-after-edit.sh >/dev/null 2>&1; then
+if grep -nE '/(Users|home)/' "$here"/check-branch-slug.sh "$here"/block-lockfile-edit.sh "$here"/format-after-edit.sh >/dev/null 2>&1; then
   echo "FAIL R10 an absolute path is in a hook script"; fail=$((fail + 1))
 else
   echo "ok   R10 no absolute path in a hook script"; pass=$((pass + 1))
