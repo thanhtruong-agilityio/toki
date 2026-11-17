@@ -22,7 +22,7 @@ The server refuses every other request that comes without a valid session.
 - Belongs to Blueprint intent I03 sign-in-by-email-code, alongside TOKI-019, 020, 021, 023, 026 and 099. Source: Toki Blueprint, intent list.
 - Milestone: M2, Sign-in, members and conversations. Source: Toki Blueprint, milestone M2.
 - Size: L. Source: Toki Blueprint, ticket TOKI-022.
-- Needs: TOKI-019 (Account tables) and TOKI-021 (Sending mail over SMTP). Source: Toki Blueprint, ticket dependencies.
+- Needs: TOKI-019 (Account tables), TOKI-021 (Sending mail over SMTP) and TOKI-020 (First Admin), for `parseEmail` in `packages/shared/src/email.ts`. Source: Toki Blueprint, ticket dependencies; TOKI-020 added by plan change, because the sign-in spec (R7) uses its address check.
 - Needed by: TOKI-023, TOKI-024 and TOKI-026. Source: Toki Blueprint, ticket dependencies.
 - Agreed scope: request a code, exchange it for a session, sign out; cookie and token. Source: Toki Blueprint, ticket TOKI-022.
 - Sign-in is by a 6-digit emailed code; there is no password. Source: D-011, BR-02, FR-01.
