@@ -1,0 +1,36 @@
+{
+  "approved_auto": false,
+  "base": "github/main",
+  "branch": "docs/toki-096-environment-config",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-17T08:07:04Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-17T08:07:05Z",
+      "stage": "explore"
+    },
+    {
+      "at": "2026-11-17T08:08:12Z",
+      "stage": "plan"
+    }
+  ],
+  "key": "TOKI-096",
+  "main_sha": "e6e2c96dd83d466b79322e64a9b03254dc8326b3",
+  "metrics": {},
+  "mode": null,
+  "plan_approved": false,
+  "plan_hash": null,
+  "spec_commit": "d9c0067f86cafb17e23d9c565058f217ceca49d3",
+  "spec_paths": [
+    "docs/specs/2026-11-12-environment-config-design.md"
+  ],
+  "stage": "plan",
+  "tier": "S",
+  "verifier": {
+    "result": null,
+    "round": 0
+  }
+}
