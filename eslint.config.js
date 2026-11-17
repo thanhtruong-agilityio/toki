@@ -4,6 +4,7 @@
 import js from "@eslint/js";
 import prettier from "eslint-config-prettier";
 import globals from "globals";
+import path from "node:path";
 import tseslint from "typescript-eslint";
 import clientCoreGlobals from "./tools/lint-rules/client-core-globals.js";
 import moduleEntry from "./tools/lint-rules/module-entry.js";
@@ -160,10 +161,12 @@ export default tseslint.config(
       "toki/module-entry": [
         "error",
         {
+          // Absolute folders, so the rule gives the same result when ESLint
+          // starts in a package folder (an editor, pnpm --filter).
           modulesDirs: [
             "apps/server/src/modules",
             "tools/lint-fixtures/server-modules/modules",
-          ],
+          ].map((dir) => path.join(import.meta.dirname, dir)),
         },
       ],
     },

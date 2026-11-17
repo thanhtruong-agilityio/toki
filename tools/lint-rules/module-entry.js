@@ -1,9 +1,12 @@
 // Local ESLint rule: a server module is imported only through its entry file.
 //
-// Option `modulesDirs`: the folders whose sub-folders are modules, relative to
-// the repository root. An import that resolves into <modulesDir>/<name>/ from
-// a file that is not inside that same module must resolve to the module's
-// entry: <name>, <name>/index, <name>/index.ts or <name>/index.js.
+// Option `modulesDirs`: the folders whose sub-folders are modules, as absolute
+// paths (eslint.config.js builds them from its own folder). A relative folder
+// is resolved against the working directory of ESLint, so it only works when
+// ESLint starts at the repository root. An import that resolves into
+// <modulesDir>/<name>/ from a file that is not inside that same module must
+// resolve to the module's entry: <name>, <name>/index, <name>/index.ts or
+// <name>/index.js.
 //
 // The rule decides on the resolved path, not on the import text, and reads no
 // file, so the target need not exist. Paths are compared without case, because

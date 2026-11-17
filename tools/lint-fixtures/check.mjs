@@ -159,6 +159,14 @@ const failures = [];
 const fail = (message) => failures.push(message);
 
 const eslint = new ESLint({ cwd: root, ignore: false });
+// An editor or `pnpm --filter` starts ESLint in a package folder, not at the
+// repository root. The probes run from there too, so a rule cannot depend on
+// the working directory.
+const STARTS = {
+  "the repository root": eslint,
+  "apps/server": new ESLint({ cwd: path.join(root, "apps/server") }),
+  "packages/ui-web": new ESLint({ cwd: path.join(root, "packages/ui-web") }),
+};
 
 function fixtureFiles(dir) {
   return readdirSync(dir, { withFileTypes: true, recursive: true })
@@ -265,9 +273,13 @@ async function checkRealPaths() {
         fail(`${file}: ${name} has other options than the fixture ${folder}`);
       }
     }
-    const [result] = await eslint.lintText(probe, { filePath });
-    if (!result.messages.some((message) => message.ruleId === rule)) {
-      fail(`${file}: a violating line is not reported by ${rule}`);
+    for (const [start, instance] of Object.entries(STARTS)) {
+      const [result] = await instance.lintText(probe, { filePath });
+      if (!result?.messages.some((message) => message.ruleId === rule)) {
+        fail(
+          `${file}: a violating line is not reported by ${rule} when ESLint starts in ${start}`,
+        );
+      }
     }
     if (config.linterOptions?.noInlineConfig !== true) {
       fail(`${file}: inline configuration is not switched off`);
