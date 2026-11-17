@@ -73,17 +73,6 @@ bash .github/scripts/review-request.test.sh
 # Read one comment: exit 0 when it mentions @reviewer, exit 1 when it does not ask for a review
 printf '%s' '@reviewer' | bash .github/scripts/review-request.sh
 
-# Lint the whole repository (ESLint; a warning fails too), under Node 22
-pnpm lint
-
-# Prove that each of the three boundary rules still fires on its fixture
-# (tools/lint-fixtures/); it names the fixture and the line when one does not
-pnpm lint:boundaries
-
-# Check the format (Prettier), or rewrite badly formatted files
-pnpm format:check
-pnpm format
-
 # Start Postgres, MinIO and Mailpit and wait until all three are healthy (needs Docker and a root .env).
 # The first run builds the MinIO image from source: a few minutes and about 3 GB of free Docker disk.
 pnpm dev:up
