@@ -3,7 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "node -e \"process.exit(1)\""
   },
   "dependencies": {
     "@toki/shared": "workspace:*"
