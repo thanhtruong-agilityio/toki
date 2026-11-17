@@ -7,7 +7,7 @@
 DEV_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$DEV_DIR/../.." && pwd)"
 ENV_FILE="$REPO_ROOT/.env"
-COMPOSE_FILE="infra/docker-compose.dev.yml"
+COMPOSE_FILE="scripts/docker-compose.dev.yml"
 COMPOSE_PROJECT="toki-dev"
 UP_HINT="Run \`pnpm dev:up\` first."
 

@@ -10,12 +10,13 @@
 
 ### Files
 ```
-package.json                       six dev:* scripts, each `bash infra/dev/<name>.sh`
+Dockerfile.minio                   builds MinIO and mc from the upstream source at a pinned release (beside CLAUDE.md)
+Dockerfile.minio.dockerignore      keeps the build context empty
+package.json                       six dev:* scripts, each `bash scripts/dev/<name>.sh`
 docs/plans/TOKI-003.md             this plan
 docs/plans/TOKI-003.state.json     the state file of the dev flow, written by `dev-state`
-infra/
+scripts/
 ├─ docker-compose.dev.yml          name: toki-dev; postgres, minio, mailpit; one named volume each
-├─ minio/Dockerfile                builds MinIO and mc from the upstream source at a pinned release
 └─ dev/
    ├─ lib.sh                       shared helpers: repo root, .env reader, compose wrapper, Docker and service checks
    ├─ guard.sh                     the shared guard: environment name (R10) and database names (R24)
@@ -27,7 +28,7 @@ infra/
 All scripts are Bash and run under the Bash 3.2 that macOS ships.
 
 ### Compose file
-- `name: toki-dev` (R20). Images: `postgres:17.12`, `axllent/mailpit:v1.33.1`, and `toki-dev-minio:RELEASE.2025-10-15T17-29-55Z` built from `infra/minio/Dockerfile` (R1, R26).
+- `name: toki-dev` (R20). Images: `postgres:17.12`, `axllent/mailpit:v1.33.1`, and `toki-dev-minio:RELEASE.2025-10-15T17-29-55Z` built from `Dockerfile.minio` (R1, R26).
 - Every `${...}` is `${VAR:?message}` (R15, R19). Health checks use the escaped `$${...}` form.
 - Ports: `127.0.0.1:${VAR}:<container port>` for Postgres 5432, MinIO 9000 and 9001 (console), Mailpit 1025 (SMTP) and 8025 (web) (R25).
 - Health checks: `pg_isready -h 127.0.0.1` (TCP, so the init-time server on the socket does not count), `wget` on MinIO's `/minio/health/live`, `/mailpit readyz` (R2).
@@ -35,7 +36,7 @@ All scripts are Bash and run under the Bash 3.2 that macOS ships.
 
 ### Scripts
 - `lib.sh`:
-  - `cd` to the repository root; `compose()` is `docker compose -p toki-dev --env-file .env -f infra/docker-compose.dev.yml "$@"` (R18); the project name is pinned, so `COMPOSE_PROJECT_NAME` cannot point a script at another project.
+  - `cd` to the repository root; `compose()` is `docker compose -p toki-dev --env-file .env -f scripts/docker-compose.dev.yml "$@"` (R18); the project name is pinned, so `COMPOSE_PROJECT_NAME` cannot point a script at another project.
   - `env_file_get FILE NAME` reads one value from an env file without sourcing it (last assignment wins; a byte order mark, optional `export`, spaces around `=`, `:` in place of `=`, quotes and inline comments handled). `env_file_is_simple FILE` fails when a quoted value is not closed on its line.
   - `cfg NAME` returns the shell value when the variable is set, else the `.env` value, the same precedence Compose uses.
   - `require_docker` (R29), `require_service NAME` (R21: the service of project `toki-dev` must be running, else "run `pnpm dev:up` first").
@@ -53,7 +54,7 @@ All scripts are Bash and run under the Bash 3.2 that macOS ships.
 - No script prompts (R28), writes `.env` (R11) or prints a credential. Credentials never leave the containers: `psql` uses the local socket, `mc` reads the root user and password from the container's own environment.
 
 ### Smoke test (R30)
-`infra/dev/smoke.test.sh`, run directly with the services up. Part 1 needs no Docker: `env_file_get`, `guard_development` (the six cases of R10 against a temporary file, never `.env`) and `guard_database_names`. Part 2: writes a marker row, file and mail; creates a second database with a marker table as a stand-in for the test database (R12); runs each reset with the environment name exported as `production` and as an unknown value and expects the guard's own refusal message with all markers intact; runs each reset and checks it empties only its own store; runs `reset.sh` last; compares the checksum of `.env` before and after. Every probe stops the test on its own error, so an error is never read as "empty".
+`scripts/dev/smoke.test.sh`, run directly with the services up. Part 1 needs no Docker: `env_file_get`, `guard_development` (the six cases of R10 against a temporary file, never `.env`) and `guard_database_names`. Part 2: writes a marker row, file and mail; creates a second database with a marker table as a stand-in for the test database (R12); runs each reset with the environment name exported as `production` and as an unknown value and expects the guard's own refusal message with all markers intact; runs each reset and checks it empties only its own store; runs `reset.sh` last; compares the checksum of `.env` before and after. Every probe stops the test on its own error, so an error is never read as "empty".
 
 ## Choices made in this run
 
@@ -82,7 +83,7 @@ Consulted once on this design (Opus, 2026-11-17). Adopted: bucket name validatio
 
 ## AC -> step -> test
 
-"smoke" is `bash infra/dev/smoke.test.sh`; "hand" is the check command of the requirement, run once, output in the pull request.
+"smoke" is `bash scripts/dev/smoke.test.sh`; "hand" is the check command of the requirement, run once, output in the pull request.
 
 | AC | Step | Test |
 | :-- | :-- | :-- |
@@ -106,7 +107,7 @@ Consulted once on this design (Opus, 2026-11-17). Adopted: bucket name validatio
 
 ## Steps
 
-1. Compose file and `infra/minio/Dockerfile`. Build the MinIO image once to prove it.
+1. Compose file and `Dockerfile.minio`. Build the MinIO image once to prove it.
 2. `smoke.test.sh` part 1 first (fails: no `lib.sh`, no `guard.sh`), then `lib.sh` and `guard.sh`.
 3. `up.sh`, `down.sh`; hand checks of R2 to R4.
 4. `smoke.test.sh` part 2 first (fails: no reset scripts), then the three reset scripts.

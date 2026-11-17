@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Smoke test for the dev reset scripts.
 #
-#   bash infra/dev/smoke.test.sh
+#   bash scripts/dev/smoke.test.sh
 #
 # Part 1 checks the guard and the .env reader and needs no Docker.
 # Part 2 needs the services up (`pnpm dev:up`). It WIPES the development data,
@@ -11,9 +11,9 @@
 set -u
 
 DEV_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# shellcheck source=infra/dev/lib.sh
+# shellcheck source=scripts/dev/lib.sh
 . "$DEV_DIR/lib.sh"
-# shellcheck source=infra/dev/guard.sh
+# shellcheck source=scripts/dev/guard.sh
 . "$DEV_DIR/guard.sh"
 
 failures=0
@@ -207,7 +207,7 @@ fi
 
 # --- the MinIO release is the same in the Compose file and the Dockerfile
 image_release="$(sed -n 's/^ *image: toki-dev-minio:\(.*\)$/\1/p' "$REPO_ROOT/$COMPOSE_FILE")"
-build_release="$(sed -n 's/^ARG MINIO_RELEASE=\(.*\)$/\1/p' "$REPO_ROOT/infra/minio/Dockerfile")"
+build_release="$(sed -n 's/^ARG MINIO_RELEASE=\(.*\)$/\1/p' "$REPO_ROOT/Dockerfile.minio")"
 if [ -n "$image_release" ]; then pass; else flunk "no MinIO release found in $COMPOSE_FILE"; fi
 expect_equal "MinIO release in the image tag and in the Dockerfile" "$build_release" "$image_release"
 
