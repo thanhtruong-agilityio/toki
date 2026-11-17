@@ -54,3 +54,5 @@ On a narrow screen the list is the Home screen itself, and the prototype's list 
 - Where does a person's avatar colour come from?
 - Does a direct message with a deactivated person show the 'Deactivated' label in the list?
 - Which ticket opens the app on the last viewed conversation and falls back to #general?
+- On a narrow screen, does the app open on the conversation last viewed (D-035 states no width) or on the list (F08)?
+- What do the Unread and Mentions chips do before the read pointer exists: is a stored non-All filter restored, or are the chips hidden?
