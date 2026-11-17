@@ -3,6 +3,9 @@
 # that has no slug, e.g. feat/toki-002. The rule is `<type>/<ticket>-<slug>` (CLAUDE.md).
 # `dev-state claim` creates `feat/<key>` with no slug; rename it before the PR is opened,
 # because renaming on GitHub afterwards closes the pull request.
+# The match is a substring of the whole command, so a message or an echo that contains
+# `git push` or `gh pr create` is refused too, and `git -C <dir> push` is not caught.
+# It is a guard against the common mistake, not a proof.
 
 input="$(cat)"
 command="$(printf '%s' "$input" | jq -r '.tool_input.command // empty' 2>/dev/null)"
