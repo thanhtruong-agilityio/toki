@@ -24,7 +24,7 @@ When the server starts on an empty database it creates the workspace, the first 
 - A display name is 1 to 80 characters. Source: D-033.
 - English is the default language. Source: D-018.
 - Server modules call each other only through public interfaces, never each other's tables. Source: Toki Blueprint, boundary rules.
-- The first Admin's address is personal data: it is not committed and is not written to a log. Source: TOKI-096 (R9); TOKI-004 (R7).
+- The first Admin's address is personal data: it is not committed (source: TOKI-096 R9) and is not written to a log. The second half is this intent's own rule: no decision of the log covers a start-up line, and TOKI-004 R7 covers only request logs.
 
 ## Open questions
 1. Which variables does set-up read, and which are required? The Blueprint names none; TOKI-096 lists a first admin email, a first admin name and a workspace name.
