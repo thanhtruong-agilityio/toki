@@ -46,12 +46,8 @@ const FIXTURES = {
     ],
   },
   "ui-web": {
-    rules: [
-      "no-restricted-globals",
-      "no-restricted-properties",
-      "no-restricted-syntax",
-    ],
-    files: ["violates.tsx", "allowed.tsx"],
+    rules: ["toki/platform-apis", "no-restricted-syntax"],
+    files: ["violates.tsx", "violates.ts", "allowed.tsx"],
   },
 };
 
@@ -66,7 +62,7 @@ const globalProbe = {
 const platformProbe = {
   fixture: "ui-web",
   probe: "export const probe = localStorage;\n",
-  rule: "no-restricted-globals",
+  rule: "toki/platform-apis",
 };
 const moduleProbe = {
   fixture: "server-modules",

@@ -8,12 +8,14 @@ import path from "node:path";
 import tseslint from "typescript-eslint";
 import clientCoreGlobals from "./tools/lint-rules/client-core-globals.js";
 import moduleEntry from "./tools/lint-rules/module-entry.js";
+import platformApis from "./tools/lint-rules/platform-apis.js";
 
-// The two local rules, used as toki/<name>.
+// The three local rules, used as toki/<name>.
 const toki = {
   rules: {
     "client-core-globals": clientCoreGlobals,
     "module-entry": moduleEntry,
+    "platform-apis": platformApis,
   },
 };
 
@@ -61,7 +63,9 @@ const domImportSource = "/^react-dom(\\/|$)|(^|\\/)ui-web(\\/|$)/";
 const domImportMessage =
   "client-core boundary: client-core, shared, i18n and tokens import nothing that needs the DOM, so React Native can reuse them.";
 
-// Rule 3. The platform APIs that ui-web may not use directly.
+// Rule 3. The platform APIs that ui-web may not use directly: these globals,
+// bare or as a property of window, globalThis or self, and these properties
+// of the global navigator and document.
 const platformGlobals = [
   "Notification",
   "localStorage",
@@ -75,8 +79,6 @@ const platformProperties = [
   ["navigator", "serviceWorker"],
   ["document", "cookie"],
 ];
-const platformMessage =
-  "ui-web boundary: ui-web reaches notifications, storage, the service worker and audio only through the platform package.";
 
 export default tseslint.config(
   {
@@ -183,41 +185,22 @@ export default tseslint.config(
     ],
     ignores: [testFiles],
     linterOptions: { noInlineConfig: true },
+    plugins: { toki },
     rules: {
-      "no-restricted-globals": [
+      // Reports the bare name, member access and destructuring, also through
+      // a cast, a non-null assertion, a computed name or window.window, and
+      // only when the object really is the global (tools/lint-rules).
+      "toki/platform-apis": [
         "error",
-        ...platformGlobals.map((name) => ({ name, message: platformMessage })),
-      ],
-      "no-restricted-properties": [
-        "error",
-        ...["window", "globalThis", "self"].flatMap((object) =>
-          platformGlobals.map((property) => ({
-            object,
-            property,
-            message: platformMessage,
-          })),
-        ),
-        ...platformProperties.map(([object, property]) => ({
-          object,
-          property,
-          message: platformMessage,
-        })),
+        { globals: platformGlobals, properties: platformProperties },
       ],
       "no-restricted-syntax": [
         "error",
         {
           selector: "JSXOpeningElement[name.name='audio']",
-          message: platformMessage,
+          message:
+            "ui-web boundary: ui-web plays audio only through the platform package, not with an <audio> element.",
         },
-        // navigator.serviceWorker and document.cookie reached through
-        // window, globalThis or self, or by destructuring.
-        ...platformProperties
-          .flatMap(([object, property]) => [
-            `MemberExpression[object.type='MemberExpression'][object.property.name='${object}'][property.name='${property}']`,
-            `VariableDeclarator[init.type='MemberExpression'][init.property.name='${object}'] > ObjectPattern > Property[key.name='${property}']`,
-            `Property[key.name='${object}'] > ObjectPattern > Property[key.name='${property}']`,
-          ])
-          .map((selector) => ({ selector, message: platformMessage })),
       ],
     },
   },
