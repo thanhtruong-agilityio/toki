@@ -87,7 +87,8 @@ else
   echo "FAIL R9 ignored file was changed"; fail=$((fail + 1))
 fi
 printf '%s\n' "$bad" > "$fdir/bad2.ts"
-no_tools=$(dirname "$(command -v jq)")
+mkdir -p "$work/bin" && ln -s "$(command -v jq)" "$work/bin/jq"
+no_tools="$work/bin"
 err=$(printf '%s' "$(write_json "$fdir/bad2.ts")" | CLAUDE_PROJECT_DIR="$repo" PATH="$no_tools:/usr/bin:/bin" bash "$here/$s" 2>&1)
 code=$?
 if [ "$code" -eq 0 ] && [ "$(cat "$fdir/bad2.ts")" = "$bad" ]; then

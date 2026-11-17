@@ -18,7 +18,7 @@ Each statement is followed by its source. Rules of this project come first; rule
   Source: web-skeleton spec, R6 and R7.
 - `packages/ui-web` reaches notifications, storage, the service worker and audio only through the `platform` package, and plays sound without an `<audio>` element. Lint checks this; file picking and a renamed copy of `window` are left to review.
   Source: lint rule `toki/platform-apis` and the `no-restricted-syntax` block for `packages/ui-web` in `eslint.config.js`.
-- Lint does not check `apps/web`; keep `Notification`, `localStorage`, `sessionStorage`, `indexedDB`, `navigator.serviceWorker` and `Audio` out of it anyway, and use `platform`.
+- Lint does not check `apps/web`; at the time of the ticket `apps/web/src` held none of `Notification`, `localStorage`, `sessionStorage`, `indexedDB`, `navigator.serviceWorker`, `Audio` and `AudioContext`, and review is what keeps it so.
   Source: web-skeleton spec, R12.
 
 ## External standard

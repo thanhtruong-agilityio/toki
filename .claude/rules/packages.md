@@ -17,7 +17,7 @@ The three boundaries are enforced by lint in `eslint.config.js`; they are not op
   Source: lint rule `toki/module-entry`.
 - `ui-web` reaches notifications, storage, the service worker and audio only through `platform`.
   Source: lint rule `toki/platform-apis`.
-- To change a boundary, change `eslint.config.js` in its own ticket; do not add an exception in a file.
+- A boundary is changed in `eslint.config.js` only; do not add an exception in a file.
   Source: header comment of `eslint.config.js` ("A boundary is changed only here").
 
 ## External standard
