@@ -201,7 +201,7 @@ function fixtureFiles(dir) {
 // "line id" -> how many times, from the markers of a fixture file.
 function expectedReports(file) {
   const expected = new Map();
-  const lines = readFileSync(file, "utf8").split("\n");
+  const lines = readFileSync(file, "utf8").split(/\r?\n/);
   lines.forEach((text, index) => {
     const marker = /\/\/ expect(-next)?: (.+)$/.exec(text);
     if (!marker) return;
