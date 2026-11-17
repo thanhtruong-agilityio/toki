@@ -8,10 +8,20 @@
 // The rule decides on the resolved path, not on the import text, and reads no
 // file, so the target need not exist. Paths are compared without case, because
 // the file system of macOS and Windows ignores case. Only relative specifiers
-// are resolved; apps/server has no path alias.
+// are resolved; apps/server has no path alias. A specifier is a string, or a
+// template literal without expressions (import(`../b/db/tables`)).
 import path from "node:path";
 
 const ENTRY = new Set(["", "index", "index.ts", "index.js"]);
+
+// The text of a specifier node, or undefined when it is not a fixed text.
+function textOf(node) {
+  if (node?.type === "Literal") return node.value;
+  if (node?.type === "TemplateLiteral" && node.expressions.length === 0) {
+    return node.quasis[0].value.cooked;
+  }
+  return undefined;
+}
 
 function moduleOf(file, modulesDirs) {
   for (const dir of modulesDirs) {
@@ -48,7 +58,8 @@ export default {
     );
     const from = moduleOf(context.filename, modulesDirs);
 
-    function check(node, source) {
+    function check(node, specifier) {
+      const source = textOf(specifier);
       if (typeof source !== "string" || !source.startsWith(".")) return;
       const target = path.resolve(path.dirname(context.filename), source);
       const to = moduleOf(target, modulesDirs);
@@ -61,14 +72,14 @@ export default {
     }
 
     return {
-      ImportDeclaration: (node) => check(node, node.source.value),
-      ExportNamedDeclaration: (node) => check(node, node.source?.value),
-      ExportAllDeclaration: (node) => check(node, node.source.value),
-      ImportExpression: (node) => check(node, node.source.value),
-      TSImportType: (node) => check(node, node.source.value),
-      TSExternalModuleReference: (node) => check(node, node.expression.value),
+      ImportDeclaration: (node) => check(node, node.source),
+      ExportNamedDeclaration: (node) => check(node, node.source),
+      ExportAllDeclaration: (node) => check(node, node.source),
+      ImportExpression: (node) => check(node, node.source),
+      TSImportType: (node) => check(node, node.source),
+      TSExternalModuleReference: (node) => check(node, node.expression),
       'CallExpression[callee.name="require"]': (node) =>
-        check(node, node.arguments[0]?.value),
+        check(node, node.arguments[0]),
     };
   },
 };

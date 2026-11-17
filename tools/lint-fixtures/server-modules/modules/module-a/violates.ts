@@ -16,6 +16,10 @@ export const lazy = () => import("../module-b/db/tables"); // expect: toki/modul
 export type Lazy = import("../module-b/db/tables").Row; // expect: toki/module-entry
 import legacy = require("../module-b/db/tables"); // expect: toki/module-entry, @typescript-eslint/no-require-imports
 export const loaded = require("../module-b/db/tables"); // expect: toki/module-entry, @typescript-eslint/no-require-imports
+export const lazyRaw = () => import(`../module-b/db/tables`); // expect: toki/module-entry
+export type LazyRaw = import(`../module-b/db/tables`).Row; // expect: toki/module-entry
+// prettier-ignore
+export const loadedRaw = require(`../module-b/db/tables`); // expect: toki/module-entry, @typescript-eslint/no-require-imports
 export { legacy };
 
 export const first: Row | undefined = rows[0];

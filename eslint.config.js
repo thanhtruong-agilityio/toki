@@ -54,6 +54,9 @@ const allowedGlobals = {
 // segment. Matching the import text is enough. A pattern also matches every
 // path below it (react-dom/client, @toki/ui-web/button).
 const domImports = ["react-dom", "**/ui-web"];
+// The same two targets for import("...") and import(`...`), which the import
+// rule does not see.
+const domImportSource = "/^react-dom(\\/|$)|(^|\\/)ui-web(\\/|$)/";
 const domImportMessage =
   "client-core boundary: client-core, shared, i18n and tokens import nothing that needs the DOM, so React Native can reuse them.";
 
@@ -122,8 +125,13 @@ export default tseslint.config(
         "error",
         {
           // import("...") as a call or as a type is not an import declaration.
-          selector:
-            ":matches(ImportExpression, TSImportType)[source.value=/^react-dom(\\/|$)|(^|\\/)ui-web(\\/|$)/]",
+          selector: `:matches(ImportExpression, TSImportType)[source.value=${domImportSource}]`,
+          message: domImportMessage,
+        },
+        {
+          // The same with a template literal that has no expression:
+          // import(`react-dom`).
+          selector: `:matches(ImportExpression, TSImportType) > TemplateLiteral[expressions.length=0] > TemplateElement[value.cooked=${domImportSource}]`,
           message: domImportMessage,
         },
         {

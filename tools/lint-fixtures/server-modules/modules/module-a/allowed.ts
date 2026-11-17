@@ -9,6 +9,7 @@ import "../module-b/index.js";
 import "../module-b/index.ts";
 export * from "../module-b";
 export const lazy = () => import("../module-b/index.js");
+export const lazyRaw = () => import(`../module-b/index.js`);
 
 // The same module, at any depth.
 import "./db/tables";
