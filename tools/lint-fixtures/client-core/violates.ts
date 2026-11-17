@@ -15,6 +15,8 @@ export type LazyType = import("react-dom").Root; // expect: no-restricted-syntax
 export const lazyRaw = () => import(`react-dom`); // expect: no-restricted-syntax
 export const lazyRawUi = () => import(`../ui-web/src`); // expect: no-restricted-syntax
 export type LazyRawType = import(`react-dom`).Root; // expect: no-restricted-syntax
+// prettier-ignore
+export const lazyPart = (x: string) => import(`react-dom/${x}`); // expect: no-restricted-syntax
 import legacyDom = require("react-dom"); // expect: @typescript-eslint/no-restricted-imports, @typescript-eslint/no-require-imports
 export { legacyDom };
 

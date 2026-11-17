@@ -139,9 +139,8 @@ export default tseslint.config(
           message: domImportMessage,
         },
         {
-          // The same with a template literal that has no expression:
-          // import(`react-dom`).
-          selector: `:matches(ImportExpression, TSImportType) > TemplateLiteral[expressions.length=0] > TemplateElement[value.cooked=${domImportSource}]`,
+          // The same with a template literal: import(`react-dom`).
+          selector: `:matches(ImportExpression, TSImportType) > TemplateLiteral > TemplateElement[value.cooked=${domImportSource}]`,
           message: domImportMessage,
         },
         {
