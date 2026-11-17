@@ -1,0 +1,53 @@
+{
+  "approved_auto": true,
+  "base": "github/main",
+  "branch": "docs/toki-096-environment-config",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-17T08:07:04Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-17T08:07:05Z",
+      "stage": "explore"
+    },
+    {
+      "at": "2026-11-17T08:08:12Z",
+      "stage": "plan"
+    },
+    {
+      "at": "2026-11-17T08:08:12Z",
+      "auto": true,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-17T08:13:01Z",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-17T08:13:03Z",
+      "stage": "check"
+    },
+    {
+      "at": "2026-11-17T08:13:58Z",
+      "stage": "drift"
+    }
+  ],
+  "key": "TOKI-096",
+  "main_sha": "e6e2c96dd83d466b79322e64a9b03254dc8326b3",
+  "metrics": {},
+  "mode": null,
+  "plan_approved": true,
+  "plan_hash": "5db50146f5f573df3de6a86432693e3d1f9bfb18db1c0262e2d41c8d1341a386",
+  "spec_commit": "d9c0067f86cafb17e23d9c565058f217ceca49d3",
+  "spec_paths": [
+    "docs/specs/2026-11-12-environment-config-design.md"
+  ],
+  "stage": "drift",
+  "tier": "S",
+  "verifier": {
+    "result": "PASS",
+    "round": 2
+  }
+}
