@@ -28,7 +28,7 @@ Columns:
 | `SERVER_HOST` | Address the server binds to. Containers set `0.0.0.0` through their environment. Never `localhost` | server | no | `127.0.0.1` | `127.0.0.1` | Thanh Truong | no |
 | `LOG_LEVEL` | Log level: `fatal`, `error`, `warn`, `info`, `debug` or `trace` | server | no | `info` | `info` | Thanh Truong | no |
 
-The web dev server has no variable of its own: it listens on the fixed port 5173 (TOKI-006).
+The web dev server has no variable of its own: it listens on the fixed port 5173 (TOKI-006, `strictPort`), so the default development ports are web 5173 (fixed), Postgres 5432 (`POSTGRES_PORT`), MinIO 9000 (`MINIO_PORT`) and server 3000 (`SERVER_PORT`). Its proxy for `/api/v1` is derived from `SERVER_PORT`.
 
 ### Database
 
