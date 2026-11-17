@@ -2,10 +2,51 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## What the project is
+
+Toki is an internal team chat for one company: channels, direct messages, threads and files, and later tasks, calendar, video meetings, a guest portal, automations, mail and AI summaries.
+
+- Single-tenant and self-hosted: each company runs its own copy on its own server.
+- Built in phases by one person working with Claude. Phase 1 is core chat on the web.
+- The prototype is the only design source.
+
+## Read first
+
+Read these, in this order, before you start work on a ticket:
+
+1. The intent of the work in hand: `docs/intents/<slug>.md`.
+2. Its spec: `docs/specs/<date>-<slug>-design.md`.
+3. `docs/definition-of-done.md`.
+
+## Repository layout
+
+The phase 1 tree. A folder marked "planned" does not exist yet; the ticket named delivers it.
+
+```
+toki/
+├─ apps/
+│  ├─ server/        Fastify: REST API + WebSocket + worker
+│  └─ web/           React + Vite
+├─ packages/
+│  ├─ shared/        Zod schemas, types, permissions, @mention parsing
+│  ├─ client-core/   API client, WebSocket sync, cache, stores. No DOM
+│  ├─ tokens/        Colours, fonts, spacing -> CSS variables and React Native styles
+│  ├─ i18n/          vi and en translations
+│  ├─ platform/      Platform interface + web and native implementations
+│  └─ ui-web/        React DOM components + CSS carried over from the prototype
+├─ infra/            not created: TOKI-003 put the development compose file at the root, as `docker-compose.dev.yml`
+├─ e2e/              planned (TOKI-008): Playwright end-to-end tests
+└─ docs/             intents, specs, plans and reference documents
+```
+
+`apps/mobile`, `apps/desktop` and `packages/ui-native` belong to later phases and are not part of this tree.
+
 # Working agreements
 
 - One ticket per branch, named `<type>/<ticket>-<slug>` (ticket id in lowercase). Never commit or push to `main`, `master`, `develop` or `release/*`.
+  - Example: `docs/toki-095-claude-md-sections`.
 - Commits follow Conventional Commits with a lowercase subject. PRs follow `.github/pull_request_template.md`.
+  - Example: `docs(claude): add the project sections to claude.md (TOKI-095)`.
 - Tickets are done per `docs/definition-of-done.md`.
 - Never paste client secrets or customer data into any AI tool. AI output is a proposal until it has been run.
 - Push to your own ticket branch and open its pull request without asking.
@@ -99,6 +140,57 @@ bash scripts/smoke.test.sh
 ```
 
 The `Spec ticket` workflow can also be run by hand on GitHub, for one spec or for all, with a `dry_run` input.
+
+## Common commands
+
+The root `pnpm` scripts, run from the repository root under Node 22 (`.nvmrc`). The workflow scripts are in Commands above.
+
+| Command | What it does | Status |
+| :---- | :---- | :---- |
+| `pnpm install` | Install the workspace | works (TOKI-001) |
+| `pnpm typecheck` | Type-check every package | works (TOKI-001) |
+| `pnpm lint` | ESLint, including the boundary rules; a warning fails | works (TOKI-002) |
+| `pnpm format`, `pnpm format:check` | Prettier: rewrite, or check only | works (TOKI-002) |
+| `pnpm dev` | Run the `dev` script of each package that has one | works (TOKI-001) |
+| `pnpm dev:up`, `pnpm dev:down` | Start or stop Postgres, MinIO and Mailpit | works (TOKI-003) |
+| `pnpm dev:reset`, `pnpm dev:reset:db`, `pnpm dev:reset:files`, `pnpm dev:reset:mail` | Wipe development data | works (TOKI-003) |
+| `pnpm test`, `pnpm test:e2e` | Run the tests (see Running tests) | planned (TOKI-008) |
+
+## Running tests
+
+- `pnpm test` runs the unit tests and the server integration tests (Vitest).
+- `pnpm test:e2e` runs the end-to-end tests in `e2e/` (Playwright).
+- Neither exists yet: both are planned (TOKI-008). Until then a ticket is checked by the steps in its spec's Testing section.
+
+## Boundary rules
+
+Three rules, enforced by lint (`pnpm lint`):
+
+1. Server modules call each other only through public interfaces, never each other's tables. Lint bans importing another server module's file other than its public entry file.
+2. `client-core` touches no DOM or browser API, so React Native can reuse it.
+3. Components reach platform features only through `platform`. Lint bans direct use of the notification, storage, service worker and audio APIs in `ui-web`; file picking cannot be caught by lint and relies on review.
+
+The rules live only in `eslint.config.js` and `tools/lint-rules/`. Change a boundary there, nowhere else.
+
+## Where documents live
+
+| Path | Holds |
+| :---- | :---- |
+| `docs/intents/` | One intent per piece of work: the problem and the outcome wanted |
+| `docs/specs/` | One spec per intent: requirements, design, testing, open concerns |
+| `docs/plans/` | One implementation plan per ticket, `<KEY>.md` |
+| `docs/definition-of-done.md` | What "done" means for a ticket |
+| `docs/ticket-config.yml` | Status names, labels and thresholds the cl skills read |
+| `.github/pull_request_template.md` | The pull request template |
+| `docs/adr/`, `docs/handoff/`, `docs/tickets/` | Written by the cl plugins when used: decisions, hand-off notes, ticket files |
+
+A reference document (an inventory, a guide) is one file, `docs/<topic>.md`. TOKI-096 uses this for `docs/environment-config.md`.
+
+## Process
+
+Work goes intent -> spec -> ticket (see "From a requirement to a ticket"). Work with no accepted intent starts by writing one; do not start on code.
+
+A pull request that creates a folder or command which this file marks as planned or not created removes that mark in the same pull request.
 
 ## Review on request
 
