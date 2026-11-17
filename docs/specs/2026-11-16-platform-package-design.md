@@ -21,7 +21,7 @@ After this change the package holds the interface and its web implementation, th
   - The sound file, when a sound plays and the 'Play a sound' switch: TOKI-075 (the file and the call) and TOKI-073 (who gets a sound). This work ships no audio file.
   - The composer's attachments: the limits of 10 files and 100 MB, drag and drop, paste, upload and progress: TOKI-059. Drag and drop and paste read their files from DOM events in the component; only opening the file dialog goes through `platform`.
   - What each feature keeps on the device and under which key: the ticket that keeps it (the code step: TOKI-023; a waiting message and dropping it when someone else signs in: TOKI-040).
-  - A store for more than text values (IndexedDB), and telling other tabs that a value changed: not built. TOKI-040 adds the first to this package if a waiting message needs more than a text value; TOKI-099 adds the second if sign-out needs it.
+  - A store for more than text values (IndexedDB), and telling other tabs that something happened: not built. TOKI-040 adds the first to this package if a waiting message needs more than a text value; TOKI-099 adds the second as a fifth member of `Platform`, `tabs`, with its web implementation and its tests, in its own change. `createWebPlatform()` then still starts nothing (R5): that member opens its channel when it is first used.
   - Reading whether the device is light or dark for 'Match my device': TOKI-078. It is not one of the four features and lint does not ban it in `ui-web`.
   - The native implementation (phase 3) and the desktop implementation (phase 6).
   - An in-memory implementation for tests: tests of other packages use the web implementation in a DOM test environment, or pass their own object to `setPlatform`.
@@ -30,7 +30,7 @@ After this change the package holds the interface and its web implementation, th
 
 ## Requirements
 Interface and selection
-- R1. `@toki/platform` exports the types `Platform`, `StorageArea`, `NotificationPermissionState`, `PickedFile` and `SoundName`, and the functions `setPlatform` and `getPlatform`. At the end of this ticket `Platform` has exactly four members, `notifications`, `storage`, `files` and `sound`, with exactly the methods listed in Design. Later tickets add methods (TOKI-074, TOKI-075) and update the test that checks this.
+- R1. `@toki/platform` exports the types `Platform`, `StorageArea`, `NotificationPermissionState`, `PickedFile` and `SoundName`, and the functions `setPlatform` and `getPlatform`. At the end of this ticket `Platform` has exactly four members, `notifications`, `storage`, `files` and `sound`, with exactly the methods listed in Design. Later tickets add methods (TOKI-074, TOKI-075) or a member (TOKI-099 adds `tabs`, the signal between the tabs of one browser) and update the test that checks this.
 - R2. `getPlatform()` called before any `setPlatform` throws an error whose message contains `setPlatform`. After `setPlatform(p)`, `getPlatform()` returns that same object `p`. A later `setPlatform(q)` replaces it.
 - R3. `@toki/platform/web` exports `createWebPlatform(options?)`, and its result is assignable to `Platform` with no cast. `packages/platform/package.json` has exactly two `exports` entries: `.` (`./src/index.ts`) and `./web` (`./src/web/index.ts`).
 - R4. Importing `@toki/platform` where no DOM exists (a test in the `node` environment) does not throw, and the files it loads use no browser global: they pass boundary rule 1 (R24).
@@ -128,10 +128,11 @@ Each choice below is decided in this spec; the Blueprint names the four features
 | :---- | :---- |
 | The sign-in code step survives a reload (TOKI-023) | `storage.tab`: `get`, `set`, `remove`; one text value under a key that ticket names, which the caller never fills with the code. Expiry is the caller's (`expiresInSeconds`). |
 | A waiting message survives a reload and is dropped when someone else signs in (TOKI-040, D-132) | `storage.device`: `set`, `get`, `remove` |
-| The conversation last viewed on this device and collapsed groups (journeys; BR-08, TS-030 of the requirements) | `storage.device`, keys named by the tickets that keep them |
+| The conversation last viewed on this device, the list filter and collapsed groups (journeys; BR-08, TS-030 of the requirements; TOKI-033) | `storage.device`, one text value (JSON written by the caller) under a key the ticket names, for example `conversationList.filter` |
 | Saved preferences (TOKI-078) | Look, accent, density and language are saved to the account (D-175), so it needs no per-device value except, possibly, a copy of the look to avoid a flash on load, which `storage.device` serves. It uses `notifications.permission()` (blocked state, F36) and `storage.device`, nothing more. 'Match my device' reads the system setting outside `platform` (Scope, Out). |
 | Attachments picked in the composer (TOKI-059) | `files.pick({ multiple: true })`; the limits are applied by the composer; upload and progress are TOKI-059's (Design, `handle`) |
 | 'Turn on' asks the browser; Preferences shows that notifications are blocked (TOKI-074, journey F36) | `notifications.requestPermission()`, `notifications.permission()` |
+| Sign-out reaching the other tabs of the browser (TOKI-099) | A new member `tabs`, added by TOKI-099 next to the four; nothing built here changes. |
 | Push registration and the service worker (TOKI-074) | Methods that TOKI-074 adds to `notifications` |
 | A sound for a message in another conversation (TOKI-075) | `sound.play("notification")`; TOKI-075 passes the address of its file in `apps/web/src/main.tsx`. A message sound is not played from a press, so TOKI-075 may need to add a method that starts the sound on the first press (see Sound below). |
 
@@ -176,11 +177,11 @@ apps/web/src/main.tsx   one added call (R26)
 eslint.config.js        rule 1: banned import, files list
 tools/lint-fixtures/    client-core/violates.ts, client-core/allowed.ts, check.mjs
 ```
-- Decided in this spec: the DOM test environment is `jsdom`, pinned to an exact version as a dev dependency of `packages/platform`. The test harness (TOKI-008) leaves DOM tests out, and this is the first package that needs them.
+- Decided in this spec: the DOM test environment is `jsdom`, pinned to an exact version as a dev dependency of `packages/platform`. If `ui-web` already pins `jsdom` when this is built (TOKI-012 R27 pins it there when `packages/platform` does not exist yet), this package uses that version, so the workspace holds one. The test harness (TOKI-008) leaves DOM tests out, and this is the first package that needs them.
 - The package `tsconfig.json` makes the DOM types available (`lib` with `DOM`), as TOKI-001 leaves to the ticket that first needs them. As a result `pnpm typecheck` does not stop a DOM type from entering `types.ts` or `current.ts`. Only rule 1 does: it bans `Window`, `Document`, `Element`, `HTML*` and `SVG*` by name (TOKI-002 R5), and other DOM types (`File`, `Blob`) rely on the undefined-global check, which is unverified for type positions, and on review (TOKI-002 concern 12). Decided in this spec: no second `tsconfig` for `src/` outside `web/`; the cost is accepted for a package this small.
 
 ## Testing
-- Tests are written first, with Vitest, and run by `pnpm test`. They use no real file, name or address. No test helper is exported (Scope, Out): a fake `Platform` written by hand in another package needs a new method each time TOKI-074 or TOKI-075 adds one; that cost is accepted until a helper is needed in several files.
+- Tests are written first, with Vitest, and run by `pnpm test`. They use no real file, name or address. No test helper is exported (Scope, Out): a fake `Platform` written by hand in another package needs a new method or member each time TOKI-074, TOKI-075 or TOKI-099 adds one; that cost is accepted until a helper is needed in several files.
 - R1, R3: a type-level test assigns `createWebPlatform()` to a `Platform` variable and names each exported type; `pnpm typecheck` fails when one is missing. The `exports` entries are read from `package.json` in a test.
 - R2, R4: `current.test.ts` runs in the `node` environment: `getPlatform()` throws with `setPlatform` in the message; after `setPlatform(p)` it returns `p`; after `setPlatform(q)` it returns `q`. The import itself proves that no DOM is needed.
 - R5: with recording fakes for `Notification`, `Audio`, `localStorage` and `sessionStorage`, `createWebPlatform()` is called and the test checks that no fake was called and the document has no new element.
