@@ -19,11 +19,11 @@ The answers of the channel and direct-message requests are not the same shape as
 - The tickets that build on it: the conversation list (TOKI-033), Browse channels and the people picker (TOKI-034), the conversation header and Details panel (TOKI-035), the sync engine (TOKI-040), the read pointer (TOKI-053) and the sign-in screens (TOKI-023), whose session state must hear every unauthenticated answer.
 
 ## Constraints
-- `client-core` touches no DOM or browser API, so React Native can reuse it. Source: Toki Blueprint, technical design, boundary rules; TOKI-002.
+- `client-core` touches no DOM or browser API, so React Native can reuse it. Source: Toki Blueprint, technical design, boundary rules; TOKI-002 rule 1 (an allow list of globals).
 - Every decision about what to show (the sorted list, unread, grouping) lives in `client-core`. Source: Toki Blueprint, technical design, "What each client shares".
 - The client uses the shared schemas and the error schema built in TOKI-004. Source: Toki Blueprint, ticket TOKI-032.
 - Within `/api/v1`, fields are only added. Source: technical design, "Four things the server does now for React Native later".
-- The list has three collapsible groups, Starred, Channels, Direct messages; channels are alphabetical; the filters are All, Unread, Mentions; the search filters by name. Source: flow F09, D-143.
+- The list has three collapsible groups, Starred, Channels, Direct messages; channels are alphabetical; the filters are All, Unread, Mentions; the search filters by name. Source: flow F09 (the groups, the order, the filters and the search), D-143 (star and mute are personal, starred conversations sort to the top).
 - Notification level defaults to "Mentions only" for channels and "All messages" for DMs; mute and star are personal. Source: D-046, D-103, D-143.
 - An archived channel leaves everyone's list; a channel that is not joined cannot be read. Source: F26, D-029, D-116.
 - Server status codes map to screens in one way for every feature: 400 field message, 403 and 404 one shared page, 409 and 410 a fresh copy, 429 wait, 5xx Retry with an error ID. Source: D-131.
@@ -41,3 +41,4 @@ The answers of the channel and direct-message requests are not the same shape as
 - Does the conversation data live in the store or in the Query cache of the web app?
 - Which ticket opens the app on the last viewed conversation and falls back to #general?
 - Which ticket creates the web wiring (one client, one store) and connects the unauthenticated answer to the session state?
+- How is a group direct message named, given that the first load carries a full name for each person and no short name?
