@@ -11,9 +11,21 @@
 //    A file with no marker must have no report.
 //    A line holds one violation, so one marker is one report.
 // 2. It checks that the real paths, in each of the eight source file
-//    extensions, hold the same rules as the fixtures, at severity error, with
-//    inline configuration switched off, and that a violating line linted
-//    under each real path is reported. A test file path must not hold them.
+//    extensions, hold the same rules as the fixtures, at severity error with
+//    the same options, with inline configuration switched off, and are not
+//    ignored. A violating line linted under each real path must be reported,
+//    also when ESLint starts in a package folder and not at the repository
+//    root. A test file path must not hold the rules of rules 1 and 3.
+// 3. It makes the same configuration check for every source file that exists
+//    under the covered folders (the src of client-core, shared, i18n, tokens
+//    and ui-web, and apps/server/src), so an exception for a sub-folder (a
+//    later block that switches a rule off, an added `ignores` entry) fails
+//    as soon as one file is there.
+//    This proves the configuration of the files of today. It does not see an
+//    exception for a folder that holds no file yet, a file with another
+//    extension (.vue, .json), or a rule that is still "error" with the same
+//    options but no longer reports: for that, only the fixtures and the
+//    probes of step 2 count.
 //
 // Exit 0 when everything matches, 1 otherwise.
 import { existsSync, readdirSync, readFileSync } from "node:fs";
@@ -111,6 +123,17 @@ const REAL_PATHS = Object.fromEntries(
   ]),
 );
 
+// The folders whose source files a boundary covers, and the group of each.
+// Test files are outside rules 1 and 3, and inside rule 2.
+const SOURCE_FOLDERS = {
+  "packages/client-core/src": { fixture: "client-core", tests: false },
+  "packages/shared/src": { fixture: "client-core", tests: false },
+  "packages/i18n/src": { fixture: "client-core", tests: false },
+  "packages/tokens/src": { fixture: "client-core", tests: false },
+  "packages/ui-web/src": { fixture: "ui-web", tests: false },
+  "apps/server/src": { fixture: "server-modules", tests: true },
+};
+
 // Test files are outside rules 1 and 3 (spec concern 12): these paths must
 // not hold the rules of their group.
 const TEST_PATHS = Object.fromEntries(
@@ -154,12 +177,16 @@ const ALLOWED_GLOBALS = new Set([
 const failures = [];
 const fail = (message) => failures.push(message);
 
+// `ignore: false` lets ESLint lint the fixture folders, which the config
+// ignores. It also hides every other ignore, so a second instance answers
+// "is this real file ignored".
 const eslint = new ESLint({ cwd: root, ignore: false });
+const withIgnores = new ESLint({ cwd: root });
 // An editor or `pnpm --filter` starts ESLint in a package folder, not at the
 // repository root. The probes run from there too, so a rule cannot depend on
 // the working directory.
 const STARTS = {
-  "the repository root": eslint,
+  "the repository root": withIgnores,
   "apps/server": new ESLint({ cwd: path.join(root, "apps/server") }),
   "packages/ui-web": new ESLint({ cwd: path.join(root, "packages/ui-web") }),
 };
@@ -246,29 +273,56 @@ function severityOf(entry) {
   return Array.isArray(entry) ? entry[0] : entry;
 }
 
+// The computed configuration of one real file must hold the rules of its
+// group as the group's fixture does.
+async function checkConfig(file, folder) {
+  const filePath = path.join(root, file);
+  if (await withIgnores.isPathIgnored(filePath)) {
+    fail(`${file}: ignored by the ESLint configuration`);
+    return;
+  }
+  const config = await eslint.calculateConfigForFile(filePath);
+  const fixture = await eslint.calculateConfigForFile(
+    path.join(here, folder, "fixture.ts"),
+  );
+  for (const name of FIXTURES[folder].rules) {
+    const entry = config?.rules?.[name];
+    if (severityOf(entry) !== 2) {
+      fail(`${file}: ${name} is not at severity error`);
+    } else if (
+      JSON.stringify(entry) !== JSON.stringify(fixture?.rules?.[name])
+    ) {
+      fail(`${file}: ${name} has other options than the fixture ${folder}`);
+    }
+  }
+  if (config?.linterOptions?.noInlineConfig !== true) {
+    fail(`${file}: inline configuration is not switched off`);
+  }
+  if (folder !== "client-core") return;
+  if (config?.languageOptions?.ecmaVersion !== 2022) {
+    fail(`${file}: the language built-ins are not those of ES2022`);
+  }
+  const enabled = new Set(
+    Object.entries(config?.languageOptions?.globals ?? {})
+      .filter(([, value]) => value !== "off")
+      .map(([name]) => name),
+  );
+  const extra = [...enabled].filter((name) => !ALLOWED_GLOBALS.has(name));
+  const missing = [...ALLOWED_GLOBALS].filter((name) => !enabled.has(name));
+  if (extra.length > 0) {
+    fail(`${file}: globals outside the allow list: ${extra.join(", ")}`);
+  }
+  if (missing.length > 0) {
+    fail(`${file}: globals of the allow list missing: ${missing.join(", ")}`);
+  }
+}
+
 async function checkRealPaths() {
   for (const [file, { fixture: folder, probe, rule }] of Object.entries(
     REAL_PATHS,
   )) {
+    await checkConfig(file, folder);
     const filePath = path.join(root, file);
-    const config = await eslint.calculateConfigForFile(filePath);
-    const fixture = await eslint.calculateConfigForFile(
-      path.join(here, folder, "fixture.ts"),
-    );
-    if (!config) {
-      fail(`${file}: ignored by the ESLint configuration`);
-      continue;
-    }
-    for (const name of FIXTURES[folder].rules) {
-      const entry = config.rules?.[name];
-      if (severityOf(entry) !== 2) {
-        fail(`${file}: ${name} is not at severity error`);
-      } else if (
-        JSON.stringify(entry) !== JSON.stringify(fixture?.rules?.[name])
-      ) {
-        fail(`${file}: ${name} has other options than the fixture ${folder}`);
-      }
-    }
     for (const [start, instance] of Object.entries(STARTS)) {
       const [result] = await instance.lintText(probe, { filePath });
       if (!result?.messages.some((message) => message.ruleId === rule)) {
@@ -277,25 +331,27 @@ async function checkRealPaths() {
         );
       }
     }
-    if (config.linterOptions?.noInlineConfig !== true) {
-      fail(`${file}: inline configuration is not switched off`);
-    }
-    if (folder !== "client-core") continue;
-    if (config.languageOptions?.ecmaVersion !== 2022) {
-      fail(`${file}: the language built-ins are not those of ES2022`);
-    }
-    const enabled = new Set(
-      Object.entries(config.languageOptions?.globals ?? {})
-        .filter(([, value]) => value !== "off")
-        .map(([name]) => name),
-    );
-    const extra = [...enabled].filter((name) => !ALLOWED_GLOBALS.has(name));
-    const missing = [...ALLOWED_GLOBALS].filter((name) => !enabled.has(name));
-    if (extra.length > 0) {
-      fail(`${file}: globals outside the allow list: ${extra.join(", ")}`);
-    }
-    if (missing.length > 0) {
-      fail(`${file}: globals of the allow list missing: ${missing.join(", ")}`);
+  }
+}
+
+// Every source file that exists today under a covered folder, however deep.
+async function checkExistingFiles() {
+  for (const [dir, { fixture: folder, tests }] of Object.entries(
+    SOURCE_FOLDERS,
+  )) {
+    if (!existsSync(path.join(root, dir))) continue;
+    const entries = readdirSync(path.join(root, dir), {
+      withFileTypes: true,
+      recursive: true,
+    });
+    for (const entry of entries) {
+      const file = relative(path.join(entry.parentPath, entry.name));
+      const [ext, beforeExt] = entry.name.split(".").reverse();
+      if (!entry.isFile() || !SOURCE_EXTENSIONS.includes(ext)) continue;
+      if (file.split(path.sep).includes("node_modules")) continue;
+      if (beforeExt === "test" && !tests) continue;
+      if (file in REAL_PATHS) continue;
+      await checkConfig(file, folder);
     }
   }
 }
@@ -313,6 +369,7 @@ async function checkTestPaths() {
 
 await checkFixtures();
 await checkRealPaths();
+await checkExistingFiles();
 await checkTestPaths();
 
 if (failures.length > 0) {
