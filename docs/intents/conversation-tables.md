@@ -17,11 +17,11 @@ The later tickets that create, list and read conversations build on these tables
 
 ## Affected users and systems
 - Members and Admins, who see the effects through the channel and direct-message tickets that build on this one: channels, DMs, group DMs, #general, notification level, mute and star.
-- The server app (`apps/server`): a new `conversations` module with its table definitions, the function that builds a direct-message key and the reads of membership and conversation facts.
+- The server app (`apps/server`): a new `conversations` module with its table definitions, the function that builds a direct-message key, the reads of membership and conversation facts, and the two writes of #general's rows (create it, add a person to it).
 - The shared package (`packages/shared`): the limits for names, topics and groups and the notification levels, so the server and the web app use the same values.
 - The database and its migrations (TOKI-005).
 - The account tables (TOKI-019), which hold the people a membership points to.
-- Later tickets that use the tables: the channel API (TOKI-029), the DM API (TOKI-030), the bootstrap call (TOKI-031), the messages table (TOKI-036), the first-Admin set-up (TOKI-020), accepting an invitation (TOKI-097) and the read pointer (TOKI-053).
+- Later tickets that use the tables: the channel API (TOKI-029), the DM API (TOKI-030), the bootstrap call (TOKI-031), the messages table (TOKI-036), the first-Admin set-up (TOKI-020), accepting an invitation (TOKI-024, TOKI-097) and the read pointer (TOKI-053).
 
 ## Constraints
 - Channel names use lowercase letters, digits and hyphens, up to 80 characters, and are unique; uniqueness includes archived channels and holds when two requests arrive at the same moment. Source: Toki Blueprint, decisions D-040, D-115, D-128.
@@ -37,7 +37,7 @@ The later tickets that create, list and read conversations build on these tables
 - Every table carries `workspace_id` to keep a path to multi-tenant; IDs are UUIDv7. Source: Toki Blueprint, data model notes, D-004.
 - Server modules call each other only through public interfaces, never each other's tables. Source: Toki Blueprint, boundary rules.
 - Milestone: M2 "Sign-in, members and conversations". Size: M. Source: Toki Blueprint, ticket TOKI-028.
-- Needs: TOKI-019 (Account tables). Needed by: TOKI-029, TOKI-030 and TOKI-036; the bootstrap call (TOKI-031) needs it through them. TOKI-020, TOKI-097 and TOKI-053 also write these tables and need it, which the plan does not yet say (spec, Plan changes). Source: Toki Blueprint, ticket list, Needs column.
+- Needs: TOKI-019 (Account tables). Needed by: TOKI-029, TOKI-030 and TOKI-036; the bootstrap call (TOKI-031) needs it through them. TOKI-020 and TOKI-024 (and TOKI-097 through it) write #general's rows through this module, and TOKI-053 writes these tables; all need it, which the plan does not yet say (spec, Plan changes). Source: Toki Blueprint, ticket list, Needs column.
 - Belongs to Blueprint intent I05 channels-and-direct-messages.
 
 ## Open questions
