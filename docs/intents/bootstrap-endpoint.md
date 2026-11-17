@@ -28,7 +28,7 @@ Unread counts and the order of direct messages by latest message need messages, 
 - The endpoint name and shape are fixed in this ticket's spec, under `/api/v1`. Source: D-125.
 - A person cannot see the content of a channel they have not joined, a private channel or a DM they are not in. Source: D-116, BR-09.
 - An archived channel leaves everyone's list. Source: flow F26, D-029.
-- A DM appears in the other person's list only when the first message is sent; an existing DM with a deactivated person keeps its place and its history. Source: flow F25, F41, D-091, D-094.
+- A DM appears in the other person's list only when the first message is sent; an existing DM with a deactivated person keeps its history and becomes read-only. Source: flow F25 (history), F41 (read-only), D-091.
 - The list shows Starred, Channels and Direct messages; notification level defaults to "Mentions only" for channels and "All messages" for DMs; mute and star are personal. Source: flow F09, D-046, D-103, D-143.
 - A person is shown by initials on a colour, not a photo; People shows no email address. Source: D-118, prototype profile panel.
 - Reconnect works from the last event number the client holds. Source: Toki Blueprint, technical design, API and realtime.
