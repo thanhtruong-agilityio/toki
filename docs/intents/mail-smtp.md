@@ -10,8 +10,8 @@ Source: Toki Blueprint, decisions D-011, D-027, D-149 and D-157; ticket TOKI-021
 ## Proposed outcome
 After this work, the server has one mail layer that other server work calls:
 - It sends through an SMTP account that the operator sets in the configuration; changing the account needs no code change. In development the mail lands in Mailpit.
-- It has two mails, each in English and Vietnamese: the sign-in mail, which carries the 6-digit code and no button, and the invitation mail, which names the workspace and the inviter and carries the Join button and a 6-digit code.
-- The sign-in mail is in the language the member chose; the invitation mail is in English.
+- It has two mails, each in English and Vietnamese: the sign-in mail, which carries the 6-digit code and no button, and the invitation mail, which names the workspace and the inviter and carries the Join button and a 6-digit code, and a small mail that carries a new code for an invitation.
+- The sign-in mail is in the language the member chose; the invitation mails are in English.
 - When mail cannot be sent, the caller is told, so it can show "Mail not sent" on an invitation. The code and the person's address stay out of the log.
 
 ## Affected users and systems
@@ -32,7 +32,7 @@ After this work, the server has one mail layer that other server work calls:
 - When mail fails halfway through a batch, the invitations already sent stay and each failed row reads "Mail not sent" with Resend. Source: Toki Blueprint, decision D-099.
 - Every text goes through the `i18n` package, in English and Vietnamese, and CI fails on a missing translation. Source: Toki Blueprint, decisions D-018 and D-064.
 - Every wording in quotes that the prototype does not contain is a proposal. Source: Toki Blueprint, decision D-139.
-- Needs TOKI-004 (server skeleton), TOKI-017 (i18n package), TOKI-096 (configuration) and TOKI-003 (Mailpit). Needed by TOKI-022, TOKI-024 and TOKI-097. Size M, milestone M2. Source: Toki Blueprint, ticket TOKI-021.
+- Needs TOKI-004 (server skeleton) and TOKI-017 (i18n package). Needed by TOKI-022; TOKI-024 needs TOKI-022. Size M, milestone M2. Source: Toki Blueprint, ticket TOKI-021 and its plan. The work also uses the variable inventory of TOKI-096 and the Mailpit of TOKI-003, and the mail of an invitation's Resend code is sent for TOKI-097; these are uses, not ordering.
 - Secrets live in `.env`, never in git. Source: Toki Blueprint, ticket TOKI-096 and infrastructure notes.
 
 ## Open questions
