@@ -16,6 +16,13 @@ const toki = {
   },
 };
 
+// A source file of a boundary is any file under src/ with one of these
+// extensions that is not a test file (<name>.test.<extension>).
+const sourceFiles = "*.{ts,tsx,mts,cts,js,jsx,mjs,cjs}";
+const testFiles = `**/*.test.${sourceFiles.slice(2)}`;
+// The four packages of rule 1.
+const portableSrc = "packages/{client-core,shared,i18n,tokens}/src";
+
 // Rule 1. The only globals that client-core, shared, i18n and tokens may use:
 // the ES2022 language built-ins plus this list. React Native has all of them.
 // Every other global (window, document, localStorage, ...) is an error, so a
@@ -82,8 +89,10 @@ export default tseslint.config(
   js.configs.recommended,
   tseslint.configs.recommended,
   {
-    // Tooling and configuration files run in Node.
+    // Tooling and configuration files run in Node. The source files of rule
+    // 1 are left out: their globals are the allow list and nothing else.
     files: ["**/*.{js,mjs,cjs}"],
+    ignores: [`${portableSrc}/**`],
     languageOptions: { globals: globals.node },
   },
   prettier,
@@ -92,10 +101,10 @@ export default tseslint.config(
     // browser API. Test files and package-root configuration files are
     // outside the block.
     files: [
-      "packages/{client-core,shared,i18n,tokens}/src/**/*.{ts,tsx}",
+      `${portableSrc}/**/${sourceFiles}`,
       "tools/lint-fixtures/client-core/**",
     ],
-    ignores: ["**/*.test.{ts,tsx}"],
+    ignores: [testFiles],
     linterOptions: { noInlineConfig: true },
     languageOptions: { ecmaVersion: 2022, globals: allowedGlobals },
     plugins: { toki },
@@ -134,7 +143,7 @@ export default tseslint.config(
     // a file outside modules/ (for example the database client), so it cannot
     // pass a module's tables on to another module.
     files: [
-      "apps/server/src/**/*.{ts,tsx}",
+      `apps/server/src/**/${sourceFiles}`,
       "tools/lint-fixtures/server-modules/**",
     ],
     linterOptions: { noInlineConfig: true },
@@ -158,10 +167,10 @@ export default tseslint.config(
     // <input type="file"> cannot be told apart from any other input here.
     // Reaching an API through a renamed copy of window also relies on review.
     files: [
-      "packages/ui-web/src/**/*.{ts,tsx}",
+      `packages/ui-web/src/**/${sourceFiles}`,
       "tools/lint-fixtures/ui-web/**",
     ],
-    ignores: ["**/*.test.{ts,tsx}"],
+    ignores: [testFiles],
     linterOptions: { noInlineConfig: true },
     rules: {
       "no-restricted-globals": [

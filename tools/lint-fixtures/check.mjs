@@ -10,9 +10,10 @@
 //    have 'noInlineConfig'" message, which has no rule id.
 //    A file with no marker must have no report.
 //    A line holds one violation, so one marker is one report.
-// 2. It checks that the real paths hold the same rules as the fixtures, at
-//    severity error, with inline configuration switched off, and that a
-//    violating line linted under each real path is reported.
+// 2. It checks that the real paths, in each of the eight source file
+//    extensions, hold the same rules as the fixtures, at severity error, with
+//    inline configuration switched off, and that a violating line linted
+//    under each real path is reported. A test file path must not hold them.
 //
 // Exit 0 when everything matches, 1 otherwise.
 import { existsSync, readdirSync, readFileSync } from "node:fs";
@@ -54,8 +55,9 @@ const FIXTURES = {
   },
 };
 
-// The real paths each block must reach (R15). A file need not exist. `probe`
-// is one violating line, linted as if it were that file; `rule` must report it.
+// The real paths each block must reach (R15), without their extension: each
+// is checked with every source extension. A file need not exist. `probe` is
+// one violating line, linted as if it were that file; `rule` must report it.
 const globalProbe = {
   fixture: "client-core",
   probe: "export const probe = window;\n",
@@ -71,27 +73,65 @@ const moduleProbe = {
   probe: 'import "../other/db/tables";\n',
   rule: "toki/module-entry",
 };
-const REAL_PATHS = {
-  "packages/client-core/src/index.ts": globalProbe,
-  "packages/client-core/src/sync/socket.tsx": globalProbe,
-  "packages/shared/src/index.ts": globalProbe,
-  "packages/shared/src/time/zone.tsx": globalProbe,
-  "packages/i18n/src/index.ts": globalProbe,
-  "packages/i18n/src/locale/format.tsx": globalProbe,
-  "packages/tokens/src/index.ts": globalProbe,
-  "packages/tokens/src/color/scale.tsx": globalProbe,
-  "packages/ui-web/src/index.ts": platformProbe,
-  "packages/ui-web/src/button/button.tsx": platformProbe,
-  "apps/server/src/modules/example/index.ts": moduleProbe,
-  "apps/server/src/modules/example/db/query.ts": {
+// A source file is any non-test file under src/ with one of these extensions.
+// The list is written out a second time on purpose, like the allow list below.
+const SOURCE_EXTENSIONS = [
+  "ts",
+  "tsx",
+  "mts",
+  "cts",
+  "js",
+  "jsx",
+  "mjs",
+  "cjs",
+];
+const REAL_STEMS = {
+  "packages/client-core/src/index": globalProbe,
+  "packages/client-core/src/sync/socket": globalProbe,
+  "packages/shared/src/index": globalProbe,
+  "packages/shared/src/time/zone": globalProbe,
+  "packages/i18n/src/index": globalProbe,
+  "packages/i18n/src/locale/format": globalProbe,
+  "packages/tokens/src/index": globalProbe,
+  "packages/tokens/src/color/scale": globalProbe,
+  "packages/ui-web/src/index": platformProbe,
+  "packages/ui-web/src/button/button": platformProbe,
+  "apps/server/src/modules/example/index": moduleProbe,
+  "apps/server/src/modules/example/db/query": {
     ...moduleProbe,
     probe: 'import "../../other/db/tables";\n',
   },
-  "apps/server/src/app.ts": {
+  "apps/server/src/app": {
     ...moduleProbe,
     probe: 'import "./modules/example/db/tables";\n',
   },
 };
+const withExtensions = (stems) =>
+  stems.flatMap((stem) => SOURCE_EXTENSIONS.map((ext) => `${stem}.${ext}`));
+const REAL_PATHS = Object.fromEntries(
+  withExtensions(Object.keys(REAL_STEMS)).map((file) => [
+    file,
+    REAL_STEMS[file.slice(0, file.lastIndexOf("."))],
+  ]),
+);
+
+// Test files are outside rules 1 and 3 (spec concern 12): these paths must
+// not hold the rules of their group.
+const TEST_PATHS = Object.fromEntries(
+  withExtensions([
+    "packages/client-core/src/index.test",
+    "packages/shared/src/time/zone.test",
+    "packages/i18n/src/index.test",
+    "packages/tokens/src/index.test",
+  ])
+    .map((file) => [file, "client-core"])
+    .concat(
+      withExtensions(["packages/ui-web/src/button/button.test"]).map((file) => [
+        file,
+        "ui-web",
+      ]),
+    ),
+);
 
 // The allow list of globals for client-core, shared, i18n and tokens, written
 // out a second time on purpose: a global added in eslint.config.js alone
@@ -252,8 +292,20 @@ async function checkRealPaths() {
   }
 }
 
+async function checkTestPaths() {
+  for (const [file, folder] of Object.entries(TEST_PATHS)) {
+    const config = await eslint.calculateConfigForFile(path.join(root, file));
+    for (const name of FIXTURES[folder].rules) {
+      if (severityOf(config?.rules?.[name] ?? 0) !== 0) {
+        fail(`${file}: a test file holds ${name}`);
+      }
+    }
+  }
+}
+
 await checkFixtures();
 await checkRealPaths();
+await checkTestPaths();
 
 if (failures.length > 0) {
   console.error(`lint:boundaries failed (${failures.length}):`);
