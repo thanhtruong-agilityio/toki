@@ -8,9 +8,9 @@ Four things are easy to get wrong. Archiving asks other people's list to lose a 
 Source: Toki Blueprint, ticket TOKI-101; decisions D-029, D-034, D-047, D-061, D-069, D-090, D-185 (open); flows F10, F21, F26; requirements FR-20, FR-29 (AC-052, AC-077, AC-078); business rules BR-07, BR-20.
 
 ## Proposed outcome
-- An Admin who is a member of a channel other than #general finds an "Archive channel" button in the channel's Details panel. Pressing it asks for confirmation; the question names the channel and its member count. Confirming archives the channel. A Member, and an Admin who is not a member, have no such button, and nobody has one for #general.
+- An Admin who is a member of a channel other than #general finds an "Archive channel" button, in the place that D-185 settles (the channel's Details panel is the working proposal; open question 3). Pressing it asks for confirmation; the question names the channel and its member count. Confirming archives the channel. A Member, and an Admin who is not a member, have no such button, and nobody has one for #general.
 - An archived channel is opened by a member from Browse channels. It shows the channel's name, its topic and an "Archived" label, the history stays readable, and in the place of the composer a notice reads that the channel has been archived. Nobody can post in it.
-- Browse channels shows an archived channel with its "Archived" label and, for an Admin who is a member of it, a "Restore" button. Pressing it puts the channel back in the list of its members.
+- Browse channels shows an archived channel with its "Archived" label and, for an Admin who is a member of it, a "Restore" button. Pressing it puts the channel back in the list of its members; whether it first asks for a confirmation is an open question (question 2).
 - There is no control anywhere that deletes a channel.
 - The build adds no decision of its own about who may restore a channel that has no Admin among its members; that question stays with the product owner.
 
