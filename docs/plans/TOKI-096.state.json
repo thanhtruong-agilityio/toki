@@ -28,6 +28,10 @@
     {
       "at": "2026-11-17T08:13:03Z",
       "stage": "check"
+    },
+    {
+      "at": "2026-11-17T08:13:58Z",
+      "stage": "drift"
     }
   ],
   "key": "TOKI-096",
@@ -40,10 +44,10 @@
   "spec_paths": [
     "docs/specs/2026-11-12-environment-config-design.md"
   ],
-  "stage": "check",
+  "stage": "drift",
   "tier": "S",
   "verifier": {
-    "result": "FAIL",
-    "round": 1
+    "result": "PASS",
+    "round": 2
   }
 }
