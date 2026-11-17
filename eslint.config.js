@@ -42,15 +42,11 @@ const allowedGlobals = {
   AbortSignal: "readonly",
 };
 
-// Imports that need the DOM. A relative path into packages/ui-web always
-// holds the "ui-web" segment, so matching the import text is enough.
-const domImports = [
-  "react-dom",
-  "react-dom/*",
-  "@toki/ui-web",
-  "@toki/ui-web/*",
-];
-const uiWebPaths = ["**/ui-web", "**/ui-web/**"];
+// Imports that need the DOM: react-dom, and ui-web by its package name
+// (@toki/ui-web) or by a relative path, which always holds the "ui-web"
+// segment. Matching the import text is enough. A pattern also matches every
+// path below it (react-dom/client, @toki/ui-web/button).
+const domImports = ["react-dom", "**/ui-web"];
 const domImportMessage =
   "client-core boundary: client-core, shared, i18n and tokens import nothing that needs the DOM, so React Native can reuse them.";
 
@@ -110,12 +106,7 @@ export default tseslint.config(
       "@typescript-eslint/no-restricted-imports": [
         "error",
         {
-          patterns: [
-            {
-              group: [...domImports, ...uiWebPaths],
-              message: domImportMessage,
-            },
-          ],
+          patterns: [{ group: domImports, message: domImportMessage }],
         },
       ],
       "no-restricted-syntax": [
@@ -123,7 +114,7 @@ export default tseslint.config(
         {
           // import("...") as a call or as a type is not an import declaration.
           selector:
-            ":matches(ImportExpression, TSImportType)[source.value=/^(react-dom|@toki\\/ui-web)(\\/|$)|(^|\\/)ui-web(\\/|$)/]",
+            ":matches(ImportExpression, TSImportType)[source.value=/^react-dom(\\/|$)|(^|\\/)ui-web(\\/|$)/]",
           message: domImportMessage,
         },
         {
