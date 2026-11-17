@@ -48,6 +48,8 @@ export type D5 = SVGElement; // expect: toki/client-core-globals
 export type D6 = HTMLInputElement[]; // expect: toki/client-core-globals
 export const d7 = (x: unknown) => x as SVGSVGElement; // expect: toki/client-core-globals
 export const d8 = typeof window; // expect: toki/client-core-globals
+export type D9 = typeof window; // expect: toki/client-core-globals
+export { history }; // expect: toki/client-core-globals
 
 // An ambient declaration that would hide a browser global.
 declare const sessionStorage: unknown; // expect: no-restricted-syntax

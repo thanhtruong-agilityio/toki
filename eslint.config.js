@@ -26,11 +26,11 @@ const testFiles = `**/*.test.${sourceFiles.slice(2)}`;
 // The four packages of rule 1.
 const portableSrc = "packages/{client-core,shared,i18n,tokens}/src";
 
-// Rule 1. The only globals that client-core, shared, i18n and tokens may use:
-// the ES2022 language built-ins plus this list. React Native has all of them.
-// Every other global (window, document, localStorage, ...) is an error, so a
-// browser global that nobody thought to list still fails. globalThis is left
-// out on purpose: it reaches every browser global.
+// Rule 1. The only globals that client-core, shared, i18n and tokens may use
+// as a value: the ES2022 language built-ins plus this list. React Native has
+// all of them. Every other global (window, document, localStorage, ...) is an
+// error, so a browser global that nobody thought to list still fails.
+// globalThis is left out on purpose: it reaches every browser global.
 // A global is added only here, and in tools/lint-fixtures/check.mjs.
 const allowedGlobals = {
   ...globals.es2022,
@@ -51,6 +51,13 @@ const allowedGlobals = {
   AbortController: "readonly",
   AbortSignal: "readonly",
 };
+
+// The DOM types that the same packages may not name. A type alone loads
+// nothing, so only these are banned: the three names, and every name with one
+// of the prefixes (HTMLElement, SVGSVGElement). Other types that the file does
+// not declare (RequestInit, MessageEvent, Storage) pass and rely on review.
+const domTypes = ["Window", "Document", "Element"];
+const domTypePrefixes = ["HTML", "SVG"];
 
 // Imports that need the DOM: react-dom, and ui-web by its package name
 // (@toki/ui-web) or by a relative path, which always holds the "ui-web"
@@ -115,9 +122,9 @@ export default tseslint.config(
     languageOptions: { ecmaVersion: 2022, globals: allowedGlobals },
     plugins: { toki },
     rules: {
-      // Reports every global outside the allow list, DOM types included
-      // (Window, Document, Element, HTMLElement, SVGElement, ...).
-      "toki/client-core-globals": "error",
+      // Reports every value use of a global outside the allow list (also
+      // `typeof window` in a type), and a type-only use of a DOM type name.
+      "toki/client-core-globals": ["error", { domTypes, domTypePrefixes }],
       "@typescript-eslint/no-restricted-imports": [
         "error",
         {

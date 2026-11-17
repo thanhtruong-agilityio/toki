@@ -29,6 +29,13 @@ export type Loaded = Promise<Record<string, Response>>;
 export type Timer = ReturnType<typeof setTimeout>;
 export const lazy = () => import("@toki/i18n");
 
+// The types that go with the allowed globals, and any other type that is not
+// one of the banned DOM type names (Window, Document, Element, HTML*, SVG*):
+// a type alone does not load the browser. They rely on review.
+export type Options = RequestInit & { headers: HeadersInit; body: BodyInit };
+export type Incoming = MessageEvent | CloseEvent | Event;
+export type Unrelated = Storage;
+
 // A local name that shadows a browser global is not the global.
 export function open(window: { title: string }, document: string) {
   return window.title + document;
