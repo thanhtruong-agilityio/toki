@@ -29,6 +29,19 @@
       "at": "2026-11-17T02:20:34Z",
       "auto": true,
       "stage": "approve"
+    },
+    {
+      "at": "2026-11-17T02:21:18Z",
+      "auto": true,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-17T02:22:09Z",
+      "stage": "drift"
+    },
+    {
+      "at": "2026-11-17T02:22:10Z",
+      "stage": "ship"
     }
   ],
   "key": "TOKI-003",
@@ -36,15 +49,15 @@
   "metrics": {},
   "mode": "Auto to PR",
   "plan_approved": true,
-  "plan_hash": "9fc74eb588a02b20624f807a87702eabb5c8b748cd8af8c261a8bbb435564ec8",
+  "plan_hash": "befc55fe7bed54049716c71e8631bd6db6a1b136f153d5530d41d7cc1b9a7519",
   "spec_commit": null,
   "spec_paths": [
     "docs/specs/2026-11-12-local-dev-environment-design.md"
   ],
-  "stage": "check",
+  "stage": "ship",
   "tier": "M",
   "verifier": {
-    "result": "FAIL",
-    "round": 2
+    "result": "PASS",
+    "round": 3
   }
 }
