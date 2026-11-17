@@ -32,7 +32,7 @@ The server offers one request that opens a direct message or a group direct mess
 - The same set of people always leads to the same conversation; messaging yourself is not supported in phase 1 (F25). Source: Toki Blueprint, flow F25.
 - Every Member and Admin may start direct messages and groups; guests may not (BR-37, D-050, D-090). Source: Toki Blueprint, FR-22, AC-059.
 - Permission is checked on the server for every request; private conversations and direct messages are visible to members only (BR-09, D-077). Source: Toki Blueprint, business rules.
-- A deactivated person is not listed; an existing direct message with them keeps its history (F25, F41, D-094). Source: Toki Blueprint, flows.
+- A deactivated person is not listed; an existing direct message with them keeps its history (F25, F41, D-091). Source: Toki Blueprint, flows.
 - The tables, their database rules and the key of a direct message come from TOKI-028 and are not changed here. Source: Toki Blueprint, ticket TOKI-028.
 - Errors use the one format of TOKI-004; the status codes follow D-131. Source: Toki Blueprint, D-131.
 - Server modules never read each other's tables. Source: Toki Blueprint, technical design.
