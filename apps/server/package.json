@@ -3,9 +3,18 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "dev": "tsx watch --env-file=../../.env src/main.ts",
+    "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@toki/shared": "workspace:*"
+    "@toki/shared": "workspace:*",
+    "fastify": "5.12.8",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.5",
+    "tsx": "4.23.15",
+    "vitest": "5.1.0"
   }
 }
