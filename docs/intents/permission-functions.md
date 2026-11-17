@@ -28,5 +28,5 @@ Source: Toki Blueprint, Stack (permission rules live in `shared`), ticket TOKI-0
 - Tests are written first (Vitest).
 
 ## Open questions
-- Who restores an archived private channel that has no members left (D-184 is open)? The capability table says an Admin restores "where a member".
+- Who restores an archived channel in which no Admin is a member, for example a private channel with no members left (D-184 is open)? The capability table says an Admin restores "where a member".
 - Does Guest have any phase 1 behaviour? The source puts Guest in phase 5 and the capability table has a Guest column.
