@@ -16,6 +16,7 @@ On a narrow screen the list is the Home screen itself, and the prototype's list 
 - The Direct messages heading has a '+' that starts a direct message or a group (shown on hover on a desktop, always on touch and narrow screens). A '+ Browse channels' row at the end of the list and a button at the top open Browse channels. Nothing in the list creates a channel.
 - Every conversation has its own address; the app opens on the conversation last viewed on the device, the first time on #general; on a narrow screen Home is the list.
 - The groups that are collapsed and the filter that is chosen are remembered on the device.
+- A conversation that opens (a channel just created, joined or a new direct message) is shown in the list: if the filter, the search or a collapsed group would hide it, the list changes to show it.
 - The list works in both looks, in both languages and at every width from 360 px.
 
 ## Affected users and systems
@@ -29,6 +30,7 @@ On a narrow screen the list is the Home screen itself, and the prototype's list 
 - The Direct messages heading has a '+' that starts a DM or a group, on hover on a desktop, always visible on touch and narrow screens; there is no pencil icon. Source: D-086, D-154, D-155.
 - A '+ Browse channels' row closes the list; nothing in the list creates a channel. Source: D-084.
 - A filter that matches nothing shows its own empty state, centred in the content area. Source: D-074.
+- After something is created, the screen shows it; if a filter would hide it, the filter changes. For the list: a conversation that opens is shown, even when the filter, the search or a collapsed group would hide it. Source: D-076.
 - Each conversation has its own address, and Back closes an open panel first. Source: D-089.
 - The app opens on the conversation last viewed on the device; the first time, on #general. Source: D-035, BR-08.
 - Star and Mute are personal; starred conversations sort to the top of the person's list. Source: D-143.
