@@ -11,7 +11,7 @@ Source: Toki Blueprint, journeys F02, F39, F40 and F41, requirements FR-25 and F
 - A deactivated person can be invited again. Accepting the new invitation brings back the same account with the role chosen in the new invitation.
 - An Admin changes a role, deactivates a person and reactivates a person. Deactivation ends every session of the person at once. The last Admin cannot be demoted or deactivated, and nobody deactivates themselves, also when two Admins act at the same moment.
 - An Admin reads the member list with its statuses and counts. A Member is refused on every one of these requests. A repeat of the same request is ignored, and each administrative action is recorded with who, what, to whom and when.
-- The accept-an-invitation work can find an invitation by the link in the mail and accept it through functions this work provides.
+- The accept-an-invitation work can find an invitation by the link in the mail, make a new code and accept it through functions this work provides; accepting creates the account, or brings a deactivated one back, and adds the person to #general in one step that this work owns.
 Source: Toki Blueprint, ticket TOKI-024, decisions D-094, D-099, D-110, D-111, D-134, D-153, D-181, D-182.
 
 ## Affected users and systems
@@ -20,8 +20,8 @@ Source: Toki Blueprint, ticket TOKI-024, decisions D-094, D-099, D-110, D-111, D
 
 ## Constraints
 - Belongs to intent I04 (member-management) of milestone M2. Size: L.
-- Needs: TOKI-022 (sign-in API: sessions, the invitation-code functions) and TOKI-027 (permission functions). Also uses the account tables (TOKI-019), the mail layer (TOKI-021) and the conversation tables (TOKI-028) as they are specified.
-- Needed by: TOKI-025 (Admin page) and TOKI-097 (accept an invitation).
+- Needs: TOKI-022 (sign-in API: sessions, the invitation-code functions) and TOKI-027 (permission functions). Also uses the account tables (TOKI-019), the first-admin work (TOKI-020: the shared address check and `createAccount`), the mail layer (TOKI-021) and the conversation tables (TOKI-028: the member row of #general). The plan lists only the first two; the spec's "Plan changes" adds the rest.
+- Needed by: TOKI-025 (Admin page) and TOKI-097 (accept an invitation). The plan does not yet list TOKI-097's need; the spec's "Plan changes" adds it.
 - Invite with the role Member or Admin (D-153); no Owner role (D-152); up to 50 addresses per batch (D-134); each address reports its own result and the invitations already sent stay (D-099).
 - An invitation lasts 7 days and works once; its mail carries the Join button and a 6-digit code, and the link alone signs nobody in (D-037, D-149). Resend starts a new 7 days and the earlier mail stops working (D-182). Invitations are in English (D-180).
 - A deactivated person can be invited again; accepting reactivates the same account with its history and channels, with the role of the new invitation (D-094, D-181).
