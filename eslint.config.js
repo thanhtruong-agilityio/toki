@@ -148,7 +148,7 @@ export default tseslint.config(
           // `declare const window: any` would hide a browser global from the
           // rule above, the way a /* global */ comment would.
           selector:
-            ":matches(VariableDeclaration, TSDeclareFunction, TSModuleDeclaration, ClassDeclaration)[declare=true]",
+            ":matches(VariableDeclaration, TSDeclareFunction, TSModuleDeclaration, ClassDeclaration, TSEnumDeclaration)[declare=true]",
           message:
             "client-core boundary: an ambient declaration can hide a browser global from lint. Declare types in a module, or add the global to the allow list in eslint.config.js.",
         },

@@ -56,4 +56,7 @@ declare const sessionStorage: unknown; // expect: no-restricted-syntax
 declare function alert(text: string): void; // expect: no-restricted-syntax
 // prettier-ignore
 declare global { var indexedDB: unknown } // expect: no-restricted-syntax
-export const e1 = [sessionStorage, alert];
+declare class Notification {} // expect: no-restricted-syntax
+// prettier-ignore
+declare enum caches { A } // expect: no-restricted-syntax
+export const e1 = [sessionStorage, alert, Notification, caches];
