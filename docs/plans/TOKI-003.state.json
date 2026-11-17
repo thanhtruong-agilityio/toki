@@ -24,6 +24,11 @@
     {
       "at": "2026-11-17T02:19:19Z",
       "stage": "check"
+    },
+    {
+      "at": "2026-11-17T02:20:34Z",
+      "auto": true,
+      "stage": "approve"
     }
   ],
   "key": "TOKI-003",
@@ -31,7 +36,7 @@
   "metrics": {},
   "mode": "Auto to PR",
   "plan_approved": true,
-  "plan_hash": "12334f33ddf6cca36983f61cee7f2ab6fb85c04f1ec65dab010ce5d70b6d44c9",
+  "plan_hash": "9fc74eb588a02b20624f807a87702eabb5c8b748cd8af8c261a8bbb435564ec8",
   "spec_commit": null,
   "spec_paths": [
     "docs/specs/2026-11-12-local-dev-environment-design.md"
@@ -40,6 +45,6 @@
   "tier": "M",
   "verifier": {
     "result": "FAIL",
-    "round": 1
+    "round": 2
   }
 }

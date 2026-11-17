@@ -57,7 +57,7 @@ All scripts are Bash and run under the Bash 3.2 that macOS ships.
 
 ## Choices made in this run
 
-1. **TOKI-096 is not built. This departs from a decision of the lead** (concern 4: TOKI-096 goes first). The spec says TOKI-096 goes first and names every variable (concern 4, R17); `main` has no inventory and no `.env.example`. This ticket uses the names below. They appear in three files only: the compose file, `guard.sh` (`NODE_ENV`, `POSTGRES_DB`, `POSTGRES_TEST_DB`) and `lib.sh` (`MINIO_BUCKET`); a rename touches those three and the smoke test. `DATABASE_URL` and `TEST_DATABASE_URL` are not read here. R17 stays pending until TOKI-096 lands; TOKI-096 either adopts these names or this ticket's files are renamed. This ticket does not create the inventory or `.env.example`. `NODE_ENV` is the name most likely to change: other tools (Vite, Vitest) set it themselves.
+1. **TOKI-096 is not built. This departs from a decision of the lead** (concern 4: TOKI-096 goes first). The spec says TOKI-096 goes first and names every variable (concern 4, R17); `main` has no inventory and no `.env.example`. This ticket uses the names below. A rename is a search for the old name across `infra/`, `CLAUDE.md` and `README.md`: the names are read in the compose file, `guard.sh` and `lib.sh`, and quoted in messages, the smoke test and the two documents. `DATABASE_URL` and `TEST_DATABASE_URL` are not read here. R17 stays pending until TOKI-096 lands; TOKI-096 either adopts these names or this ticket's files are renamed. This ticket does not create the inventory or `.env.example`. `NODE_ENV` is the name most likely to change: other tools (Vite, Vitest) set it themselves.
 
    | Value (TOKI-096 category) | Name used |
    | :-- | :-- |
