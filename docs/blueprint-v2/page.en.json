@@ -11172,7 +11172,7 @@
       {
        "id": "TOKI-015",
        "title": "AppShell in three layouts",
-       "scope": "Calm, Focus, and narrow under 720px with BottomTabs. Per D-068: smallest size 360 × 560; from 720 to 1099px side panels overlay the chat; navigation and the tab row scroll; the conversation list is the main area of the sidebar. Also owns `.tab`, the 15 px narrow body size (to be confirmed), the toast anchor mount, the account card as a trigger button, the look-attribute function, and role rules for sections. The shell's `/` test needs a session from TOKI-023, which is in M2: either that test moves to TOKI-023 or the shell test uses a fake session (to decide).",
+       "scope": "Calm, Focus, and narrow under 720px with BottomTabs. Per D-068: smallest size 360 × 560; from 720 to 1099px side panels overlay the chat; navigation and the tab row scroll; the conversation list is the main area of the sidebar. Also owns `.tab`, the 15 px narrow body size (to be confirmed), the toast anchor mount, the account card as a trigger button, the look-attribute function, and role rules for sections. The shell's `/` test needs a session from TOKI-023, which is in M2: TOKI-023 R42 gives the shell test a stubbed signed-in session, so either build order works.",
        "size": "L",
        "spec": {
         "state": "pr",
@@ -11254,21 +11254,33 @@
        "title": "Account tables",
        "scope": "users, login_codes, sessions, devices",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #62",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-020",
        "title": "First admin from environment variables",
        "scope": "Create the first Admin, the workspace and #general when the database is empty; #general cannot be left or archived (D-034, F01)",
        "size": "S",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #71",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-021",
        "title": "Sending mail over SMTP",
-       "scope": "A configurable mail layer (D-027) and two templates in English and Vietnamese: the sign-in mail carries the 6-digit code only, with no button (D-157); the invitation mail names the workspace and the inviter and carries the Join button and a 6-digit code (D-149)",
+       "scope": "A configurable mail layer (D-027) and two templates in English and Vietnamese: the sign-in mail carries the 6-digit code only, with no button (D-157); the invitation mail names the workspace and the inviter and carries the Join button and a 6-digit code (D-149) Registers its listener through `onSessionsEnded` of TOKI-022.",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #61",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-022",
@@ -11297,42 +11309,66 @@
        "title": "Shared permission functions",
        "scope": "Member and Admin rules in shared, used by both server and client",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #60",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-024",
        "title": "Member management (API)",
        "scope": "Invite with the role Member or Admin (D-153), up to 50 addresses per batch (D-134); each address reports its own result and those already sent stay when mail fails (D-099); resend and revoke; an invitation lasts 7 days and works once (D-037). A deactivated person can be invited again (D-094). Change role, deactivate, reactivate: deactivation ends every session at once (BR-29); nobody deactivates themselves; the last Admin cannot be demoted or deactivated (D-153). The server refuses every request from a Member (D-090), ignores a repeat of the same request (D-111) and records each action: who, what, to whom, when (D-110)",
        "size": "L",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #74",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-025",
        "title": "Admin page",
-       "scope": "Opens only for Admins; a Member sees 'You do not have access to this page' (D-090). Member table with name, email, role, status (Invited, Active, Deactivated) and last active; search, a status chip with a total for each status, the first 50 rows and more on scroll (D-109). 'Invite members': several addresses, role Member or Admin with Member by default, each row showing 'Invited' or 'Mail not sent' with Resend (D-153, D-099); Revoke asks for confirmation. Row menu: Change role, Deactivate, Reactivate, each with a confirmation that names the person (D-061, D-069); the entries are locked, with the reason, on the Admin's own row and on the last Admin (D-153)",
+       "scope": "Opens only for Admins; a Member sees 'You do not have access to this page' (D-090). Member table with name, email, role, status (Invited, Active, Deactivated) and last active; search, a status chip with a total for each status, the first 50 rows and more on scroll (D-109). 'Invite members': several addresses, role Member or Admin with Member by default, each row showing 'Invited' or 'Mail not sent' with Resend (D-153, D-099); Revoke asks for confirmation. Row menu: Change role, Deactivate, Reactivate, each with a confirmation that names the person (D-061, D-069); the entries are locked, with the reason, on the Admin's own row and on the last Admin (D-153) Takes its idempotency keys from the id generator of TOKI-098; the build order (the ids part of TOKI-098 as its own pull request, first) is to decide.",
        "size": "L",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #92",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-026",
        "title": "Sessions and emergency access (server)",
        "scope": "List your own sessions with device kind, browser and last use; sign out one device or all others; a session ended this way is refused on its next request (D-158, F07). A server command prints a one-time sign-in link valid 10 minutes for one member, refuses an address that is not in the workspace or is deactivated, and logs every use (D-159)",
        "size": "S",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #72",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-097",
        "title": "Accept an invitation",
        "scope": "Join in the mail opens the code step with the email filled in; the link alone signs nobody in (D-149). The code is valid 10 minutes; 'Resend code' sends a new one after 60 seconds and cancels the old one (D-136, D-082); the 5th wrong try locks it (D-137). On success the person is in #general and lands there, with no welcome step (D-083, D-034); the display name is the part of the email before @ (D-150); a deactivated person gets the same account back with its history and channels (D-094). Pages for an expired, a revoked and an unrecognised invitation; a used one leads to sign-in (D-081). A person signed in as someone else is asked before anything changes (D-080)",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #75",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-099",
        "title": "Account menu, Sign out and signed-in devices (screens)",
-       "scope": "The account card's menu: Set status, Pause notifications, Focus time, Preferences, Sign out; an entry appears when its own ticket is built. 'Sign out' in the account menu, and in the More sheet on narrow screens (D-158, D-067). A 'Signed-in devices' section in Preferences: each row shows the device kind, browser and last use, and the current one is labelled 'This device'; 'Sign out' beside another device and 'Sign out all other devices', each asking for confirmation (D-158, D-069). Owns the account menu content and renders the Menu on the shell's trigger; owns the cross-tab signal on Sign out and the sign-out call; and the confirmation for signing out other devices.",
-       "size": "S",
-       "spec": null
+       "scope": "The account card's menu: Set status, Pause notifications, Focus time, Preferences, Sign out; an entry appears when its own ticket is built. 'Sign out' in the account menu, and in the More sheet on narrow screens (D-158, D-067). A 'Signed-in devices' section in Preferences: each row shows the device kind, browser and last use, and the current one is labelled 'This device'; 'Sign out' beside another device and 'Sign out all other devices', each asking for confirmation (D-158, D-069). Owns the account menu content and renders the Menu on the shell's trigger; owns the cross-tab signal on Sign out and the sign-out call; and the confirmation for signing out other devices. Also owns the conversation-store reset on Sign out (`endLocalSession`) and, when absent, the shared role words `common.role.*`.",
+       "size": "M",
+       "spec": {
+        "state": "pr",
+        "pr": "PR #90",
+        "fix": ""
+       }
       }
      ]
     },
@@ -11353,77 +11389,121 @@
        "title": "Conversation tables",
        "scope": "conversations, conversation_members, the DM de-duplication key",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #66",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-029",
        "title": "Channel API",
        "scope": "Create (Admin only; a Member's request is refused, D-084, D-090), browse, join, leave, edit topic and description, add people, remove people, archive and restore. Names are lowercase letters, digits and hyphens, up to 80 characters; the server never creates two channels with one name, also when two requests arrive together and against archived channels (D-040, D-115, D-128); topic up to 250 characters (D-101); public or private is fixed and there is no rename (D-040, D-105). A channel that is not joined cannot be read, and joining gives the full history (D-116, D-029). Every write requires membership (D-077). Any member edits the topic and adds people (D-041, D-090); an Admin removes people and archives only where a member, never in #general (D-085, D-047, D-034). A private channel is rejoined only when a member adds the person back, and the last member leaving archives it (D-051)",
        "size": "L",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #81",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-030",
        "title": "DM and group DM API",
        "scope": "Open a DM, create a group of up to 8; groups cannot gain or lose people (D-045, F25)",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #80",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-031",
        "title": "Bootstrap endpoint",
        "scope": "One call returning yourself, the workspace, members, conversations, unread counts and the current event number",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #79",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-032",
        "title": "client-core: API client and conversation store",
-       "scope": "A client typed from the shared schemas; the list already grouped and filtered. Uses the error schema built in TOKI-004",
+       "scope": "A client typed from the shared schemas; the list already grouped and filtered. Uses the error schema built in TOKI-004 Also builds the one client and store in `apps/web/src/client.ts` and registers the 401 hook; TOKI-023 supplies `reportUnauthenticated`.",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #82",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-033",
        "title": "Conversation list",
-       "scope": "Starred, Channels, Direct messages groups; collapse; All, Unread, Mentions filters; search by name. The Direct messages heading has a '+' that starts a DM or a group: on hover on desktop, always visible on touch and narrow screens (D-086, D-154); there is no pencil icon (D-155). A '+ Browse channels' row closes the list; nothing in the list creates a channel (D-084). A filter that matches nothing shows its own empty state (D-074). Each conversation has its own address, and Back closes an open panel first (D-089)",
-       "size": "M",
-       "spec": null
+       "scope": "Starred, Channels, Direct messages groups; collapse; All, Unread, Mentions filters; search by name. The Direct messages heading has a '+' that starts a DM or a group: on hover on desktop, always visible on touch and narrow screens (D-086, D-154); there is no pencil icon (D-155). A '+ Browse channels' row closes the list; nothing in the list creates a channel (D-084). A filter that matches nothing shows its own empty state (D-074). Each conversation has its own address, and Back closes an open panel first (D-089) Also builds the list-actions registry, `personHue`, the route `/c/$conversationId` and the shell panel slots. Overlaps TOKI-054 on the filter chips and list badges (to decide).",
+       "size": "L",
+       "spec": {
+        "state": "pr",
+        "pr": "PR #84",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-034",
        "title": "Browse channels and the people picker",
        "scope": "Browse channels: search, name, topic and member count, 'Join' or 'Open', an 'Archived' label, the first 50 and more on scroll (D-109), 'No channels match' centred (D-074); a channel that is not joined shows no messages, here or from a link, only its name and topic with Join (D-116); no button creates a channel (D-084). The picker opened by the '+' on Direct messages: a people search showing the first 50 (D-109); each person pressed becomes a removable chip; Start opens the DM for one chip or a group DM for more; a person beyond 8, counting yourself, is refused (D-086, D-017)",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #83",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-035",
        "title": "Conversation header and Details panel",
-       "scope": "Name, topic, members, notification level, mute, star, leave. Defaults: Mentions only for channels, All messages for DMs (D-046). Mute also hides the unread badge and bold; the level 'Nothing' only stops toast, push and sound (D-103). Any member edits the topic and description in place; the name cannot be changed (D-105). Leaving a public channel happens at once with Undo for 5 seconds; leaving a private channel asks for confirmation that says a member must invite you back, with no Undo (D-156, D-061); the last member is told the channel will be archived (D-051); #general has no Leave (D-034). Owns Back closing an open panel before leaving the conversation (D-089).",
+       "scope": "Name, topic, members, notification level, mute, star, leave. Defaults: Mentions only for channels, All messages for DMs (D-046). Mute also hides the unread badge and bold; the level 'Nothing' only stops toast, push and sound (D-103). Any member edits the topic and description in place; the name cannot be changed (D-105). Leaving a public channel happens at once with Undo for 5 seconds; leaving a private channel asks for confirmation that says a member must invite you back, with no Undo (D-156, D-061); the last member is told the channel will be archived (D-051); #general has no Leave (D-034). Owns Back closing an open panel before leaving the conversation (D-089). No ticket yet owns the request that saves the notification level, mute and star (to decide).",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #85",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-098",
        "title": "Create a channel from the Admin page",
-       "scope": "A '+' on the 'Channels' list of the Admin page opens the Create channel dialog (D-151). In phase 1 that list shows every channel with its member count; the busiest ranking comes with Analytics (D-183): Name, a Private switch off by default, Topic (optional, up to 250 characters), Add people (optional) (D-101). A space typed in the name becomes a hyphen and capitals become lowercase (D-127). Errors show under the field; Create is disabled until the form is valid and while the request runs (D-104, D-111); a name already in use is refused by the server and the field says so (D-115). Closing with content asks whether to discard (D-070). The new channel opens at once (D-076). A Member has no way to open this dialog (D-084)",
+       "scope": "A '+' on the 'Channels' list of the Admin page opens the Create channel dialog (D-151). In phase 1 that list shows every channel with its member count; the busiest ranking comes with Analytics (D-183): Name, a Private switch off by default, Topic (optional, up to 250 characters), Add people (optional) (D-101). A space typed in the name becomes a hyphen and capitals become lowercase (D-127). Errors show under the field; Create is disabled until the form is valid and while the request runs (D-104, D-111); a name already in use is refused by the server and the field says so (D-115). Closing with content asks whether to discard (D-070). The new channel opens at once (D-076). A Member has no way to open this dialog (D-084) Also builds the UUIDv7 generator `newId` in `packages/shared`, which TOKI-025 uses.",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #89",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-100",
        "title": "Add and remove people in a channel (screens)",
        "scope": "Add people: a search that lists only people not yet in the channel, the first 50 shown and more on scroll (D-109); choose one or more and press Add; any member can do it, in private channels too (D-090). Remove a person: offered only to an Admin who is a member of the channel, never in #general, with a confirmation that names the person (D-085, D-047, D-069)",
        "size": "S",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #86",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-101",
        "title": "Archive and restore a channel (screens)",
        "scope": "Archive: offered only to an Admin who is a member, never for #general (D-047, D-034); the confirmation names the channel and its member count (D-061, D-069). Afterwards the channel leaves everyone's list, its composer is replaced by 'This channel has been archived' and its history stays readable (D-029). Browse channels shows it with an 'Archived' label and gives Admins a 'Restore' button (F26)",
        "size": "S",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #88",
+        "fix": ""
+       }
       }
      ]
     }
@@ -11448,14 +11528,14 @@
       {
        "id": "TOKI-036",
        "title": "messages and events tables",
-       "scope": "UUIDv7, pagination indexes, a numbered event log. Reuses the UUIDv7 generator chosen in TOKI-005",
+       "scope": "UUIDv7, pagination indexes, a numbered event log. Reuses the UUIDv7 generator chosen in TOKI-005 Owns the conditions of the event number; until then the bootstrap endpoint returns 0.",
        "size": "M",
        "spec": null
       },
       {
        "id": "TOKI-037",
        "title": "Message API",
-       "scope": "Idempotent send, paged loading, loading around one message; up to 10,000 characters and 10 files per message (D-042)",
+       "scope": "Idempotent send, paged loading, loading around one message; up to 10,000 characters and 10 files per message (D-042) Owns hiding a new DM from the other person until its first message (proposed, undecided) and refuses posts to an archived channel.",
        "size": "L",
        "spec": null
       },
@@ -11483,7 +11563,7 @@
       {
        "id": "TOKI-041",
        "title": "Virtualised message list",
-       "scope": "Reverse scroll, stick to bottom, hold position when loading older messages, a New messages button; opens at the New divider when there are unread messages (D-052)",
+       "scope": "Reverse scroll, stick to bottom, hold position when loading older messages, a New messages button; opens at the New divider when there are unread messages (D-052) Also draws the readable history of an archived channel, passed by TOKI-101 as `ArchivedHistory`.",
        "size": "L",
        "spec": null
       },
@@ -11620,7 +11700,7 @@
       {
        "id": "TOKI-053",
        "title": "Read pointer",
-       "scope": "Unread counts per conversation, synced across devices. Read when the conversation is open, the window is in use and the list is at the bottom (D-052). Grey system lines such as 'Minh joined' raise no count (D-100); thread replies do not raise the channel's count (F14); leaving a channel clears its count (D-133); nobody sees who has read a message (D-048)",
+       "scope": "Unread counts per conversation, synced across devices. Read when the conversation is open, the window is in use and the list is at the bottom (D-052). Grey system lines such as 'Minh joined' raise no count (D-100); thread replies do not raise the channel's count (F14); leaving a channel clears its count (D-133); nobody sees who has read a message (D-048) Fills the unread data of the client store (`setUnread`) and adds unread counts to the bootstrap answer.",
        "size": "L",
        "spec": null
       },
@@ -11815,7 +11895,7 @@
       {
        "id": "TOKI-074",
        "title": "Web Push",
-       "scope": "VAPID keys, a service worker used for push only (D-030), device registration with a test notification, a click that opens Toki at that message; the notification shows sender, conversation and the start of the message (D-044); a card offering notifications on first visit, the browser asked only after Turn on (F36); on iPhone push works only once Toki is added to the Home Screen (D-108); signing out removes that device's registration (D-158). Adds the VAPID keys to the configuration list and `.env.example` of TOKI-096. Owns iPhone detection and adds the VAPID keys to the configuration list.",
+       "scope": "VAPID keys, a service worker used for push only (D-030), device registration with a test notification, a click that opens Toki at that message; the notification shows sender, conversation and the start of the message (D-044); a card offering notifications on first visit, the browser asked only after Turn on (F36); on iPhone push works only once Toki is added to the Home Screen (D-108); signing out removes that device's registration (D-158). Adds the VAPID keys to the configuration list and `.env.example` of TOKI-096. Owns iPhone detection and adds the VAPID keys to the configuration list. Registers through `onSessionsEnded` of TOKI-022 and removes the push registration of an ended session.",
        "size": "L",
        "spec": null
       },
@@ -11870,7 +11950,7 @@
       {
        "id": "TOKI-078",
        "title": "Preferences screen",
-       "scope": "Look (Calm, Focus, Match my device), accent, density; notification switches including 'Notify me for @mentions even in muted channels', on by default (D-088); Pause, status; language: English by default or Tiếng Việt, switching the whole interface at once (D-018); profile: display name of 1 to 80 characters (D-033), job title, time zone (D-144), no picture upload (D-118); the 'Signed-in devices' list with sign out of one device or of all others, after confirmation (D-158); saved to the account and applied on every device (D-142). Owns the first-paint look when the saved look differs from the device setting.",
+       "scope": "Look (Calm, Focus, Match my device), accent, density; notification switches including 'Notify me for @mentions even in muted channels', on by default (D-088); Pause, status; language: English by default or Tiếng Việt, switching the whole interface at once (D-018); profile: display name of 1 to 80 characters (D-033), job title, time zone (D-144), no picture upload (D-118); the 'Signed-in devices' list with sign out of one device or of all others, after confirmation (D-158); saved to the account and applied on every device (D-142). Owns the first-paint look when the saved look differs from the device setting. Takes over the `/prefs` page frame built in TOKI-099.",
        "size": "M",
        "spec": null
       },
@@ -11925,7 +12005,7 @@
       {
        "id": "TOKI-084",
        "title": "Production image and Compose",
-       "scope": "Dockerfile, Compose, Caddyfile, automatic TLS",
+       "scope": "Dockerfile, Compose, Caddyfile, automatic TLS Builds every entry under `src/cli/`, including the emergency-link command of TOKI-026.",
        "size": "M",
        "spec": null
       },

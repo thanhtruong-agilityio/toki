@@ -4133,7 +4133,7 @@
       {
        "id": "015",
        "title": "AppShell ba bố cục",
-       "scope": "Calm, Focus, khung hẹp dưới 720px với BottomTabs. Theo NR2: nhỏ nhất 360 × 560; từ 720 tới 1099px panel phụ phủ lên chat; thanh điều hướng và hàng tab cuộn được; danh sách hội thoại là vùng chính của thanh bên. Còn sở hữu `.tab`, cỡ chữ 15 px ở màn hình hẹp (cần xác nhận), việc gắn điểm neo toast, thẻ tài khoản dạng nút kích hoạt, hàm đặt thuộc tính giao diện, và quy tắc vai trò cho các mục. Bài test `/` của shell cần một phiên từ TOKI-023, ở M2: hoặc bài test đó chuyển sang TOKI-023, hoặc test của shell dùng phiên giả (cần quyết).",
+       "scope": "Calm, Focus, khung hẹp dưới 720px với BottomTabs. Theo NR2: nhỏ nhất 360 × 560; từ 720 tới 1099px panel phụ phủ lên chat; thanh điều hướng và hàng tab cuộn được; danh sách hội thoại là vùng chính của thanh bên. Còn sở hữu `.tab`, cỡ chữ 15 px ở màn hình hẹp (cần xác nhận), việc gắn điểm neo toast, thẻ tài khoản dạng nút kích hoạt, hàm đặt thuộc tính giao diện, và quy tắc vai trò cho các mục. Bài test `/` của shell cần một phiên từ TOKI-023, ở M2: TOKI-023 R42 cho bài test của shell một phiên đăng nhập giả, nên thứ tự dựng nào cũng được.",
        "size": "L",
        "needs": [
         "006",
@@ -4240,7 +4240,12 @@
        "size": "M",
        "needs": [
         "005"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #62",
+        "fix": ""
+       }
       },
       {
        "id": "020",
@@ -4249,18 +4254,28 @@
        "size": "S",
        "needs": [
         "019"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #71",
+        "fix": ""
+       }
       },
       {
        "id": "021",
        "title": "Gửi thư qua SMTP",
-       "scope": "Lớp gửi thư cấu hình được (D-027) và hai mẫu thư bằng tiếng Anh và tiếng Việt: thư đăng nhập chỉ có mã 6 số, không có nút (D-157); thư mời nêu tên workspace và người mời, có nút Join và mã 6 số (D-149)",
+       "scope": "Lớp gửi thư cấu hình được (D-027) và hai mẫu thư bằng tiếng Anh và tiếng Việt: thư đăng nhập chỉ có mã 6 số, không có nút (D-157); thư mời nêu tên workspace và người mời, có nút Join và mã 6 số (D-149) Đăng ký listener qua `onSessionsEnded` của TOKI-022.",
        "size": "M",
        "needs": [
         "004",
         "017"
        ],
-       "open": "Nội dung và giao diện thư"
+       "open": "Nội dung và giao diện thư",
+       "spec": {
+        "state": "pr",
+        "pr": "PR #61",
+        "fix": ""
+       }
       },
       {
        "id": "022",
@@ -4269,6 +4284,7 @@
        "size": "L",
        "needs": [
         "019",
+        "020",
         "021"
        ],
        "spec": {
@@ -4286,7 +4302,8 @@
         "006",
         "014",
         "017",
-        "022"
+        "022",
+        "032"
        ],
        "spec": {
         "state": "pr",
@@ -4301,7 +4318,12 @@
        "size": "M",
        "needs": [
         "019"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #60",
+        "fix": ""
+       }
       },
       {
        "id": "024",
@@ -4309,19 +4331,32 @@
        "scope": "Mời với role Member hoặc Admin (D-153), tối đa 50 địa chỉ mỗi đợt (D-134); mỗi địa chỉ báo kết quả riêng, và khi gửi thư lỗi giữa chừng thì các lời mời đã gửi vẫn giữ (D-099); gửi lại và thu hồi; lời mời có hiệu lực 7 ngày và dùng một lần (D-037). Người đã bị vô hiệu hóa vẫn mời lại được (D-094). Đổi role, vô hiệu hóa, kích hoạt lại: vô hiệu hóa kết thúc mọi phiên ngay lập tức (BR-29); không ai tự vô hiệu hóa mình; Admin cuối cùng không bị hạ role hay vô hiệu hóa (D-153). Server từ chối mọi yêu cầu từ Member (D-090), bỏ qua yêu cầu lặp lại (D-111) và ghi lại từng thao tác: ai, làm gì, với ai, khi nào (D-110)",
        "size": "L",
        "needs": [
+        "020",
+        "021",
         "022",
-        "027"
-       ]
+        "027",
+        "028"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #74",
+        "fix": ""
+       }
       },
       {
        "id": "025",
        "title": "Trang Admin",
-       "scope": "Chỉ Admin mở được; Member thấy 'You do not have access to this page' (D-090). Bảng thành viên gồm tên, email, role, trạng thái (Invited, Active, Deactivated) và lần hoạt động gần nhất; ô tìm, chip lọc theo trạng thái kèm tổng số, hiện 50 dòng đầu và tải thêm khi cuộn (D-109). 'Invite members': nhiều địa chỉ, role Member hoặc Admin, mặc định Member, mỗi dòng hiện 'Invited' hoặc 'Mail not sent' kèm Resend (D-153, D-099); Revoke hỏi xác nhận. Menu trên mỗi dòng: Change role, Deactivate, Reactivate, mỗi thao tác có hộp xác nhận nêu tên người đó (D-061, D-069); các mục bị khóa, kèm lý do, ở dòng của chính Admin và ở Admin cuối cùng (D-153)",
+       "scope": "Chỉ Admin mở được; Member thấy 'You do not have access to this page' (D-090). Bảng thành viên gồm tên, email, role, trạng thái (Invited, Active, Deactivated) và lần hoạt động gần nhất; ô tìm, chip lọc theo trạng thái kèm tổng số, hiện 50 dòng đầu và tải thêm khi cuộn (D-109). 'Invite members': nhiều địa chỉ, role Member hoặc Admin, mặc định Member, mỗi dòng hiện 'Invited' hoặc 'Mail not sent' kèm Resend (D-153, D-099); Revoke hỏi xác nhận. Menu trên mỗi dòng: Change role, Deactivate, Reactivate, mỗi thao tác có hộp xác nhận nêu tên người đó (D-061, D-069); các mục bị khóa, kèm lý do, ở dòng của chính Admin và ở Admin cuối cùng (D-153) Lấy idempotency key từ bộ tạo id của TOKI-098; thứ tự dựng (phần id của TOKI-098 làm thành pull request riêng, đi trước) cần quyết.",
        "size": "L",
        "needs": [
         "024",
         "093"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #92",
+        "fix": ""
+       }
       },
       {
        "id": "026",
@@ -4329,26 +4364,54 @@
        "scope": "Liệt kê các phiên của mình kèm loại thiết bị, trình duyệt và lần dùng gần nhất; đăng xuất một thiết bị hoặc mọi thiết bị khác; phiên bị kết thúc kiểu này sẽ bị từ chối ở yêu cầu kế tiếp (D-158, F07). Lệnh trên server in ra link đăng nhập dùng một lần, có hiệu lực 10 phút cho một thành viên, từ chối địa chỉ không thuộc workspace hoặc đã bị vô hiệu hóa, và ghi log mỗi lần dùng (D-159)",
        "size": "S",
        "needs": [
-        "022"
-       ]
+        "022",
+        "023"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #72",
+        "fix": ""
+       }
       },
       {
        "id": "097",
        "title": "Nhận lời mời",
        "scope": "Nút Join trong thư mở bước nhập mã với email điền sẵn; chỉ có link thì không đăng nhập được (D-149). Mã có hiệu lực 10 phút; 'Resend code' gửi mã mới sau 60 giây và hủy mã cũ (D-136, D-082); lần nhập sai thứ 5 khóa mã (D-137). Thành công thì người đó đã ở trong #general và vào thẳng đó, không có bước chào (D-083, D-034); tên hiển thị là phần trước @ của email (D-150); người đã bị vô hiệu hóa nhận lại đúng tài khoản cũ cùng lịch sử và các channel (D-094). Có trang cho lời mời hết hạn, bị thu hồi và không nhận ra; lời mời đã dùng thì dẫn về trang đăng nhập (D-081). Người đang đăng nhập bằng tài khoản khác được hỏi trước khi có gì thay đổi (D-080)",
        "size": "M",
-       "needs": []
+       "needs": [
+        "008",
+        "015",
+        "021",
+        "022",
+        "023",
+        "024"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #75",
+        "fix": ""
+       }
       },
       {
        "id": "099",
        "title": "Menu tài khoản, Sign out và các thiết bị đã đăng nhập (màn hình)",
-       "scope": "Menu của thẻ tài khoản: Set status, Pause notifications, Focus time, Preferences, Sign out; mỗi mục xuất hiện khi ticket của nó được làm. 'Sign out' trong menu tài khoản, và trong sheet More trên khung hẹp (D-158, D-067). Mục 'Signed-in devices' trong Preferences: mỗi dòng hiện loại thiết bị, trình duyệt và lần dùng gần nhất, thiết bị hiện tại có nhãn 'This device'; nút 'Sign out' cạnh từng thiết bị khác và 'Sign out all other devices', mỗi nút đều hỏi xác nhận (D-158, D-069). Sở hữu nội dung menu tài khoản và hiện Menu trên nút kích hoạt của shell; sở hữu tín hiệu giữa các tab khi Sign out, lời gọi sign-out, và hộp xác nhận khi đăng xuất thiết bị khác.",
-       "size": "S",
+       "scope": "Menu của thẻ tài khoản: Set status, Pause notifications, Focus time, Preferences, Sign out; mỗi mục xuất hiện khi ticket của nó được làm. 'Sign out' trong menu tài khoản, và trong sheet More trên khung hẹp (D-158, D-067). Mục 'Signed-in devices' trong Preferences: mỗi dòng hiện loại thiết bị, trình duyệt và lần dùng gần nhất, thiết bị hiện tại có nhãn 'This device'; nút 'Sign out' cạnh từng thiết bị khác và 'Sign out all other devices', mỗi nút đều hỏi xác nhận (D-158, D-069). Sở hữu nội dung menu tài khoản và hiện Menu trên nút kích hoạt của shell; sở hữu tín hiệu giữa các tab khi Sign out, lời gọi sign-out, và hộp xác nhận khi đăng xuất thiết bị khác. Còn sở hữu việc đặt lại store hội thoại khi Sign out (`endLocalSession`) và, nếu chưa có, các chữ vai trò dùng chung `common.role.*`.",
+       "size": "M",
        "needs": [
         "014",
         "015",
-        "093"
-       ]
+        "018",
+        "023",
+        "026",
+        "032",
+        "093",
+        "094"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #90",
+        "fix": ""
+       }
       }
      ]
     },
@@ -4362,7 +4425,12 @@
        "size": "M",
        "needs": [
         "019"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #66",
+        "fix": ""
+       }
       },
       {
        "id": "029",
@@ -4370,9 +4438,16 @@
        "scope": "Tạo (chỉ Admin; yêu cầu từ Member bị từ chối, D-084, D-090), browse, join, leave, sửa topic và mô tả, thêm người, gỡ người, lưu trữ và khôi phục. Tên channel gồm chữ thường, số, gạch nối, tối đa 80 ký tự; server không bao giờ tạo hai channel trùng tên, kể cả khi hai yêu cầu tới cùng lúc và kể cả trùng với channel đã lưu trữ (D-040, D-115, D-128); topic tối đa 250 ký tự (D-101); công khai hay riêng tư là cố định và không đổi tên được (D-040, D-105). Channel chưa join thì không đọc được, join xong thấy toàn bộ lịch sử (D-116, D-029). Mọi thao tác ghi đòi là thành viên (D-077). Mọi thành viên sửa được topic và thêm được người (D-041, D-090); Admin chỉ gỡ người và lưu trữ ở channel mình tham gia, không bao giờ ở #general (D-085, D-047, D-034). Rời channel riêng tư thì chỉ quay lại được khi một thành viên thêm lại, và người cuối cùng rời thì channel được lưu trữ (D-051)",
        "size": "L",
        "needs": [
+        "022",
+        "024",
         "027",
         "028"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #81",
+        "fix": ""
+       }
       },
       {
        "id": "030",
@@ -4380,8 +4455,17 @@
        "scope": "Mở DM, tạo group tới 8 người; group không thêm bớt người được (G12, F25)",
        "size": "M",
        "needs": [
-        "028"
-       ]
+        "019",
+        "022",
+        "027",
+        "028",
+        "029"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #80",
+        "fix": ""
+       }
       },
       {
        "id": "031",
@@ -4389,28 +4473,55 @@
        "scope": "Một lần gọi trả về mình, workspace, thành viên, hội thoại, unread, số thứ tự sự kiện",
        "size": "M",
        "needs": [
+        "022",
         "029",
         "030"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #79",
+        "fix": ""
+       }
       },
       {
        "id": "032",
        "title": "client-core: API client và store hội thoại",
-       "scope": "Client có kiểu từ schema dùng chung; danh sách đã nhóm và lọc. Dùng schema lỗi đã làm ở TOKI-004",
+       "scope": "Client có kiểu từ schema dùng chung; danh sách đã nhóm và lọc. Dùng schema lỗi đã làm ở TOKI-004 Còn dựng client và store duy nhất trong `apps/web/src/client.ts` và đăng ký hook 401; TOKI-023 cung cấp `reportUnauthenticated`.",
        "size": "M",
        "needs": [
+        "002",
+        "004",
+        "007",
+        "008",
         "031"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #82",
+        "fix": ""
+       }
       },
       {
        "id": "033",
        "title": "Danh sách hội thoại",
-       "scope": "Nhóm Starred, Channels, Direct messages; gập mở; lọc All, Unread, Mentions; tìm theo tên. Tiêu đề Direct messages có nút '+' để mở DM hoặc group: hiện khi hover trên máy tính, luôn hiện trên màn hình cảm ứng và khung hẹp (D-086, D-154); không còn icon bút chì (D-155). Dòng '+ Browse channels' nằm cuối danh sách; không có gì trong danh sách tạo được channel (D-084). Bộ lọc không khớp gì thì hiện trạng thái trống riêng (D-074). Mỗi cuộc trò chuyện có địa chỉ riêng, và Back đóng panel đang mở trước (Q49)",
-       "size": "M",
+       "scope": "Nhóm Starred, Channels, Direct messages; gập mở; lọc All, Unread, Mentions; tìm theo tên. Tiêu đề Direct messages có nút '+' để mở DM hoặc group: hiện khi hover trên máy tính, luôn hiện trên màn hình cảm ứng và khung hẹp (D-086, D-154); không còn icon bút chì (D-155). Dòng '+ Browse channels' nằm cuối danh sách; không có gì trong danh sách tạo được channel (D-084). Bộ lọc không khớp gì thì hiện trạng thái trống riêng (D-074). Mỗi cuộc trò chuyện có địa chỉ riêng, và Back đóng panel đang mở trước (Q49) Còn dựng registry các hành động của danh sách, `personHue`, route `/c/$conversationId` và các slot panel của shell. Chồng với TOKI-054 ở chip bộ lọc và huy hiệu trên danh sách (cần quyết).",
+       "size": "L",
        "needs": [
+        "006",
+        "012",
+        "013",
         "015",
+        "017",
+        "018",
+        "023",
+        "031",
         "032"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #84",
+        "fix": ""
+       }
       },
       {
        "id": "034",
@@ -4418,30 +4529,57 @@
        "scope": "Browse channels: tìm, tên, topic và số thành viên, nút 'Join' hoặc 'Open', nhãn 'Archived', hiện 50 channel đầu và tải thêm khi cuộn (D-109), 'No channels match' đặt giữa (D-074); channel chưa join thì không hiện tin nhắn nào, ở đây hay khi mở từ link, chỉ có tên và topic kèm nút Join (D-116); không có nút tạo channel (D-084). Ô chọn người mở từ nút '+' ở Direct messages: tìm người, hiện 50 người đầu (D-109); mỗi người được bấm thành một chip gỡ được; Start mở DM nếu có một chip, tạo group DM nếu nhiều hơn; người vượt quá 8, tính cả mình, bị từ chối (D-086, D-017)",
        "size": "M",
        "needs": [
+        "006",
+        "012",
+        "013",
         "014",
+        "016",
+        "029",
+        "030",
         "032",
+        "033",
         "093"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #83",
+        "fix": ""
+       }
       },
       {
        "id": "035",
        "title": "Header hội thoại và panel Details",
-       "scope": "Tên, topic, thành viên, mức thông báo, mute, star, leave. Mặc định: channel là Mentions only, DM là All messages (D-046). Mute còn ẩn cả badge chưa đọc và chữ đậm; mức 'Nothing' chỉ tắt toast, push và âm thanh (D-103). Mọi thành viên sửa được topic và mô tả ngay tại chỗ; tên không đổi được (D-105). Rời channel công khai thì rời ngay, có Hoàn tác trong 5 giây; rời channel riêng tư thì hỏi xác nhận, nói rõ phải có thành viên mời lại, và không có Hoàn tác (D-156, D-061); người cuối cùng được báo channel sẽ bị lưu trữ (D-051); #general không có nút Leave (D-034). Sở hữu việc nút Back đóng panel đang mở trước khi rời cuộc trò chuyện (D-089).",
+       "scope": "Tên, topic, thành viên, mức thông báo, mute, star, leave. Mặc định: channel là Mentions only, DM là All messages (D-046). Mute còn ẩn cả badge chưa đọc và chữ đậm; mức 'Nothing' chỉ tắt toast, push và âm thanh (D-103). Mọi thành viên sửa được topic và mô tả ngay tại chỗ; tên không đổi được (D-105). Rời channel công khai thì rời ngay, có Hoàn tác trong 5 giây; rời channel riêng tư thì hỏi xác nhận, nói rõ phải có thành viên mời lại, và không có Hoàn tác (D-156, D-061); người cuối cùng được báo channel sẽ bị lưu trữ (D-051); #general không có nút Leave (D-034). Sở hữu việc nút Back đóng panel đang mở trước khi rời cuộc trò chuyện (D-089). Chưa ticket nào sở hữu request lưu mức thông báo, mute và star (cần quyết).",
        "size": "M",
        "needs": [
         "033",
         "093",
         "094"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #85",
+        "fix": ""
+       }
       },
       {
        "id": "098",
        "title": "Tạo channel từ trang Admin",
-       "scope": "Nút '+' ở danh sách 'Channels' trên trang Admin mở hộp Create channel (D-151). Ở phase 1 danh sách này hiện mọi kênh kèm số thành viên; xếp hạng theo độ sôi nổi đi cùng Analytics (D-183): Name, công tắc Private mặc định tắt, Topic (không bắt buộc, tối đa 250 ký tự), Add people (không bắt buộc) (D-101). Gõ dấu cách trong tên thì thành gạch nối, chữ hoa thành chữ thường (D-127). Lỗi hiện dưới ô nhập; nút Create bị khóa cho tới khi form hợp lệ và trong lúc yêu cầu đang chạy (D-104, D-111); tên đã có thì server từ chối và ô nhập báo rõ (D-115). Đóng khi đã có nội dung thì hỏi có bỏ không (D-070). Channel mới mở ra ngay (D-076). Member không có cách nào mở hộp này (D-084)",
+       "scope": "Nút '+' ở danh sách 'Channels' trên trang Admin mở hộp Create channel (D-151). Ở phase 1 danh sách này hiện mọi kênh kèm số thành viên; xếp hạng theo độ sôi nổi đi cùng Analytics (D-183): Name, công tắc Private mặc định tắt, Topic (không bắt buộc, tối đa 250 ký tự), Add people (không bắt buộc) (D-101). Gõ dấu cách trong tên thì thành gạch nối, chữ hoa thành chữ thường (D-127). Lỗi hiện dưới ô nhập; nút Create bị khóa cho tới khi form hợp lệ và trong lúc yêu cầu đang chạy (D-104, D-111); tên đã có thì server từ chối và ô nhập báo rõ (D-115). Đóng khi đã có nội dung thì hỏi có bỏ không (D-070). Channel mới mở ra ngay (D-076). Member không có cách nào mở hộp này (D-084) Còn dựng bộ tạo UUIDv7 `newId` trong `packages/shared`, TOKI-025 dùng bộ này.",
        "size": "M",
        "needs": [
+        "014",
+        "017",
+        "029",
+        "032",
+        "034",
         "093"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #89",
+        "fix": ""
+       }
       },
       {
        "id": "100",
@@ -4449,8 +4587,17 @@
        "scope": "Thêm người: ô tìm chỉ liệt kê người chưa ở trong channel, hiện 50 người đầu và tải thêm khi cuộn (D-109); chọn một hoặc nhiều người rồi bấm Add; mọi thành viên đều làm được, kể cả ở channel riêng tư (D-090). Gỡ người: chỉ hiện với Admin là thành viên của channel, không bao giờ ở #general, có hộp xác nhận nêu tên người bị gỡ (D-085, D-047, D-069)",
        "size": "S",
        "needs": [
+        "027",
+        "029",
+        "034",
+        "035",
         "093"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #86",
+        "fix": ""
+       }
       },
       {
        "id": "101",
@@ -4458,8 +4605,18 @@
        "scope": "Lưu trữ: chỉ hiện với Admin là thành viên, không bao giờ với #general (D-047, D-034); hộp xác nhận nêu tên channel và số thành viên (D-061, D-069). Sau đó channel rời khỏi danh sách của mọi người, composer được thay bằng dòng 'This channel has been archived' và lịch sử vẫn đọc được (D-029). Browse channels hiện channel đó với nhãn 'Archived' và có nút 'Restore' cho Admin (F26)",
        "size": "S",
        "needs": [
+        "029",
+        "032",
+        "033",
+        "034",
+        "035",
         "093"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #88",
+        "fix": ""
+       }
       }
      ]
     }
@@ -4477,7 +4634,7 @@
       {
        "id": "036",
        "title": "Bảng messages và events",
-       "scope": "UUIDv7, chỉ mục phân trang, nhật ký sự kiện có số thứ tự. Dùng lại bộ sinh UUIDv7 đã chọn ở TOKI-005",
+       "scope": "UUIDv7, chỉ mục phân trang, nhật ký sự kiện có số thứ tự. Dùng lại bộ sinh UUIDv7 đã chọn ở TOKI-005 Sở hữu các điều kiện của số sự kiện; đến lúc đó endpoint bootstrap trả 0.",
        "size": "M",
        "needs": [
         "028"
@@ -4486,7 +4643,7 @@
       {
        "id": "037",
        "title": "API tin nhắn",
-       "scope": "Gửi không trùng, tải theo trang, tải quanh một tin; một tin tối đa 10.000 ký tự và 10 file (G9)",
+       "scope": "Gửi không trùng, tải theo trang, tải quanh một tin; một tin tối đa 10.000 ký tự và 10 file (G9) Sở hữu việc ẩn DM mới với người kia đến tin đầu tiên (đề xuất, chưa quyết) và từ chối đăng bài vào kênh đã lưu trữ.",
        "size": "L",
        "needs": [
         "036"
@@ -4524,10 +4681,11 @@
       {
        "id": "041",
        "title": "Danh sách tin ảo hóa",
-       "scope": "Cuộn ngược, bám đáy, giữ vị trí khi tải tin cũ, nút Tin mới; mở tại vạch New khi có tin chưa đọc (OQ3)",
+       "scope": "Cuộn ngược, bám đáy, giữ vị trí khi tải tin cũ, nút Tin mới; mở tại vạch New khi có tin chưa đọc (OQ3) Còn vẽ lịch sử đọc được của kênh đã lưu trữ, do TOKI-101 truyền vào dưới dạng `ArchivedHistory`.",
        "size": "L",
        "needs": [
-        "040"
+        "040",
+        "101"
        ],
        "open": "Chọn thư viện ảo hóa"
       },
@@ -4682,7 +4840,7 @@
       {
        "id": "053",
        "title": "Con trỏ đã đọc",
-       "scope": "Đếm unread theo từng hội thoại, đồng bộ giữa thiết bị. Đã đọc khi hội thoại đang mở, cửa sổ đang được dùng và đã ở cuối danh sách (D-052). Dòng hệ thống màu xám như 'Minh joined' không làm tăng số đếm (D-100); reply trong thread không làm tăng số đếm của channel (F14); rời channel thì xóa số đếm của channel đó (D-133); không ai thấy người khác đã đọc tin hay chưa (D-048)",
+       "scope": "Đếm unread theo từng hội thoại, đồng bộ giữa thiết bị. Đã đọc khi hội thoại đang mở, cửa sổ đang được dùng và đã ở cuối danh sách (D-052). Dòng hệ thống màu xám như 'Minh joined' không làm tăng số đếm (D-100); reply trong thread không làm tăng số đếm của channel (F14); rời channel thì xóa số đếm của channel đó (D-133); không ai thấy người khác đã đọc tin hay chưa (D-048) Điền dữ liệu chưa đọc của store phía client (`setUnread`) và thêm số chưa đọc vào câu trả lời bootstrap.",
        "size": "L",
        "needs": [
         "040"
@@ -4914,7 +5072,7 @@
       {
        "id": "074",
        "title": "Web Push",
-       "scope": "Khóa VAPID, service worker chỉ dùng cho push (D-030), đăng ký thiết bị kèm một thông báo thử, bấm thông báo mở Toki tại đúng tin đó; thông báo hiện tên người gửi, tên hội thoại và đoạn đầu của tin (D-044); thẻ hỏi bật thông báo ở lần đầu, chỉ hỏi quyền trình duyệt sau khi bấm Turn on (F36); trên iPhone push chỉ chạy khi Toki đã được thêm vào màn hình chính (D-108); đăng xuất thì gỡ đăng ký push của thiết bị đó (D-158). Thêm khoá VAPID vào bảng kê cấu hình và `.env.example` của TOKI-096. Sở hữu việc nhận biết iPhone và thêm khoá VAPID vào bảng kê cấu hình.",
+       "scope": "Khóa VAPID, service worker chỉ dùng cho push (D-030), đăng ký thiết bị kèm một thông báo thử, bấm thông báo mở Toki tại đúng tin đó; thông báo hiện tên người gửi, tên hội thoại và đoạn đầu của tin (D-044); thẻ hỏi bật thông báo ở lần đầu, chỉ hỏi quyền trình duyệt sau khi bấm Turn on (F36); trên iPhone push chỉ chạy khi Toki đã được thêm vào màn hình chính (D-108); đăng xuất thì gỡ đăng ký push của thiết bị đó (D-158). Thêm khoá VAPID vào bảng kê cấu hình và `.env.example` của TOKI-096. Sở hữu việc nhận biết iPhone và thêm khoá VAPID vào bảng kê cấu hình. Đăng ký qua `onSessionsEnded` của TOKI-022 và xoá đăng ký push của phiên đã kết thúc.",
        "size": "L",
        "needs": [
         "073"
@@ -4971,7 +5129,7 @@
       {
        "id": "078",
        "title": "Màn hình Preferences",
-       "scope": "Look (Calm, Focus, Match my device), accent, density; các công tắc thông báo, gồm 'Notify me for @mentions even in muted channels', mặc định bật (D-088); Pause, status; ngôn ngữ: English mặc định hoặc Tiếng Việt, đổi là cả giao diện đổi ngay (D-018); hồ sơ: tên hiển thị 1 tới 80 ký tự (D-033), chức danh, múi giờ (D-144), không tải ảnh đại diện (D-118); danh sách 'Signed-in devices', đăng xuất một thiết bị hoặc mọi thiết bị khác, có hỏi xác nhận (D-158); lưu theo tài khoản và áp dụng trên mọi thiết bị (D-142). Sở hữu giao diện lần vẽ đầu khi giao diện đã lưu khác cài đặt thiết bị.",
+       "scope": "Look (Calm, Focus, Match my device), accent, density; các công tắc thông báo, gồm 'Notify me for @mentions even in muted channels', mặc định bật (D-088); Pause, status; ngôn ngữ: English mặc định hoặc Tiếng Việt, đổi là cả giao diện đổi ngay (D-018); hồ sơ: tên hiển thị 1 tới 80 ký tự (D-033), chức danh, múi giờ (D-144), không tải ảnh đại diện (D-118); danh sách 'Signed-in devices', đăng xuất một thiết bị hoặc mọi thiết bị khác, có hỏi xác nhận (D-158); lưu theo tài khoản và áp dụng trên mọi thiết bị (D-142). Sở hữu giao diện lần vẽ đầu khi giao diện đã lưu khác cài đặt thiết bị. Tiếp quản khung trang `/prefs` do TOKI-099 dựng.",
        "size": "M",
        "needs": [
         "017",
@@ -5046,7 +5204,7 @@
       {
        "id": "084",
        "title": "Image và Compose production",
-       "scope": "Dockerfile, Compose, Caddyfile, TLS tự động",
+       "scope": "Dockerfile, Compose, Caddyfile, TLS tự động Dựng mọi entry trong `src/cli/`, kể cả lệnh tạo liên kết khẩn cấp của TOKI-026.",
        "size": "M",
        "needs": [
         "004"
@@ -5069,6 +5227,7 @@
        "scope": "Hướng dẫn từng bước và .env.example: cấu hình SMTP (D-027), Admin đầu tiên tạo từ cấu hình server (D-028), và lệnh trên server in ra link đăng nhập một lần khi không gửi được thư (D-159); phase này chưa có bước backup (D-092). Trỏ tới `.env.example` đã làm ở TOKI-096; không viết bản thứ hai",
        "size": "S",
        "needs": [
+        "026",
         "084",
         "096"
        ]
