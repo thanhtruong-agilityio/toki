@@ -29,6 +29,10 @@
     {
       "at": "2026-11-17T01:47:21Z",
       "stage": "check"
+    },
+    {
+      "at": "2026-11-17T01:48:29Z",
+      "stage": "ship"
     }
   ],
   "key": "TOKI-002",
@@ -41,10 +45,10 @@
   "spec_paths": [
     "docs/specs/2026-11-12-lint-format-boundary-rules-design.md"
   ],
-  "stage": "check",
+  "stage": "ship",
   "tier": "M",
   "verifier": {
-    "result": null,
-    "round": 0
+    "result": "PASS",
+    "round": 1
   }
 }
