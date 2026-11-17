@@ -18,13 +18,13 @@ People join Toki only by an invitation from an Admin, and nothing yet lets an in
 ## Affected users and systems
 
 - Users: a person invited as Member or Admin, including a deactivated person who is invited again. Source: Toki Blueprint, journey F03 and decisions D-094 and D-153.
-- Systems: the web app (the Join page), `client-core` (three calls and the session state), the server (three public routes behind the page), and the `members`, `auth` and `conversations` server modules. Source: Toki Blueprint, technical design.
+- Systems: the web app (the Join page), `client-core` (three calls and the session state), the server (three public routes behind the page), and the `members` and `auth` server modules. Source: Toki Blueprint, technical design.
 
 ## Constraints
 
 - Belongs to Blueprint intent I04 member-management, alongside TOKI-024, 025 and 027. Source: Toki Blueprint, intent list.
 - Milestone: M2 Sign-in, members and conversations. Size: M. Source: Toki Blueprint, ticket TOKI-097.
-- Needs: the plan lists nothing. The design needs the account tables (TOKI-019), the mail layer (TOKI-021), the Sign-in API (TOKI-022), the sign-in screens (TOKI-023), the invitation record of member management (TOKI-024) and the conversation tables (TOKI-028). Source: the specs of those tickets; plan change.
+- Needs: the plan lists nothing. The design needs the test harness (TOKI-008), the app shell (TOKI-015), the mail layer (TOKI-021), the Sign-in API (TOKI-022), the sign-in screens (TOKI-023) and the invitation record of member management (TOKI-024); the account tables (TOKI-019), the first Admin (TOKI-020) and the conversation tables (TOKI-028) arrive through TOKI-022 and TOKI-024. Source: the specs of those tickets; plan change.
 - Needed by: no ticket lists it. Source: Toki Blueprint, Needs column.
 - Join opens the code step with the email filled in; the link alone signs nobody in. Source: decision D-149.
 - A code is valid for 10 minutes; "Resend code" is available after 60 seconds and a new code cancels the earlier one; the 5th wrong try locks the code. Source: decisions D-136, D-082, D-137.
