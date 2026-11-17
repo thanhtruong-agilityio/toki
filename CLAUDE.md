@@ -196,6 +196,8 @@ A pull request that creates a folder or command which this file marks as planned
 
 A comment that mentions `@reviewer` on an open pull request starts the `PR review` workflow (`.github/workflows/pr-review.yml`), which reviews the pull request with Claude. The review instructions are the `prompt` of its last step. The review posts inline comments and one summary comment that ends with a `<!-- review:{"sha":...} -->` marker. It never approves or merges.
 
+The same review also starts, with no comment, when a pull request is opened or marked ready for review by the owner, a member or a collaborator of the repository (`pull_request_target`, `opened` and `ready_for_review`). A draft, a bot's pull request and a pull request from anyone else wait for a `@reviewer` comment. A push to an open pull request does not start a review. The trigger runs the file on `main`, so a change to `pr-review.yml` takes effect only after it is merged.
+
 Anyone may ask, so the run treats the pull request as untrusted: the workspace is `main`, the head of the pull request is only read under `pr-head/`, and Claude has read and comment tools only. Keep it that way when you change the workflow: do not add a tool that runs code, and do not put text from a comment or a pull request into a `run:` script except through `env:`.
 
 The workflow needs the repository secret `CLAUDE_CODE_OAUTH_TOKEN`. Like every `issue_comment` workflow, it runs the version on `main`, not the one on the pull request.
