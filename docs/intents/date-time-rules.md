@@ -15,7 +15,7 @@ The builder (Thanh and Claude) can build Activity, Later, status, Pause and Focu
 ## Affected users and systems
 - Users: the builder (one person building with Claude). Indirectly every Member, Admin and Guest, who read the dates and times. Source: Toki Blueprint, intent I02 design-system.
 - Systems: `packages/shared` (created empty by TOKI-001). Later users of the rules: the server (`apps/server`), `packages/client-core` and `packages/ui-web`.
-- Tickets that use the result: TOKI-042 Message component (time of a message, day dividers), TOKI-035 Details panel (creation date of a channel), TOKI-056 Status, TOKI-057 Profile panel, TOKI-063 Files, TOKI-066 Activity screen, TOKI-067 Later, TOKI-076 Pause and Focus time, TOKI-079 People screen. The plan lists none of them as needing TOKI-094; the spec asks for that change.
+- Tickets that use the result: TOKI-042 Message component (time of a message, day dividers), TOKI-035 Details panel (creation date of a channel), TOKI-056 Status, TOKI-057 Profile panel, TOKI-063 Files, TOKI-066 Activity screen, TOKI-067 Later, TOKI-076 Pause and Focus time, TOKI-079 People screen, TOKI-025 Admin page (last active, invitation date), TOKI-099 Account menu (last use of a device). The plan lists none of them as needing TOKI-094; the spec asks for that change.
 
 ## Constraints
 - Belongs to Blueprint intent I02 design-system, whose "done when" includes "the Undo, confirmation and date-rule patterns exist". Source: Toki Blueprint, intent list.
