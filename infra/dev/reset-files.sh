@@ -25,7 +25,7 @@ in_minio '
 status=$?
 
 if [ "$status" -eq 91 ]; then
-  fail "pnpm dev:reset:files failed: the bucket '$bucket' is missing. Run \`pnpm dev:up\`, which creates it."
+  fail "pnpm dev:reset:files failed: the bucket '$bucket' is missing or cannot be read. Run \`pnpm dev:up\`, which creates it."
   exit 1
 fi
 if [ "$status" -ne 0 ]; then

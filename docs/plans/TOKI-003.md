@@ -35,15 +35,15 @@ All scripts are Bash and run under the Bash 3.2 that macOS ships.
 
 ### Scripts
 - `lib.sh`:
-  - `cd` to the repository root; `compose()` is `docker compose --env-file .env -f infra/docker-compose.dev.yml "$@"` (R18).
-  - `env_file_get FILE NAME` reads one value from an env file without sourcing it (last assignment wins; optional `export`, quotes and inline comments handled).
+  - `cd` to the repository root; `compose()` is `docker compose -p toki-dev --env-file .env -f infra/docker-compose.dev.yml "$@"` (R18); the project name is pinned, so `COMPOSE_PROJECT_NAME` cannot point a script at another project.
+  - `env_file_get FILE NAME` reads one value from an env file without sourcing it (last assignment wins; a byte order mark, optional `export`, spaces around `=`, `:` in place of `=`, quotes and inline comments handled). `env_file_is_simple FILE` fails when a quoted value is not closed on its line.
   - `cfg NAME` returns the shell value when the variable is set, else the `.env` value, the same precedence Compose uses.
   - `require_docker` (R29), `require_service NAME` (R21: the service of project `toki-dev` must be running, else "run `pnpm dev:up` first").
   - `require_bucket_name`: the bucket name must be a valid S3 bucket name; an empty or odd name never reaches `mc`, where `local/` would address every bucket.
   - `in_postgres`, `in_minio`, `in_mailpit`: the only places that call `compose exec`, always with `-T`.
 - `guard.sh`:
-  - `guard_development FILE`: reads the environment name from the shell and from FILE separately. Passes only when at least one source sets it and every source that sets it says `development`. Otherwise prints a refusal that names the variable and returns non-zero (R10).
-  - `guard_database_names`: refuses when the test database name is unset or empty (names the variable), when the development name is empty, equals the test name, or is `postgres`, `template0` or `template1` (R24).
+  - `guard_development FILE`: reads the environment name from the shell and from FILE separately. Passes only when at least one source sets it and every source that sets it says `development`. Otherwise prints a refusal that names the variable and returns non-zero (R10). It also refuses a FILE with a multi-line value.
+  - `guard_database_names`: refuses when the shell and `.env` set different values for one of the two names, when the test database name is unset or empty (names the variable), when the development name is empty, is not a plain identifier, equals the test name, or is `postgres`, `template0` or `template1` (R24).
 - Each reset script: `guard_development` is the first step, then the name checks (database names, bucket name), `require_docker`, `require_service`, then the change. With `--check` it stops before the change; `reset.sh` uses that for its preflight (R22, R24), so no check is written twice.
   - `reset-db.sh`: `guard_database_names`, then `DROP DATABASE IF EXISTS :"db" WITH (FORCE); CREATE DATABASE :"db";` through `compose exec` on `postgres`, connected to the `postgres` database (R5, R12, R23). No migration step (concern 1).
   - `reset-files.sh`: in the `minio` container, `mc stat` the bucket (missing -> non-zero, "run `pnpm dev:up`", creates nothing), then `mc rm --recursive --force` (R6). The missing bucket is a run-time failure, not a preflight failure, so R9 holds.

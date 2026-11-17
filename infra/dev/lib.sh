@@ -16,30 +16,45 @@ cd "$REPO_ROOT" || exit 1
 say() { printf '%s\n' "$*"; }
 fail() { printf '%s\n' "$*" >&2; }
 
-# Compose, always from the repository root and always with the root .env.
+# Compose, always from the repository root, always with the root .env and
+# always on the toki-dev project: a COMPOSE_PROJECT_NAME in the shell or in
+# .env must not point a script at another project's containers.
 compose() {
-  docker compose --env-file .env -f "$COMPOSE_FILE" "$@"
+  docker compose -p "$COMPOSE_PROJECT" --env-file .env -f "$COMPOSE_FILE" "$@"
 }
 
 # env_file_get FILE NAME
 # Prints the value NAME has in an env file, without running the file.
 # Returns 1 when the file does not set NAME (or does not exist).
-# The last assignment wins. Handles an optional `export`, single or double
-# quotes around the value, and a ` # comment` after an unquoted value.
+# The last assignment wins. Handles a byte order mark on the first line, an
+# optional `export`, spaces or tabs around the `=`, a `:` in place of the
+# `=`, single or double quotes around the value, and a ` # comment` after an
+# unquoted value. Compose reads all of these as setting NAME.
 env_file_get() {
-  local file="$1" name="$2" line value found=1 result=""
+  local file="$1" name="$2" line value found=1 result="" first=1
   [ -f "$file" ] || return 1
   while IFS= read -r line || [ -n "$line" ]; do
     line="${line%$'\r'}"
+    if [ "$first" -eq 1 ]; then
+      line="${line#$'\xef\xbb\xbf'}"
+      first=0
+    fi
     # Trim leading whitespace, then an optional `export `.
     line="${line#"${line%%[![:space:]]*}"}"
     case "$line" in
       export[[:space:]]*) line="${line#export}"; line="${line#"${line%%[![:space:]]*}"}" ;;
     esac
+    # NAME, optional spaces or tabs, then `=` or `:`.
     case "$line" in
-      "$name="*) value="${line#"$name="}" ;;
+      "$name"*) value="${line#"$name"}" ;;
       *) continue ;;
     esac
+    value="${value#"${value%%[![:space:]]*}"}"
+    case "$value" in
+      [=:]*) value="${value#?}" ;;
+      *) continue ;;
+    esac
+    value="${value#"${value%%[![:space:]]*}"}"
     case "$value" in
       \"*)
         value="${value#\"}"
@@ -59,6 +74,42 @@ env_file_get() {
   done < "$file"
   [ "$found" -eq 0 ] || return 1
   printf '%s' "$result"
+}
+
+# env_file_is_simple FILE
+# Returns 1 when a line of the env file opens a quoted value and does not
+# close it on the same line. Such a value runs over the next lines, which
+# env_file_get would read as lines of their own. A missing file is simple.
+env_file_is_simple() {
+  local file="$1" line value quote
+  [ -f "$file" ] || return 0
+  while IFS= read -r line || [ -n "$line" ]; do
+    line="${line%$'\r'}"
+    line="${line#$'\xef\xbb\xbf'}"
+    line="${line#"${line%%[![:space:]]*}"}"
+    case "$line" in
+      '#'* | '') continue ;;
+      *[=:]*) value="${line#*[=:]}" ;;
+      *) continue ;;
+    esac
+    value="${value#"${value%%[![:space:]]*}"}"
+    case "$value" in
+      \"*) quote='"' ;;
+      \'*) quote="'" ;;
+      *) continue ;;
+    esac
+    value="${value#?}"
+    if [ "$quote" = '"' ]; then
+      # An escaped quote does not close the value.
+      value="${value//\\\\/}"
+      value="${value//\\\"/}"
+    fi
+    case "$value" in
+      *"$quote"*) ;;
+      *) return 1 ;;
+    esac
+  done < "$file"
+  return 0
 }
 
 # cfg NAME
@@ -113,6 +164,10 @@ require_service() {
 # hyphens, starting and ending with a letter or digit. An empty or odd name
 # must never reach `mc`, where it could address every bucket.
 valid_bucket_name() {
+  # grep matches line by line, so a name with a newline is refused first.
+  case "$1" in
+    *$'\n'*) return 1 ;;
+  esac
   printf '%s' "$1" | grep -Eq '^[a-z0-9][a-z0-9.-]{1,61}[a-z0-9]$'
 }
 

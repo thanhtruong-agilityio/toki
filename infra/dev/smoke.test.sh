@@ -105,6 +105,17 @@ guard_case "empty in the shell, development in .env" refuse "" "NODE_ENV=develop
 guard_case "wrong case" refuse -unset- "NODE_ENV=Development"
 guard_case "development with a suffix" refuse -unset- "NODE_ENV=development2"
 
+# Lines that Compose reads as setting NODE_ENV must count as setting it, even
+# when the shell says development.
+guard_case "spaces around the equals sign" refuse development "NODE_ENV = production"
+guard_case "a colon in place of the equals sign" refuse development "NODE_ENV: production"
+guard_case "a byte order mark before the name" refuse development $'\xef\xbb\xbfNODE_ENV=production'
+guard_case "a multi-line value that hides a line" refuse development \
+  $'NODE_ENV=production\nNOTE="first\nNODE_ENV=development\nlast"'
+guard_case "spaces around the equals sign, development" pass -unset- "NODE_ENV = development"
+guard_case "quoted values closed on their line" pass -unset- \
+  $'NOTE="it\'s closed"\nOTHER=\'one "two"\'\nNODE_ENV=development'
+
 # A missing .env file sets nothing: only the shell counts.
 if (unset NODE_ENV; guard_development "$tmp/absent.env" >/dev/null 2>&1); then
   flunk "guard: no file and no shell value must refuse"
@@ -143,6 +154,41 @@ names_case "test name not set" refuse toki_dev -unset- POSTGRES_TEST_DB
 names_case "test name empty" refuse toki_dev "" POSTGRES_TEST_DB
 names_case "development name empty" refuse "" toki_test POSTGRES_DB
 
+names_case "a name with a variable in it" refuse '${BASE}_dev' toki_test POSTGRES_DB
+names_case "a leading space" refuse " toki_dev" toki_test POSTGRES_DB
+names_case "a hyphen" refuse toki-dev toki_test POSTGRES_DB
+names_case "a leading digit" refuse 1toki toki_test POSTGRES_DB
+names_case "a newline" refuse $'toki_dev\nother' toki_test POSTGRES_DB
+names_case "a leading underscore" pass _toki_dev toki_test
+
+# The shell and .env must not disagree on a database name.
+# sources_case WHAT EXPECTED SHELL_DEV|-unset- SHELL_TEST|-unset- [MUST_NAME]
+printf '%s\n' "POSTGRES_DB=toki_dev" "POSTGRES_TEST_DB=toki_test" > "$tmp/names.env"
+sources_case() {
+  local what="$1" expected="$2" shell_dev="$3" shell_test="$4" must_name="${5:-}" output status
+  output="$(
+    unset POSTGRES_DB POSTGRES_TEST_DB
+    [ "$shell_dev" = "-unset-" ] || export POSTGRES_DB="$shell_dev"
+    [ "$shell_test" = "-unset-" ] || export POSTGRES_TEST_DB="$shell_test"
+    guard_database_names "$tmp/names.env" 2>&1
+  )"
+  status=$?
+  if [ "$expected" = "pass" ]; then
+    expect_equal "names: $what" "0 toki_dev" "$status $output"
+  elif [ "$status" -eq 0 ]; then
+    flunk "names: $what must refuse"
+  elif ! printf '%s' "$output" | grep -q "Refused: $must_name is "; then
+    flunk "names: $what refused without naming $must_name: $output"
+  else
+    pass
+  fi
+}
+
+sources_case "names in .env only" pass -unset- -unset-
+sources_case "the same names in the shell and .env" pass toki_dev toki_test
+sources_case "another development name in the shell" refuse toki_other -unset- POSTGRES_DB
+sources_case "another test name in the shell" refuse -unset- toki_other POSTGRES_TEST_DB
+
 # --- valid_bucket_name
 for name in toki-dev abc a.b-c; do
   if valid_bucket_name "$name"; then pass; else flunk "bucket name '$name' must be valid"; fi
@@ -150,6 +196,20 @@ done
 for name in "" ab "a b" "Toki" "-abc" "abc-" "a/b" "*"; do
   if valid_bucket_name "$name"; then flunk "bucket name '$name' must be refused"; else pass; fi
 done
+if valid_bucket_name $'toki-dev\n*'; then flunk "a bucket name with a newline must be refused"; else pass; fi
+
+# --- compose pins the project name, whatever COMPOSE_PROJECT_NAME says
+if declare -f compose | grep -q -- '-p "\$COMPOSE_PROJECT"'; then
+  pass
+else
+  flunk "compose must pass -p \"\$COMPOSE_PROJECT\" on every call"
+fi
+
+# --- the MinIO release is the same in the Compose file and the Dockerfile
+image_release="$(sed -n 's/^ *image: toki-dev-minio:\(.*\)$/\1/p' "$REPO_ROOT/$COMPOSE_FILE")"
+build_release="$(sed -n 's/^ARG MINIO_RELEASE=\(.*\)$/\1/p' "$REPO_ROOT/infra/minio/Dockerfile")"
+if [ -n "$image_release" ]; then pass; else flunk "no MinIO release found in $COMPOSE_FILE"; fi
+expect_equal "MinIO release in the image tag and in the Dockerfile" "$build_release" "$image_release"
 
 if [ "$failures" -ne 0 ]; then
   printf 'smoke test: %d of %d checks failed (part 1, no Docker needed)\n' "$failures" "$checks" >&2
@@ -177,24 +237,27 @@ bucket="$(require_bucket_name)" || stop "the bucket name is not usable."
 # one). No reset may touch it.
 other_database="toki_smoke_other"
 [ "$database" != "$other_database" ] || stop "POSTGRES_DB must not be '$other_database'."
+[ "$(cfg POSTGRES_TEST_DB)" != "$other_database" ] || stop "POSTGRES_TEST_DB must not be '$other_database'."
 
 env_checksum() { cksum < "$ENV_FILE"; }
 checksum_before="$(env_checksum)"
 
-# Each probe prints a number, or stops the test: an error is never read as
-# "empty".
-number_or_stop() {
+# Each probe leaves a number in $count, or stops the test: an error is never
+# read as "empty". A probe must be called in this shell, not inside $(...),
+# where `stop` would end only the subshell.
+count=""
+number_or_stop() { # number_or_stop WHAT VALUE -> sets $count
   case "$2" in
     '' | *[!0-9]*) stop "could not read $1 (got '$2')." ;;
   esac
-  printf '%s' "$2"
+  count="$2"
 }
 
 sql() { # sql DATABASE STATEMENT
   printf '%s\n' "$2" | in_postgres "$1" -At
 }
 
-table_count() { # tables in a database, outside the system schemas
+table_count() { # tables in a database, outside the system schemas -> $count
   number_or_stop "the tables of $1" "$(sql "$1" "SELECT count(*) FROM pg_tables WHERE schemaname NOT IN ('pg_catalog', 'information_schema');")"
 }
 
@@ -239,10 +302,14 @@ trap 'drop_other_database; rm -rf "$tmp"' EXIT
 # expect_stores WHAT TABLES OBJECTS MAILS
 # The second database must hold its marker table at every point.
 expect_stores() {
-  expect_equal "$1: tables in $database" "$2" "$(table_count "$database")"
-  expect_equal "$1: objects in $bucket" "$3" "$(object_count)"
-  expect_equal "$1: mails in the inbox" "$4" "$(mail_count)"
-  expect_equal "$1: tables in $other_database" "1" "$(table_count "$other_database")"
+  table_count "$database"
+  expect_equal "$1: tables in $database" "$2" "$count"
+  object_count
+  expect_equal "$1: objects in $bucket" "$3" "$count"
+  mail_count
+  expect_equal "$1: mails in the inbox" "$4" "$count"
+  table_count "$other_database"
+  expect_equal "$1: tables in $other_database" "1" "$count"
 }
 
 run_script() { # run_script NAME -> sets $output and $status
