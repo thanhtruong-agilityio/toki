@@ -1,4 +1,7 @@
 {
+  "accepted_deviations": [
+    "overlays.test.ts not named in the plan (step 5 names the work, not the file); accepted by the Dev 2026-11-18, to be said in the PR"
+  ],
   "approved_auto": false,
   "base": "main",
   "branch": "feat/toki-014-overlays",
@@ -24,6 +27,18 @@
     {
       "at": "2026-11-18T09:06:06Z",
       "stage": "build"
+    },
+    {
+      "at": "2026-11-18T09:19:35Z",
+      "stage": "check"
+    },
+    {
+      "at": "2026-11-18T09:22:03Z",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-18T09:24:12Z",
+      "stage": "check"
     }
   ],
   "key": "TOKI-014",
@@ -36,10 +51,10 @@
   "spec_paths": [
     "docs/specs/2026-11-16-overlays-design.md"
   ],
-  "stage": "build",
+  "stage": "check",
   "tier": "L",
   "verifier": {
-    "result": null,
-    "round": 0
+    "result": "FAIL",
+    "round": 2
   }
 }
