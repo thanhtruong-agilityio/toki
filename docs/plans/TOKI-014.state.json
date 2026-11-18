@@ -1,0 +1,32 @@
+{
+  "approved_auto": false,
+  "base": "main",
+  "branch": "feat/toki-014-overlays",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-18T08:58:54Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-18T08:59:41Z",
+      "stage": "explore"
+    }
+  ],
+  "key": "TOKI-014",
+  "main_sha": "a246ca0918f4971b8425bbcd9d982188e2639377",
+  "metrics": {},
+  "mode": null,
+  "plan_approved": false,
+  "plan_hash": null,
+  "spec_commit": null,
+  "spec_paths": [
+    "docs/specs/2026-11-16-overlays-design.md"
+  ],
+  "stage": "explore",
+  "tier": "L",
+  "verifier": {
+    "result": null,
+    "round": 0
+  }
+}
