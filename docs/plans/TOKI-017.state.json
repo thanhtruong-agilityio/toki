@@ -15,19 +15,28 @@
     {
       "at": "2026-11-18T09:27:30Z",
       "stage": "plan"
+    },
+    {
+      "at": "2026-11-18T09:28:18Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-18T09:28:18Z",
+      "stage": "build"
     }
   ],
   "key": "TOKI-017",
   "main_sha": "a246ca0918f4971b8425bbcd9d982188e2639377",
   "metrics": {},
-  "mode": null,
-  "plan_approved": false,
-  "plan_hash": null,
+  "mode": "auto-to-check",
+  "plan_approved": true,
+  "plan_hash": "db3c20af91beed6b4e09b8bde646421432466d2f69c38dd5ae988f2055935afa",
   "spec_commit": null,
   "spec_paths": [
     "docs/specs/2026-11-16-i18n-package-design.md"
   ],
-  "stage": "plan",
+  "stage": "build",
   "tier": "M",
   "verifier": {
     "result": null,
