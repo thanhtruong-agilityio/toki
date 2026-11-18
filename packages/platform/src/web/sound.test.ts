@@ -79,4 +79,13 @@ describe("sound.play", () => {
     expect(created[0]?.currentTime).toBe(0);
     expect(created[0]?.play).toHaveBeenCalledTimes(2);
   });
+
+  test("an element whose play failed is dropped, so a later play retries with a new one", async () => {
+    outcome = () => Promise.reject(new Error("load error"));
+    const sound = createSound({ notification: "/made-up.mp3" });
+    await expect(sound.play("notification")).resolves.toBe(false);
+    outcome = () => Promise.resolve();
+    await expect(sound.play("notification")).resolves.toBe(true);
+    expect(created).toHaveLength(2);
+  });
 });

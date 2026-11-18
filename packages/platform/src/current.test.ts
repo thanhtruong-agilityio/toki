@@ -1,7 +1,13 @@
 // @vitest-environment node
-import { describe, expect, test } from "vitest";
-import { getPlatform, setPlatform } from "./index";
+import { describe, expect, test, vi } from "vitest";
 import type { Platform } from "./index";
+
+// The holder is module state, so every test loads a fresh copy of it and the
+// tests do not depend on their order.
+async function load() {
+  vi.resetModules();
+  return import("./index");
+}
 
 function fake(): Platform {
   return {
@@ -24,11 +30,13 @@ describe("the platform holder", () => {
     expect(typeof window).toBe("undefined");
   });
 
-  test("getPlatform before setPlatform throws and names setPlatform (R2)", () => {
+  test("getPlatform before setPlatform throws and names setPlatform (R2)", async () => {
+    const { getPlatform } = await load();
     expect(() => getPlatform()).toThrow(/setPlatform/);
   });
 
-  test("getPlatform returns the object given to setPlatform, and a later one replaces it (R2)", () => {
+  test("getPlatform returns the object given to setPlatform, and a later one replaces it (R2)", async () => {
+    const { getPlatform, setPlatform } = await load();
     const p = fake();
     const q = fake();
     setPlatform(p);

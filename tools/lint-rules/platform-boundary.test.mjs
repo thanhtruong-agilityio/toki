@@ -140,3 +140,77 @@ test("a test file of ui-web is outside rule 3 (R28)", async () => {
   );
   assert.deepEqual(hits, []);
 });
+
+// The interface files of platform also may not reach src/web by a relative
+// path that does not name the package folder (./web, ../web/index).
+const relativeWeb = [
+  [
+    "./web",
+    'export * from "./web";',
+    "packages/platform/src/index.ts",
+    IMPORT_RULE,
+  ],
+  [
+    "./web/index",
+    'import "./web/index";',
+    "packages/platform/src/current.ts",
+    IMPORT_RULE,
+  ],
+  [
+    "../web/index from a subfolder",
+    'import "../web/index";',
+    "packages/platform/src/inner/x.ts",
+    IMPORT_RULE,
+  ],
+  [
+    "import(./web)",
+    'export const a = import("./web");',
+    "packages/platform/src/index.ts",
+    SYNTAX_RULE,
+  ],
+  [
+    "import(`./web`)",
+    "export const a = import(`./web`);",
+    "packages/platform/src/index.ts",
+    SYNTAX_RULE,
+  ],
+];
+for (const [name, code, file, rule] of relativeWeb) {
+  test(`platform interface file: ${name} is reported (R21, R24)`, async () => {
+    const hits = await boundaryMessages(code, file);
+    assert.ok(
+      hits.some((m) => m.ruleId === rule),
+      JSON.stringify(hits),
+    );
+  });
+}
+
+test("platform interface file: ./types has no boundary message (R24)", async () => {
+  assert.deepEqual(
+    await boundaryMessages(
+      'import type { Platform } from "./types";\nexport type A = Platform;\n',
+      "packages/platform/src/current.ts",
+    ),
+    [],
+  );
+});
+
+test("src/web itself may import its own files (R24)", async () => {
+  assert.deepEqual(
+    await boundaryMessages(
+      'import "./storage";',
+      "packages/platform/src/web/index.ts",
+    ),
+    [],
+  );
+});
+
+test("a folder named web inside client-core is not banned (R21)", async () => {
+  assert.deepEqual(
+    await boundaryMessages(
+      'import "./web/x";',
+      "packages/client-core/src/case.ts",
+    ),
+    [],
+  );
+});

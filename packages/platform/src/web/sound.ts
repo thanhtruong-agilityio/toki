@@ -18,7 +18,13 @@ export function createSound(
           elements.set(name, element);
         }
         element.currentTime = 0;
-        await element.play();
+        try {
+          await element.play();
+        } catch (error) {
+          // Drop the element: one that failed to load would fail forever.
+          if (elements.get(name) === element) elements.delete(name);
+          throw error;
+        }
         return true;
       } catch {
         return false;

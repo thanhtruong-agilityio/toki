@@ -53,12 +53,8 @@ describe.each([
 
 describe("storage the browser refuses (R9)", () => {
   test("reading the storage object throws: get gives null, set gives false, the rest do nothing", () => {
-    vi.stubGlobal("localStorage", undefined);
-    Object.defineProperty(globalThis, "localStorage", {
-      configurable: true,
-      get() {
-        throw new Error("blocked");
-      },
+    vi.spyOn(window, "localStorage", "get").mockImplementation(() => {
+      throw new Error("blocked");
     });
     const { device: d } = createStorage();
     expect(d.get("a.b")).toBeNull();

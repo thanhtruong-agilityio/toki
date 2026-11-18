@@ -82,15 +82,20 @@ const domImportMessage =
 const webPlatformImports = ["@toki/platform/web", "**/platform/src/web"];
 const webPlatformSource =
   "/^@toki\\/platform\\/web(\\/|$)|(^|\\/)platform\\/src\\/web(\\/|$)/";
+// Inside platform, ./web and ../web/... reach the web build without naming the
+// package folder. Used only in the block of the platform interface files, so a
+// folder called web in another package is not banned.
+const relativeWebRegex = "^\\.{1,2}/(.*/)?web(/|$)";
+const relativeWebSource = "/^\\.{1,2}\\/(.*\\/)?web(\\/|$)/";
 const webPlatformMessage = (who) =>
   `${who} boundary: import @toki/platform, never its web implementation (@toki/platform/web); the app chooses the build with setPlatform.`;
-const webPlatformSyntax = (message) => [
+const webPlatformSyntax = (message, source = webPlatformSource) => [
   {
-    selector: `:matches(ImportExpression, TSImportType)[source.value=${webPlatformSource}]`,
+    selector: `:matches(ImportExpression, TSImportType)[source.value=${source}]`,
     message,
   },
   {
-    selector: `:matches(ImportExpression, TSImportType) > TemplateLiteral > TemplateElement[value.cooked=${webPlatformSource}]`,
+    selector: `:matches(ImportExpression, TSImportType) > TemplateLiteral > TemplateElement[value.cooked=${source}]`,
     message,
   },
 ];
@@ -112,30 +117,17 @@ const platformProperties = [
   ["document", "cookie"],
 ];
 
-export default tseslint.config(
-  {
-    // Build output.
-    ignores: ["**/node_modules/", "**/dist/", "**/build/", "**/coverage/"],
-  },
-  js.configs.recommended,
-  tseslint.configs.recommended,
-  {
-    // Tooling and configuration files run in Node. The source files of rule
-    // 1 are left out: their globals are the allow list and nothing else.
-    files: ["**/*.{js,mjs,cjs}"],
-    ignores: [`${portableSrc}/**`, `${platformSrc}/**`],
-    languageOptions: { globals: globals.node },
-  },
-  prettier,
-  {
+// Rule 1: client-core, and the packages it imports, touch no DOM or browser
+// API. Two blocks use it: the four portable packages, and the interface files
+// of platform, which also may not reach src/web by a relative path that does
+// not name the package folder (./web, ../web/index).
+function rule1Block({ files, ignores, extraPatterns = [], extraSyntax = [] }) {
+  return {
     // Rule 1: client-core, and the packages it imports, touch no DOM or
     // browser API. Test files and package-root configuration files are
     // outside the block.
-    files: [
-      `${portableSrc}/**/${sourceFiles}`,
-      `${platformSrc}/**/${sourceFiles}`,
-    ],
-    ignores: [testFiles, platformWebSrc],
+    files,
+    ignores,
     linterOptions: { noInlineConfig: true },
     languageOptions: { ecmaVersion: 2022, globals: allowedGlobals },
     plugins: { toki },
@@ -152,12 +144,14 @@ export default tseslint.config(
               group: webPlatformImports,
               message: webPlatformMessage("client-core"),
             },
+            ...extraPatterns,
           ],
         },
       ],
       "no-restricted-syntax": [
         "error",
         ...webPlatformSyntax(webPlatformMessage("client-core")),
+        ...extraSyntax,
         {
           // import("...") as a call or as a type is not an import declaration.
           selector: `:matches(ImportExpression, TSImportType)[source.value=${domImportSource}]`,
@@ -178,7 +172,39 @@ export default tseslint.config(
         },
       ],
     },
+  };
+}
+
+export default tseslint.config(
+  {
+    // Build output.
+    ignores: ["**/node_modules/", "**/dist/", "**/build/", "**/coverage/"],
   },
+  js.configs.recommended,
+  tseslint.configs.recommended,
+  {
+    // Tooling and configuration files run in Node. The source files of rule
+    // 1 are left out: their globals are the allow list and nothing else.
+    files: ["**/*.{js,mjs,cjs}"],
+    ignores: [`${portableSrc}/**`, `${platformSrc}/**`],
+    languageOptions: { globals: globals.node },
+  },
+  prettier,
+  rule1Block({
+    files: [`${portableSrc}/**/${sourceFiles}`],
+    ignores: [testFiles],
+  }),
+  rule1Block({
+    files: [`${platformSrc}/**/${sourceFiles}`],
+    ignores: [testFiles, platformWebSrc],
+    extraPatterns: [
+      { regex: relativeWebRegex, message: webPlatformMessage("client-core") },
+    ],
+    extraSyntax: webPlatformSyntax(
+      webPlatformMessage("client-core"),
+      relativeWebSource,
+    ),
+  }),
   {
     // Rule 2: server modules call each other only through their public entry
     // (index.ts), never each other's internals or tables. The same holds for

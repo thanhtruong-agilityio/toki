@@ -1,9 +1,18 @@
 import type { NotificationPermissionState, Platform } from "../types";
 
+const STATES = ["default", "granted", "denied"] as const;
+
 // Reads the browser's value each time: it changes when the person answers.
+// Reading it can throw in a restricted webview, and a value outside the
+// browser's three is not trusted: neither may reach a caller (R10).
 function permission(): NotificationPermissionState {
   if (typeof Notification === "undefined") return "unsupported";
-  return Notification.permission;
+  try {
+    const value = Notification.permission;
+    return STATES.includes(value) ? value : "default";
+  } catch {
+    return "unsupported";
+  }
 }
 
 export function createNotifications(): Platform["notifications"] {

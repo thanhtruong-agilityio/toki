@@ -88,3 +88,35 @@ describe("only requestPermission makes the browser ask (R11)", () => {
     expect(request).toHaveBeenCalledTimes(1);
   });
 });
+
+describe("a browser whose Notification.permission cannot be read (R10, R12)", () => {
+  test("permission() gives unsupported when reading it throws", () => {
+    vi.stubGlobal("Notification", {
+      get permission() {
+        throw new Error("blocked");
+      },
+      requestPermission: async () => "granted",
+    });
+    expect(createNotifications().permission()).toBe("unsupported");
+  });
+
+  test("permission() gives default for a value outside the four", () => {
+    vi.stubGlobal("Notification", {
+      permission: "weird",
+      requestPermission: async () => "granted",
+    });
+    expect(createNotifications().permission()).toBe("default");
+  });
+
+  test("requestPermission never rejects when permission cannot be read", async () => {
+    vi.stubGlobal("Notification", {
+      get permission() {
+        throw new Error("blocked");
+      },
+      requestPermission: () => Promise.reject(new Error("no")),
+    });
+    await expect(createNotifications().requestPermission()).resolves.toBe(
+      "unsupported",
+    );
+  });
+});
