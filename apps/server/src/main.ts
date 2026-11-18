@@ -5,7 +5,7 @@ import { ConfigError, loadProcessConfig } from "./config.js";
 // name and never a value; the logger does not exist yet.
 let config;
 try {
-  config = loadProcessConfig(["server", "database"]);
+  config = loadProcessConfig(["server", "database", "mail"]);
 } catch (error) {
   if (!(error instanceof ConfigError)) throw error;
   for (const name of error.names)

@@ -47,6 +47,11 @@ const validEnv = (port: number) => ({
   SERVER_PORT: String(port),
   // Points at no running Postgres (R20).
   DATABASE_URL: "postgres://fake:fake@127.0.0.1:1/fake",
+  // The mail area is required by the entry; nothing listens here (R18).
+  SMTP_HOST: "127.0.0.1",
+  SMTP_PORT: "1",
+  SMTP_TLS: "none",
+  MAIL_FROM_ADDRESS: "toki@example.com",
 });
 
 describe("the started process", () => {
