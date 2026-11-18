@@ -74,6 +74,16 @@ describe("exports (R1, R2)", () => {
     }
   });
 
+  test("components/index.ts exports the names of the confirmation dialog (TOKI-093 R1)", () => {
+    for (const name of [
+      "ConfirmDialog",
+      "confirmVariants",
+      "confirmCancelReasons",
+    ]) {
+      expect(components, name).toHaveProperty(name);
+    }
+  });
+
   test("components/index.ts exports the names of the overlays (TOKI-014 R1)", () => {
     for (const name of [
       "Menu",

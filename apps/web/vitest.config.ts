@@ -1,10 +1,14 @@
 import { defineConfig } from "vitest/config";
 
-// jsdom for every file; `globals` stays off, so tests/support/setup.ts registers
-// the matchers, the cleanup and the act flag itself.
+// Node by default: the tests of the preview page need it (TOKI-016). A test that
+// renders React opts into jsdom with `// @vitest-environment jsdom` on its first
+// line (TOKI-093 R2). `globals` stays off, so tests/support/setup.ts registers the
+// matchers, the cleanup and the act flag itself. This file keeps the project from
+// loading vite.config.ts, which reads the repository's .env (TOKI-016 plan,
+// decision 7).
 export default defineConfig({
   test: {
-    environment: "jsdom",
+    environment: "node",
     globals: false,
     setupFiles: ["./tests/support/setup.ts"],
     include: ["tests/**/*.test.{ts,tsx}"],

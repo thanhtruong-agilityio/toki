@@ -4,9 +4,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node ../../tools/check-no-dev-pages.mjs",
-    "test": "vitest run",
-    "typecheck": "tsc --noEmit"
+    "build": "vite build && pnpm run check:no-dev-pages",
+    "check:no-dev-pages": "node scripts/check-no-dev-pages.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.107.1",
