@@ -37,6 +37,10 @@
       "at": "2026-11-18T09:00:59Z",
       "auto": false,
       "stage": "approve"
+    },
+    {
+      "at": "2026-11-18T09:06:40Z",
+      "stage": "ci"
     }
   ],
   "key": "TOKI-008",
@@ -49,7 +53,7 @@
   "spec_paths": [
     "docs/specs/2026-11-12-test-harness-design.md"
   ],
-  "stage": "check",
+  "stage": "ci",
   "tier": "M",
   "verifier": {
     "result": "PASS",
