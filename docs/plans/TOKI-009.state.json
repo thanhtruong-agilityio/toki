@@ -7,19 +7,36 @@
     {
       "at": "2026-11-18T07:33:19Z",
       "stage": "pick"
+    },
+    {
+      "at": "2026-11-18T07:34:05Z",
+      "stage": "plan"
+    },
+    {
+      "at": "2026-11-18T07:34:05Z",
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-18T07:34:41Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-18T07:35:19Z",
+      "stage": "build"
     }
   ],
   "key": "TOKI-009",
   "main_sha": "cd855ee75585404a3034a78e4cf9af15735b6bda",
   "metrics": {},
-  "mode": null,
-  "plan_approved": false,
-  "plan_hash": null,
+  "mode": "Auto to PR",
+  "plan_approved": true,
+  "plan_hash": "bc4587bba2d7c6054412a4d7ec4a9523eebdaf2f9bb7e608a2532c9e01126e57",
   "spec_commit": "0307cc2b3bb8110af4d926e5eafd0b36b483aedb",
   "spec_paths": [
     "docs/specs/2026-11-16-tokens-package-design.md"
   ],
-  "stage": "pick",
+  "stage": "build",
   "tier": "M",
   "verifier": {
     "result": null,
