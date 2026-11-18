@@ -1,7 +1,7 @@
 import { createTranslator, type Language } from "@toki/i18n";
 import nodemailer from "nodemailer";
 import { isWellFormedAddress } from "./address.js";
-import { hasControl } from "./chars.js";
+import { controlToSpace, hasControl } from "./chars.js";
 import { classify, type Cause, type Reason, type Stage } from "./classify.js";
 import type { MailConfig } from "./config.js";
 import {
@@ -90,11 +90,9 @@ const CODE = /^\d{6}$/;
 const NAME_LIMIT = 200;
 
 function validName(name: unknown): name is string {
-  return (
-    typeof name === "string" &&
-    name.trim().length > 0 &&
-    name.trim().length <= NAME_LIMIT
-  );
+  if (typeof name !== "string") return false;
+  const shown = controlToSpace(name).trim();
+  return shown.length > 0 && shown.length <= NAME_LIMIT;
 }
 
 function validCode(code: unknown): code is string {

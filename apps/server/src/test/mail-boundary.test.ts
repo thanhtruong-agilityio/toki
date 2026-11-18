@@ -1,21 +1,13 @@
-import { readFileSync, readdirSync, statSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { join, relative } from "node:path";
 import { describe, expect, it } from "vitest";
+import { sourceFiles } from "./source-files.js";
 
 // R1: the mail module is reached through its index.ts only, and nodemailer is
 // imported inside it only. TOKI-002's lint rule covers the first as well.
 const root = new URL("../", import.meta.url).pathname;
 
-function sources(dir: string): string[] {
-  return readdirSync(dir).flatMap((name) => {
-    const path = join(dir, name);
-    if (statSync(path).isDirectory())
-      return name === "node_modules" ? [] : sources(path);
-    return name.endsWith(".ts") ? [path] : [];
-  });
-}
-
-const outside = sources(root)
+const outside = sourceFiles(root, true)
   .map((path) => relative(root, path))
   .filter((path) => !path.startsWith("modules/mail/"))
   .map((path) => ({ path, text: readFileSync(join(root, path), "utf8") }));

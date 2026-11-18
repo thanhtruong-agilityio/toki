@@ -125,6 +125,11 @@ describe("input that is refused before any connection (R6, R9)", () => {
       (l) => l.sendInvitationMail({ ...invitation, workspaceName: "  " }),
     ],
     [
+      "a name of control characters only",
+      (l) =>
+        l.sendInvitationMail({ ...invitation, inviterName: "\u0001\u0002" }),
+    ],
+    [
       "a name of 201 characters",
       (l) =>
         l.sendInvitationMail({ ...invitation, inviterName: "x".repeat(201) }),

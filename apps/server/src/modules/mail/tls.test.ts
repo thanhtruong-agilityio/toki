@@ -1,7 +1,7 @@
 import { generate } from "selfsigned";
-import { readFileSync, readdirSync, statSync } from "node:fs";
-import { join } from "node:path";
-import { afterAll, afterEach, beforeAll, describe, expect, it } from "vitest";
+import { readFileSync } from "node:fs";
+import { afterEach, beforeAll, describe, expect, it } from "vitest";
+import { sourceFiles } from "../../test/source-files.js";
 import { startSmtp } from "../../test/smtp-server.js";
 import { createMailLayer } from "./index.js";
 import type { MailConfig } from "./config.js";
@@ -30,9 +30,10 @@ const open: Array<() => Promise<void>> = [];
 afterEach(async () => {
   while (open.length) await open.pop()!();
 });
-afterAll(() => undefined);
 
 const to = "sam@example.com";
+// A password that appears nowhere else, so a leak into the log is found (R13).
+const PASSWORD = "pw-9f3k-secret";
 
 async function send(
   config: Partial<MailConfig> & Pick<MailConfig, "tls">,
@@ -117,26 +118,27 @@ describe("TLS (R4)", () => {
   );
 
   it("sends the login only over TLS and delivers with the right one", async () => {
-    const login = { user: "u", password: "p" };
-    const { smtp, result } = await send(
-      { tls: "starttls", user: "u", password: "p" },
+    const login = { user: "u", password: PASSWORD };
+    const { smtp, result, log } = await send(
+      { tls: "starttls", user: "u", password: PASSWORD },
       { ...starttls(rightName), login },
       rightName.cert,
     );
     expect(result).toEqual({ ok: true });
     expect(smtp.rawReceived()).toHaveLength(1);
+    expect(JSON.stringify(log.lines)).not.toContain(PASSWORD);
   });
 
   it("returns auth_failed for a refused login", async () => {
     const { smtp, result, log } = await send(
-      { tls: "starttls", user: "u", password: "wrong" },
+      { tls: "starttls", user: "u", password: PASSWORD },
       { ...starttls(rightName), login: { user: "u", password: "right" } },
       rightName.cert,
     );
     expect(result).toEqual({ ok: false, reason: "auth_failed" });
     expect(smtp.rawReceived()).toHaveLength(0);
     expect(log.lines[0]).toMatchObject({ stage: "auth", replyCode: 535 });
-    expect(JSON.stringify(log.lines)).not.toContain("wrong");
+    expect(JSON.stringify(log.lines)).not.toContain(PASSWORD);
   });
 
   it("with none, sends in clear to a server that offers STARTTLS with a certificate nobody trusts", async () => {
@@ -146,18 +148,9 @@ describe("TLS (R4)", () => {
   });
 });
 
-function sources(dir: string): string[] {
-  return readdirSync(dir).flatMap((name) => {
-    const path = join(dir, name);
-    if (statSync(path).isDirectory())
-      return name === "node_modules" ? [] : sources(path);
-    return /\.ts$/.test(name) && !/\.test\.ts$/.test(name) ? [path] : [];
-  });
-}
-
 describe("nothing switches the certificate check off (R4)", () => {
   const root = new URL("../../", import.meta.url).pathname;
-  const files = sources(root).map((path) => ({
+  const files = sourceFiles(root, false).map((path) => ({
     path,
     text: readFileSync(path, "utf8"),
   }));

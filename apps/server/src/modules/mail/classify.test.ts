@@ -44,6 +44,22 @@ describe("classify (R16, R25)", () => {
       true,
     ],
     [
+      "reset in the middle of a send",
+      err("ECONNECTION", "CONN", "read ECONNRESET"),
+      "unavailable",
+      "connect",
+      "connect",
+      false,
+    ],
+    [
+      "connection closed early",
+      err("ECONNECTION", "CONN", "Connection closed unexpectedly"),
+      "unavailable",
+      "connect",
+      "connect",
+      false,
+    ],
+    [
       "greeting timeout",
       err("ETIMEDOUT", "CONN", "Greeting never received"),
       "unavailable",

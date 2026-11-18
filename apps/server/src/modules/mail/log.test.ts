@@ -10,7 +10,7 @@ afterEach(async () => {
 });
 
 const address = "sam@example.com";
-const secrets = [code, address, joinUrl, "hunter2", "Acme", "Sam"];
+const secrets = [code, address, joinUrl, "Acme", "Sam"];
 
 function watchStreams() {
   const out: string[] = [];
@@ -30,7 +30,7 @@ async function setup(behaviour: Parameters<typeof startSmtp>[0] = {}) {
   open.push(smtp.close);
   const log = captureLogger();
   const { layer, close } = createMailLayer({
-    config: mailConfig(smtp.port, { user: undefined, password: "hunter2" }),
+    config: mailConfig(smtp.port),
     logger: log.logger,
     production: false,
   });

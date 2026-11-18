@@ -121,11 +121,17 @@ export function classify(error: unknown): Classified {
       /certificate|ssl|tls|self.signed|altnames|handshake|starttls|wrong version/i.test(
         message,
       );
+    // Only a failure to reach the server starts the cooldown (R25); a connection
+    // that was reset or closed in the middle of a send does not.
+    const unreachable =
+      /ECONNREFUSED|EHOSTUNREACH|ENETUNREACH|EAI_AGAIN|ENOTFOUND|EADDRNOTAVAIL|ETIMEDOUT/i.test(
+        message,
+      );
     return {
       reason: "unavailable",
       cause: tls ? "tls" : "connect",
       stage: "connect",
-      startsCooldown: true,
+      startsCooldown: tls || unreachable,
     };
   }
   return { reason: "unavailable", cause: "internal", startsCooldown: false };

@@ -14,7 +14,6 @@
   "dependencies": {
     "@toki/i18n": "workspace:*",
     "@toki/shared": "workspace:*",
-    "@types/nodemailer": "8.0.2",
     "drizzle-orm": "0.45.4",
     "fastify": "5.12.8",
     "nodemailer": "10.6.0",
@@ -24,6 +23,7 @@
   },
   "devDependencies": {
     "@types/mailparser": "3.9.0",
+    "@types/nodemailer": "8.0.2",
     "@types/node": "22.20.5",
     "@types/smtp-server": "3.5.13",
     "drizzle-kit": "0.31.11",
