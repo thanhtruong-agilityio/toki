@@ -614,3 +614,309 @@ test.describe("console and requests (R20)", () => {
     });
   }
 });
+
+// Table C (R14): what the browser must draw, in each look, with teal and no
+// density chosen. "X" of the spec is :not([disabled]), added to every row so
+// that the dimmed look of a disabled control is not read.
+const X = ":not([disabled])";
+
+// A hexadecimal colour as the browser writes it from a computed style.
+function rgb(hex: string): string {
+  const n = parseInt(hex.slice(1), 16);
+  return `rgb(${n >> 16}, ${(n >> 8) & 255}, ${n & 255})`;
+}
+
+type Pair = { calm: string; focus: string };
+type Row = {
+  name: string;
+  selector: string;
+  props: Array<{ property: string; value: Pair }>;
+  focus?: Array<{ property: string; value: Pair }>;
+};
+
+const btn = `.btn:not(.primary):not(.danger):not(.ghost):not(.sm):not(.wide)${X}`;
+const inp = `.inp:not(.code):not(.invalid):not([readonly])${X}`;
+
+const colour = (calm: string, focus: string): Pair => ({
+  calm: rgb(calm),
+  focus: rgb(focus),
+});
+
+const TABLE_C: Row[] = [
+  {
+    name: "1 Button radius",
+    selector: btn,
+    props: [
+      { property: "border-radius", value: { calm: "10px", focus: "8px" } },
+    ],
+  },
+  {
+    name: "2 Button colours",
+    selector: btn,
+    props: [
+      { property: "background-color", value: colour("#FFFFFF", "#161B1E") },
+      { property: "color", value: colour("#16201D", "#E8EDEB") },
+      { property: "border-top-color", value: colour("#E0E5DF", "#283035") },
+    ],
+  },
+  {
+    name: "3 Button primary",
+    selector: `.btn.primary${X}`,
+    props: [
+      { property: "background-color", value: colour("#0F766E", "#5EEAD4") },
+      { property: "color", value: colour("#FFFFFF", "#04201C") },
+    ],
+  },
+  {
+    name: "4 Button danger",
+    selector: `.btn.danger${X}`,
+    props: [
+      { property: "background-color", value: colour("#B42318", "#F97066") },
+      { property: "color", value: colour("#FFFFFF", "#161B1E") },
+    ],
+  },
+  {
+    name: "5 IconButton",
+    selector: `.ib:not(.on):not(.sm)${X}`,
+    props: [{ property: "color", value: colour("#3A4541", "#C9D1CE") }],
+  },
+  {
+    name: "6 IconButton pressed",
+    selector: `.ib.on${X}`,
+    props: [
+      { property: "background-color", value: colour("#DCEFEA", "#123B36") },
+      { property: "color", value: colour("#0B5D56", "#7EF0DE") },
+    ],
+  },
+  {
+    name: "7 Chip pressed",
+    selector: `.chip[aria-pressed="true"]${X}`,
+    props: [
+      { property: "background-color", value: colour("#DCEFEA", "#123B36") },
+      { property: "color", value: colour("#0B5D56", "#7EF0DE") },
+    ],
+  },
+  {
+    name: "8a Switch off",
+    selector: `.sw[aria-checked="false"]${X}`,
+    props: [
+      { property: "background-color", value: colour("#E0E5DF", "#283035") },
+    ],
+  },
+  {
+    name: "8b Switch on",
+    selector: `.sw[aria-checked="true"]${X}`,
+    props: [
+      { property: "background-color", value: colour("#0F766E", "#5EEAD4") },
+    ],
+  },
+  {
+    name: "9 Field",
+    selector: inp,
+    props: [
+      { property: "border-top-color", value: colour("#E0E5DF", "#283035") },
+    ],
+    focus: [
+      { property: "border-top-color", value: colour("#0F766E", "#5EEAD4") },
+      {
+        property: "box-shadow",
+        value: {
+          calm: `${rgb("#DCEFEA")} 0px 0px 0px 3px`,
+          focus: `${rgb("#123B36")} 0px 0px 0px 3px`,
+        },
+      },
+    ],
+  },
+  {
+    name: "10 Field error box",
+    selector: '.gerr[role="alert"]',
+    props: [
+      { property: "background-color", value: colour("#FCE8E6", "#3A1614") },
+      { property: "color", value: colour("#B42318", "#F97066") },
+    ],
+  },
+  {
+    name: "11 Badge",
+    selector: ".cnt:not(.mute):not(.mn)",
+    props: [
+      { property: "background-color", value: colour("#0F766E", "#5EEAD4") },
+      { property: "color", value: colour("#FFFFFF", "#04201C") },
+    ],
+  },
+  {
+    name: "12 Badge mention",
+    selector: ".cnt.mn",
+    props: [
+      { property: "background-color", value: colour("#B42318", "#F97066") },
+      { property: "color", value: colour("#FFFFFF", "#161B1E") },
+    ],
+  },
+  {
+    name: "13 Tag",
+    selector: ".tag",
+    props: [
+      {
+        property: "background-color",
+        value: {
+          calm: "rgba(22, 32, 29, 0.055)",
+          focus: "rgba(232, 237, 235, 0.07)",
+        },
+      },
+      { property: "color", value: colour("#3A4541", "#C9D1CE") },
+    ],
+  },
+];
+
+test.describe("Table C (R14)", () => {
+  for (const look of LOOKS) {
+    test(`the 13 rows hold in ${look}`, async ({ page }) => {
+      await page.goto(`/preview.html?look=${look}&accent=teal`);
+      await expect(page.locator("figure").first()).toBeVisible();
+      for (const row of TABLE_C) {
+        const element = page.locator(`figure ${row.selector}`).first();
+        await expect(element, row.name).toBeAttached();
+        for (const { property, value } of row.props) {
+          await expect(element, `${row.name} ${property}`).toHaveCSS(
+            property,
+            value[look],
+          );
+        }
+        if (row.focus) {
+          await element.focus();
+          for (const { property, value } of row.focus) {
+            await expect(element, `${row.name} focused ${property}`).toHaveCSS(
+              property,
+              value[look],
+            );
+          }
+        }
+      }
+    });
+  }
+});
+
+test.describe("accent and density reach the components (R15)", () => {
+  test("Calm and indigo", async ({ page }) => {
+    await page.goto("/preview.html?look=calm&accent=indigo");
+    const primary = page.locator(`figure .btn.primary${X}`).first();
+    await expect(primary).toHaveCSS("background-color", rgb("#4F46E5"));
+    const chip = page.locator('figure .chip[aria-pressed="true"]').first();
+    await expect(chip).toHaveCSS("background-color", rgb("#E3E5FB"));
+    await expect(chip).toHaveCSS("color", rgb("#3730A3"));
+  });
+
+  test("Focus and indigo", async ({ page }) => {
+    await page.goto("/preview.html?look=focus&accent=indigo");
+    const primary = page.locator(`figure .btn.primary${X}`).first();
+    await expect(primary).toHaveCSS("background-color", rgb("#A5B4FC"));
+    await expect(primary).toHaveCSS("color", rgb("#1E1B4B"));
+    const chip = page.locator('figure .chip[aria-pressed="true"]').first();
+    await expect(chip).toHaveCSS("background-color", rgb("#25285A"));
+    await expect(chip).toHaveCSS("color", rgb("#C7D2FE"));
+  });
+
+  const sizes: Array<[string, string, string, string]> = [
+    ["calm", "", "36px", "the look's own"],
+    ["focus", "", "30px", "the look's own"],
+    ["calm", "compact", "30px", "compact"],
+    ["focus", "comfortable", "36px", "comfortable"],
+  ];
+  for (const [look, density, width, label] of sizes) {
+    test(`the default avatar is ${width} wide in ${look} with ${label}`, async ({
+      page,
+    }) => {
+      const query = density ? `&density=${density}` : "";
+      await page.goto(`/preview.html?look=${look}${query}`);
+      const av = page.locator('figure .av:not([style*="--s"])').first();
+      await expect(av).toHaveCSS("width", width);
+    });
+  }
+
+  test("an avatar with a size keeps it, whatever the density", async ({
+    page,
+  }) => {
+    for (const density of ["comfortable", "compact"]) {
+      await page.goto(`/preview.html?look=calm&density=${density}`);
+      const sized = page.locator('figure .av[style*="--s"]');
+      await expect(sized.first()).toBeAttached();
+      const bad = await sized.evaluateAll((nodes) =>
+        nodes
+          .filter(
+            (node) =>
+              getComputedStyle(node).width !==
+              getComputedStyle(node).getPropertyValue("--s").trim(),
+          )
+          .map((node) => node.getAttribute("style")),
+      );
+      expect(bad).toEqual([]);
+    }
+  });
+});
+
+test.describe("layouts (R16)", () => {
+  const WINDOWS: Array<[number, number]> = [
+    [360, 560],
+    [719, 900],
+    [720, 900],
+    [1099, 900],
+    [1100, 900],
+    [1400, 900],
+  ];
+  for (const look of LOOKS) {
+    for (const [width, height] of WINDOWS) {
+      test(`no sideways scroll and no wide figure at ${width} px (${look})`, async ({
+        page,
+      }) => {
+        await page.setViewportSize({ width, height });
+        await page.goto(`/preview.html?look=${look}`);
+        await expect(page.locator("figure").first()).toBeVisible();
+        const measured = await page.evaluate(() => ({
+          scroll: document.documentElement.scrollWidth,
+          inner: window.innerWidth,
+          wide: [...document.querySelectorAll("figure")]
+            .filter(
+              (node) => node.getBoundingClientRect().width > window.innerWidth,
+            )
+            .map((node) => node.getAttribute("data-example")),
+        }));
+        expect(measured.scroll).toBeLessThanOrEqual(measured.inner);
+        expect(measured.wide).toEqual([]);
+      });
+    }
+  }
+
+  test("at 719 px every control is at least 40 px tall, except .linkbtn and .sw", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 719, height: 900 });
+    await page.goto("/preview.html");
+    await expect(page.locator("figure").first()).toBeVisible();
+    const short = await page.evaluate(() => {
+      const selector =
+        ".btn:not(.linkbtn), .ib, .chip, .inp, .sel, .field, .toast button";
+      return [...document.querySelectorAll(selector)]
+        .map((node) => ({
+          selector: node.className,
+          tag: node.tagName,
+          height: node.getBoundingClientRect().height,
+        }))
+        .filter((item) => item.height < 40);
+    });
+    expect(short).toEqual([]);
+  });
+
+  test("at 720 px the sizes drop to 34, 28, 34 and 28 px", async ({ page }) => {
+    await page.setViewportSize({ width: 720, height: 900 });
+    await page.goto("/preview.html");
+    await expect(page.locator("figure").first()).toBeVisible();
+    const heightOf = (selector: string) =>
+      page.locator(`figure ${selector}`).first();
+    await expect(heightOf(".btn:not(.sm):not(.wide):not(.linkbtn)")).toHaveCSS(
+      "height",
+      "34px",
+    );
+    await expect(heightOf(".btn.sm")).toHaveCSS("height", "28px");
+    await expect(heightOf(".ib:not(.sm)")).toHaveCSS("height", "34px");
+    await expect(heightOf(".chip:not(.sm)")).toHaveCSS("height", "28px");
+  });
+});
