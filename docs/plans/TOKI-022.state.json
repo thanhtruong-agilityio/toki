@@ -1,0 +1,32 @@
+{
+  "approved_auto": false,
+  "base": "github/main",
+  "branch": "feat/toki-022-sign-in-api",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-18T10:55:52Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-18T10:57:31Z",
+      "stage": "explore"
+    }
+  ],
+  "key": "TOKI-022",
+  "main_sha": "8b1d462182d8fd9c13da1dccfa6df2d381a81599",
+  "metrics": {},
+  "mode": null,
+  "plan_approved": false,
+  "plan_hash": null,
+  "spec_commit": "eaa8f3c75ce6f9685d35b980cddadde1f5a7d0b2",
+  "spec_paths": [
+    "docs/specs/2026-11-16-sign-in-api-design.md"
+  ],
+  "stage": "explore",
+  "tier": "L",
+  "verifier": {
+    "result": null,
+    "round": 0
+  }
+}
