@@ -139,6 +139,12 @@ pnpm --filter @toki/platform test
 # Test the base components of ui-web
 pnpm --filter @toki/ui-web test
 
+# Check that no dev-only page (the component preview) is in the web build (run last by the web build; a dist folder can be given with `-- --dist <dir>`)
+pnpm --filter @toki/web run check:no-dev-pages
+
+# Open the component preview page of the design system (development server only)
+pnpm --filter @toki/web dev   # then http://localhost:5173/preview.html?look=calm&accent=teal
+
 # Test the rule that reads a review request from a comment
 bash .github/scripts/review-request.test.sh
 
