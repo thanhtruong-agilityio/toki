@@ -9,3 +9,4 @@ export * from "./Badge";
 export * from "./Avatar";
 export * from "./PresenceDot";
 export * from "./EmptyState";
+export * from "./Toast";
