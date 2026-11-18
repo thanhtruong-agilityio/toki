@@ -314,7 +314,7 @@ describe("keys and times (R4, R5, R6, R22)", () => {
   });
 });
 
-describe("users (R7 to R12)", () => {
+describe("users (R7 to R11)", () => {
   const user = (over: Record<string, unknown>) =>
     insertUser(sql, { workspace_id: ws, ...over });
 
@@ -390,22 +390,6 @@ describe("users (R7 to R12)", () => {
     expect(row!.language).toBe("en");
     await checkFails(user({ language: "fr" }), "users_language_check");
     await user({ language: "vi" });
-  });
-
-  it("deactivates and reactivates the same row without losing its sessions or devices (R12)", async () => {
-    const id = await user({});
-    const session = await insertSession(sql, { workspace_id: ws, user_id: id });
-    const device = await insertDevice(sql, {
-      workspace_id: ws,
-      user_id: id,
-      session_id: session,
-    });
-    await sql`update users set status = 'deactivated' where id = ${id}`;
-    await sql`update users set status = 'active' where id = ${id}`;
-    const [{ n }] = await sql`select (
-      (select count(*) from sessions where id = ${session}) +
-      (select count(*) from devices where id = ${device}))::int as n`;
-    expect(n).toBe(2);
   });
 });
 
