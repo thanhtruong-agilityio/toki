@@ -11,19 +11,32 @@
     {
       "at": "2026-11-18T08:59:41Z",
       "stage": "explore"
+    },
+    {
+      "at": "2026-11-18T09:04:53Z",
+      "stage": "plan"
+    },
+    {
+      "at": "2026-11-18T09:06:05Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-18T09:06:06Z",
+      "stage": "build"
     }
   ],
   "key": "TOKI-014",
   "main_sha": "a246ca0918f4971b8425bbcd9d982188e2639377",
   "metrics": {},
-  "mode": null,
-  "plan_approved": false,
-  "plan_hash": null,
+  "mode": "auto-to-check",
+  "plan_approved": true,
+  "plan_hash": "1b40f081a178939df8205f995cd53e3a195c8a1d9d0d791937a975c1381ac2ad",
   "spec_commit": null,
   "spec_paths": [
     "docs/specs/2026-11-16-overlays-design.md"
   ],
-  "stage": "explore",
+  "stage": "build",
   "tier": "L",
   "verifier": {
     "result": null,
