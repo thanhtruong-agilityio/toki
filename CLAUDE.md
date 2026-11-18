@@ -151,10 +151,19 @@ pnpm dev:up
 pnpm dev:down
 
 # Wipe development data: all three stores, or one. Each refuses unless NODE_ENV is development.
+# dev:reset:db then applies every migration, so the tables exist and hold no row.
 pnpm dev:reset
 pnpm dev:reset:db
 pnpm dev:reset:files
 pnpm dev:reset:mail
+
+# Create a migration from a change to the table definitions in apps/server/src/modules/*/schema.ts.
+# Commit the whole apps/server/migrations/ folder (the SQL file and meta/).
+pnpm db:generate
+
+# Apply every pending migration to the database in DATABASE_URL (reads the root .env when it exists).
+# Needs the services up for development. See apps/server/src/db/README.md.
+pnpm db:migrate
 
 # Test the reset scripts. Part 1 (the guard) needs no Docker; part 2 needs the services up
 # and WIPES the development data. Run it whenever a script in scripts/ changes.
@@ -175,7 +184,8 @@ The root `pnpm` scripts, run from the repository root under Node 22 (`.nvmrc`). 
 | `pnpm format`, `pnpm format:check` | Prettier: rewrite, or check only | works (TOKI-002) |
 | `pnpm dev` | Run the `dev` script of each package that has one | works (TOKI-001) |
 | `pnpm dev:up`, `pnpm dev:down` | Start or stop Postgres, MinIO and Mailpit | works (TOKI-003) |
-| `pnpm dev:reset`, `pnpm dev:reset:db`, `pnpm dev:reset:files`, `pnpm dev:reset:mail` | Wipe development data | works (TOKI-003) |
+| `pnpm dev:reset`, `pnpm dev:reset:db`, `pnpm dev:reset:files`, `pnpm dev:reset:mail` | Wipe development data; `dev:reset:db` also applies the migrations | works (TOKI-003, TOKI-005) |
+| `pnpm db:generate`, `pnpm db:migrate` | Create a migration from the table definitions; apply every pending migration | works (TOKI-005) |
 | `pnpm test`, `pnpm test:e2e` | Run the tests (see Running tests) | planned (TOKI-008) |
 
 ## Running tests

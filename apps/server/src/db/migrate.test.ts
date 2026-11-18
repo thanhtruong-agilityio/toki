@@ -1,4 +1,10 @@
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import {
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import postgres from "postgres";
@@ -48,6 +54,13 @@ function folderOf(sqlByTag: Record<string, string>) {
 }
 
 describe("runMigrations", () => {
+  it("points at the committed folder as a file path, not a percent-encoded one", () => {
+    expect(migrationsFolder).not.toMatch(/%[0-9A-Fa-f]{2}/);
+    expect(existsSync(join(migrationsFolder, "meta", "_journal.json"))).toBe(
+      true,
+    );
+  });
+
   it("creates workspaces on an empty database (R4)", async () => {
     await runMigrations(throwaway.url, migrationsFolder);
     expect(await tables(throwaway.url)).toContain("workspaces");
