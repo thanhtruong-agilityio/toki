@@ -141,14 +141,12 @@ export const Dialog = forwardRef<HTMLDivElement, DialogProps>(
 
     // R33, on open: the opener, the lock, the isolation, then focus. On close,
     // in the cleanup: the isolation and the lock are released.
-    useLayoutEffect(() => {
-      if (!open) return;
-      if (!session.current) session.current = { opener: recordOpener() };
-      lockScroll();
+    const release = useRef<(() => void) | null>(null);
+    const isolateNow = useCallback(() => {
       // Layers above this dialog (a Menu that opens in the same commit, as a
       // child) are not isolated: they are above it and interactive (R15, R28).
-      const release =
-        backdrop === "opaque" && scrim.current
+      release.current =
+        backdropRef.current === "opaque" && scrim.current
           ? isolate(
               scrim.current,
               layersAbove(layerId)
@@ -156,15 +154,41 @@ export const Dialog = forwardRef<HTMLDivElement, DialogProps>(
                 .filter((node): node is HTMLElement => node !== null),
             )
           : null;
+    }, [layerId]);
+    const backdropRef = useRef(backdrop);
+    backdropRef.current = backdrop;
+
+    useLayoutEffect(() => {
+      if (!open) return;
+      if (!session.current) session.current = { opener: recordOpener() };
+      lockScroll();
+      isolateNow();
       if (panel.current && isTop(layerId)) {
         focusInto(panel.current, initialFocusRef);
       }
       return () => {
-        release?.();
+        release.current?.();
+        release.current = null;
         unlockScroll();
       };
-      // `backdrop` and `initialFocusRef` are read when the dialog opens.
+      // `initialFocusRef` is read when the dialog opens.
     }, [open]);
+
+    // The isolation follows `backdrop` while the dialog is open; the lock and
+    // the focus are not touched. The first run is the open step above.
+    const isolated = useRef<DialogBackdrop | null>(null);
+    useLayoutEffect(() => {
+      if (!open) {
+        isolated.current = null;
+        return;
+      }
+      if (isolated.current !== null && isolated.current !== backdrop) {
+        release.current?.();
+        release.current = null;
+        isolateNow();
+      }
+      isolated.current = backdrop;
+    }, [open, backdrop, isolateNow]);
 
     // R33, on close: after React has removed the portal, focus goes back. This
     // cleanup also runs when the dialog unmounts while open: R13 is followed

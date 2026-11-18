@@ -832,6 +832,37 @@ describe("opaque backdrop and the toast region (R15, R34)", () => {
     expect(document.querySelector("[inert],[aria-hidden]")).toBeNull();
   });
 
+  test("the isolation follows backdrop while open; focus and the lock do not change", () => {
+    const lock = vi.spyOn(lockModule, "lockScroll");
+    const unlock = vi.spyOn(lockModule, "unlockScroll");
+    const focus = vi.spyOn(focusModule, "focusInto");
+    const { rerender } = render(<Page backdrop="dim" open />);
+    const inner = screen.getByText("in");
+    expect(document.querySelector("[inert]")).toBeNull();
+    expect(document.activeElement).toBe(inner);
+    expect(lock).toHaveBeenCalledTimes(1);
+    expect(focus).toHaveBeenCalledTimes(1);
+    rerender(<Page backdrop="opaque" open />);
+    expect(document.querySelector(".scrim")).toHaveClass("opaque");
+    expect(q("pane")).toHaveAttribute("inert");
+    expect(q("pane")).toHaveAttribute("aria-hidden", "true");
+    expect(q("region")).not.toHaveAttribute("inert");
+    expect(document.activeElement).toBe(inner);
+    rerender(<Page backdrop="dim" open />);
+    expect(document.querySelector(".scrim")).not.toHaveClass("opaque");
+    expect(document.querySelector("[inert],[aria-hidden]")).toBeNull();
+    expect(document.activeElement).toBe(inner);
+    expect(document.body.style.overflow).toBe("hidden");
+    expect(lock).toHaveBeenCalledTimes(1);
+    expect(unlock).not.toHaveBeenCalled();
+    expect(focus).toHaveBeenCalledTimes(1);
+    rerender(<Page backdrop="opaque" open />);
+    rerender(<Page backdrop="opaque" open={false} />);
+    expect(document.querySelector("[inert],[aria-hidden]")).toBeNull();
+    expect(document.body.style.overflow).toBe("");
+    expect(unlock).toHaveBeenCalledTimes(1);
+  });
+
   test("a Menu that is open from the first render of an opaque Modal is above it: not inert, not hidden, asked first by Esc", async () => {
     const user = userEvent.setup();
     const calls: string[] = [];

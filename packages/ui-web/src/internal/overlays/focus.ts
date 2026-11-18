@@ -82,7 +82,9 @@ export function firstTabbable(root: HTMLElement): HTMLElement | null {
 
 // jsdom ignores visibility in focus(), so the check is made here (R13, R22):
 // the element is in the document and neither it nor an ancestor is
-// `display: none` or `visibility: hidden`.
+// `display: none` and the element itself is not `visibility: hidden`.
+// Visibility is inherited, so the computed value of the element already counts
+// its ancestors, and a child may set `visible` inside a hidden ancestor.
 export function canFocus(element: HTMLElement): boolean {
   if (!element.isConnected) return false;
   if (getComputedStyle(element).visibility === "hidden") return false;
@@ -91,8 +93,7 @@ export function canFocus(element: HTMLElement): boolean {
     node;
     node = node.parentElement
   ) {
-    const style = getComputedStyle(node);
-    if (style.display === "none" || style.visibility === "hidden") return false;
+    if (getComputedStyle(node).display === "none") return false;
   }
   return true;
 }

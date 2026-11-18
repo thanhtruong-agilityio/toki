@@ -106,6 +106,16 @@ describe("canFocus and focusElement (R13, R22)", () => {
     expect(canFocus(gone)).toBe(false);
   });
 
+  test("a child that sets visibility visible inside a hidden ancestor can take focus; display none above or its own hidden visibility cannot", () => {
+    const root = mount(`
+      <div style="visibility:hidden"><button id="shown" style="visibility:visible">b</button></div>
+      <div style="display:none"><button id="d" style="visibility:visible">b</button></div>
+      <div style="visibility:visible"><button id="own" style="visibility:hidden">b</button></div>`);
+    expect(canFocus(root.querySelector("#shown") as HTMLElement)).toBe(true);
+    expect(canFocus(root.querySelector("#d") as HTMLElement)).toBe(false);
+    expect(canFocus(root.querySelector("#own") as HTMLElement)).toBe(false);
+  });
+
   test("focusElement gives focus and says so; it gives none to a hidden element", () => {
     const root = mount(
       `<button id="b">b</button><button id="v" style="visibility:hidden">b</button>`,

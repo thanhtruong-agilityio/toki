@@ -1,6 +1,7 @@
 export type Rect = { left: number; top: number; right: number; bottom: number };
 
-export type MenuAlign = "end" | "start";
+export const menuAligns = ["end", "start"] as const;
+export type MenuAlign = (typeof menuAligns)[number];
 
 // The prototype's `posMenu` (R23): below the anchor, its right edge (`end`) or
 // its left edge (`start`) on the anchor's, above when it does not fit, and 8 px

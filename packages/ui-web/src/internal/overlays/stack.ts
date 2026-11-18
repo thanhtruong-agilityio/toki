@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 
 export type LayerKind = "dialog" | "menu";
 
@@ -31,13 +31,16 @@ export function newLayerId(): number {
   return ids;
 }
 
-// Reads the order of a layer at its first render with `open` true and clears
-// it when `open` turns false (R9).
+// Reads the order of a layer at its first render with `open` true (R9). The
+// render only allocates; the order is cleared in an effect once a commit has
+// `open` false, so a render that is discarded cannot change it.
 export function useLayerOrder(open: boolean): number {
   const order = useRef(0);
-  if (!open) order.current = 0;
-  else if (order.current === 0) order.current = nextOrder();
-  return order.current;
+  if (open && order.current === 0) order.current = nextOrder();
+  useLayoutEffect(() => {
+    if (!open) order.current = 0;
+  }, [open]);
+  return open ? order.current : 0;
 }
 
 function onKeyDown(event: KeyboardEvent): void {

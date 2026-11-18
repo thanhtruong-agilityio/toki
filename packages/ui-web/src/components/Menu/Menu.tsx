@@ -9,6 +9,7 @@ import {
   useState,
   type ComponentPropsWithoutRef,
   type KeyboardEvent as ReactKeyboardEvent,
+  type MouseEvent as ReactMouseEvent,
   type RefObject,
 } from "react";
 import { createPortal } from "react-dom";
@@ -21,11 +22,10 @@ import {
   removeLayer,
   useLayerOrder,
 } from "../../internal/overlays/stack";
-import { computeMenuPosition } from "./menuPlace";
+import { computeMenuPosition, type MenuAlign } from "./menuPlace";
 import "./Menu.css";
 
-export const menuAligns = ["end", "start"] as const;
-export type MenuAlign = (typeof menuAligns)[number];
+export { menuAligns, type MenuAlign } from "./menuPlace";
 
 export const menuCloseReasons = ["select", "escape", "tab", "outside"] as const;
 export type MenuCloseReason = (typeof menuCloseReasons)[number];
@@ -83,6 +83,7 @@ export const Menu = forwardRef<HTMLDivElement, MenuProps>(
       openFocus = "first",
       className,
       onKeyDown,
+      onMouseDown,
       children,
       ...rest
     } = props;
@@ -157,11 +158,18 @@ export const Menu = forwardRef<HTMLDivElement, MenuProps>(
     // The position follows the window and any scroll (R23).
     useEffect(() => {
       if (!open) return;
+      // The capture phase also sees the menu's own scroll, which does not
+      // move it.
+      const onScroll = (event: Event) => {
+        const target = event.target as Node | null;
+        if (target && menu.current?.contains(target)) return;
+        place();
+      };
       window.addEventListener("resize", place);
-      window.addEventListener("scroll", place, true);
+      window.addEventListener("scroll", onScroll, true);
       return () => {
         window.removeEventListener("resize", place);
-        window.removeEventListener("scroll", place, true);
+        window.removeEventListener("scroll", onScroll, true);
       };
     }, [open, place]);
 
@@ -230,6 +238,16 @@ export const Menu = forwardRef<HTMLDivElement, MenuProps>(
       items[next]!.focus();
     };
 
+    // A press on a part that cannot take focus (a heading, the padding) would
+    // move focus to the body and the keys would stop; it is prevented, so
+    // focus stays on the current item. A press on an item is left alone.
+    const handleMouseDown = (event: ReactMouseEvent<HTMLDivElement>) => {
+      onMouseDown?.(event);
+      if (event.defaultPrevented) return;
+      const target = event.target as HTMLElement;
+      if (!target.closest('[role="menuitem"]')) event.preventDefault();
+    };
+
     return createPortal(
       <MenuContext.Provider value={context}>
         <div
@@ -240,6 +258,7 @@ export const Menu = forwardRef<HTMLDivElement, MenuProps>(
           aria-orientation="vertical"
           className={cx("menu", className)}
           onKeyDown={handleKeyDown}
+          onMouseDown={handleMouseDown}
         >
           {children}
         </div>

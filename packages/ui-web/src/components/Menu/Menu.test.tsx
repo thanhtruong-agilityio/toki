@@ -252,6 +252,47 @@ describe("nothing is left when closed (R4)", () => {
   });
 });
 
+describe("a press inside the menu (R20)", () => {
+  test("a press on a heading or the padding keeps focus on the item, and arrows still move", async () => {
+    const user = userEvent.setup();
+    render(
+      <Demo>
+        <MenuGroup label="Group">
+          <MenuItem>One</MenuItem>
+          <MenuItem>Two</MenuItem>
+        </MenuGroup>
+      </Demo>,
+    );
+    await user.click(screen.getByText("trigger"));
+    expect(focused()).toBe(item("One"));
+    const heading = screen.getByText("Group");
+    for (const target of [heading, menu()]) {
+      const down = new MouseEvent("mousedown", {
+        bubbles: true,
+        cancelable: true,
+      });
+      target.dispatchEvent(down);
+      expect(down.defaultPrevented).toBe(true);
+    }
+    await user.pointer({ keys: "[MouseLeft>]", target: heading });
+    await user.pointer({ keys: "[/MouseLeft]", target: heading });
+    expect(focused()).toBe(item("One"));
+    await user.keyboard("{ArrowDown}");
+    expect(focused()).toBe(item("Two"));
+  });
+
+  test("a press on an item is not prevented", () => {
+    render(<Demo />);
+    fireEvent.click(screen.getByText("trigger"));
+    const down = new MouseEvent("mousedown", {
+      bubbles: true,
+      cancelable: true,
+    });
+    item("Two").dispatchEvent(down);
+    expect(down.defaultPrevented).toBe(false);
+  });
+});
+
 describe("keys (R20)", () => {
   test("opens on the first item that is not disabled; the last with ArrowUp on the trigger", async () => {
     const user = userEvent.setup();
@@ -602,6 +643,42 @@ describe("position (R23)", () => {
     expect(menu().style.top).toBe("234px");
     rect = { left: 500, top: 300, right: 700, bottom: 330 };
     fireEvent.scroll(document.body);
+    expect(menu().style.top).toBe("334px");
+  });
+
+  test("a scroll inside the menu does not reposition it; a scroll elsewhere does", () => {
+    const anchor = createRef<HTMLButtonElement>();
+    let rect = { left: 500, top: 100, right: 600, bottom: 130 };
+    vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockImplementation(
+      function (this: HTMLElement) {
+        if (this.getAttribute("role") === "menu")
+          return { width: 200, height: 100 } as DOMRect;
+        return { ...rect, width: 100, height: 30, x: 0, y: 0 } as DOMRect;
+      },
+    );
+    Object.defineProperty(window, "innerWidth", {
+      value: 1000,
+      configurable: true,
+    });
+    Object.defineProperty(window, "innerHeight", {
+      value: 800,
+      configurable: true,
+    });
+    render(
+      <>
+        <button ref={anchor}>a</button>
+        <div id="other">other</div>
+        <Menu open anchorRef={anchor} onClose={noop} aria-label="m">
+          <MenuItem>One</MenuItem>
+        </Menu>
+      </>,
+    );
+    expect(menu().style.top).toBe("134px");
+    rect = { left: 500, top: 300, right: 700, bottom: 330 };
+    fireEvent.scroll(menu());
+    fireEvent.scroll(item("One"));
+    expect(menu().style.top).toBe("134px");
+    fireEvent.scroll(document.getElementById("other")!);
     expect(menu().style.top).toBe("334px");
   });
 
