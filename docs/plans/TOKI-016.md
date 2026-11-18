@@ -90,3 +90,4 @@ Riskiest step: 6, the screenshots (decision 5): platform-specific images and fon
 - `docs/plans/TOKI-016.state.json` is committed with the work.
 - The Table C, R15 and R16 browser tests were written after the page and checked by changing expected values; they did not fail first.
 - The branch is behind `main` and is merged with it before the pull request.
+- TOKI-014 merged into `main` during the build, so step 4 is built (R13, R23, Table A2 in R8, the overlay lines of R17); only `PENDING_TOKI_010` placeholders remain (fonts section, its R17 line, the R20 `.woff2` count, R24, and the R3 fonts-link `test.todo`). The browser test lists the 15 components in the order of `componentExamples` and does not import from `packages/`.
