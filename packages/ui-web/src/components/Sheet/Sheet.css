@@ -1,0 +1,14 @@
+/* Table B of docs/specs/2026-11-16-overlays-design.md. The prototype has no
+   rule for the class `sheet`; the whole table is decided. */
+.scrim.sheet {
+  place-items: end center;
+  padding: 0;
+}
+
+.scrim.sheet .modal {
+  width: min(520px, 100%);
+  max-height: calc(100% - 48px);
+  border-radius: var(--radius) var(--radius) 0 0;
+  border-bottom: 0;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}

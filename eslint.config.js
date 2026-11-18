@@ -26,6 +26,10 @@ const sourceFiles = "*.{ts,tsx,mts,cts,js,jsx,mjs,cjs}";
 const testFiles = `**/*.test.${sourceFiles.slice(2)}`;
 // The four packages of rule 1.
 const portableSrc = "packages/{client-core,shared,i18n,tokens}/src";
+// The interface files of platform (TOKI-018) are covered by rule 1 too; its
+// web implementation, src/web, is where the browser APIs are allowed to live.
+const platformSrc = "packages/platform/src";
+const platformWebSrc = `${platformSrc}/web/**`;
 
 // Rule 1. The only globals that client-core, shared, i18n and tokens may use
 // as a value: the ES2022 language built-ins plus this list. React Native has
@@ -71,6 +75,31 @@ const domImportSource = "/^react-dom(\\/|$)|(^|\\/)ui-web(\\/|$)/";
 const domImportMessage =
   "client-core boundary: client-core, shared, i18n and tokens import nothing that needs the DOM, so React Native can reuse them.";
 
+// The web implementation of platform: @toki/platform/web (with every subpath)
+// or a relative path into packages/platform/src/web. Only apps/web imports it.
+// A pattern also matches every path below it. The same two targets for
+// import("...") and import(`...`).
+const webPlatformImports = ["@toki/platform/web", "**/platform/src/web"];
+const webPlatformSource =
+  "/^@toki\\/platform\\/web(\\/|$)|(^|\\/)platform\\/src\\/web(\\/|$)/";
+// Inside platform, ./web and ../web/... reach the web build without naming the
+// package folder. Used only in the block of the platform interface files, so a
+// folder called web in another package is not banned.
+const relativeWebRegex = "^\\.{1,2}/(.*/)?web(/|$)";
+const relativeWebSource = "/^\\.{1,2}\\/(.*\\/)?web(\\/|$)/";
+const webPlatformMessage = (who) =>
+  `${who} boundary: import @toki/platform, never its web implementation (@toki/platform/web); the app chooses the build with setPlatform.`;
+const webPlatformSyntax = (message, source = webPlatformSource) => [
+  {
+    selector: `:matches(ImportExpression, TSImportType)[source.value=${source}]`,
+    message,
+  },
+  {
+    selector: `:matches(ImportExpression, TSImportType) > TemplateLiteral > TemplateElement[value.cooked=${source}]`,
+    message,
+  },
+];
+
 // Rule 3. The platform APIs that ui-web may not use directly: these globals,
 // bare or as a property of window, globalThis or self, and these properties
 // of the global navigator and document.
@@ -88,27 +117,17 @@ const platformProperties = [
   ["document", "cookie"],
 ];
 
-export default tseslint.config(
-  {
-    // Build output.
-    ignores: ["**/node_modules/", "**/dist/", "**/build/", "**/coverage/"],
-  },
-  js.configs.recommended,
-  tseslint.configs.recommended,
-  {
-    // Tooling and configuration files run in Node. The source files of rule
-    // 1 are left out: their globals are the allow list and nothing else.
-    files: ["**/*.{js,mjs,cjs}"],
-    ignores: [`${portableSrc}/**`],
-    languageOptions: { globals: globals.node },
-  },
-  prettier,
-  {
+// Rule 1: client-core, and the packages it imports, touch no DOM or browser
+// API. Two blocks use it: the four portable packages, and the interface files
+// of platform, which also may not reach src/web by a relative path that does
+// not name the package folder (./web, ../web/index).
+function rule1Block({ files, ignores, extraPatterns = [], extraSyntax = [] }) {
+  return {
     // Rule 1: client-core, and the packages it imports, touch no DOM or
     // browser API. Test files and package-root configuration files are
     // outside the block.
-    files: [`${portableSrc}/**/${sourceFiles}`],
-    ignores: [testFiles],
+    files,
+    ignores,
     linterOptions: { noInlineConfig: true },
     languageOptions: { ecmaVersion: 2022, globals: allowedGlobals },
     plugins: { toki },
@@ -119,11 +138,20 @@ export default tseslint.config(
       "@typescript-eslint/no-restricted-imports": [
         "error",
         {
-          patterns: [{ group: domImports, message: domImportMessage }],
+          patterns: [
+            { group: domImports, message: domImportMessage },
+            {
+              group: webPlatformImports,
+              message: webPlatformMessage("client-core"),
+            },
+            ...extraPatterns,
+          ],
         },
       ],
       "no-restricted-syntax": [
         "error",
+        ...webPlatformSyntax(webPlatformMessage("client-core")),
+        ...extraSyntax,
         {
           // import("...") as a call or as a type is not an import declaration.
           selector: `:matches(ImportExpression, TSImportType)[source.value=${domImportSource}]`,
@@ -144,7 +172,39 @@ export default tseslint.config(
         },
       ],
     },
+  };
+}
+
+export default tseslint.config(
+  {
+    // Build output.
+    ignores: ["**/node_modules/", "**/dist/", "**/build/", "**/coverage/"],
   },
+  js.configs.recommended,
+  tseslint.configs.recommended,
+  {
+    // Tooling and configuration files run in Node. The source files of rule
+    // 1 are left out: their globals are the allow list and nothing else.
+    files: ["**/*.{js,mjs,cjs}"],
+    ignores: [`${portableSrc}/**`, `${platformSrc}/**`],
+    languageOptions: { globals: globals.node },
+  },
+  prettier,
+  rule1Block({
+    files: [`${portableSrc}/**/${sourceFiles}`],
+    ignores: [testFiles],
+  }),
+  rule1Block({
+    files: [`${platformSrc}/**/${sourceFiles}`],
+    ignores: [testFiles, platformWebSrc],
+    extraPatterns: [
+      { regex: relativeWebRegex, message: webPlatformMessage("client-core") },
+    ],
+    extraSyntax: webPlatformSyntax(
+      webPlatformMessage("client-core"),
+      relativeWebSource,
+    ),
+  }),
   {
     // Rule 2: server modules call each other only through their public entry
     // (index.ts), never each other's internals or tables. The same holds for
@@ -184,8 +244,20 @@ export default tseslint.config(
         "error",
         { globals: platformGlobals, properties: platformProperties },
       ],
+      "@typescript-eslint/no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: webPlatformImports,
+              message: webPlatformMessage("ui-web"),
+            },
+          ],
+        },
+      ],
       "no-restricted-syntax": [
         "error",
+        ...webPlatformSyntax(webPlatformMessage("ui-web")),
         {
           selector: "JSXOpeningElement[name.name='audio']",
           message:

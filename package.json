@@ -16,7 +16,7 @@
   "scripts": {
     "typecheck": "pnpm -r run typecheck && tsc --noEmit",
     "i18n:check": "pnpm --filter @toki/i18n check",
-    "test": "vitest run && node --test tools/bundle-size/check.test.mjs tools/lint-rules/icon-only-button-name.test.mjs",
+    "test": "vitest run && node --test tools/bundle-size/check.test.mjs && pnpm run test:lint-rules",
     "test:e2e": "playwright test",
     "build": "pnpm -r --if-present run build",
     "size": "node tools/bundle-size/check.mjs",
@@ -30,7 +30,7 @@
     "db:generate": "pnpm --filter @toki/server run db:generate",
     "db:migrate": "pnpm --filter @toki/server run db:migrate",
     "lint": "eslint . --max-warnings 0",
-    "test:lint-rules": "node --test tools/lint-rules/icon-only-button-name.test.mjs",
+    "test:lint-rules": "node --test tools/lint-rules/icon-only-button-name.test.mjs tools/lint-rules/platform-boundary.test.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
