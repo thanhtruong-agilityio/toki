@@ -26,6 +26,10 @@ const sourceFiles = "*.{ts,tsx,mts,cts,js,jsx,mjs,cjs}";
 const testFiles = `**/*.test.${sourceFiles.slice(2)}`;
 // The four packages of rule 1.
 const portableSrc = "packages/{client-core,shared,i18n,tokens}/src";
+// The interface files of platform (TOKI-018) are covered by rule 1 too; its
+// web implementation, src/web, is where the browser APIs are allowed to live.
+const platformSrc = "packages/platform/src";
+const platformWebSrc = `${platformSrc}/web/**`;
 
 // Rule 1. The only globals that client-core, shared, i18n and tokens may use
 // as a value: the ES2022 language built-ins plus this list. React Native has
@@ -71,6 +75,26 @@ const domImportSource = "/^react-dom(\\/|$)|(^|\\/)ui-web(\\/|$)/";
 const domImportMessage =
   "client-core boundary: client-core, shared, i18n and tokens import nothing that needs the DOM, so React Native can reuse them.";
 
+// The web implementation of platform: @toki/platform/web (with every subpath)
+// or a relative path into packages/platform/src/web. Only apps/web imports it.
+// A pattern also matches every path below it. The same two targets for
+// import("...") and import(`...`).
+const webPlatformImports = ["@toki/platform/web", "**/platform/src/web"];
+const webPlatformSource =
+  "/^@toki\\/platform\\/web(\\/|$)|(^|\\/)platform\\/src\\/web(\\/|$)/";
+const webPlatformMessage = (who) =>
+  `${who} boundary: import @toki/platform, never its web implementation (@toki/platform/web); the app chooses the build with setPlatform.`;
+const webPlatformSyntax = (message) => [
+  {
+    selector: `:matches(ImportExpression, TSImportType)[source.value=${webPlatformSource}]`,
+    message,
+  },
+  {
+    selector: `:matches(ImportExpression, TSImportType) > TemplateLiteral > TemplateElement[value.cooked=${webPlatformSource}]`,
+    message,
+  },
+];
+
 // Rule 3. The platform APIs that ui-web may not use directly: these globals,
 // bare or as a property of window, globalThis or self, and these properties
 // of the global navigator and document.
@@ -99,7 +123,7 @@ export default tseslint.config(
     // Tooling and configuration files run in Node. The source files of rule
     // 1 are left out: their globals are the allow list and nothing else.
     files: ["**/*.{js,mjs,cjs}"],
-    ignores: [`${portableSrc}/**`],
+    ignores: [`${portableSrc}/**`, `${platformSrc}/**`],
     languageOptions: { globals: globals.node },
   },
   prettier,
@@ -107,8 +131,11 @@ export default tseslint.config(
     // Rule 1: client-core, and the packages it imports, touch no DOM or
     // browser API. Test files and package-root configuration files are
     // outside the block.
-    files: [`${portableSrc}/**/${sourceFiles}`],
-    ignores: [testFiles],
+    files: [
+      `${portableSrc}/**/${sourceFiles}`,
+      `${platformSrc}/**/${sourceFiles}`,
+    ],
+    ignores: [testFiles, platformWebSrc],
     linterOptions: { noInlineConfig: true },
     languageOptions: { ecmaVersion: 2022, globals: allowedGlobals },
     plugins: { toki },
@@ -119,11 +146,18 @@ export default tseslint.config(
       "@typescript-eslint/no-restricted-imports": [
         "error",
         {
-          patterns: [{ group: domImports, message: domImportMessage }],
+          patterns: [
+            { group: domImports, message: domImportMessage },
+            {
+              group: webPlatformImports,
+              message: webPlatformMessage("client-core"),
+            },
+          ],
         },
       ],
       "no-restricted-syntax": [
         "error",
+        ...webPlatformSyntax(webPlatformMessage("client-core")),
         {
           // import("...") as a call or as a type is not an import declaration.
           selector: `:matches(ImportExpression, TSImportType)[source.value=${domImportSource}]`,
@@ -184,8 +218,20 @@ export default tseslint.config(
         "error",
         { globals: platformGlobals, properties: platformProperties },
       ],
+      "@typescript-eslint/no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: webPlatformImports,
+              message: webPlatformMessage("ui-web"),
+            },
+          ],
+        },
+      ],
       "no-restricted-syntax": [
         "error",
+        ...webPlatformSyntax(webPlatformMessage("ui-web")),
         {
           selector: "JSXOpeningElement[name.name='audio']",
           message:
