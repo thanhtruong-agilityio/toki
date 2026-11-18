@@ -80,14 +80,18 @@ describe("Button (R10, R11, Table B)", () => {
   test("click, Space and Enter call onClick; disabled calls nothing", async () => {
     const user = userEvent.setup();
     const onClick = vi.fn();
-    const { rerender } = render(<Button onClick={onClick}>x</Button>);
+    render(<Button onClick={onClick}>x</Button>);
     await user.click(screen.getByRole("button"));
     screen.getByRole("button").focus();
     await user.keyboard(" ");
     await user.keyboard("{Enter}");
     expect(onClick).toHaveBeenCalledTimes(3);
-    onClick.mockClear();
-    rerender(
+  });
+
+  test("a disabled button calls nothing and is skipped by Tab", async () => {
+    const user = userEvent.setup();
+    const onClick = vi.fn();
+    render(
       <Button onClick={onClick} disabled>
         x
       </Button>,
