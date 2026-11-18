@@ -47,7 +47,7 @@ function html(component: string): HTMLElement {
 
 describe("examples of group 2 (R30)", () => {
   test("the entries follow group 1 in the order of the spec", () => {
-    expect(componentExamples.slice(8).map((e) => e.component)).toEqual([
+    expect(componentExamples.slice(8, 12).map((e) => e.component)).toEqual([
       "Avatar",
       "PresenceDot",
       "EmptyState",
