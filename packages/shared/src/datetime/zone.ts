@@ -22,7 +22,11 @@ export interface ZonedParts {
 }
 
 export function isInstant(value: unknown): value is number {
-  return typeof value === "number" && Number.isFinite(value) && Math.abs(value) <= MAX_INSTANT;
+  return (
+    typeof value === "number" &&
+    Number.isFinite(value) &&
+    Math.abs(value) <= MAX_INSTANT
+  );
 }
 
 // A cache of formatters, one per known zone. It holds no setting: the key is
@@ -61,7 +65,15 @@ export function isValidTimeZone(timeZone: string): boolean {
   return formatterFor(timeZone) !== null;
 }
 
-const WEEKDAYS: Readonly<Record<string, number>> = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+const WEEKDAYS: Readonly<Record<string, number>> = {
+  Sun: 0,
+  Mon: 1,
+  Tue: 2,
+  Wed: 3,
+  Thu: 4,
+  Fri: 5,
+  Sat: 6,
+};
 
 export function zonedParts(at: number, timeZone: string): ZonedParts | null {
   if (!isInstant(at)) return null;
@@ -108,7 +120,10 @@ export type WallTime = { kind: "ok"; at: number } | { kind: "gap"; at: number };
  * instant after the gap. Returns null for a bad zone or a wall time out of
  * range.
  */
-export function resolveWallTime(wall: number, timeZone: string): WallTime | null {
+export function resolveWallTime(
+  wall: number,
+  timeZone: string,
+): WallTime | null {
   if (!isInstant(wall - DAY_MS) || !isInstant(wall + DAY_MS)) return null;
   const before = utcOffsetMinutes(wall - DAY_MS, timeZone);
   const after = utcOffsetMinutes(wall + DAY_MS, timeZone);
@@ -143,23 +158,36 @@ export const TIME_FORM = /^([01]\d|2[0-3]):([0-5]\d)$/;
  * The instant at which the wall clock in `timeZone` shows `time` (HH:mm) on
  * the day `dayOffset` days after the day of `now` (R10).
  */
-export function atLocalTime(now: number, timeZone: string, dayOffset: number, time: string): number | null {
+export function atLocalTime(
+  now: number,
+  timeZone: string,
+  dayOffset: number,
+  time: string,
+): number | null {
   if (!Number.isInteger(dayOffset)) return null;
   const match = typeof time === "string" ? TIME_FORM.exec(time) : null;
   const today = zonedParts(now, timeZone);
   if (match === null || today === null) return null;
-  const wall = Date.UTC(today.year, today.month - 1, today.day + dayOffset, Number(match[1]), Number(match[2]));
+  const wall = Date.UTC(
+    today.year,
+    today.month - 1,
+    today.day + dayOffset,
+    Number(match[1]),
+    Number(match[2]),
+  );
   const resolved = resolveWallTime(wall, timeZone);
   return resolved !== null && isInstant(resolved.at) ? resolved.at : null;
 }
 
 /** A "now" that is not an instant is a fault of the calling code (RangeError). */
 export function assertNow(now: unknown): void {
-  if (!isInstant(now)) throw new RangeError(`"now" is not an instant: ${String(now)}`);
+  if (!isInstant(now))
+    throw new RangeError(`"now" is not an instant: ${String(now)}`);
 }
 
 /** A zone or a "now" the code gives is wrong: a RangeError, not a reason. */
 export function assertEnv(now: unknown, timeZone: string): void {
-  if (!isValidTimeZone(timeZone)) throw new RangeError(`Unknown time zone: ${JSON.stringify(timeZone)}`);
+  if (!isValidTimeZone(timeZone))
+    throw new RangeError(`Unknown time zone: ${JSON.stringify(timeZone)}`);
   assertNow(now);
 }

@@ -16,13 +16,24 @@ describe("quickTimeChoices", () => {
 
   it("keeps 15:00 until it is no longer later than now", () => {
     const now = Date.UTC(2026, 10, 10, 7, 59, 59); // 14:59:59
-    expect(quickTimeChoices(now, HCM).map((choice) => choice.id)).toEqual(["in1Hour", "today1500", "tomorrow0900"]);
+    expect(quickTimeChoices(now, HCM).map((choice) => choice.id)).toEqual([
+      "in1Hour",
+      "today1500",
+      "tomorrow0900",
+    ]);
   });
 
   it("replaces 15:00 with 3 hours from 15:00 on", () => {
-    for (const now of [Date.UTC(2026, 10, 10, 8, 0), Date.UTC(2026, 10, 10, 16, 30)]) {
+    for (const now of [
+      Date.UTC(2026, 10, 10, 8, 0),
+      Date.UTC(2026, 10, 10, 16, 30),
+    ]) {
       const choices = quickTimeChoices(now, HCM);
-      expect(choices.map((choice) => choice.id)).toEqual(["in1Hour", "in3Hours", "tomorrow0900"]);
+      expect(choices.map((choice) => choice.id)).toEqual([
+        "in1Hour",
+        "in3Hours",
+        "tomorrow0900",
+      ]);
       expect(choices[1]?.at).toBe(now + 10_800_000);
     }
   });

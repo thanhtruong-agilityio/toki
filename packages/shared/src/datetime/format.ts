@@ -44,11 +44,17 @@ export function formatCountdown(ms: number): string | null {
   const hours = Math.floor(total / 3600);
   const minutes = Math.floor((total % 3600) / 60);
   const seconds = total % 60;
-  return hours > 0 ? `${hours}:${pad2(minutes)}:${pad2(seconds)}` : `${pad2(minutes)}:${pad2(seconds)}`;
+  return hours > 0
+    ? `${hours}:${pad2(minutes)}:${pad2(seconds)}`
+    : `${pad2(minutes)}:${pad2(seconds)}`;
 }
 
 /** R2, R3: short weekday, day, short month, and the year when it differs. */
-export function formatDate(at: number, ctx: DateContext, opts: FormatDateOptions = {}): string | null {
+export function formatDate(
+  at: number,
+  ctx: DateContext,
+  opts: FormatDateOptions = {},
+): string | null {
   if (!isInstant(ctx.now)) return null;
   const parts = zonedParts(at, ctx.timeZone);
   const today = zonedParts(ctx.now, ctx.timeZone);
@@ -60,7 +66,8 @@ export function formatDate(at: number, ctx: DateContext, opts: FormatDateOptions
   const out: string[] = [];
   if (opts.weekday !== false) out.push(weekday);
   out.push(String(parts.day), month);
-  if (opts.year === "always" || parts.year !== today.year) out.push(String(parts.year));
+  if (opts.year === "always" || parts.year !== today.year)
+    out.push(String(parts.year));
   return out.join(" ");
 }
 
@@ -71,7 +78,11 @@ function dayNumber(year: number, month: number, day: number): number {
 function hasDayWords(words: unknown): words is DayWords {
   if (typeof words !== "object" || words === null) return false;
   const { today, tomorrow, yesterday } = words as Record<string, unknown>;
-  return typeof today === "string" && typeof tomorrow === "string" && typeof yesterday === "string";
+  return (
+    typeof today === "string" &&
+    typeof tomorrow === "string" &&
+    typeof yesterday === "string"
+  );
 }
 
 /** R4: a day word for yesterday, today and tomorrow, otherwise the date. */
@@ -81,7 +92,8 @@ export function formatDay(at: number, ctx: FormatContext): string | null {
   const today = isInstant(ctx.now) ? zonedParts(ctx.now, ctx.timeZone) : null;
   if (parts === null || today === null) return null;
   const difference =
-    dayNumber(parts.year, parts.month, parts.day) - dayNumber(today.year, today.month, today.day);
+    dayNumber(parts.year, parts.month, parts.day) -
+    dayNumber(today.year, today.month, today.day);
   if (difference === 0) return ctx.dayWords.today;
   if (difference === 1) return ctx.dayWords.tomorrow;
   if (difference === -1) return ctx.dayWords.yesterday;
