@@ -3,6 +3,7 @@ import { join } from "node:path";
 import {
   CHANNEL_DESCRIPTION_MAX,
   CHANNEL_NAME_PATTERN,
+  GROUP_DM_MAX_PEOPLE,
   CHANNEL_TOPIC_MAX,
   isValidChannelDescription,
   isValidChannelTopic,
@@ -14,7 +15,10 @@ import { migrationsFolder, runMigrations } from "./migrate.js";
 import {
   insertConversation,
   insertConversationMember,
+  insertDevice,
   insertDirectConversation,
+  insertLoginCode,
+  insertSession,
   insertUser,
   insertWorkspace,
 } from "./test-rows.js";
@@ -769,6 +773,26 @@ describe("R15: the shared values agree with the database", () => {
       );
     }
   });
+
+  it("accepts and refuses the same group sizes", async () => {
+    for (const size of [2, 3, GROUP_DM_MAX_PEOPLE, GROUP_DM_MAX_PEOPLE + 1]) {
+      const w = await insertWorkspace(sql);
+      const people: string[] = [];
+      for (let i = 0; i < size; i += 1) {
+        people.push(await insertUser(sql, { workspace_id: w }));
+      }
+      let accepted = true;
+      try {
+        await insertDirectConversation(sql, {
+          workspace_id: w,
+          user_ids: people,
+        });
+      } catch {
+        accepted = false;
+      }
+      expect(accepted, `${size} people`).toBe(size <= GROUP_DM_MAX_PEOPLE);
+    }
+  });
 });
 
 describe("R16: foreign keys", () => {
@@ -855,7 +879,21 @@ describe("R16: foreign keys", () => {
       "conversation_members_user_id_fkey",
     ]).toContain(e1.constraint_name);
     const e2 = await failsWith(sql`delete from workspaces where id = ${w}`, FK);
-    expect(e2.constraint_name).toBeTruthy();
+    expect([
+      "conversations_workspace_id_fkey",
+      "conversation_members_workspace_id_fkey",
+      "users_workspace_id_fkey",
+    ]).toContain(e2.constraint_name);
+    // A workspace that only a conversation points to names the conversation key.
+    const w0 = await insertWorkspace(sql);
+    const creator = await insertUser(sql, { workspace_id: w0 });
+    const w2 = await insertWorkspace(sql);
+    await insertConversation(sql, { workspace_id: w2, created_by: creator });
+    await failsWith(
+      sql`delete from workspaces where id = ${w2}`,
+      FK,
+      "conversations_workspace_id_fkey",
+    );
   });
 });
 
@@ -1041,15 +1079,33 @@ describe("R23: one TRUNCATE empties every table", () => {
           user_id: u,
           workspace_id: w,
         });
-        await db.unsafe(
-          "truncate workspaces, users, login_codes, sessions, devices, conversations, conversation_members",
-        );
-        for (const table of [
+        await insertLoginCode(db, { workspace_id: w, user_id: u });
+        const session = await insertSession(db, {
+          workspace_id: w,
+          user_id: u,
+        });
+        await insertDevice(db, {
+          workspace_id: w,
+          user_id: u,
+          session_id: session,
+        });
+        const tables = [
           "workspaces",
           "users",
+          "login_codes",
+          "sessions",
+          "devices",
           "conversations",
           "conversation_members",
-        ]) {
+        ];
+        for (const table of tables) {
+          const [row] = await db.unsafe(
+            `select count(*)::int as n from ${table}`,
+          );
+          expect(row!.n, `${table} has a row before`).toBeGreaterThan(0);
+        }
+        await db.unsafe(`truncate ${tables.join(", ")}`);
+        for (const table of tables) {
           const [row] = await db.unsafe(
             `select count(*)::int as n from ${table}`,
           );

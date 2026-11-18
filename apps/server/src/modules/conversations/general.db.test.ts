@@ -172,8 +172,10 @@ describe("addMemberToGeneral (R26)", () => {
     const workspaceId = await insertWorkspace(t.sql);
     const person = await insertUser(t.sql, { workspace_id: workspaceId });
     await expect(
-      addMemberToGeneral(t.db, { workspaceId, userId: person, createdAt: NOW }),
-    ).rejects.toThrow(/no #general/);
+      t.db.transaction((tx) =>
+        addMemberToGeneral(tx, { workspaceId, userId: person, createdAt: NOW }),
+      ),
+    ).rejects.toThrow(new RegExp(`${workspaceId} has no #general`));
     expect(
       await count("conversation_members", `workspace_id = '${workspaceId}'`),
     ).toBe(0);
@@ -229,15 +231,42 @@ describe("addMemberToGeneral (R26)", () => {
     });
     const person = await insertUser(t.sql, { workspace_id: workspaceId });
     const second = t.connect();
-    const results = await Promise.all([
-      addMemberToGeneral(t.db, { workspaceId, userId: person, createdAt: NOW }),
-      addMemberToGeneral(second.db, {
+    // The first call holds its transaction open; the second must wait on the
+    // lock (polled in pg_stat_activity, so the two really overlap); then the
+    // first commits.
+    let release!: () => void;
+    const gate = new Promise<void>((r) => (release = r));
+    let added!: () => void;
+    const addedP = new Promise<void>((r) => (added = r));
+    const first = t.db.transaction(async (tx) => {
+      const result = await addMemberToGeneral(tx, {
         workspaceId,
         userId: person,
         createdAt: NOW,
-      }),
-    ]);
-    expect(results.filter(Boolean)).toHaveLength(1);
+      });
+      added();
+      await gate;
+      return result;
+    });
+    await addedP;
+    const secondCall = addMemberToGeneral(second.db, {
+      workspaceId,
+      userId: person,
+      createdAt: NOW,
+    });
+    const deadline = Date.now() + 5000;
+    for (;;) {
+      const [w] = await t.sql<{ n: number }[]>`
+        select count(*)::int as n from pg_stat_activity
+        where datname = current_database() and wait_event_type = 'Lock'`;
+      if (w!.n > 0) break;
+      if (Date.now() > deadline)
+        throw new Error("the second call never waited");
+      await new Promise((r) => setTimeout(r, 20));
+    }
+    release();
+    expect(await first).toBe(true);
+    expect(await secondCall).toBe(false);
     expect(
       await count(
         "conversation_members",
