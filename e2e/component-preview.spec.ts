@@ -178,8 +178,7 @@ test.describe("not in the build (R2)", () => {
 
 const LOOKS = ["calm", "focus"] as const;
 
-// The entries that exist on main (TOKI-012 and TOKI-013), in the order of
-// componentExamples. Menu, Modal and Sheet follow with TOKI-014.
+// The entries of componentExamples, in order (TOKI-012, TOKI-013, TOKI-014).
 const COMPONENTS = [
   "Button",
   "IconButton",
@@ -193,6 +192,9 @@ const COMPONENTS = [
   "PresenceDot",
   "EmptyState",
   "Toast",
+  "Menu",
+  "Modal",
+  "Sheet",
 ];
 
 test.describe("component sections and figures (R5, R6, R7)", () => {
@@ -251,6 +253,48 @@ test.describe("component sections and figures (R5, R6, R7)", () => {
     });
   }
 });
+
+// Table A2: the 13 overlay examples. The figure holds the opener; the layer is
+// in body, so its selectors exist only once it is open (R23). `selectors` must
+// all match; `without` must match nothing.
+type Overlay = {
+  entry: "Menu" | "Modal" | "Sheet";
+  id: string;
+  selectors: string[];
+  without?: string;
+};
+const TABLE_A2: Overlay[] = [
+  { entry: "Menu", id: "default", selectors: ['.menu[role="menu"]'] },
+  { entry: "Menu", id: "start", selectors: ['.menu[role="menu"]'] },
+  { entry: "Menu", id: "groups", selectors: [".menu .mt", ".menu hr"] },
+  { entry: "Menu", id: "danger", selectors: [".menu button.dng"] },
+  {
+    entry: "Menu",
+    id: "disabled",
+    selectors: ['.menu button[aria-disabled="true"]'],
+  },
+  { entry: "Menu", id: "icon", selectors: [".menu button .ic"] },
+  {
+    entry: "Modal",
+    id: "with-footer",
+    selectors: ['.scrim .modal[role="dialog"] .mft'],
+  },
+  { entry: "Modal", id: "no-footer", selectors: [".scrim .modal .mbd"] },
+  {
+    entry: "Modal",
+    id: "label-only",
+    selectors: [".scrim .modal[aria-label]"],
+  },
+  { entry: "Modal", id: "opaque", selectors: [".scrim.opaque"] },
+  {
+    entry: "Modal",
+    id: "no-close",
+    selectors: [".scrim .modal"],
+    without: ".scrim .modal .mhd button",
+  },
+  { entry: "Sheet", id: "rows", selectors: [".scrim.sheet .modal"] },
+  { entry: "Sheet", id: "long-body", selectors: [".scrim.sheet .modal"] },
+];
 
 // Table B1: what the specs oblige the examples to draw. Each selector is read
 // inside a figure. A selector written as a function needs more than CSS.
@@ -393,7 +437,24 @@ test.describe("Table B1 and B2 (R8)", () => {
     }
   });
 
-  test.fixme(`Menu, Modal and Sheet have an entry, and their ids include the 13 of Table A2 (${PENDING_TOKI_014})`, async () => {});
+  test("Menu, Modal and Sheet have an entry whose ids include the 13 of Table A2", async ({
+    page,
+  }) => {
+    await page.goto("/preview.html");
+    for (const component of ["Menu", "Modal", "Sheet"]) {
+      const ids = await page
+        .locator(`figure[data-example^="${component}/"]`)
+        .evaluateAll((nodes) =>
+          nodes.map((node) => node.getAttribute("data-example")),
+        );
+      expect(ids.length, component).toBeGreaterThan(0);
+      const wanted = TABLE_A2.filter((row) => row.entry === component).map(
+        (row) => `${row.entry}/${row.id}`,
+      );
+      for (const id of wanted) expect(ids, component).toContain(id);
+    }
+    expect(TABLE_A2).toHaveLength(13);
+  });
 });
 
 // The 32 custom properties of TOKI-009 R10, in the order the page lists them.
@@ -990,14 +1051,109 @@ test.describe("prototype references (R17)", () => {
     for (const name of nones) expect(TABLE_D[name ?? ""]).toBe("none");
   });
 
-  test.fixme(`the fonts section shows its line (${PENDING_TOKI_010}); Menu, Modal and Sheet show theirs (${PENDING_TOKI_014})`, async () => {});
+  test.fixme(`the fonts section shows its line (${PENDING_TOKI_010})`, async () => {});
 });
 
 // Placeholders for the checks that cannot run yet, so that each one is listed
 // in the report and none is forgotten (plan, decision 1).
 test.describe("deferred checks", () => {
-  test.fixme(`R13: the first button of Menu, Modal and Sheet opens a layer; Escape closes it and focus returns (${PENDING_TOKI_014})`, async () => {});
-  test.fixme(`R23: the 13 examples of Table A2 open and close, and the panel stays inside the window at five widths (${PENDING_TOKI_014})`, async () => {});
   test.fixme(`R20: seven .woff2 responses come from the page's own address (${PENDING_TOKI_010})`, async () => {});
   test.fixme(`R24: the screenshots of the six views match the committed images (${PENDING_TOKI_010}: images made with the wrong fonts would be redone)`, async () => {});
+});
+
+// R13: Menu, Modal and Sheet open from the first button of their first figure,
+// and Escape closes them with focus back on that button.
+test.describe("overlays open and close (R13)", () => {
+  const roles = { Menu: "menu", Modal: "dialog", Sheet: "dialog" } as const;
+  for (const [entry, role] of Object.entries(roles)) {
+    test(`${entry}: the first button opens a ${role}, Escape closes it and focus returns`, async ({
+      page,
+    }) => {
+      await page.goto("/preview.html");
+      const figure = page.locator(`figure[data-example^="${entry}/"]`).first();
+      const opener = figure.locator("button").first();
+      await opener.click();
+      await expect(page.getByRole(role as "menu" | "dialog")).toBeVisible();
+      await page.keyboard.press("Escape");
+      await expect(page.getByRole(role as "menu" | "dialog")).toHaveCount(0);
+      await expect(opener).toBeFocused();
+    });
+  }
+});
+
+// R23: each of the 13 examples opens and closes, in both looks.
+const LAYER = ".menu, .scrim";
+test.describe("the 13 overlay examples (R23)", () => {
+  for (const look of LOOKS) {
+    for (const row of TABLE_A2) {
+      test(`${row.entry}/${row.id} opens and closes (${look})`, async ({
+        page,
+      }) => {
+        await page.goto(`/preview.html?look=${look}`);
+        const figure = page.locator(
+          `figure[data-example="${row.entry}/${row.id}"]`,
+        );
+        await figure.locator("button").first().click();
+        for (const selector of row.selectors) {
+          await expect(page.locator(selector).first(), selector).toBeVisible();
+        }
+        if (row.without) {
+          await expect(page.locator(row.without)).toHaveCount(0);
+        }
+        await page.keyboard.press("Escape");
+        if ((await page.locator(LAYER).count()) > 0) {
+          // opaque and no-close ignore Escape: use the first button inside
+          // .modal that is not in .mhd.
+          await page.locator(".modal button:not(.mhd button)").first().click();
+        }
+        await expect(page.locator(LAYER)).toHaveCount(0);
+      });
+    }
+  }
+});
+
+test.describe("the panel stays inside the window (R23)", () => {
+  const WINDOWS: Array<[number, number]> = [
+    [360, 560],
+    [719, 900],
+    [720, 900],
+    [1099, 900],
+    [1100, 900],
+  ];
+  const OPEN = [
+    { entry: "Modal", id: "with-footer", panel: ".modal" },
+    { entry: "Sheet", id: "long-body", panel: ".modal" },
+    { entry: "Menu", id: "groups", panel: ".menu" },
+  ];
+  for (const look of LOOKS) {
+    for (const [width, height] of WINDOWS) {
+      for (const open of OPEN) {
+        test(`${open.entry}/${open.id} at ${width} px (${look})`, async ({
+          page,
+        }) => {
+          await page.setViewportSize({ width, height });
+          await page.goto(`/preview.html?look=${look}`);
+          await page
+            .locator(`figure[data-example="${open.entry}/${open.id}"] button`)
+            .first()
+            .click();
+          const panel = page.locator(open.panel).first();
+          await expect(panel).toBeVisible();
+          await expect
+            .poll(async () =>
+              panel.evaluate((node) => {
+                const r = node.getBoundingClientRect();
+                return (
+                  r.left >= 0 &&
+                  r.top >= 0 &&
+                  r.right <= window.innerWidth &&
+                  r.bottom <= window.innerHeight
+                );
+              }),
+            )
+            .toBe(true);
+        });
+      }
+    }
+  }
 });
