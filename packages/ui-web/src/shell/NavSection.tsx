@@ -31,7 +31,7 @@ export function hasBadge(badge: number | undefined): badge is number {
 
 // A plain left click goes to `onNavigate`; the modified clicks, the middle
 // click and a missing handler are left to the browser (R5).
-function isPlainClick(event: MouseEvent): boolean {
+export function isPlainClick(event: MouseEvent): boolean {
   return (
     !event.defaultPrevented &&
     event.button === 0 &&

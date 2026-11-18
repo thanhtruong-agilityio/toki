@@ -1,6 +1,6 @@
-/* The app shell: Tables C to E and the Focus rows of Table F of the app shell
-   spec (TOKI-015). The overlay and toast rows of Table F and Table G are added
-   by the steps that build them. */
+/* The app shell: Tables C to E, the Focus rows of Table F and Table G of the
+   app shell spec (TOKI-015). The overlay and toast rows of Table F are added by
+   the step that builds them. */
 
 .app {
   position: fixed;
@@ -462,5 +462,164 @@
   }
   [data-eff="focus"] .toolbar {
     padding: 0 20px 10px;
+  }
+}
+
+/* Table G: 719 px and below, the panes, the bottom bar and the safe areas. */
+@media (max-width: 719px) {
+  .app {
+    display: block;
+    background: var(--bg);
+    --tabh: calc(62px + env(safe-area-inset-bottom, 0px));
+  }
+  .toast-anchor {
+    position: absolute;
+    inset: 0;
+  }
+  .sidebar {
+    display: block;
+  }
+  .convs,
+  .main,
+  .side {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: var(--tabh);
+    margin: 0;
+    border-radius: 0;
+    box-shadow: none;
+    width: auto;
+    border: 0;
+    background: var(--surface);
+    transition:
+      transform 0.18s ease,
+      visibility 0.18s;
+    visibility: hidden;
+    display: flex;
+  }
+  .convs {
+    background: var(--bg);
+  }
+  .app[data-pane="list"] .convs,
+  .app[data-pane="main"] .main,
+  .app[data-pane="side"] .side {
+    visibility: visible;
+  }
+  .app[data-pane="side"] .side {
+    z-index: 6;
+  }
+  .app[data-pane="list"] .main {
+    transform: translateX(100%);
+  }
+  .app:not([data-pane="list"]) .convs {
+    transform: translateX(-24%);
+  }
+  .app[data-chat-open] .main,
+  .side {
+    bottom: 0;
+  }
+  .side {
+    animation: shell-slide-in 0.18s ease-out;
+  }
+  @keyframes shell-slide-in {
+    from {
+      transform: translateX(100%);
+    }
+  }
+  .nav {
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: var(--tabh);
+    padding: 0;
+    background: var(--surface);
+    border-top: 1px solid var(--line);
+    z-index: 5;
+    transition:
+      transform 0.18s,
+      visibility 0.18s;
+  }
+  .app[data-chat-open] .nav,
+  .app[data-pane="side"] .nav {
+    transform: translateY(100%);
+    visibility: hidden;
+  }
+  .nav .ws,
+  .nav .srch,
+  .nav-items,
+  .usercard {
+    display: none;
+  }
+  .nav-tabs {
+    display: flex;
+    height: 100%;
+    padding: 6px 6px calc(6px + env(safe-area-inset-bottom, 0px));
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nt {
+    flex: 1 0 64px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    min-height: 48px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--muted);
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+  }
+  .nt[aria-current="page"] {
+    color: var(--accent-text);
+    font-weight: 700;
+  }
+  .nt[aria-current="page"] .ic {
+    stroke-width: 2.2;
+  }
+  .nt .cnt {
+    position: absolute;
+    top: 2px;
+    left: calc(50% + 4px);
+    min-width: 16px;
+    height: 16px;
+    font-size: 10px;
+  }
+  .tabs {
+    padding-left: max(10px, env(safe-area-inset-left, 0px));
+    padding-right: max(10px, env(safe-area-inset-right, 0px));
+  }
+  .tab {
+    min-height: 40px;
+  }
+  .sechead,
+  .secbody,
+  .toolbar {
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  .sechead {
+    padding-top: max(14px, env(safe-area-inset-top, 0px));
+  }
+  .sb,
+  .sh {
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  .sh {
+    padding-top: max(12px, env(safe-area-inset-top, 0px));
+  }
+  .sh .back-side {
+    display: inline-grid;
+  }
+  .sh .closex {
+    display: none;
   }
 }

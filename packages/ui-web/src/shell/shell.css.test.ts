@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { describe, expect, test } from "vitest";
 import { parseDeclarations, readCss } from "../test/css";
@@ -10,6 +10,7 @@ const tokensCss = resolve(
 );
 
 const WIDE = "(min-width:720px)";
+const NARROW = "(max-width:719px)";
 const MONO = '"JetBrains Mono",ui-monospace,"SF Mono",Menlo,monospace';
 
 type Row = { media: string | null; selector: string; decl: string };
@@ -23,10 +24,16 @@ const D = (selector: string, decl: string): Row => ({
   selector,
   decl,
 });
+const G = (selector: string, decl: string): Row => ({
+  media: NARROW,
+  selector,
+  decl,
+});
 
-// Tables C, D, E and the Focus rows of Table F of the app shell spec, typed in
-// (R16). Each step of the ticket appends the rows of its own tables; the
-// overlay and toast rows of Table F and Table G come with steps 3 and 4.
+// Tables C, D, E, the Focus rows of Table F and Table G of the app shell spec,
+// typed in (R16). Each step of the ticket appends the rows of its own tables;
+// the overlay and toast rows of Table F come with step 4. The keyframes of
+// Table G are read by postcss as a rule whose "media" is the animation name.
 const tables: Row[] = [
   // Table C
   C(
@@ -234,11 +241,77 @@ const tables: Row[] = [
   D('[data-eff="focus"] .sechead', "padding:14px 20px 8px"),
   D('[data-eff="focus"] .secbody', "padding:0 20px 20px"),
   D('[data-eff="focus"] .toolbar', "padding:0 20px 10px"),
+  // Table G
+  G(
+    ".app",
+    "display:block; background:var(--bg); --tabh:calc(62px + env(safe-area-inset-bottom,0px))",
+  ),
+  G(".toast-anchor", "position:absolute; inset:0"),
+  G(".sidebar", "display:block"),
+  G(
+    ".convs, .main, .side",
+    "position:absolute; left:0; right:0; top:0; bottom:var(--tabh); margin:0; border-radius:0; box-shadow:none; width:auto; border:0; background:var(--surface); transition:transform .18s ease,visibility .18s; visibility:hidden; display:flex",
+  ),
+  G(".convs", "background:var(--bg)"),
+  G(
+    '.app[data-pane="list"] .convs, .app[data-pane="main"] .main, .app[data-pane="side"] .side',
+    "visibility:visible",
+  ),
+  G('.app[data-pane="side"] .side', "z-index:6"),
+  G('.app[data-pane="list"] .main', "transform:translateX(100%)"),
+  G('.app:not([data-pane="list"]) .convs', "transform:translateX(-24%)"),
+  G(".app[data-chat-open] .main, .side", "bottom:0"),
+  G(".side", "animation:shell-slide-in .18s ease-out"),
+  {
+    media: "shell-slide-in",
+    selector: "from",
+    decl: "transform:translateX(100%)",
+  },
+  G(
+    ".nav",
+    "display:block; position:absolute; left:0; right:0; bottom:0; height:var(--tabh); padding:0; background:var(--surface); border-top:1px solid var(--line); z-index:5; transition:transform .18s,visibility .18s",
+  ),
+  G(
+    '.app[data-chat-open] .nav, .app[data-pane="side"] .nav',
+    "transform:translateY(100%); visibility:hidden",
+  ),
+  G(".nav .ws, .nav .srch, .nav-items, .usercard", "display:none"),
+  G(
+    ".nav-tabs",
+    "display:flex; height:100%; padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px)); overflow-x:auto; scrollbar-width:none",
+  ),
+  G(
+    ".nt",
+    "flex:1 0 64px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; min-height:48px; border-radius:12px; font-size:11px; font-weight:500; color:var(--muted); position:relative; text-align:center; text-decoration:none",
+  ),
+  G('.nt[aria-current="page"]', "color:var(--accent-text); font-weight:700"),
+  G('.nt[aria-current="page"] .ic', "stroke-width:2.2"),
+  G(
+    ".nt .cnt",
+    "position:absolute; top:2px; left:calc(50% + 4px); min-width:16px; height:16px; font-size:10px",
+  ),
+  G(
+    ".tabs",
+    "padding-left:max(10px,env(safe-area-inset-left,0px)); padding-right:max(10px,env(safe-area-inset-right,0px))",
+  ),
+  G(".tab", "min-height:40px"),
+  G(
+    ".sechead, .secbody, .toolbar",
+    "padding-left:max(16px,env(safe-area-inset-left,0px)); padding-right:max(16px,env(safe-area-inset-right,0px))",
+  ),
+  G(".sechead", "padding-top:max(14px,env(safe-area-inset-top,0px))"),
+  G(
+    ".sb, .sh",
+    "padding-left:max(16px,env(safe-area-inset-left,0px)); padding-right:max(16px,env(safe-area-inset-right,0px))",
+  ),
+  G(".sh", "padding-top:max(12px,env(safe-area-inset-top,0px))"),
+  G(".sh .back-side", "display:inline-grid"),
+  G(".sh .closex", "display:none"),
 ];
 
 const rules = readCss(file);
 
-describe("shell.css (R16, Tables C to E and the Focus rows of F)", () => {
+describe("shell.css (R16, Tables C to E, the Focus rows of F, G)", () => {
   test("holds exactly the rows typed in, in order, and no other rule", () => {
     expect(rules.map((r) => [r.media, r.selector])).toEqual(
       tables.map((t) => [t.media, t.selector]),
@@ -261,6 +334,7 @@ describe("shell.css (R16, Tables C to E and the Focus rows of F)", () => {
       "(max-width:719px)",
       "(min-width:720px)and(max-width:1099px)",
       "(min-width:956px)and(max-width:1099px)",
+      "shell-slide-in",
     ]);
     for (const r of rules) expect(allowed.has(r.media), r.selector).toBe(true);
     const text = readFileSync(file, "utf8");
@@ -333,11 +407,53 @@ describe("shell.css uses the design system's names (R17)", () => {
     }
   });
 
-  test("--tabh is read only by rules that begin with .app", () => {
-    for (const r of rules)
-      for (const [prop, value] of Object.entries(r.declarations)) {
-        if (prop !== "--tabh" && /var\(\s*--tabh/.test(value))
-          expect(r.selector, r.selector).toMatch(/^\.app/);
+  test("--tabh is defined only on .app, only under 720 px (R24)", () => {
+    const defs = rules.filter((r) => "--tabh" in r.declarations);
+    expect(defs.map((r) => [r.media, r.selector])).toEqual([[NARROW, ".app"]]);
+    expect(defs[0]!.declarations["--tabh"]).toBe(
+      "calc(62px + env(safe-area-inset-bottom,0px))",
+    );
+  });
+
+  test("--tabh is read only by rules that begin with .app or style an element inside it (R24)", () => {
+    // The panes, the bar and the rules of Table G; never a toast or an overlay.
+    const inside = /^\.(app|convs|main|side|nav)\b/;
+    const readers = rules.filter((r) =>
+      Object.entries(r.declarations).some(
+        ([prop, value]) => prop !== "--tabh" && /var\(\s*--tabh/.test(value),
+      ),
+    );
+    expect(readers.map((r) => r.selector)).toEqual([
+      ".convs, .main, .side",
+      ".nav",
+    ]);
+    for (const r of readers) {
+      expect(r.media, r.selector).toBe(NARROW);
+      for (const part of r.selector.split(","))
+        expect(part.trim(), r.selector).toMatch(inside);
+    }
+  });
+
+  test("no other style sheet of the app reads or defines --tabh (R24)", () => {
+    const roots = [
+      resolve(import.meta.dirname, ".."),
+      resolve(import.meta.dirname, "../../../../apps/web/src"),
+    ];
+    const found: string[] = [];
+    const walk = (dir: string) => {
+      for (const e of readdirSync(dir, { withFileTypes: true })) {
+        const p = resolve(dir, e.name);
+        if (e.isDirectory()) walk(p);
+        else if (e.name.endsWith(".css") && p !== file)
+          if (readFileSync(p, "utf8").includes("--tabh")) found.push(p);
       }
+    };
+    for (const r of roots) walk(r);
+    expect(found).toEqual([]);
+  });
+
+  test("the narrow rules never name a look (R17)", () => {
+    for (const r of rules.filter((x) => x.media === NARROW))
+      expect(r.selector).not.toMatch(/data-eff/);
   });
 });

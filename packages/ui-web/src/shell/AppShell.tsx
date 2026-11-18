@@ -1,12 +1,16 @@
 import {
   forwardRef,
+  useEffect,
+  useRef,
   type ComponentPropsWithoutRef,
   type ReactNode,
 } from "react";
 import { cx } from "../internal/cx";
+import { BottomTabs, type MoreTab } from "./BottomTabs";
 import { derivePane } from "./derivePane";
 import { NavItem, type NavigateHandler, type NavSection } from "./NavSection";
 import { SearchBox, type SearchBoxProps } from "./SearchBox";
+import { useNarrow } from "./useNarrow";
 import { UserCard, type UserCardAccount } from "./UserCard";
 import { WorkspaceHeader } from "./WorkspaceHeader";
 import "./shell.css";
@@ -30,6 +34,8 @@ export type AppShellProps = Omit<ComponentPropsWithoutRef<"div">, Owned> & {
   // The conversation list, drawn as the sidebar's `aside.convs`.
   list?: ReactNode;
   chatOpen?: boolean;
+  // The More button of the bottom bar; with none the bar has no More tab (R6).
+  moreTab?: MoreTab;
   children?: ReactNode;
 } & PanelProps;
 
@@ -45,6 +51,7 @@ export const AppShell = forwardRef<HTMLDivElement, AppShellProps>(
       account,
       list,
       chatOpen = false,
+      moreTab,
       panel,
       panelLabel,
       children,
@@ -59,6 +66,21 @@ export const AppShell = forwardRef<HTMLDivElement, AppShellProps>(
       panelOpen: hasPanel,
       hasList,
     });
+    const narrow = useNarrow();
+    const convsRef = useRef<HTMLElement>(null);
+    const mainRef = useRef<HTMLElement>(null);
+    const sideRef = useRef<HTMLElement>(null);
+    const shownPane = useRef(pane);
+    // On a narrow screen the pane that is now shown takes focus, unless the
+    // focus is already inside it; not at the first render (R29).
+    useEffect(() => {
+      if (shownPane.current === pane) return;
+      shownPane.current = pane;
+      if (!narrow) return;
+      const target = { list: convsRef, main: mainRef, side: sideRef }[pane]
+        .current;
+      if (target && !target.contains(document.activeElement)) target.focus();
+    }, [pane, narrow]);
     return (
       <div
         {...rest}
@@ -84,17 +106,35 @@ export const AppShell = forwardRef<HTMLDivElement, AppShellProps>(
                 />
               ))}
             </div>
+            <BottomTabs
+              sections={sections}
+              currentSection={currentSection}
+              onNavigate={onNavigate}
+              moreTab={moreTab}
+            />
           </nav>
           {hasList && (
-            <aside className="convs" aria-label={labels.conversations}>
+            <aside
+              ref={convsRef}
+              className="convs"
+              tabIndex={-1}
+              aria-label={labels.conversations}
+            >
               {list}
             </aside>
           )}
           <UserCard account={account} />
         </div>
-        <main className="main">{children}</main>
+        <main ref={mainRef} className="main" tabIndex={-1}>
+          {children}
+        </main>
         {hasPanel && (
-          <aside className="side" aria-label={panelLabel}>
+          <aside
+            ref={sideRef}
+            className="side"
+            tabIndex={-1}
+            aria-label={panelLabel}
+          >
             {panel}
           </aside>
         )}

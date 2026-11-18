@@ -1,9 +1,17 @@
 import { describe, expect, test } from "vitest";
 import * as shell from "./index";
 import * as entry from "../index";
-import type { AppShellProps, NavSection, PaneName } from "./index";
+import type {
+  AppShellProps,
+  BottomTabsProps,
+  MoreTab,
+  NavSection,
+  PaneName,
+} from "./index";
 import type {
   AppShellProps as AppShellPropsEntry,
+  BottomTabsProps as BottomTabsPropsEntry,
+  MoreTab as MoreTabEntry,
   NavSection as NavSectionEntry,
   PaneName as PaneNameEntry,
 } from "../index";
@@ -12,9 +20,13 @@ import type {
 // each one. Each step of TOKI-015 adds its own names here.
 type ShellTypes = [
   AppShellProps,
+  BottomTabsProps,
+  MoreTab,
   NavSection,
   PaneName,
   AppShellPropsEntry,
+  BottomTabsPropsEntry,
+  MoreTabEntry,
   NavSectionEntry,
   PaneNameEntry,
 ];
@@ -28,6 +40,8 @@ describe("shell exports (R1)", () => {
       "SearchBox",
       "UserCard",
       "derivePane",
+      "BottomTabs",
+      "useNarrow",
     ])
       expect(shell, name).toHaveProperty(name);
   });
