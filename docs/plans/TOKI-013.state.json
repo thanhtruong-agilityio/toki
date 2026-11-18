@@ -16,19 +16,23 @@
       "at": "2026-11-18T08:47:08Z",
       "auto": false,
       "stage": "approve"
+    },
+    {
+      "at": "2026-11-18T08:58:02Z",
+      "stage": "build"
     }
   ],
   "key": "TOKI-013",
   "main_sha": "431fb325a9c468a5054d9071b12ffde01046cb18",
   "metrics": {},
-  "mode": null,
+  "mode": "auto-to-check",
   "plan_approved": true,
   "plan_hash": "7570cdbb015ab6cbece76fc22c0b79b7855f3555b26a4726787563ef39b87381",
   "spec_commit": "b20ae75252c321478928e8faa3454d3bb59ae1e5",
   "spec_paths": [
     "docs/specs/2026-11-16-base-components-2-design.md"
   ],
-  "stage": "plan",
+  "stage": "build",
   "tier": "M",
   "verifier": {
     "result": null,
