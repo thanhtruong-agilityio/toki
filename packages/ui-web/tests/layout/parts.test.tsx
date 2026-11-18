@@ -9,7 +9,7 @@ import {
   UserCard,
   WorkspaceHeader,
   type NavSection,
-} from "../../src/shell/index";
+} from "../../src/layout/index";
 
 describe("ref and className (R34)", () => {
   test("WorkspaceHeader", () => {

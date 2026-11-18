@@ -11,7 +11,7 @@ import {
   visibleSections,
   type Role,
   type SectionRow,
-} from "../shell/sections";
+} from "../layout/sections";
 import { rootRoute } from "./__root";
 
 // The one component that wires the shell to the app: translations, the section

@@ -2,7 +2,7 @@ import { createRef, useState } from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, test, vi } from "vitest";
-import { SectionPage, SidePanel, Tab, TabList } from "../../src/shell/index";
+import { SectionPage, SidePanel, Tab, TabList } from "../../src/layout/index";
 
 afterEach(() => {
   Reflect.deleteProperty(Element.prototype, "scrollIntoView");

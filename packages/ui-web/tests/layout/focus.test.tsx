@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react";
 import { afterEach, describe, expect, test, vi } from "vitest";
-import { AppShell, type NavSection } from "../../src/shell/index";
+import { AppShell, type NavSection } from "../../src/layout/index";
 
 const sections: NavSection[] = [
   { id: "home", icon: "home", label: "H", href: "/", tab: true },

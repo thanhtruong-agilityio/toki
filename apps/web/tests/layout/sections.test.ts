@@ -4,7 +4,7 @@ import {
   currentSectionId,
   sections,
   visibleSections,
-} from "../../src/shell/sections";
+} from "../../src/layout/sections";
 
 // Technical design, Frontend, "Real paths" (R10, R30).
 const paths: Record<string, string> = {

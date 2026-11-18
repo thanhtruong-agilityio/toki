@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { render } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
-import { AppShell, type NavSection } from "../../src/shell/index";
+import { AppShell, type NavSection } from "../../src/layout/index";
 import { useToastAvoid } from "../../src/components/Toast";
 
 // R23, R25: the shell mounts the provider around everything it draws, so the

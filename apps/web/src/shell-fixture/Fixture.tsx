@@ -14,7 +14,11 @@ import {
   type NavSection,
 } from "@toki/ui-web";
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { visibleSections, type Role, type SectionRow } from "../shell/sections";
+import {
+  visibleSections,
+  type Role,
+  type SectionRow,
+} from "../layout/sections";
 
 // The fixture's section list: the six sections of phase 1 and Preferences, in
 // the order of R30. Made-up labels; the `labelKey` is not used here.

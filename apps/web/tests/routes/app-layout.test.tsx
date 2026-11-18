@@ -11,7 +11,7 @@ import { act, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, test, vi } from "vitest";
 import { routeTree } from "../../src/router";
-import type { Role, SectionRow } from "../../src/shell/sections";
+import type { Role, SectionRow } from "../../src/layout/sections";
 import { AppShellRoute } from "../../src/routes/app-layout";
 
 async function mount(language: Language, path = "/") {

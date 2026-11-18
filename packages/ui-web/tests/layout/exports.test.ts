@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import * as shell from "../../src/shell/index";
+import * as shell from "../../src/layout/index";
 import * as entry from "../../src/index";
 import type {
   AppShellProps,
@@ -11,7 +11,7 @@ import type {
   SidePanelProps,
   TabListProps,
   TabProps,
-} from "../../src/shell/index";
+} from "../../src/layout/index";
 import type {
   AppShellProps as AppShellPropsEntry,
   BottomTabsProps as BottomTabsPropsEntry,

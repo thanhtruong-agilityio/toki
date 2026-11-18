@@ -4,7 +4,7 @@ import { resolve } from "node:path";
 import * as components from "../../src/components/index";
 import * as entry from "../../src/index";
 import * as appearance from "../../src/appearance";
-import * as shell from "../../src/shell";
+import * as shell from "../../src/layout";
 import type {
   DialogCloseReason,
   MenuCloseReason,

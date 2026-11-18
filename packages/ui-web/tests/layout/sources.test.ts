@@ -3,7 +3,7 @@ import { resolve } from "node:path";
 import { describe, expect, test } from "vitest";
 
 // The folder this file sat in before the tests moved to tests/: its relative paths still start here.
-const SRC_DIR = `${import.meta.dirname}/../../src/shell`;
+const SRC_DIR = `${import.meta.dirname}/../../src/layout`;
 
 const dir = SRC_DIR;
 const sources = readdirSync(dir).filter(

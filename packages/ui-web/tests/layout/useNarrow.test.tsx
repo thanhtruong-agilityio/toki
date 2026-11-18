@@ -1,6 +1,6 @@
 import { act, renderHook } from "@testing-library/react";
 import { afterEach, describe, expect, test, vi } from "vitest";
-import { useNarrow } from "../../src/shell/index";
+import { useNarrow } from "../../src/layout/index";
 
 type Listener = (event: { matches: boolean }) => void;
 

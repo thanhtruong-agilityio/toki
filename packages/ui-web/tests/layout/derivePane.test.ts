@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { derivePane } from "../../src/shell/derivePane";
+import { derivePane } from "../../src/layout/derivePane";
 
 // R4: all 16 inputs.
 describe("derivePane (R4)", () => {

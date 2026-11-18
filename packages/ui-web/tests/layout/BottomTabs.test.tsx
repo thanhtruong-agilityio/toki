@@ -2,7 +2,7 @@ import { createRef } from "react";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, onTestFinished, test, vi } from "vitest";
-import { AppShell, BottomTabs, type NavSection } from "../../src/shell/index";
+import { AppShell, BottomTabs, type NavSection } from "../../src/layout/index";
 
 const sections: NavSection[] = [
   {

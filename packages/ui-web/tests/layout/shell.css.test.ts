@@ -4,7 +4,7 @@ import { describe, expect, test } from "vitest";
 import { parseDeclarations, readCss } from "../support/css";
 
 // The folder this file sat in before the tests moved to tests/: its relative paths still start here.
-const SRC_DIR = `${import.meta.dirname}/../../src/shell`;
+const SRC_DIR = `${import.meta.dirname}/../../src/layout`;
 
 const file = resolve(SRC_DIR, "shell.css");
 const tokensCss = resolve(SRC_DIR, "../../../tokens/src/tokens.css");
