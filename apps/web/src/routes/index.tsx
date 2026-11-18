@@ -1,8 +1,8 @@
 import { createRoute } from "@tanstack/react-router";
-import { rootRoute } from "./__root";
+import { appLayoutRoute } from "./app-layout";
 
 export const indexRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => appLayoutRoute,
   path: "/",
   component: () => <p data-testid="app-root">Toki</p>,
 });

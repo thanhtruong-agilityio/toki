@@ -1,10 +1,14 @@
 import { createRouter } from "@tanstack/react-router";
 import { rootRoute } from "./routes/__root";
+import { appLayoutRoute } from "./routes/app-layout";
 import { indexRoute } from "./routes/index";
 
 // The only place that creates the router. A later screen adds one route
-// under src/routes/ and one entry here.
-const routeTree = rootRoute.addChildren([indexRoute]);
+// under src/routes/ and one entry to the children of appLayoutRoute here;
+// /login (TOKI-023) is a child of the root, outside the layout.
+export const routeTree = rootRoute.addChildren([
+  appLayoutRoute.addChildren([indexRoute]),
+]);
 
 export const router = createRouter({ routeTree });
 

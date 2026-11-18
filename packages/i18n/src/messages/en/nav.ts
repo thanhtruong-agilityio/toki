@@ -12,4 +12,5 @@ export const nav = {
   conversations: "Conversations",
   search: "Search",
   admin: "Admin",
+  mainLabel: "Main",
 };

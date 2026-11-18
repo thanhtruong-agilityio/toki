@@ -188,11 +188,12 @@ const NAV: ReadonlyArray<readonly [MessageKey, string, string]> = [
   ["nav.conversations", "Conversations", "Hội thoại"],
   ["nav.search", "Search", "Tìm kiếm"],
   ["nav.admin", "Admin", "Quản trị"],
+  ["nav.mainLabel", "Main", "Điều hướng chính"],
 ];
 
 describe("nav namespace (R4, R15)", () => {
-  it("holds exactly the 13 keys of the table", () => {
-    expect(NAV).toHaveLength(13);
+  it("holds exactly the 14 keys of the table", () => {
+    expect(NAV).toHaveLength(14);
   });
 
   it.each(NAV)(

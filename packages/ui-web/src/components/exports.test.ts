@@ -4,6 +4,7 @@ import { resolve } from "node:path";
 import * as components from "./index";
 import * as entry from "../index";
 import * as appearance from "../appearance";
+import * as shell from "../shell";
 import type {
   DialogCloseReason,
   MenuCloseReason,
@@ -150,7 +151,8 @@ describe("exports (R1, R2)", () => {
     ).toEqual([]);
     // The shell and appearance exports come from their own modules (TOKI-015 R1).
     const extra = Object.keys(entry).filter(
-      (name) => !(name in components) && !(name in appearance),
+      (name) =>
+        !(name in components) && !(name in appearance) && !(name in shell),
     );
     expect(
       extra.filter((name) => !name.endsWith("Icon") && name !== "iconNames"),
