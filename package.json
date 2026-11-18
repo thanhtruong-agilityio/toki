@@ -15,6 +15,7 @@
   },
   "scripts": {
     "typecheck": "pnpm -r run typecheck && tsc --noEmit",
+    "i18n:check": "pnpm --filter @toki/i18n check",
     "test": "vitest run && node --test tools/bundle-size/check.test.mjs apps/web/scripts/check-no-dev-pages.test.mjs && pnpm run test:lint-rules",
     "test:e2e": "playwright test",
     "build": "pnpm -r --if-present run build",
