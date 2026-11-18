@@ -1,0 +1,28 @@
+{
+  "approved_auto": false,
+  "base": "main",
+  "branch": "feat/toki-018-platform-package",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-18T09:20:19Z",
+      "stage": "pick"
+    }
+  ],
+  "key": "TOKI-018",
+  "main_sha": "a246ca0918f4971b8425bbcd9d982188e2639377",
+  "metrics": {},
+  "mode": null,
+  "plan_approved": false,
+  "plan_hash": null,
+  "spec_commit": null,
+  "spec_paths": [
+    "docs/specs/2026-11-16-platform-package-design.md"
+  ],
+  "stage": "pick",
+  "tier": "M",
+  "verifier": {
+    "result": null,
+    "round": 0
+  }
+}
