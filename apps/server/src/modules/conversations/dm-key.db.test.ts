@@ -4,8 +4,8 @@ import {
   insertConversationMember,
   insertUser,
   insertWorkspace,
-} from "../../db/test-rows.js";
-import { createMigratedDb } from "../../test/migrated-db.js";
+} from "../../tests/test-rows.js";
+import { createMigratedDb } from "../../tests/migrated-db.js";
 import { buildDmKey } from "./index.js";
 
 let t: Awaited<ReturnType<typeof createMigratedDb>>;

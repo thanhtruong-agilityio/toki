@@ -5,8 +5,8 @@ import {
   insertDirectConversation,
   insertUser,
   insertWorkspace,
-} from "../../db/test-rows.js";
-import { createMigratedDb } from "../../test/migrated-db.js";
+} from "../../tests/test-rows.js";
+import { createMigratedDb } from "../../tests/migrated-db.js";
 import {
   getConversationFacts,
   isConversationMember,

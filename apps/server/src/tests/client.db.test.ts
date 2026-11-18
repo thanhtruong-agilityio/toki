@@ -1,7 +1,7 @@
 import { createServer } from "node:net";
 import { describe, expect, it } from "vitest";
 import { loadConfig } from "../config.js";
-import { createDb } from "./client.js";
+import { createDb } from "../db/client.js";
 
 async function freePort() {
   return new Promise<number>((resolve) => {

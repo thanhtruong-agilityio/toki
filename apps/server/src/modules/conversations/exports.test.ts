@@ -65,7 +65,7 @@ describe("R24: no test or source of this change imports another module's table",
       "facts.db.test.ts",
       "general.db.test.ts",
       "dm-key.db.test.ts",
-      "../../db/conversation-tables.db.test.ts",
+      "../../tests/conversation-tables.db.test.ts",
     ];
     for (const file of files) {
       const text = readFileSync(join(here, file), "utf8");

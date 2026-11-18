@@ -38,6 +38,14 @@
       "at": "2026-11-18T11:01:32Z",
       "auto": false,
       "stage": "approve"
+    },
+    {
+      "at": "2026-11-18T11:15:55Z",
+      "stage": "ship"
+    },
+    {
+      "at": "2026-11-18T11:16:30Z",
+      "stage": "ci"
     }
   ],
   "key": "TOKI-028",
@@ -50,7 +58,7 @@
   "spec_paths": [
     "docs/specs/2026-11-17-conversation-tables-design.md"
   ],
-  "stage": "check",
+  "stage": "ci",
   "tier": "L",
   "verifier": {
     "result": "PASS",

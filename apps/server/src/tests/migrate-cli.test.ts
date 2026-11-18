@@ -2,7 +2,7 @@ import { spawn } from "node:child_process";
 import { createServer } from "node:net";
 import { describe, expect, it } from "vitest";
 
-const entry = new URL("./migrate-cli.ts", import.meta.url).pathname;
+const entry = new URL("../db/migrate-cli.ts", import.meta.url).pathname;
 const cwd = new URL("../..", import.meta.url).pathname;
 
 function run(env: Record<string, string>) {

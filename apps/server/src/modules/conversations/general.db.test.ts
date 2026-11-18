@@ -1,6 +1,6 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { insertUser, insertWorkspace } from "../../db/test-rows.js";
-import { createMigratedDb } from "../../test/migrated-db.js";
+import { insertUser, insertWorkspace } from "../../tests/test-rows.js";
+import { createMigratedDb } from "../../tests/migrated-db.js";
 import {
   addMemberToGeneral,
   createGeneralChannel,

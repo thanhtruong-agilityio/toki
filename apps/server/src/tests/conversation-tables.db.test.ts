@@ -10,8 +10,8 @@ import {
 } from "@toki/shared";
 import postgres, { type Sql } from "postgres";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { createThrowawayDb } from "../test/throwaway-db.js";
-import { migrationsFolder, runMigrations } from "./migrate.js";
+import { createThrowawayDb } from "./throwaway-db.js";
+import { migrationsFolder, runMigrations } from "../db/migrate.js";
 import {
   insertConversation,
   insertConversationMember,
