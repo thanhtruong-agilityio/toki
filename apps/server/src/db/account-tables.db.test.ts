@@ -10,7 +10,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import postgres, { type Sql } from "postgres";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { createThrowawayDb } from "../test/throwaway-db.js";
+import { createThrowawayDb } from "../tests/throwaway-db.js";
 import { migrationsFolder, runMigrations } from "./migrate.js";
 import {
   insertDevice,

@@ -8,7 +8,7 @@ import {
   insertUser,
   insertWorkspace,
 } from "../../db/test-rows.js";
-import { createThrowawayDb } from "../../test/throwaway-db.js";
+import { createThrowawayDb } from "../../tests/throwaway-db.js";
 import { users } from "./schema.js";
 
 let throwaway: Awaited<ReturnType<typeof createThrowawayDb>>;

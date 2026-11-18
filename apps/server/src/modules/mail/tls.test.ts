@@ -1,8 +1,8 @@
 import { generate } from "selfsigned";
 import { readFileSync } from "node:fs";
 import { afterEach, beforeAll, describe, expect, it } from "vitest";
-import { sourceFiles } from "../../test/source-files.js";
-import { startSmtp } from "../../test/smtp-server.js";
+import { sourceFiles } from "../../tests/source-files.js";
+import { startSmtp } from "../../tests/smtp-server.js";
 import { createMailLayer } from "./index.js";
 import type { MailConfig } from "./config.js";
 import { captureLogger, code, mailConfig } from "./test-helpers.js";

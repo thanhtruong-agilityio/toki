@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it } from "vitest";
-import { startSilentServer, startSmtp } from "../../test/smtp-server.js";
+import { startSilentServer, startSmtp } from "../../tests/smtp-server.js";
 import { createMailLayer, type Limits } from "./index.js";
 import { captureLogger, code, mailConfig } from "./test-helpers.js";
 
