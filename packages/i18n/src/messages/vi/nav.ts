@@ -1,0 +1,15 @@
+export const nav = {
+  home: "Trang chủ",
+  activity: "Hoạt động",
+  later: "Để sau",
+  files: "Tệp",
+  people: "Mọi người",
+  preferences: "Tùy chọn",
+  more: "Thêm",
+  directMessages: "Tin nhắn riêng",
+  channels: "Kênh",
+  starred: "Đã gắn sao",
+  conversations: "Hội thoại",
+  search: "Tìm kiếm",
+  admin: "Quản trị",
+};
