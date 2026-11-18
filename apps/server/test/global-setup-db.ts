@@ -19,12 +19,13 @@ const quote = (name: string) => `"${name.replaceAll('"', '""')}"`;
 export default async function setup(project: TestProject) {
   project.provide("dbSetupError", null);
   project.provide("testDatabaseName", "");
+  const rootEnv = readRootEnv();
   try {
     const testUrl = process.env.TEST_DATABASE_URL;
     const { host, database } = checkTestDatabase({
       testUrl,
-      developmentUrl: readRootEnv().DATABASE_URL ?? undefined,
-      environments: [process.env.NODE_ENV, readRootEnv().NODE_ENV],
+      developmentUrl: process.env.DATABASE_URL ?? rootEnv.DATABASE_URL,
+      environments: [process.env.NODE_ENV, rootEnv.NODE_ENV],
     });
     project.provide("testDatabaseName", database);
 
@@ -42,8 +43,14 @@ export default async function setup(project: TestProject) {
       );
       await admin.unsafe(`create database ${quote(database)}`);
     } catch (error) {
+      const code = (error as { code?: string }).code ?? "error";
+      const unreachable = ["ECONNREFUSED", "ENOTFOUND", "ETIMEDOUT"].includes(
+        code,
+      );
       throw new Error(
-        `cannot reach the test database ${host}/${database} (${(error as { code?: string }).code ?? "error"})`,
+        unreachable
+          ? `cannot reach the test database ${host}/${database} (${code})`
+          : `the test database server at ${host} refused the request for ${database} (${code})`,
         { cause: error },
       );
     } finally {

@@ -1,0 +1,39 @@
+.ib {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-sm);
+  color: var(--ink-2);
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+.ib:hover:where(:not([disabled])) {
+  background: var(--hover);
+  color: var(--ink);
+}
+.ib.on {
+  background: var(--accent-soft);
+  color: var(--accent-text);
+}
+.ib.sm {
+  width: 28px;
+  height: 28px;
+}
+.ib[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (max-width: 719px) {
+  .ib {
+    min-height: 40px;
+    width: 40px;
+    height: 40px;
+  }
+  .ib.sm {
+    width: 36px;
+    height: 36px;
+  }
+}

@@ -23,7 +23,7 @@ export default defineConfig({
       // query runs; the tests here send none.
       command: "pnpm --filter @toki/server exec tsx src/main.ts",
       url: `http://127.0.0.1:${SERVER_PORT}/healthz`,
-      reuseExistingServer: !process.env.CI,
+      reuseExistingServer: false,
       stdout: "pipe",
       stderr: "pipe",
       timeout: 60_000,
@@ -38,7 +38,7 @@ export default defineConfig({
     {
       command: "pnpm --filter @toki/web exec vite --host 127.0.0.1",
       url: `http://127.0.0.1:${WEB_PORT}`,
-      reuseExistingServer: !process.env.CI,
+      reuseExistingServer: false,
       stdout: "pipe",
       stderr: "pipe",
       timeout: 60_000,

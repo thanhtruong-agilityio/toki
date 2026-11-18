@@ -32,6 +32,11 @@
     {
       "at": "2026-11-18T08:58:22Z",
       "stage": "check"
+    },
+    {
+      "at": "2026-11-18T09:00:59Z",
+      "auto": false,
+      "stage": "approve"
     }
   ],
   "key": "TOKI-008",
@@ -39,7 +44,7 @@
   "metrics": {},
   "mode": "Auto to check",
   "plan_approved": true,
-  "plan_hash": "331aae016def73382d72122fdb853e348b86a2eeaba6921e26465e530fdd2b49",
+  "plan_hash": "dea43f6521a8e3f79f0b6e5589146ce7f63196f0a5918abc5123495469727bc5",
   "spec_commit": "265676591904383be35214fe36e1aa2e6b99b4d8",
   "spec_paths": [
     "docs/specs/2026-11-12-test-harness-design.md"
@@ -47,7 +52,7 @@
   "stage": "check",
   "tier": "M",
   "verifier": {
-    "result": "FAIL",
-    "round": 1
+    "result": "PASS",
+    "round": 2
   }
 }
