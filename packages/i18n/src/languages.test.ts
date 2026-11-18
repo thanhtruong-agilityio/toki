@@ -11,6 +11,9 @@ describe("languages (R1 to R3)", () => {
   it("R1: the two codes, in order, and the default", () => {
     expect(LANGUAGES).toEqual(["en", "vi"]);
     expect(DEFAULT_LANGUAGE).toBe("en");
+    // R1: the type is the literal "en", not the union.
+    const literal: "en" = DEFAULT_LANGUAGE;
+    expect(literal).toBe("en");
   });
 
   it("R2: isLanguage is true for en and vi only", () => {

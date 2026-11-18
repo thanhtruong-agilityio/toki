@@ -7,7 +7,7 @@ import {
   useMemo,
   type ReactNode,
 } from "react";
-import { DEFAULT_LANGUAGE, type Language } from "./languages";
+import { DEFAULT_LANGUAGE, resolveLanguage, type Language } from "./languages";
 import { createTranslator, type Translator } from "./translate";
 
 type Value = { language: Language; t: Translator };
@@ -23,7 +23,8 @@ export function I18nProvider(props: {
   language?: Language;
   children?: ReactNode;
 }) {
-  const language = props.language ?? DEFAULT_LANGUAGE;
+  // A value that is not a language (read from an account or a request) is English (R2).
+  const language = resolveLanguage(props.language);
   const value = useMemo<Value>(
     () => ({ language, t: createTranslator(language) }),
     [language],

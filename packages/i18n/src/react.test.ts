@@ -36,6 +36,19 @@ describe("I18nProvider and useTranslation (R10, R11)", () => {
     expect(render("en")).toBe("en:Home");
   });
 
+  it("treats a language it does not know as English", () => {
+    const unknown = (value: string) =>
+      renderToString(
+        createElement(
+          I18nProvider,
+          { language: value as Language },
+          createElement(Probe),
+        ),
+      ).replace(/<[^>]+>/g, "");
+    expect(unknown("fr")).toBe("en:Home");
+    expect(unknown("vi-VN")).toBe("en:Home");
+  });
+
   it("gives the same t for the same language, so a dependency list stays quiet", () => {
     const seen: unknown[] = [];
     function Collect() {

@@ -2,7 +2,7 @@ export const LANGUAGES = ["en", "vi"] as const;
 
 export type Language = (typeof LANGUAGES)[number];
 
-export const DEFAULT_LANGUAGE: Language = "en";
+export const DEFAULT_LANGUAGE = "en" satisfies Language;
 
 // Shown in the language picker. These two names are not keys: each reads the same in both languages.
 export const LANGUAGE_NAMES: Record<Language, string> = {

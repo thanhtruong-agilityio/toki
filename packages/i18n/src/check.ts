@@ -1,25 +1,20 @@
 // The missing-translation check as a function of the catalogs (R13 to R18). It reads no file and
 // uses no Node API; scripts/check.ts passes it the committed catalogs and prints the result.
-import type { Catalog, PluralForms } from "./catalog";
+import {
+  PLURAL_FORM_NAMES,
+  isPluralText,
+  type Catalog,
+  type PluralForms,
+} from "./catalog";
 import { LANGUAGES, type Language } from "./languages";
 
 export type Problem = { language: Language; key: string; problem: string };
 
 type Text = string | PluralForms;
 
-const PLURAL_FORMS = ["zero", "one", "two", "few", "many", "other"];
+const PLURAL_FORMS: readonly string[] = PLURAL_FORM_NAMES;
 const PART = /^[a-z][A-Za-z0-9]*$/;
-
-function isPlural(value: unknown): value is PluralForms {
-  if (typeof value !== "object" || value === null) return false;
-  const entries = Object.entries(value);
-  return (
-    entries.length > 0 &&
-    entries.every(
-      ([name, text]) => PLURAL_FORMS.includes(name) && typeof text === "string",
-    )
-  );
-}
+const NAME = PART; // a placeholder name follows the same rule as a key part
 
 // Every text of a catalog by key; a text with plural forms is one key.
 function flatten(
@@ -29,7 +24,7 @@ function flatten(
 ): Map<string, Text> {
   for (const [name, value] of Object.entries(catalog)) {
     const key = prefix === "" ? name : `${prefix}.${name}`;
-    if (typeof value === "string" || isPlural(value)) into.set(key, value);
+    if (typeof value === "string" || isPluralText(value)) into.set(key, value);
     else flatten(value as Catalog, key, into);
   }
   return into;
@@ -89,6 +84,20 @@ function textProblems(language: Language, key: string, text: Text): Problem[] {
           problem: `form ${name} is not used in ${language}`,
         });
       }
+    }
+  }
+  for (const [, value] of forms(text)) {
+    for (const match of value.matchAll(/\{([^{}]*)\}/g)) {
+      if (!NAME.test(match[1] ?? "")) {
+        found.push({
+          language,
+          key,
+          problem: `invalid placeholder ${match[0]}`,
+        });
+      }
+    }
+    if (/[{}]/.test(value.replace(/\{[^{}]*\}/g, ""))) {
+      found.push({ language, key, problem: "stray brace" });
     }
   }
   for (const [form, value] of forms(text)) {
