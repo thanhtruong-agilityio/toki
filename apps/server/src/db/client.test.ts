@@ -1,6 +1,6 @@
 import { createServer } from "node:net";
 import { describe, expect, it } from "vitest";
-import { loadProcessConfig } from "../config.js";
+import { loadConfig } from "../config.js";
 import { createDb } from "./client.js";
 
 async function freePort() {
@@ -14,9 +14,16 @@ async function freePort() {
 }
 
 describe("createDb", () => {
-  // The only test that uses DATABASE_URL; it reads and writes nothing (R1).
+  // Reads and writes nothing (R1). It uses DATABASE_URL, the development
+  // database. CI has no development database, only the service of
+  // TEST_DATABASE_URL (TOKI-007 R15), so there the same read-only check runs on it.
   it("connects with the value of the configuration module and runs select 1", async () => {
-    const { database } = loadProcessConfig(["database"]);
+    const { database } = loadConfig(
+      {
+        DATABASE_URL: process.env.DATABASE_URL || process.env.TEST_DATABASE_URL,
+      },
+      ["database"],
+    );
     const { db, close } = createDb(database.url);
     try {
       const rows = await db.execute<{ one: number }>("select 1 as one");
