@@ -1,0 +1,37 @@
+{
+  "approved_auto": true,
+  "base": "github/main",
+  "branch": "feat/toki-011-icon-set",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-18T07:59:25Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-18T08:01:36Z",
+      "auto": true,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-18T08:01:36Z",
+      "stage": "build"
+    }
+  ],
+  "key": "TOKI-011",
+  "main_sha": "91674326f85f068a17f191532a8ed47b2e2f7500",
+  "metrics": {},
+  "mode": null,
+  "plan_approved": true,
+  "plan_hash": "62c85f46d8bb4e4ac26f1f16cad001240b7393b9f357ced2aa6268ec99157db1",
+  "spec_commit": "6268c3d86197b94326ee00c46b586b27bcf69d22",
+  "spec_paths": [
+    "docs/specs/2026-11-16-icon-set-design.md"
+  ],
+  "stage": "build",
+  "tier": "S",
+  "verifier": {
+    "result": null,
+    "round": 0
+  }
+}
