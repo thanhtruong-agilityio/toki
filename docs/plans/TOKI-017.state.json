@@ -36,14 +36,15 @@
   "mode": "auto-to-check",
   "plan_approved": true,
   "plan_hash": "db3c20af91beed6b4e09b8bde646421432466d2f69c38dd5ae988f2055935afa",
-  "spec_commit": null,
+  "spec_commit": "f27bbf3ca425615b7a8d6b55eefb7fcedd5c22b0",
   "spec_paths": [
     "docs/specs/2026-11-16-i18n-package-design.md"
   ],
   "stage": "check",
   "tier": "M",
   "verifier": {
-    "result": "FAIL",
-    "round": 1
+    "accepted_with_note": "Accepted by Thanh on 2026-11-18 after two FAIL rounds: catalog.ts (types only) and the state json are not named in the plan; R20 is checked on the pull request.",
+    "result": "PASS",
+    "round": 2
   }
 }
