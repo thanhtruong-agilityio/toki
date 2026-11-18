@@ -10,6 +10,7 @@ import { createRef, useRef } from "react";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { readCss } from "../../test/css";
 import { Toast } from "./Toast";
+import { ToastRegion } from "./ToastRegion";
 import {
   ToastProvider,
   useToastAnchor,
@@ -197,6 +198,29 @@ describe("ToastProvider and the region (R21, R22)", () => {
       (t) => t.textContent,
     );
     expect(texts).toEqual(["first", "second", "third"]);
+  });
+});
+
+describe("ToastRegion (R4)", () => {
+  test("ref points at div.toasts, className is appended and aria-live is owned", () => {
+    const ref = createRef<HTMLDivElement>();
+    const extra = { "aria-live": "assertive" } as unknown as object;
+    render(
+      <ToastProvider>
+        <ToastRegion ref={ref} className="mine" data-x="1" {...extra} />
+      </ToastProvider>,
+    );
+    const region = ref.current!;
+    expect(region.tagName).toBe("DIV");
+    expect(region.className).toBe("toasts mine");
+    expect(region.getAttribute("data-x")).toBe("1");
+    expect(region.getAttribute("aria-live")).toBe("polite");
+  });
+
+  test("outside a provider it throws an error that names ToastProvider", () => {
+    const error = vi.spyOn(console, "error").mockImplementation(() => {});
+    expect(() => render(<ToastRegion />)).toThrowError(/ToastProvider/);
+    error.mockRestore();
   });
 });
 

@@ -43,6 +43,31 @@ describe("group 2 sources (R1, R3)", () => {
     ]);
   });
 
+  test("each folder holds only the files that R1 names", () => {
+    const allowed: Record<string, string[]> = {
+      Avatar: ["Avatar", "getInitials"],
+      PresenceDot: ["PresenceDot"],
+      EmptyState: ["EmptyState"],
+      Toast: ["Toast", "ToastProvider", "ToastRegion", "toastPlace"],
+    };
+    const standard = ["Avatar", "PresenceDot", "EmptyState", "Toast"];
+    for (const name of folders) {
+      const expected = new Set<string>([
+        `${name}.tsx`,
+        `${name}.css`,
+        `${name}.test.tsx`,
+        `${name}.examples.tsx`,
+        "index.ts",
+        ...allowed[name]!.filter((n) => n !== name).map((n) =>
+          n === "getInitials" || n === "toastPlace" ? `${n}.ts` : `${n}.tsx`,
+        ),
+      ]);
+      const actual = readdirSync(join(componentsDir, name));
+      expect(actual.sort(), name).toEqual([...expected].sort());
+      expect(standard).toContain(name);
+    }
+  });
+
   test("no colour literal, and every var() is a token or --h or --s (R3)", () => {
     const literal = /#[0-9a-f]{3,8}\b|\brgba?\(|\bhsla?\(\s*\d/i;
     for (const file of cssFiles) {
