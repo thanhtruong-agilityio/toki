@@ -11,19 +11,32 @@
     {
       "at": "2026-11-18T10:29:12Z",
       "stage": "explore"
+    },
+    {
+      "at": "2026-11-18T10:34:46Z",
+      "stage": "plan"
+    },
+    {
+      "at": "2026-11-18T10:36:43Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-18T10:36:43Z",
+      "stage": "build"
     }
   ],
   "key": "TOKI-021",
   "main_sha": "a07900dcfc3e40930061d23f4359a13d3cf2aa3b",
   "metrics": {},
-  "mode": null,
-  "plan_approved": false,
-  "plan_hash": null,
+  "mode": "auto-to-pr",
+  "plan_approved": true,
+  "plan_hash": "410e6bc51845014b7387fda2e26f61e69eb9f2c780c6bc517a36b766298de472",
   "spec_commit": "ecdab9631d7b36c6843479fb25cce3740b00d892",
   "spec_paths": [
     "docs/specs/2026-11-17-mail-smtp-design.md"
   ],
-  "stage": "explore",
+  "stage": "build",
   "tier": "M",
   "verifier": {
     "result": null,
