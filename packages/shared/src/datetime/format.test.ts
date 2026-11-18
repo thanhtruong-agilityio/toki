@@ -162,3 +162,21 @@ describe("bad values (R7, R8)", () => {
     }
   });
 });
+
+describe("a string given where an instant is wanted (R7)", () => {
+  // The caller must convert with Date.parse first; a string, even an ISO 8601
+  // one, is never read as an instant.
+  const iso = "2026-11-10T08:05:00Z" as unknown as number;
+  const at = Date.UTC(2026, 10, 10, 8, 0);
+
+  it("returns null in every numeric place of every function", () => {
+    expect(formatTime(iso, HCM)).toBeNull();
+    expect(formatDate(iso, dateCtx)).toBeNull();
+    expect(formatDay(iso, ctx)).toBeNull();
+    expect(formatDateTime(iso, ctx)).toBeNull();
+    expect(formatDate(at, { ...dateCtx, now: iso })).toBeNull();
+    expect(formatDay(at, { ...ctx, now: iso })).toBeNull();
+    expect(formatDateTime(at, { ...ctx, now: iso })).toBeNull();
+    expect(formatCountdown(iso)).toBeNull();
+  });
+});

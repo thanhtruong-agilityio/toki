@@ -90,3 +90,13 @@ describe("atLocalTime", () => {
     for (const zone of badZones) expect(atLocalTime(now, zone, 0, "09:00")).toBeNull();
   });
 });
+
+describe("a string given where an instant is wanted (R7)", () => {
+  const iso = "2026-11-10T08:05:00Z" as unknown as number;
+
+  it("returns null, because a string is never read as an instant", () => {
+    expect(zonedParts(iso, HCM)).toBeNull();
+    expect(utcOffsetMinutes(iso, HCM)).toBeNull();
+    expect(atLocalTime(iso, HCM, 0, "09:00")).toBeNull();
+  });
+});
