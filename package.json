@@ -15,7 +15,8 @@
   },
   "scripts": {
     "typecheck": "pnpm -r run typecheck",
-    "test": "pnpm -r --if-present run test && node --test tools/bundle-size/check.test.mjs",
+    "test": "vitest run && node --test tools/bundle-size/check.test.mjs",
+    "test:e2e": "playwright test",
     "build": "pnpm -r --if-present run build",
     "size": "node tools/bundle-size/check.mjs",
     "dev": "pnpm -r --parallel --if-present run dev",
@@ -29,17 +30,18 @@
     "db:migrate": "pnpm --filter @toki/server run db:migrate",
     "lint": "eslint . --max-warnings 0",
     "format": "prettier --write .",
-    "format:check": "prettier --check .",
-    "test": "pnpm -r --if-present run test"
+    "format:check": "prettier --check ."
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
+    "@playwright/test": "1.65.1",
     "@typescript/native": "npm:typescript@7.0.2",
     "eslint": "10.15.0",
     "eslint-config-prettier": "10.1.8",
     "globals": "17.14.0",
     "prettier": "3.10.1",
     "typescript": "npm:@typescript/typescript6@6.0.2",
-    "typescript-eslint": "8.72.2"
+    "typescript-eslint": "8.72.2",
+    "vitest": "5.1.0"
   }
 }

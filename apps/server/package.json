@@ -4,10 +4,11 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch --env-file=../../.env src/main.ts",
-    "test": "vitest run",
+    "test": "vitest run --config vitest.all.config.ts",
     "typecheck": "tsc --noEmit",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "tsx --env-file-if-exists=../../.env src/db/migrate-cli.ts"
+    "db:migrate": "tsx --env-file-if-exists=../../.env src/db/migrate-cli.ts",
+    "test:unit": "vitest run --config vitest.config.ts"
   },
   "dependencies": {
     "@toki/shared": "workspace:*",
