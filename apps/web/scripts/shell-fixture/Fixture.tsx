@@ -18,7 +18,7 @@ import {
   visibleSections,
   type Role,
   type SectionRow,
-} from "../layout/sections";
+} from "../../src/layout/sections";
 
 // The fixture's section list: the six sections of phase 1 and Preferences, in
 // the order of R30. Made-up labels; the `labelKey` is not used here.

@@ -3,7 +3,7 @@ import { resolve } from "node:path";
 import { describe, expect, test } from "vitest";
 
 // The folder this file sat in before the tests moved to tests/: its relative paths still start here.
-const SRC_DIR = `${import.meta.dirname}/../../src/shell-fixture`;
+const SRC_DIR = `${import.meta.dirname}/../../scripts/shell-fixture`;
 
 // R32: the fixture's entry imports the four style sheets before every non-CSS
 // import (TOKI-012 R29), links no fonts.css yet (TOKI-010 is not on main), and
@@ -19,7 +19,7 @@ describe("the shell fixture entry (R32)", () => {
     expect(imports.slice(0, 4)).toEqual([
       "@toki/tokens/tokens.css",
       "@toki/ui-web/base.css",
-      "../app.css",
+      "../../src/app.css",
       "@toki/ui-web/utilities.css",
     ]);
     expect(imports.slice(4).some((source) => source.endsWith(".css"))).toBe(
@@ -35,7 +35,7 @@ describe("the shell fixture entry (R32)", () => {
 
   test("the page loads the entry and links no style sheet", () => {
     const html = readFileSync(resolve(dir, "../../shell-fixture.html"), "utf8");
-    expect(html).toContain('src="/src/shell-fixture/main.tsx"');
+    expect(html).toContain('src="/scripts/shell-fixture/main.tsx"');
     expect(html).not.toMatch(/<link[^>]+stylesheet/);
   });
 

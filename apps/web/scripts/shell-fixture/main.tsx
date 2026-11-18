@@ -1,6 +1,6 @@
 import "@toki/tokens/tokens.css";
 import "@toki/ui-web/base.css";
-import "../app.css";
+import "../../src/app.css";
 import "@toki/ui-web/utilities.css";
 import { applyAppearance } from "@toki/ui-web";
 import { createRoot } from "react-dom/client";
