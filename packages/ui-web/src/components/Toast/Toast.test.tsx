@@ -886,4 +886,83 @@ describe("placement", () => {
       expect(region(container).style.left).toBe("");
     });
   });
+  describe("the on-screen keyboard (R34)", () => {
+    type Viewport = EventTarget & { height: number; offsetTop: number };
+    const setViewport = (vv: Viewport | undefined) =>
+      Object.defineProperty(window, "visualViewport", {
+        value: vv,
+        configurable: true,
+      });
+    const makeViewport = (height: number, offsetTop = 0): Viewport =>
+      Object.assign(new EventTarget(), { height, offsetTop });
+    afterEach(() => setViewport(undefined));
+
+    const page = (composerTop?: number) => (
+      <ToastProvider>
+        {composerTop === undefined ? null : (
+          <Avoid
+            id="composer"
+            rect={{ top: composerTop, left: 0, right: 1000, height: 100 }}
+          />
+        )}
+      </ToastProvider>
+    );
+
+    test("toasts stay at least 20 px above the part of the window that the keyboard covers", () => {
+      setViewport(makeViewport(500));
+      const { container } = render(page());
+      expect(bottom(container)).toBe("320px");
+    });
+
+    test("with the keyboard shut, or no visualViewport, nothing changes", () => {
+      setViewport(makeViewport(800));
+      const { container, unmount } = render(page());
+      expect(bottom(container)).toBe("20px");
+      unmount();
+      setViewport(undefined);
+      const again = render(page());
+      expect(bottom(again.container)).toBe("20px");
+    });
+
+    test("the offset of the visual viewport counts", () => {
+      setViewport(makeViewport(500, 100));
+      const { container } = render(page());
+      expect(bottom(container)).toBe("220px");
+    });
+
+    test("it is the larger of the composer value and the keyboard value, never their sum (both orders)", () => {
+      // A composer low on the page: the keyboard value is larger.
+      setViewport(makeViewport(500));
+      const low = render(page(700));
+      expect(bottom(low.container)).toBe("320px");
+      low.unmount();
+      // A composer already lifted above the keyboard (iOS): its value is larger.
+      setViewport(makeViewport(500));
+      const lifted = render(page(400));
+      expect(bottom(lifted.container)).toBe("414px");
+    });
+
+    test("it follows resize and scroll events of the visual viewport", () => {
+      const vv = makeViewport(800);
+      setViewport(vv);
+      const { container } = render(page());
+      expect(bottom(container)).toBe("20px");
+      vv.height = 450;
+      act(() => void vv.dispatchEvent(new Event("resize")));
+      expect(bottom(container)).toBe("370px");
+      vv.offsetTop = 50;
+      act(() => void vv.dispatchEvent(new Event("scroll")));
+      expect(bottom(container)).toBe("320px");
+    });
+
+    test("it stops listening when the provider unmounts", () => {
+      const vv = makeViewport(800);
+      const remove = vi.spyOn(vv, "removeEventListener");
+      setViewport(vv);
+      const { unmount } = render(page());
+      unmount();
+      expect(remove).toHaveBeenCalledWith("resize", expect.any(Function));
+      expect(remove).toHaveBeenCalledWith("scroll", expect.any(Function));
+    });
+  });
 });

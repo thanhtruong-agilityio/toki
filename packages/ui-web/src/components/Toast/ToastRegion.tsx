@@ -7,7 +7,11 @@ import {
 import { cx } from "../../internal/cx";
 import { Toast } from "./Toast";
 import { useToastList } from "./ToastProvider";
-import { computeToastBottom, computeToastExtent } from "./toastPlace";
+import {
+  computeToastBottom,
+  computeToastExtent,
+  TOAST_BOTTOM,
+} from "./toastPlace";
 import "./Toast.css";
 
 export type ToastRegionProps = Omit<
@@ -20,7 +24,7 @@ export type ToastRegionProps = Omit<
 export const ToastRegion = forwardRef<HTMLDivElement, ToastRegionProps>(
   function ToastRegion({ className, style, ...rest }, ref) {
     const { items, api, hold, registry } = useToastList();
-    const [place, setPlace] = useState<Place>({ bottom: 20 });
+    const [place, setPlace] = useState<Place>({ bottom: TOAST_BOTTOM });
 
     // Measures what the layout registered and sets the region's place (R28,
     // R31): when something is registered or removed, changes size or ends a
@@ -32,9 +36,15 @@ export const ToastRegion = forwardRef<HTMLDivElement, ToastRegionProps>(
       measure();
       const stop = registry.subscribe(measure);
       window.addEventListener("resize", measure);
+      // The on-screen keyboard (R34), when the browser reports it.
+      const viewport = window.visualViewport;
+      viewport?.addEventListener("resize", measure);
+      viewport?.addEventListener("scroll", measure);
       return () => {
         stop();
         window.removeEventListener("resize", measure);
+        viewport?.removeEventListener("resize", measure);
+        viewport?.removeEventListener("scroll", measure);
       };
     }, [registry]);
     useLayoutEffect(() => {
@@ -116,10 +126,21 @@ function measurePlace(
     const rect = rectOf(ref);
     return rect ? [{ top: rect.top, left: rect.left, right: rect.right }] : [];
   });
-  const bottom = computeToastBottom(window.innerHeight, obstacles, {
-    left: extent.left,
-    right: extent.left + extent.width,
-  });
+  // The larger of the value for what is registered and the value for the
+  // keyboard, never their sum: where the composer is lifted above the keyboard
+  // (iOS) the first already clears it, and where the keyboard shrinks the
+  // layout viewport (Android Chrome) nothing is covered (R34).
+  const viewport = window.visualViewport;
+  const covered = viewport
+    ? Math.max(0, window.innerHeight - (viewport.height + viewport.offsetTop))
+    : 0;
+  const bottom = Math.max(
+    computeToastBottom(window.innerHeight, obstacles, {
+      left: extent.left,
+      right: extent.left + extent.width,
+    }),
+    covered > 0 ? covered + TOAST_BOTTOM : 0,
+  );
   return anchor
     ? { bottom, left: extent.left + extent.width / 2, width: extent.width }
     : { bottom };

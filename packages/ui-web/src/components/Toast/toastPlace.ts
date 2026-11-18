@@ -9,7 +9,8 @@ export const TOAST_MAX = 3;
 // Where the toasts stand (R27, R31). Plain functions, so a table test can
 // check them without a browser.
 
-const BOTTOM_DEFAULT = 20; // px from the bottom of the window with nothing to avoid
+// px from the bottom of the window with nothing to avoid (R27), and above the keyboard (R34)
+export const TOAST_BOTTOM = 20;
 const ABOVE_OBSTACLE = 14; // px between the toasts and what they stay above
 const WIDTH_MAX = 480;
 const WIDTH_SHARE = 0.92;
@@ -23,7 +24,7 @@ export function computeToastBottom(
   obstacles: ToastObstacle[],
   extent?: ToastSpan,
 ): number {
-  let bottom = BOTTOM_DEFAULT;
+  let bottom = TOAST_BOTTOM;
   for (const { top, left, right } of obstacles) {
     if (![top, left, right].every(Number.isFinite)) continue;
     if (right <= left || top >= viewportHeight) continue;
