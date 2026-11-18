@@ -32,8 +32,12 @@ describe("mail configuration (R2, R3, R4)", () => {
   });
 
   it("defaults SMTP_TLS to starttls and the sender name to Toki", () => {
-    const { SMTP_TLS: _tls, ...rest } = base;
-    const mail = loadConfig({ ...rest, NODE_ENV: "production" }, ["mail"]).mail;
+    const rest: Record<string, string | undefined> = {
+      ...base,
+      SMTP_TLS: undefined,
+      NODE_ENV: "production",
+    };
+    const mail = loadConfig(rest, ["mail"]).mail;
     expect(mail.tls).toBe("starttls");
     expect(mail.fromName).toBe("Toki");
   });

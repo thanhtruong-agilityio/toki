@@ -1,4 +1,5 @@
 import type { Language, Translator } from "@toki/i18n";
+import { controlToSpace } from "./chars.js";
 import { CODE_TTL_MINUTES, INVITATION_LIFETIME_DAYS } from "./lifetimes.js";
 
 // Pure functions: the three mails as a subject, a text part and an HTML part
@@ -9,8 +10,7 @@ export type RenderedMail = { subject: string; text: string; html: string };
 const SUBJECT_NAME_LIMIT = 40;
 
 function clean(value: string): string {
-  // eslint-disable-next-line no-control-regex
-  return value.replace(/[\u0000-\u001f\u007f]+/g, " ");
+  return controlToSpace(value);
 }
 
 function escapeHtml(value: string): string {
