@@ -878,6 +878,18 @@ describe("R16: foreign keys", () => {
       "conversations_created_by_fkey",
       "conversation_members_user_id_fkey",
     ]).toContain(e1.constraint_name);
+    // A person that only a member row points to names the member key.
+    const member = await insertUser(sql, { workspace_id: w });
+    await insertConversationMember(sql, {
+      conversation_id: c,
+      user_id: member,
+      workspace_id: w,
+    });
+    await failsWith(
+      sql`delete from users where id = ${member}`,
+      FK,
+      "conversation_members_user_id_fkey",
+    );
     const e2 = await failsWith(sql`delete from workspaces where id = ${w}`, FK);
     expect([
       "conversations_workspace_id_fkey",
