@@ -6,6 +6,7 @@ import { examples as field } from "./components/Field/Field.examples";
 import { examples as iconButton } from "./components/IconButton/IconButton.examples";
 import { examples as modal } from "./components/Modal/Modal.examples";
 import { examples as select } from "./components/Select/Select.examples";
+import { examples as sheet } from "./components/Sheet/Sheet.examples";
 import { examples as switchExamples } from "./components/Switch/Switch.examples";
 import { examples as tag } from "./components/Tag/Tag.examples";
 
@@ -27,4 +28,5 @@ export const componentExamples: Array<{
   { component: "Tag", examples: tag },
   { component: "Badge", examples: badge },
   { component: "Modal", examples: modal },
+  { component: "Sheet", examples: sheet },
 ];

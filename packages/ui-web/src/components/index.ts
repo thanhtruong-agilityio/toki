@@ -7,3 +7,4 @@ export * from "./Select";
 export * from "./Tag";
 export * from "./Badge";
 export * from "./Modal";
+export * from "./Sheet";
