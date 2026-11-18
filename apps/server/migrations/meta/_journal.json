@@ -8,6 +8,13 @@
       "when": 1794987081329,
       "tag": "0000_lazy_winter_soldier",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1794996172359,
+      "tag": "0001_account_tables",
+      "breakpoints": true
     }
   ]
 }
