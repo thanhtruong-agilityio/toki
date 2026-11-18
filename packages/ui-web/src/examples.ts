@@ -6,8 +6,11 @@ import { examples as chip } from "./components/Chip/Chip.examples";
 import { examples as emptyState } from "./components/EmptyState/EmptyState.examples";
 import { examples as field } from "./components/Field/Field.examples";
 import { examples as iconButton } from "./components/IconButton/IconButton.examples";
+import { examples as menu } from "./components/Menu/Menu.examples";
+import { examples as modal } from "./components/Modal/Modal.examples";
 import { examples as presenceDot } from "./components/PresenceDot/PresenceDot.examples";
 import { examples as select } from "./components/Select/Select.examples";
+import { examples as sheet } from "./components/Sheet/Sheet.examples";
 import { examples as switchExamples } from "./components/Switch/Switch.examples";
 import { examples as tag } from "./components/Tag/Tag.examples";
 import { examples as toast } from "./components/Toast/Toast.examples";
@@ -33,4 +36,7 @@ export const componentExamples: Array<{
   { component: "PresenceDot", examples: presenceDot },
   { component: "EmptyState", examples: emptyState },
   { component: "Toast", examples: toast },
+  { component: "Menu", examples: menu },
+  { component: "Modal", examples: modal },
+  { component: "Sheet", examples: sheet },
 ];

@@ -1,0 +1,65 @@
+{
+  "accepted_deviations": [
+    "overlays.test.ts not named in the plan (step 5 names the work, not the file); accepted by the Dev 2026-11-18, to be said in the PR",
+    "verifier rounds 1 and 2 returned FAIL; round-1 findings were fixed, the two round-2 points (the file name; step 8 not yet run) were accepted by the Dev on 2026-11-18, step 8 was run afterwards; PASS recorded by the Dev decision, not by a third verifier round"
+  ],
+  "approved_auto": false,
+  "base": "main",
+  "branch": "feat/toki-014-overlays",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-18T08:58:54Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-18T08:59:41Z",
+      "stage": "explore"
+    },
+    {
+      "at": "2026-11-18T09:04:53Z",
+      "stage": "plan"
+    },
+    {
+      "at": "2026-11-18T09:06:05Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-18T09:06:06Z",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-18T09:19:35Z",
+      "stage": "check"
+    },
+    {
+      "at": "2026-11-18T09:22:03Z",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-18T09:24:12Z",
+      "stage": "check"
+    },
+    {
+      "at": "2026-11-18T09:33:12Z",
+      "stage": "ship"
+    }
+  ],
+  "key": "TOKI-014",
+  "main_sha": "a246ca0918f4971b8425bbcd9d982188e2639377",
+  "metrics": {},
+  "mode": "auto-to-check",
+  "plan_approved": true,
+  "plan_hash": "1b40f081a178939df8205f995cd53e3a195c8a1d9d0d791937a975c1381ac2ad",
+  "spec_commit": null,
+  "spec_paths": [
+    "docs/specs/2026-11-16-overlays-design.md"
+  ],
+  "stage": "ship",
+  "tier": "L",
+  "verifier": {
+    "result": "PASS",
+    "round": 3
+  }
+}
