@@ -9,8 +9,8 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import postgres from "postgres";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { createThrowawayDb } from "../test/throwaway-db.js";
-import { migrationsFolder, runMigrations } from "./migrate.js";
+import { createThrowawayDb } from "./throwaway-db.js";
+import { migrationsFolder, runMigrations } from "../db/migrate.js";
 
 let throwaway: Awaited<ReturnType<typeof createThrowawayDb>>;
 beforeAll(async () => {

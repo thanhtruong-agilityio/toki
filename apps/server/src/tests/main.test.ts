@@ -47,6 +47,11 @@ const validEnv = (port: number) => ({
   SERVER_PORT: String(port),
   // Points at no running Postgres (R20).
   DATABASE_URL: "postgres://fake:fake@127.0.0.1:1/fake",
+  // The mail area is required by the entry; nothing listens here (R18).
+  SMTP_HOST: "127.0.0.1",
+  SMTP_PORT: "1",
+  SMTP_TLS: "none",
+  MAIL_FROM_ADDRESS: "toki@example.com",
 });
 
 describe("the started process", () => {
@@ -111,5 +116,52 @@ describe("the started process", () => {
     expect(await proc.exited).toBe(1);
     expect(proc.err()).toContain("LOG_LEVEL");
     expect(proc.err() + proc.out()).not.toContain(secret);
+  });
+  it("does not start without the mail values and names the variable, never the value (R3)", async () => {
+    for (const name of ["SMTP_HOST", "SMTP_PORT", "MAIL_FROM_ADDRESS"]) {
+      const env: Record<string, string> = { ...validEnv(await freePort()) };
+      delete env[name];
+      const proc = start(env);
+      expect(await proc.exited).toBe(1);
+      expect(proc.err()).toContain(name);
+    }
+    const secret = "pw-never-printed-91";
+    const proc = start({
+      ...validEnv(await freePort()),
+      SMTP_TLS: "starttls",
+      SMTP_PASSWORD: secret,
+    });
+    expect(await proc.exited).toBe(1);
+    expect(proc.err()).toContain("SMTP_USER");
+    expect(proc.err() + proc.out()).not.toContain(secret);
+  });
+
+  it("refuses clear-text mail outside development and names SMTP_TLS (R4)", async () => {
+    const proc = start({
+      ...validEnv(await freePort()),
+      NODE_ENV: "production",
+    });
+    expect(await proc.exited).toBe(1);
+    expect(proc.err()).toContain("SMTP_TLS");
+  });
+
+  it("starts and answers /healthz without opening a connection to the SMTP host (R18)", async () => {
+    let connections = 0;
+    const smtp = createServer((socket) => {
+      connections += 1;
+      socket.destroy();
+    });
+    await new Promise<void>((resolve) => smtp.listen(0, "127.0.0.1", resolve));
+    const smtpPort = (smtp.address() as { port: number }).port;
+    const port = await freePort();
+    const proc = start({ ...validEnv(port), SMTP_PORT: String(smtpPort) });
+    await until(() => proc.out().includes("listening"));
+    const health = await fetch(`http://127.0.0.1:${port}/healthz`);
+    expect(health.status).toBe(200);
+    await new Promise((r) => setTimeout(r, 200));
+    expect(connections).toBe(0);
+    proc.child.kill("SIGTERM");
+    expect(await proc.exited).toBe(0);
+    await new Promise<void>((resolve) => smtp.close(() => resolve()));
   });
 });

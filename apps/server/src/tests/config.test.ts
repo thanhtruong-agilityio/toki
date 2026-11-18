@@ -79,6 +79,16 @@ describe("loadConfig", () => {
 
   it("reads one database variable and no other (R19)", () => {
     expect(configVariableNames.database).toEqual(["DATABASE_URL"]);
+    expect(configVariableNames.mail).toEqual([
+      "SMTP_HOST",
+      "SMTP_PORT",
+      "SMTP_TLS",
+      "SMTP_USER",
+      "SMTP_PASSWORD",
+      "MAIL_FROM_ADDRESS",
+      "MAIL_FROM_NAME",
+      "NODE_ENV",
+    ]);
   });
 });
 
