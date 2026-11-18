@@ -13,6 +13,15 @@ import { IconsSection } from "./IconsSection";
 import { LiveToasts } from "./LiveToasts";
 import { TokensSection } from "./TokensSection";
 
+// The value of a select is one of its own options; an unknown one keeps the old value.
+function pickOf<T extends string>(
+  allowed: readonly T[],
+  value: string,
+  fallback: T,
+): T {
+  return allowed.find((item) => item === value) ?? fallback;
+}
+
 const densityLabel: Record<(typeof densityChoices)[number], string> = {
   own: "The look's own",
   comfortable: "Comfortable",
@@ -46,7 +55,7 @@ export function PreviewPage() {
               onChange={(event) =>
                 change({
                   ...controls,
-                  look: readControls(`?look=${event.target.value}`).look,
+                  look: pickOf(looks, event.target.value, controls.look),
                 })
               }
             >
@@ -66,7 +75,7 @@ export function PreviewPage() {
               onChange={(event) =>
                 change({
                   ...controls,
-                  accent: readControls(`?accent=${event.target.value}`).accent,
+                  accent: pickOf(accents, event.target.value, controls.accent),
                 })
               }
             >
@@ -86,8 +95,11 @@ export function PreviewPage() {
               onChange={(event) =>
                 change({
                   ...controls,
-                  density: readControls(`?density=${event.target.value}`)
-                    .density,
+                  density: pickOf(
+                    densityChoices,
+                    event.target.value,
+                    controls.density,
+                  ),
                 })
               }
             >
@@ -100,7 +112,7 @@ export function PreviewPage() {
           </label>
         </div>
       </header>
-      <TokensSection />
+      <TokensSection controls={controls} />
       <IconsSection />
       {componentExamples.map((entry) => (
         <ExampleSection

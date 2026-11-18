@@ -47,12 +47,12 @@ Build order (concern 9, stop after any step if needed):
 | R4 controls | 1 | `preview.test.ts` `readControls`; browser test of the three attributes and the address |
 | R5, R6 sections, figures | 2 | browser test: order, `data-count` per entry |
 | R7 error boundary | 2 | `src/preview/ExampleFigure.test.tsx` (jsdom) with a throwing element |
-| R8 Table B1, B2, A2 | 2 | browser test; A2 and the three required entries skipped (TOKI-014) |
+| R8 Table B1, B2, A2 | 2, 4 | browser test; A2 and the Menu, Modal and Sheet entries run since TOKI-014 merged |
 | R9 icons | 3 | browser test: 43 cells |
 | R10 fonts | 3 | browser test (skipped, TOKI-010) |
 | R11 tokens | 3 | browser test: 32 rows, three `--accent` values |
 | R12 live toasts | 3 | browser test with real timers |
-| R13, R23 overlays | 4 | browser test (skipped, TOKI-014) |
+| R13, R23 overlays | 4 | browser test (runs since TOKI-014 merged) |
 | R14 Table C | 5 | browser test, `toHaveCSS`, 13 rows, both looks |
 | R15 accent, density | 5 | browser test |
 | R16 layouts | 5 | browser test at the six sizes |

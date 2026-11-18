@@ -176,7 +176,9 @@ test.describe("not in the build (R2)", () => {
 
 const LOOKS = ["calm", "focus"] as const;
 
-// The entries of componentExamples, in order (TOKI-012, TOKI-013, TOKI-014).
+// The entries that must be on the page, in order (TOKI-012, TOKI-013,
+// TOKI-014). A later ticket may add an entry to componentExamples: the checks
+// below ask for these, in this order, and accept more after them.
 const COMPONENTS = [
   "Button",
   "IconButton",
@@ -204,11 +206,11 @@ test.describe("component sections and figures (R5, R6, R7)", () => {
         .evaluateAll((nodes) =>
           nodes.map((node) => node.getAttribute("data-component")),
         );
-      expect(names).toEqual(COMPONENTS);
+      expect(names.slice(0, COMPONENTS.length)).toEqual(COMPONENTS);
       const headings = await page
         .locator("section[data-component] > h2")
         .allTextContents();
-      expect(headings).toEqual(COMPONENTS);
+      expect(headings).toEqual(names);
     });
 
     test(`R6: figures per entry equal data-count, with a caption and a surface panel (${look})`, async ({
@@ -217,7 +219,7 @@ test.describe("component sections and figures (R5, R6, R7)", () => {
       await page.goto(`/preview.html?look=${look}`);
       const sections = page.locator("section[data-component]");
       const count = await sections.count();
-      expect(count).toBe(COMPONENTS.length);
+      expect(count).toBeGreaterThanOrEqual(COMPONENTS.length);
       for (let i = 0; i < count; i++) {
         const section = sections.nth(i);
         const name = await section.getAttribute("data-component");
@@ -505,7 +507,9 @@ test.describe("section order, icons, tokens (R5, R9, R11)", () => {
             node.getAttribute("data-section"),
         ),
       );
-    expect(order).toEqual(["tokens", "icons", ...COMPONENTS, "live-toasts"]);
+    expect(order.slice(0, 2)).toEqual(["tokens", "icons"]);
+    expect(order.slice(2, 2 + COMPONENTS.length)).toEqual(COMPONENTS);
+    expect(order.at(-1)).toBe("live-toasts");
     for (const heading of await page
       .locator("section[data-section] > h2")
       .all()) {
@@ -1024,7 +1028,7 @@ test.describe("prototype references (R17)", () => {
         text: node.querySelector("[data-prototype-ref]")?.textContent ?? "",
       })),
     );
-    expect(found.length).toBe(2 + COMPONENTS.length);
+    expect(found.length).toBeGreaterThanOrEqual(2 + COMPONENTS.length);
     for (const { name, refs, text } of found) {
       expect(refs, `${name} has one line`).toHaveLength(1);
       expect(refs[0], name ?? "").not.toBe("No prototype reference recorded");

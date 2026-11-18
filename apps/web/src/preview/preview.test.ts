@@ -308,6 +308,25 @@ describe("imports of the page (R19)", () => {
   });
 });
 
+describe("overlays are drawn as given (R13)", () => {
+  test("the page adds no router, shell or provider except the toast one", () => {
+    const sources = filesUnder(previewDir).filter(
+      (path) => isCode(path) && !isTest(path),
+    );
+    for (const path of sources) {
+      const text = readFileSync(path, "utf8");
+      expect(text, path).not.toMatch(/Router|AppShell|createRouter/);
+      const providers = [...text.matchAll(/<(\w*Provider)\b/g)].map(
+        (match) => match[1],
+      );
+      expect(
+        providers.filter((name) => name !== "ToastProvider"),
+        path,
+      ).toEqual([]);
+    }
+  });
+});
+
 describe("prototype references (R17)", () => {
   test("an entry with no key reads No prototype reference recorded", () => {
     expect(referenceFor("NoSuchComponent")).toBe(

@@ -8,6 +8,7 @@ import { fileURLToPath } from "node:url";
 
 // The page name and the text that only that page holds.
 const PAGES = [{ name: "preview.html", marker: "preview-root" }];
+const TEXT_FILE = /\.(html|js|mjs|css|map|json|txt|svg|webmanifest)$/i;
 
 function filesUnder(dir) {
   const found = [];
@@ -52,6 +53,8 @@ export function findProblems({ dist, config }) {
     if (name.endsWith(".html") && name !== "index.html") {
       problems.push(`${name} is in dist; only index.html may be built`);
     }
+    // Only text files can hold the marker; fonts and images are skipped.
+    if (!TEXT_FILE.test(name)) continue;
     const text = readFileSync(file, "utf8");
     for (const page of PAGES) {
       for (const needle of [page.marker, page.name]) {

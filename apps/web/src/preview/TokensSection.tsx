@@ -1,3 +1,5 @@
+import { useLayoutEffect, useState } from "react";
+import type { Controls } from "./controls";
 import { ReferenceLine } from "./ReferenceLine";
 
 // The 32 custom properties of TOKI-009 R10, in the order of tokens.css.
@@ -44,9 +46,19 @@ const TOKEN_NAMES = [
 const isColour = (value: string) => /^(#|rgba?\()/i.test(value);
 
 // Each value is what the browser computes for the property on the root
-// element now. The page renders again when a control changes (R11).
-export function TokensSection() {
-  const style = getComputedStyle(document.documentElement);
+// element. It is read after the attributes of the controls are set, in a
+// layout effect that runs again when a control changes, so it never shows the
+// values of the previous look (R11).
+export function TokensSection({ controls }: { controls: Controls }) {
+  const [values, setValues] = useState<Record<string, string>>({});
+  useLayoutEffect(() => {
+    const style = getComputedStyle(document.documentElement);
+    setValues(
+      Object.fromEntries(
+        TOKEN_NAMES.map((name) => [name, style.getPropertyValue(name).trim()]),
+      ),
+    );
+  }, [controls.look, controls.accent, controls.density]);
   return (
     <section
       className="pv-section"
@@ -57,7 +69,7 @@ export function TokensSection() {
       <ReferenceLine section="tokens" />
       <div className="pv-tokens">
         {TOKEN_NAMES.map((name) => {
-          const value = style.getPropertyValue(name).trim();
+          const value = values[name] ?? "";
           return (
             <div className="pv-token" key={name} data-token={name}>
               {isColour(value) ? (
