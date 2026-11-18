@@ -44,7 +44,7 @@
   "stage": "check",
   "tier": "M",
   "verifier": {
-    "result": "FAIL",
-    "round": 1
+    "result": "PASS",
+    "round": 2
   }
 }
