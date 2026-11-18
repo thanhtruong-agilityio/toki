@@ -1,0 +1,42 @@
+/* The page's own rules: every selector starts with .pv- (R18), plus body and
+   :root. The components are styled by @toki/ui-web, never from here. */
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+.pv-page {
+  box-sizing: border-box;
+  max-width: 100%;
+  padding: 16px;
+}
+
+.pv-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+  margin-bottom: 24px;
+}
+
+.pv-title {
+  margin: 0;
+  font-size: 20px;
+}
+
+.pv-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.pv-control {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pv-select {
+  font: inherit;
+}
