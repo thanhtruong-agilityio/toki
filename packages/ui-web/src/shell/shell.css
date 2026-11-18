@@ -1,6 +1,4 @@
-/* The app shell: Tables C to E, the Focus rows of Table F and Table G of the
-   app shell spec (TOKI-015). The overlay and toast rows of Table F are added by
-   the step that builds them. */
+/* The app shell: Tables C to G of the app shell spec (TOKI-015). */
 
 .app {
   position: fixed;
@@ -462,6 +460,34 @@
   }
   [data-eff="focus"] .toolbar {
     padding: 0 20px 10px;
+  }
+}
+
+/* Table F, the overlay: from 720 to 1099 px a panel lies over the chat and
+   does not squeeze it (R19). grid-area:auto because an absolutely placed grid
+   item takes its grid area as the containing block, which is 0 px wide when the
+   panel is out of the grid. */
+@media (min-width: 720px) and (max-width: 1099px) {
+  .app[data-panel] .side {
+    grid-area: auto;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 6;
+    width: min(var(--shell-panel), 100%);
+    box-shadow: var(--pop);
+  }
+}
+
+/* Table F, the toast anchor beside an overlay panel (R23): from 956 px the
+   anchor leaves out the panel (Calm: its 360 px and the 12 px margin). */
+@media (min-width: 956px) and (max-width: 1099px) {
+  [data-eff="calm"] .app[data-panel] .toast-anchor {
+    margin-right: calc(var(--shell-panel) + 12px);
+  }
+  [data-eff="focus"] .app[data-panel] .toast-anchor {
+    margin-right: var(--shell-panel);
   }
 }
 

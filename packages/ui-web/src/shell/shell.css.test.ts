@@ -11,6 +11,8 @@ const tokensCss = resolve(
 
 const WIDE = "(min-width:720px)";
 const NARROW = "(max-width:719px)";
+const OVERLAY = "(min-width:720px)and(max-width:1099px)";
+const BESIDE = "(min-width:956px)and(max-width:1099px)";
 const MONO = '"JetBrains Mono",ui-monospace,"SF Mono",Menlo,monospace';
 
 type Row = { media: string | null; selector: string; decl: string };
@@ -24,15 +26,25 @@ const D = (selector: string, decl: string): Row => ({
   selector,
   decl,
 });
+const O = (selector: string, decl: string): Row => ({
+  media: OVERLAY,
+  selector,
+  decl,
+});
+const B = (selector: string, decl: string): Row => ({
+  media: BESIDE,
+  selector,
+  decl,
+});
 const G = (selector: string, decl: string): Row => ({
   media: NARROW,
   selector,
   decl,
 });
 
-// Tables C, D, E, the Focus rows of Table F and Table G of the app shell spec,
-// typed in (R16). Each step of the ticket appends the rows of its own tables;
-// the overlay and toast rows of Table F come with step 4. The keyframes of
+// Tables C to G of the app shell spec, typed in (R16), in the order of the
+// file: Tables C, D, E, Table F (Focus, the overlay, the toast anchor), G. The
+// keyframes of
 // Table G are read by postcss as a rule whose "media" is the animation name.
 const tables: Row[] = [
   // Table C
@@ -241,6 +253,19 @@ const tables: Row[] = [
   D('[data-eff="focus"] .sechead', "padding:14px 20px 8px"),
   D('[data-eff="focus"] .secbody', "padding:0 20px 20px"),
   D('[data-eff="focus"] .toolbar', "padding:0 20px 10px"),
+  // Table F, the overlay and the toast anchor beside it
+  O(
+    ".app[data-panel] .side",
+    "grid-area:auto; position:absolute; top:0; right:0; bottom:0; z-index:6; width:min(var(--shell-panel),100%); box-shadow:var(--pop)",
+  ),
+  B(
+    '[data-eff="calm"] .app[data-panel] .toast-anchor',
+    "margin-right:calc(var(--shell-panel) + 12px)",
+  ),
+  B(
+    '[data-eff="focus"] .app[data-panel] .toast-anchor',
+    "margin-right:var(--shell-panel)",
+  ),
   // Table G
   G(
     ".app",
@@ -311,7 +336,7 @@ const tables: Row[] = [
 
 const rules = readCss(file);
 
-describe("shell.css (R16, Tables C to E, the Focus rows of F, G)", () => {
+describe("shell.css (R16, Tables C to G)", () => {
   test("holds exactly the rows typed in, in order, and no other rule", () => {
     expect(rules.map((r) => [r.media, r.selector])).toEqual(
       tables.map((t) => [t.media, t.selector]),
@@ -332,8 +357,8 @@ describe("shell.css (R16, Tables C to E, the Focus rows of F, G)", () => {
       null,
       "(min-width:720px)",
       "(max-width:719px)",
-      "(min-width:720px)and(max-width:1099px)",
-      "(min-width:956px)and(max-width:1099px)",
+      OVERLAY,
+      BESIDE,
       "shell-slide-in",
     ]);
     for (const r of rules) expect(allowed.has(r.media), r.selector).toBe(true);
