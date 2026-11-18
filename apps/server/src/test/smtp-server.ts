@@ -18,6 +18,8 @@ export type Behaviour = {
   delayMs?: number;
   // Wait this long before answering only the DATA command (after the body).
   dataDelayMs?: number;
+  // Listen on this port instead of an ephemeral one.
+  listenPort?: number;
   // Passed to smtp-server: certificate, secure, disabledCommands, ...
   server?: SMTPServerOptions;
   // Accept this login only.
@@ -111,7 +113,9 @@ export async function startSmtp(behaviour: Behaviour = {}): Promise<TestSmtp> {
       sockets.delete(socket);
     });
   });
-  await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
+  await new Promise<void>((resolve) =>
+    server.listen(behaviour.listenPort ?? 0, "127.0.0.1", resolve),
+  );
   const address = server.server.address();
   const port = typeof address === "object" && address ? address.port : 0;
 
