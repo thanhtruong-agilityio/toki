@@ -6,6 +6,7 @@ import type {
   SoundName,
   StorageArea,
 } from "./index";
+import { createWebPlatform } from "./web/index";
 
 // Type-level: `pnpm typecheck` fails when a name is missing or its shape moves.
 type Members = keyof Platform;
@@ -25,6 +26,9 @@ const file: PickedFile = {
 };
 const area: Pick<StorageArea, "get" | "set" | "remove" | "clear"> | null = null;
 
+// R3: assignable with no cast; `pnpm typecheck` fails when the shapes drift.
+const web: Platform = createWebPlatform();
+
 describe("the interface types (R1)", () => {
   test("Platform has exactly four members", () => {
     // The list above is typed against keyof Platform: a fifth member makes
@@ -35,6 +39,7 @@ describe("the interface types (R1)", () => {
       files: true,
       sound: true,
     };
+    expect(Object.keys(web).sort()).toEqual([...members].sort());
     expect(Object.keys(all).sort()).toEqual([...members].sort());
     expect([states.length, sound, file.name, area]).toEqual([
       4,

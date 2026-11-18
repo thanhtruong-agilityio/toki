@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, test, vi } from "vitest";
+import { createWebPlatform } from "./index";
 import { createNotifications } from "./notifications";
 
 function fakeNotification(
@@ -65,5 +66,25 @@ describe("notifications.requestPermission (R11, R12)", () => {
     const request = fakeNotification("default", async () => "granted");
     createNotifications().permission();
     expect(request).not.toHaveBeenCalled();
+  });
+});
+
+describe("only requestPermission makes the browser ask (R11)", () => {
+  test("no other call of the package asks, and requestPermission asks once", async () => {
+    const request = fakeNotification("default", async () => "granted");
+    const platform = createWebPlatform({ sounds: { notification: "/x.mp3" } });
+    platform.notifications.permission();
+    platform.storage.device.set("a.b", "1");
+    platform.storage.device.get("a.b");
+    platform.storage.device.remove("a.b");
+    platform.storage.device.clear();
+    platform.storage.tab.set("a.b", "1");
+    platform.storage.tab.clear();
+    void platform.files.pick();
+    document.querySelector("input")?.dispatchEvent(new Event("cancel"));
+    await platform.sound.play("notification");
+    expect(request).not.toHaveBeenCalled();
+    await platform.notifications.requestPermission();
+    expect(request).toHaveBeenCalledTimes(1);
   });
 });
