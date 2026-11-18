@@ -32,6 +32,10 @@
     {
       "at": "2026-11-18T09:50:29Z",
       "stage": "check"
+    },
+    {
+      "at": "2026-11-18T09:56:56Z",
+      "stage": "ship"
     }
   ],
   "key": "TOKI-093",
@@ -44,7 +48,7 @@
   "spec_paths": [
     "docs/specs/2026-11-16-destructive-patterns-design.md"
   ],
-  "stage": "check",
+  "stage": "ship",
   "tier": "M",
   "verifier": {
     "result": "PASS",
