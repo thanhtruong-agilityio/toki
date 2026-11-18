@@ -6,12 +6,14 @@ import globals from "globals";
 import path from "node:path";
 import tseslint from "typescript-eslint";
 import clientCoreGlobals from "./tools/lint-rules/client-core-globals.js";
+import iconOnlyButtonName from "./tools/lint-rules/icon-only-button-name.js";
 import moduleEntry from "./tools/lint-rules/module-entry.js";
 import platformApis from "./tools/lint-rules/platform-apis.js";
 
-// The three local rules, used as toki/<name>.
+// The local rules, used as toki/<name>.
 const toki = {
   rules: {
+    "icon-only-button-name": iconOnlyButtonName,
     "client-core-globals": clientCoreGlobals,
     "module-entry": moduleEntry,
     "platform-apis": platformApis,
@@ -189,6 +191,22 @@ export default tseslint.config(
           message:
             "ui-web boundary: ui-web plays audio only through the platform package, not with an <audio> element.",
         },
+      ],
+    },
+  },
+  {
+    // Rule 4 (TOKI-012): a button that holds only icons has a name (D-075).
+    // The two places that write JSX in phase 1; a new app that writes JSX adds
+    // its path here. Inline configuration is off, so an eslint-disable comment
+    // cannot silence the rule (it is reported itself). Test files are outside.
+    files: ["packages/ui-web/src/**/*.tsx", "apps/web/src/**/*.tsx"],
+    ignores: [testFiles],
+    linterOptions: { noInlineConfig: true },
+    plugins: { toki },
+    rules: {
+      "toki/icon-only-button-name": [
+        "error",
+        { uiWebSrc: path.join(import.meta.dirname, "packages/ui-web/src") },
       ],
     },
   },
