@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
-# pnpm dev:reset:db - leave the development database with no table and no row.
+# pnpm dev:reset:db - leave the development database with its tables and no row.
 #
 # It drops and recreates only the development database, by name. The Postgres
 # server, its volume and every other database (the test database among them)
-# are left alone. It runs no migration.
+# are left alone. It then applies every migration (pnpm db:migrate), so the
+# tables exist and hold no row.
 #
 # With --check it runs every check and stops before it changes anything.
 
@@ -29,4 +30,9 @@ if ! printf '%s\n' \
   exit 1
 fi
 
-say "The development database '$database' is empty."
+if ! (cd "$REPO_ROOT" && pnpm db:migrate); then
+  fail "pnpm dev:reset:db failed: '$database' was wiped, but the migrations did not apply."
+  exit 1
+fi
+
+say "The development database '$database' has its tables and no row."

@@ -257,8 +257,10 @@ sql() { # sql DATABASE STATEMENT
   printf '%s\n' "$2" | in_postgres "$1" -At
 }
 
-table_count() { # tables in a database, outside the system schemas -> $count
-  number_or_stop "the tables of $1" "$(sql "$1" "SELECT count(*) FROM pg_tables WHERE schemaname NOT IN ('pg_catalog', 'information_schema');")"
+# The marker table stands for the data: dev:reset:db now re-applies the
+# migrations, so the tables of the application are there after a reset.
+table_count() { # marker tables in a database (0 or 1) -> $count
+  number_or_stop "the marker table of $1" "$(sql "$1" "SELECT count(*) FROM pg_tables WHERE tablename = 'toki_smoke_marker';")"
 }
 
 object_count() {
