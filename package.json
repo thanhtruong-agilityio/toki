@@ -14,7 +14,7 @@
     }
   },
   "scripts": {
-    "typecheck": "pnpm -r run typecheck",
+    "typecheck": "pnpm -r run typecheck && tsc --noEmit",
     "test": "vitest run && node --test tools/bundle-size/check.test.mjs",
     "test:e2e": "playwright test",
     "build": "pnpm -r --if-present run build",

@@ -31,6 +31,13 @@ The design is the spec (Layout, Design, Errors). This section records only what 
 - `.github/workflows/ci.yml`: new `e2e` job (install, `pnpm exec playwright install --with-deps chromium`, `pnpm test:e2e`).
 - `scripts/check-clock-use.sh` for R19 (grep run by hand in the PR, not wired into CI).
 
+### Added during build (verifier round 1)
+- `apps/server/test/root-env.ts`: reads and loads the root `.env`, used by both server Vitest configs and the global setup.
+- `apps/server/package.json`: scripts `test` and `test:unit`. `apps/server/tsconfig.json`: `include` also covers `test` and `*.config.ts`.
+- Root `tsconfig.json`: covers `e2e`, `playwright.config.ts` and `vitest.config.ts`; the root `typecheck` script runs `tsc --noEmit` after the workspace run (answers the `e2e/` risk above).
+- Root `package.json`: `vitest` 5.1.0 and `@playwright/test` 1.65.1 as exact devDependencies; `test` keeps the bundle-size test (`node --test tools/bundle-size/check.test.mjs`) that the second duplicate key had hidden. `pnpm-lock.yaml` follows.
+- `.gitignore`: `playwright-report`, `test-results`. `docs/plans/TOKI-008.state.json`: workflow state.
+
 ### Risks
 - NODE_ENV: Vitest sets it to `test` in its own process, so the guard reads the shell and the root `.env` value the way `scripts/guard.sh` does, not `process.env` alone.
 - Glob projects over a package with no config: confirm Vitest accepts a bare directory; if not, add a minimal `vitest.config.ts` per package.
