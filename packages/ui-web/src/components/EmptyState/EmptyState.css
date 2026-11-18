@@ -1,0 +1,31 @@
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 10px;
+  padding: 56px 24px;
+  color: var(--muted);
+  flex: 1;
+}
+
+.empty .eic {
+  width: 56px;
+  height: 56px;
+  border-radius: 18px;
+  background: var(--accent-soft);
+  color: var(--accent-text);
+  display: grid;
+  place-items: center;
+}
+
+.empty .eic .ic {
+  width: 26px;
+  height: 26px;
+}
+
+.empty b {
+  color: var(--ink);
+  font-size: 15px;
+}

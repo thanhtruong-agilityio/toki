@@ -1,0 +1,34 @@
+.av {
+  --s: var(--av);
+  width: var(--s);
+  height: var(--s);
+  flex: none;
+  border-radius: 30%;
+  display: inline-grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: calc(var(--s) * 0.38);
+  letter-spacing: 0.01em;
+  background: hsl(var(--h) var(--av-s) var(--av-l));
+  color: hsl(var(--h) var(--av-ts) var(--av-tl));
+  position: relative;
+  user-select: none;
+}
+
+.av .pd {
+  position: absolute;
+  right: -3px;
+  bottom: -3px;
+}
+
+.pdw {
+  position: relative;
+  display: inline-grid;
+  flex: none;
+}
+
+.pdw .pd {
+  position: absolute;
+  right: -3px;
+  bottom: -3px;
+}

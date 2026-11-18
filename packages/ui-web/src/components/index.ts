@@ -6,3 +6,7 @@ export * from "./Field";
 export * from "./Select";
 export * from "./Tag";
 export * from "./Badge";
+export * from "./Avatar";
+export * from "./PresenceDot";
+export * from "./EmptyState";
+export * from "./Toast";
