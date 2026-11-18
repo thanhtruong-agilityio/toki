@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -309,25 +309,46 @@ describe("examples (R9)", () => {
     expect(new Set(examples.map((e) => e.id)).size).toBe(5);
   });
 
-  test.each(examples.map((e) => [e.id, e] as const))(
-    "%s opens from its first button and closes on every reason",
-    async (_id, example) => {
-      const user = userEvent.setup();
-      render(example.element);
-      expect(document.querySelector(".scrim")).toBeNull();
-      const opener = screen.getAllByRole("button")[0] as HTMLElement;
+  test.each(
+    examples.filter((e) => e.id !== "busy").map((e) => [e.id, e] as const),
+  )("%s closes on Esc, an outside press and Cancel", async (_id, example) => {
+    const user = userEvent.setup();
+    render(example.element);
+    expect(document.querySelector(".scrim")).toBeNull();
+    const opener = screen.getAllByRole("button")[0] as HTMLElement;
+    for (const how of ["escape", "outside", "cancel"] as const) {
       await user.click(opener);
       expect(panel()).toBeInTheDocument();
       expect(panel()).toHaveClass("cfm");
-      fireEvent.keyDown(panel(), { key: "Escape" });
-      if (example.id === "busy") {
-        // busy ignores Esc and outside presses on purpose
-        expect(panel()).toBeInTheDocument();
-      } else {
-        expect(document.querySelector(".scrim")).toBeNull();
-      }
-    },
-  );
+      if (how === "escape") await user.keyboard("{Escape}");
+      if (how === "outside")
+        await user.click(document.querySelector(".scrim") as HTMLElement);
+      if (how === "cancel")
+        await user.click(screen.getByRole("button", { name: "Cancel" }));
+      expect(document.querySelector(".scrim")).toBeNull();
+    }
+  });
+
+  test("the busy demo ignores Esc while busy and can be left after 3000 ms", async () => {
+    vi.useFakeTimers({ shouldAdvanceTime: true });
+    try {
+      const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+      const busy = examples.find((e) => e.id === "busy")!;
+      render(busy.element);
+      await user.click(screen.getAllByRole("button")[0] as HTMLElement);
+      expect(screen.getByRole("button", { name: "Cancel" })).toBeDisabled();
+      await user.keyboard("{Escape}");
+      expect(panel()).toBeInTheDocument();
+      await act(async () => {
+        vi.advanceTimersByTime(3000);
+      });
+      expect(screen.getByRole("button", { name: "Cancel" })).toBeEnabled();
+      await user.click(screen.getByRole("button", { name: "Cancel" }));
+      expect(document.querySelector(".scrim")).toBeNull();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
 
   test("the long target demo holds a target of 120 characters", async () => {
     const user = userEvent.setup();

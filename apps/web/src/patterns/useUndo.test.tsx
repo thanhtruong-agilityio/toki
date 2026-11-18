@@ -237,6 +237,14 @@ describe("key (R15)", () => {
     expect(screen.getByText("again")).toBeInTheDocument();
   });
 
+  it("60 calls with different keys keep working, and the latest key is still replaced", async () => {
+    setup();
+    for (let i = 0; i < 60; i++) await start({ text: `t${i}`, key: `k${i}` });
+    await start({ text: "again", key: "k59" });
+    expect(screen.queryByText("t59")).toBeNull();
+    expect(screen.getByText("again")).toBeInTheDocument();
+  });
+
   it("the map keeps the 50 most recent keys", () => {
     const map = new Map<string, number>();
     for (let i = 0; i < 60; i++) rememberToastKey(map, `k${i}`, i);
