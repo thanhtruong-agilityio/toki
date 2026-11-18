@@ -1,0 +1,115 @@
+.lbl {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-2);
+  margin: 12px 0 4px;
+}
+.inp {
+  height: 36px;
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  padding: 0 10px;
+  color: var(--ink);
+  outline: 0;
+}
+.inp:focus,
+.sel:focus,
+textarea.inp:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+textarea.inp {
+  height: auto;
+  padding: 8px 10px;
+  resize: vertical;
+}
+.inp.code {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 20px;
+  letter-spacing: 0.4em;
+  height: 46px;
+  text-align: center;
+}
+.inp::placeholder {
+  color: var(--muted);
+}
+.sel {
+  height: 34px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  padding: 0 10px;
+  color: var(--ink);
+}
+.sel.wide {
+  width: 100%;
+}
+.field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  padding: 0 10px;
+  color: var(--muted);
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+.field:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.field input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  outline: 0;
+  color: var(--ink);
+}
+.field input::placeholder {
+  color: var(--muted);
+}
+.gerr {
+  margin-top: 12px;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--danger-soft);
+  color: var(--danger);
+  font-size: 12.5px;
+}
+.inp.invalid,
+.sel.invalid,
+.field.invalid {
+  border-color: var(--danger);
+}
+.inp.invalid:focus,
+.sel.invalid:focus,
+.field.invalid:focus-within {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 3px var(--danger-soft);
+}
+.inp[disabled],
+.sel[disabled],
+.field.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.inp[readonly],
+.field.readonly {
+  background: var(--surface-2);
+}
+
+@media (max-width: 719px) {
+  .inp,
+  .sel,
+  .field {
+    min-height: 40px;
+  }
+}
