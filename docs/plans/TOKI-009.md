@@ -60,4 +60,4 @@ Choices the spec leaves to the builder:
 
 ## Out of scope
 
-Everything in the spec's Scope, Out list. No change to `apps/web`; the R9 hand check adds and removes one line and leaves no trace.
+Everything in the spec's Scope, Out list. No change to `apps/web`; there is no hand check that touches it.
