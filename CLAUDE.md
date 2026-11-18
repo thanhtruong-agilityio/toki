@@ -130,8 +130,11 @@ DRY_RUN=1 bash .github/scripts/spec-ticket.sh docs/specs/<file>.md
 # Test the Claude hooks (branch slug, lock file, format): feeds each hook a tool call and checks the exit code
 bash .claude/hooks/hooks.test.sh
 
-# Test the lint rule that requires a name on an icon-only button (the 36 cases of TOKI-012)
+# Test the lint rules: the name on an icon-only button (the 36 cases of TOKI-012) and the import ban on the web implementation of platform (TOKI-018)
 pnpm test:lint-rules
+
+# Test the platform package (storage, notifications, file picking, sound)
+pnpm --filter @toki/platform test
 
 # Test the base components of ui-web
 pnpm --filter @toki/ui-web test

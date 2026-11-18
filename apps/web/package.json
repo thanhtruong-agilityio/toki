@@ -11,6 +11,7 @@
   "dependencies": {
     "@tanstack/react-query": "^5.107.1",
     "@tanstack/react-router": "^1.170.46",
+    "@toki/platform": "workspace:*",
     "@toki/shared": "workspace:*",
     "@toki/tokens": "workspace:*",
     "@toki/ui-web": "workspace:*",

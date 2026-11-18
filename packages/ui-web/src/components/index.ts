@@ -10,3 +10,6 @@ export * from "./Avatar";
 export * from "./PresenceDot";
 export * from "./EmptyState";
 export * from "./Toast";
+export * from "./Menu";
+export * from "./Modal";
+export * from "./Sheet";
