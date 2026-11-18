@@ -1,5 +1,6 @@
 import {
   createMemoryHistory,
+  createRootRoute,
   createRouter,
   RouterProvider,
 } from "@tanstack/react-router";
@@ -9,6 +10,8 @@ import { act, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, test, vi } from "vitest";
 import { routeTree } from "../router";
+import type { Role, SectionRow } from "../shell/sections";
+import { AppShellRoute } from "./app-layout";
 
 async function mount(language: Language, path = "/") {
   const router = createRouter({
@@ -74,5 +77,62 @@ describe("the layout route in Vietnamese (R31)", () => {
     const nav = screen.getByRole("navigation");
     expect(nav.querySelector("a.ni")).toHaveTextContent("Trang chủ");
     expect(nav.querySelector("a.nt")).toHaveTextContent("Trang chủ");
+  });
+});
+
+describe("the layout route for a Member and for an Admin (R36)", () => {
+  const rows: SectionRow[] = [
+    row("home"),
+    row("activity"),
+    row("people"),
+    { ...row("admin"), roles: ["admin"] },
+  ];
+  function row(id: string): SectionRow {
+    return {
+      id,
+      icon: "home",
+      labelKey: "nav.home",
+      to: `/${id}`,
+      match: () => false,
+      tab: true,
+    };
+  }
+  async function mountWith(role: Role | undefined) {
+    const root = createRootRoute({
+      component: () => <AppShellRoute role={role} rows={rows} />,
+    });
+    const router = createRouter({
+      routeTree: root,
+      history: createMemoryHistory({ initialEntries: ["/"] }),
+    });
+    await act(async () => {
+      render(
+        <I18nProvider language="en">
+          <RouterProvider router={router} />
+        </I18nProvider>,
+      );
+    });
+    await screen.findByTestId("shell");
+  }
+  const ids = () =>
+    [...document.querySelectorAll<HTMLElement>("a.ni")].map(
+      (a) => a.dataset.id,
+    );
+
+  test("a Member sees no Admin item", async () => {
+    await mountWith("member");
+    expect(ids()).toEqual(["home", "activity", "people"]);
+    expect(document.querySelector('a.ni[data-id="admin"]')).toBeNull();
+  });
+
+  test("an Admin sees the Admin item", async () => {
+    await mountWith("admin");
+    expect(ids()).toEqual(["home", "activity", "people", "admin"]);
+    expect(document.querySelector('a.ni[data-id="admin"]')).not.toBeNull();
+  });
+
+  test("with no known role the rows with a role are not drawn", async () => {
+    await mountWith(undefined);
+    expect(ids()).toEqual(["home", "activity", "people"]);
   });
 });

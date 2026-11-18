@@ -35,4 +35,10 @@ describe("the shell fixture entry (R32)", () => {
     expect(html).toContain('src="/src/shell-fixture/main.tsx"');
     expect(html).not.toMatch(/<link[^>]+stylesheet/);
   });
+
+  test("the fixture's made-up data holds the More rows (R32)", () => {
+    const fixture = readFileSync(resolve(dir, "Fixture.tsx"), "utf8");
+    expect(fixture).toMatch(/MORE_ROWS = \[[^\]]*"Preferences"[^\]]*\]/);
+    expect(fixture).toContain('data-testid="more-rows"');
+  });
 });

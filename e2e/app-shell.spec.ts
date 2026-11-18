@@ -929,3 +929,65 @@ for (const look of LOOKS) {
     expect(active.label).toBe("Details");
   });
 }
+
+// ---------------------------------------------------------------------------
+// R11: which button of the side panel shows. The back button is shown under
+// 720 px and the close button from 720 px; the hidden one is `display:none`.
+// ---------------------------------------------------------------------------
+
+for (const look of LOOKS) {
+  for (const [width, shown, hidden] of [
+    [719, ".back-side", ".closex"],
+    [720, ".closex", ".back-side"],
+  ] as const) {
+    test(`R11 ${look} ${width}: ${shown} shows, ${hidden} does not, and the shown one closes the panel`, async ({
+      page,
+    }) => {
+      await open(page, look, width, heightFor(width), {
+        [width < 720 ? "pane" : "panel"]: width < 720 ? "side" : "1",
+      });
+      await expect(page.locator(".side")).toBeVisible();
+      expect((await box(page, `.side ${shown}`)).display).not.toBe("none");
+      expect((await box(page, `.side ${hidden}`)).display).toBe("none");
+      await expect(page.locator(`.side ${shown}`)).toBeVisible();
+      await expect(page.locator(`.side ${hidden}`)).toBeHidden();
+      await page.locator(`.side ${shown}`).click();
+      await expect(page.locator(".side")).toHaveCount(0);
+    });
+  }
+}
+
+// ---------------------------------------------------------------------------
+// R23: when `data-chat-open` moves the bar out (narrow, `?pane=main`), the toasts
+// come down to 14 px above the composer, or to 20 px from the bottom of the window
+// when nothing is registered (TOKI-013 R27, R28 e, `toastPlace.ts`).
+// ---------------------------------------------------------------------------
+
+for (const look of LOOKS) {
+  test(`R23 ${look} 360: the bar is out, the toasts come down to the composer`, async ({
+    page,
+  }) => {
+    await openWithToasts(page, look, 360, 560, { pane: "main" });
+    const nav = await box(page, ".nav");
+    expect(nav.y, "the bar is out of the window").toBeGreaterThanOrEqual(560);
+    const composer = await box(page, '[data-testid="composer"]');
+    const toasts = await boxes(page, ".toast");
+    const lowest = Math.max(...toasts.map((t) => t.bottom));
+    expectNear(lowest, composer.y - 14, "lowest toast bottom against composer");
+    expect(composer.bottom).toBeGreaterThan(560 - 2);
+  });
+
+  test(`R23 ${look} 360: the bar is out and no composer, the toasts stand 20 px from the bottom`, async ({
+    page,
+  }) => {
+    await openWithToasts(page, look, 360, 560, {
+      pane: "main",
+      section: "activity",
+    });
+    expect((await box(page, ".nav")).y).toBeGreaterThanOrEqual(560);
+    await expect(page.locator('[data-testid="composer"]')).toHaveCount(0);
+    const toasts = await boxes(page, ".toast");
+    const lowest = Math.max(...toasts.map((t) => t.bottom));
+    expectNear(lowest, 560 - 20, "lowest toast bottom against the window");
+  });
+}

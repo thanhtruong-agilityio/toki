@@ -62,6 +62,10 @@ const PEOPLE = [
   "Sana Haddad",
 ];
 
+// The rows of the More sheet, made up (R32). The sheet itself is TOKI-092's; the
+// fixture draws a plain list when the More tab is pressed.
+export const MORE_ROWS = ["Search", "People", "Preferences", "Admin"];
+
 const LONG_TOAST =
   "A made-up message that is long enough to fill the whole width of the toast region and wrap over several lines, so that the box is as tall as a toast gets.";
 
@@ -300,6 +304,24 @@ export function Fixture({ params }: { params: URLSearchParams }) {
       panel={panel}
       panelLabel="Details"
     >
+      {moreOpen && (
+        <ul
+          data-testid="more-rows"
+          style={{
+            position: "absolute",
+            right: 8,
+            bottom: 8,
+            zIndex: 5,
+            margin: 0,
+            padding: 8,
+            listStyle: "none",
+          }}
+        >
+          {MORE_ROWS.map((text) => (
+            <li key={text}>{text}</li>
+          ))}
+        </ul>
+      )}
       <ToastDemo enabled={params.get("toasts") === "1"} />
       {main}
     </AppShell>

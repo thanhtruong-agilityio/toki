@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, test } from "vitest";
@@ -54,7 +54,16 @@ describe("utilities.css (R26, Table H)", () => {
   });
 
   test("no component imports it", () => {
-    const entry = readFileSync(resolve(root, "src/index.ts"), "utf8");
-    expect(entry).not.toMatch(/utilities\.css/);
+    const files = readdirSync(resolve(root, "src"), { recursive: true })
+      .map(String)
+      .filter((f) => /\.(tsx?|css)$/.test(f) && !/\.test\.tsx?$/.test(f));
+    expect(files).toContain("index.ts");
+    for (const file of files) {
+      if (file === "styles/utilities.css") continue;
+      expect(
+        readFileSync(resolve(root, "src", file), "utf8"),
+        `${file} must not mention utilities.css`,
+      ).not.toMatch(/utilities\.css/);
+    }
   });
 });

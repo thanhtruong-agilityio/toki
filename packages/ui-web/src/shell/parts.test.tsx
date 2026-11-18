@@ -1,7 +1,15 @@
 import { createRef } from "react";
 import { render, screen } from "@testing-library/react";
 import { describe, expect, test } from "vitest";
-import { SearchBox, UserCard, WorkspaceHeader } from "./index";
+import {
+  AppShell,
+  BottomTabs,
+  SearchBox,
+  SidePanel,
+  UserCard,
+  WorkspaceHeader,
+  type NavSection,
+} from "./index";
 
 describe("ref and className (R34)", () => {
   test("WorkspaceHeader", () => {
@@ -54,6 +62,46 @@ describe("no text of their own (R2)", () => {
         <SearchBox search={{ label: "", onOpen: () => {} }} />
         <UserCard account={{ label: "", name: "", hue: 0 }} />
       </>,
+    );
+    expect(container.textContent).toBe("");
+  });
+});
+
+describe("AppShell and BottomTabs with empty text props (R2)", () => {
+  const sections: NavSection[] = [
+    { id: "a", icon: "home", label: "", href: "/", tab: true },
+    { id: "b", icon: "bell", label: "", href: "/b", more: true },
+  ];
+  test("AppShell renders no text", () => {
+    const { container } = render(
+      <AppShell
+        sections={sections}
+        currentSection="a"
+        labels={{ mainNavigation: "", conversations: "" }}
+        workspace={{ name: "" }}
+        search={{ label: "", onOpen: () => {} }}
+        account={{ label: "", name: "", hue: 0 }}
+        list={null}
+        moreTab={{ label: "", open: false, onOpen: () => {} }}
+        panel={
+          <SidePanel
+            title=""
+            labels={{ back: "", close: "" }}
+            onClose={() => {}}
+          />
+        }
+        panelLabel=""
+      />,
+    );
+    expect(container.textContent).toBe("");
+  });
+  test("BottomTabs renders no text", () => {
+    const { container } = render(
+      <BottomTabs
+        sections={sections}
+        currentSection="a"
+        moreTab={{ label: "", open: false, onOpen: () => {} }}
+      />,
     );
     expect(container.textContent).toBe("");
   });
