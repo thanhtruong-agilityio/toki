@@ -24,19 +24,23 @@
     {
       "at": "2026-11-18T09:41:07Z",
       "stage": "approve"
+    },
+    {
+      "at": "2026-11-18T09:42:17Z",
+      "stage": "build"
     }
   ],
   "key": "TOKI-093",
   "main_sha": "a246ca0918f4971b8425bbcd9d982188e2639377",
   "metrics": {},
-  "mode": null,
+  "mode": "auto-to-check",
   "plan_approved": true,
   "plan_hash": "507f846350a8a4c604bb14ed046a74175eb644fd8d456b055b8dadc939111371",
   "spec_commit": null,
   "spec_paths": [
     "docs/specs/2026-11-16-destructive-patterns-design.md"
   ],
-  "stage": "approve",
+  "stage": "build",
   "tier": "M",
   "verifier": {
     "result": null,
