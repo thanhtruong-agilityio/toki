@@ -3,6 +3,7 @@ import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 import * as components from "./index";
 import * as entry from "../index";
+import * as appearance from "../appearance";
 import type {
   DialogCloseReason,
   MenuCloseReason,
@@ -147,7 +148,10 @@ describe("exports (R1, R2)", () => {
     expect(
       Object.keys(components).filter((name) => name.endsWith("Icon")),
     ).toEqual([]);
-    const extra = Object.keys(entry).filter((name) => !(name in components));
+    // The shell and appearance exports come from their own modules (TOKI-015 R1).
+    const extra = Object.keys(entry).filter(
+      (name) => !(name in components) && !(name in appearance),
+    );
     expect(
       extra.filter((name) => !name.endsWith("Icon") && name !== "iconNames"),
     ).toEqual([]);

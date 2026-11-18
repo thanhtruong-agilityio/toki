@@ -8,6 +8,7 @@
   "exports": {
     ".": "./src/index.ts",
     "./base.css": "./src/styles/base.css",
+    "./utilities.css": "./src/styles/utilities.css",
     "./examples": "./src/examples.ts"
   },
   "scripts": {

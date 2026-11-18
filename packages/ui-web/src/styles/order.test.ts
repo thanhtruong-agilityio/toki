@@ -15,6 +15,8 @@ const imports = [
 
 const tokens = "@toki/tokens/tokens.css";
 const base = "@toki/ui-web/base.css";
+const app = "./app.css";
+const utilities = "@toki/ui-web/utilities.css";
 
 describe("the style imports of apps/web/src/main.tsx (R29)", () => {
   test("tokens.css then base.css are imported", () => {
@@ -30,8 +32,23 @@ describe("the style imports of apps/web/src/main.tsx (R29)", () => {
     if (fonts !== -1) expect(fonts).toBeLessThan(imports.indexOf(tokens));
   });
 
+  test("app.css comes right after base.css and utilities.css after it (R26, R27)", () => {
+    expect(imports.indexOf(app)).toBe(imports.indexOf(base) + 1);
+    expect(imports.indexOf(utilities)).toBe(imports.indexOf(app) + 1);
+  });
+
+  test("applyAppearance is imported on one line, after the style sheets (R28)", () => {
+    const i = imports.indexOf("@toki/ui-web");
+    expect(i).toBeGreaterThan(imports.indexOf(utilities));
+  });
+
   test("no import that is not a style sheet precedes one of them", () => {
-    const lastStyle = Math.max(imports.indexOf(tokens), imports.indexOf(base));
+    const lastStyle = Math.max(
+      imports.indexOf(tokens),
+      imports.indexOf(base),
+      imports.indexOf(app),
+      imports.indexOf(utilities),
+    );
     expect(lastStyle).toBeGreaterThanOrEqual(0);
     const before = imports.slice(0, lastStyle + 1);
     expect(before.filter((source) => !source.endsWith(".css"))).toEqual([]);
