@@ -1,6 +1,6 @@
 import { forwardRef, type ComponentPropsWithoutRef } from "react";
 import { cx } from "../../internal/cx";
-import { useFieldFrame } from "../Field/FieldFrame";
+import { hasLabelText, useFieldFrame } from "../Field/FieldFrame";
 import "../Field/Field.css";
 
 export type SelectOption = { value: string; label: string; disabled?: boolean };
@@ -42,7 +42,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     );
     return (
       <>
-        {label === undefined ? null : (
+        {!hasLabelText(label) ? null : (
           <label className="lbl" htmlFor={frame.id}>
             {label}
           </label>

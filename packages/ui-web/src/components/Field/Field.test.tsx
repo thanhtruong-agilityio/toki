@@ -58,6 +58,14 @@ describe("Field form (a): label and control (R15)", () => {
   });
 });
 
+describe("Field with a blank label", () => {
+  test.each(["", "   "])("label %j renders no empty label element", (label) => {
+    const { container } = render(<Field label={label} aria-label="Named" />);
+    expect(container.querySelector("label")).toBeNull();
+    expect(screen.getByRole("textbox", { name: "Named" })).toBeInTheDocument();
+  });
+});
+
 describe("Field form (c): a name with no visible label (R15)", () => {
   test("input alone, named by aria-label, no label element", () => {
     const { container } = render(<Field aria-label="Custom status" />);

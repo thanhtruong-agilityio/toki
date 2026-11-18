@@ -181,9 +181,17 @@ export default {
       JSXElement(node) {
         const opening = node.openingElement;
         const name = opening.name;
-        if (name.type !== "JSXIdentifier") return;
-        const kind =
-          name.name === "button" ? "button" : bindings.get(name.name);
+        let kind;
+        if (name.type === "JSXIdentifier") {
+          kind = name.name === "button" ? "button" : bindings.get(name.name);
+        } else if (
+          name.type === "JSXMemberExpression" &&
+          name.object.type === "JSXIdentifier" &&
+          namespaces.has(name.object.name)
+        ) {
+          // <UI.Button> and <UI.IconButton> through a namespace import.
+          kind = kindOf(name.property.name);
+        }
         if (kind !== "button" && kind !== "iconbutton") return;
         const attributes = opening.attributes;
         if (attributes.some((a) => a.type === "JSXSpreadAttribute")) return;

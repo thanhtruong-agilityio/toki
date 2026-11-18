@@ -167,12 +167,36 @@ const cases = [
 const FILE = "packages/ui-web/src/components/Case/Case.tsx";
 const ruleMessages = (messages) => messages.filter((m) => m.ruleId === RULE);
 
+// Cases beyond Table K: Button and IconButton reached through a namespace import.
+const extra = [
+  [
+    "E1",
+    `import * as UI from "@toki/ui-web";\nexport const a = <UI.IconButton icon="x" />;`,
+    true,
+  ],
+  [
+    "E2",
+    `import * as UI from "@toki/ui-web";\nexport const a = <UI.Button><UI.XIcon /></UI.Button>;`,
+    true,
+  ],
+  [
+    "E3",
+    `import * as UI from "@toki/ui-web";\nexport const a = <UI.IconButton icon="x" label="Close" />;`,
+    false,
+  ],
+  [
+    "E4",
+    `import * as UI from "other-lib";\nexport const a = <UI.Button><UI.XIcon /></UI.Button>;`,
+    false,
+  ],
+];
+
 test("Table K has 36 cases, 21 reported and 15 not", () => {
   assert.equal(cases.length, 36);
   assert.equal(cases.filter(([, , v]) => v).length, 21);
 });
 
-for (const [id, code, reported] of cases) {
+for (const [id, code, reported] of [...cases, ...extra]) {
   test(`${id} is ${reported ? "reported" : "not reported"}`, async () => {
     const [result] = await eslint.lintText(code, {
       filePath: path.join(root, FILE),

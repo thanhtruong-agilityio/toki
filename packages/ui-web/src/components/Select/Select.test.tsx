@@ -101,6 +101,14 @@ describe("Select (R16, R17)", () => {
     expect(screen.getByRole("combobox")).not.toHaveAttribute("aria-invalid");
   });
 
+  test.each(["", "   "])("label %j renders no empty label element", (label) => {
+    const { container } = render(
+      <Select label={label} aria-label="Named" options={options} />,
+    );
+    expect(container.querySelector("label")).toBeNull();
+    expect(screen.getByRole("combobox", { name: "Named" })).toBeInTheDocument();
+  });
+
   test("type error: no name at all (R16)", () => {
     // @ts-expect-error neither label nor aria-label
     const a = <Select options={options} />;

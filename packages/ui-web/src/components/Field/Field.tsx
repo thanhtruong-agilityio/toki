@@ -5,7 +5,7 @@ import {
 } from "react";
 import { cx } from "../../internal/cx";
 import { Icon, type IconName } from "../../internal/icon-stand-in";
-import { useFieldFrame } from "./FieldFrame";
+import { hasLabelText, useFieldFrame } from "./FieldFrame";
 import "./Field.css";
 
 export const fieldVariants = ["default", "code", "search"] as const;
@@ -122,7 +122,7 @@ export const Field = forwardRef<Element, FieldProps>(
     );
     return (
       <>
-        {label === undefined ? null : (
+        {!hasLabelText(label) ? null : (
           <label className="lbl" htmlFor={frame.id}>
             {label}
           </label>
