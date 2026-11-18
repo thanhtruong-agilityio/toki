@@ -6,26 +6,19 @@ import { useOnlineGate } from "./useOnlineGate";
 
 afterEach(() => setConnectionCheck(null));
 
-function Probe({ kind }: { kind?: "action" | "undo" }) {
-  const { ensureOnline } = useOnlineGate();
-  return (
-    <button
-      onClick={() => ((window as { __r?: boolean }).__r = ensureOnline(kind))}
-    >
-      go
-    </button>
-  );
-}
-
 function press(kind?: "action" | "undo") {
-  (window as { __r?: boolean }).__r = undefined;
+  let result: boolean | undefined;
+  function Probe() {
+    const { ensureOnline } = useOnlineGate();
+    return <button onClick={() => (result = ensureOnline(kind))}>go</button>;
+  }
   render(
     <Providers>
-      <Probe kind={kind} />
+      <Probe />
     </Providers>,
   );
   act(() => screen.getByRole("button", { name: "go" }).click());
-  return (window as { __r?: boolean }).__r;
+  return result;
 }
 
 describe("useOnlineGate (R17)", () => {

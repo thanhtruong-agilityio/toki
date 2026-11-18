@@ -229,6 +229,33 @@ describe("key (R15)", () => {
     expect(screen.getByText("fifth")).toBeInTheDocument();
   });
 
+  it("the call that started last wins when two calls with one key finish out of order", async () => {
+    setup();
+    let finishFirst!: () => void;
+    let finishSecond!: () => void;
+    await act(async () => {
+      void run({
+        action: "pinMessage",
+        text: "Pinned",
+        key: "m1",
+        perform: () => new Promise<void>((r) => (finishFirst = r)),
+        undo: vi.fn(),
+      });
+      void run({
+        action: "unpinMessage",
+        text: "Unpinned",
+        key: "m1",
+        perform: () => new Promise<void>((r) => (finishSecond = r)),
+        undo: vi.fn(),
+      });
+    });
+    // The later call answers first, then the earlier one.
+    await act(async () => finishSecond());
+    await act(async () => finishFirst());
+    expect(screen.getByText("Unpinned")).toBeInTheDocument();
+    expect(screen.queryByText("Pinned")).toBeNull();
+  });
+
   it("an entry whose toast has expired causes no error when the key comes again", async () => {
     setup();
     await start({ text: "first", key: "m1" });

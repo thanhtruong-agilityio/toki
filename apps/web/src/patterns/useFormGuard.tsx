@@ -23,7 +23,8 @@ export type FormGuardOptions = {
 export type FormGuard = {
   onRequestClose: (reason: DialogCloseReason) => void;
   requestClose: () => void;
-  discardDialog: ReactElement | null;
+  // Always an element: it stays mounted so that closing it can return focus.
+  discardDialog: ReactElement;
   trackFocus: (event: FocusEvent<HTMLElement>) => void;
 };
 

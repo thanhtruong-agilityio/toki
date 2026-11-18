@@ -1,4 +1,10 @@
-import { useId, useLayoutEffect, useRef, type RefObject } from "react";
+import {
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useRef,
+  type RefObject,
+} from "react";
 import { Button } from "../Button/Button";
 import { Modal } from "../Modal/Modal";
 import "./ConfirmDialog.css";
@@ -44,7 +50,7 @@ export function ConfirmDialog({
   const blank = target.trim() === "";
   // A throw in render at the moment of a destructive action would blank the
   // page in production, so only development and test throw (R5).
-  if (blank && import.meta.env.DEV) throw new Error(BLANK_TARGET);
+  if (blank && import.meta.env?.DEV) throw new Error(BLANK_TARGET);
 
   const descriptionId = useId();
   const cancelRef = useRef<HTMLButtonElement>(null);
@@ -56,10 +62,12 @@ export function ConfirmDialog({
     if (busy && open) panelRef.current?.focus();
   }, [busy, open]);
 
-  if (blank) {
-    console.error(BLANK_TARGET);
-    return null;
-  }
+  // Once per blank target, not on every render.
+  useEffect(() => {
+    if (blank) console.error(BLANK_TARGET);
+  }, [blank]);
+
+  if (blank) return null;
 
   // `title` here is the heading of the Modal, not the HTML attribute that the
   // source test of TOKI-012 bans (it matches the text of the source, not the DOM).

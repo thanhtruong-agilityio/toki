@@ -1,6 +1,6 @@
 import { useTranslation } from "@toki/i18n/react";
 import { useToasts, type ToastId } from "@toki/ui-web";
-import { useCallback, useRef } from "react";
+import { useCallback, useLayoutEffect, useRef } from "react";
 import { actionPatterns, type UndoActionId } from "./actions";
 import { useOnlineGate } from "./useOnlineGate";
 
@@ -44,8 +44,16 @@ export function useUndo(): { run: (args: UndoRun) => Promise<UndoOutcome> } {
   // `run` keeps its identity and holds no state of the component that called it,
   // so the latest values live in a ref and an Undo outlives that component (R16).
   const latest = useRef({ toasts, t, ensureOnline });
-  latest.current = { toasts, t, ensureOnline };
+  // Written on commit, not during render, so a render that React discards
+  // cannot change what `run` uses.
+  useLayoutEffect(() => {
+    latest.current = { toasts, t, ensureOnline };
+  });
   const keys = useRef(new Map<string, ToastId>());
+  // The number of the latest call of each key, taken when `run` is called. The
+  // call that started last owns the key, whatever order the requests finish in.
+  const calls = useRef(new Map<string, number>());
+  const counter = useRef(0);
 
   const run = useCallback((args: UndoRun): Promise<UndoOutcome> => {
     const row = (
@@ -68,6 +76,8 @@ export function useUndo(): { run: (args: UndoRun) => Promise<UndoOutcome> } {
   }: UndoRun): Promise<UndoOutcome> {
     const { ensureOnline } = latest.current;
     if (!ensureOnline()) return "blocked";
+    const mine = ++counter.current;
+    if (key !== undefined) rememberToastKey(calls.current, key, mine);
 
     try {
       await perform();
@@ -78,6 +88,9 @@ export function useUndo(): { run: (args: UndoRun) => Promise<UndoOutcome> } {
     }
 
     const { toasts, t } = latest.current;
+    // A later call with the same key has started: its state is the current one,
+    // so an Undo for this older call would reverse the wrong thing (R15).
+    if (key !== undefined && calls.current.get(key) !== mine) return "done";
     const earlier = key === undefined ? undefined : keys.current.get(key);
     if (earlier !== undefined) toasts.dismiss(earlier);
 
