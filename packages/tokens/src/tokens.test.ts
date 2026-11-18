@@ -1,5 +1,6 @@
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { toCss } from "./css";
 import {
@@ -310,6 +311,15 @@ describe("R7 getTheme", () => {
       }
     }
   }
+});
+
+describe("getTheme isolation", () => {
+  it("does not share shadow layers with the tokens", () => {
+    const theme = getTheme("calm", "teal");
+    theme.shadow.push({ x: 1, y: 1, blur: 1, spread: 1, color: "#000000" });
+    theme.pop[0]!.blur = 99;
+    expect(shadows.calm).toEqual(tableE.calm);
+  });
 });
 
 describe("R8 values usable in React Native", () => {
@@ -682,7 +692,7 @@ describe("tokens.css", () => {
 });
 
 describe("package files", () => {
-  const root = new URL("..", import.meta.url).pathname;
+  const root = fileURLToPath(new URL("..", import.meta.url));
   const pkg = JSON.parse(readFileSync(join(root, "package.json"), "utf8")) as {
     exports: Record<string, string>;
     dependencies?: unknown;

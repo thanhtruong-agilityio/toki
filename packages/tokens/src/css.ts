@@ -1,5 +1,11 @@
 import { getTheme, type Theme } from "./theme";
-import { accents, densities, densityValues, looks, type Look } from "./tokens";
+import {
+  accents,
+  densityValues,
+  looks,
+  type Density,
+  type Look,
+} from "./tokens";
 
 // Builds the text of tokens.css from the token objects. Pure: no file access.
 // The order of the blocks is fixed (see the spec, Design): Calm, the device
@@ -79,13 +85,21 @@ const accentNames = [
   "--accent-soft",
   "--accent-text",
 ];
-const densityNames = ["--av", "--gap", "--row"];
 
 function lookLines(look: Look, indent: string): string[] {
   const scheme = look === "calm" ? "light" : "dark";
   return [
     `${indent}color-scheme: ${scheme};`,
     ...declarations(getTheme(look, "teal"), allNames, indent),
+  ];
+}
+
+function densityLines(density: Density, indent: string): string[] {
+  const v = densityValues[density];
+  return [
+    `${indent}--av: ${v.avatarSize}px;`,
+    `${indent}--gap: ${v.messageGap}px;`,
+    `${indent}--row: ${v.rowHeight}px;`,
   ];
 }
 
@@ -111,14 +125,9 @@ export function toCss(): string {
       );
     }
   }
-  for (const density of [...densities].reverse()) {
-    // compact first, then comfortable
-    const theme = { ...getTheme("calm", "teal"), ...densityValues[density] };
+  for (const density of ["compact", "comfortable"] as const) {
     parts.push(
-      block(
-        `:root[data-density="${density}"]`,
-        declarations(theme, densityNames, "  "),
-      ),
+      block(`:root[data-density="${density}"]`, densityLines(density, "  ")),
     );
   }
   return parts.join("\n\n") + "\n";
