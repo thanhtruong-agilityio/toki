@@ -158,3 +158,9 @@ body {
 .pv-counter {
   margin: 12px 0 0;
 }
+
+.pv-ref {
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: 12px;
+}

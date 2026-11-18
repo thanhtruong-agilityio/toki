@@ -1,3 +1,4 @@
+import { ReferenceLine } from "./ReferenceLine";
 import { ExampleFigure, type FigureExample } from "./ExampleFigure";
 
 // One entry of componentExamples: heading and the figures. data-count is
@@ -17,6 +18,7 @@ export function ExampleSection({
       data-count={examples.length}
     >
       <h2 className="pv-heading">{component}</h2>
+      <ReferenceLine section={component} />
       <div className="pv-figures">
         {examples.map((example) => (
           <ExampleFigure

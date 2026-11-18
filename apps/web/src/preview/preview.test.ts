@@ -3,6 +3,7 @@ import { join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, test } from "vitest";
 import { applyControls, readControls, writeAddress } from "./controls";
+import { referenceFor, references } from "./references";
 
 // Checks of the pure functions of the preview page and of its files read as
 // text (TOKI-016 R3, R4, R18, R19). Node environment.
@@ -303,6 +304,32 @@ describe("imports of the page (R19)", () => {
         expect(entry.source, where).not.toMatch(/ui-web\/examples/);
         expect(entry.source, where).not.toMatch(/(^|\/)preview(\/|$)/);
       }
+    }
+  });
+});
+
+describe("prototype references (R17)", () => {
+  test("an entry with no key reads No prototype reference recorded", () => {
+    expect(referenceFor("NoSuchComponent")).toBe(
+      "No prototype reference recorded",
+    );
+    expect(referenceFor("Button", {})).toBe("No prototype reference recorded");
+    // A name that Object.prototype holds is not a key either.
+    expect(referenceFor("toString")).toBe("No prototype reference recorded");
+  });
+
+  test("a recorded entry gives its value, and none is a plain value", () => {
+    expect(referenceFor("Button", { Button: "82-93" })).toBe("82-93");
+    expect(referenceFor("PersonChip", { PersonChip: "none" })).toBe("none");
+  });
+
+  test("references is a plain object from names to strings, with the three overlays", () => {
+    for (const value of Object.values(references)) {
+      expect(typeof value).toBe("string");
+      expect(value.length).toBeGreaterThan(0);
+    }
+    for (const name of ["Menu", "Modal", "Sheet", "tokens", "icons"]) {
+      expect(references).toHaveProperty(name);
     }
   });
 });

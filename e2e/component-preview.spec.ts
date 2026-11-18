@@ -920,3 +920,75 @@ test.describe("layouts (R16)", () => {
     await expect(heightOf(".chip:not(.sm)")).toHaveCSS("height", "28px");
   });
 });
+
+// Table D (R17): the prototype lines each section is compared with. Rows for
+// sections that are not on the page yet (Menu, Modal, Sheet, fonts) are not
+// checked until their entries exist; PersonChip is TOKI-034's.
+const TABLE_D: Record<string, string> = {
+  Button: "82-93, 309, 714",
+  IconButton: "94-97",
+  Chip: "98-101, 185",
+  Switch: "338-341",
+  Field: "186-189, 345-348, 715, 716",
+  Select: "344, 701",
+  Tag: "121",
+  Badge: "102-104, 586",
+  Avatar: "115-120, 529, 599-600",
+  PresenceDot: "115-120, 599-600",
+  EmptyState: "363-366",
+  Toast: "419-423",
+  Menu: "410-416, 538, 2103-2112, 2129",
+  Modal: "404-409, 560-561, 2134, 2142, 2152, 2196",
+  Sheet: "2155 (no CSS rule in the prototype: TOKI-014 Table B, decided)",
+  PersonChip: "none",
+  tokens:
+    "6-56, without the six Meet variables --stage, --stage-bar, --stage-ink, --stage-line, --stage-muted and --tile that TOKI-009 R18 leaves out",
+  icons: "the ICONS table at about line 835",
+  fonts:
+    "the font link of the prototype's head; the families in TOKI-010 Table A",
+};
+
+test.describe("prototype references (R17)", () => {
+  test("every section shows the lines of Table D", async ({ page }) => {
+    await page.goto("/preview.html");
+    const sections = page.locator(
+      "section[data-component], section[data-section='tokens'], section[data-section='fonts'], section[data-section='icons']",
+    );
+    const found = await sections.evaluateAll((nodes) =>
+      nodes.map((node) => ({
+        name:
+          node.getAttribute("data-component") ??
+          node.getAttribute("data-section"),
+        refs: [...node.querySelectorAll("[data-prototype-ref]")].map((ref) =>
+          ref.getAttribute("data-prototype-ref"),
+        ),
+        text: node.querySelector("[data-prototype-ref]")?.textContent ?? "",
+      })),
+    );
+    expect(found.length).toBe(2 + COMPONENTS.length);
+    for (const { name, refs, text } of found) {
+      expect(refs, `${name} has one line`).toHaveLength(1);
+      expect(refs[0], name ?? "").not.toBe("No prototype reference recorded");
+      expect(refs[0], name ?? "").toBe(TABLE_D[name ?? ""]);
+      expect(text, name ?? "").toContain(refs[0]!);
+    }
+  });
+
+  test("a section whose value is none has a row none in Table D", async ({
+    page,
+  }) => {
+    await page.goto("/preview.html");
+    const nones = await page
+      .locator('[data-prototype-ref="none"]')
+      .evaluateAll((nodes) =>
+        nodes.map(
+          (node) =>
+            node.closest("section")?.getAttribute("data-component") ??
+            node.closest("section")?.getAttribute("data-section"),
+        ),
+      );
+    for (const name of nones) expect(TABLE_D[name ?? ""]).toBe("none");
+  });
+
+  test.fixme(`the fonts section shows its line (${PENDING_TOKI_010}); Menu, Modal and Sheet show theirs (${PENDING_TOKI_014})`, async () => {});
+});

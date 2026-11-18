@@ -1,4 +1,5 @@
 import { Icon, iconNames } from "@toki/ui-web";
+import { ReferenceLine } from "./ReferenceLine";
 
 const SIZES = [12, 18, 24, 30];
 
@@ -11,6 +12,7 @@ export function IconsSection() {
       data-count={iconNames.length}
     >
       <h2 className="pv-heading">Icons</h2>
+      <ReferenceLine section="icons" />
       <div className="pv-icons">
         {iconNames.map((name) => (
           <div className="pv-icon-cell" key={name} data-icon={name}>

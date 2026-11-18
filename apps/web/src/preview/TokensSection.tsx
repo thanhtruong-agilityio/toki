@@ -1,3 +1,5 @@
+import { ReferenceLine } from "./ReferenceLine";
+
 // The 32 custom properties of TOKI-009 R10, in the order of tokens.css.
 const TOKEN_NAMES = [
   // 17 base colours
@@ -52,6 +54,7 @@ export function TokensSection() {
       data-count={TOKEN_NAMES.length}
     >
       <h2 className="pv-heading">Tokens</h2>
+      <ReferenceLine section="tokens" />
       <div className="pv-tokens">
         {TOKEN_NAMES.map((name) => {
           const value = style.getPropertyValue(name).trim();
