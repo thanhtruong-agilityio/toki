@@ -6,5 +6,6 @@ export * from "./Field";
 export * from "./Select";
 export * from "./Tag";
 export * from "./Badge";
+export * from "./Menu";
 export * from "./Modal";
 export * from "./Sheet";

@@ -4,6 +4,7 @@ import { examples as button } from "./components/Button/Button.examples";
 import { examples as chip } from "./components/Chip/Chip.examples";
 import { examples as field } from "./components/Field/Field.examples";
 import { examples as iconButton } from "./components/IconButton/IconButton.examples";
+import { examples as menu } from "./components/Menu/Menu.examples";
 import { examples as modal } from "./components/Modal/Modal.examples";
 import { examples as select } from "./components/Select/Select.examples";
 import { examples as sheet } from "./components/Sheet/Sheet.examples";
@@ -27,6 +28,7 @@ export const componentExamples: Array<{
   { component: "Select", examples: select },
   { component: "Tag", examples: tag },
   { component: "Badge", examples: badge },
+  { component: "Menu", examples: menu },
   { component: "Modal", examples: modal },
   { component: "Sheet", examples: sheet },
 ];
