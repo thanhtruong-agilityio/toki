@@ -1,0 +1,50 @@
+import { IconBase, createIcon, type IconProps } from "./icon-base";
+import type { IconName } from "./paths";
+
+export const AtIcon = createIcon("at");
+export const BellIcon = createIcon("bell");
+export const BellOffIcon = createIcon("bell-off");
+export const BoldIcon = createIcon("bold");
+export const BoltIcon = createIcon("bolt");
+export const BookmarkIcon = createIcon("bookmark");
+export const CheckIcon = createIcon("check");
+export const ClockIcon = createIcon("clock");
+export const CodeIcon = createIcon("code");
+export const CopyIcon = createIcon("copy");
+export const DownIcon = createIcon("down");
+export const EditIcon = createIcon("edit");
+export const ExternalIcon = createIcon("external");
+export const FileIcon = createIcon("file");
+export const FolderIcon = createIcon("folder");
+export const GlobeIcon = createIcon("globe");
+export const GridIcon = createIcon("grid");
+export const HashIcon = createIcon("hash");
+export const HomeIcon = createIcon("home");
+export const ImageIcon = createIcon("image");
+export const ItalicIcon = createIcon("italic");
+export const LeftIcon = createIcon("left");
+export const LinkIcon = createIcon("link");
+export const ListIcon = createIcon("list");
+export const LockIcon = createIcon("lock");
+export const MenuIcon = createIcon("menu");
+export const MoonIcon = createIcon("moon");
+export const MoreIcon = createIcon("more");
+export const PaperclipIcon = createIcon("paperclip");
+export const PinIcon = createIcon("pin");
+export const PlusIcon = createIcon("plus");
+export const ReplyIcon = createIcon("reply");
+export const SearchIcon = createIcon("search");
+export const SendIcon = createIcon("send");
+export const SettingsIcon = createIcon("settings");
+export const ShieldIcon = createIcon("shield");
+export const SmileIcon = createIcon("smile");
+export const StarIcon = createIcon("star");
+export const TrashIcon = createIcon("trash");
+export const UserIcon = createIcon("user");
+export const UsersIcon = createIcon("users");
+export const WifiOffIcon = createIcon("wifi-off");
+export const XIcon = createIcon("x");
+
+export const Icon = (props: IconProps & { name: IconName }) => (
+  <IconBase {...props} />
+);

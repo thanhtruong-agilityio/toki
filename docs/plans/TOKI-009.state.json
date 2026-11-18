@@ -1,0 +1,54 @@
+{
+  "approved_auto": false,
+  "base": "github/main",
+  "branch": "feat/toki-009-tokens-package",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-18T07:33:19Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-18T07:34:05Z",
+      "stage": "plan"
+    },
+    {
+      "at": "2026-11-18T07:34:05Z",
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-18T07:34:41Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-18T07:35:19Z",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-18T07:37:42Z",
+      "stage": "check"
+    },
+    {
+      "at": "2026-11-18T07:43:00Z",
+      "auto": false,
+      "stage": "approve"
+    }
+  ],
+  "key": "TOKI-009",
+  "main_sha": "cd855ee75585404a3034a78e4cf9af15735b6bda",
+  "metrics": {},
+  "mode": "Auto to PR",
+  "plan_approved": true,
+  "plan_hash": "2a60d9dfe8ae1aa8d696d1167d7cf9ef32be527cc2cb7dd63999efcf1404ce32",
+  "spec_commit": "0307cc2b3bb8110af4d926e5eafd0b36b483aedb",
+  "spec_paths": [
+    "docs/specs/2026-11-16-tokens-package-design.md"
+  ],
+  "stage": "check",
+  "tier": "M",
+  "verifier": {
+    "result": "PASS",
+    "round": 3
+  }
+}

@@ -110,6 +110,12 @@ The wording of a spec is therefore read by a script. To be ready, a spec needs a
 Run from the repository root.
 
 ```bash
+# Rewrite packages/tokens/src/tokens.css from the token objects (the test of the package fails when the file is stale)
+pnpm --filter @toki/tokens generate
+
+# Test the tokens package
+pnpm --filter @toki/tokens test
+
 # Test the readiness rule (the workflow runs this before it touches a ticket)
 bash .github/scripts/spec-ready.test.sh
 
