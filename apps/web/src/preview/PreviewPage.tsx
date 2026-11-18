@@ -7,6 +7,8 @@ import {
   type Controls,
 } from "./controls";
 import { accents, looks } from "@toki/tokens";
+import { componentExamples } from "@toki/ui-web/examples";
+import { ExampleSection } from "./ExampleSection";
 
 const densityLabel: Record<(typeof densityChoices)[number], string> = {
   own: "The look's own",
@@ -95,6 +97,13 @@ export function PreviewPage() {
           </label>
         </div>
       </header>
+      {componentExamples.map((entry) => (
+        <ExampleSection
+          key={entry.component}
+          component={entry.component}
+          examples={entry.examples}
+        />
+      ))}
     </div>
   );
 }
