@@ -1,0 +1,32 @@
+{
+  "approved_auto": false,
+  "base": "github/main",
+  "branch": "feat/toki-012-base-components-group-1",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-18T08:03:39Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-18T08:03:39Z",
+      "stage": "design"
+    }
+  ],
+  "key": "TOKI-012",
+  "main_sha": "8f944058f0844d4bf9eff1313ebcc36a42145c9b",
+  "metrics": {},
+  "mode": null,
+  "plan_approved": false,
+  "plan_hash": null,
+  "spec_commit": "568e2e3746194a6e1e19bd587df4fc40f6501db5",
+  "spec_paths": [
+    "docs/specs/2026-11-16-base-components-1-design.md"
+  ],
+  "stage": "design",
+  "tier": "M",
+  "verifier": {
+    "result": null,
+    "round": 0
+  }
+}
