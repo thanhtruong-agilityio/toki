@@ -9,8 +9,6 @@ import { expect, test, type Page } from "@playwright/test";
 
 // Deferred checks name what they wait for, once each (plan, decision 1).
 export const PENDING_TOKI_010 = "waits for TOKI-010 (fonts are not on main)";
-export const PENDING_TOKI_014 =
-  "waits for TOKI-014 (Menu, Modal and Sheet are not on main)";
 
 const root = (page: import("@playwright/test").Page) => page.locator("html");
 
@@ -983,8 +981,8 @@ test.describe("layouts (R16)", () => {
 });
 
 // Table D (R17): the prototype lines each section is compared with. Rows for
-// sections that are not on the page yet (Menu, Modal, Sheet, fonts) are not
-// checked until their entries exist; PersonChip is TOKI-034's.
+// sections that are not on the page yet (fonts) are not checked until the
+// section exists; PersonChip is TOKI-034's.
 const TABLE_D: Record<string, string> = {
   Button: "82-93, 309, 714",
   IconButton: "94-97",
