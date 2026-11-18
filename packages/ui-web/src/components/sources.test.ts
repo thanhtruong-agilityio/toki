@@ -127,7 +127,9 @@ describe("sources of the components (R3, R7, R21, R28)", () => {
   test("no source imports another package of the workspace (R3, R28)", () => {
     for (const file of [
       ...sources,
-      ...walk(resolve(srcDir, "styles")),
+      ...walk(resolve(srcDir, "styles")).filter(
+        (f) => !/\.test\.tsx?$/.test(f),
+      ),
       resolve(srcDir, "internal/cx.ts"),
     ]) {
       expect(readFileSync(file, "utf8"), file).not.toMatch(
