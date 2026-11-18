@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { isOnline, setConnectionCheck } from "./online";
+import { isOnline, setConnectionCheck } from "../../src/patterns/online";
 
 afterEach(() => {
   setConnectionCheck(null);

@@ -4,10 +4,17 @@ import userEvent from "@testing-library/user-event";
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { Providers } from "../test/providers";
-import { actionPatterns, type ActionId, type ConfirmActionId } from "./actions";
-import { ConfirmAction } from "./ConfirmAction";
-import { setConnectionCheck } from "./online";
+import { Providers } from "../support/providers";
+import {
+  actionPatterns,
+  type ActionId,
+  type ConfirmActionId,
+} from "../../src/patterns/actions";
+import { ConfirmAction } from "../../src/patterns/ConfirmAction";
+import { setConnectionCheck } from "../../src/patterns/online";
+
+// The folder this file sat in before the tests moved to tests/: its relative paths still start here.
+const SRC_DIR = `${import.meta.dirname}/../../src/patterns`;
 
 afterEach(() => setConnectionCheck(null));
 
@@ -133,7 +140,7 @@ describe("never both (R11)", () => {
   });
 
   it("no file of apps/web/src outside patterns/ imports ConfirmDialog from @toki/ui-web (R11 d)", () => {
-    const root = resolve(__dirname, "..");
+    const root = resolve(SRC_DIR, "..");
     const files: string[] = [];
     const walk = (dir: string) => {
       for (const name of readdirSync(dir)) {

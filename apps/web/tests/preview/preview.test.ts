@@ -2,8 +2,17 @@ import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, test } from "vitest";
-import { applyControls, readControls, writeAddress } from "./controls";
-import { referenceFor, references } from "./references";
+import {
+  applyControls,
+  readControls,
+  writeAddress,
+} from "../../src/preview/controls";
+import { referenceFor, references } from "../../src/preview/references";
+
+const SRC_URL = new URL(
+  "../../src/preview/preview.test.ts",
+  `file://${import.meta.dirname}/`,
+);
 
 // Checks of the pure functions of the preview page and of its files read as
 // text (TOKI-016 R3, R4, R18, R19). Node environment.
@@ -11,7 +20,7 @@ import { referenceFor, references } from "./references";
 // Deferred until TOKI-010 (fonts) is on main: its fonts.css does not exist yet.
 const PENDING_TOKI_010 = "waits for TOKI-010 (fonts.css is not on main)";
 
-const webDir = fileURLToPath(new URL("../..", import.meta.url));
+const webDir = fileURLToPath(new URL("../..", SRC_URL));
 const srcDir = join(webDir, "src");
 const previewDir = join(srcDir, "preview");
 

@@ -3,11 +3,11 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Modal } from "@toki/ui-web";
 import { describe, expect, it, vi } from "vitest";
-import { Providers } from "../test/providers";
-import { useFormGuard } from "./useFormGuard";
+import { Providers } from "../support/providers";
+import { useFormGuard } from "../../src/patterns/useFormGuard";
 
 // The proposal of concern 1 lives in one constant; this is the other value.
-vi.mock("./guardEscape", () => ({ GUARD_ESCAPE: "ignore" }));
+vi.mock("../../src/patterns/guardEscape", () => ({ GUARD_ESCAPE: "ignore" }));
 
 function Screen({ onClose }: { onClose: () => void }) {
   const guard = useFormGuard({ hasContent: true, formName: "Form", onClose });

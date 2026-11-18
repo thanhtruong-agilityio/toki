@@ -5,7 +5,7 @@ import {
   MAX_INSTANT,
   utcOffsetMinutes,
   zonedParts,
-} from "./zone.js";
+} from "../../src/datetime/zone.js";
 
 const HCM = "Asia/Ho_Chi_Minh";
 const NY = "America/New_York";

@@ -3,10 +3,15 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 
+const SRC_URL = new URL(
+  "../../src/db/account-tables-layout.test.ts",
+  `file://${import.meta.dirname}/`,
+);
+
 // File reads only: no database. R6 (no time default in the schema files),
 // R21 (the four tables are not exported, no import leaves a module) and R26
 // (the SQL helper is imported by tests only).
-const src = join(dirname(fileURLToPath(import.meta.url)), "..");
+const src = join(dirname(fileURLToPath(SRC_URL)), "..");
 const schemaFiles = ["members", "auth", "notifications"].map((m) =>
   join(src, "modules", m, "schema.ts"),
 );

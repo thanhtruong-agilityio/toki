@@ -1,9 +1,9 @@
 // @vitest-environment jsdom
 import { act, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
-import { Providers } from "../test/providers";
-import { setConnectionCheck } from "./online";
-import { useOnlineGate } from "./useOnlineGate";
+import { Providers } from "../support/providers";
+import { setConnectionCheck } from "../../src/patterns/online";
+import { useOnlineGate } from "../../src/patterns/useOnlineGate";
 
 afterEach(() => setConnectionCheck(null));
 

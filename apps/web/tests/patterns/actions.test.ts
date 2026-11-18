@@ -4,7 +4,7 @@ import {
   type ActionId,
   type ConfirmActionId,
   type UndoActionId,
-} from "./actions";
+} from "../../src/patterns/actions";
 
 // A copy of Table A of the TOKI-093 spec: id, pattern, source, owner.
 const tableA: Array<[string, "undo" | "confirm" | "none", string, string]> = [

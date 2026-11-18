@@ -1,14 +1,14 @@
 import postgres, { type Sql } from "postgres";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { createDb } from "../../db/client.js";
-import { migrationsFolder, runMigrations } from "../../db/migrate.js";
+import { createDb } from "../../../src/db/client.js";
+import { migrationsFolder, runMigrations } from "../../../src/db/migrate.js";
 import {
   insertSession,
   insertUser,
   insertWorkspace,
-} from "../../db/test-rows.js";
-import { createThrowawayDb } from "../../test/throwaway-db.js";
-import { devices } from "./schema.js";
+} from "../../../src/db/test-rows.js";
+import { createThrowawayDb } from "../../support/throwaway-db.js";
+import { devices } from "../../../src/modules/notifications/schema.js";
 
 let throwaway: Awaited<ReturnType<typeof createThrowawayDb>>;
 let conn: ReturnType<typeof createDb>;

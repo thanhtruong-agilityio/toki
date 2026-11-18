@@ -4,10 +4,10 @@ import userEvent from "@testing-library/user-event";
 import { Button, Modal } from "@toki/ui-web";
 import { useState } from "react";
 import { describe, expect, it, vi } from "vitest";
-import { Providers } from "../test/providers";
-import { GUARD_ESCAPE } from "./guardEscape";
-import { hasFormContent } from "./formContent";
-import { useFormGuard, type FormClose } from "./useFormGuard";
+import { Providers } from "../support/providers";
+import { GUARD_ESCAPE } from "../../src/patterns/guardEscape";
+import { hasFormContent } from "../../src/patterns/formContent";
+import { useFormGuard, type FormClose } from "../../src/patterns/useFormGuard";
 
 function FormScreen({
   initial = "",

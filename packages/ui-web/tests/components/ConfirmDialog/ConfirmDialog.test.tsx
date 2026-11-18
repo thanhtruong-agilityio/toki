@@ -3,15 +3,18 @@ import userEvent from "@testing-library/user-event";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { afterEach, describe, expect, test, vi } from "vitest";
-import { readCss } from "../../test/css";
-import { componentExamples } from "../../examples";
+import { readCss } from "../../support/css";
+import { componentExamples } from "../../../src/examples";
 import {
   ConfirmDialog,
   confirmCancelReasons,
   confirmVariants,
   type ConfirmDialogProps,
-} from "./index";
-import * as entry from "../../index";
+} from "../../../src/components/ConfirmDialog/index";
+import * as entry from "../../../src/index";
+
+// The folder this file sat in before the tests moved to tests/: its relative paths still start here.
+const SRC_DIR = `${import.meta.dirname}/../../../src/components/ConfirmDialog`;
 
 function props(over: Partial<ConfirmDialogProps> = {}): ConfirmDialogProps {
   return {
@@ -266,17 +269,14 @@ describe("no text of its own (R3)", () => {
   });
 
   test("the source imports no workspace package and no look attribute", () => {
-    const source = readFileSync(
-      resolve(__dirname, "ConfirmDialog.tsx"),
-      "utf8",
-    );
+    const source = readFileSync(resolve(SRC_DIR, "ConfirmDialog.tsx"), "utf8");
     expect(source).not.toMatch(/from\s+["']@toki\//);
   });
 });
 
 describe("ConfirmDialog.css (R8, Table C)", () => {
   test("holds exactly the three rules of Table C", () => {
-    const rules = readCss(resolve(__dirname, "ConfirmDialog.css"));
+    const rules = readCss(resolve(SRC_DIR, "ConfirmDialog.css"));
     expect(
       rules.map((r) => ({
         selector: r.selector,

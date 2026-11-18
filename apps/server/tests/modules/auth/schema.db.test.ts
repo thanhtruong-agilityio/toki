@@ -1,10 +1,10 @@
 import postgres, { type Sql } from "postgres";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { createDb } from "../../db/client.js";
-import { migrationsFolder, runMigrations } from "../../db/migrate.js";
-import { insertUser, insertWorkspace } from "../../db/test-rows.js";
-import { createThrowawayDb } from "../../test/throwaway-db.js";
-import { loginCodes, sessions } from "./schema.js";
+import { createDb } from "../../../src/db/client.js";
+import { migrationsFolder, runMigrations } from "../../../src/db/migrate.js";
+import { insertUser, insertWorkspace } from "../../../src/db/test-rows.js";
+import { createThrowawayDb } from "../../support/throwaway-db.js";
+import { loginCodes, sessions } from "../../../src/modules/auth/schema.js";
 
 let throwaway: Awaited<ReturnType<typeof createThrowawayDb>>;
 let conn: ReturnType<typeof createDb>;

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { hasFormContent } from "./formContent";
+import { hasFormContent } from "../../src/patterns/formContent";
 
 describe("hasFormContent (R19)", () => {
   it.each([

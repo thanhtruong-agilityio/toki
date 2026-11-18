@@ -7,8 +7,8 @@ import {
   formatTime,
   type DateContext,
   type FormatContext,
-} from "./format.js";
-import { NAMES } from "./names.js";
+} from "../../src/datetime/format.js";
+import { NAMES } from "../../src/datetime/names.js";
 
 const HCM = "Asia/Ho_Chi_Minh";
 const words = { today: "Today", tomorrow: "Tomorrow", yesterday: "Yesterday" };

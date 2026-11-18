@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import * as patterns from "./index";
+import * as patterns from "../../src/patterns/index";
 
 describe("the exports of patterns/ (R1)", () => {
   it.each([

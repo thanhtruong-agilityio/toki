@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { en } from "./messages/en";
-import { vi as viMessages } from "./messages/vi";
-import { createTranslator } from "./translate";
+import { en } from "../src/messages/en";
+import { vi as viMessages } from "../src/messages/vi";
+import { createTranslator } from "../src/translate";
 
 // A copy of Table B of the TOKI-093 spec: key, English, Vietnamese (proposals, D-139).
 const tableB: Array<[string, string, string]> = [

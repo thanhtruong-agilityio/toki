@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { quickTimeChoices } from "./quick-choices.js";
+import { quickTimeChoices } from "../../src/datetime/quick-choices.js";
 
 const HCM = "Asia/Ho_Chi_Minh";
 const tomorrow0900 = Date.UTC(2026, 10, 11, 2, 0);

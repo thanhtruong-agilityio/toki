@@ -3,7 +3,7 @@ import {
   validateDateNotPast,
   validateDateTime,
   validateFutureInstant,
-} from "./validate.js";
+} from "../../src/datetime/validate.js";
 
 const HCM = "Asia/Ho_Chi_Minh";
 // Tue 10 Nov 2026, 12:00 in Ho Chi Minh

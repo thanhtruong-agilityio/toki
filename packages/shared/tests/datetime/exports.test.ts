@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import * as shared from "../index.js";
+import * as shared from "../../src/index.js";
 
 describe("@toki/shared", () => {
   it("exports every function of the date and time module", () => {

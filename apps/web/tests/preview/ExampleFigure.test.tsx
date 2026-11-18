@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { cleanup, render } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
-import { ExampleFigure } from "./ExampleFigure";
+import { ExampleFigure } from "../../src/preview/ExampleFigure";
 
 // R7: a figure that throws shows its message and the rest of the page still
 // renders. The setup file of ui-web is that package's, so this file does what

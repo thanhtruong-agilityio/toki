@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { NAMES, namesFor } from "./names.js";
+import { NAMES, namesFor } from "../../src/datetime/names.js";
 
 describe("names", () => {
   it("lists exactly 7 weekday and 12 month names for every language", () => {

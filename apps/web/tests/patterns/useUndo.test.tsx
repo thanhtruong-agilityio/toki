@@ -4,14 +4,17 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { useEffect, useState } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { Providers } from "../test/providers";
-import { setConnectionCheck } from "./online";
+import { Providers } from "../support/providers";
+import { setConnectionCheck } from "../../src/patterns/online";
 import {
   UNDO_KEY_LIMIT,
   rememberToastKey,
   useUndo,
   type UndoOutcome,
-} from "./useUndo";
+} from "../../src/patterns/useUndo";
+
+// The folder this file sat in before the tests moved to tests/: its relative paths still start here.
+const SRC_DIR = `${import.meta.dirname}/../../src/patterns`;
 
 type Run = ReturnType<typeof useUndo>["run"];
 let run!: Run;
@@ -209,7 +212,7 @@ describe("time (R14)", () => {
   });
 
   it("useUndo.ts calls no timer", () => {
-    const source = readFileSync(resolve(__dirname, "useUndo.ts"), "utf8");
+    const source = readFileSync(resolve(SRC_DIR, "useUndo.ts"), "utf8");
     expect(source).not.toMatch(/setTimeout|setInterval|requestAnimationFrame/);
   });
 });
