@@ -12,9 +12,9 @@ type Pems = { private: string; cert: string };
 let rightName: Pems;
 let wrongName: Pems;
 
-async function certFor(
-  altNames: Array<{ type: number; value?: string; ip?: string }>,
-) {
+type Alt = { type: 2; value: string } | { type: 7; ip: string };
+
+async function certFor(altNames: Alt[]) {
   return generate([{ name: "commonName", value: "test" }], {
     algorithm: "sha256",
     extensions: [{ name: "subjectAltName", altNames }],
