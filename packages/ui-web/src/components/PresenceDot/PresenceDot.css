@@ -1,0 +1,19 @@
+.pd {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  border: 2px solid var(--surface);
+  background: var(--accent);
+  display: inline-block;
+  flex: none;
+  box-sizing: border-box;
+}
+
+.pd.away {
+  background: var(--surface);
+  border-color: var(--muted);
+}
+
+.pd.dnd {
+  background: var(--danger);
+}

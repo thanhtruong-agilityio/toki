@@ -1,11 +1,10 @@
 import { defineConfig } from "vitest/config";
+import { loadRootEnv } from "./test/root-env.js";
 
-// Tests read DATABASE_URL and TEST_DATABASE_URL from the root .env when it is
-// there; a value already in the environment (CI) is kept.
-try {
-  process.loadEnvFile(new URL("../../.env", import.meta.url));
-} catch {
-  // No .env: the values must come from the environment.
-}
+// The database-free project (R20): every test file except *.db.test.ts, and no
+// Postgres needed. `pnpm --filter ./apps/server test:unit` runs only this one.
+loadRootEnv();
 
-export default defineConfig({});
+export default defineConfig({
+  test: { name: "server", exclude: ["**/node_modules/**", "**/*.db.test.ts"] },
+});
