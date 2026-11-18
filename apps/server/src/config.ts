@@ -1,6 +1,11 @@
 // The only reader of process.env in apps/server/src. One schema per area; a
 // later ticket adds its area here. The names come from docs/environment-config.md.
 import { z } from "zod";
+import {
+  mailConfigSchema,
+  mailVariableNames,
+  type MailConfig,
+} from "./modules/mail/index.js";
 
 const logLevels = ["fatal", "error", "warn", "info", "debug", "trace"] as const;
 
@@ -21,15 +26,23 @@ const areas = {
   database: z
     .object({ DATABASE_URL: z.string().min(1) })
     .transform((v) => ({ url: v.DATABASE_URL })),
+  mail: mailConfigSchema,
 };
 
 export type AreaName = keyof typeof areas;
-export type Config = { [A in AreaName]: z.output<(typeof areas)[A]> };
+// The mail area is optional in the type (R21): a test builds the app with a
+// fake mail layer and no mail values. The server entry still requires it.
+export type Config = {
+  server: z.output<(typeof areas)["server"]>;
+  database: z.output<(typeof areas)["database"]>;
+  mail?: MailConfig;
+};
 
 // The variable names each area reads, for the check against .env.example.
 export const configVariableNames: Record<AreaName, string[]> = {
   server: ["NODE_ENV", "SERVER_PORT", "SERVER_HOST", "LOG_LEVEL"],
   database: ["DATABASE_URL"],
+  mail: mailVariableNames,
 };
 
 // Carries variable names only: a value never reaches the message.
@@ -54,7 +67,7 @@ function present(env: Env, names: string[]): Env {
 export function loadConfig<A extends AreaName>(
   env: Env,
   wanted: readonly A[],
-): Pick<Config, A> {
+): { [K in A]: Required<Config>[K] } {
   const config: Partial<Config> = {};
   const failing: string[] = [];
   for (const area of wanted) {
@@ -70,13 +83,13 @@ export function loadConfig<A extends AreaName>(
     }
   }
   if (failing.length > 0) throw new ConfigError([...new Set(failing)]);
-  return config as Pick<Config, A>;
+  return config as { [K in A]: Required<Config>[K] };
 }
 
 // For the entry points (the server, later a command-line tool): reads the
 // process environment, which this module alone may do.
 export function loadProcessConfig<A extends AreaName>(
   wanted: readonly A[],
-): Pick<Config, A> {
+): { [K in A]: Required<Config>[K] } {
   return loadConfig(process.env, wanted);
 }

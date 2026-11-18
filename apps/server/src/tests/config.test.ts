@@ -1,15 +1,6 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import {
-  ConfigError,
-  configVariableNames,
-  loadConfig,
-} from "../../src/config.js";
-
-const SRC_URL = new URL(
-  "../../src/test/config.test.ts",
-  `file://${import.meta.dirname}/`,
-);
+import { ConfigError, configVariableNames, loadConfig } from "../config.js";
 
 const valid = {
   NODE_ENV: "development",
@@ -88,13 +79,23 @@ describe("loadConfig", () => {
 
   it("reads one database variable and no other (R19)", () => {
     expect(configVariableNames.database).toEqual(["DATABASE_URL"]);
+    expect(configVariableNames.mail).toEqual([
+      "SMTP_HOST",
+      "SMTP_PORT",
+      "SMTP_TLS",
+      "SMTP_USER",
+      "SMTP_PASSWORD",
+      "MAIL_FROM_ADDRESS",
+      "MAIL_FROM_NAME",
+      "NODE_ENV",
+    ]);
   });
 });
 
 describe("configuration names and .env.example (R13)", () => {
   it("every name the schema reads is in .env.example", () => {
     const example = readFileSync(
-      new URL("../../../../.env.example", SRC_URL),
+      new URL("../../../../.env.example", import.meta.url),
       "utf8",
     );
     const listed = new Set(

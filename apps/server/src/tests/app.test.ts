@@ -2,9 +2,10 @@ import { ErrorResponseSchema } from "@toki/shared";
 import { Writable } from "node:stream";
 import { describe, expect, it } from "vitest";
 import { z } from "zod";
-import { buildApp } from "../../src/app.js";
-import type { Config } from "../../src/config.js";
-import { AppError } from "../../src/errors.js";
+import { buildApp } from "../app.js";
+import type { Config } from "../config.js";
+import { AppError } from "../errors.js";
+import { fakeMail } from "./fake-mail.js";
 
 const config: Config = {
   server: {
@@ -41,6 +42,7 @@ async function setup(level: Config["server"]["logLevel"] = "info") {
   const app = buildApp({
     config: { ...config, server: { ...config.server, logLevel: level } },
     logStream: log.stream,
+    mail: fakeMail().layer,
     registerRoutes: (scope) => {
       scope.get("/ok", async () => ({ ok: true }));
       scope.get("/boom", async () => {
@@ -95,7 +97,7 @@ describe("prefix (R10)", () => {
   });
 
   it("refuses to register a route outside /api/v1 other than /healthz", () => {
-    const app = buildApp({ config });
+    const app = buildApp({ config, mail: fakeMail().layer });
     expect(() => app.get("/outside", async () => ({}))).toThrow(/\/api\/v1/);
   });
 });

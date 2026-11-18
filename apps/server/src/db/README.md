@@ -93,6 +93,6 @@ all migrations again.
 ## Tests
 
 Tests that create tables or insert rows run on a throwaway database that
-`src/test/throwaway-db.ts` makes on the server of `TEST_DATABASE_URL` and drops
+`src/tests/throwaway-db.ts` makes on the server of `TEST_DATABASE_URL` and drops
 when done. It refuses a host that is not loopback. Only the connection test
 reads `DATABASE_URL`, and it writes nothing.

@@ -1,5 +1,5 @@
 import { defineConfig } from "vitest/config";
-import { loadRootEnv } from "./tests/root-env.js";
+import { loadRootEnv } from "./test/root-env.js";
 
 // The database project (R20): *.db.test.ts only, one file at a time so the
 // files can share the one test database (R6). The application's connection
@@ -11,10 +11,10 @@ loadRootEnv();
 export default defineConfig({
   test: {
     name: "server-db",
-    include: ["tests/**/*.db.test.ts"],
+    include: ["{src,test}/**/*.db.test.ts"],
     fileParallelism: false,
-    globalSetup: ["./tests/global-setup-db.ts"],
-    setupFiles: ["./tests/setup-file-db.ts"],
+    globalSetup: ["./test/global-setup-db.ts"],
+    setupFiles: ["./test/setup-file-db.ts"],
     env: { DATABASE_URL: process.env.TEST_DATABASE_URL ?? "" },
   },
 });

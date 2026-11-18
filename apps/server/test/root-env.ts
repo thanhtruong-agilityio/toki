@@ -1,12 +1,7 @@
 import { readFileSync } from "node:fs";
 import { parseEnv } from "node:util";
 
-const SRC_URL = new URL(
-  "../test/root-env.ts",
-  `file://${import.meta.dirname}/`,
-);
-
-const rootEnv = new URL("../../../.env", SRC_URL);
+const rootEnv = new URL("../../../.env", import.meta.url);
 
 // The values of the root .env file, or none when there is no file.
 export function readRootEnv(): Record<string, string | undefined> {

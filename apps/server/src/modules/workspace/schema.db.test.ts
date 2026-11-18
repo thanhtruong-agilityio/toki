@@ -1,9 +1,9 @@
 import { sql } from "drizzle-orm";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { createDb } from "../../../src/db/client.js";
-import { migrationsFolder, runMigrations } from "../../../src/db/migrate.js";
-import { createThrowawayDb } from "../../support/throwaway-db.js";
-import { workspaces } from "../../../src/modules/workspace/schema.js";
+import { createDb } from "../../db/client.js";
+import { migrationsFolder, runMigrations } from "../../db/migrate.js";
+import { createThrowawayDb } from "../../tests/throwaway-db.js";
+import { workspaces } from "./schema.js";
 
 let throwaway: Awaited<ReturnType<typeof createThrowawayDb>>;
 let conn: ReturnType<typeof createDb>;

@@ -10,15 +10,15 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import postgres, { type Sql } from "postgres";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { createThrowawayDb } from "../support/throwaway-db.js";
-import { migrationsFolder, runMigrations } from "../../src/db/migrate.js";
+import { createThrowawayDb } from "./throwaway-db.js";
+import { migrationsFolder, runMigrations } from "../db/migrate.js";
 import {
   insertDevice,
   insertLoginCode,
   insertSession,
   insertUser,
   insertWorkspace,
-} from "../../src/db/test-rows.js";
+} from "./test-rows.js";
 
 // The constraint tests send SQL text, so they prove what the database
 // enforces whatever the Drizzle definitions say (R22, Layout). Every "must

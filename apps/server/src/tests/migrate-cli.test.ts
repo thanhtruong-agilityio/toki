@@ -2,13 +2,8 @@ import { spawn } from "node:child_process";
 import { createServer } from "node:net";
 import { describe, expect, it } from "vitest";
 
-const SRC_URL = new URL(
-  "../../src/db/migrate-cli.test.ts",
-  `file://${import.meta.dirname}/`,
-);
-
-const entry = new URL("./migrate-cli.ts", SRC_URL).pathname;
-const cwd = new URL("../..", SRC_URL).pathname;
+const entry = new URL("../db/migrate-cli.ts", import.meta.url).pathname;
+const cwd = new URL("../..", import.meta.url).pathname;
 
 function run(env: Record<string, string>) {
   return new Promise<{ code: number | null; out: string; err: string }>(
