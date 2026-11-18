@@ -14,8 +14,9 @@
     }
   },
   "scripts": {
-    "typecheck": "pnpm -r run typecheck",
-    "test": "pnpm -r --if-present run test && node --test tools/bundle-size/check.test.mjs tools/lint-rules/icon-only-button-name.test.mjs",
+    "typecheck": "pnpm -r run typecheck && tsc --noEmit",
+    "test": "vitest run && node --test tools/bundle-size/check.test.mjs tools/lint-rules/icon-only-button-name.test.mjs",
+    "test:e2e": "playwright test",
     "build": "pnpm -r --if-present run build",
     "size": "node tools/bundle-size/check.mjs",
     "dev": "pnpm -r --parallel --if-present run dev",
@@ -34,12 +35,15 @@
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
+    "@playwright/test": "1.65.1",
+    "@types/node": "22.20.5",
     "@typescript/native": "npm:typescript@7.0.2",
     "eslint": "10.15.0",
     "eslint-config-prettier": "10.1.8",
     "globals": "17.14.0",
     "prettier": "3.10.1",
     "typescript": "npm:@typescript/typescript6@6.0.2",
-    "typescript-eslint": "8.72.2"
+    "typescript-eslint": "8.72.2",
+    "vitest": "5.1.0"
   }
 }
