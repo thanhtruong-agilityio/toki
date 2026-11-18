@@ -1004,6 +1004,9 @@ const TABLE_D: Record<string, string> = {
   Modal: "404-409, 560-561, 2134, 2142, 2152, 2196",
   Sheet: "2155 (no CSS rule in the prototype: TOKI-014 Table B, decided)",
   PersonChip: "none",
+  // TOKI-093: the prototype draws no confirmation dialog (an inline row instead).
+  ConfirmDialog:
+    "none: the prototype draws an inline row (lines 1369 and 1452), no dialog",
   tokens:
     "6-56, without the six Meet variables --stage, --stage-bar, --stage-ink, --stage-line, --stage-muted and --tile that TOKI-009 R18 leaves out",
   icons: "the ICONS table at about line 835",
