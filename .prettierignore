@@ -4,6 +4,9 @@ build/
 coverage/
 pnpm-lock.yaml
 
+# Written by Drizzle Kit; committed whole, never edited by hand
+apps/server/migrations/
+
 # Documents written by the cl workflow
 docs/
 .github/
