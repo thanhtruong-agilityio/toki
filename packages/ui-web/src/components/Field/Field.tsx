@@ -4,7 +4,7 @@ import {
   type ComponentPropsWithoutRef,
 } from "react";
 import { cx } from "../../internal/cx";
-import { Icon, type IconName } from "../../internal/icon-stand-in";
+import { Icon, type IconName } from "../../icons";
 import { hasLabelText, useFieldFrame } from "./FieldFrame";
 import "./Field.css";
 

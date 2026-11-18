@@ -1,5 +1,5 @@
 import type { Example } from "../../internal/example";
-import { Icon } from "../../internal/icon-stand-in";
+import { Icon } from "../../icons";
 import { buttonSizes, buttonVariants, Button } from "./Button";
 
 // Demo words are test data, not interface text (R26).

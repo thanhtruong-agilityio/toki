@@ -25,6 +25,8 @@
     "dev:reset:db": "bash scripts/reset-db.sh",
     "dev:reset:files": "bash scripts/reset-files.sh",
     "dev:reset:mail": "bash scripts/reset-mail.sh",
+    "db:generate": "pnpm --filter @toki/server run db:generate",
+    "db:migrate": "pnpm --filter @toki/server run db:migrate",
     "lint": "eslint . --max-warnings 0",
     "test:lint-rules": "node --test tools/lint-rules/icon-only-button-name.test.mjs",
     "format": "prettier --write .",

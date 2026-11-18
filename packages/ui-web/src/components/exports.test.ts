@@ -46,9 +46,13 @@ describe("exports (R1, R2)", () => {
     expect(components.badgeVariants).toEqual(["default", "mute", "mention"]);
   });
 
-  test("no export ends in Icon (the icons are TOKI-011's)", () => {
-    expect(Object.keys(entry).filter((name) => name.endsWith("Icon"))).toEqual(
-      [],
-    );
+  test("no component export ends in Icon; the icons come from src/icons (R1)", () => {
+    expect(
+      Object.keys(components).filter((name) => name.endsWith("Icon")),
+    ).toEqual([]);
+    const extra = Object.keys(entry).filter((name) => !(name in components));
+    expect(
+      extra.filter((name) => !name.endsWith("Icon") && name !== "iconNames"),
+    ).toEqual([]);
   });
 });

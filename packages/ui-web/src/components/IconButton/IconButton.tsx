@@ -1,6 +1,6 @@
 import { forwardRef, type ComponentPropsWithoutRef } from "react";
 import { cx } from "../../internal/cx";
-import { Icon, type IconName } from "../../internal/icon-stand-in";
+import { Icon, type IconName } from "../../icons";
 import "./IconButton.css";
 
 export const iconButtonSizes = ["md", "sm"] as const;
