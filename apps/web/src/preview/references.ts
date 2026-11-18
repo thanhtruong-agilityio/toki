@@ -19,6 +19,8 @@ export const references: Record<string, string> = {
   Menu: "410-416, 538, 2103-2112, 2129",
   Modal: "404-409, 560-561, 2134, 2142, 2152, 2196",
   Sheet: "2155 (no CSS rule in the prototype: TOKI-014 Table B, decided)",
+  ConfirmDialog:
+    "none: the prototype draws an inline row (lines 1369 and 1452), no dialog",
   tokens:
     "6-56, without the six Meet variables --stage, --stage-bar, --stage-ink, --stage-line, --stage-muted and --tile that TOKI-009 R18 leaves out",
   icons: "the ICONS table at about line 835",

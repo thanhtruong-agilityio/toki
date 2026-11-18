@@ -1,0 +1,57 @@
+{
+  "approved_auto": false,
+  "base": "main",
+  "branch": "feat/toki-093-destructive-patterns",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-18T09:36:57Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-18T09:37:43Z",
+      "stage": "explore"
+    },
+    {
+      "at": "2026-11-18T09:39:28Z",
+      "stage": "plan"
+    },
+    {
+      "at": "2026-11-18T09:41:06Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-18T09:41:07Z",
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-18T09:42:17Z",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-18T09:50:29Z",
+      "stage": "check"
+    },
+    {
+      "at": "2026-11-18T09:56:56Z",
+      "stage": "ship"
+    }
+  ],
+  "key": "TOKI-093",
+  "main_sha": "a246ca0918f4971b8425bbcd9d982188e2639377",
+  "metrics": {},
+  "mode": "auto-to-check",
+  "plan_approved": true,
+  "plan_hash": "507f846350a8a4c604bb14ed046a74175eb644fd8d456b055b8dadc939111371",
+  "spec_commit": null,
+  "spec_paths": [
+    "docs/specs/2026-11-16-destructive-patterns-design.md"
+  ],
+  "stage": "ship",
+  "tier": "M",
+  "verifier": {
+    "result": "PASS",
+    "round": 2
+  }
+}
