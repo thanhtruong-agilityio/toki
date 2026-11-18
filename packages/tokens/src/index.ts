@@ -1,7 +1,7 @@
 export {
   accentColors,
   accents,
-  defaultDensity,
+  lookDensity,
   densities,
   densityValues,
   looks,

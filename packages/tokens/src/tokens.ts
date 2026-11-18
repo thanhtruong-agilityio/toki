@@ -171,7 +171,7 @@ export const densityValues: Record<Density, DensityValues> = {
 };
 
 // With no density chosen, Calm shows Comfortable and Focus shows Compact.
-export const defaultDensity: Record<Look, Density> = {
+export const lookDensity: Record<Look, Density> = {
   calm: "comfortable",
   focus: "compact",
 };

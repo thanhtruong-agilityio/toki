@@ -1,6 +1,6 @@
 import {
   accentColors,
-  defaultDensity,
+  lookDensity,
   densityValues,
   palettes,
   radii,
@@ -23,7 +23,7 @@ export function getTheme(look: Look, accent: Accent, density?: Density): Theme {
   return {
     ...palettes[look],
     ...accentColors[look][accent],
-    ...densityValues[density ?? defaultDensity[look]],
+    ...densityValues[density ?? lookDensity[look]],
     ...radii[look],
     ...shadows[look],
   };

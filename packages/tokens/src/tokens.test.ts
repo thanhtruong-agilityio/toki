@@ -5,7 +5,7 @@ import { toCss } from "./css";
 import {
   accentColors,
   accents,
-  defaultDensity,
+  lookDensity,
   densities,
   densityValues,
   getTheme,
@@ -181,7 +181,7 @@ const tableE: Record<LookName, { shadow: Layer[]; pop: Layer[] }> = {
 const lookList: LookName[] = ["calm", "focus"];
 const accentList: AccentName[] = ["teal", "indigo", "clay", "violet"];
 const densityList: DensityName[] = ["comfortable", "compact"];
-const defaultDensityExpected: Record<LookName, DensityName> = {
+const lookDensityExpected: Record<LookName, DensityName> = {
   calm: "comfortable",
   focus: "compact",
 };
@@ -233,7 +233,7 @@ function expectedTheme(
   return {
     ...tableA[look],
     ...tableB[look][accent],
-    ...tableC[density ?? defaultDensityExpected[look]],
+    ...tableC[density ?? lookDensityExpected[look]],
     ...tableD[look],
     ...tableE[look],
   };
@@ -283,8 +283,8 @@ describe("R4 density", () => {
   it("densityValues holds Table C", () => {
     expect(densityValues).toEqual(tableC);
   });
-  it("defaultDensity is comfortable for calm and compact for focus", () => {
-    expect(defaultDensity).toEqual(defaultDensityExpected);
+  it("lookDensity is comfortable for calm and compact for focus", () => {
+    expect(lookDensity).toEqual(lookDensityExpected);
   });
 });
 
@@ -552,6 +552,54 @@ describe("tokens.css", () => {
     }
   });
 
+  it("R10-R14 the blocks stand in the fixed order of the file", () => {
+    expect(blocks.map((b) => b.selector)).toEqual([
+      ':root, :root[data-eff="calm"]',
+      ":root:not([data-eff])",
+      ':root[data-eff="focus"]',
+      ...lookList.flatMap((look) =>
+        (["indigo", "clay", "violet"] as const).map(
+          (accent) => `:root[data-eff="${look}"][data-accent="${accent}"]`,
+        ),
+      ),
+      ':root[data-density="compact"]',
+      ':root[data-density="comfortable"]',
+    ]);
+    expect(blocks[1]!.media).toBeDefined();
+  });
+
+  it("R15 gives the five worked examples exactly as the file holds them", () => {
+    const calm = plain.find((x) => x.selector === lookBlockSelectors[0])!;
+    const focus = plain.find((x) => x.selector === lookBlockSelectors[1])!;
+    expect(calm.decls["--shadow"]).toBe(
+      "0px 1px 2px 0px rgba(22,32,29,0.06), 0px 8px 24px 0px rgba(22,32,29,0.06)",
+    );
+    expect(focus.decls["--pop"]).toBe(
+      "0px 0px 0px 1px #283035, 0px 16px 40px 0px rgba(0,0,0,0.5)",
+    );
+    expect(focus.decls["--shadow"]).toBe("none");
+    expect(calm.decls["--radius"]).toBe("16px");
+    expect(calm.decls["--av-s"]).toBe("45%");
+  });
+
+  it("R15 every length ends in px, every avatar tint in %, every shadow layer has four lengths", () => {
+    const colourText = "(#[0-9A-F]{6}|rgba\\(\\d+,\\d+,\\d+,\\d*\\.?\\d+\\))";
+    const layerForm = new RegExp(`^(-?\\d+px ){3}-?\\d+px ${colourText}$`);
+    for (const b of blocks) {
+      for (const [prop, value] of Object.entries(b.decls)) {
+        const entry = Object.values(variables).find((v) => v.name === prop);
+        if (entry === undefined) continue;
+        if (entry.kind === "px") expect(value, prop).toMatch(/^\d+px$/);
+        if (entry.kind === "pct") expect(value, prop).toMatch(/^\d+%$/);
+        if (entry.kind === "color")
+          expect(value, prop).toMatch(new RegExp(`^${colourText}$`));
+        if (entry.kind === "shadow" && value !== "none") {
+          for (const l of value.split(", ")) expect(l, prop).toMatch(layerForm);
+        }
+      }
+    }
+  });
+
   it("R15 writes px, %, none and shadow layers in the documented form", () => {
     for (const [key, { name, kind }] of Object.entries(variables)) {
       for (const look of lookList) {
@@ -570,22 +618,53 @@ describe("tokens.css", () => {
     }
   });
 
-  it("R16 gives each look, accent and density the values of getTheme", () => {
+  function expectSame(
+    got: Record<string, string>,
+    theme: ReturnType<typeof getTheme>,
+    label: string,
+  ) {
+    for (const [key, { name, kind }] of Object.entries(variables)) {
+      expect(got[name], `${label} ${name}`).toBe(
+        cssForm(kind, theme[key as keyof typeof theme]),
+      );
+    }
+  }
+
+  it("R16a gives each look, accent and density the values of getTheme, on a light and a dark device", () => {
     for (const look of lookList) {
       for (const accent of accentList) {
         for (const density of [...densityList, undefined]) {
           const attrs: Record<string, string> = { eff: look, accent };
           if (density !== undefined) attrs.density = density;
-          const got = resolve(blocks, attrs, false);
-          const theme = getTheme(look, accent, density);
-          for (const [key, { name, kind }] of Object.entries(variables)) {
-            expect(
-              got[name],
-              `${look} ${accent} ${density ?? "none"} ${name}`,
-            ).toBe(cssForm(kind, theme[key as keyof typeof theme]));
+          for (const dark of [false, true]) {
+            const got = resolve(blocks, attrs, dark);
+            expectSame(
+              got,
+              getTheme(look, accent, density),
+              `${look} ${accent} ${density ?? "none"} dark=${dark}`,
+            );
+            expect(got["color-scheme"]).toBe(
+              look === "calm" ? "light" : "dark",
+            );
           }
-          expect(got["color-scheme"]).toBe(look === "calm" ? "light" : "dark");
         }
+      }
+    }
+  });
+
+  it("R16b gives a page without data-eff the values of Calm on a light device and Focus on a dark one", () => {
+    for (const dark of [false, true]) {
+      for (const density of [...densityList, undefined]) {
+        const attrs: Record<string, string> = {};
+        if (density !== undefined) attrs.density = density;
+        const look = dark ? "focus" : "calm";
+        const got = resolve(blocks, attrs, dark);
+        expectSame(
+          got,
+          getTheme(look, "teal", density),
+          `${look} ${density ?? "none"}`,
+        );
+        expect(got["color-scheme"]).toBe(dark ? "dark" : "light");
       }
     }
   });
@@ -610,9 +689,13 @@ describe("package files", () => {
   };
 
   it("R9 exports tokens.css beside the main entry, and the file exists", () => {
-    expect(pkg.exports["."]).toBe("./src/index.ts");
-    expect(pkg.exports["./tokens.css"]).toBe("./src/tokens.css");
-    expect(existsSync(join(root, pkg.exports["./tokens.css"]!))).toBe(true);
+    expect(pkg.exports).toEqual({
+      ".": "./src/index.ts",
+      "./tokens.css": "./src/tokens.css",
+    });
+    for (const target of Object.values(pkg.exports)) {
+      expect(existsSync(join(root, target)), target).toBe(true);
+    }
   });
 
   it("R19 has no dependencies entry", () => {
@@ -627,7 +710,7 @@ describe("package files", () => {
     });
   }
 
-  it("R18 uses none of the Meet call screen names anywhere in the package", () => {
+  it("R18 uses none of the Meet call screen names in src and scripts", () => {
     const names = [
       "stage",
       "stage-bar",
@@ -636,7 +719,11 @@ describe("package files", () => {
       "stage-muted",
       "tile",
     ].map((n) => `--${n}`);
-    for (const file of files(root)) {
+    const scanned = [
+      ...files(join(root, "src")),
+      ...files(join(root, "scripts")),
+    ].filter((f) => !f.endsWith("tokens.test.ts"));
+    for (const file of scanned) {
       const content = readFileSync(file, "utf8");
       for (const name of names) {
         // A longer name that starts the same way is not one of the six.
@@ -655,7 +742,7 @@ describe("package files", () => {
     )) {
       const content = readFileSync(file, "utf8");
       expect(content, file).not.toMatch(
-        /\b(window|document|localStorage|sessionStorage|navigator)\b/,
+        /\b(window|document|localStorage|sessionStorage|navigator|process|require)\b/,
       );
       for (const m of content.matchAll(/(?:from|import)\s+["']([^"']+)["']/g)) {
         expect(m[1]!.startsWith("."), `${file} imports ${m[1]}`).toBe(true);
