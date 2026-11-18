@@ -257,27 +257,6 @@ describe("failures are sorted (R16) and not retried (R17)", () => {
     expect(smtp.totalConnections()).toBe(1);
   });
 
-  it("returns auth_failed for a refused login", async () => {
-    const smtp = await startSmtp({ login: { user: "u", password: "right" } });
-    open.push(smtp.close);
-    const { layer, close } = createMailLayer({
-      config: mailConfig(smtp.port, {
-        user: "u",
-        password: "wrong",
-        tls: "starttls",
-      }),
-      logger: captureLogger().logger,
-      production: false,
-    });
-    open.push(close);
-    // Over a plain server the STARTTLS requirement fails first; see tls.test.ts for the login over TLS.
-    const result = await layer.sendInvitationCode({
-      to: "sam@example.com",
-      code,
-    });
-    expect(result.ok).toBe(false);
-  });
-
   it("returns unavailable when nothing listens", async () => {
     const smtp = await startSmtp();
     await smtp.close();

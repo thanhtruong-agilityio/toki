@@ -24,6 +24,10 @@
     {
       "at": "2026-11-18T10:36:43Z",
       "stage": "build"
+    },
+    {
+      "at": "2026-11-18T10:49:05Z",
+      "stage": "check"
     }
   ],
   "key": "TOKI-021",
@@ -36,10 +40,10 @@
   "spec_paths": [
     "docs/specs/2026-11-17-mail-smtp-design.md"
   ],
-  "stage": "build",
+  "stage": "check",
   "tier": "M",
   "verifier": {
-    "result": null,
-    "round": 0
+    "result": "FAIL",
+    "round": 1
   }
 }
