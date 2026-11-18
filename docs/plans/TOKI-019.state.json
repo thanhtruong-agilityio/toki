@@ -1,0 +1,49 @@
+{
+  "approved_auto": false,
+  "base": "github/main",
+  "branch": "feat/toki-019-account-tables",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-18T09:56:14Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-18T09:56:14Z",
+      "stage": "explore"
+    },
+    {
+      "at": "2026-11-18T09:58:44Z",
+      "stage": "plan"
+    },
+    {
+      "at": "2026-11-18T09:59:29Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-18T09:59:30Z",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-18T10:04:25Z",
+      "stage": "check"
+    }
+  ],
+  "key": "TOKI-019",
+  "main_sha": "88f92548ad8c04d81489354f97e6b3d10f5549c9",
+  "metrics": {},
+  "mode": "auto-to-check",
+  "plan_approved": true,
+  "plan_hash": "d81bf29753418d6380dfbde31c55fe76d00b38d4bed00b1fe84c84bd592da253",
+  "spec_commit": "0ee530c26a1de4430eacc081c72a4d812ee2191c",
+  "spec_paths": [
+    "docs/specs/2026-11-17-account-tables-design.md"
+  ],
+  "stage": "check",
+  "tier": "L",
+  "verifier": {
+    "result": "PASS",
+    "round": 2
+  }
+}
