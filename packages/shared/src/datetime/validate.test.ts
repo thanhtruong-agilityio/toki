@@ -77,3 +77,18 @@ describe("validateDateNotPast", () => {
     expect(validateDateNotPast("2026-02-30", lateEnv)).toEqual({ ok: false, reason: "invalid" });
   });
 });
+
+describe("faults of the calling code", () => {
+  it("throws a RangeError when now is not an instant", () => {
+    for (const bad of [NaN, Infinity, Number(undefined)]) {
+      expect(() => validateDateTime({ date: "2026-11-11", time: "09:00" }, { now: bad, timeZone: HCM })).toThrow(RangeError);
+      expect(() => validateFutureInstant(now + 1, bad)).toThrow(RangeError);
+      expect(() => validateDateNotPast("2026-11-11", { now: bad, timeZone: HCM })).toThrow(RangeError);
+    }
+  });
+
+  it("throws a RangeError that names an unknown zone in validateDateNotPast", () => {
+    expect(() => validateDateNotPast("2026-11-11", { now, timeZone: "Mars/Phobos" })).toThrow(/Mars\/Phobos/);
+    expect(() => validateDateNotPast("2026-11-11", { now, timeZone: "" })).toThrow(RangeError);
+  });
+});
