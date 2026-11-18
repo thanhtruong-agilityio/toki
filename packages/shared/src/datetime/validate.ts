@@ -1,20 +1,14 @@
-import { isInstant, isValidTimeZone, resolveWallTime, zonedParts } from "./zone.js";
+import { assertEnv, assertNow, isInstant, resolveWallTime, TIME_FORM, zonedParts } from "./zone.js";
 
-export type Reason = "required" | "invalid" | "past";
-export type Failure = { ok: false; reason: Reason; field?: "date" | "time" };
+export type DateReason = "required" | "invalid" | "past";
+export type DateFailure = { ok: false; reason: DateReason; field?: "date" | "time" };
 
 const DATE_FORM = /^(\d{4})-(\d{2})-(\d{2})$/;
-const TIME_FORM = /^([01]\d|2[0-3]):([0-5]\d)$/;
 
-// A zone or a "now" that the code gives is a fault of the calling code, not of
-// what a person typed, so it throws and is not one of the three reasons.
-function assertEnv(now: number, timeZone: string): void {
-  if (!isValidTimeZone(timeZone)) throw new RangeError(`Unknown time zone: ${JSON.stringify(timeZone)}`);
-  if (!isInstant(now)) throw new RangeError(`"now" is not an instant: ${String(now)}`);
-}
-
+// null, undefined and a string of spaces are empty. Any other value that is
+// not a string (a number in a JSON body) is filled but not in the form.
 function isBlank(value: unknown): boolean {
-  return typeof value !== "string" || value.trim() === "";
+  return value === null || value === undefined || (typeof value === "string" && value.trim() === "");
 }
 
 /** The day as year, month, day when `text` is a real YYYY-MM-DD, else null. */
@@ -34,13 +28,13 @@ function parseDate(text: string): { year: number; month: number; day: number } |
 export function validateDateTime(
   input: { date?: string | null; time?: string | null },
   env: { now: number; timeZone: string },
-): { ok: true; at: number } | Failure {
+): { ok: true; at: number } | DateFailure {
   assertEnv(env.now, env.timeZone);
   if (isBlank(input.date)) return { ok: false, reason: "required", field: "date" };
   if (isBlank(input.time)) return { ok: false, reason: "required", field: "time" };
-  const date = parseDate(input.date as string);
+  const date = typeof input.date === "string" ? parseDate(input.date) : null;
   if (date === null) return { ok: false, reason: "invalid", field: "date" };
-  const time = TIME_FORM.exec(input.time as string);
+  const time = typeof input.time === "string" ? TIME_FORM.exec(input.time) : null;
   if (time === null) return { ok: false, reason: "invalid", field: "time" };
 
   const wall = new Date(0);
@@ -55,8 +49,8 @@ export function validateDateTime(
 export function validateFutureInstant(
   at: number | null | undefined,
   now: number,
-): { ok: true; at: number } | Failure {
-  if (!isInstant(now)) throw new RangeError(`"now" is not an instant: ${String(now)}`);
+): { ok: true; at: number } | DateFailure {
+  assertNow(now);
   if (at === null || at === undefined) return { ok: false, reason: "required" };
   if (!isInstant(at)) return { ok: false, reason: "invalid" };
   return at <= now ? { ok: false, reason: "past" } : { ok: true, at };
@@ -66,10 +60,10 @@ export function validateFutureInstant(
 export function validateDateNotPast(
   date: string | null | undefined,
   env: { now: number; timeZone: string },
-): { ok: true; date: string } | Failure {
+): { ok: true; date: string } | DateFailure {
   assertEnv(env.now, env.timeZone);
   if (isBlank(date)) return { ok: false, reason: "required" };
-  const parsed = parseDate(date as string);
+  const parsed = typeof date === "string" ? parseDate(date) : null;
   if (parsed === null) return { ok: false, reason: "invalid" };
   const today = zonedParts(env.now, env.timeZone);
   if (today === null) throw new RangeError(`Cannot read the day of "now" in ${env.timeZone}`);

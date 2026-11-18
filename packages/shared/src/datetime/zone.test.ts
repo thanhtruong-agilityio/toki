@@ -20,6 +20,12 @@ describe("isValidTimeZone", () => {
     expect(isValidTimeZone("Mars/Phobos")).toBe(false);
     expect(isValidTimeZone(undefined as unknown as string)).toBe(false);
   });
+
+  it("accepts IANA names only, not offsets such as +07:00", () => {
+    for (const offset of ["+07:00", "-05:00", "+0700"]) expect(isValidTimeZone(offset)).toBe(false);
+    expect(isValidTimeZone("UTC")).toBe(true);
+    expect(isValidTimeZone("Etc/GMT+7")).toBe(true);
+  });
 });
 
 describe("zonedParts", () => {
@@ -31,6 +37,12 @@ describe("zonedParts", () => {
 
   it("shows midnight as hour 0, never 24", () => {
     expect(zonedParts(Date.UTC(2026, 10, 9, 17, 0, 0), HCM)).toMatchObject({ day: 10, hour: 0, minute: 0 });
+  });
+
+  it("reads the years 0 to 99 as themselves, not as 1900 to 1999", () => {
+    const at = -61_000_000_000_000; // year 36
+    expect(zonedParts(at, "UTC")?.year).toBe(36);
+    expect(utcOffsetMinutes(at, "UTC")).toBe(0);
   });
 
   it("works at the limits of Date and refuses beyond them", () => {

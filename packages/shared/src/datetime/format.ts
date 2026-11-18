@@ -1,9 +1,6 @@
 import { namesFor } from "./names.js";
 import { isInstant, zonedParts } from "./zone.js";
 
-/** Milliseconds since 1970-01-01T00:00:00Z. */
-export type Instant = number;
-
 export interface DayWords {
   today: string;
   tomorrow: string;
@@ -11,7 +8,7 @@ export interface DayWords {
 }
 
 export interface DateContext {
-  now: Instant;
+  now: number;
   /** IANA name. */
   timeZone: string;
   /** 'en' or 'vi'; a code that is not listed gets the English names. */
@@ -35,7 +32,7 @@ function pad2(value: number): string {
 }
 
 /** R1: HH:mm in the zone. */
-export function formatTime(at: Instant, timeZone: string): string | null {
+export function formatTime(at: number, timeZone: string): string | null {
   const parts = zonedParts(at, timeZone);
   return parts === null ? null : `${pad2(parts.hour)}:${pad2(parts.minute)}`;
 }
@@ -51,7 +48,7 @@ export function formatCountdown(ms: number): string | null {
 }
 
 /** R2, R3: short weekday, day, short month, and the year when it differs. */
-export function formatDate(at: Instant, ctx: DateContext, opts: FormatDateOptions = {}): string | null {
+export function formatDate(at: number, ctx: DateContext, opts: FormatDateOptions = {}): string | null {
   if (!isInstant(ctx.now)) return null;
   const parts = zonedParts(at, ctx.timeZone);
   const today = zonedParts(ctx.now, ctx.timeZone);
@@ -78,7 +75,7 @@ function hasDayWords(words: unknown): words is DayWords {
 }
 
 /** R4: a day word for yesterday, today and tomorrow, otherwise the date. */
-export function formatDay(at: Instant, ctx: FormatContext): string | null {
+export function formatDay(at: number, ctx: FormatContext): string | null {
   if (!hasDayWords(ctx.dayWords)) return null;
   const parts = zonedParts(at, ctx.timeZone);
   const today = isInstant(ctx.now) ? zonedParts(ctx.now, ctx.timeZone) : null;
@@ -92,7 +89,7 @@ export function formatDay(at: Instant, ctx: FormatContext): string | null {
 }
 
 /** R5: the day, a space, the time. */
-export function formatDateTime(at: Instant, ctx: FormatContext): string | null {
+export function formatDateTime(at: number, ctx: FormatContext): string | null {
   const day = formatDay(at, ctx);
   const time = formatTime(at, ctx.timeZone);
   return day === null || time === null ? null : `${day} ${time}`;

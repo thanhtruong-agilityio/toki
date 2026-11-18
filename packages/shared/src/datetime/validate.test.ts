@@ -23,6 +23,13 @@ describe("validateDateTime", () => {
     }
   });
 
+  it("returns invalid, not required, for a value that is filled but not a string", () => {
+    const body = { date: 20261110 as unknown as string, time: "09:00" };
+    expect(validateDateTime(body, env)).toEqual({ ok: false, reason: "invalid", field: "date" });
+    expect(validateDateTime({ date: "2026-11-11", time: 900 as unknown as string }, env)).toEqual({ ok: false, reason: "invalid", field: "time" });
+    expect(validateDateNotPast(20261110 as unknown as string, env)).toEqual({ ok: false, reason: "invalid" });
+  });
+
   it("returns required before invalid when one field is empty and the other bad", () => {
     expect(validateDateTime({ date: "", time: "nope" }, env)).toMatchObject({ reason: "required", field: "date" });
   });

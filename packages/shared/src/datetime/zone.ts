@@ -25,17 +25,21 @@ export function isInstant(value: unknown): value is number {
   return typeof value === "number" && Number.isFinite(value) && Math.abs(value) <= MAX_INSTANT;
 }
 
-// A cache of formatters, one per zone. It holds no setting: the key is the
-// zone name and the value never changes.
-const formatters = new Map<string, Intl.DateTimeFormat | null>();
+// A cache of formatters, one per known zone. It holds no setting: the key is
+// the zone name and the value never changes. Only zones the runtime knows are
+// stored (a few hundred at most), so a stream of bad names cannot grow it.
+const formatters = new Map<string, Intl.DateTimeFormat>();
+
+// An IANA name starts with a letter. Intl also accepts offsets such as
+// "+07:00", which have no daylight rules and are not a place.
+const ZONE_NAME = /^[A-Za-z]/;
 
 function formatterFor(timeZone: unknown): Intl.DateTimeFormat | null {
-  if (typeof timeZone !== "string" || timeZone === "") return null;
+  if (typeof timeZone !== "string" || !ZONE_NAME.test(timeZone)) return null;
   const cached = formatters.get(timeZone);
   if (cached !== undefined) return cached;
-  let formatter: Intl.DateTimeFormat | null;
   try {
-    formatter = new Intl.DateTimeFormat("en-US", {
+    const formatter = new Intl.DateTimeFormat("en-US", {
       timeZone,
       hourCycle: "h23",
       year: "numeric",
@@ -46,11 +50,11 @@ function formatterFor(timeZone: unknown): Intl.DateTimeFormat | null {
       second: "numeric",
       weekday: "short",
     });
+    formatters.set(timeZone, formatter);
+    return formatter;
   } catch {
-    formatter = null;
+    return null;
   }
-  formatters.set(timeZone, formatter);
-  return formatter;
 }
 
 export function isValidTimeZone(timeZone: string): boolean {
@@ -80,7 +84,11 @@ export function zonedParts(at: number, timeZone: string): ZonedParts | null {
 
 /** The wall clock of the parts, written as if it were UTC. */
 function wallOf(parts: ZonedParts): number {
-  return Date.UTC(parts.year, parts.month - 1, parts.day, parts.hour, parts.minute, parts.second);
+  // Date.UTC reads the years 0 to 99 as 1900 to 1999, so the year is set apart.
+  const wall = new Date(0);
+  wall.setUTCFullYear(parts.year, parts.month - 1, parts.day);
+  wall.setUTCHours(parts.hour, parts.minute, parts.second, 0);
+  return wall.getTime();
 }
 
 /** Offset of the zone from UTC at the instant, in minutes, east positive. */
@@ -128,7 +136,8 @@ export function resolveWallTime(wall: number, timeZone: string): WallTime | null
   return { kind: "gap", at: high };
 }
 
-const TIME_FORM = /^([01]\d|2[0-3]):([0-5]\d)$/;
+/** HH:mm, 00:00 to 23:59. */
+export const TIME_FORM = /^([01]\d|2[0-3]):([0-5]\d)$/;
 
 /**
  * The instant at which the wall clock in `timeZone` shows `time` (HH:mm) on
@@ -142,4 +151,15 @@ export function atLocalTime(now: number, timeZone: string, dayOffset: number, ti
   const wall = Date.UTC(today.year, today.month - 1, today.day + dayOffset, Number(match[1]), Number(match[2]));
   const resolved = resolveWallTime(wall, timeZone);
   return resolved !== null && isInstant(resolved.at) ? resolved.at : null;
+}
+
+/** A "now" that is not an instant is a fault of the calling code (RangeError). */
+export function assertNow(now: unknown): void {
+  if (!isInstant(now)) throw new RangeError(`"now" is not an instant: ${String(now)}`);
+}
+
+/** A zone or a "now" the code gives is wrong: a RangeError, not a reason. */
+export function assertEnv(now: unknown, timeZone: string): void {
+  if (!isValidTimeZone(timeZone)) throw new RangeError(`Unknown time zone: ${JSON.stringify(timeZone)}`);
+  assertNow(now);
 }

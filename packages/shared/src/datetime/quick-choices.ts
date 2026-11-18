@@ -1,4 +1,4 @@
-import { atLocalTime, isInstant, isValidTimeZone } from "./zone.js";
+import { assertEnv, atLocalTime } from "./zone.js";
 
 export type QuickTimeId = "in1Hour" | "today1500" | "in3Hours" | "tomorrow0900";
 
@@ -10,8 +10,7 @@ const HOUR_MS = 3_600_000;
  * screens.
  */
 export function quickTimeChoices(now: number, timeZone: string): { id: QuickTimeId; at: number }[] {
-  if (!isInstant(now)) throw new RangeError(`"now" is not an instant: ${String(now)}`);
-  if (!isValidTimeZone(timeZone)) throw new RangeError(`Unknown time zone: ${JSON.stringify(timeZone)}`);
+  assertEnv(now, timeZone);
   const today1500 = atLocalTime(now, timeZone, 0, "15:00");
   const tomorrow0900 = atLocalTime(now, timeZone, 1, "09:00");
   if (tomorrow0900 === null) throw new RangeError(`Cannot compute 09:00 tomorrow in ${timeZone}`);
