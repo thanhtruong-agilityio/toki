@@ -8,6 +8,17 @@ import * as schema from "./schema.js";
 // One list of the names this module exports, extended by every later ticket in
 // its own change (R18). It checks that each name is exported and that no
 // export is a table definition; it does not check that nothing else is exported.
+// The names of the exports that are a table definition of schema.ts.
+export function leakedTables(
+  exported: Record<string, unknown>,
+  tables: Record<string, unknown>,
+): string[] {
+  const tableObjects = new Set<unknown>(Object.values(tables));
+  return Object.entries(exported)
+    .filter(([, value]) => tableObjects.has(value))
+    .map(([name]) => name);
+}
+
 export const EXPORTED_NAMES = [
   "buildDmKey",
   "getConversationFacts",
@@ -23,19 +34,16 @@ describe("the public surface of the conversations module (R18)", () => {
   });
 
   it("exports no table definition", () => {
-    const tables = new Set<unknown>(Object.values(schema));
-    for (const [name, value] of Object.entries(mod)) {
-      expect(tables.has(value), `${name} is a table of schema.ts`).toBe(false);
-    }
+    expect(leakedTables(mod, schema)).toEqual([]);
     expect(Object.keys(mod)).not.toContain("conversations");
     expect(Object.keys(mod)).not.toContain("conversationMembers");
   });
 
   it("fails when a table object is added to the exports", () => {
-    const tables = new Set<unknown>(Object.values(schema));
     const withTable = { ...mod, conversations: schema.conversations };
-    const leaked = Object.values(withTable).some((v) => tables.has(v));
-    expect(leaked).toBe(true);
+    expect(leakedTables(withTable, schema)).toEqual(["conversations"]);
+    const renamed = { ...mod, anything: schema.conversationMembers };
+    expect(leakedTables(renamed, schema)).toEqual(["anything"]);
   });
 
   it("does not re-export the table file from index.ts", () => {

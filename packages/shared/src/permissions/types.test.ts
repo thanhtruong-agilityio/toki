@@ -1,6 +1,8 @@
 import { describe, expectTypeOf, it } from "vitest";
 import type { ConversationFacts } from "../index.js";
 
+// expectTypeOf checks nothing at runtime: `pnpm typecheck` (tsc over src, test
+// files included) is what fails when the type drifts.
 describe("ConversationFacts (TOKI-027 R2)", () => {
   it("has the four facts and the four kinds", () => {
     expectTypeOf<ConversationFacts>().toEqualTypeOf<{

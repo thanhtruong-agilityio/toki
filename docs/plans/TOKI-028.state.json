@@ -33,6 +33,11 @@
       "at": "2026-11-18T10:58:00Z",
       "auto": false,
       "stage": "approve"
+    },
+    {
+      "at": "2026-11-18T11:01:32Z",
+      "auto": false,
+      "stage": "approve"
     }
   ],
   "key": "TOKI-028",
@@ -40,7 +45,7 @@
   "metrics": {},
   "mode": "auto-to-check",
   "plan_approved": true,
-  "plan_hash": "d3719aa2fb5794d1b49eac567547e1ac3dbd738dce254effd44f64e61fb7aeea",
+  "plan_hash": "cb98322c281cf476e2ce1fa9ddb80dcb9ed5e8a98b537ce808adb08b21c6a937",
   "spec_commit": "11a6e9b67e2f767c9e6bb3a1bf68287c17b04e14",
   "spec_paths": [
     "docs/specs/2026-11-17-conversation-tables-design.md"
@@ -48,7 +53,7 @@
   "stage": "check",
   "tier": "L",
   "verifier": {
-    "result": "FAIL",
-    "round": 2
+    "result": "PASS",
+    "round": 3
   }
 }

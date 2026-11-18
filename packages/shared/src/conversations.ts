@@ -15,6 +15,13 @@ export const CHANNEL_NAME_PATTERN = new RegExp(
 export const NOTIFICATION_LEVELS = ["all", "mentions", "none"] as const;
 export type NotificationLevel = (typeof NOTIFICATION_LEVELS)[number];
 
+// For a value read from a text column.
+export function isNotificationLevel(
+  value: unknown,
+): value is NotificationLevel {
+  return (NOTIFICATION_LEVELS as readonly unknown[]).includes(value);
+}
+
 export type ConversationKind = "channel" | "dm" | "group_dm";
 
 // null or 1 to max characters. Counts code points with Array.from, as Postgres

@@ -347,7 +347,8 @@ async function raceInserts(
     inserted();
     await gate;
   });
-  await insertedP;
+  // If the first insert fails, firstDone rejects and the race ends here.
+  await Promise.race([insertedP, firstDone]);
   const secondDone = Promise.resolve(second(sqlB)).then(
     () => null,
     (e: PgError) => e,

@@ -7,6 +7,7 @@ import {
   GROUP_DM_MAX_PEOPLE,
   NOTIFICATION_LEVELS,
   effectiveNotificationLevel,
+  isNotificationLevel,
   isValidChannelDescription,
   isValidChannelTopic,
 } from "./conversations.js";
@@ -60,6 +61,17 @@ describe.each([
   it("refuses a value that is not a string or null", () => {
     expect(fn(undefined as never)).toBe(false);
     expect(fn(5 as never)).toBe(false);
+  });
+});
+
+describe("isNotificationLevel", () => {
+  it("accepts the three levels and refuses anything else", () => {
+    for (const level of NOTIFICATION_LEVELS) {
+      expect(isNotificationLevel(level)).toBe(true);
+    }
+    for (const bad of ["loud", "nothing", "", null, undefined, 1]) {
+      expect(isNotificationLevel(bad)).toBe(false);
+    }
   });
 });
 

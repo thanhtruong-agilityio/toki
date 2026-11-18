@@ -11,6 +11,11 @@ import {
   unique,
   uuid,
 } from "drizzle-orm/pg-core";
+import {
+  CHANNEL_DESCRIPTION_MAX,
+  CHANNEL_NAME_MAX,
+  CHANNEL_TOPIC_MAX,
+} from "@toki/shared";
 import { uuidv7 } from "uuidv7";
 
 // The two conversation tables (TOKI-028). Not exported from the module's
@@ -22,7 +27,9 @@ import { uuidv7 } from "uuidv7";
 // database default; the server writes the time (R17).
 
 // The name pattern, the topic and the description limit are the values of
-// packages/shared (R15); a test runs the same lists through both.
+// packages/shared (R15). A migration freezes the numbers it was generated
+// with, so a change of a limit needs a new migration; a test runs the same
+// lists through both.
 const IDS = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
 
 export const conversations = pgTable(
@@ -58,15 +65,15 @@ export const conversations = pgTable(
     ),
     check(
       "conversations_name_check",
-      sql`${table.kind} <> 'channel' or (${table.name} is not null and ${table.name} ~ '^[a-z0-9-]{1,80}$')`,
+      sql`${table.kind} <> 'channel' or (${table.name} is not null and ${table.name} ~ ${sql.raw(`'^[a-z0-9-]{1,${CHANNEL_NAME_MAX}}$'`)})`,
     ),
     check(
       "conversations_topic_check",
-      sql`${table.topic} is null or char_length(${table.topic}) between 1 and 250`,
+      sql`${table.topic} is null or char_length(${table.topic}) between 1 and ${sql.raw(String(CHANNEL_TOPIC_MAX))}`,
     ),
     check(
       "conversations_description_check",
-      sql`${table.description} is null or char_length(${table.description}) between 1 and 500`,
+      sql`${table.description} is null or char_length(${table.description}) between 1 and ${sql.raw(String(CHANNEL_DESCRIPTION_MAX))}`,
     ),
     check(
       "conversations_general_shape_check",

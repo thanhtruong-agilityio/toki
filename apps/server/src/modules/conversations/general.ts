@@ -1,4 +1,5 @@
-import { and, eq } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
+import { uuidv7 } from "uuidv7";
 import type { Db } from "./facts.js";
 import { conversationMembers, conversations } from "./schema.js";
 
@@ -10,32 +11,25 @@ export async function createGeneralChannel(
   tx: Db,
   input: { workspaceId: string; createdBy: string; createdAt: Date },
 ): Promise<string> {
-  const [created] = await tx
-    .insert(conversations)
-    .values({
-      workspaceId: input.workspaceId,
-      kind: "channel",
-      name: "general",
-      topic: null,
-      description: null,
-      isPrivate: false,
-      isGeneral: true,
-      dmKey: null,
-      createdBy: input.createdBy,
-      createdAt: input.createdAt,
-      archivedAt: null,
-    })
-    .returning({ id: conversations.id });
-  const id = created!.id;
-  await tx.insert(conversationMembers).values({
-    conversationId: id,
-    userId: input.createdBy,
-    workspaceId: input.workspaceId,
-    notificationLevel: null,
-    isMuted: false,
-    isStarred: false,
-    createdAt: input.createdAt,
-  });
+  // One statement for both rows, so a caller that passes a client and not a
+  // transaction never leaves a #general row without its creator. The id is
+  // made here, as the Drizzle default of the table would make it.
+  const id = uuidv7();
+  await tx.execute(sql`
+    with created as (
+      insert into conversations
+        (id, workspace_id, kind, name, topic, description, is_private,
+         is_general, dm_key, created_by, created_at, archived_at)
+      values
+        (${id}, ${input.workspaceId}, 'channel', 'general', null, null, false,
+         true, null, ${input.createdBy}, ${input.createdAt.toISOString()}::timestamptz, null)
+      returning id, workspace_id, created_by, created_at
+    )
+    insert into conversation_members
+      (conversation_id, user_id, workspace_id, notification_level, is_muted,
+       is_starred, created_at)
+    select id, created_by, workspace_id, null, false, false, created_at
+    from created`);
   return id;
 }
 
