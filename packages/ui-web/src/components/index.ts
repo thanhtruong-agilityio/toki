@@ -8,3 +8,4 @@ export * from "./Tag";
 export * from "./Badge";
 export * from "./Avatar";
 export * from "./PresenceDot";
+export * from "./EmptyState";

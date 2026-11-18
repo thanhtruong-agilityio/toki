@@ -21,7 +21,15 @@ const folders = readdirSync(componentsDir).filter(
     !["Menu", "Modal", "Sheet"].includes(name),
 );
 const files = folders.flatMap((f) => walk(join(componentsDir, f)));
-const cssFiles = files.filter((f) => f.endsWith(".css"));
+// R6 of TOKI-012 is about its eight components. The CSS of group 2 holds
+// hsl(var(--h) ...), the density size --av, its own --h and --s and one look
+// selector (TOKI-013 R3, R9, R20), so it is checked by sources-group2.test.ts.
+const group2 = ["Avatar", "PresenceDot", "EmptyState", "Toast"];
+const cssFiles = files.filter(
+  (f) =>
+    f.endsWith(".css") &&
+    !group2.some((name) => f.includes(`/components/${name}/`)),
+);
 const sources = files.filter(
   (f) =>
     /\.tsx?$/.test(f) &&
