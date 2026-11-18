@@ -1,0 +1,11 @@
+.cfm-text {
+  margin: 0;
+}
+.cfm-target {
+  margin: 8px 0 0;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.cfm .mft {
+  flex-wrap: wrap;
+}

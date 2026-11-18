@@ -14,6 +14,7 @@ import { examples as sheet } from "./components/Sheet/Sheet.examples";
 import { examples as switchExamples } from "./components/Switch/Switch.examples";
 import { examples as tag } from "./components/Tag/Tag.examples";
 import { examples as toast } from "./components/Toast/Toast.examples";
+import { examples as confirmDialog } from "./components/ConfirmDialog/ConfirmDialog.examples";
 
 export type { Example } from "./internal/example";
 
@@ -39,4 +40,5 @@ export const componentExamples: Array<{
   { component: "Menu", examples: menu },
   { component: "Modal", examples: modal },
   { component: "Sheet", examples: sheet },
+  { component: "ConfirmDialog", examples: confirmDialog },
 ];
