@@ -182,6 +182,9 @@ export const Menu = forwardRef<HTMLDivElement, MenuProps>(
     }, [open]);
 
     // When it has closed and focus is on the body, the anchor gets it (R22).
+    // The cleanup also runs on unmount while open: R13 is followed and focus
+    // is returned; the Errors section of the spec ("no focus is returned") is
+    // to be corrected in a spec change.
     useEffect(() => {
       if (!open) return;
       return () => {

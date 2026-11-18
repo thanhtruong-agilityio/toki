@@ -34,11 +34,23 @@ function give(element: Element): void {
   else element.setAttribute("aria-hidden", entry.ariaHidden);
 }
 
-function walk(container: Element, own: Element, taken: Element[]): void {
+function walk(
+  container: Element,
+  own: Element,
+  keep: readonly Element[],
+  taken: Element[],
+): void {
   for (const child of Array.from(container.children)) {
     if (child === own) continue;
     if (child.hasAttribute("data-layer-skip")) continue;
-    if (child.querySelector("[data-layer-skip]")) walk(child, own, taken);
+    // A layer above the dialog (a Menu opened from it) stays interactive; so
+    // does every element that contains one (R15, R28).
+    if (keep.includes(child)) continue;
+    if (
+      child.querySelector("[data-layer-skip]") ||
+      keep.some((node) => child.contains(node))
+    )
+      walk(child, own, keep, taken);
     else {
       take(child);
       taken.push(child);
@@ -46,9 +58,13 @@ function walk(container: Element, own: Element, taken: Element[]): void {
   }
 }
 
-export function isolate(own: Element): () => void {
+// `keep` holds the nodes of the layers above the dialog, which are left alone.
+export function isolate(
+  own: Element,
+  keep: readonly Element[] = [],
+): () => void {
   const taken: Element[] = [];
-  walk(document.body, own, taken);
+  walk(document.body, own, keep, taken);
   let released = false;
   return () => {
     if (released) return;

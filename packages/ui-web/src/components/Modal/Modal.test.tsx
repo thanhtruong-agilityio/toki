@@ -20,6 +20,7 @@ import {
   dialogCloseReasons,
   type DialogCloseReason,
 } from "./Dialog";
+import { Menu, MenuItem } from "../Menu";
 import { Modal } from "./Modal";
 
 const noop = () => {};
@@ -725,6 +726,56 @@ describe("scroll lock (R14)", () => {
   });
 });
 
+// R13 is followed: focus goes back when the dialog or the Menu unmounts while
+// open. The Errors section of the spec says the opposite and is to be
+// corrected in a spec change.
+describe("unmounted while open (R13)", () => {
+  test("a dialog unmounted while open, its opener still in the page, gets focus back", async () => {
+    const user = userEvent.setup();
+    function Page({ show }: { show: boolean }) {
+      return (
+        <>
+          <button id="op">op</button>
+          {show ? (
+            <Modal open title="T" onRequestClose={noop}>
+              <button>in</button>
+            </Modal>
+          ) : null}
+        </>
+      );
+    }
+    const { rerender } = render(<Page show={false} />);
+    await user.click(screen.getByText("op"));
+    rerender(<Page show />);
+    expect(document.activeElement).toBe(screen.getByText("in"));
+    rerender(<Page show={false} />);
+    expect(document.activeElement).toBe(document.getElementById("op"));
+  });
+
+  test("a Menu unmounted while open returns focus to its anchor", async () => {
+    const user = userEvent.setup();
+    function Page({ show }: { show: boolean }) {
+      const anchor = useRef<HTMLButtonElement>(null);
+      return (
+        <>
+          <button ref={anchor}>anchor</button>
+          {show ? (
+            <Menu open anchorRef={anchor} aria-label="m" onClose={noop}>
+              <MenuItem>One</MenuItem>
+            </Menu>
+          ) : null}
+        </>
+      );
+    }
+    const { rerender } = render(<Page show={false} />);
+    await user.click(screen.getByText("anchor"));
+    rerender(<Page show />);
+    expect(document.activeElement).toBe(screen.getByRole("menuitem"));
+    rerender(<Page show={false} />);
+    expect(document.activeElement).toBe(screen.getByText("anchor"));
+  });
+});
+
 describe("opaque backdrop and the toast region (R15, R34)", () => {
   function Page({
     backdrop,
@@ -739,6 +790,7 @@ describe("opaque backdrop and the toast region (R15, R34)", () => {
           <div id="pane">page</div>
           <div id="region" data-layer-skip="" role="status">
             toast text
+            <button id="toast-action">undo</button>
           </div>
         </div>
         <div id="side">side</div>
@@ -767,12 +819,51 @@ describe("opaque backdrop and the toast region (R15, R34)", () => {
     }
     expect(screen.getByRole("status")).toHaveTextContent("toast text");
     expect(dialog()).not.toHaveAttribute("inert");
-    // Tab never lands in the region.
-    await user.tab();
-    await user.tab();
+    // Tab never lands in the region, which holds a focusable button.
+    expect(document.activeElement).toBe(screen.getByText("in"));
+    for (let i = 0; i < 3; i += 1) {
+      await user.tab();
+      expect(q("region").contains(document.activeElement)).toBe(false);
+      expect(dialog().contains(document.activeElement)).toBe(true);
+    }
+    await user.tab({ shift: true });
     expect(q("region").contains(document.activeElement)).toBe(false);
     rerender(<Page backdrop="opaque" open={false} />);
     expect(document.querySelector("[inert],[aria-hidden]")).toBeNull();
+  });
+
+  test("a Menu that is open from the first render of an opaque Modal is above it: not inert, not hidden, asked first by Esc", async () => {
+    const user = userEvent.setup();
+    const calls: string[] = [];
+    const anchor = createRef<HTMLButtonElement>();
+    render(
+      <>
+        <div id="page">page</div>
+        <Modal
+          open
+          title="T"
+          backdrop="opaque"
+          onRequestClose={() => calls.push("modal")}
+        >
+          <button ref={anchor}>anchor</button>
+          <Menu
+            open
+            anchorRef={anchor}
+            aria-label="m"
+            onClose={(r) => calls.push(`menu:${r}`)}
+          >
+            <MenuItem>One</MenuItem>
+          </Menu>
+        </Modal>
+      </>,
+    );
+    const menu = screen.getByRole("menu");
+    expect(menu.closest("[inert]")).toBeNull();
+    expect(menu.closest("[aria-hidden]")).toBeNull();
+    expect(document.getElementById("page")!.closest("[inert]")).not.toBeNull();
+    expect(dialog().closest("[inert]")).toBeNull();
+    await user.keyboard("{Escape}");
+    expect(calls).toEqual(["menu:escape"]);
   });
 
   test("dim: nothing is changed", () => {

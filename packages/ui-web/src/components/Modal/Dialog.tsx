@@ -145,8 +145,17 @@ export const Dialog = forwardRef<HTMLDivElement, DialogProps>(
       if (!open) return;
       if (!session.current) session.current = { opener: recordOpener() };
       lockScroll();
+      // Layers above this dialog (a Menu that opens in the same commit, as a
+      // child) are not isolated: they are above it and interactive (R15, R28).
       const release =
-        backdrop === "opaque" && scrim.current ? isolate(scrim.current) : null;
+        backdrop === "opaque" && scrim.current
+          ? isolate(
+              scrim.current,
+              layersAbove(layerId)
+                .map((layer) => layer.getNode())
+                .filter((node): node is HTMLElement => node !== null),
+            )
+          : null;
       if (panel.current && isTop(layerId)) {
         focusInto(panel.current, initialFocusRef);
       }
@@ -157,7 +166,10 @@ export const Dialog = forwardRef<HTMLDivElement, DialogProps>(
       // `backdrop` and `initialFocusRef` are read when the dialog opens.
     }, [open]);
 
-    // R33, on close: after React has removed the portal, focus goes back.
+    // R33, on close: after React has removed the portal, focus goes back. This
+    // cleanup also runs when the dialog unmounts while open: R13 is followed
+    // and focus is returned. The Errors section of the spec says "no focus is
+    // returned"; that line is to be corrected in a spec change.
     useEffect(() => {
       if (!open) return;
       return () => {
