@@ -17,6 +17,14 @@ Avatar and PresenceDot; EmptyState; Toast, provider and timers; the placement (R
 2. **Group-1 cross-file tests walk the folders.** `components/sources.test.ts` reads every folder of `components/` except Menu, Modal and Sheet, so the four new folders are checked for the shared rules (R3, R6, R7, R21 of TOKI-012) without an edit. `components/exports.test.ts` lists names; this ticket adds its own `exports-group2.test.ts` for the names of group 2 instead of editing TOKI-012's file.
 3. **No new dependency.** `window.visualViewport`, `ResizeObserver` and `getBoundingClientRect` are stubbed in tests (jsdom has none of the first two).
 
+### Changes made during the build (recorded after verifier round 1)
+
+- `components/sources.test.ts` (TOKI-012's cross-file check of its R6) now skips the four group-2 CSS files: their rules hold `hsl(var(--h) ...)`, the density size `--av`, the names `--h` and `--s` and the Toast's one look selector, which R6 of TOKI-012 bans for its eight components. The group-2 rules (TOKI-013 R1, R3, R20) are checked by the new `components/sources-group2.test.ts`. This is the one edit to a TOKI-012 file besides the index and examples lines. It replaces decision 2 where it says the four folders are checked "without an edit".
+- The tests for `computeToastBottom`, `computeToastExtent` and the placement hooks are in `Toast.test.tsx`, not in separate files, because R1 allows one test file per folder. `components/exports-group2.test.tsx` (not `.ts`) holds the export check and the example checks of R30.
+- `ToastProvider.tsx` holds a registry (the avoided elements, the anchors, one `ResizeObserver`) next to the timers; the region subscribes to it. Registration listens to `transitionend` and `transitioncancel` of the element it was given when it registered.
+- Files added that the steps did not name: `docs/plans/TOKI-013.state.json` and the lines of `src/examples.ts` and `components/index.ts`.
+- Known and not covered by a test: an element swapped under the same ref after it registered keeps the old listeners; a second click of the Undo button in the same tick (React flushes discrete events at once).
+
 ## AC to step to test
 
 | Requirement | Step | Test (written first, seen to fail) |
