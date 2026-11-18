@@ -163,7 +163,11 @@
   font-size: 11.5px;
   color: var(--muted);
 }
+/* flex:none is not in Table C: without it the search box shrinks (34 px to
+   about 29 px) when the sidebar is short, as .nav-items shrinks, and the
+   numbers of Table J (R20: 149.6 px of items at 560 px) do not hold. */
 .srch {
+  flex: none;
   display: flex;
   align-items: center;
   gap: 8px;

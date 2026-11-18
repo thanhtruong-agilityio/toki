@@ -119,7 +119,7 @@ const tables: Row[] = [
   C(".ws .wss", "font-size:11.5px; color:var(--muted)"),
   C(
     ".srch",
-    "display:flex; align-items:center; gap:8px; height:36px; padding:0 10px; border-radius:var(--radius-sm); background:var(--surface); border:1px solid var(--line); color:var(--muted); margin-bottom:8px; width:100%; transition:border-color .15s",
+    "flex:none; display:flex; align-items:center; gap:8px; height:36px; padding:0 10px; border-radius:var(--radius-sm); background:var(--surface); border:1px solid var(--line); color:var(--muted); margin-bottom:8px; width:100%; transition:border-color .15s",
   ),
   C(".srch:hover", "border-color:var(--muted)"),
   C(

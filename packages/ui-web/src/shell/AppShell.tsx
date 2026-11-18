@@ -118,7 +118,23 @@ function Shell(
     if (!narrow) return;
     const target = { list: convsRef, main: mainRef, side: sideRef }[pane]
       .current;
-    if (target && !target.contains(document.activeElement)) target.focus();
+    if (!target || target.contains(document.activeElement)) return;
+    target.focus();
+    if (document.activeElement === target) return;
+    // The pane is still `visibility:hidden` when the change is committed: its
+    // transition has not shown it yet, and a browser refuses the focus of a
+    // hidden element. Try again on the next frames, a few times at most.
+    let tries = 0;
+    let frame = 0;
+    const retry = () => {
+      if (target.contains(document.activeElement)) return;
+      target.focus();
+      if (document.activeElement !== target && ++tries < 10) {
+        frame = requestAnimationFrame(retry);
+      }
+    };
+    frame = requestAnimationFrame(retry);
+    return () => cancelAnimationFrame(frame);
   }, [pane, narrow]);
   return (
     <div

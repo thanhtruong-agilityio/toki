@@ -34,8 +34,12 @@ export const sections: SectionRow[] = [
 
 // The rows a person sees. With no known role only the rows with no `roles` are
 // drawn, so an Admin item is never drawn by default (R36).
-export function visibleSections(role?: Role): SectionRow[] {
-  return sections.filter(
+// `rows` is the list to filter; the shell fixture (R32) passes its own.
+export function visibleSections(
+  role?: Role,
+  rows: ReadonlyArray<SectionRow> = sections,
+): SectionRow[] {
+  return rows.filter(
     (row) => !row.roles || (role !== undefined && row.roles.includes(role)),
   );
 }

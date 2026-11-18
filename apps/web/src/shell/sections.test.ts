@@ -59,6 +59,15 @@ describe("visibleSections (R36)", () => {
     expect(visibleSections("member").map((s) => s.id)).toEqual(["home"]);
     expect(visibleSections("admin").map((s) => s.id)).toEqual(["home"]);
   });
+  test("filters a list that is given (the shell fixture's)", () => {
+    const rows = [
+      { ...sections[0]!, id: "a" },
+      { ...sections[0]!, id: "b", roles: ["admin" as const] },
+    ];
+    expect(visibleSections(undefined, rows).map((s) => s.id)).toEqual(["a"]);
+    expect(visibleSections("member", rows).map((s) => s.id)).toEqual(["a"]);
+    expect(visibleSections("admin", rows).map((s) => s.id)).toEqual(["a", "b"]);
+  });
 });
 
 describe("currentSectionId (R30)", () => {
