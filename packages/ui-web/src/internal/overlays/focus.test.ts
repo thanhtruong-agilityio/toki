@@ -1,5 +1,12 @@
 import { afterEach, describe, expect, test } from "vitest";
-import { canFocus, firstTabbable, focusElement, tabbables } from "./focus";
+import {
+  canFocus,
+  firstTabbable,
+  focusElement,
+  focusInto,
+  recordOpener,
+  tabbables,
+} from "./focus";
 
 function mount(html: string): HTMLElement {
   const root = document.createElement("div");
@@ -109,5 +116,35 @@ describe("canFocus and focusElement (R13, R22)", () => {
     expect(focusElement(root.querySelector("#v") as HTMLElement)).toBe(false);
     expect(document.activeElement).toBe(b);
     expect(focusElement(null)).toBe(false);
+  });
+});
+
+describe("recordOpener and focusInto (R11, R13)", () => {
+  test("recordOpener returns the focused element, and null for the body", () => {
+    const root = mount(`<button id="b">b</button>`);
+    expect(recordOpener()).toBeNull();
+    const b = root.querySelector("#b") as HTMLElement;
+    b.focus();
+    expect(recordOpener()).toBe(b);
+  });
+
+  test("focusInto: the ref, then data-autofocus, then the first tabbable, then the panel", () => {
+    const panel = mount(`
+      <button id="a">a</button>
+      <input id="auto" data-autofocus />
+      <button id="z">z</button>`);
+    panel.tabIndex = -1;
+    const z = panel.querySelector("#z") as HTMLElement;
+    focusInto(panel, { current: z });
+    expect(document.activeElement).toBe(z);
+    focusInto(panel, null);
+    expect(document.activeElement?.id).toBe("auto");
+    panel.querySelector("#auto")!.removeAttribute("data-autofocus");
+    focusInto(panel, undefined);
+    expect(document.activeElement?.id).toBe("a");
+    const bare = mount(`<span>text</span>`);
+    bare.tabIndex = -1;
+    focusInto(bare, null);
+    expect(document.activeElement).toBe(bare);
   });
 });

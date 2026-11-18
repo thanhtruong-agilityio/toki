@@ -103,3 +103,29 @@ export function focusElement(element: HTMLElement | null | undefined): boolean {
   element.focus();
   return document.activeElement === element;
 }
+
+// The element that has focus when a dialog opens, or null when focus is on the
+// body (R13). It is a helper so that the order of R33 can be tested.
+export function recordOpener(): HTMLElement | null {
+  const active = document.activeElement;
+  return active instanceof HTMLElement && active !== document.body
+    ? active
+    : null;
+}
+
+// First focus of a dialog (R11): the element of the ref, else the first
+// `data-autofocus`, else the first tabbable element, else the panel itself.
+export function focusInto(
+  panel: HTMLElement,
+  initial: { current: HTMLElement | null } | null | undefined,
+): void {
+  const candidates = [
+    initial?.current ?? null,
+    panel.querySelector<HTMLElement>("[data-autofocus]"),
+    firstTabbable(panel),
+    panel,
+  ];
+  for (const candidate of candidates) {
+    if (candidate && focusElement(candidate)) return;
+  }
+}
