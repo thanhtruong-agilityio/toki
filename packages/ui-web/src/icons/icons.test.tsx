@@ -3,7 +3,8 @@ import { join } from "node:path";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import * as icons from "./index";
-import { BellIcon, Icon, iconNames, iconPaths, type IconProps } from "./index";
+import { BellIcon, Icon, iconNames, type IconProps } from "./index";
+import { iconPaths } from "./paths";
 
 // The 43 icons of the spec (Table A), in order.
 const KEPT = [
@@ -114,19 +115,14 @@ describe("names and exports (R1, R2, R9, R10, R16)", () => {
     expect([...iconNames]).toEqual(KEPT);
   });
 
-  it("exports exactly the 43 components, Icon, iconNames and iconPaths", () => {
-    const expected = [
-      ...KEPT.map(pascal),
-      "Icon",
-      "iconNames",
-      "iconPaths",
-    ].sort();
+  it("exports exactly the 43 components, Icon and iconNames", () => {
+    const expected = [...KEPT.map(pascal), "Icon", "iconNames"].sort();
     expect(Object.keys(icons).sort()).toEqual(expected);
   });
 
   it("names every drawing export Icon or *Icon", () => {
     for (const key of Object.keys(icons)) {
-      if (key === "iconNames" || key === "iconPaths") continue;
+      if (key === "iconNames") continue;
       expect(key === "Icon" || key.endsWith("Icon")).toBe(true);
     }
   });

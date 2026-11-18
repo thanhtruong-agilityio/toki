@@ -16,6 +16,15 @@
     {
       "at": "2026-11-18T08:01:36Z",
       "stage": "build"
+    },
+    {
+      "at": "2026-11-18T08:01:46Z",
+      "stage": "check"
+    },
+    {
+      "at": "2026-11-18T08:02:35Z",
+      "auto": true,
+      "stage": "approve"
     }
   ],
   "key": "TOKI-011",
@@ -23,15 +32,15 @@
   "metrics": {},
   "mode": null,
   "plan_approved": true,
-  "plan_hash": "62c85f46d8bb4e4ac26f1f16cad001240b7393b9f357ced2aa6268ec99157db1",
+  "plan_hash": "8bf65fdf9ffd69ada1dbc86bc979a9d23f300e4979493b105d299a9e603dc6ef",
   "spec_commit": "6268c3d86197b94326ee00c46b586b27bcf69d22",
   "spec_paths": [
     "docs/specs/2026-11-16-icon-set-design.md"
   ],
-  "stage": "build",
+  "stage": "check",
   "tier": "S",
   "verifier": {
-    "result": null,
-    "round": 0
+    "result": "FAIL",
+    "round": 1
   }
 }

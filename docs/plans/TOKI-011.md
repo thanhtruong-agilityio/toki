@@ -4,11 +4,11 @@ Tier S. Spec: `docs/specs/2026-11-16-icon-set-design.md` (source of truth). Bran
 
 ## Steps
 
-1. `packages/ui-web/package.json` and `tsconfig.json`: dependencies, `sideEffects`, `test` script, `jsx` and DOM lib (R11, R12). Versions: react `19.3.1`, react-dom `19.3.1`, `@types/react` `19.3.0`, `@types/react-dom` `19.3.0` (lockfile pins of `apps/web`), `@types/node` `22.20.5` and `vitest` `5.1.0` (same as `tokens`); peer `react` `^19.0.0`.
+1. `packages/ui-web/package.json` and `tsconfig.json`: dependencies, `sideEffects`, `test` script, `jsx`, the DOM lib and `types: ["node"]` (the test reads files) (R11, R12). Versions: react `19.3.1`, react-dom `19.3.1`, `@types/react` `19.3.0`, `@types/react-dom` `19.3.0` (lockfile pins of `apps/web`), `@types/node` `22.20.5` and `vitest` `5.1.0` (same as `tokens`); peer `react` `^19.0.0`.
 2. Write `src/icons/icons.test.tsx` first; run it and see it fail on the empty package.
 3. `src/icons/paths.ts` (43 paths copied from the prototype by script), `icon-base.tsx`, `icons.tsx`, `index.ts`, `src/index.ts`.
 4. Check R8 by script against the prototype's `ICONS` object, R11 (`package.json`, `exports`), R14 by search. Record the results in the PR.
-5. `pnpm install`, typecheck, lint, `lint:boundaries`, `format:check`, tests.
+5. `pnpm install`, typecheck, lint, `format:check`, tests. `lint:boundaries` does not exist in the repository yet, so R13 covers lint and format only.
 
 ## AC -> step -> test
 
