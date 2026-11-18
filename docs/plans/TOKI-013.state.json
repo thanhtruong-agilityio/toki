@@ -29,6 +29,10 @@
       "at": "2026-11-18T09:12:04Z",
       "auto": false,
       "stage": "approve"
+    },
+    {
+      "at": "2026-11-18T09:12:59Z",
+      "stage": "check"
     }
   ],
   "key": "TOKI-013",

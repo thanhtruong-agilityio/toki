@@ -61,10 +61,17 @@ export function ToastProvider({ children }: { children?: ReactNode }) {
   const stable = useMemo(() => {
     const remove = (id: ToastId) => {
       const entry = entries.current.get(id);
-      if (!entry) return;
-      clearTimeout(entry.handle);
-      entries.current.delete(id);
-      setItems((list) => list.filter((item) => item.id !== id));
+      if (entry) {
+        clearTimeout(entry.handle);
+        entries.current.delete(id);
+      }
+      // Also when the entry is gone but the toast is still listed, so that
+      // dismiss always takes it off the screen; an unknown id changes nothing.
+      setItems((list) =>
+        list.some((item) => item.id === id)
+          ? list.filter((item) => item.id !== id)
+          : list,
+      );
     };
     const start = (id: ToastId, entry: Entry) => {
       entry.handle = setTimeout(() => remove(id), entry.ms);
@@ -115,6 +122,10 @@ export function ToastProvider({ children }: { children?: ReactNode }) {
         const list = kind === "avoid" ? avoid : anchors;
         const el = ref.current;
         list.push(ref);
+        // transitionend bubbles: only the element's own transition counts.
+        const onEnd = (event: Event) => {
+          if (event.target === el) notify();
+        };
         // A size change, and a move by `transform`, which changes no size
         // and so fires no ResizeObserver (R28 a, e).
         if (el) {
@@ -122,16 +133,19 @@ export function ToastProvider({ children }: { children?: ReactNode }) {
             observer ??= new ResizeObserver(notify);
             observer.observe(el);
           }
-          el.addEventListener("transitionend", notify);
-          el.addEventListener("transitioncancel", notify);
+          el.addEventListener("transitionend", onEnd);
+          el.addEventListener("transitioncancel", onEnd);
         }
         notify();
         return () => {
           list.splice(list.indexOf(ref), 1);
           if (el) {
-            observer?.unobserve(el);
-            el.removeEventListener("transitionend", notify);
-            el.removeEventListener("transitioncancel", notify);
+            // The same element may be registered again, as an anchor and as
+            // an obstacle: it stays observed while one registration is left.
+            const still = [...avoid, ...anchors].some((r) => r.current === el);
+            if (!still) observer?.unobserve(el);
+            el.removeEventListener("transitionend", onEnd);
+            el.removeEventListener("transitioncancel", onEnd);
           }
           notify();
         };

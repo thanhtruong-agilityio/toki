@@ -989,4 +989,78 @@ describe("placement", () => {
       expect(remove).toHaveBeenCalledWith("scroll", expect.any(Function));
     });
   });
+  describe("review findings", () => {
+    test("a transitionend that bubbles from a child does not re-measure", () => {
+      vi.stubGlobal("ResizeObserver", undefined);
+      function Bar() {
+        const ref = useRef<HTMLDivElement>(null);
+        useToastAvoid(ref);
+        return (
+          <div
+            data-testid="bar"
+            ref={(el) => {
+              (ref as { current: HTMLDivElement | null }).current = el;
+              if (el && !rects.has(el))
+                stubRect(el, { top: 740, left: 0, right: 1000, height: 60 });
+            }}
+          >
+            <button data-testid="child" />
+          </div>
+        );
+      }
+      const { container, getByTestId } = render(
+        <ToastProvider>
+          <Bar />
+        </ToastProvider>,
+      );
+      expect(bottom(container)).toBe("74px");
+      stubRect(getByTestId("bar"), {
+        top: 800,
+        left: 0,
+        right: 1000,
+        height: 60,
+      });
+      act(
+        () =>
+          void fireEvent(
+            getByTestId("child"),
+            new Event("transitionend", { bubbles: true }),
+          ),
+      );
+      expect(bottom(container)).toBe("74px");
+      act(() => void fireEvent(getByTestId("bar"), new Event("transitionend")));
+      expect(bottom(container)).toBe("20px");
+    });
+
+    test("an element registered as avoid and as anchor stays observed when one hook unmounts", () => {
+      function Both({ anchor }: { anchor: boolean }) {
+        const ref = useRef<HTMLDivElement>(null);
+        useToastAvoid(ref);
+        useToastAnchor(anchor ? ref : { current: null });
+        return (
+          <div
+            data-testid="both"
+            ref={(el) => {
+              (ref as { current: HTMLDivElement | null }).current = el;
+              if (el && !rects.has(el))
+                stubRect(el, { top: 700, left: 0, right: 1000, height: 100 });
+            }}
+          />
+        );
+      }
+      const { getByTestId, rerender } = render(
+        <ToastProvider>
+          <Both anchor />
+        </ToastProvider>,
+      );
+      const el = getByTestId("both");
+      expect(observers.some((o) => o.observed.has(el))).toBe(true);
+      rerender(
+        <ToastProvider>
+          <Both anchor={false} />
+        </ToastProvider>,
+      );
+      expect(observers.some((o) => o.observed.has(el))).toBe(true);
+    });
+  });
 });
