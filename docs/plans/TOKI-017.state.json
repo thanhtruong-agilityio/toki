@@ -1,0 +1,36 @@
+{
+  "approved_auto": false,
+  "base": "main",
+  "branch": "feat/toki-017-i18n-package",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-18T09:26:46Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-18T09:26:46Z",
+      "stage": "explore"
+    },
+    {
+      "at": "2026-11-18T09:27:30Z",
+      "stage": "plan"
+    }
+  ],
+  "key": "TOKI-017",
+  "main_sha": "a246ca0918f4971b8425bbcd9d982188e2639377",
+  "metrics": {},
+  "mode": null,
+  "plan_approved": false,
+  "plan_hash": null,
+  "spec_commit": null,
+  "spec_paths": [
+    "docs/specs/2026-11-16-i18n-package-design.md"
+  ],
+  "stage": "plan",
+  "tier": "M",
+  "verifier": {
+    "result": null,
+    "round": 0
+  }
+}
