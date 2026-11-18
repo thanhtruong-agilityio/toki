@@ -75,7 +75,12 @@ describe("Chip and ChipGroup (R13, Table B)", () => {
   });
 
   test("with no children the text is empty (R3)", () => {
-    const { container } = render(<Chip />);
+    const { container } = render(
+      <>
+        <Chip />
+        <ChipGroup />
+      </>,
+    );
     expect(container.textContent).toBe("");
   });
 });

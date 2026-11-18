@@ -74,6 +74,27 @@ describe("Select (R16, R17)", () => {
     expect(select.className).toBe("sel invalid");
   });
 
+  test("aria-describedby lists the caller's id first, then the error id (R17)", () => {
+    render(
+      <Select
+        id="s"
+        aria-label="a"
+        options={options}
+        error="Bad"
+        aria-describedby="hint"
+      />,
+    );
+    expect(screen.getByRole("combobox")).toHaveAttribute(
+      "aria-describedby",
+      "hint s-error",
+    );
+  });
+
+  test("with no label the text is only the options (R3)", () => {
+    const { container } = render(<Select aria-label="a" options={[]} />);
+    expect(container.textContent).toBe("");
+  });
+
   test("an empty error renders nothing", () => {
     render(<Select aria-label="a" options={options} error="  " />);
     expect(screen.queryByRole("alert")).toBeNull();

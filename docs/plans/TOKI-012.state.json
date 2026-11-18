@@ -24,6 +24,10 @@
     {
       "at": "2026-11-18T08:21:14Z",
       "stage": "build"
+    },
+    {
+      "at": "2026-11-18T08:30:41Z",
+      "stage": "check"
     }
   ],
   "key": "TOKI-012",
@@ -36,10 +40,10 @@
   "spec_paths": [
     "docs/specs/2026-11-16-base-components-1-design.md"
   ],
-  "stage": "build",
+  "stage": "check",
   "tier": "M",
   "verifier": {
-    "result": null,
-    "round": 0
+    "result": "FAIL",
+    "round": 1
   }
 }

@@ -74,6 +74,11 @@ describe("IconButton (R12, Table B)", () => {
     expect(screen.getByRole("button")).not.toHaveFocus();
   });
 
+  test("with no label text the text is empty (R3)", () => {
+    const { container } = render(<IconButton icon="x" label="" />);
+    expect(container.textContent).toBe("");
+  });
+
   test("type errors (R30)", () => {
     // @ts-expect-error label is required
     const a = <IconButton icon="x" />;

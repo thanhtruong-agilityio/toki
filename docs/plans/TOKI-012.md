@@ -22,6 +22,12 @@ base CSS, Button, IconButton; Chip, Switch, Tag, Badge; Field and Select; exampl
 3. **Where the rule lives.** The existing local rules are in `tools/lint-rules/*.js`, registered inline as the `toki` object of `eslint.config.js`. The new rule is `tools/lint-rules/icon-only-button-name.js`, added to that object. The spec's `tools/eslint-rules/index.js` is not created.
 4. Versions of `jsdom`, `@testing-library/*`, `postcss` are looked up when the dependencies are added and pinned exactly; Vitest is `5.1.0`, as in `packages/tokens`. `packages/platform` exists on `main`: if it pins `jsdom`, that version is used (R27).
 
+### Changes made during the build (recorded after verifier round 1)
+
+- The lint-rule test is run by its own root script `test:lint-rules`, not added to the root `test` script: that script is declared twice in the root `package.json` (the later `pnpm -r --if-present run test` wins and drops the bundle-size test), which this ticket does not fix. `CLAUDE.md` lists the new commands, as its rule asks.
+- Files added that the steps did not name: `src/test/css-table.ts` (table comparison helper), `src/css.d.ts` (side-effect CSS imports), `tsconfig.json` of `ui-web` (jsx, DOM lib, `skipLibCheck` for a type clash between jest-dom 7 and Vitest 5), `docs/plans/TOKI-012.state.json`, `pnpm-lock.yaml`.
+- Test files are named `sources.test.ts` (R3, R6, R7, R21, R28) and `examples.test.tsx` (R26, R31).
+
 ## AC to step to test
 
 | Requirement | Step | Test (written first, seen to fail) |
