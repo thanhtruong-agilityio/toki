@@ -7,6 +7,10 @@ import type {
   MoreTab,
   NavSection,
   PaneName,
+  SectionPageProps,
+  SidePanelProps,
+  TabListProps,
+  TabProps,
 } from "./index";
 import type {
   AppShellProps as AppShellPropsEntry,
@@ -14,6 +18,14 @@ import type {
   MoreTab as MoreTabEntry,
   NavSection as NavSectionEntry,
   PaneName as PaneNameEntry,
+  AppearanceOptions,
+  Look,
+  Accent,
+  Density,
+  SectionPageProps as SectionPagePropsEntry,
+  SidePanelProps as SidePanelPropsEntry,
+  TabListProps as TabListPropsEntry,
+  TabProps as TabPropsEntry,
 } from "../index";
 
 // A missing type fails `pnpm typecheck` on the imports above; the tuple uses
@@ -29,18 +41,35 @@ type ShellTypes = [
   MoreTabEntry,
   NavSectionEntry,
   PaneNameEntry,
+  SectionPageProps,
+  SidePanelProps,
+  TabListProps,
+  TabProps,
+  SectionPagePropsEntry,
+  SidePanelPropsEntry,
+  TabListPropsEntry,
+  TabPropsEntry,
+  AppearanceOptions,
+  Look,
+  Accent,
+  Density,
 ];
 export type { ShellTypes };
 
 describe("shell exports (R1)", () => {
-  test("the shell exports the names built so far", () => {
+  // Every value name of R1; the types are checked by the tuple above.
+  test("the shell exports every name of R1", () => {
     for (const name of [
       "AppShell",
+      "BottomTabs",
       "WorkspaceHeader",
       "SearchBox",
       "UserCard",
+      "SidePanel",
+      "SectionPage",
+      "TabList",
+      "Tab",
       "derivePane",
-      "BottomTabs",
       "useNarrow",
     ])
       expect(shell, name).toHaveProperty(name);
@@ -50,5 +79,7 @@ describe("shell exports (R1)", () => {
       expect.arrayContaining(Object.keys(shell)),
     );
     expect(entry).toHaveProperty("applyAppearance");
+    for (const name of Object.keys(shell))
+      expect(entry, name).toHaveProperty(name);
   });
 });

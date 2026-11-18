@@ -16,3 +16,9 @@ export type {
   UserCardAccount,
   UserCardProps,
 } from "./UserCard";
+export { SidePanel } from "./SidePanel";
+export type { SidePanelProps } from "./SidePanel";
+export { SectionPage } from "./SectionPage";
+export type { SectionPageProps } from "./SectionPage";
+export { TabList, Tab } from "./TabList";
+export type { TabListProps, TabProps } from "./TabList";

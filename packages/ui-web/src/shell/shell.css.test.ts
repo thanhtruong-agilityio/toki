@@ -368,6 +368,23 @@ describe("shell.css (R16, Tables C to G)", () => {
   });
 });
 
+describe("the media conditions of R16", () => {
+  test("the list is exactly the four conditions of the spec", () => {
+    const used = new Set(
+      rules
+        .map((r) => r.media)
+        .filter((m): m is string => m !== null && m !== "shell-slide-in"),
+    );
+    expect([...used].sort()).toEqual([WIDE, NARROW, OVERLAY, BESIDE].sort());
+  });
+
+  test("the file holds only rules and the media blocks and keyframes of the tables", () => {
+    const text = readFileSync(file, "utf8");
+    const atRules = [...text.matchAll(/@([a-z-]+)/g)].map((m) => m[1]);
+    expect(new Set(atRules)).toEqual(new Set(["media", "keyframes"]));
+  });
+});
+
 describe("shell.css uses the design system's names (R17)", () => {
   const tokenNames = new Set(
     [
@@ -419,6 +436,13 @@ describe("shell.css uses the design system's names (R17)", () => {
   test("no selector names data-look, data-accent or data-density", () => {
     for (const r of rules)
       expect(r.selector).not.toMatch(/data-(look|accent|density)/);
+  });
+
+  test("no :hover rule hides an element (D-067)", () => {
+    const hides = /^(opacity:\s*0|visibility:\s*hidden|display:\s*none)$/;
+    for (const r of rules.filter((x) => /:hover/.test(x.selector)))
+      for (const [prop, value] of Object.entries(r.declarations))
+        expect(`${prop}:${value}`, r.selector).not.toMatch(hides);
   });
 
   test("nothing is hover-only (D-067)", () => {
