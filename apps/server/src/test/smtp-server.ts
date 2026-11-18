@@ -103,6 +103,8 @@ export async function startSmtp(behaviour: Behaviour = {}): Promise<TestSmtp> {
       });
     },
   });
+  // A client that leaves in the middle of a TLS handshake is an event of the server; without a listener it would crash the test.
+  server.on("error", () => {});
   server.server.on("connection", (socket: Socket) => {
     open += 1;
     total += 1;
@@ -128,7 +130,9 @@ export async function startSmtp(behaviour: Behaviour = {}): Promise<TestSmtp> {
     maxOpenConnections: () => max,
     totalConnections: () => total,
     close: async () => {
-      for (const s of sockets) s.destroy();
+      // Destroying the raw socket under a TLS socket that is still shutting
+      // down crashes Node 22 (SIGSEGV); an implicit-TLS server's clients leave on their own.
+      if (!behaviour.server?.secure) for (const s of sockets) s.destroy();
       await new Promise<void>((resolve) => server.close(() => resolve()));
     },
   };

@@ -61,6 +61,17 @@ export function classify(error: unknown): Classified {
   const stage = stageOf(e.command);
   const reply = typeof e.responseCode === "number" ? e.responseCode : undefined;
 
+  // The client sends STARTTLS even when the server did not offer it; a server
+  // that answers 500 to it is a TLS failure, not a refused mail.
+  if (code === "ETLS" || /^STARTTLS$/i.test(String(e.command))) {
+    return {
+      reason: "unavailable",
+      cause: "tls",
+      stage: "connect",
+      startsCooldown: true,
+    };
+  }
+
   if (reply !== undefined) {
     const base = {
       cause: "reply" as const,
