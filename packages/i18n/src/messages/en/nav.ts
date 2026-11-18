@@ -1,0 +1,15 @@
+export const nav = {
+  home: "Home",
+  activity: "Activity",
+  later: "Later",
+  files: "Files",
+  people: "People",
+  preferences: "Preferences",
+  more: "More",
+  directMessages: "Direct messages",
+  channels: "Channels",
+  starred: "Starred",
+  conversations: "Conversations",
+  search: "Search",
+  admin: "Admin",
+};

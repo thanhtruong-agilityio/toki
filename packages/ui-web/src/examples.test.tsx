@@ -1,4 +1,5 @@
-import { render } from "@testing-library/react";
+import { cleanup, render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { describe, expect, test } from "vitest";
@@ -7,8 +8,11 @@ import {
   buttonSizes,
   buttonVariants,
   chipSizes,
+  dialogBackdrops,
   fieldVariants,
   iconButtonSizes,
+  menuAligns,
+  menuItemVariants,
 } from "./components";
 import { componentExamples } from "./examples";
 
@@ -163,4 +167,160 @@ describe("folders (R31)", () => {
       expect(componentExamples.some((e) => e.component === name)).toBe(true);
     },
   );
+});
+
+describe("overlay examples (TOKI-014 R30)", () => {
+  const ids = (component: string) =>
+    componentExamples
+      .find((e) => e.component === component)!
+      .examples.map((e) => e.id);
+
+  test("Menu, Modal and Sheet come in that order after the entries of groups 1 and 2", () => {
+    const names = componentExamples.map((e) => e.component);
+    expect(names.indexOf("Menu")).toBeGreaterThan(names.indexOf("Badge"));
+    expect(names.indexOf("Modal")).toBe(names.indexOf("Menu") + 1);
+    expect(names.indexOf("Sheet")).toBe(names.indexOf("Modal") + 1);
+  });
+
+  test("the 13 ids", () => {
+    expect(ids("Menu")).toEqual([
+      "default",
+      "start",
+      "groups",
+      "danger",
+      "disabled",
+      "icon",
+    ]);
+    expect(ids("Modal")).toEqual([
+      "with-footer",
+      "no-footer",
+      "label-only",
+      "opaque",
+      "no-close",
+    ]);
+    expect(ids("Sheet")).toEqual(["rows", "long-body"]);
+  });
+
+  // How a value of each list shows in an example id (R30).
+  const map: Array<[string, string, string]> = [
+    ...menuAligns.map((v): [string, string, string] => [
+      "Menu",
+      `align ${v}`,
+      { end: "default", start: "start" }[v],
+    ]),
+    ...menuItemVariants.map((v): [string, string, string] => [
+      "Menu",
+      `variant ${v}`,
+      { default: "default", danger: "danger" }[v],
+    ]),
+    ...dialogBackdrops.map((v): [string, string, string] => [
+      "Modal",
+      `backdrop ${v}`,
+      { dim: "with-footer", opaque: "opaque" }[v],
+    ]),
+  ];
+
+  test.each(map)("%s: %s has an example", (component, _what, id) => {
+    expect(ids(component)).toContain(id);
+  });
+
+  async function open(component: string, id: string) {
+    const example = componentExamples
+      .find((e) => e.component === component)!
+      .examples.find((e) => e.id === id)!;
+    const user = userEvent.setup();
+    const { container } = render(<figure>{example.element}</figure>);
+    const opener = container.querySelector("button") as HTMLButtonElement;
+    await user.click(opener);
+    return { user, opener, container };
+  }
+
+  const all: Array<[string, string]> = [
+    ["Menu", "default"],
+    ["Menu", "start"],
+    ["Menu", "groups"],
+    ["Menu", "danger"],
+    ["Menu", "disabled"],
+    ["Menu", "icon"],
+    ["Modal", "with-footer"],
+    ["Modal", "no-footer"],
+    ["Modal", "label-only"],
+    ["Modal", "opaque"],
+    ["Modal", "no-close"],
+    ["Sheet", "rows"],
+    ["Sheet", "long-body"],
+  ];
+
+  test.each(all)(
+    "%s %s: the first button opens the layer; it closes and gives focus back",
+    async (component, id) => {
+      const { user, opener } = await open(component, id);
+      const role = component === "Menu" ? "menu" : "dialog";
+      expect(screen.getByRole(role)).toBeInTheDocument();
+      if (id === "opaque" || id === "no-close") {
+        // Esc and an outside press leave it open; the button in the panel,
+        // reached by Tab, closes it.
+        await user.keyboard("{Escape}");
+        await user.click(document.querySelector(".scrim") as HTMLElement);
+        expect(screen.getByRole("dialog")).toBeInTheDocument();
+        const done = screen.getByRole("button", { name: "Done" });
+        for (let i = 0; i < 4 && document.activeElement !== done; i++)
+          await user.tab();
+        expect(document.activeElement).toBe(done);
+        await user.keyboard("{Enter}");
+      } else {
+        await user.keyboard("{Escape}");
+      }
+      expect(screen.queryByRole(role)).toBeNull();
+      expect(document.activeElement).toBe(opener);
+    },
+  );
+
+  test("every opening button of a dialog passes its own ref as returnFocusRef (R13)", () => {
+    for (const [file, count] of [
+      ["Modal/Modal.examples.tsx", 5],
+      ["Sheet/Sheet.examples.tsx", 1],
+    ] as const) {
+      const text = readFileSync(join(srcDir, "components", file), "utf8");
+      expect(text.match(/returnFocusRef=\{/g)).toHaveLength(count);
+    }
+  });
+
+  test("what each example shows once open", async () => {
+    const shows: Array<[string, string, string]> = [
+      ["Menu", "default", '.menu[role="menu"]'],
+      ["Menu", "start", '.menu[role="menu"]'],
+      ["Menu", "groups", ".menu .mt"],
+      ["Menu", "danger", ".menu button.dng"],
+      ["Menu", "disabled", '.menu button[aria-disabled="true"]'],
+      ["Menu", "icon", ".menu button .ic"],
+      ["Modal", "with-footer", '.scrim .modal[role="dialog"] .mft'],
+      ["Modal", "no-footer", ".scrim .modal .mbd"],
+      ["Modal", "label-only", ".scrim .modal[aria-label]"],
+      ["Modal", "opaque", ".scrim.opaque"],
+      ["Sheet", "rows", ".scrim.sheet .modal"],
+      ["Sheet", "long-body", ".scrim.sheet .modal"],
+    ];
+    for (const [component, id, selector] of shows) {
+      const { user } = await open(component, id);
+      expect(
+        document.querySelector(selector),
+        `${component} ${id}`,
+      ).not.toBeNull();
+      if (id === "with-footer")
+        expect(document.querySelector(".scrim.opaque")).toBeNull();
+      if (id === "groups") {
+        expect(document.querySelectorAll(".menu [role=menuitem]")).toHaveLength(
+          9,
+        );
+        expect(document.querySelectorAll(".menu .mt")).toHaveLength(3);
+        expect(document.querySelectorAll(".menu hr")).toHaveLength(2);
+      }
+      await user.keyboard("{Escape}");
+      cleanup();
+    }
+    // no-close has no header button.
+    await open("Modal", "no-close");
+    expect(document.querySelector(".mhd button")).toBeNull();
+  });
 });
