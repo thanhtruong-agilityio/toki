@@ -395,3 +395,222 @@ test.describe("Table B1 and B2 (R8)", () => {
 
   test.fixme(`Menu, Modal and Sheet have an entry, and their ids include the 13 of Table A2 (${PENDING_TOKI_014})`, async () => {});
 });
+
+// The 32 custom properties of TOKI-009 R10, in the order the page lists them.
+const TOKEN_NAMES = [
+  "--bg",
+  "--surface",
+  "--surface-2",
+  "--ink",
+  "--ink-2",
+  "--muted",
+  "--line",
+  "--mention-bg",
+  "--mention-ink",
+  "--danger",
+  "--danger-soft",
+  "--live",
+  "--on-live",
+  "--idea",
+  "--idea-soft",
+  "--hover",
+  "--scrim",
+  "--accent",
+  "--on-accent",
+  "--accent-soft",
+  "--accent-text",
+  "--av-s",
+  "--av-l",
+  "--av-ts",
+  "--av-tl",
+  "--av",
+  "--gap",
+  "--row",
+  "--radius",
+  "--radius-sm",
+  "--shadow",
+  "--pop",
+];
+
+test.describe("section order, icons, tokens (R5, R9, R11)", () => {
+  test("R5: the sections come in order (fonts are not drawn yet)", async ({
+    page,
+  }) => {
+    await page.goto("/preview.html");
+    const order = await page
+      .locator("section[data-section]")
+      .evaluateAll((nodes) =>
+        nodes.map(
+          (node) =>
+            node.getAttribute("data-component") ??
+            node.getAttribute("data-section"),
+        ),
+      );
+    expect(order).toEqual(["tokens", "icons", ...COMPONENTS, "live-toasts"]);
+    for (const heading of await page
+      .locator("section[data-section] > h2")
+      .all()) {
+      await expect(heading).not.toBeEmpty();
+    }
+  });
+
+  test.fixme(`R5, R10: the fonts section comes between tokens and icons, with seven rows and seven loaded faces (${PENDING_TOKI_010})`, async () => {});
+
+  test("R9: 43 icon cells, each captioned with its name, and a row of four sizes", async ({
+    page,
+  }) => {
+    await page.goto("/preview.html");
+    const section = page.locator('section[data-section="icons"]');
+    const cells = section.locator("[data-icon]");
+    await expect(cells).toHaveCount(43);
+    await expect(section).toHaveAttribute("data-count", "43");
+    const names = await cells.evaluateAll((nodes) =>
+      nodes.map((node) => node.getAttribute("data-icon")),
+    );
+    expect(new Set(names).size).toBe(43);
+    for (let i = 0; i < 43; i++) {
+      const cell = cells.nth(i);
+      await expect(cell.locator("svg.ic")).toHaveCount(1);
+      await expect(cell.locator("figcaption, .pv-icon-name")).toHaveText(
+        names[i]!,
+      );
+    }
+    const sizes = section.locator("[data-icon-size]");
+    await expect(sizes).toHaveCount(4);
+    for (const size of [12, 18, 24, 30]) {
+      await expect(
+        section.locator(`[data-icon-size="${size}"] svg`),
+      ).toHaveAttribute("width", String(size));
+    }
+  });
+
+  test("R11: 32 token rows with a value, and the values follow the controls", async ({
+    page,
+  }) => {
+    await page.goto("/preview.html");
+    const rows = page.locator('section[data-section="tokens"] [data-token]');
+    await expect(rows).toHaveCount(32);
+    const names = await rows.evaluateAll((nodes) =>
+      nodes.map((node) => node.getAttribute("data-token")),
+    );
+    expect(names).toEqual(TOKEN_NAMES);
+    const value = (name: string) =>
+      page.locator(`[data-token="${name}"] [data-token-value]`);
+    for (const name of TOKEN_NAMES) await expect(value(name)).not.toBeEmpty();
+
+    await expect(value("--accent")).toHaveText("#0F766E");
+    await page.locator('[data-control="accent"]').selectOption("indigo");
+    await expect(value("--accent")).toHaveText("#4F46E5");
+    await page.locator('[data-control="look"]').selectOption("focus");
+    await expect(value("--accent")).toHaveText("#A5B4FC");
+    await page.locator('[data-control="look"]').selectOption("calm");
+    await page.locator('[data-control="accent"]').selectOption("teal");
+    await expect(value("--bg")).toHaveText("#F2F4EF");
+    await expect(value("--av")).toHaveText("36px");
+    await page.locator('[data-control="density"]').selectOption("compact");
+    await expect(value("--av")).toHaveText("30px");
+  });
+
+  test("R11: a colour token shows a swatch, and a length does not", async ({
+    page,
+  }) => {
+    await page.goto("/preview.html");
+    const swatch = (name: string) =>
+      page.locator(`[data-token="${name}"] [data-swatch]`);
+    await expect(swatch("--bg")).toHaveCount(1);
+    await expect(swatch("--hover")).toHaveCount(1);
+    await expect(swatch("--bg")).toHaveCSS(
+      "background-color",
+      "rgb(242, 244, 239)",
+    );
+    await expect(swatch("--radius")).toHaveCount(0);
+    await expect(swatch("--shadow")).toHaveCount(0);
+  });
+});
+
+test.describe("live toasts (R12)", () => {
+  test("one polite live region on the page", async ({ page }) => {
+    await page.goto("/preview.html");
+    await expect(page.locator('[aria-live="polite"]')).toHaveCount(1);
+  });
+
+  test("R12: a plain toast shows in the region and is gone within 4 s", async ({
+    page,
+  }) => {
+    await page.goto("/preview.html");
+    const region = page.locator('[aria-live="polite"]');
+    await page
+      .getByRole("button", { name: "Show a toast", exact: true })
+      .click();
+    await expect(region.locator(".toast")).toHaveCount(1);
+    await expect(region.locator(".toast button")).toHaveCount(0);
+    await expect(region.locator(".toast")).toHaveCount(0, { timeout: 4000 });
+  });
+
+  test("R12: a toast with an action is gone within 7 s, or at once when pressed", async ({
+    page,
+  }) => {
+    await page.goto("/preview.html");
+    const region = page.locator('[aria-live="polite"]');
+    const counter = page.locator("[data-toast-counter]");
+    await expect(counter).toContainText("0");
+    await page
+      .getByRole("button", { name: "Show a toast with an action" })
+      .click();
+    await expect(region.locator(".toast")).toHaveCount(1);
+    await region.locator(".toast button").click();
+    await expect(region.locator(".toast")).toHaveCount(0);
+    await expect(counter).toContainText("1");
+
+    await page
+      .getByRole("button", { name: "Show a toast with an action" })
+      .click();
+    await expect(region.locator(".toast")).toHaveCount(1);
+    await expect(region.locator(".toast")).toHaveCount(0, { timeout: 7000 });
+    await expect(counter).toContainText("1");
+  });
+
+  test("R12: three toasts in a row appear in the order shown", async ({
+    page,
+  }) => {
+    await page.goto("/preview.html");
+    const region = page.locator('[aria-live="polite"]');
+    await page.getByRole("button", { name: "Show three toasts" }).click();
+    await expect(region.locator(".toast")).toHaveCount(3);
+    await expect(region.locator(".toast span")).toHaveText([
+      "First toast",
+      "Second toast",
+      "Third toast",
+    ]);
+  });
+});
+
+test.describe("console and requests (R20)", () => {
+  for (const look of LOOKS) {
+    test(`loading the page logs no error or warning and asks only its own address (${look})`, async ({
+      page,
+      baseURL,
+    }) => {
+      const logged: string[] = [];
+      const foreign: string[] = [];
+      page.on("console", (message) => {
+        if (["error", "warning"].includes(message.type())) {
+          logged.push(`${message.type()}: ${message.text()}`);
+        }
+      });
+      page.on("pageerror", (error) =>
+        logged.push(`pageerror: ${error.message}`),
+      );
+      page.on("request", (request) => {
+        if (!request.url().startsWith(`${baseURL}/`)) {
+          foreign.push(request.url());
+        }
+      });
+      await page.goto(`/preview.html?look=${look}`);
+      await expect(page.locator("figure").first()).toBeVisible();
+      await page.waitForLoadState("networkidle");
+      expect(logged).toEqual([]);
+      expect(foreign).toEqual([]);
+    });
+  }
+});

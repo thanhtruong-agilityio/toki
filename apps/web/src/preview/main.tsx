@@ -1,6 +1,7 @@
 import "@toki/tokens/tokens.css";
 import "@toki/ui-web/base.css";
 import "./preview.css";
+import { ToastProvider } from "@toki/ui-web";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { applyControls, readControls } from "./controls";
@@ -11,6 +12,8 @@ applyControls(document.documentElement, readControls(window.location.search));
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <PreviewPage />
+    <ToastProvider>
+      <PreviewPage />
+    </ToastProvider>
   </StrictMode>,
 );

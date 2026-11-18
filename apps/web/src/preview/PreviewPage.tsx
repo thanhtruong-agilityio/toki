@@ -9,6 +9,9 @@ import {
 import { accents, looks } from "@toki/tokens";
 import { componentExamples } from "@toki/ui-web/examples";
 import { ExampleSection } from "./ExampleSection";
+import { IconsSection } from "./IconsSection";
+import { LiveToasts } from "./LiveToasts";
+import { TokensSection } from "./TokensSection";
 
 const densityLabel: Record<(typeof densityChoices)[number], string> = {
   own: "The look's own",
@@ -97,6 +100,8 @@ export function PreviewPage() {
           </label>
         </div>
       </header>
+      <TokensSection />
+      <IconsSection />
       {componentExamples.map((entry) => (
         <ExampleSection
           key={entry.component}
@@ -104,6 +109,7 @@ export function PreviewPage() {
           examples={entry.examples}
         />
       ))}
+      <LiveToasts />
     </div>
   );
 }
