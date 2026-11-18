@@ -8,7 +8,6 @@
     "typecheck": "tsc --noEmit",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx --env-file-if-exists=../../.env src/db/migrate-cli.ts",
-    "mail:smoke": "tsx --env-file-if-exists=../../.env src/dev/send-test-mails.ts",
     "test:unit": "vitest run --config vitest.config.ts"
   },
   "dependencies": {

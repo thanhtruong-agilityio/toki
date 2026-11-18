@@ -6,7 +6,7 @@ import {
   insertSession,
   insertUser,
   insertWorkspace,
-} from "../../db/test-rows.js";
+} from "../../tests/test-rows.js";
 import { createThrowawayDb } from "../../tests/throwaway-db.js";
 import { devices } from "./schema.js";
 
