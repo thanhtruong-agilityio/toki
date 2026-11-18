@@ -1,0 +1,41 @@
+{
+  "approved_auto": false,
+  "base": "github/main",
+  "branch": "feat/toki-094-shared-date-time-rules",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-18T09:42:53Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-18T09:47:55Z",
+      "stage": "plan"
+    },
+    {
+      "at": "2026-11-18T09:49:31Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-18T09:51:02Z",
+      "stage": "build"
+    }
+  ],
+  "key": "TOKI-094",
+  "main_sha": "5127d1b97807aa6fe8f5cd1dcdcc9fec3cc44b16",
+  "metrics": {},
+  "mode": "auto-to-check",
+  "plan_approved": true,
+  "plan_hash": "a7ea357f3b590dfd54a99cad7874a2831e305391c3f23796da8bbb984d9c8e2d",
+  "spec_commit": "635a98ed42c0504d2ece1581c83f39a203cc456a",
+  "spec_paths": [
+    "docs/specs/2026-11-16-date-time-rules-design.md"
+  ],
+  "stage": "build",
+  "tier": "M",
+  "verifier": {
+    "result": null,
+    "round": 0
+  }
+}
