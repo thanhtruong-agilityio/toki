@@ -90,13 +90,21 @@ export function translate(
 
 export type Translator = (key: MessageKey, params?: Params) => string;
 
+// A translator over the given catalogs; the tests use it with small ones.
+export function createTranslatorWith(
+  all: Record<Language, Catalog>,
+  language: Language,
+): Translator {
+  return (key, params) => translateWith(all, language, key, params);
+}
+
 const translators = new Map<Language, Translator>();
 
 // The same function for the same language, so a dependency list that holds it stays quiet.
 export function createTranslator(language: Language): Translator {
   let bound = translators.get(language);
   if (!bound) {
-    bound = (key, params) => translate(language, key, params);
+    bound = createTranslatorWith(catalogs, language);
     translators.set(language, bound);
   }
   return bound;

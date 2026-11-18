@@ -1,10 +1,13 @@
 import { describe, expect, it } from "vitest";
 import {
   createTranslator,
+  createTranslatorWith,
   translate,
   translateWith,
   type Catalog,
+  type MessageKey,
 } from "./translate";
+import type { Language } from "./languages";
 
 // A small catalog pair for the lookup; the real catalogs are compared by the check, not here.
 const catalogs: Record<"en" | "vi", Catalog> = {
@@ -119,7 +122,38 @@ describe("missing texts (R7)", () => {
 });
 
 describe("createTranslator (R9)", () => {
-  it("equals translate for the same keys and parameters", () => {
+  type Case = [Language, string, Record<string, string | number> | undefined];
+  // The cases of R4 to R7 run again through a bound translator.
+  const cases: Case[] = [
+    ["en", "tries", { count: 2 }],
+    ["en", "tries", { count: "many" }],
+    ["en", "tries", undefined],
+    ["en", "greeting.hello", { name: "Linh" }],
+    ["en", "pluralTries", { count: 1 }],
+    ["en", "pluralTries", { count: 0 }],
+    ["en", "pluralTries", { count: 1.5 }],
+    ["vi", "pluralTries", { count: 1 }],
+    ["vi", "pluralTries", { count: 2 }],
+    ["en", "pluralTries", undefined],
+    ["en", "pluralTries", { count: "1" }],
+    ["vi", "onlyEnglish", undefined],
+    ["vi", "mixed", { count: 1 }],
+    ["vi", "nope.nothing", undefined],
+    ["en", "greeting.toString", undefined],
+    ["en", "greeting", undefined],
+  ];
+
+  it.each(cases)(
+    "%s %s %j: the bound translator equals the lookup",
+    (language, key, params) => {
+      const bound = createTranslatorWith(catalogs, language);
+      expect(bound(key as MessageKey, params as never)).toBe(
+        translateWith(catalogs, language, key, params as never),
+      );
+    },
+  );
+
+  it("equals translate on the real catalogs", () => {
     for (const language of ["en", "vi"] as const) {
       const bound = createTranslator(language);
       expect(bound("nav.home")).toBe(translate(language, "nav.home"));
@@ -130,4 +164,38 @@ describe("createTranslator (R9)", () => {
     expect(createTranslator("en")).toBe(createTranslator("en"));
     expect(createTranslator("en")).not.toBe(createTranslator("vi"));
   });
+});
+
+// A copy of the table "First texts" of the spec (R4, R15). A later ticket that adds a key to nav
+// adds it here in the same change (TOKI-015 adds nav.mainLabel).
+const NAV: ReadonlyArray<readonly [MessageKey, string, string]> = [
+  ["nav.home", "Home", "Trang chủ"],
+  ["nav.activity", "Activity", "Hoạt động"],
+  ["nav.later", "Later", "Để sau"],
+  ["nav.files", "Files", "Tệp"],
+  ["nav.people", "People", "Mọi người"],
+  ["nav.preferences", "Preferences", "Tùy chọn"],
+  ["nav.more", "More", "Thêm"],
+  ["nav.directMessages", "Direct messages", "Tin nhắn riêng"],
+  ["nav.channels", "Channels", "Kênh"],
+  ["nav.starred", "Starred", "Đã gắn sao"],
+  ["nav.conversations", "Conversations", "Hội thoại"],
+  ["nav.search", "Search", "Tìm kiếm"],
+  ["nav.admin", "Admin", "Quản trị"],
+];
+
+describe("nav namespace (R4, R15)", () => {
+  it("holds exactly the 13 keys of the table", () => {
+    expect(NAV).toHaveLength(13);
+  });
+
+  it.each(NAV)(
+    "%s reads as the table says in both languages",
+    (key, english, vietnamese) => {
+      expect({ en: translate("en", key), vi: translate("vi", key) }).toEqual({
+        en: english,
+        vi: vietnamese,
+      });
+    },
+  );
 });

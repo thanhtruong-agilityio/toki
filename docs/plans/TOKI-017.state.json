@@ -24,6 +24,10 @@
     {
       "at": "2026-11-18T09:28:18Z",
       "stage": "build"
+    },
+    {
+      "at": "2026-11-18T09:32:13Z",
+      "stage": "check"
     }
   ],
   "key": "TOKI-017",
@@ -36,10 +40,10 @@
   "spec_paths": [
     "docs/specs/2026-11-16-i18n-package-design.md"
   ],
-  "stage": "build",
+  "stage": "check",
   "tier": "M",
   "verifier": {
-    "result": null,
-    "round": 0
+    "result": "FAIL",
+    "round": 1
   }
 }
