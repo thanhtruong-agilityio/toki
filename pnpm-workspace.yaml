@@ -1,3 +1,9 @@
 packages:
   - "apps/*"
   - "packages/*"
+
+# Build scripts of dependencies: pnpm 12 stops the install on one that has no
+# decision. esbuild ships its binary as a platform package, so its install
+# script is not needed and stays off.
+allowBuilds:
+  esbuild: false
