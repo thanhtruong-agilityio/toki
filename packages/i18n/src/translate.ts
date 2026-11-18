@@ -1,4 +1,9 @@
-import type { Catalog, KeysOf, PluralForms } from "./catalog";
+import {
+  isPluralText,
+  type Catalog,
+  type KeysOf,
+  type PluralForms,
+} from "./catalog";
 import type { Language } from "./languages";
 import { en } from "./messages/en";
 import { vi } from "./messages/vi";
@@ -10,17 +15,6 @@ export type MessageKey = KeysOf<typeof en>;
 export type Params = { count?: number } & Record<string, string | number>;
 
 const catalogs: Record<Language, Catalog> = { en, vi };
-
-function isPluralForms(value: unknown): value is PluralForms {
-  return (
-    typeof value === "object" &&
-    value !== null &&
-    "other" in value &&
-    Object.keys(value).every((name) =>
-      ["zero", "one", "two", "few", "many", "other"].includes(name),
-    )
-  );
-}
 
 // Looks the key up among own properties only, so "constructor" or "toString" is never found.
 function find(catalog: Catalog, key: string): string | PluralForms | undefined {
@@ -36,7 +30,7 @@ function find(catalog: Catalog, key: string): string | PluralForms | undefined {
     current = (current as Record<string, unknown>)[part];
   }
   if (typeof current === "string") return current;
-  return isPluralForms(current) ? current : undefined;
+  return isPluralText(current) ? current : undefined;
 }
 
 function pick(
@@ -56,7 +50,9 @@ function fill(text: string, params?: Params): string {
   return text.replace(
     /\{([a-z][A-Za-z0-9]*)\}/g,
     (placeholder, name: string) =>
-      Object.hasOwn(params, name) ? String(params[name]) : placeholder,
+      Object.hasOwn(params, name) && params[name] !== undefined
+        ? String(params[name])
+        : placeholder,
   );
 }
 

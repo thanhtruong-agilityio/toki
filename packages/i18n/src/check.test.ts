@@ -71,6 +71,24 @@ describe("checkCatalogs", () => {
     expect(problems[0]).toMatch(/^vi nav\.a: placeholders differ/);
   });
 
+  it("(d) a placeholder name that translate would not fill, or a stray brace", () => {
+    expect(
+      run({ nav: { a: "{Count} left" } }, { nav: { a: "{Count} còn" } }),
+    ).toEqual([
+      expect.stringMatching(/^en nav\.a: invalid placeholder \{Count\}/),
+      expect.stringMatching(/^vi nav\.a: invalid placeholder \{Count\}/),
+    ]);
+    expect(
+      run({ nav: { a: "{ count } left" } }, { nav: { a: "{count} còn" } }),
+    ).toEqual([
+      expect.stringMatching(/^en nav\.a: invalid placeholder/),
+      expect.stringMatching(/^vi nav\.a: placeholders differ/),
+    ]);
+    expect(run({ nav: { a: "left }" } }, { nav: { a: "còn" } })).toEqual([
+      expect.stringMatching(/^en nav\.a: stray brace/),
+    ]);
+  });
+
   it("(e) a key breaks the naming rule", () => {
     const bad = (key: Catalog) => run(key, key);
     expect(bad({ nav: { "Bad-name": "x" } })).toEqual([

@@ -1,0 +1,166 @@
+/* The page's own rules: every selector starts with .pv- (R18), plus body and
+   :root. The components are styled by @toki/ui-web, never from here. */
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+.pv-page {
+  box-sizing: border-box;
+  max-width: 100%;
+  padding: 16px;
+}
+
+.pv-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+  margin-bottom: 24px;
+}
+
+.pv-title {
+  margin: 0;
+  font-size: 20px;
+}
+
+.pv-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.pv-control {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pv-select {
+  font: inherit;
+}
+
+.pv-section {
+  margin-bottom: 32px;
+}
+
+.pv-heading {
+  margin: 0 0 12px;
+  font-size: 16px;
+}
+
+.pv-figures {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.pv-figure {
+  box-sizing: border-box;
+  max-width: 100%;
+  margin: 0;
+}
+
+.pv-panel {
+  box-sizing: border-box;
+  max-width: 100%;
+  overflow-x: auto;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.pv-caption {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.pv-failed {
+  margin: 0;
+  color: var(--danger);
+}
+
+.pv-icons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.pv-icon-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  box-sizing: border-box;
+  width: 88px;
+  padding: 8px 4px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.pv-icon-name {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  color: var(--muted);
+  font-size: 11px;
+  text-align: center;
+}
+
+.pv-tokens {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+  gap: 6px 16px;
+}
+
+.pv-token {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  font-size: 12px;
+}
+
+.pv-swatch {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+}
+
+.pv-token-name {
+  flex: none;
+}
+
+.pv-token-value {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: var(--muted);
+}
+
+.pv-toast-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pv-button {
+  font: inherit;
+}
+
+.pv-counter {
+  margin: 12px 0 0;
+}
+
+.pv-ref {
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: 12px;
+}

@@ -14,10 +14,29 @@ function sources(folder: string): string[] {
   });
 }
 
-function withoutComments(text: string): string {
-  return text
-    .replace(/\/\*[\s\S]*?\*\//g, "")
-    .replace(/(^|[^:"'`\\])\/\/.*$/gm, "$1");
+// Removes comments but leaves strings alone, so "a//b" does not hide the rest of the line.
+export function withoutComments(text: string): string {
+  let out = "";
+  let i = 0;
+  while (i < text.length) {
+    const char = text[i] ?? "";
+    const next = text[i + 1];
+    if (char === "/" && next === "/") {
+      while (i < text.length && text[i] !== "\n") i++;
+    } else if (char === "/" && next === "*") {
+      const end = text.indexOf("*/", i + 2);
+      i = end === -1 ? text.length : end + 2;
+    } else if (char === '"' || char === "'" || char === "`") {
+      let j = i + 1;
+      while (j < text.length && text[j] !== char) j += text[j] === "\\" ? 2 : 1;
+      out += text.slice(i, j + 1);
+      i = j + 1;
+    } else {
+      out += char;
+      i++;
+    }
+  }
+  return out;
 }
 
 const files = sources(src).map((path) => ({
@@ -51,6 +70,22 @@ describe("the boundary of the package (R12, R21, R22)", () => {
       expect(argument).not.toMatch(/^(undefined|void\b|null)/);
       expect(argument).toMatch(/^("[^"]+"|'[^']+'|language)$/);
     }
+  });
+
+  it("R12: Intl is only ever called as Intl.<Name>(…), never aliased or reached through globalThis", () => {
+    for (const { name, code } of files) {
+      expect(code, `${name} uses globalThis`).not.toMatch(/\bglobalThis\b/);
+    }
+    const code = files.find((file) => file.name === "format.ts")?.code ?? "";
+    const all = code.match(/\bIntl\b/g) ?? [];
+    const calls = code.match(/\bIntl\.\w+\s*\(/g) ?? [];
+    expect(all.length).toBe(calls.length);
+  });
+
+  it("the comment stripper keeps strings and drops comments", () => {
+    expect(
+      withoutComments('const a = "x//y"; // gone\nconst b = 1; /* gone */'),
+    ).toBe('const a = "x//y"; \nconst b = 1; ');
   });
 
   it("R21: only react.ts imports react", () => {

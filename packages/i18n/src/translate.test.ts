@@ -53,6 +53,12 @@ describe("placeholders (R5)", () => {
     expect(t("en", "tries", {})).toBe("{count} tries left");
   });
 
+  it("keeps the placeholder when the parameter is undefined", () => {
+    expect(t("en", "tries", { count: undefined as never })).toBe(
+      "{count} tries left",
+    );
+  });
+
   it("ignores a parameter with no placeholder", () => {
     expect(t("en", "greeting.hello", { name: "Linh" })).toBe("Hello");
   });
