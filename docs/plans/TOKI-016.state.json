@@ -15,22 +15,39 @@
     {
       "at": "2026-11-18T09:24:54Z",
       "stage": "plan"
+    },
+    {
+      "at": "2026-11-18T09:26:29Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-18T09:26:30Z",
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-18T09:26:43Z",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-18T09:38:28Z",
+      "stage": "check"
     }
   ],
   "key": "TOKI-016",
   "main_sha": "a246ca0918f4971b8425bbcd9d982188e2639377",
   "metrics": {},
-  "mode": null,
-  "plan_approved": false,
-  "plan_hash": null,
+  "mode": "auto-to-check",
+  "plan_approved": true,
+  "plan_hash": "98592522a5f91649c2387ec76e58578a1486382efd74bfcea1789eb7272d0b20",
   "spec_commit": null,
   "spec_paths": [
     "docs/specs/2026-11-16-component-preview-design.md"
   ],
-  "stage": "plan",
+  "stage": "check",
   "tier": "M",
   "verifier": {
-    "result": null,
-    "round": 0
+    "result": "FAIL",
+    "round": 1
   }
 }

@@ -81,3 +81,12 @@ Build order (concern 9, stop after any step if needed):
 ## What can break (riskiest step)
 
 Riskiest step: 6, the screenshots (decision 5): platform-specific images and font dependence on TOKI-010. Next: the deferred checks hiding a failure (decision 1, answered with `test.fixme` and a shared reason, only on the missing part); the Vitest project for `apps/web` loading the dev config (decision 7); the favicon console error (decision 8). Grilled once (tier M) by an Opus review on 2026-11-18; each finding is in decisions 1 and 5 to 11 or the table above.
+
+## Changes made during the build (recorded after verifier round 1)
+
+- The root `test` script also runs `apps/web/scripts/check-no-dev-pages.test.mjs` (six cases for the script of R2); the file and the change to root `package.json` were not named in the steps.
+- In `preview.test.ts` the deferred R3 fonts-link check is a `test.todo` (Vitest has no `fixme`); the deferred browser checks are `test.fixme` with `PENDING_TOKI_010` and `PENDING_TOKI_014`. R13, R23, the R20 `.woff2` count and R24 each have a placeholder in `e2e/component-preview.spec.ts`. R21 is by hand and has none.
+- The look's own density is the value `own` in the address (`density=own`); the spec is silent. Component sections carry `data-section="component"` and `data-component`. Table B1 selectors match inside any figure, as the spec reads.
+- `docs/plans/TOKI-016.state.json` is committed with the work.
+- The Table C, R15 and R16 browser tests were written after the page and checked by changing expected values; they did not fail first.
+- The branch is behind `main` and is merged with it before the pull request.

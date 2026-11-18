@@ -992,3 +992,12 @@ test.describe("prototype references (R17)", () => {
 
   test.fixme(`the fonts section shows its line (${PENDING_TOKI_010}); Menu, Modal and Sheet show theirs (${PENDING_TOKI_014})`, async () => {});
 });
+
+// Placeholders for the checks that cannot run yet, so that each one is listed
+// in the report and none is forgotten (plan, decision 1).
+test.describe("deferred checks", () => {
+  test.fixme(`R13: the first button of Menu, Modal and Sheet opens a layer; Escape closes it and focus returns (${PENDING_TOKI_014})`, async () => {});
+  test.fixme(`R23: the 13 examples of Table A2 open and close, and the panel stays inside the window at five widths (${PENDING_TOKI_014})`, async () => {});
+  test.fixme(`R20: seven .woff2 responses come from the page's own address (${PENDING_TOKI_010})`, async () => {});
+  test.fixme(`R24: the screenshots of the six views match the committed images (${PENDING_TOKI_010}: images made with the wrong fonts would be redone)`, async () => {});
+});
