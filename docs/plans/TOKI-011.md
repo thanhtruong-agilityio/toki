@@ -8,7 +8,12 @@ Tier S. Spec: `docs/specs/2026-11-16-icon-set-design.md` (source of truth). Bran
 2. Write `src/icons/icons.test.tsx` first; run it and see it fail on the empty package.
 3. `src/icons/paths.ts` (43 paths copied from the prototype by script), `icon-base.tsx`, `icons.tsx`, `index.ts`, `src/index.ts`.
 4. Check R8 by script against the prototype's `ICONS` object, R11 (`package.json`, `exports`), R14 by search. Record the results in the PR.
-5. `pnpm install`, typecheck, lint, `format:check`, tests. `lint:boundaries` does not exist in the repository yet, so R13 covers lint and format only.
+5. `pnpm install` (this changes `pnpm-lock.yaml`, the `packages/ui-web` block only), typecheck, lint, `format:check`, tests. `lint:boundaries` does not exist in the repository yet, so R13 covers lint and format only.
+
+## Files outside the code
+
+- `pnpm-lock.yaml`: written by `pnpm install` in step 5.
+- `docs/plans/TOKI-011.state.json`: the state file of the dev flow (`dev-state`); it records the tier, the approval and the verifier rounds.
 
 ## AC -> step -> test
 
