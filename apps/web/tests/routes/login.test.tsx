@@ -285,15 +285,16 @@ describe("a reload on the code step (R15, R35)", () => {
     t: Awaited<ReturnType<typeof loadApp>>,
     over: Record<string, unknown> = {},
   ) {
+    const { ago = 20_000, ...rest } = over as { ago?: number };
     t.platform.storage.tab.set(
       RECORD_KEY,
       JSON.stringify({
         address: ADDRESS,
         requestId: "req-stored",
-        answeredAt: t.clock.now() - 20_000,
+        answeredAt: t.clock.now() - ago,
         resendAfterSeconds: 60,
         expiresInSeconds: 600,
-        ...over,
+        ...rest,
       }),
     );
   }
@@ -322,6 +323,25 @@ describe("a reload on the code step (R15, R35)", () => {
     expect(resend()).toBeDisabled();
     t.timers.advance(1_000);
     expect(resend()).toBeEnabled();
+  });
+
+  test("a resend after a reload gives the new code its full life (R15, R35)", async () => {
+    // 300 of the 600 seconds are gone at the reload.
+    const t = await reopen({ ago: 300_000 });
+    t.calls.requestCode.mockResolvedValueOnce({
+      kind: "ok",
+      requestId: "req-2",
+      expiresInSeconds: 600,
+      resendAfterSeconds: 60,
+    });
+    t.timers.advance(60_000);
+    await userEvent.click(screen.getByRole("button", { name: "Resend code" }));
+    await t.settle();
+    expect(record(t)).toMatchObject({ requestId: "req-2" });
+    t.timers.advance(599_000);
+    expect(record(t)).not.toBeNull();
+    t.timers.advance(1_000);
+    expect(record(t)).toBeNull();
   });
 
   test("a code typed after the reload is sent with the stored requestId", async () => {
