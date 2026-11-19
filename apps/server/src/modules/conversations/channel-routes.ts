@@ -2,7 +2,9 @@ import type { FastifyPluginAsync, FastifyReply, FastifyRequest } from "fastify";
 import {
   BrowseChannelsQuerySchema,
   ChannelIdSchema,
+  AddMembersBodySchema,
   ChannelMembersQuerySchema,
+  JoinChannelBodySchema,
   CreateChannelBodySchema,
   EditChannelBodySchema,
   canReadConversation,
@@ -18,7 +20,12 @@ import {
   toSummary,
 } from "./browse.js";
 import { recordChange as defaultRecordChange } from "./changes.js";
-import { createChannel, editChannelDetails } from "./channels.js";
+import {
+  addMembers,
+  createChannel,
+  editChannelDetails,
+  joinChannel,
+} from "./channels.js";
 import type { ChannelDeps, ChannelDepsInput } from "./deps.js";
 import { getConversationFacts as defaultGetConversationFacts } from "./facts.js";
 import { toSafeError } from "./safe-error.js";
@@ -140,8 +147,34 @@ export function channelRoutes(input: ChannelDepsInput): FastifyPluginAsync {
         );
       }),
     );
-    scope.post("/channels/:id/join", guarded(notBuilt));
-    scope.post("/channels/:id/members", guarded(notBuilt));
+    scope.post(
+      "/channels/:id/join",
+      guarded(async (request) => {
+        const account = request.account!;
+        const id = ChannelIdSchema.parse((request.params as { id: string }).id);
+        const body = JoinChannelBodySchema.parse(request.body ?? {});
+        return joinChannel(
+          deps,
+          { id: account.id, role: account.role },
+          id,
+          body.settings,
+        );
+      }),
+    );
+    scope.post(
+      "/channels/:id/members",
+      guarded(async (request) => {
+        const account = request.account!;
+        const id = ChannelIdSchema.parse((request.params as { id: string }).id);
+        const body = AddMembersBodySchema.parse(request.body ?? {});
+        return addMembers(
+          deps,
+          { id: account.id, role: account.role },
+          id,
+          body.userIds,
+        );
+      }),
+    );
     scope.post("/channels/:id/leave", guarded(notBuilt));
     scope.delete("/channels/:id/members/:userId", guarded(notBuilt));
     scope.post("/channels/:id/archive", guarded(notBuilt));

@@ -1,8 +1,10 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { createHarness, type Harness } from "../auth/test-harness.js";
+import { insertConversation, insertConversationMember } from "../test-rows.js";
 import {
   bystander,
   conversationRows,
+  memberRows,
   jsonOf,
   newChannelId,
   person,
@@ -105,5 +107,54 @@ describe("create (S4)", () => {
     expect(
       await conversationRows(h.sql, "name = 'lock-create-3'"),
     ).toHaveLength(0);
+  });
+});
+
+// A public channel with one member, made by rows.
+async function openChannel(name: string, memberIds: string[]) {
+  const id = await insertConversation(h.sql, {
+    workspace_id: h.workspaceId,
+    created_by: memberIds[0]!,
+    name,
+  });
+  for (const user_id of memberIds) {
+    await insertConversationMember(h.sql, {
+      conversation_id: id,
+      user_id,
+      workspace_id: h.workspaceId,
+    });
+  }
+  return id;
+}
+
+describe("join and add (S7)", () => {
+  it("a Member who is deactivated while their join waits gets 401 account_deactivated and no member row", async () => {
+    const owner = await bystander(h, "lock-owner-4");
+    const id = await openChannel("lock-join-4", [owner]);
+    const joiner: Person = await person(h, "lock-joiner-4");
+    const res = await whileHeld(
+      (tx) =>
+        tx`update users set status = 'deactivated' where id = ${joiner.id}`,
+      () => send(h, joiner, "POST", `/api/v1/channels/${id}/join`),
+    );
+    expect(res.statusCode).toBe(401);
+    expect(jsonOf(res).error.code).toBe("account_deactivated");
+    expect(await memberRows(h.sql, id)).toHaveLength(1);
+  });
+
+  it("an add of a person who is being deactivated is 400 invalid_member and writes no member row", async () => {
+    const adder: Person = await person(h, "lock-adder-5");
+    const id = await openChannel("lock-add-5", [adder.id]);
+    const target = await bystander(h, "lock-target-5");
+    const res = await whileHeld(
+      (tx) => tx`update users set status = 'deactivated' where id = ${target}`,
+      () =>
+        send(h, adder, "POST", `/api/v1/channels/${id}/members`, {
+          userIds: [target],
+        }),
+    );
+    expect(res.statusCode).toBe(400);
+    expect(jsonOf(res).error.code).toBe("invalid_member");
+    expect(await memberRows(h.sql, id)).toHaveLength(1);
   });
 });

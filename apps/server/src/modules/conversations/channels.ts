@@ -1,13 +1,16 @@
 import {
   ErrorCodes,
   canCreateChannel,
+  canAddPeopleToChannel,
   canEditChannelDetails,
+  canJoinChannel,
   type ChannelDetail,
   type ConversationFacts,
   type CreateChannelBodySchema,
   type EditChannelBodySchema,
+  type SettingsPatch,
 } from "@toki/shared";
-import { and, eq } from "drizzle-orm";
+import { and, eq, inArray } from "drizzle-orm";
 import type { z } from "zod";
 import type { DbClient } from "../../db/client.js";
 import { AppError } from "../../errors.js";
@@ -302,6 +305,112 @@ export async function editChannelDetails(
       }
       const channel = await readChannelDetail(deps, tx, actor.id, id);
       return { channel: channel!, changed };
+    },
+  );
+}
+
+// R10: a public channel that is not archived. The member row has the defaults,
+// or the values that come with the join (Undo of a leave gives back the level,
+// mute and star the person had). A person who is already a member changes
+// nothing and the values are ignored.
+export async function joinChannel(
+  deps: Writer,
+  account: { id: string; role: string },
+  id: string,
+  settings: SettingsPatch = {},
+): Promise<{ channel: ChannelDetail; changed: boolean }> {
+  return inConversationTx(
+    deps,
+    account,
+    id,
+    [],
+    canJoinChannel,
+    async ({ tx, actor, now }) => {
+      const inserted = await tx
+        .insert(conversationMembers)
+        .values({
+          conversationId: id,
+          userId: actor.id,
+          workspaceId: actor.workspaceId,
+          notificationLevel: settings.notificationLevel ?? null,
+          isMuted: settings.isMuted ?? false,
+          isStarred: settings.isStarred ?? false,
+          createdAt: now,
+        })
+        .onConflictDoNothing()
+        .returning({ userId: conversationMembers.userId });
+      const changed = inserted.length === 1;
+      if (changed) {
+        await deps.recordChange(tx, {
+          type: "member_joined",
+          actorId: actor.id,
+          conversationId: id,
+          userIds: [actor.id],
+          at: now,
+        });
+      }
+      const channel = await readChannelDetail(deps, tx, actor.id, id);
+      return { channel: channel!, changed };
+    },
+  );
+}
+
+// R11: any member of either role adds people, in a private channel too. Every
+// id must be an active person of the workspace, whether or not the person is
+// already a member (so a deactivated member makes the whole request 400); then
+// the people who are already members are skipped. The new rows have the
+// defaults: a person who is added again does not get the old level back.
+export async function addMembers(
+  deps: Writer,
+  account: { id: string; role: string },
+  id: string,
+  userIds: readonly string[],
+): Promise<{ added: string[]; alreadyMembers: string[] }> {
+  const ids = [...new Set(userIds)];
+  return inConversationTx(
+    deps,
+    account,
+    id,
+    ids,
+    canAddPeopleToChannel,
+    async ({ tx, actor, accounts, now }) => {
+      requireActivePeople(actor, accounts, ids);
+      const existing = await tx
+        .select({ userId: conversationMembers.userId })
+        .from(conversationMembers)
+        .where(
+          and(
+            eq(conversationMembers.conversationId, id),
+            inArray(conversationMembers.userId, ids),
+          ),
+        );
+      const present = new Set(existing.map((r) => r.userId));
+      const added = ids.filter((u) => !present.has(u));
+      const alreadyMembers = ids.filter((u) => present.has(u));
+      if (added.length > 0) {
+        await tx
+          .insert(conversationMembers)
+          .values(
+            added.map((userId) => ({
+              conversationId: id,
+              userId,
+              workspaceId: actor.workspaceId,
+              notificationLevel: null,
+              isMuted: false,
+              isStarred: false,
+              createdAt: now,
+            })),
+          )
+          .onConflictDoNothing();
+        await deps.recordChange(tx, {
+          type: "members_added",
+          actorId: actor.id,
+          conversationId: id,
+          userIds: added,
+          at: now,
+        });
+      }
+      return { added, alreadyMembers };
     },
   );
 }
