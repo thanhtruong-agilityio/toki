@@ -8,8 +8,8 @@ import { buildApp } from "../../src/app.js";
 import type { Config } from "../../src/config.js";
 import { drizzle } from "drizzle-orm/postgres-js";
 import { migrationsFolder, runMigrations } from "../../src/db/migrate.js";
-import { fakeMail } from "../../src/tests/fake-mail.js";
-import { createThrowawayDb } from "../../src/tests/throwaway-db.js";
+import { fakeMail } from "../fake-mail.js";
+import { createThrowawayDb } from "../throwaway-db.js";
 import type { FastifyInstance, InjectOptions } from "fastify";
 
 export const SECRET = "s".repeat(40);

@@ -2,8 +2,8 @@ import postgres, { type Sql } from "postgres";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { createDb } from "../../src/db/client.js";
 import { migrationsFolder, runMigrations } from "../../src/db/migrate.js";
-import { insertUser, insertWorkspace } from "../../src/tests/test-rows.js";
-import { createThrowawayDb } from "../../src/tests/throwaway-db.js";
+import { insertUser, insertWorkspace } from "../test-rows.js";
+import { createThrowawayDb } from "../throwaway-db.js";
 import {
   findAccountByEmail,
   getAccountById,

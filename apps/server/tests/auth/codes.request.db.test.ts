@@ -181,7 +181,7 @@ describe("limits (R4, R5, R6, R42)", () => {
 
   it("leaves an invitation's row untouched and does not count it (R47)", async () => {
     const e = "inv@example.com";
-    const { insertLoginCode } = await import("../../src/tests/test-rows.js");
+    const { insertLoginCode } = await import("../test-rows.js");
     const id = await insertLoginCode(h.sql, {
       workspace_id: h.workspaceId,
       email: e,
@@ -199,7 +199,7 @@ describe("limits (R4, R5, R6, R42)", () => {
   });
 
   it("prunes at most 100 sign-in rows of any address that are 15 minutes old (R48)", async () => {
-    const { insertLoginCode } = await import("../../src/tests/test-rows.js");
+    const { insertLoginCode } = await import("../test-rows.js");
     const old = new Date(h.clock.now() - 20 * 60_000);
     for (let i = 0; i < 105; i++) {
       await insertLoginCode(h.sql, {
@@ -282,7 +282,7 @@ describe("an address that has only an invitation (R1, R2, concern 1)", () => {
 
 describe("pruning together (R48)", () => {
   it("answers every one of many parallel requests for different addresses while old rows are pruned", async () => {
-    const { insertLoginCode } = await import("../../src/tests/test-rows.js");
+    const { insertLoginCode } = await import("../test-rows.js");
     const old = new Date(h.clock.now() - 30 * 60_000);
     for (let i = 0; i < 300; i++) {
       await insertLoginCode(h.sql, {
