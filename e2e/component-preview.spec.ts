@@ -3,6 +3,7 @@ import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { expect, test, type Page } from "@playwright/test";
+import { stubSignedIn } from "./support/session";
 
 // The component preview page (TOKI-016). "The page" is /preview.html on the
 // development server that `pnpm test:e2e` starts.
@@ -27,6 +28,7 @@ test.describe("page and controls (R1, R4)", () => {
   });
 
   test("R1: the app at / still opens", async ({ page }) => {
+    await stubSignedIn(page);
     const response = await page.goto("/");
     expect(response?.status()).toBe(200);
     await expect(page.getByTestId("app-root")).toHaveText("Toki");
