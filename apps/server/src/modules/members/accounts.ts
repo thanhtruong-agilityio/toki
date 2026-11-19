@@ -1,4 +1,4 @@
-import { count, eq } from "drizzle-orm";
+import { count, eq, inArray } from "drizzle-orm";
 import { uuidv7 } from "uuidv7";
 import type { DbClient } from "../../db/client.js";
 import { users } from "./schema.js";
@@ -47,6 +47,43 @@ export async function getAccountById(
     .where(eq(users.id, id))
     .limit(1);
   return (row as Account | undefined) ?? null;
+}
+
+// What the channel code needs to know about a person: who, which workspace,
+// which role (as stored text, so a role the permission functions do not know
+// reaches them) and whether the account is in use. No address, no name.
+export type AccountFacts = {
+  id: string;
+  workspaceId: string;
+  role: string;
+  status: "active" | "deactivated";
+};
+
+// One statement for every id that has a row, in id order. With
+// `lock: "share"` the rows are read `FOR SHARE`, so a demotion or a
+// deactivation that holds a row finishes first and the caller reads its
+// result, and a person cannot be deactivated between the check and the
+// insert that follows (TOKI-029 R15, TOKI-024 R39). Without the option no
+// lock is taken, which is how a read-only transaction calls it.
+export async function getAccountsByIds(
+  client: DbClient,
+  ids: readonly string[],
+  options: { lock?: "share" } = {},
+): Promise<AccountFacts[]> {
+  const unique = [...new Set(ids)];
+  if (unique.length === 0) return [];
+  const query = client
+    .select({
+      id: users.id,
+      workspaceId: users.workspaceId,
+      role: users.role,
+      status: users.status,
+    })
+    .from(users)
+    .where(inArray(users.id, unique))
+    .orderBy(users.id);
+  const rows = await (options.lock === "share" ? query.for("share") : query);
+  return rows as AccountFacts[];
 }
 
 // The number of accounts in the database (TOKI-020 R14).
