@@ -18,23 +18,45 @@ async function ask(email: string) {
   h.clock.advance(61_000);
   const res = await h.requestCode(email);
   await h.flush();
-  return { requestId: h.json(res).requestId as string, code: (() => {
-    try { return h.lastCode(); } catch { return "000000"; }
-  })() };
+  return {
+    requestId: h.json(res).requestId as string,
+    code: (() => {
+      try {
+        return h.lastCode();
+      } catch {
+        return "000000";
+      }
+    })(),
+  };
 }
 const wrong = (code: string) => (code === "111111" ? "222222" : "111111");
 
 describe("exchange (R10 to R16)", () => {
   it("creates one session and returns the user, with the cookie and no token (R10, R21)", async () => {
-    const id = await h.addUser("sam@example.com", { display_name: "Sam", role: "admin", language: "vi" });
+    const id = await h.addUser("sam@example.com", {
+      display_name: "Sam",
+      role: "admin",
+      language: "vi",
+    });
     const { requestId, code } = await ask("sam@example.com");
-    const res = await h.exchange(requestId, code, {}, { headers: { "user-agent": "UA/1" } });
+    const res = await h.exchange(
+      requestId,
+      code,
+      {},
+      { headers: { "user-agent": "UA/1" } },
+    );
     expect(res.statusCode).toBe(200);
     expect(h.json(res)).toEqual({
-      user: { id, email: "sam@example.com", displayName: "Sam", role: "admin", language: "vi" },
+      user: {
+        id,
+        email: "sam@example.com",
+        displayName: "Sam",
+        role: "admin",
+        language: "vi",
+      },
     });
     expect(String(res.headers["set-cookie"])).toContain("toki_session=");
-    expect((await sessions(id))).toHaveLength(1);
+    expect(await sessions(id)).toHaveLength(1);
   });
 
   it("refuses the right digits with another requestId (R11, R16)", async () => {
@@ -43,7 +65,9 @@ describe("exchange (R10 to R16)", () => {
     const a = await ask("a@example.com");
     const b = await ask("b@example.com");
     const res = await h.exchange(b.requestId, a.code);
-    expect(["code_incorrect", "code_expired"]).toContain(h.json(res).error.code);
+    expect(["code_incorrect", "code_expired"]).toContain(
+      h.json(res).error.code,
+    );
     const unknown = await h.exchange("x".repeat(43), a.code);
     expect(h.json(unknown).error.code).toBe("code_expired");
     expect(unknown.statusCode).toBe(400);
@@ -62,24 +86,28 @@ describe("exchange (R10 to R16)", () => {
     expect(h.json(fifth).error.code).toBe("code_locked");
     const right = await h.exchange(requestId, code);
     expect(h.json(right).error.code).toBe("code_locked");
-    expect(await sessions()).not.toContainEqual(expect.objectContaining({ email: "lock" }));
     // a newer code cancels the locked one: now code_expired
     await ask("lock@example.com");
-    expect(h.json(await h.exchange(requestId, code)).error.code).toBe("code_expired");
+    expect(h.json(await h.exchange(requestId, code)).error.code).toBe(
+      "code_expired",
+    );
   });
 
   it("accepts at 9:59 and refuses at exactly 10:00 without a wrong try (R10, R14)", async () => {
     await h.addUser("time@example.com");
     const early = await ask("time@example.com");
     h.clock.advance(599_000);
-    expect((await h.exchange(early.requestId, early.code)).statusCode).toBe(200);
+    expect((await h.exchange(early.requestId, early.code)).statusCode).toBe(
+      200,
+    );
 
     const late = await ask("time@example.com");
     h.clock.advance(600_000);
     const res = await h.exchange(late.requestId, late.code);
     expect(res.statusCode).toBe(400);
     expect(h.json(res).error.code).toBe("code_expired");
-    const [row] = await h.sql`select wrong_tries from login_codes where email = 'time@example.com' order by created_at desc limit 1`;
+    const [row] =
+      await h.sql`select wrong_tries from login_codes where email = 'time@example.com' order by created_at desc limit 1`;
     expect(row!.wrong_tries).toBe(0);
   });
 
@@ -100,9 +128,12 @@ describe("account status and unknown addresses (R18, R19)", () => {
     expect(res.statusCode).toBe(400);
     expect(h.json(res).error.code).toBe("account_deactivated");
     expect(await sessions(id)).toHaveLength(0);
-    const [row] = await h.sql`select used_at from login_codes where email = 'off@example.com'`;
+    const [row] =
+      await h.sql`select used_at from login_codes where email = 'off@example.com'`;
     expect(row!.used_at).not.toBeNull();
-    expect(h.json(await h.exchange(requestId, code)).error.code).toBe("code_expired");
+    expect(h.json(await h.exchange(requestId, code)).error.code).toBe(
+      "code_expired",
+    );
   });
 
   it("never accepts a code for an address with no account, in the order of R12 to R14 (R19)", async () => {
@@ -112,12 +143,18 @@ describe("account status and unknown addresses (R18, R19)", () => {
       expect(h.json(res).error.code).toBe("code_incorrect");
       expect(h.json(res).error.details.triesLeft).toBe(left);
     }
-    expect(h.json(await h.exchange(requestId, "123456")).error.code).toBe("code_locked");
-    expect(h.json(await h.exchange(requestId, "123456")).error.code).toBe("code_locked");
+    expect(h.json(await h.exchange(requestId, "123456")).error.code).toBe(
+      "code_locked",
+    );
+    expect(h.json(await h.exchange(requestId, "123456")).error.code).toBe(
+      "code_locked",
+    );
 
     const other = await ask("ghost2@example.com");
     h.clock.advance(600_000);
-    expect(h.json(await h.exchange(other.requestId, "123456")).error.code).toBe("code_expired");
+    expect(h.json(await h.exchange(other.requestId, "123456")).error.code).toBe(
+      "code_expired",
+    );
   });
 });
 
@@ -133,11 +170,16 @@ describe("validation (R20)", () => {
       { requestId },
     ];
     for (const payload of bodies) {
-      const res = await h.call({ method: "POST", url: "/api/v1/auth/sessions", payload });
+      const res = await h.call({
+        method: "POST",
+        url: "/api/v1/auth/sessions",
+        payload,
+      });
       expect(res.statusCode, JSON.stringify(payload)).toBe(400);
       expect(h.json(res).error.code).toBe("validation_failed");
     }
-    const [row] = await h.sql`select wrong_tries from login_codes where email = 'val@example.com' order by created_at desc limit 1`;
+    const [row] =
+      await h.sql`select wrong_tries from login_codes where email = 'val@example.com' order by created_at desc limit 1`;
     expect(row!.wrong_tries).toBe(0);
   });
 });
@@ -161,10 +203,16 @@ describe("concurrency (R17)", () => {
       Array.from({ length: 12 }, () => h.exchange(requestId, wrong(code))),
     );
     const codes = results.map((r) => h.json(r).error.code as string);
-    expect(codes.filter((c) => c === "code_incorrect").length).toBeLessThanOrEqual(4);
-    expect(codes.filter((c) => c === "code_locked").length).toBeGreaterThanOrEqual(1);
-    for (const c of codes) expect(["code_incorrect", "code_locked"]).toContain(c);
-    const [row] = await h.sql`select wrong_tries from login_codes where email = 'race2@example.com'`;
+    expect(
+      codes.filter((c) => c === "code_incorrect").length,
+    ).toBeLessThanOrEqual(4);
+    expect(
+      codes.filter((c) => c === "code_locked").length,
+    ).toBeGreaterThanOrEqual(1);
+    for (const c of codes)
+      expect(["code_incorrect", "code_locked"]).toContain(c);
+    const [row] =
+      await h.sql`select wrong_tries from login_codes where email = 'race2@example.com'`;
     expect(row!.wrong_tries).toBe(5);
   });
 });

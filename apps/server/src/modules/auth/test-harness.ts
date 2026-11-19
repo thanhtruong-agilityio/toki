@@ -50,7 +50,12 @@ export async function createHarness(
     },
   });
   const config: Config = {
-    server: { env: "development", port: 3000, host: "127.0.0.1", logLevel: "info" },
+    server: {
+      env: "development",
+      port: 3000,
+      host: "127.0.0.1",
+      logLevel: "info",
+    },
     database: { url: throwaway.url },
     auth: {
       codeSecret: SECRET,
@@ -102,7 +107,10 @@ export async function createHarness(
     return insertUser(sql, { workspace_id: workspaceId, email, ...values });
   }
 
-  async function requestCode(email: string, extra: Partial<InjectOptions> = {}) {
+  async function requestCode(
+    email: string,
+    extra: Partial<InjectOptions> = {},
+  ) {
     return call({
       method: "POST",
       url: "/api/v1/auth/codes",
@@ -139,6 +147,8 @@ export async function createHarness(
     transport: "cookie" | "token" = "cookie",
     inject: Partial<InjectOptions> = {},
   ) {
+    // Past the 60 seconds of an earlier request for the same address.
+    clock.advance(61_000);
     const asked = await requestCode(email);
     const { requestId } = json(asked);
     await flush();
@@ -165,8 +175,25 @@ export async function createHarness(
   }
 
   return {
-    app, sql, db, statements, clock, mail, workspaceId, config,
-    call, json, addUser, requestCode, lastCode, flush, exchange, signIn,
-    withCookie, cookieName, logText, close,
+    app,
+    sql,
+    db,
+    statements,
+    clock,
+    mail,
+    workspaceId,
+    config,
+    call,
+    json,
+    addUser,
+    requestCode,
+    lastCode,
+    flush,
+    exchange,
+    signIn,
+    withCookie,
+    cookieName,
+    logText,
+    close,
   };
 }

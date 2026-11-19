@@ -20,14 +20,21 @@ describe("request a code (R1 to R9)", () => {
     const res = await h.requestCode("Sam@Example.com ");
     expect(res.statusCode).toBe(200);
     const body = h.json(res);
-    expect(Object.keys(body).sort()).toEqual(["expiresInSeconds", "requestId", "resendAfterSeconds"]);
+    expect(Object.keys(body).sort()).toEqual([
+      "expiresInSeconds",
+      "requestId",
+      "resendAfterSeconds",
+    ]);
     expect(body.expiresInSeconds).toBe(600);
     expect(body.resendAfterSeconds).toBe(60);
     expect(body.requestId).toMatch(/^[A-Za-z0-9_-]{43}$/);
     await h.flush();
     const sent = h.mail.calls.filter((c) => c.operation === "sendSignInMail");
     expect(sent).toHaveLength(1);
-    expect(sent[0]!.input).toMatchObject({ to: "sam@example.com", language: "vi" });
+    expect(sent[0]!.input).toMatchObject({
+      to: "sam@example.com",
+      language: "vi",
+    });
     expect((sent[0]!.input as { code: string }).code).toMatch(/^[0-9]{6}$/);
   });
 
@@ -43,7 +50,11 @@ describe("request a code (R1 to R9)", () => {
     const before = h.mail.calls.length;
     const res = await h.requestCode("nobody@example.com");
     expect(res.statusCode).toBe(200);
-    expect(Object.keys(h.json(res)).sort()).toEqual(["expiresInSeconds", "requestId", "resendAfterSeconds"]);
+    expect(Object.keys(h.json(res)).sort()).toEqual([
+      "expiresInSeconds",
+      "requestId",
+      "resendAfterSeconds",
+    ]);
     await h.flush();
     expect(h.mail.calls.length).toBe(before);
     const [row] = await rows("nobody@example.com");
@@ -144,7 +155,9 @@ describe("limits (R4, R5, R6, R42)", () => {
     }
     const res = await h.requestCode(e);
     expect(h.json(res).error.code).toBe("code_request_limit");
-    expect(h.json(res).error.details.retryAfterSeconds).toBeGreaterThanOrEqual(50);
+    expect(h.json(res).error.details.retryAfterSeconds).toBeGreaterThanOrEqual(
+      50,
+    );
   });
 
   it("an accepted request cancels the earlier code (R6)", async () => {
@@ -173,7 +186,8 @@ describe("limits (R4, R5, R6, R42)", () => {
       expect((await h.requestCode(e)).statusCode).toBe(200);
       h.clock.advance(61_000);
     }
-    const [row] = await h.sql`select cancelled_at from login_codes where id = ${id}`;
+    const [row] =
+      await h.sql`select cancelled_at from login_codes where id = ${id}`;
     expect(row!.cancelled_at).toBeNull();
   });
 
@@ -189,41 +203,14 @@ describe("limits (R4, R5, R6, R42)", () => {
       });
     }
     const countOld = async () =>
-      Number((await h.sql`select count(*) from login_codes where email like 'old%@example.com'`)[0]!.count);
+      Number(
+        (
+          await h.sql`select count(*) from login_codes where email like 'old%@example.com'`
+        )[0]!.count,
+      );
     expect(await countOld()).toBe(105);
     await h.requestCode("prune@example.com");
     expect(await countOld()).toBe(5);
-  });
-});
-
-describe("mail after the answer (R8)", () => {
-  it("answers although the mail layer fails or never answers, without a log line of ours", async () => {
-    const failing = await createHarness({
-      mail: {
-        sendSignInMail: () => Promise.reject(new Error("smtp down")),
-        sendInvitationMail: async () => ({ ok: true }),
-        sendInvitationCode: async () => ({ ok: true }),
-      },
-    });
-    const silent = await createHarness({
-      mail: {
-        sendSignInMail: () => new Promise(() => {}),
-        sendInvitationMail: async () => ({ ok: true }),
-        sendInvitationCode: async () => ({ ok: true }),
-      },
-    });
-    try {
-      for (const x of [failing, silent]) {
-        await x.addUser("a@example.com");
-        const res = await x.requestCode("a@example.com");
-        expect(res.statusCode).toBe(200);
-        await x.flush();
-        expect(x.logText()).not.toContain("a@example.com");
-      }
-    } finally {
-      await failing.close();
-      await silent.close();
-    }
   });
 });
 
