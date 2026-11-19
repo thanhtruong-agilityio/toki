@@ -6,3 +6,6 @@ export {
   getAccountById,
 } from "./accounts.js";
 export type { Account } from "./accounts.js";
+export { onMemberChanged } from "./events.js";
+export type { MemberChange } from "./events.js";
+export { registerMembersRoutes } from "./routes.js";

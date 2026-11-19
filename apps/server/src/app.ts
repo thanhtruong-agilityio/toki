@@ -12,6 +12,7 @@ import {
 } from "./errors.js";
 import { registerHealth } from "./health.js";
 import { registerAuthHooks, registerAuthRoutes } from "./modules/auth/index.js";
+import { registerMembersRoutes } from "./modules/members/index.js";
 import { createMailLayer, type MailLayer } from "./modules/mail/index.js";
 
 declare module "fastify" {
@@ -115,6 +116,12 @@ export function buildApp({
     registerAuthHooks(app, { db, clock, config: auth });
     registerApi(app, async (scope) => {
       registerAuthRoutes(scope, { db, mail: app.mail, config: auth });
+      registerMembersRoutes(scope, {
+        db,
+        mail: app.mail,
+        clock,
+        appOrigin: auth.appOrigin,
+      });
       await registerRoutes?.(scope);
     });
   } else {
