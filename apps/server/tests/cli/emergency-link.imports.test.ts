@@ -57,7 +57,10 @@ describe("the import graph of the emergency command (TOKI-026 R23)", () => {
     const rel = graph.files.map((f) => path.relative(root, f));
     expect(rel).toContain("apps/server/src/cli/emergency-link.ts");
     expect(rel).toContain("apps/server/src/modules/auth/cli.ts");
-    expect(rel).toContain("apps/server/src/modules/members/index.ts");
+    expect(rel).toContain("apps/server/src/modules/members/cli.ts");
+    // The index of `members` reaches the mail layer through its routes and invitations.
+    expect(rel).not.toContain("apps/server/src/modules/members/index.ts");
+    expect(rel).not.toContain("apps/server/src/modules/auth/index.ts");
   });
 
   it("reaches no file of the mail module and no file that reads the whole configuration", () => {
@@ -71,19 +74,26 @@ describe("the import graph of the emergency command (TOKI-026 R23)", () => {
     expect(graph.packages.filter((p) => /mail/i.test(p))).toEqual([]);
   });
 
-  it("the entry of the auth module for the command exports issueEmergencyLink and nothing else", () => {
-    const text = readFileSync(
-      path.join(root, "apps/server/src/modules/auth/cli.ts"),
-      "utf8",
-    );
-    const exported = [...text.matchAll(/export\s*\{([^}]*)\}/g)].flatMap((m) =>
-      m[1]!
-        .split(",")
-        .map((s) => s.trim())
-        .filter(Boolean),
-    );
-    expect(exported).toEqual(["issueEmergencyLink"]);
-  });
+  it.each([
+    ["auth", ["issueEmergencyLink"]],
+    ["members", ["findAccountForEmergencyLink"]],
+  ])(
+    "the cli entry of the %s module exports only what the command needs",
+    (name, names) => {
+      const text = readFileSync(
+        path.join(root, `apps/server/src/modules/${name}/cli.ts`),
+        "utf8",
+      );
+      const exported = [...text.matchAll(/export\s*\{([^}]*)\}/g)].flatMap(
+        (m) =>
+          m[1]!
+            .split(",")
+            .map((s) => s.trim())
+            .filter(Boolean),
+      );
+      expect(exported).toEqual(names);
+    },
+  );
 
   it("the Commands section of CLAUDE.md has the documented form (R39)", () => {
     const text = readFileSync(path.join(root, "CLAUDE.md"), "utf8");

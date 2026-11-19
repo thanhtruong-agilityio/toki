@@ -9,7 +9,7 @@ import { parseEmail, systemClock } from "@toki/shared";
 import pino from "pino";
 import { createDb } from "../db/client.js";
 import { issueEmergencyLink } from "../modules/auth/cli.js";
-import { findAccountByEmail } from "../modules/members/index.js";
+import { findAccountForEmergencyLink } from "../modules/members/cli.js";
 import { CliConfigError, readCliConfig } from "./config.js";
 import { operatorName } from "./operator.js";
 
@@ -48,7 +48,7 @@ async function main(args: string[]): Promise<number> {
 
   const { db, close } = createDb(config.databaseUrl);
   try {
-    const account = await findAccountByEmail(db, email);
+    const account = await findAccountForEmergencyLink(db, email);
     if (!account) {
       logger.warn({ operator, reason: "no_account" }, "emergency_link_refused");
       return 1;
