@@ -86,6 +86,16 @@ Flow F01 (TOKI-020) reads these three values to create the workspace, the first 
 | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- |
 | `APP_DOMAIN` | Domain name the installation is served on | production compose (TOKI-084) | yes | none | `localhost` | the operator of that installation (see [External values](#external-values), domain) | no |
 
+### Sign-in
+
+Names are proposals of TOKI-022 for TOKI-096, which owns the inventory. The code secret keys the hash of the 6-digit sign-in code, so a copy of the database alone cannot be used to find a code.
+
+| Name | Purpose | Read by | Required | Default | Development value | Supplied by | Secret |
+| :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- |
+| `AUTH_CODE_SECRET` | Key of the HMAC of sign-in codes, at least 32 characters. Changing it makes the codes of the last 10 minutes fail | server | yes | none | a throwaway string of 32 or more characters | the operator of that installation | yes |
+| `APP_ORIGIN` | The origin of the web app (scheme, host and port), compared with the `Origin` header of a request that changes something | server | yes | none | `http://localhost:5173` | the operator of that installation | no |
+| `TRUSTED_PROXY` | Address of the reverse proxy whose `X-Forwarded-For` the server trusts for the per-address limit. Empty means no proxy is trusted | server | no | none | empty | the operator of that installation | no |
+
 ### Backup storage
 
 No variable in phase 1. Backup is deferred to a later phase (Blueprint decision D-092); where backups are stored and how that is configured are decided with it.

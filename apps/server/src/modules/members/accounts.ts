@@ -1,14 +1,57 @@
-import { count } from "drizzle-orm";
-import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
+import { count, eq } from "drizzle-orm";
 import { uuidv7 } from "uuidv7";
+import type { DbClient } from "../../db/client.js";
 import { users } from "./schema.js";
 
-// The caller's database client or open transaction (TOKI-020 R14).
-type Db = PostgresJsDatabase;
+export type Account = {
+  id: string;
+  workspaceId: string;
+  email: string;
+  displayName: string;
+  role: "member" | "admin";
+  status: "active" | "deactivated";
+  language: "en" | "vi";
+};
 
-// The number of accounts in the database.
-export async function countAccounts(tx: Db): Promise<number> {
-  const [row] = await tx.select({ n: count() }).from(users);
+const columns = {
+  id: users.id,
+  workspaceId: users.workspaceId,
+  email: users.email,
+  displayName: users.displayName,
+  role: users.role,
+  status: users.status,
+  language: users.language,
+};
+
+// The email address is compared as stored: lower case (the caller normalises
+// it with parseEmail). An address with no users row returns no account.
+export async function findAccountByEmail(
+  client: DbClient,
+  email: string,
+): Promise<Account | null> {
+  const [row] = await client
+    .select(columns)
+    .from(users)
+    .where(eq(users.email, email))
+    .limit(1);
+  return (row as Account | undefined) ?? null;
+}
+
+export async function getAccountById(
+  client: DbClient,
+  id: string,
+): Promise<Account | null> {
+  const [row] = await client
+    .select(columns)
+    .from(users)
+    .where(eq(users.id, id))
+    .limit(1);
+  return (row as Account | undefined) ?? null;
+}
+
+// The number of accounts in the database (TOKI-020 R14).
+export async function countAccounts(client: DbClient): Promise<number> {
+  const [row] = await client.select({ n: count() }).from(users);
   return row?.n ?? 0;
 }
 
@@ -17,7 +60,7 @@ export async function countAccounts(tx: Db): Promise<number> {
 // around the rules of the last Admin and of invitations (TOKI-024). The
 // language keeps the table default. Returns the new id.
 export async function createFirstAdminAccount(
-  tx: Db,
+  client: DbClient,
   input: {
     workspaceId: string;
     email: string;
@@ -26,7 +69,7 @@ export async function createFirstAdminAccount(
   },
 ): Promise<string> {
   const id = uuidv7();
-  await tx.insert(users).values({
+  await client.insert(users).values({
     id,
     workspaceId: input.workspaceId,
     email: input.email,

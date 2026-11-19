@@ -55,6 +55,12 @@ export function registerErrorHandling(app: FastifyInstance) {
   app.setErrorHandler(
     (error: FastifyError, request: FastifyRequest, reply: FastifyReply) => {
       if (error instanceof AppError) {
+        const wait = (
+          error.details as { retryAfterSeconds?: unknown } | undefined
+        )?.retryAfterSeconds;
+        if (error.status === 429 && typeof wait === "number") {
+          reply.header("retry-after", String(wait));
+        }
         return reply
           .code(error.status)
           .send(body(error.code, error.message, error.details));

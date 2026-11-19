@@ -3,6 +3,11 @@
 import { parseEmail } from "@toki/shared";
 import { z } from "zod";
 import {
+  authConfigSchema,
+  authVariableNames,
+  type AuthConfig,
+} from "./modules/auth/index.js";
+import {
   mailConfigSchema,
   mailVariableNames,
   type MailConfig,
@@ -51,6 +56,7 @@ const areas = {
       name: v.FIRST_ADMIN_NAME,
       workspaceName: v.WORKSPACE_NAME,
     })),
+  auth: authConfigSchema,
 };
 
 export type AreaName = keyof typeof areas;
@@ -61,6 +67,8 @@ export type Config = {
   database: z.output<(typeof areas)["database"]>;
   mail?: MailConfig;
   firstAdmin?: z.output<(typeof areas)["firstAdmin"]>;
+  // Optional for the same reason as mail: a test builds the app without it.
+  auth?: AuthConfig;
 };
 
 // The variable names each area reads, for the check against .env.example.
@@ -69,6 +77,7 @@ export const configVariableNames: Record<AreaName, string[]> = {
   database: ["DATABASE_URL"],
   mail: mailVariableNames,
   firstAdmin: ["FIRST_ADMIN_EMAIL", "FIRST_ADMIN_NAME", "WORKSPACE_NAME"],
+  auth: authVariableNames,
 };
 
 // Carries variable names only: a value never reaches the message.

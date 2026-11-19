@@ -42,6 +42,9 @@ export default defineConfig({
         FIRST_ADMIN_EMAIL: "admin@example.com",
         FIRST_ADMIN_NAME: "Test Admin",
         WORKSPACE_NAME: "Test Workspace",
+        // And the auth values (TOKI-022); fake, nothing reads them in the e2e run.
+        AUTH_CODE_SECRET: "e2e-code-secret-e2e-code-secret-00",
+        APP_ORIGIN: "http://127.0.0.1:5173",
       },
     },
     {

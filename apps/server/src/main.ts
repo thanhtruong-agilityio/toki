@@ -8,7 +8,13 @@ import { ensureFirstAdmin } from "./first-admin.js";
 // name and never a value; the logger does not exist yet.
 let config;
 try {
-  config = loadProcessConfig(["server", "database", "mail", "firstAdmin"]);
+  config = loadProcessConfig([
+    "server",
+    "database",
+    "mail",
+    "auth",
+    "firstAdmin",
+  ]);
 } catch (error) {
   if (!(error instanceof ConfigError)) throw error;
   for (const name of error.names)
@@ -16,19 +22,19 @@ try {
   process.exit(1);
 }
 
-const app = buildApp({ config });
+const connection = createDb(config.database.url);
+const app = buildApp({ config, db: connection.db });
 
 // The first set-up (TOKI-020). It starts after the server listens, so an
-// unreachable database never delays /healthz. The close hook stops it from
-// starting a new attempt, waits for the attempt in progress (bounded at 10
-// seconds), and only then closes the connection pool under it.
-const { db, close: closeDb } = createDb(config.database.url);
+// unreachable database never delays /healthz. One close hook: it stops the
+// step from starting a new attempt, waits for the attempt in progress (bounded
+// at 10 seconds), and only then closes the connection under it.
 const stopFirstAdmin = new AbortController();
 let firstAdmin: Promise<unknown> = Promise.resolve();
 app.addHook("onClose", async () => {
   stopFirstAdmin.abort();
   await firstAdmin;
-  await closeDb();
+  await connection.close();
 });
 
 // The only global timer of this step; unref'd so it never keeps the process up.
@@ -57,7 +63,7 @@ try {
 }
 
 firstAdmin = ensureFirstAdmin({
-  db,
+  db: connection.db,
   config: config.firstAdmin,
   clock: systemClock,
   logger: app.log,

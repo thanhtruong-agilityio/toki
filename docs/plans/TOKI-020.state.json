@@ -38,6 +38,10 @@
       "at": "2026-11-19T02:37:27Z",
       "auto": false,
       "stage": "approve"
+    },
+    {
+      "at": "2026-11-19T02:40:45Z",
+      "stage": "ship"
     }
   ],
   "key": "TOKI-020",
@@ -50,7 +54,7 @@
   "spec_paths": [
     "docs/specs/2026-11-17-first-admin-design.md"
   ],
-  "stage": "check",
+  "stage": "ship",
   "tier": "L",
   "verifier": {
     "accepted_note": "Round 2 FAIL: only deviation is docs/plans/TOKI-020.state.json (the dev-state record) not named in the plan; accepted by the Dev as tooling output, no code deviation. All 21 AC covered.",

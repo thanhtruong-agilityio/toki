@@ -79,7 +79,13 @@ const PG_RETRY_CODES = new Set([
 ]);
 
 type Outcome =
-  | { kind: "created"; workspaceId: string; userId: string; conversationId: string; adopted: boolean }
+  | {
+      kind: "created";
+      workspaceId: string;
+      userId: string;
+      conversationId: string;
+      adopted: boolean;
+    }
   | { kind: "skipped"; reason: "database_not_empty" }
   | { kind: "several_workspaces" };
 
