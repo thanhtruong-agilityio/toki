@@ -33,6 +33,11 @@
       "at": "2026-11-19T02:05:51Z",
       "auto": false,
       "stage": "approve"
+    },
+    {
+      "at": "2026-11-19T02:37:27Z",
+      "auto": false,
+      "stage": "approve"
     }
   ],
   "key": "TOKI-020",
@@ -40,7 +45,7 @@
   "metrics": {},
   "mode": "auto-to-check",
   "plan_approved": true,
-  "plan_hash": "e29b5fd83fb67550332bb188d8696de18e7cf2797ab257a3156452f68784b89d",
+  "plan_hash": "1c42558f4333eaf37080619107a1ce1f78d5eff12b2329fcd003d3153f4eb5ff",
   "spec_commit": "2c0260a324f155b68ebd0a951dee196d1093ed3d",
   "spec_paths": [
     "docs/specs/2026-11-17-first-admin-design.md"
