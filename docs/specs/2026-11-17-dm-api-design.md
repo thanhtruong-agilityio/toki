@@ -21,7 +21,7 @@ The rules that belong to this request and not to the tables are: only a Member o
   - Listing conversations: TOKI-031 and TOKI-033. The rule that a direct message appears in the other person's list only after the first message (F25) needs `messages` (TOKI-036) and belongs to TOKI-037 (concern 7).
   - The people picker, the chips, the text of the refusals and the screen that opens the conversation: TOKI-034 and TOKI-033. The server sends codes and English developer messages only.
   - Sending, reading and loading messages, and refusing a message into a read-only direct message: TOKI-037 (Design, "Hand-offs").
-  - Notification level, mute and star of a conversation: not here. TOKI-029 builds the request that saves them, for a direct message and a group too (TOKI-028 concern 2).
+  - Notification level, mute and star of a conversation: not here. TOKI-029 builds the request that saves them, for a direct message and a group too (TOKI-028 concern 2, decided by Thanh Truong as product owner on 2026-11-18).
   - Add, remove, leave, archive and restore requests. A direct message or group has none, and the channel routes of TOKI-029 refuse a direct conversation (R14).
   - Guests as people: phase 5. This ticket refuses a role that the permission functions do not know, as the caller and as a person to message, with a server error (R4, R7); the phase 5 ticket gives a guest its own result and the database-level test of D-050.
   - A limit on how many direct messages or groups one person may open: the log sets none (effect on the other people: concern 8).
