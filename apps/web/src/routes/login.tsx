@@ -72,11 +72,13 @@ function LoginPage() {
   }, [calls]);
 
   // The record goes when the code has expired; a step that is showing then stays, expired (R18).
+  // An accepted resend starts the life of the new code again, so it bumps `resends` and the timer restarts.
+  const [resends, setResends] = useState(0);
   const expiresIn = step.kind === "code" ? step.expiresInSeconds : null;
   useEffect(() => {
     if (expiresIn === null) return;
     return timers.after(expiresIn * 1000, () => removeCodeRecord(tab));
-  }, [expiresIn, timers, tab]);
+  }, [expiresIn, resends, timers, tab]);
 
   const keep = (
     address: string,
@@ -141,6 +143,7 @@ function LoginPage() {
     const answer = await calls.requestCode(address);
     if (answer.kind === "ok") {
       keep(address, answer);
+      setResends((n) => n + 1);
       return {
         kind: "ok",
         resendAfterSeconds: answer.resendAfterSeconds,

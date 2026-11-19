@@ -206,6 +206,27 @@ describe("the code step and the tab record (R7, R15, R35)", () => {
     });
   });
 
+  test("after an accepted resend the record goes at the end of the new code, not the first (R15, R35)", async () => {
+    const t = await openLogin();
+    await toCodeStep(t);
+    t.calls.requestCode.mockResolvedValueOnce({
+      kind: "ok",
+      requestId: "req-2",
+      expiresInSeconds: 600,
+      resendAfterSeconds: 60,
+    });
+    t.timers.advance(60_000);
+    await userEvent.click(screen.getByRole("button", { name: "Resend code" }));
+    await t.settle();
+    // The first code ends at 600 s, the new one at 660 s.
+    t.timers.advance(540_000);
+    expect(record(t)).toMatchObject({ requestId: "req-2" });
+    t.timers.advance(59_000);
+    expect(record(t)).not.toBeNull();
+    t.timers.advance(1_000);
+    expect(record(t)).toBeNull();
+  });
+
   test("a resend that is refused keeps the record as it was", async () => {
     const t = await openLogin();
     await toCodeStep(t);
