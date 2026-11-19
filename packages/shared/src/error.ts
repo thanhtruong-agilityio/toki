@@ -34,6 +34,8 @@ export const ErrorCodes = {
   sessionEnded: "session_ended",
   originNotAllowed: "origin_not_allowed",
   rateLimited: "rate_limited",
+  currentSession: "current_session",
+  emergencyLinkInvalid: "emergency_link_invalid",
 } as const;
 
 export type ErrorCode = (typeof ErrorCodes)[keyof typeof ErrorCodes];
