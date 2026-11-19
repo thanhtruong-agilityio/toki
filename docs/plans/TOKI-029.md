@@ -127,3 +127,12 @@ The advisor (Opus) grilled this plan in two rounds; the second found three point
 7. **`deps` reaches the code that uses it:** `checkAccess`, `lockForWrite` and the settings check take `deps` first, so an injected facts read or account read is the one that runs (round two).
 8. **S11 and S12 are check steps.** The access table and the seam counts are written with each route; the two last steps are expected green on the first run (round two).
 9. **Four cases added** to the table: remove by an Admin outside the channel, archive by an Admin who is not a member, a leave of #general by a person outside it, the member list with `limit` 100.
+
+## Files added during the build
+
+The build added four files that the steps above do not name. None changes behaviour; each is the smallest home for something the steps already require.
+
+- `apps/server/src/modules/conversations/deps.ts`: the `ChannelDeps` and `AccountFacts` types of S3, kept apart so `access.ts`, `channels.ts`, `settings.ts` and `app.ts` share them without a cycle.
+- `apps/server/src/modules/conversations/safe-error.ts`: the guard of R20 (S3), a pure function, so it has its own unit test.
+- `apps/server/tests/conversations/channels.access.test.ts` and `channels.safe-error.test.ts`: unit tests of `checkAccess` (R1 step 3, R2) and of `toSafeError` (R20), which need no database.
+- `docs/plans/TOKI-029.state.json` is the workflow state file and is committed with the plan, as in the other tickets.
