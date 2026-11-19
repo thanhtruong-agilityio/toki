@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Tests for the three project hooks. Usage: bash .claude/hooks/hooks.test.sh
+# Tests for the project hooks. Usage: bash .claude/hooks/hooks.test.sh
 # Each case feeds a tool call as JSON on standard input and checks the exit code
 # and, for a refusal, a word of the message on standard error.
 set -uo pipefail
@@ -98,6 +98,68 @@ else
 fi
 check "R9 file that does not exist" 0 "" $s "$(write_json "$fdir/nothing.ts")" "$repo"
 check "R9 not JSON" 0 "" $s "not json" "$repo"
+
+# Notification hook: with NOTIFY_DRY_RUN=1 it prints the message and shows nothing.
+s=notify-on-finish.sh
+user_line() { jq -cn --arg t "$1" '{type:"user",message:{content:$t}}'; }
+plan_line() { jq -cn --argjson i "$1" '{type:"assistant",message:{content:[{type:"tool_use",name:"mcp__ccd_turn__update_plan",input:$i}]}}'; }
+# notify <name> <expected message> <hook input> [PATH]
+notify() {
+  local name=$1 want=$2 json=$3 path=${4:-$PATH} out code
+  out=$(printf '%s' "$json" | PATH="$path" NOTIFY_DRY_RUN=1 CLAUDE_PROJECT_DIR="$work/proj" bash "$here/$s" 2>&1)
+  code=$?
+  if [ "$code" -eq 0 ] && [ "$out" = "$want" ]; then
+    echo "ok   $name"; pass=$((pass + 1))
+  else
+    echo "FAIL $name: exit $code, printed \"$out\", wanted \"$want\""; fail=$((fail + 1))
+  fi
+}
+stop_json() { jq -cn --arg p "$1" '{hook_event_name:"Stop",transcript_path:$p}'; }
+plain="Claude finished in proj"
+t="$work/t1.jsonl"
+{
+  user_line "first request"
+  plan_line '{"items":[{"content":"Read the hook","status":"in_progress"},{"content":"Write the test","status":"pending"},{"content":"Fix the hook","status":"pending"},{"content":"Update the docs","status":"pending"}]}'
+  plan_line '{"advance":true}'
+  user_line "go on"
+  jq -cn '{type:"user",message:{content:[{type:"tool_result",content:"ok"}]}}'
+  plan_line '{"advance":true}'
+  plan_line '{"done":[4],"start":3}'
+  echo '{"type":"assistant","message":{"content":[{"type":"tool_use","na'
+} > "$t"
+notify "notify tasks done in the last turn" "Done 3/4: Write the test, Update the docs" "$(stop_json "$t")"
+t="$work/t2.jsonl"
+{
+  user_line "first request"
+  plan_line '{"items":[{"content":"Read the hook","status":"in_progress"}]}'
+  plan_line '{"advance":true}'
+  user_line "thanks"
+} > "$t"
+notify "notify no task done in the last turn" "$plain" "$(stop_json "$t")"
+t="$work/t3.jsonl"
+{
+  user_line "replace the plan"
+  plan_line '{"items":[{"content":"A","status":"in_progress"},{"content":"B","status":"pending"}]}'
+  plan_line '{"advance":true}'
+  plan_line '{"items":[{"content":"A","status":"completed"},{"content":"C","status":"completed"},{"content":"D","status":"in_progress"}]}'
+} > "$t"
+notify "notify a new list keeps what was done" "Done 2/3: A, C" "$(stop_json "$t")"
+t="$work/t4.jsonl"
+long=$(printf 'A task with a rather long title number %s,' 1 2 3 4 5 6 7 8)
+{
+  user_line "many"
+  plan_line "$(jq -cn --arg l "$long" '{items:[$l|split(",")[]|select(.!="")|{content:.,status:"completed"}]}')"
+} > "$t"
+out=$(stop_json "$t" | NOTIFY_DRY_RUN=1 CLAUDE_PROJECT_DIR="$work/proj" bash "$here/$s" 2>&1)
+case "$out" in
+  "Done 8/8: A task"*...) if [ "${#out}" -le 150 ]; then echo "ok   notify long list is cut"; pass=$((pass + 1)); else echo "FAIL notify long list: ${#out} characters"; fail=$((fail + 1)); fi ;;
+  *) echo "FAIL notify long list: printed \"$out\""; fail=$((fail + 1)) ;;
+esac
+notify "notify no transcript file" "$plain" "$(stop_json "$work/missing.jsonl")"
+notify "notify not JSON" "$plain" "not json"
+mkdir -p "$work/nojq"
+for tool in bash basename cat; do ln -s "$(command -v "$tool")" "$work/nojq/$tool"; done
+notify "notify jq missing" "$plain" "$(stop_json "$work/t1.jsonl")" "$work/nojq"
 
 # R10: no absolute path in the three scripts
 if grep -nE '/(Users|home)/' "$here"/check-branch-slug.sh "$here"/block-lockfile-edit.sh "$here"/format-after-edit.sh >/dev/null 2>&1; then

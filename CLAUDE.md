@@ -125,4 +125,4 @@ A reference document (an inventory, a guide) is one file, `docs/<topic>.md`, for
 
 Rules are in `.claude/rules/`. `ticket.md` loads in every session: how a requirement becomes a ticket, the process, and the review of a pull request. The others load by area: `server`, `web`, `packages`, `typescript`, `specs`, `workflows` and `tooling` (scripts, tools, hooks).
 
-The hooks in `.claude/hooks/` refuse a push or a pull request from a branch with no slug, refuse an edit of `pnpm-lock.yaml`, format a file after an edit, and notify when a turn ends. The project command `/spec-check` checks a spec before its pull request.
+The hooks in `.claude/hooks/` refuse a push or a pull request from a branch with no slug, refuse an edit of `pnpm-lock.yaml`, format a file after an edit, and notify when a turn ends, naming the tasks of the task list that the turn completed. The project command `/spec-check` checks a spec before its pull request.
