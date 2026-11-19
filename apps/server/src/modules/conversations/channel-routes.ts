@@ -23,11 +23,13 @@ import {
 import { recordChange as defaultRecordChange } from "./changes.js";
 import {
   addMembers,
+  archiveChannel,
   createChannel,
   editChannelDetails,
   joinChannel,
   leaveChannel,
   removeMember,
+  restoreChannel,
 } from "./channels.js";
 import type { ChannelDeps, ChannelDepsInput } from "./deps.js";
 import { getConversationFacts as defaultGetConversationFacts } from "./facts.js";
@@ -205,8 +207,24 @@ export function channelRoutes(input: ChannelDepsInput): FastifyPluginAsync {
         );
       }),
     );
-    scope.post("/channels/:id/archive", guarded(notBuilt));
-    scope.post("/channels/:id/restore", guarded(notBuilt));
+    scope.post(
+      "/channels/:id/archive",
+      guarded(async (request) => {
+        const account = request.account!;
+        const id = ChannelIdSchema.parse((request.params as { id: string }).id);
+        NoBodySchema.parse(request.body ?? {});
+        return archiveChannel(deps, { id: account.id, role: account.role }, id);
+      }),
+    );
+    scope.post(
+      "/channels/:id/restore",
+      guarded(async (request) => {
+        const account = request.account!;
+        const id = ChannelIdSchema.parse((request.params as { id: string }).id);
+        NoBodySchema.parse(request.body ?? {});
+        return restoreChannel(deps, { id: account.id, role: account.role }, id);
+      }),
+    );
     scope.patch("/conversations/:id/settings", guarded(notBuilt));
   };
 }

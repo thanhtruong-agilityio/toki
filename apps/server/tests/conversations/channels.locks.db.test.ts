@@ -249,3 +249,61 @@ describe("leave and remove (S8)", () => {
     expect(rows.map((r) => r.user_id)).toEqual([adder.id]);
   });
 });
+
+describe("archive and restore (S9)", () => {
+  it("a join that meets an archive waits for it and is refused: no member is added after the archive was read as absent", async () => {
+    const admin: Person = await person(h, "lock-arch-admin-8", "admin");
+    const joiner: Person = await person(h, "lock-arch-joiner-8");
+    const id = await openChannel("lock-join-archive", [admin.id]);
+    const held = holdFirst("channel_archived");
+    try {
+      const archive = send(h, admin, "POST", `/api/v1/channels/${id}/archive`);
+      await held.entered;
+      const join = send(h, joiner, "POST", `/api/v1/channels/${id}/join`);
+      await waitForLock(h.sql);
+      held.release();
+      const [a, j] = await Promise.all([archive, join]);
+      expect(a.statusCode).toBe(200);
+      expect(j.statusCode).toBe(409);
+      expect(jsonOf(j).error.code).toBe("channel_archived");
+    } finally {
+      held.done();
+    }
+    expect(await memberRows(h.sql, id)).toHaveLength(1);
+  });
+
+  it("an edit of the topic that meets an archive is refused and changes nothing", async () => {
+    const admin: Person = await person(h, "lock-arch-admin-9", "admin");
+    const id = await openChannel("lock-edit-archive", [admin.id]);
+    const held = holdFirst("channel_archived");
+    try {
+      const archive = send(h, admin, "POST", `/api/v1/channels/${id}/archive`);
+      await held.entered;
+      const edit = send(h, admin, "PATCH", `/api/v1/channels/${id}`, {
+        topic: "late",
+      });
+      await waitForLock(h.sql);
+      held.release();
+      const [, e] = await Promise.all([archive, edit]);
+      expect(e.statusCode).toBe(409);
+    } finally {
+      held.done();
+    }
+    const [row] = await h.sql`select topic from conversations where id = ${id}`;
+    expect(row!.topic).toBeNull();
+  });
+
+  it("an Admin who is demoted before the archive reads their row gets 403 forbidden", async () => {
+    const admin: Person = await person(h, "lock-arch-admin-10", "admin");
+    const id = await openChannel("lock-demoted", [admin.id]);
+    const res = await whileHeld(
+      (tx) => tx`update users set role = 'member' where id = ${admin.id}`,
+      () => send(h, admin, "POST", `/api/v1/channels/${id}/archive`),
+    );
+    expect(res.statusCode).toBe(403);
+    expect(jsonOf(res).error.code).toBe("forbidden");
+    const [row] =
+      await h.sql`select archived_at from conversations where id = ${id}`;
+    expect(row!.archived_at).toBeNull();
+  });
+});

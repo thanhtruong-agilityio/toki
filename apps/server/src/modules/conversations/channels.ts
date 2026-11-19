@@ -2,10 +2,12 @@ import {
   ErrorCodes,
   canCreateChannel,
   canAddPeopleToChannel,
+  canArchiveChannel,
   canEditChannelDetails,
   canJoinChannel,
   canLeaveChannel,
   canRemovePeopleFromChannel,
+  canRestoreChannel,
   type ChannelDetail,
   type ConversationFacts,
   type CreateChannelBodySchema,
@@ -538,6 +540,95 @@ export async function removeMember(
         at: now,
       });
       return { changed: true };
+    },
+  );
+}
+
+// R14. Archiving needs an Admin who is a member; archiving an archived channel
+// changes nothing (the conflict that TOKI-027 leaves to the API, D-111).
+// Members, files and history are kept.
+export async function archiveChannel(
+  deps: Writer,
+  account: { id: string; role: string },
+  id: string,
+): Promise<{ channel: ChannelDetail; changed: boolean }> {
+  return inConversationTx(
+    deps,
+    account,
+    id,
+    [],
+    canArchiveChannel,
+    async ({ tx, actor, facts, now }) => {
+      const changed = !facts.archived;
+      if (changed) {
+        await tx
+          .update(conversations)
+          .set({ archivedAt: now })
+          .where(eq(conversations.id, id));
+        await deps.recordChange(tx, {
+          type: "channel_archived",
+          actorId: actor.id,
+          conversationId: id,
+          userIds: [actor.id],
+          at: now,
+        });
+      }
+      const channel = await readChannelDetail(deps, tx, actor.id, id);
+      return { channel: channel!, changed };
+    },
+  );
+}
+
+// R14 and concern 2: any Admin restores, a member or not, and becomes a member
+// with the defaults when they were not one. An Admin outside a private channel
+// never reaches this: the access check answers 404 first. Restoring an active
+// channel changes nothing and adds no member row.
+export async function restoreChannel(
+  deps: Writer,
+  account: { id: string; role: string },
+  id: string,
+): Promise<{ channel: ChannelDetail; changed: boolean }> {
+  return inConversationTx(
+    deps,
+    account,
+    id,
+    [],
+    canRestoreChannel,
+    async ({ tx, actor, facts, now }) => {
+      const changed = facts.archived;
+      if (changed) {
+        await tx
+          .update(conversations)
+          .set({ archivedAt: null })
+          .where(eq(conversations.id, id));
+        await deps.recordChange(tx, {
+          type: "channel_restored",
+          actorId: actor.id,
+          conversationId: id,
+          userIds: [actor.id],
+          at: now,
+        });
+        if (!facts.isMember) {
+          await tx.insert(conversationMembers).values({
+            conversationId: id,
+            userId: actor.id,
+            workspaceId: actor.workspaceId,
+            notificationLevel: null,
+            isMuted: false,
+            isStarred: false,
+            createdAt: now,
+          });
+          await deps.recordChange(tx, {
+            type: "member_joined",
+            actorId: actor.id,
+            conversationId: id,
+            userIds: [actor.id],
+            at: now,
+          });
+        }
+      }
+      const channel = await readChannelDetail(deps, tx, actor.id, id);
+      return { channel: channel!, changed };
     },
   );
 }
