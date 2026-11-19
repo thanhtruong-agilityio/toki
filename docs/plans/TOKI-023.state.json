@@ -2,6 +2,9 @@
   "approved_auto": false,
   "base": "main",
   "branch": "feat/toki-023-sign-in-screens",
+  "build": {
+    "step": 2
+  },
   "deployed_sha": null,
   "history": [
     {
@@ -24,6 +27,10 @@
     {
       "at": "2026-11-19T02:45:09Z",
       "stage": "build"
+    },
+    {
+      "at": "2026-11-19T03:27:07Z",
+      "stage": "check"
     }
   ],
   "key": "TOKI-023",
@@ -36,10 +43,10 @@
   "spec_paths": [
     "docs/specs/2026-11-16-sign-in-screens-design.md"
   ],
-  "stage": "build",
+  "stage": "check",
   "tier": "M",
   "verifier": {
-    "result": null,
-    "round": 0
+    "result": "PASS",
+    "round": 3
   }
 }
