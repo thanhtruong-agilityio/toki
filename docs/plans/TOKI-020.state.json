@@ -41,7 +41,7 @@
   "mode": "auto-to-check",
   "plan_approved": true,
   "plan_hash": "e29b5fd83fb67550332bb188d8696de18e7cf2797ab257a3156452f68784b89d",
-  "spec_commit": "cfcb225b25e89d6c577ce3cf27f495831b5d1773",
+  "spec_commit": "2c0260a324f155b68ebd0a951dee196d1093ed3d",
   "spec_paths": [
     "docs/specs/2026-11-17-first-admin-design.md"
   ],
