@@ -40,6 +40,10 @@
     {
       "at": "2026-11-19T07:28:29Z",
       "stage": "ship"
+    },
+    {
+      "at": "2026-11-19T07:29:09Z",
+      "stage": "ci"
     }
   ],
   "key": "TOKI-027",
@@ -48,11 +52,12 @@
   "mode": "Auto to PR",
   "plan_approved": true,
   "plan_hash": "a01e136ec2a1d05940c05feee33dacae8f7296fd7a1b0f5f6063b24cda9fb9a9",
+  "pr": 177,
   "spec_commit": "fae25fa2e3ed53619e559310533d0a6a1a4494ba",
   "spec_paths": [
     "docs/specs/2026-11-17-permission-functions-design.md"
   ],
-  "stage": "ship",
+  "stage": "ci",
   "tier": "M",
   "verifier": {
     "result": "PASS",
