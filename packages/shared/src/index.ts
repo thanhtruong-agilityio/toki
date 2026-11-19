@@ -9,3 +9,4 @@ export * from "./auth/devices.js";
 export * from "./auth/emergency.js";
 export * from "./auth/limits.js";
 export * from "./auth/schemas.js";
+export * from "./channels/index.js";

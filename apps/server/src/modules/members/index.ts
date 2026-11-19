@@ -4,5 +4,6 @@ export {
   createFirstAdminAccount,
   findAccountByEmail,
   getAccountById,
+  getAccountsByIds,
 } from "./accounts.js";
-export type { Account } from "./accounts.js";
+export type { Account, AccountFacts } from "./accounts.js";

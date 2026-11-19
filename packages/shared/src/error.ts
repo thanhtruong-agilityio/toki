@@ -36,6 +36,12 @@ export const ErrorCodes = {
   rateLimited: "rate_limited",
   currentSession: "current_session",
   emergencyLinkInvalid: "emergency_link_invalid",
+  channelNameTaken: "channel_name_taken",
+  channelIdInUse: "channel_id_in_use",
+  channelArchived: "channel_archived",
+  channelIsGeneral: "channel_is_general",
+  invalidMember: "invalid_member",
+  selfTarget: "self_target",
 } as const;
 
 export type ErrorCode = (typeof ErrorCodes)[keyof typeof ErrorCodes];
