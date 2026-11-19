@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <link rel="icon" href="data:," />
+    <title>Toki shell fixture</title>
+    <!-- Development only (TOKI-015 R32): Vite serves this page, the production
+         build does not include it (apps/web/scripts/check-no-dev-pages.mjs). It links no
+         fonts.css yet: TOKI-010 is not on main, so the fixture is measured
+         against the fallback fonts. -->
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/scripts/shell-fixture/main.tsx"></script>
+  </body>
+</html>

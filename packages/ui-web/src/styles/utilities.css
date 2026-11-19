@@ -1,0 +1,59 @@
+.mono,
+time,
+[data-timer] {
+  font-family: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.disp {
+  font-family: "Bricolage Grotesque", "Be Vietnam Pro", system-ui, sans-serif;
+  letter-spacing: -0.01em;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.sm {
+  font-size: 12.5px;
+}
+
+.xs {
+  font-size: 11.5px;
+}
+
+.grow {
+  flex: 1;
+  min-width: 0;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ell {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.scroll {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.title {
+  font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: -0.015em;
+  margin: 0;
+}
+
+@media (max-width: 719px) {
+  .title {
+    font-size: 24px;
+  }
+}
