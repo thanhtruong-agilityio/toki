@@ -77,7 +77,7 @@ Flow F01 (TOKI-020) reads these three values to create the workspace, the first 
 | Name | Purpose | Read by | Required | Default | Development value | Supplied by | Secret |
 | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- |
 | `FIRST_ADMIN_EMAIL` | Email address of the first admin | server | yes | none | `admin@example.test` | the operator of that installation | no |
-| `FIRST_ADMIN_NAME` | Display name of the first admin | server | yes | none | `Test Admin` | the operator of that installation | no |
+| `FIRST_ADMIN_NAME` | Display name of the first admin | server | no | none | `Test Admin` | the operator of that installation | no |
 | `WORKSPACE_NAME` | Name of the workspace created for the installation | server | yes | none | `Toki Dev` | the operator of that installation | no |
 
 ### Domain
