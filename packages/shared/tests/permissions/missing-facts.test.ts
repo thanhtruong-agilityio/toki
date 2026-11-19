@@ -50,6 +50,21 @@ describe("missing facts deny (R4)", () => {
       });
     });
 
+    // Only a public channel can be #general (R2). The second argument is the
+    // conversation for every function that reads one.
+    if (facts.some(([arg, key]) => arg === 1 && key === "isGeneral")) {
+      it.each(["private_channel", "dm", "group_dm"])(
+        "refuses #general on a %s as a malformed fact",
+        (kind) => {
+          const general = withFact(args(), [1, "isGeneral"], true);
+          expect(call(withFact(general, [1, "kind"], kind))).toEqual({
+            allowed: false,
+            reason: "fact_missing",
+          });
+        },
+      );
+    }
+
     it("names a missing fact before an unknown role (R3)", () => {
       const guest = withFact(args(), [0, "role"], "guest");
       for (const path of facts.filter(([arg]) => arg !== 0)) {
