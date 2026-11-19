@@ -19,22 +19,47 @@
     {
       "at": "2026-11-19T04:17:49Z",
       "stage": "plan"
+    },
+    {
+      "at": "2026-11-19T04:20:46Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-19T04:20:46Z",
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-19T04:21:17Z",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-19T04:33:08Z",
+      "stage": "check"
+    },
+    {
+      "at": "2026-11-19T04:35:48Z",
+      "stage": "drift"
+    },
+    {
+      "at": "2026-11-19T04:39:38Z",
+      "stage": "ship"
     }
   ],
   "key": "TOKI-010",
   "main_sha": "4d40b1f4bec702de035b0754c10b39b407bb1fa8",
   "metrics": {},
-  "mode": null,
-  "plan_approved": false,
-  "plan_hash": null,
+  "mode": "Auto to PR",
+  "plan_approved": true,
+  "plan_hash": "1006878d507754c862a9a178eef6d0d92cad36b3fbff4e2017f86c23cbb80389",
   "spec_commit": "1315d7f83870ac57b86d65260b92602bfa9b7b97",
   "spec_paths": [
     "docs/specs/2026-11-16-self-hosted-fonts-design.md"
   ],
-  "stage": "plan",
+  "stage": "ship",
   "tier": "M",
   "verifier": {
-    "result": null,
-    "round": 0
+    "result": "PASS",
+    "round": 1
   }
 }
