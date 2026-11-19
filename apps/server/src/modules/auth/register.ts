@@ -63,6 +63,7 @@ export function registerAuthHooks(
     if (route.config?.public) return;
     const checked = await checkSession(db, request);
     request.account = checked.account;
+    request.sessionId = checked.sessionId;
     // The cookie lives as long as the session (R26).
     if (checked.via === "cookie") {
       reply.header(

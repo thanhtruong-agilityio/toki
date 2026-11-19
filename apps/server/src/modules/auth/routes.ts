@@ -17,6 +17,12 @@ import { getWorkspace } from "../workspace/index.js";
 import { exchangeCode, requestCode } from "./codes.js";
 import type { AuthConfig } from "./config.js";
 import { clearedCookie, sessionCookie } from "./cookies.js";
+import {
+  endOneSession,
+  endOtherSessions,
+  listLiveSessions,
+  SESSION_ID_PATTERN,
+} from "./devices.js";
 import { endSessionOfRequest } from "./sessions.js";
 
 declare module "fastify" {
@@ -27,6 +33,9 @@ declare module "fastify" {
   interface FastifyRequest {
     // The account of the session, set by the session check (R55).
     account?: Account;
+    // The id of the session of the request, set by the session check
+    // (TOKI-026 R3, R11).
+    sessionId?: string;
   }
 }
 
@@ -125,6 +134,41 @@ export function registerAuthRoutes(
     reply.header("set-cookie", clearedCookie(development));
     return reply.code(204).send();
   });
+
+  // The signed-in person's own sessions and how to end the others (TOKI-026
+  // R1 to R16). None is public: each needs a session.
+  scope.get("/auth/sessions", (request) =>
+    guarded(async () => ({
+      sessions: await listLiveSessions(
+        db,
+        request.account!.id,
+        request.sessionId!,
+      ),
+    })),
+  );
+
+  scope.delete("/auth/sessions/:sessionId", (request, reply) =>
+    guarded(async () => {
+      const { sessionId } = request.params as { sessionId: string };
+      if (!SESSION_ID_PATTERN.test(sessionId)) {
+        throw invalid("sessionId", "invalid_format");
+      }
+      await endOneSession(
+        db,
+        request.account!.id,
+        request.sessionId!,
+        sessionId.toLowerCase(),
+      );
+      return reply.code(204).send();
+    }),
+  );
+
+  scope.delete("/auth/sessions", (request, reply) =>
+    guarded(async () => {
+      await endOtherSessions(db, request.account!.id, request.sessionId!);
+      return reply.code(204).send();
+    }),
+  );
 
   scope.get("/auth/workspace", pub, async () => {
     const workspace = await getWorkspace(db);
