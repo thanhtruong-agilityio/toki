@@ -227,6 +227,36 @@ describe("the code step and the tab record (R7, R15, R35)", () => {
     expect(record(t)).toBeNull();
   });
 
+  test("a new send after 'Use a different email' uses its own code life, not the resend's (R35)", async () => {
+    const t = await openLogin();
+    await toCodeStep(t);
+    t.calls.requestCode.mockResolvedValueOnce({
+      kind: "ok",
+      requestId: "req-2",
+      expiresInSeconds: 600,
+      resendAfterSeconds: 60,
+    });
+    t.timers.advance(60_000);
+    await userEvent.click(screen.getByRole("button", { name: "Resend code" }));
+    await t.settle();
+    await userEvent.click(
+      screen.getByRole("button", { name: "Use a different email" }),
+    );
+    await t.settle();
+    t.calls.requestCode.mockResolvedValueOnce({
+      kind: "ok",
+      requestId: "req-3",
+      expiresInSeconds: 300,
+      resendAfterSeconds: 60,
+    });
+    await userEvent.click(screen.getByRole("button", { name: "Send code" }));
+    await t.settle();
+    t.timers.advance(299_000);
+    expect(record(t)).toMatchObject({ requestId: "req-3" });
+    t.timers.advance(1_000);
+    expect(record(t)).toBeNull();
+  });
+
   test("a resend that is refused keeps the record as it was", async () => {
     const t = await openLogin();
     await toCodeStep(t);

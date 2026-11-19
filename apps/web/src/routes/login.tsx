@@ -113,6 +113,7 @@ function LoginPage() {
     const sendEmail = async (address: string): Promise<EmailOutcome> => {
       const answer = await calls.requestCode(address);
       if (answer.kind === "ok") {
+        setResent(null);
         setStep({ kind: "code", ...keep(address, answer) });
         return { kind: "ok" };
       }
