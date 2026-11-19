@@ -1,0 +1,36 @@
+{
+  "approved_auto": false,
+  "base": "github/main",
+  "branch": "feat/toki-029-channel-api",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-19T07:53:50Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-19T07:54:33Z",
+      "stage": "explore"
+    },
+    {
+      "at": "2026-11-19T07:58:47Z",
+      "stage": "design"
+    }
+  ],
+  "key": "TOKI-029",
+  "main_sha": "321620dac959197891ac1cbbb13fe57a9aea5df9",
+  "metrics": {},
+  "mode": null,
+  "plan_approved": false,
+  "plan_hash": null,
+  "spec_commit": "e3d6890e9ad8ecc576064954ff94cba4bea139b4",
+  "spec_paths": [
+    "docs/specs/2026-11-17-channel-api-design.md"
+  ],
+  "stage": "design",
+  "tier": "L",
+  "verifier": {
+    "result": null,
+    "round": 0
+  }
+}
