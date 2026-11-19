@@ -28,6 +28,10 @@
     {
       "at": "2026-11-19T08:19:20Z",
       "stage": "check"
+    },
+    {
+      "at": "2026-11-19T09:02:34Z",
+      "stage": "ship"
     }
   ],
   "key": "TOKI-024",
@@ -36,11 +40,12 @@
   "mode": "Auto to check",
   "plan_approved": true,
   "plan_hash": "0d40292410b749d8e8460da83f891ef1013ff0816dc95d7f053810816c5127f2",
+  "pr": 183,
   "spec_commit": "24a95cf0676668d0f3afd9f3dd2d07c578bc338f",
   "spec_paths": [
     "docs/specs/2026-11-17-member-management-api-design.md"
   ],
-  "stage": "check",
+  "stage": "ship",
   "tier": "L",
   "verifier": {
     "result": "PASS",
