@@ -150,6 +150,39 @@ describe("a permission function that cannot decide is a server error (R1)", () =
   });
 });
 
+describe("fact_missing is a server error (R1)", () => {
+  it("answers 500 internal_error when the target's facts are missing", async () => {
+    // A status that is neither active nor deactivated: the permission
+    // functions cannot decide (fact_missing), and no route may allow it.
+    const odd = await h.addUser("odd-target@example.com");
+    await h.sql`alter table users drop constraint users_status_check`;
+    await h.sql`update users set status = 'frozen' where id = ${odd}`;
+    try {
+      expect(
+        shared.canDeactivateAccount(
+          { id: admin.id, role: "admin" },
+          { id: odd, role: "member", status: "frozen" as never },
+          2,
+        ),
+      ).toEqual({ allowed: false, reason: "fact_missing" });
+      for (const [url, payload] of [
+        [`/members/${odd}/deactivate`, undefined],
+        [`/members/${odd}/role`, { role: "admin" }],
+      ] as const) {
+        const res = await h.post(admin, url, payload);
+        expect(res.statusCode, url).toBe(500);
+        expect(h.body(res).error.code).toBe("internal_error");
+      }
+      expect(
+        (await h.sql`select status, role from users where id = ${odd}`)[0],
+      ).toEqual({ status: "frozen", role: "member" });
+    } finally {
+      await h.sql`update users set status = 'active' where id = ${odd}`;
+      await h.sql`alter table users add constraint users_status_check check (status in ('active', 'deactivated'))`;
+    }
+  });
+});
+
 describe("the list (R1, R3)", () => {
   it("is refused to a Member with 403, whatever the query, and without a session with 401", async () => {
     for (const query of ["", "?limit=0", "?status=revoked", "?cursor=zzz"]) {
