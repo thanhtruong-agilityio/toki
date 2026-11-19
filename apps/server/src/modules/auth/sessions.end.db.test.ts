@@ -8,6 +8,7 @@ import {
   reportSessionsEnded,
   type EndReason,
 } from "./index.js";
+import { checkSession } from "./sessions.js";
 import { createHarness, type Harness } from "./test-harness.js";
 
 let h: Harness;
@@ -272,5 +273,30 @@ describe("transactions and reports (R50, R53)", () => {
     expect(ended).toBe(await sessionId(a.secret));
     expect((await get(a.secret)).statusCode).toBe(200);
     expect(heard).toEqual([]);
+  });
+});
+
+describe("the check reads the session and its account in one transaction (plan decision 6)", () => {
+  it("opens exactly one transaction on the client it is given", async () => {
+    await h.addUser("one@example.com");
+    const a = await h.signIn("one@example.com");
+    let opened = 0;
+    const counting = new Proxy(h.db, {
+      get(target, prop) {
+        if (prop === "transaction") {
+          return (...args: Parameters<typeof target.transaction>) => {
+            opened += 1;
+            return target.transaction(...args);
+          };
+        }
+        const value = Reflect.get(target, prop, target);
+        return typeof value === "function" ? value.bind(target) : value;
+      },
+    });
+    const checked = await checkSession(counting, {
+      headers: h.withCookie(a.secret),
+    });
+    expect(checked.account.email).toBe("one@example.com");
+    expect(opened).toBe(1);
   });
 });

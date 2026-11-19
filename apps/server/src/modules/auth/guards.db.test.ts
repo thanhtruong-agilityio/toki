@@ -105,3 +105,24 @@ describe("Origin rule (R46)", () => {
     }
   });
 });
+
+describe("JSON bodies keep Fastify's guard against prototype poisoning", () => {
+  it("answers 400 to a __proto__ key and to constructor.prototype, and changes nothing", async () => {
+    const before = await codesBefore();
+    for (const raw of [
+      '{"email":"a@example.com","__proto__":{"polluted":true}}',
+      '{"email":"a@example.com","constructor":{"prototype":{"polluted":true}}}',
+    ]) {
+      const res = await h.call({
+        method: "POST",
+        url: "/api/v1/auth/codes",
+        headers: { "content-type": "application/json" },
+        payload: raw,
+      });
+      expect(res.statusCode, raw).toBe(400);
+      expect(h.json(res).error.code).toBe("bad_request");
+    }
+    expect(await codesBefore()).toBe(before);
+    expect(({} as Record<string, unknown>).polluted).toBeUndefined();
+  });
+});

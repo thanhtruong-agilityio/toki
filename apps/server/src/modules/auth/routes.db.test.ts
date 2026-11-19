@@ -70,7 +70,13 @@ describe("safety (R36, R37)", () => {
       "/api/v1/auth/workspace",
       "/api/v1/protected",
     ]) {
-      await h.call({ method: "GET", url, headers: h.withCookie(secret) });
+      const res = await h.call({
+        method: "GET",
+        url,
+        headers: h.withCookie(secret),
+      });
+      // the handlers really ran: a refused call would leave the tables alone too
+      expect(res.statusCode, url).toBe(200);
     }
     const signedIn = {
       sessions:
