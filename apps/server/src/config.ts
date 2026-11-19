@@ -2,6 +2,11 @@
 // later ticket adds its area here. The names come from docs/environment-config.md.
 import { z } from "zod";
 import {
+  authConfigSchema,
+  authVariableNames,
+  type AuthConfig,
+} from "./modules/auth/index.js";
+import {
   mailConfigSchema,
   mailVariableNames,
   type MailConfig,
@@ -27,6 +32,7 @@ const areas = {
     .object({ DATABASE_URL: z.string().min(1) })
     .transform((v) => ({ url: v.DATABASE_URL })),
   mail: mailConfigSchema,
+  auth: authConfigSchema,
 };
 
 export type AreaName = keyof typeof areas;
@@ -36,6 +42,8 @@ export type Config = {
   server: z.output<(typeof areas)["server"]>;
   database: z.output<(typeof areas)["database"]>;
   mail?: MailConfig;
+  // Optional for the same reason as mail: a test builds the app without it.
+  auth?: AuthConfig;
 };
 
 // The variable names each area reads, for the check against .env.example.
@@ -43,6 +51,7 @@ export const configVariableNames: Record<AreaName, string[]> = {
   server: ["NODE_ENV", "SERVER_PORT", "SERVER_HOST", "LOG_LEVEL"],
   database: ["DATABASE_URL"],
   mail: mailVariableNames,
+  auth: authVariableNames,
 };
 
 // Carries variable names only: a value never reaches the message.

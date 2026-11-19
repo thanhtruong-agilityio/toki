@@ -1,11 +1,12 @@
 import { buildApp } from "./app.js";
 import { ConfigError, loadProcessConfig } from "./config.js";
+import { createDb } from "./db/client.js";
 
 // A startup failure is plain text on standard error, one line per variable
 // name and never a value; the logger does not exist yet.
 let config;
 try {
-  config = loadProcessConfig(["server", "database", "mail"]);
+  config = loadProcessConfig(["server", "database", "mail", "auth"]);
 } catch (error) {
   if (!(error instanceof ConfigError)) throw error;
   for (const name of error.names)
@@ -13,7 +14,11 @@ try {
   process.exit(1);
 }
 
-const app = buildApp({ config });
+const connection = createDb(config.database.url);
+const app = buildApp({ config, db: connection.db });
+app.addHook("onClose", async () => {
+  await connection.close();
+});
 
 // One shutdown path: stop accepting requests, run the close hooks the app has
 // registered (a later ticket adds its pool, worker or gateway), exit 0.

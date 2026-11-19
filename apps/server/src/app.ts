@@ -2,13 +2,16 @@ import Fastify, { LogController } from "fastify";
 import { randomUUID } from "node:crypto";
 import type { Writable } from "node:stream";
 import { API_PREFIX, registerApi, type RegisterRoutes } from "./api/index.js";
+import { systemClock, type Clock } from "@toki/shared";
 import type { Config } from "./config.js";
+import type { Db } from "./db/client.js";
 import {
   clientErrorHandler,
   frameworkErrors,
   registerErrorHandling,
 } from "./errors.js";
 import { registerHealth } from "./health.js";
+import { registerAuthHooks, registerAuthRoutes } from "./modules/auth/index.js";
 import { createMailLayer, type MailLayer } from "./modules/mail/index.js";
 
 declare module "fastify" {
@@ -28,6 +31,12 @@ export type BuildAppOptions = {
   // A mail layer to use instead of the real one; a test passes a fake so that
   // no test of another module needs an SMTP server or mail values (R21).
   mail?: MailLayer;
+  // The database. With it the app registers the sign-in module and every
+  // /api/v1 route needs a session unless it says otherwise (TOKI-022 R24); a
+  // test of another area builds the app without it.
+  db?: Db;
+  // The clock the auth module reads (TOKI-008 R19); the system clock by default.
+  clock?: Clock;
 };
 
 export function buildApp({
@@ -35,6 +44,8 @@ export function buildApp({
   logStream,
   registerRoutes,
   mail,
+  db,
+  clock = systemClock,
 }: BuildAppOptions) {
   if (!mail && !config.mail) {
     throw new Error("buildApp needs `mail` or `config.mail`");
@@ -46,6 +57,9 @@ export function buildApp({
     },
     logController: new LogController({ disableRequestLogging: true }),
     genReqId: () => randomUUID(),
+    // The address the limit of R56 counts: X-Forwarded-For is read only from
+    // the trusted proxy; otherwise the address of the connection.
+    trustProxy: config.auth?.trustedProxy ?? false,
     frameworkErrors,
     clientErrorHandler,
   });
@@ -95,6 +109,16 @@ export function buildApp({
 
   registerErrorHandling(app);
   registerHealth(app);
-  registerApi(app, registerRoutes);
+  if (db) {
+    if (!config.auth) throw new Error("buildApp needs `config.auth` with `db`");
+    const auth = config.auth;
+    registerAuthHooks(app, { db, clock, config: auth });
+    registerApi(app, async (scope) => {
+      registerAuthRoutes(scope, { db, mail: app.mail, config: auth });
+      await registerRoutes?.(scope);
+    });
+  } else {
+    registerApi(app, registerRoutes);
+  }
   return app;
 }
