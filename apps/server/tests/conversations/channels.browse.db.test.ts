@@ -114,6 +114,13 @@ describe("browse, R6", () => {
     expect(c.memberCount).toBe(2);
   });
 
+  it("counts members without the deactivated ones in the details too", async () => {
+    const gone = await bystander(h, "b-gone-2", { status: "deactivated" });
+    const id = await channel("count-details", { members: [gone, member.id] });
+    const res = await send(h, member, "GET", `/api/v1/channels/${id}`);
+    expect(jsonOf(res).channel.memberCount).toBe(1);
+  });
+
   it("orders by bytes: digits, then a, a-1, b", async () => {
     for (const n of ["ord-b", "ord-a-1", "ord-a", "ord-10", "ord-9"]) {
       await channel(n);

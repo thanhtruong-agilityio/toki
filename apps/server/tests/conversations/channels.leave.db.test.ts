@@ -106,6 +106,19 @@ describe("leave, R12", () => {
     });
   });
 
+  it("a join after a leave without settings gives the defaults", async () => {
+    const id = await channel("lv-undo-plain");
+    await h.sql`update conversation_members set is_muted = true where conversation_id = ${id} and user_id = ${member.id}`;
+    await leave(member, id);
+    const res = await send(h, member, "POST", `/api/v1/channels/${id}/join`);
+    expect(res.statusCode).toBe(200);
+    expect(await rowOf(id, member.id)).toMatchObject({
+      notification_level: null,
+      is_muted: false,
+      is_starred: false,
+    });
+  });
+
   it("a repeat is harmless: 200 changed false, nothing written, nothing recorded", async () => {
     const id = await channel("lv-twice");
     await leave(member, id);

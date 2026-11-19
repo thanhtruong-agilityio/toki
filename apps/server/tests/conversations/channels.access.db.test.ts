@@ -9,6 +9,7 @@ import {
   insertDirectConversation,
 } from "../test-rows.js";
 import {
+  bystander,
   jsonOf,
   newChannelId,
   person,
@@ -89,6 +90,12 @@ describe("a private channel and a DM are never confirmed (R1 step 3)", () => {
       user_ids: [admin.id, member.id],
       created_by: admin.id,
     });
+    const third = await bystander(h, "x-third");
+    const group = await insertDirectConversation(h.sql, {
+      workspace_id: h.workspaceId,
+      user_ids: [admin.id, member.id, third],
+      created_by: admin.id,
+    });
     const outsider = await person(h, "x-outsider", "admin");
     const bodies = new Set<string>();
     // A Member who is not in the private channel, an Admin who is not in it
@@ -97,6 +104,8 @@ describe("a private channel and a DM are never confirmed (R1 step 3)", () => {
       [member, priv],
       [outsider, priv],
       [outsider, dm],
+      [outsider, group],
+      [admin, group],
       [member, newChannelId()],
     ] as const) {
       for (const [method, url, body] of NAMED_ROUTES(id, member.id)) {

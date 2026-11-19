@@ -129,6 +129,11 @@ describe("create, R3 and R4", () => {
     expect((await conversationRows(h.sql)).length).toBe(before);
   });
 
+  it("accepts a name of 1 character", async () => {
+    const res = await create(admin, { id: newChannelId(), name: "q" });
+    expect(res.statusCode).toBe(201);
+  });
+
   it("accepts a name of 80 characters", async () => {
     const res = await create(admin, {
       id: newChannelId(),

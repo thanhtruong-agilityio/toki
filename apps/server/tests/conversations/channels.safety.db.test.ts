@@ -42,12 +42,14 @@ afterAll(async () => {
 describe("what the log may hold (R20)", () => {
   it("a database failure inside a request answers 500 and leaves no name, topic or parameter in the log", async () => {
     force = true;
+    const listed = await h.addUser("zz-listed@example.com");
     let res;
     try {
       res = await send(h, admin, "POST", "/api/v1/channels", {
         id: newChannelId(),
         name: SECRET_NAME,
         topic: SECRET_TOPIC,
+        memberIds: [listed],
       });
     } finally {
       force = false;
@@ -58,6 +60,7 @@ describe("what the log may hold (R20)", () => {
     expect(log).toContain("conversations_topic_check");
     expect(log).not.toContain(SECRET_NAME);
     expect(log).not.toContain(SECRET_TOPIC);
+    expect(log).not.toContain(listed);
     expect(log).not.toContain("insert into");
     expect(res.body).not.toContain(SECRET_NAME);
   });

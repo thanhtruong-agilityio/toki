@@ -357,3 +357,57 @@ describe("#general and a newcomer (S11)", () => {
     expect(await memberRows(h.sql, general)).toHaveLength(3);
   });
 });
+
+describe("no deadlock with a newcomer (S11)", () => {
+  it("a join, an add and a leave finish together with addMemberToGeneral", async () => {
+    const admin: Person = await person(h, "lock-dead-admin", "admin");
+    const joiner: Person = await person(h, "lock-dead-joiner");
+    const leaver: Person = await person(h, "lock-dead-leaver");
+    const target = await bystander(h, "lock-dead-target");
+    const newcomer = await bystander(h, "lock-dead-newcomer");
+    const [existing] =
+      await h.sql`select id from conversations where is_general`;
+    if (!existing) {
+      const general = await insertConversation(h.sql, {
+        workspace_id: h.workspaceId,
+        created_by: admin.id,
+        name: "general",
+        is_general: true,
+      });
+      await insertConversationMember(h.sql, {
+        conversation_id: general,
+        user_id: admin.id,
+        workspace_id: h.workspaceId,
+      });
+    }
+    const id = await openChannel("lock-dead", [admin.id, leaver.id]);
+    const results = await Promise.race([
+      Promise.all([
+        send(h, joiner, "POST", `/api/v1/channels/${id}/join`),
+        send(h, admin, "POST", `/api/v1/channels/${id}/members`, {
+          userIds: [target],
+        }),
+        send(h, leaver, "POST", `/api/v1/channels/${id}/leave`),
+        addMemberToGeneral(h.db, {
+          workspaceId: h.workspaceId,
+          userId: newcomer,
+          createdAt: new Date(h.clock.now()),
+        }),
+      ]),
+      new Promise<"deadlock">((r) => setTimeout(() => r("deadlock"), 8000)),
+    ]);
+    expect(results).not.toBe("deadlock");
+    const [j, a, l, g] = results as [
+      { statusCode: number },
+      { statusCode: number },
+      { statusCode: number },
+      boolean,
+    ];
+    expect([j.statusCode, a.statusCode, l.statusCode, g]).toEqual([
+      200,
+      200,
+      200,
+      true,
+    ]);
+  });
+});
