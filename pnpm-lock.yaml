@@ -229,6 +229,9 @@ importers:
       nodemailer:
         specifier: 10.6.0
         version: 10.6.0
+      pino:
+        specifier: 10.4.0
+        version: 10.4.0
       postgres:
         specifier: 4.1.1
         version: 4.1.1

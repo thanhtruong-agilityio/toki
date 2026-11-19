@@ -29,8 +29,9 @@
     "dev:reset:mail": "bash scripts/reset-mail.sh",
     "db:generate": "pnpm --filter @toki/server run db:generate",
     "db:migrate": "pnpm --filter @toki/server run db:migrate",
+    "emergency:link": "pnpm --silent --filter @toki/server run emergency:link",
     "lint": "eslint . --max-warnings 0",
-    "test:lint-rules": "node --test tools/lint-rules/icon-only-button-name.test.mjs tools/lint-rules/platform-boundary.test.mjs",
+    "test:lint-rules": "node --test tools/lint-rules/icon-only-button-name.test.mjs tools/lint-rules/platform-boundary.test.mjs tools/lint-rules/module-entry.test.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },

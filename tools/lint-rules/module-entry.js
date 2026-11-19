@@ -8,6 +8,11 @@
 // resolve to the module's entry: <name>, <name>/index, <name>/index.ts or
 // <name>/index.js.
 //
+// Option `cliDirs` (optional): absolute folders of the command entries (apps/server/src/cli). A file
+// inside one of them may also import `<name>/cli`, `<name>/cli.ts` or `<name>/cli.js`: the narrow entry
+// a module gives a command that must not reach the module's index, which reaches the mail layer
+// (TOKI-026 R23). Nothing else changes.
+//
 // The rule decides on the resolved path, not on the import text, and reads no
 // file, so the target need not exist. Paths are compared without case, because
 // the file system of macOS and Windows ignores case. Only relative specifiers
@@ -16,6 +21,7 @@
 import path from "node:path";
 
 const ENTRY = new Set(["", "index", "index.ts", "index.js"]);
+const CLI_ENTRY = new Set(["cli", "cli.ts", "cli.js"]);
 
 // The text of a specifier node, or undefined when it is not a fixed text.
 function textOf(node) {
@@ -44,6 +50,7 @@ export default {
         type: "object",
         properties: {
           modulesDirs: { type: "array", items: { type: "string" } },
+          cliDirs: { type: "array", items: { type: "string" } },
         },
         required: ["modulesDirs"],
         additionalProperties: false,
@@ -59,6 +66,14 @@ export default {
     const modulesDirs = context.options[0].modulesDirs.map((dir) =>
       path.resolve(context.cwd, dir).toLowerCase(),
     );
+    const cliDirs = (context.options[0].cliDirs ?? []).map((dir) =>
+      path.resolve(context.cwd, dir).toLowerCase(),
+    );
+    const file = context.filename.toLowerCase();
+    const inCli = cliDirs.some((dir) => {
+      const rest = path.relative(dir, file);
+      return rest !== "" && !rest.startsWith("..") && !path.isAbsolute(rest);
+    });
     const from = moduleOf(context.filename, modulesDirs);
 
     function check(node, specifier) {
@@ -67,6 +82,7 @@ export default {
       const target = path.resolve(path.dirname(context.filename), source);
       const to = moduleOf(target, modulesDirs);
       if (!to || to.id === from?.id || ENTRY.has(to.inside)) return;
+      if (inCli && CLI_ENTRY.has(to.inside)) return;
       context.report({
         node,
         messageId: "internal",

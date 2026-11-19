@@ -7,6 +7,7 @@
     "test": "vitest run --config vitest.all.config.ts",
     "typecheck": "tsc --noEmit",
     "db:generate": "drizzle-kit generate",
+    "emergency:link": "tsx --env-file-if-exists=../../.env src/cli/emergency-link.ts",
     "db:migrate": "tsx --env-file-if-exists=../../.env src/db/migrate-cli.ts",
     "test:unit": "vitest run --config vitest.config.ts"
   },
@@ -16,14 +17,15 @@
     "drizzle-orm": "0.45.4",
     "fastify": "5.12.8",
     "nodemailer": "10.6.0",
+    "pino": "10.4.0",
     "postgres": "4.1.1",
     "uuidv7": "1.2.1",
     "zod": "4.6.7"
   },
   "devDependencies": {
     "@types/mailparser": "3.9.0",
-    "@types/nodemailer": "8.0.2",
     "@types/node": "22.20.5",
+    "@types/nodemailer": "8.0.2",
     "@types/smtp-server": "3.5.13",
     "drizzle-kit": "0.31.11",
     "mailparser": "3.14.5",
