@@ -9,6 +9,19 @@ import {
 import { printLink, useLink } from "./emergency-fixtures.js";
 import { createHarness, type Harness } from "./test-harness.js";
 
+// Polls until a backend of this database waits on a lock (a transaction waits for another).
+async function waitForLockWait(sql: postgres.Sql, ms = 10_000) {
+  const stop = Date.now() + ms;
+  for (;;) {
+    const [row] = await sql<{ n: number }[]>`
+      select count(*)::int as n from pg_stat_activity
+      where datname = current_database() and wait_event_type = 'Lock'`;
+    if (row!.n > 0) return;
+    if (Date.now() > stop) throw new Error("no backend waits on a lock");
+    await new Promise((resolve) => setTimeout(resolve, 20));
+  }
+}
+
 let h: Harness;
 beforeAll(async () => {
   h = await createHarness();
@@ -103,12 +116,10 @@ describe("issueEmergencyLink (TOKI-026 R25, R48)", () => {
       });
       await ready;
       const racing = issueEmergencyLink(drizzle(racer), account, at);
-      // B has to wait for A's unique index entry: it is still running after a moment.
-      const early = await Promise.race([
-        racing.then(() => "done"),
-        new Promise((resolve) => setTimeout(() => resolve("waiting"), 300)),
-      ]);
-      expect(early).toBe("waiting");
+      // B has to be waiting on a lock of A's insert before A commits: B's cancel step has run by then
+      // and found nothing to cancel, and B's insert waits for A's unique index entry. Not a sleep: the
+      // test polls Postgres until a backend of this database waits on a lock.
+      await waitForLockWait(h.sql);
       release();
       await running;
       expect(await racing).toBe("concurrent");
@@ -123,16 +134,23 @@ describe("issueEmergencyLink (TOKI-026 R25, R48)", () => {
     expect(open[0]!.token_hash).toBe("a".repeat(64));
   });
 
-  it("serves two runs one after the other: the second cancels the first", async () => {
-    const id = await h.addUser("serial@example.com");
+  it("ends two overlapping runs with exactly one open link and at most one 'concurrent'", async () => {
+    const id = await h.addUser("overlap@example.com");
     const account = { id, workspaceId: h.workspaceId };
     const now = new Date(h.clock.now());
+    // The pool of the harness may run the two transactions at the same time or one after the other;
+    // both are correct under R48: either one run meets the other and answers 'concurrent', or the
+    // second cancels the first. What must hold is one open link, and no error.
     const results = await Promise.all([
       issueEmergencyLink(h.db, account, now),
       issueEmergencyLink(h.db, account, now),
     ]);
-    // The harness connection runs them one at a time, so both succeed and only one stays open.
-    expect(results.every((r) => r !== "concurrent")).toBe(true);
+    expect(
+      results.filter((r) => r === "concurrent").length,
+    ).toBeLessThanOrEqual(1);
+    expect(
+      results.filter((r) => r !== "concurrent").length,
+    ).toBeGreaterThanOrEqual(1);
     const open = (await rows(id)).filter(
       (r) => r.used_at === null && r.cancelled_at === null,
     );

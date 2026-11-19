@@ -187,7 +187,11 @@ describe("refusals (R20, R21, R35, R36)", () => {
       [],
       ["a@example.com", "b@example.com"],
       ["not-an-address"],
-      [`${"a".repeat(250)}@example.com`],
+      // Every part is within its own limit (local part 64, labels 63), so only the 254 of the whole
+      // address refuses it.
+      [
+        `${"a".repeat(64)}@${"b".repeat(63)}.${"c".repeat(63)}.${"d".repeat(61)}.com`,
+      ],
     ]) {
       const res = await run(args);
       expect(res.code, JSON.stringify(args)).toBe(2);
@@ -214,7 +218,18 @@ describe("refusals (R20, R21, R35, R36)", () => {
     });
     await ready;
     const racing = run(["race@example.com"]);
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    // Not a sleep: wait until the command's backend waits on a lock of the held insert, which means its
+    // cancel step has run and its own insert waits for the unique index entry.
+    const stop = Date.now() + 20_000;
+    for (;;) {
+      const [row] = await t.sql<{ n: number }[]>`
+        select count(*)::int as n from pg_stat_activity
+        where datname = current_database() and wait_event_type = 'Lock'`;
+      if (row!.n > 0) break;
+      if (Date.now() > stop)
+        throw new Error("the command never waited on a lock");
+      await new Promise((resolve) => setTimeout(resolve, 25));
+    }
     release();
     await running;
     await holder.end();
