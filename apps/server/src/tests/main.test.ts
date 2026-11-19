@@ -52,6 +52,9 @@ const validEnv = (port: number) => ({
   SMTP_PORT: "1",
   SMTP_TLS: "none",
   MAIL_FROM_ADDRESS: "toki@example.com",
+  // The auth area is required by the entry (TOKI-022); fake values only.
+  AUTH_CODE_SECRET: "x".repeat(32),
+  APP_ORIGIN: "http://localhost:5173",
 });
 
 describe("the started process", () => {

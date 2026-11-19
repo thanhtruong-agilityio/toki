@@ -9,12 +9,35 @@ import type { Config } from "../../config.js";
 import { drizzle } from "drizzle-orm/postgres-js";
 import { migrationsFolder, runMigrations } from "../../db/migrate.js";
 import { fakeMail } from "../../tests/fake-mail.js";
-import { insertUser, insertWorkspace } from "../../tests/test-rows.js";
 import { createThrowawayDb } from "../../tests/throwaway-db.js";
 import type { FastifyInstance, InjectOptions } from "fastify";
 
 export const SECRET = "s".repeat(40);
 export const ORIGIN = "http://localhost:5173";
+
+// Every field a test reads from a response body, typed as present: a test that
+// reads a field that is not there fails on the value, not on the type.
+type Body = {
+  requestId: string;
+  expiresInSeconds: number;
+  resendAfterSeconds: number;
+  token: string;
+  name: string;
+  id: string;
+  workspaceId: string;
+  user: {
+    id: string;
+    email: string;
+    displayName: string;
+    role: string;
+    language: string;
+  };
+  error: {
+    code: string;
+    message: string;
+    details: { retryAfterSeconds: number; triesLeft: number };
+  };
+};
 
 export type Harness = Awaited<ReturnType<typeof createHarness>>;
 
@@ -39,7 +62,8 @@ export async function createHarness(
   });
   const db = drizzle(appClient);
   const sql: Sql = postgres(throwaway.url, { max: 12, onnotice: () => {} });
-  const workspaceId = await insertWorkspace(sql, { name: "Acme" });
+  const workspaceId = crypto.randomUUID();
+  await sql`insert into workspaces (id, name, created_at) values (${workspaceId}, 'Acme', ${new Date("2026-01-01T00:00:00Z")})`;
   const clock = createTestClock();
   const mail = fakeMail();
   const chunks: string[] = [];
@@ -73,6 +97,7 @@ export async function createHarness(
     registerRoutes: (scope) => {
       scope.get("/protected", async (request) => ({
         id: request.account!.id,
+        workspaceId: request.account!.workspaceId,
       }));
       scope.get("/public-thing", { config: { public: true } }, async () => ({
         ok: true,
@@ -98,13 +123,26 @@ export async function createHarness(
       ...opts,
     });
   };
-  const json = (res: { body: string }) => JSON.parse(res.body) as any;
+  const json = (res: { body: string }) => JSON.parse(res.body) as Body;
 
   async function addUser(
     email: string,
     values: Record<string, unknown> = {},
   ): Promise<string> {
-    return insertUser(sql, { workspace_id: workspaceId, email, ...values });
+    const id = crypto.randomUUID();
+    const row = {
+      id,
+      workspace_id: workspaceId,
+      email,
+      display_name: "Test user",
+      role: "member",
+      status: "active",
+      language: "en",
+      created_at: new Date("2026-01-01T00:00:00Z"),
+      ...values,
+    };
+    await sql`insert into users ${sql(row as unknown as Record<string, never>)}`;
+    return id;
   }
 
   async function requestCode(

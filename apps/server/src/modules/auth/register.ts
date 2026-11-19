@@ -25,7 +25,27 @@ export function registerAuthHooks(
   const { db, clock, config } = deps;
   runtime.clock = clock;
   runtime.development = config.development;
+  runtime.codeSecret = config.codeSecret;
   const limiter = createAddressLimiter(clock);
+
+  // A request that says it is JSON but has no body (a client that sends the
+  // header on a DELETE) is not an error: the route's schema decides (R45, R33).
+  // Malformed JSON stays a 400.
+  app.removeContentTypeParser("application/json");
+  app.addContentTypeParser(
+    "application/json",
+    { parseAs: "string" },
+    (_request, body, done) => {
+      if (body === "") return done(null, undefined);
+      try {
+        done(null, JSON.parse(body as string));
+      } catch (error) {
+        const failure = error as Error & { statusCode?: number };
+        failure.statusCode = 400;
+        done(failure, undefined);
+      }
+    },
+  );
 
   app.addHook("onRequest", async (request, reply) => {
     if (!isApiPath(request.url.split("?")[0]!)) return;

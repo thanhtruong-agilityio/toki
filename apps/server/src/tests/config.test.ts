@@ -134,7 +134,8 @@ describe("auth area (TOKI-022)", () => {
     expect(
       loadConfig({ ...ok, NODE_ENV: "prod" }, ["auth"]).auth.development,
     ).toBe(false);
-    const { NODE_ENV: _drop, ...noEnv } = ok;
+    const noEnv: Record<string, string | undefined> = { ...ok };
+    delete noEnv.NODE_ENV;
     expect(loadConfig(noEnv, ["auth"]).auth.development).toBe(false);
   });
   it("stops on a missing or short secret and a bad origin, naming only the variable", () => {

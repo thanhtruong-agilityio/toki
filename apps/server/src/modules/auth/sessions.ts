@@ -6,6 +6,7 @@ import { ErrorCodes } from "@toki/shared";
 import { getAccountById, type Account } from "../members/index.js";
 import { cookieName, readCookie } from "./cookies.js";
 import { runtime } from "./runtime.js";
+import { withTransaction } from "./tx.js";
 import { newSecret, sha256 } from "./secrets.js";
 import { sessions } from "./schema.js";
 
@@ -18,20 +19,6 @@ export class AccountNotActiveError extends Error {
 }
 
 const IDLE_MS = SESSION_IDLE_DAYS * 24 * 60 * 60 * 1000;
-
-// Given the database, opens its own transaction; given a transaction, joins it
-// and commits nothing (R53). `own` tells the caller which one it was, because
-// a report after the commit is its own to make only when it opened it (R50).
-async function withTransaction<T>(
-  client: DbClient,
-  work: (tx: DbClient) => Promise<T>,
-): Promise<{ result: T; own: boolean }> {
-  if ("rollback" in client) {
-    return { result: await work(client), own: false };
-  }
-  const result = await client.transaction((tx) => work(tx));
-  return { result, own: true };
-}
 
 // ---- listeners (R50) ----
 

@@ -38,6 +38,9 @@ export default defineConfig({
         SMTP_PORT: "1",
         SMTP_TLS: "none",
         MAIL_FROM_ADDRESS: "toki@example.com",
+        // And the auth values (TOKI-022); fake, nothing reads them in the e2e run.
+        AUTH_CODE_SECRET: "e2e-code-secret-e2e-code-secret-00",
+        APP_ORIGIN: "http://127.0.0.1:5173",
       },
     },
     {

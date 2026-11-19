@@ -9,13 +9,14 @@ import {
 } from "@toki/shared";
 import { and, asc, eq, gt, inArray, isNull, lte, sql } from "drizzle-orm";
 import { timingSafeEqual } from "node:crypto";
-import type { Db } from "../../db/client.js";
+import type { Db, DbClient } from "../../db/client.js";
 import { AppError } from "../../errors.js";
 import { findAccountByEmail, getAccountById } from "../members/index.js";
 import { getWorkspace } from "../workspace/index.js";
 import { runtime } from "./runtime.js";
 import { loginCodes } from "./schema.js";
 import { hashCode, newCode, newSecret, sha256 } from "./secrets.js";
+import { withTransaction } from "./tx.js";
 import {
   createSession,
   endSessionOfRequest,
@@ -279,4 +280,139 @@ export async function exchangeCode(
     };
   }
   throw expired();
+}
+
+// ---- invitation codes (R49, R51) ----
+
+// The code of an invitation: created inside the caller's transaction, so a
+// rolled-back invitation leaves no live code. The caller supplies a new secret
+// for every code, a resend included (`request_hash` is unique). It sends no
+// mail and applies no request limit (concern 4).
+export async function createInvitationCode(
+  client: DbClient,
+  input: { email: string; secret: string },
+): Promise<string> {
+  const now = new Date(runtime.clock.now());
+  const code = newCode();
+  const { result } = await withTransaction(client, async (tx) => {
+    await tx
+      .update(loginCodes)
+      .set({ cancelledAt: now })
+      .where(
+        and(
+          eq(loginCodes.purpose, "invitation"),
+          eq(loginCodes.email, input.email),
+          isNull(loginCodes.usedAt),
+          isNull(loginCodes.cancelledAt),
+        ),
+      );
+    const workspace = await getWorkspace(tx);
+    if (!workspace) throw new Error("There is no workspace.");
+    await tx.insert(loginCodes).values({
+      workspaceId: workspace.id,
+      createdAt: now,
+      purpose: "invitation",
+      email: input.email,
+      userId: null,
+      requestHash: sha256(input.secret),
+      codeHash: hashCode(runtime.codeSecret, input.secret, code),
+      expiresAt: new Date(now.getTime() + CODE_TTL_SECONDS * 1000),
+    });
+    return code;
+  });
+  return result;
+}
+
+export type InvitationCheck =
+  | { result: "ok" }
+  | { result: "incorrect"; triesLeft: number }
+  | { result: "locked" }
+  | { result: "expired" };
+
+// The same rules as a sign-in code: 10 minutes, once, five wrong tries and the
+// lock (R14, R15, R12, R13, R17). It knows no account status.
+export async function checkInvitationCode(
+  client: DbClient,
+  input: { secret: string; code: string },
+): Promise<InvitationCheck> {
+  const requestHash = sha256(input.secret);
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const now = runtime.clock.now();
+    const [row] = await client
+      .select()
+      .from(loginCodes)
+      .where(
+        and(
+          eq(loginCodes.requestHash, requestHash),
+          eq(loginCodes.purpose, "invitation"),
+        ),
+      )
+      .limit(1);
+    const refused = refusal(row, now);
+    if (refused) {
+      return {
+        result: refused.code === ErrorCodes.codeLocked ? "locked" : "expired",
+      };
+    }
+    const code = row!;
+    const live = and(
+      eq(loginCodes.id, code.id),
+      isNull(loginCodes.usedAt),
+      isNull(loginCodes.cancelledAt),
+      gt(loginCodes.expiresAt, new Date(now)),
+      sql`${loginCodes.wrongTries} < ${CODE_MAX_WRONG_TRIES}`,
+    );
+    if (
+      matches(
+        code.codeHash,
+        hashCode(runtime.codeSecret, input.secret, input.code),
+      )
+    ) {
+      const used = await client
+        .update(loginCodes)
+        .set({ usedAt: new Date(now) })
+        .where(live)
+        .returning({ id: loginCodes.id });
+      if (used.length === 1) return { result: "ok" };
+      continue;
+    }
+    const updated = await client
+      .update(loginCodes)
+      .set({ wrongTries: sql`${loginCodes.wrongTries} + 1` })
+      .where(live)
+      .returning({ wrongTries: loginCodes.wrongTries });
+    if (updated.length === 0) continue;
+    const tries = updated[0]!.wrongTries;
+    return tries >= CODE_MAX_WRONG_TRIES
+      ? { result: "locked" }
+      : { result: "incorrect", triesLeft: CODE_MAX_WRONG_TRIES - tries };
+  }
+  return { result: "expired" };
+}
+
+// Deletes up to `limit` invitation rows created before `olderThan`; never a
+// sign-in row (R51).
+export async function pruneInvitationCodes(
+  client: DbClient,
+  olderThan: Date,
+  limit: number,
+): Promise<number> {
+  const { result } = await withTransaction(client, async (tx) => {
+    const stale = tx
+      .select({ id: loginCodes.id })
+      .from(loginCodes)
+      .where(
+        and(
+          eq(loginCodes.purpose, "invitation"),
+          lte(loginCodes.createdAt, olderThan),
+        ),
+      )
+      .limit(limit);
+    const deleted = await tx
+      .delete(loginCodes)
+      .where(inArray(loginCodes.id, stale))
+      .returning({ id: loginCodes.id });
+    return deleted.length;
+  });
+  return result;
 }
