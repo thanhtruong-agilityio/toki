@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && pnpm run check:no-dev-pages",
+    "build": "vite build && pnpm run check:no-dev-pages && pnpm run check:fonts",
     "check:no-dev-pages": "node scripts/check-no-dev-pages.mjs",
     "check:fonts": "node scripts/check-fonts.mjs",
     "typecheck": "tsc --noEmit",

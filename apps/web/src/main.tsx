@@ -1,3 +1,4 @@
+import "./fonts/fonts.css";
 import "@toki/tokens/tokens.css";
 import "@toki/ui-web/base.css";
 import "./app.css";
