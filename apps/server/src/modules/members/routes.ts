@@ -111,20 +111,27 @@ export function registerMembersRoutes(
     if (claimed.kind === "replay") {
       return reply.code(claimed.status).send(claimed.body);
     }
+    let body: T;
     try {
-      const body = await work();
-      await pruneRequests(db, claim.now, claimed.claimId);
-      await completeRequest(db, {
-        claimId: claimed.claimId,
-        status: 200,
-        body,
-        now: claim.now,
-      });
-      return body;
+      body = await work();
     } catch (error) {
-      await releaseRequest(db, claimed.claimId);
+      // Only a 200 is stored: any other answer frees the key. A failure to
+      // free it must not hide the error that is being answered.
+      await releaseRequest(db, claimed.claimId).catch(() => {});
       throw error;
     }
+    // The work is done and committed. Housekeeping and the stored copy are
+    // best effort: their failure must not turn a finished request into an
+    // error, which a retry would then process again.
+    await pruneRequests(db, claim.now, claimed.claimId).catch(() => {});
+    const stored = await completeRequest(db, {
+      claimId: claimed.claimId,
+      status: 200,
+      body,
+      now: claim.now,
+    }).catch(() => false);
+    if (!stored) await releaseRequest(db, claimed.claimId).catch(() => {});
+    return body;
   }
   const keyOf = (request: FastifyRequest) =>
     IdempotencyKeySchema.parse(request.headers["idempotency-key"]);

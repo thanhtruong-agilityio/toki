@@ -341,23 +341,38 @@ export async function inviteBatch(
     ...new Set(input.emails.map((e) => e.trim().toLowerCase())),
   ];
   const made: Made[] = [];
+  // An error stops the batch (a lost actor is a 403, R39; a database failure
+  // is a 500), but the invitations already made stay, and their mails are
+  // still handed over below: otherwise they would wait as "Mail not sent"
+  // without one attempt.
+  let stopped: unknown = null;
   for (const entry of distinct) {
     const email = parseEmail(entry);
-    made.push(
-      email === null
-        ? {
-            result: { email: entry, result: "invalid_email" },
-            mail: null,
-            created: null,
-          }
-        : await inviteOne(deps, actor, email, role, now),
-    );
+    if (email === null) {
+      made.push({
+        result: { email: entry, result: "invalid_email" },
+        mail: null,
+        created: null,
+      });
+      continue;
+    }
+    try {
+      made.push(await inviteOne(deps, actor, email, role, now));
+    } catch (error) {
+      stopped = error;
+      break;
+    }
   }
   const sent = await sendMails(
     deps,
     actor,
     made.flatMap((m) => (m.mail ? [m.mail] : [])),
-  );
+  ).catch((error: unknown) => {
+    // Never hide the error that stopped the batch behind a mail error.
+    if (stopped === null) throw error;
+    return new Set<string>();
+  });
+  if (stopped !== null) throw stopped;
   await pruneCodes(deps, now);
   return {
     results: made.map((m): InviteResult => {

@@ -262,6 +262,29 @@ describe("the results (R5 to R10)", () => {
   });
 });
 
+describe("a batch that stops partway", () => {
+  it("still hands the mails of the invitations already made to the layer, and answers 500", async () => {
+    const first = mail("first");
+    const bad = mail("bad");
+    const last = mail("last");
+    await h.sql.unsafe(
+      `alter table invitations add constraint fail_in_test check (email <> '${bad}') not valid`,
+    );
+    try {
+      const res = await h.invite(lan, [first, bad, last]);
+      expect(res.statusCode).toBe(500);
+    } finally {
+      await h.sql`alter table invitations drop constraint fail_in_test`;
+    }
+    // The invitation that was made stays, with its mail sent and marked.
+    expect(h.invitationMails().map((m) => m.to)).toEqual([first]);
+    expect((await h.invitationsOf(first))[0]!.mail_status).toBe("sent");
+    // The address after the failure was not processed.
+    expect(await h.invitationsOf(last)).toEqual([]);
+    expect(await h.sql`select id from member_requests`).toEqual([]);
+  });
+});
+
 describe("the mail (R6, R12)", () => {
   it("carries the workspace name, the name of the acting Admin, the Join address and a 6-digit code", async () => {
     const a = mail("a");

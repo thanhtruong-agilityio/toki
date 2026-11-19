@@ -1,4 +1,5 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
+import { insertMemberRequest } from "../test-rows.js";
 import { createMemberHarness, type MemberHarness } from "./setup.js";
 
 // The repeat rule (R13, D-111): the batch and the resend are answered once
@@ -230,6 +231,41 @@ describe("only a 200 is stored (R13)", () => {
     const many = Array.from({ length: 51 }, () => mail("p"));
     await h.invite(lan, many, { key });
     expect(await requests()).toHaveLength(0);
+  });
+});
+
+describe("housekeeping that fails (R13)", () => {
+  it("does not turn a finished batch into an error: the 200 is answered and stored", async () => {
+    const other = await h.admin(mail("other"));
+    // An old row for the batch to prune, and a trigger that refuses its delete.
+    await insertMemberRequest(h.sql, {
+      workspace_id: h.workspaceId,
+      user_id: other.id,
+      created_at: new Date(h.clock.now() - 2 * 24 * HOUR),
+      claimed_at: new Date(h.clock.now() - 2 * 24 * HOUR),
+    });
+    await h.sql
+      .unsafe(`create function refuse_prune() returns trigger language plpgsql as $$
+      begin raise exception 'the delete is refused in this test'; end $$`);
+    await h.sql`create trigger refuse_prune_trg before delete on member_requests
+      for each row execute function refuse_prune()`;
+    const a = mail("a");
+    const key = h.key();
+    try {
+      const res = await h.invite(lan, [a], { key });
+      expect(res.statusCode).toBe(200);
+      expect(h.body(res).results[0]!.result).toBe("invited");
+    } finally {
+      await h.sql`drop trigger refuse_prune_trg on member_requests`;
+      await h.sql`drop function refuse_prune()`;
+    }
+    const [row] =
+      await h.sql`select state from member_requests where request_key = ${key}`;
+    expect(row!.state).toBe("done");
+    // The retry is answered from the stored response: no second invitation.
+    const again = await h.invite(lan, [a], { key });
+    expect(h.body(again).results[0]!.result).toBe("invited");
+    expect(h.invitationMails()).toHaveLength(1);
   });
 });
 
