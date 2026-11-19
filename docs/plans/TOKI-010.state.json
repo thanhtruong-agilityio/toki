@@ -1,0 +1,70 @@
+{
+  "approved_auto": false,
+  "base": "github/main",
+  "branch": "feat/toki-010-self-hosted-fonts",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-19T04:11:33Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-19T04:12:00Z",
+      "stage": "explore"
+    },
+    {
+      "at": "2026-11-19T04:13:13Z",
+      "stage": "design"
+    },
+    {
+      "at": "2026-11-19T04:17:49Z",
+      "stage": "plan"
+    },
+    {
+      "at": "2026-11-19T04:20:46Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-19T04:20:46Z",
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-19T04:21:17Z",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-19T04:33:08Z",
+      "stage": "check"
+    },
+    {
+      "at": "2026-11-19T04:35:48Z",
+      "stage": "drift"
+    },
+    {
+      "at": "2026-11-19T04:39:38Z",
+      "stage": "ship"
+    },
+    {
+      "at": "2026-11-19T07:06:28Z",
+      "auto": false,
+      "stage": "approve"
+    }
+  ],
+  "key": "TOKI-010",
+  "main_sha": "4d40b1f4bec702de035b0754c10b39b407bb1fa8",
+  "metrics": {},
+  "mode": "Auto to PR",
+  "plan_approved": true,
+  "plan_hash": "252f45f95981ba38a5cf1f0f59de98e28a46e82201adfa7c3c786f2a484fe4fc",
+  "spec_commit": "1315d7f83870ac57b86d65260b92602bfa9b7b97",
+  "spec_paths": [
+    "docs/specs/2026-11-16-self-hosted-fonts-design.md"
+  ],
+  "stage": "ship",
+  "tier": "M",
+  "verifier": {
+    "result": "PASS",
+    "round": 1
+  }
+}
