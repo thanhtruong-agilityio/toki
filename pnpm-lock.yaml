@@ -388,6 +388,13 @@ importers:
         version: 5.1.0(@types/node@22.20.5)(jsdom@31.0.1(@noble/hashes@1.8.0))(vite@8.3.8(@types/node@22.20.5)(esbuild@0.28.2)(tsx@4.23.15))
 
   packages/ui-web:
+    dependencies:
+      '@toki/i18n':
+        specifier: workspace:*
+        version: link:../i18n
+      '@toki/shared':
+        specifier: workspace:*
+        version: link:../shared
     devDependencies:
       '@testing-library/dom':
         specifier: 10.4.2

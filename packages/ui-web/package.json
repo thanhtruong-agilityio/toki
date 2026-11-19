@@ -15,6 +15,10 @@
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
+  "dependencies": {
+    "@toki/i18n": "workspace:*",
+    "@toki/shared": "workspace:*"
+  },
   "peerDependencies": {
     "react": "^19.0.0"
   },

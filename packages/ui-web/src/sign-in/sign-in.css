@@ -1,0 +1,107 @@
+/* The sign-in page: one centred card (docs/specs/2026-11-16-sign-in-screens-design.md,
+   "Layout at the three widths"). Tokens only. */
+.gsign {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: var(--bg);
+}
+.gcard {
+  width: min(420px, 100%);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--pop);
+  padding: 24px;
+}
+.gws {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.gws .gwl {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--accent);
+  color: var(--on-accent);
+  display: grid;
+  place-items: center;
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+}
+.gws .gwn {
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: -0.01em;
+}
+.gcard h1 {
+  margin: 0 0 4px;
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-size: 20px;
+}
+.gcard .gaddr {
+  margin: 0;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.gcard .gnote {
+  margin: 2px 0 0;
+  color: var(--muted);
+  font-size: 12.5px;
+}
+.gcard .gmsg {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.gcard .gmsg .btn {
+  margin-top: 8px;
+}
+.gcard .glinks {
+  margin-top: 12px;
+  text-align: center;
+}
+.inp.shake {
+  animation: gshake 0.3s;
+}
+@keyframes gshake {
+  20%,
+  60% {
+    transform: translateX(-4px);
+  }
+  40%,
+  80% {
+    transform: translateX(4px);
+  }
+}
+
+@media (max-width: 719px) {
+  .gsign {
+    align-items: start;
+  }
+  .gcard .linkbtn {
+    min-height: 40px;
+  }
+}
+
+.gmodal {
+  padding: 20px 18px;
+  display: grid;
+  gap: 14px;
+  justify-items: start;
+}
+.gmodal .gmodal-text {
+  margin: 0;
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+}
+.gmodal .gmodal-text:focus-visible {
+  outline: 0;
+}
