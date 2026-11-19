@@ -37,6 +37,10 @@
     {
       "at": "2026-11-19T02:04:30Z",
       "stage": "check"
+    },
+    {
+      "at": "2026-11-19T02:27:30Z",
+      "stage": "ship"
     }
   ],
   "key": "TOKI-022",
@@ -49,7 +53,7 @@
   "spec_paths": [
     "docs/specs/2026-11-16-sign-in-api-design.md"
   ],
-  "stage": "check",
+  "stage": "ship",
   "tier": "L",
   "verifier": {
     "result": "PASS",
