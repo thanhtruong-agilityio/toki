@@ -126,3 +126,22 @@ describe("JSON bodies keep Fastify's guard against prototype poisoning", () => {
     expect(({} as Record<string, unknown>).polluted).toBeUndefined();
   });
 });
+
+describe("a foreign Origin ends nothing, also with a session (R46)", () => {
+  it("answers 403 to a signed-in DELETE and the session still works", async () => {
+    await h.addUser("origin@example.com");
+    const { secret } = await h.signIn("origin@example.com");
+    const res = await h.call({
+      method: "DELETE",
+      url: "/api/v1/auth/session",
+      headers: { origin: "https://evil.example", ...h.withCookie(secret) },
+    });
+    expect(res.statusCode).toBe(403);
+    const after = await h.call({
+      method: "GET",
+      url: "/api/v1/protected",
+      headers: h.withCookie(secret),
+    });
+    expect(after.statusCode).toBe(200);
+  });
+});

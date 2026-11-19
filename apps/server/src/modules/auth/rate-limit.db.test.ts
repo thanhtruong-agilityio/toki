@@ -71,17 +71,34 @@ describe("limit per network address (R56)", () => {
     await h.addUser("tries@example.com");
     h.clock.advance(61_000);
     const asked = await h.requestCode("tries@example.com");
+    await h.flush();
     const requestId = h.json(asked).requestId as string;
+    const code = h.lastCode();
     const ip = "192.0.2.6";
-    for (let i = 0; i < 20; i++)
-      await h.exchange(requestId, "000000", {}, from(ip));
-    const [before] =
-      await h.sql`select wrong_tries from login_codes where email = 'tries@example.com'`;
-    const res = await h.exchange(requestId, "000000", {}, from(ip));
-    expect(h.json(res).error.code).toBe("rate_limited");
-    const [after] =
-      await h.sql`select wrong_tries from login_codes where email = 'tries@example.com'`;
-    expect(after!.wrong_tries).toBe(before!.wrong_tries);
+    // 20 requests that touch no code: an unknown requestId counts toward the limit only
+    for (let i = 0; i < 20; i++) {
+      await h.exchange("u".repeat(43), "000000", {}, from(ip));
+    }
+    const tries = async () =>
+      (
+        await h.sql`select wrong_tries from login_codes where email = 'tries@example.com'`
+      )[0]!.wrong_tries;
+    expect(await tries()).toBe(0);
+    const wrongOne = await h.exchange(
+      requestId,
+      code === "111111" ? "222222" : "111111",
+      {},
+      from(ip),
+    );
+    expect(h.json(wrongOne).error.code).toBe("rate_limited");
+    expect(await tries()).toBe(0); // no attempt was made: the count did not move
+    const rightOne = await h.exchange(requestId, code, {}, from(ip));
+    expect(h.json(rightOne).error.code).toBe("rate_limited");
+    const [made] = await h.sql`select count(*)::int as n from sessions`;
+    expect(made!.n).toBe(0);
+    const [used] =
+      await h.sql`select used_at from login_codes where email = 'tries@example.com'`;
+    expect(used!.used_at).toBeNull();
   });
 
   it("reopens after 15 minutes of the test clock and gives the same answer for a member and a stranger", async () => {
@@ -119,6 +136,21 @@ describe("limit per network address (R56)", () => {
       expect(h.json(res).error.code).toBe("code_resend_too_soon");
     }
     const res = await codes("count@example.com", ip);
+    expect(h.json(res).error.code).toBe("rate_limited");
+  });
+
+  it("counts a request that R4 refuses toward the 20", async () => {
+    const ip = "192.0.2.10";
+    const email = "r4count@example.com";
+    for (let i = 0; i < 5; i++) {
+      expect((await codes(email, ip)).statusCode).toBe(200);
+      h.clock.advance(61_000);
+    }
+    for (let i = 0; i < 15; i++) {
+      const res = await codes(email, ip);
+      expect(h.json(res).error.code).toBe("code_request_limit");
+    }
+    const res = await codes(email, ip);
     expect(h.json(res).error.code).toBe("rate_limited");
   });
 });

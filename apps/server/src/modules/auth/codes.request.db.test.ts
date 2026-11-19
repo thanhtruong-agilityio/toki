@@ -251,3 +251,29 @@ describe("parallel requests for one address (R4, R5)", () => {
     expect(results.filter((r) => r.statusCode === 429)).toHaveLength(5);
   });
 });
+
+describe("an address that has only an invitation (R1, R2, concern 1)", () => {
+  it("answers like an unknown address, sends no mail, and returns a new requestId", async () => {
+    const { createInvitationCode } = await import("./index.js");
+    const email = "invonly@example.com";
+    await createInvitationCode(h.db, { email, secret: "o".repeat(43) });
+    const mailBefore = h.mail.calls.length;
+    h.clock.advance(61_000);
+    const a = await h.requestCode(email);
+    h.clock.advance(61_000);
+    const b = await h.requestCode(email);
+    expect(a.statusCode).toBe(200);
+    expect(Object.keys(h.json(a)).sort()).toEqual([
+      "expiresInSeconds",
+      "requestId",
+      "resendAfterSeconds",
+    ]);
+    expect(h.json(a).expiresInSeconds).toBe(600);
+    expect(h.json(a).requestId).not.toBe(h.json(b).requestId);
+    await h.flush();
+    expect(h.mail.calls.length).toBe(mailBefore);
+    const [row] =
+      await h.sql`select user_id from login_codes where email = ${email} and purpose = 'sign_in' order by created_at desc limit 1`;
+    expect(row!.user_id).toBeNull();
+  });
+});

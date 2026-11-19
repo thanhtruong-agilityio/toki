@@ -7,7 +7,7 @@ import {
   ErrorCodes,
   type Transport,
 } from "@toki/shared";
-import { and, asc, eq, gt, inArray, isNull, lte, sql } from "drizzle-orm";
+import { and, asc, eq, gt, inArray, isNull, lt, lte, sql } from "drizzle-orm";
 import { timingSafeEqual } from "node:crypto";
 import type { Db, DbClient } from "../../db/client.js";
 import { AppError } from "../../errors.js";
@@ -419,7 +419,7 @@ export async function pruneInvitationCodes(
       .where(
         and(
           eq(loginCodes.purpose, "invitation"),
-          lte(loginCodes.createdAt, olderThan),
+          lt(loginCodes.createdAt, olderThan),
         ),
       )
       .limit(limit);

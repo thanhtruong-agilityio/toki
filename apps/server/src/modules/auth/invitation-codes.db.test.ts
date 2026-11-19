@@ -147,6 +147,18 @@ describe("pruneInvitationCodes (R51)", () => {
     expect(
       (await rows("sign_in")).some((r) => r.email === "keep@example.com"),
     ).toBe(true);
+    // a row created exactly at `olderThan` is not "before" it: it stays
+    const atCutoff = await insertLoginCode(h.sql, {
+      workspace_id: h.workspaceId,
+      purpose: "invitation",
+      email: "edge@example.com",
+      created_at: cutoff,
+      expires_at: new Date(cutoff.getTime() + 600_000),
+    });
+    expect(await pruneInvitationCodes(h.db, cutoff, 100)).toBe(0);
+    expect(
+      (await h.sql`select id from login_codes where id = ${atCutoff}`).length,
+    ).toBe(1);
     // a recent invitation row stays
     expect((await rows("invitation")).length).toBeGreaterThan(0);
   });
