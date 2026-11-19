@@ -910,7 +910,11 @@ export async function readFont(path) {
       Boolean(head?.macStyle?.italic) ||
       font.italicAngle !== 0,
     weight: os2?.usWeightClass ?? 0,
-    codePoints: new Set(font.characterSet),
+    // The cmap table ends with an entry for U+FFFF that names glyph 0, "no
+    // glyph"; only code points with a glyph of their own count.
+    codePoints: new Set(
+      font.characterSet.filter((cp) => font.glyphForCodePoint(cp).id !== 0),
+    ),
     sha256: createHash("sha256").update(bytes).digest("hex"),
   };
 }

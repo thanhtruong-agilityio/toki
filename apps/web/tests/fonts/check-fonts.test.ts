@@ -1,4 +1,4 @@
-import { mkdtempSync, rmSync } from "node:fs";
+import { mkdtempSync, readdirSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, test } from "vitest";
@@ -15,6 +15,7 @@ import {
   main,
   parseCss,
   parseLinks,
+  readFont,
   REQUIRED,
   TABLE_A,
   TABLE_D,
@@ -728,5 +729,44 @@ describe("R16: the command", () => {
     } finally {
       rmSync(dir, { recursive: true });
     }
+  });
+});
+
+// The seven committed files, read with the font library, against the record.
+describe("the real files (R3 to R6, R14, R15)", () => {
+  const fontsDir = join(import.meta.dirname, "../../src/fonts");
+  const readAll = () =>
+    Promise.all(TABLE_A.map((row) => readFont(join(fontsDir, row.file))));
+
+  test.each(TABLE_A)(
+    "$file is WOFF2, static, upright, at weight $weight",
+    async (row) => {
+      const font = await readFont(join(fontsDir, row.file));
+      expect(font.isWoff2).toBe(true);
+      expect(font.axes).toEqual([]);
+      expect(font.italic).toBe(false);
+      expect(font.weight).toBe(row.weight);
+      expect(font.sha256).toMatch(/^[0-9a-f]{64}$/);
+    },
+  );
+
+  test("the files hold Table B, stay inside Table C and under the sizes", async () => {
+    const sources: unknown = JSON.parse(
+      readFileSync(join(fontsDir, "sources.json"), "utf8"),
+    );
+    expect(checkFonts({ fonts: await readAll(), sources })).toEqual([]);
+  });
+
+  test("sources.json and the licence files match the files", async () => {
+    const sources: unknown = JSON.parse(
+      readFileSync(join(fontsDir, "sources.json"), "utf8"),
+    );
+    const licenceFiles = readdirSync(join(fontsDir, "licenses")).map(
+      (name) => `licenses/${name}`,
+    );
+    expect(licenceFiles).toHaveLength(3);
+    expect(
+      checkSources({ sources, fonts: await readAll(), licenceFiles }),
+    ).toEqual([]);
   });
 });
