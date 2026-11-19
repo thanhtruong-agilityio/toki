@@ -24,6 +24,16 @@ export const ErrorCodes = {
   unauthorized: "unauthorized",
   forbidden: "forbidden",
   tooManyRequests: "too_many_requests",
+  codeRequestLimit: "code_request_limit",
+  codeResendTooSoon: "code_resend_too_soon",
+  codeIncorrect: "code_incorrect",
+  codeLocked: "code_locked",
+  codeExpired: "code_expired",
+  accountDeactivated: "account_deactivated",
+  unauthenticated: "unauthenticated",
+  sessionEnded: "session_ended",
+  originNotAllowed: "origin_not_allowed",
+  rateLimited: "rate_limited",
 } as const;
 
 export type ErrorCode = (typeof ErrorCodes)[keyof typeof ErrorCodes];
