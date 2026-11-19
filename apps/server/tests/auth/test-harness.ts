@@ -4,7 +4,7 @@
 import { createTestClock } from "@toki/shared";
 import postgres, { type Sql } from "postgres";
 import { Writable } from "node:stream";
-import { buildApp } from "../../src/app.js";
+import { buildApp, type BuildAppOptions } from "../../src/app.js";
 import type { Config } from "../../src/config.js";
 import { drizzle } from "drizzle-orm/postgres-js";
 import { migrationsFolder, runMigrations } from "../../src/db/migrate.js";
@@ -47,6 +47,7 @@ export async function createHarness(
     trustedProxy?: string;
     registerRoutes?: (scope: FastifyInstance) => void;
     mail?: ReturnType<typeof fakeMail>["layer"];
+    channelDeps?: BuildAppOptions["channelDeps"];
   } = {},
 ) {
   const throwaway = await createThrowawayDb();
@@ -94,6 +95,7 @@ export async function createHarness(
     clock,
     mail: options.mail ?? mail.layer,
     logStream,
+    channelDeps: options.channelDeps,
     registerRoutes: (scope) => {
       scope.get("/protected", async (request) => ({
         id: request.account!.id,
