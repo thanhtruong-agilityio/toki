@@ -4,6 +4,7 @@ import {
   ChannelIdSchema,
   ChannelMembersQuerySchema,
   CreateChannelBodySchema,
+  EditChannelBodySchema,
   canReadConversation,
   ErrorCodes,
   canCreateChannel,
@@ -17,7 +18,7 @@ import {
   toSummary,
 } from "./browse.js";
 import { recordChange as defaultRecordChange } from "./changes.js";
-import { createChannel } from "./channels.js";
+import { createChannel, editChannelDetails } from "./channels.js";
 import type { ChannelDeps, ChannelDepsInput } from "./deps.js";
 import { getConversationFacts as defaultGetConversationFacts } from "./facts.js";
 import { toSafeError } from "./safe-error.js";
@@ -125,7 +126,20 @@ export function channelRoutes(input: ChannelDepsInput): FastifyPluginAsync {
         return listChannelMembers(deps.db, id, query);
       }),
     );
-    scope.patch("/channels/:id", guarded(notBuilt));
+    scope.patch(
+      "/channels/:id",
+      guarded(async (request) => {
+        const account = request.account!;
+        const id = ChannelIdSchema.parse((request.params as { id: string }).id);
+        const body = EditChannelBodySchema.parse(request.body ?? {});
+        return editChannelDetails(
+          deps,
+          { id: account.id, role: account.role },
+          id,
+          body,
+        );
+      }),
+    );
     scope.post("/channels/:id/join", guarded(notBuilt));
     scope.post("/channels/:id/members", guarded(notBuilt));
     scope.post("/channels/:id/leave", guarded(notBuilt));

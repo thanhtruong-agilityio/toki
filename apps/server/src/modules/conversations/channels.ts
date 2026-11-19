@@ -1,14 +1,17 @@
 import {
   ErrorCodes,
   canCreateChannel,
+  canEditChannelDetails,
   type ChannelDetail,
+  type ConversationFacts,
   type CreateChannelBodySchema,
+  type EditChannelBodySchema,
 } from "@toki/shared";
 import { and, eq } from "drizzle-orm";
 import type { z } from "zod";
 import type { DbClient } from "../../db/client.js";
 import { AppError } from "../../errors.js";
-import { refusal } from "./access.js";
+import { checkAccess, refusal, type Permission } from "./access.js";
 import { readChannelDetail } from "./browse.js";
 import type { AccountFacts, ChannelDeps } from "./deps.js";
 import { conversationMembers, conversations } from "./schema.js";
@@ -203,4 +206,102 @@ export async function createChannel(
     const channel = await readChannelDetail(deps, tx, actor.id, body.id);
     return { created: false, channel: channel! };
   });
+}
+
+type Locked = {
+  tx: DbClient;
+  actor: AccountFacts;
+  accounts: Map<string, AccountFacts>;
+  facts: ConversationFacts;
+  now: Date;
+};
+
+// The shape of every write on an existing conversation (R1 steps 3 to 5, R15):
+// the check, then a transaction that locks the accounts and the conversation
+// row, reads the actor and the facts again, and runs the write. A refusal
+// before the lock costs no lock; a refusal after it is the one that counts.
+export async function inConversationTx<T>(
+  deps: Writer,
+  account: { id: string; role: string },
+  conversationId: string,
+  otherIds: readonly string[],
+  permission: Permission,
+  work: (locked: Locked) => Promise<T>,
+): Promise<T> {
+  await checkAccess(deps, deps.db, account, conversationId, permission);
+  return deps.db.transaction(async (tx) => {
+    const { actor, accounts } = await lockForWrite(
+      deps,
+      tx,
+      account.id,
+      otherIds,
+      conversationId,
+    );
+    const facts = await checkAccess(
+      deps,
+      tx,
+      { id: actor.id, role: actor.role },
+      conversationId,
+      permission,
+    );
+    return work({
+      tx,
+      actor,
+      accounts,
+      facts,
+      now: new Date(deps.clock.now()),
+    });
+  });
+}
+
+type EditBody = z.output<typeof EditChannelBodySchema>;
+
+// R9: only the given fields are written, so two people changing two fields at
+// once both keep their change; setting what is stored changes nothing.
+export async function editChannelDetails(
+  deps: Writer,
+  account: { id: string; role: string },
+  id: string,
+  body: EditBody,
+): Promise<{ channel: ChannelDetail; changed: boolean }> {
+  return inConversationTx(
+    deps,
+    account,
+    id,
+    [],
+    canEditChannelDetails,
+    async ({ tx, actor, now }) => {
+      const [current] = await tx
+        .select({
+          topic: conversations.topic,
+          description: conversations.description,
+        })
+        .from(conversations)
+        .where(eq(conversations.id, id))
+        .limit(1);
+      const set: { topic?: string | null; description?: string | null } = {};
+      if (body.topic !== undefined && body.topic !== current!.topic) {
+        set.topic = body.topic;
+      }
+      if (
+        body.description !== undefined &&
+        body.description !== current!.description
+      ) {
+        set.description = body.description;
+      }
+      const changed = Object.keys(set).length > 0;
+      if (changed) {
+        await tx.update(conversations).set(set).where(eq(conversations.id, id));
+        await deps.recordChange(tx, {
+          type: "details_changed",
+          actorId: actor.id,
+          conversationId: id,
+          userIds: [actor.id],
+          at: now,
+        });
+      }
+      const channel = await readChannelDetail(deps, tx, actor.id, id);
+      return { channel: channel!, changed };
+    },
+  );
 }
