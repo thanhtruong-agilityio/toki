@@ -157,6 +157,22 @@ function parseCodePoint(text) {
   return Number.parseInt(text.slice(2), 16);
 }
 
+// "U+0020-007E,U+00B7" to the code points it names; null when a part is not
+// a code point or a range of code points.
+function parseUnicodes(text) {
+  const found = new Set();
+  for (const part of text.split(",")) {
+    const m = /^\s*U\+([0-9A-Fa-f]{4,6})(?:-([0-9A-Fa-f]{4,6}))?\s*$/.exec(
+      part,
+    );
+    if (!m) return null;
+    const from = Number.parseInt(m[1], 16);
+    const to = m[2] === undefined ? from : Number.parseInt(m[2], 16);
+    for (let cp = from; cp <= to; cp += 1) found.add(cp);
+  }
+  return found;
+}
+
 // ---------------------------------------------------------------- parsing
 
 // The index of the character that closes the block opened just before `from`.
@@ -818,6 +834,27 @@ export function checkSources({ sources, fonts, licenceFiles }) {
         problems.push(problem(file, "R14", `sources.json has no cut.${field}`));
       }
     }
+    if (filled(cut.unicodes)) {
+      const given = parseUnicodes(cut.unicodes);
+      const left = given && REQUIRED.find((cp) => !given.has(cp));
+      if (given === null) {
+        problems.push(
+          problem(
+            file,
+            "R14",
+            "cut.unicodes is not a list of code points such as U+0020-007E,U+00B7",
+          ),
+        );
+      } else if (left !== undefined) {
+        problems.push(
+          problem(
+            file,
+            "R14",
+            `cut.unicodes leaves out ${hex(left)}, a code point of Table B`,
+          ),
+        );
+      }
+    }
     if (entry.family !== row.family || entry.weight !== row.weight) {
       problems.push(
         problem(
@@ -874,8 +911,20 @@ export function checkSources({ sources, fonts, licenceFiles }) {
         );
       }
       const first = licenceOf.get(row.family);
-      if (first === undefined) licenceOf.set(row.family, entry.licenceFile);
-      else if (first !== entry.licenceFile) {
+      const other = [...licenceOf].find(
+        ([family, name]) => family !== row.family && name === entry.licenceFile,
+      );
+      if (other) {
+        problems.push(
+          problem(
+            file,
+            "R15",
+            `the licence file ${entry.licenceFile} is the one of ${other[0]}; each family has its own`,
+          ),
+        );
+      } else if (first === undefined) {
+        licenceOf.set(row.family, entry.licenceFile);
+      } else if (first !== entry.licenceFile) {
         problems.push(
           problem(
             file,
@@ -884,6 +933,18 @@ export function checkSources({ sources, fonts, licenceFiles }) {
           ),
         );
       }
+    }
+  }
+  const named = sources.fonts.map((entry) => entry?.licenceFile);
+  for (const name of licenceFiles) {
+    if (!named.includes(name)) {
+      problems.push(
+        problem(
+          `${FONTS_DIR}/${name}`,
+          "R15",
+          "a licence file that no entry of sources.json names",
+        ),
+      );
     }
   }
   for (const entry of sources.fonts) {

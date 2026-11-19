@@ -32,6 +32,9 @@ import {
 const BODY_LIST =
   '"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif';
 const SHA = "a".repeat(64);
+// Table C as it is given to the cutting tool; it holds all of Table B.
+const UNICODES =
+  "U+0000-00FF,U+0102-0103,U+0110-0111,U+0128-0129,U+0131,U+0152-0153,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+02C6-02DC,U+0300-0329,U+1EA0-1EF9,U+2000-206F,U+20AB-20AC,U+2122,U+2190-2193,U+2212,U+2215,U+FEFF,U+FFFD";
 const LICENCE: Record<string, string> = {
   "Be Vietnam Pro": "licenses/be-vietnam-pro-OFL.txt",
   "Bricolage Grotesque": "licenses/bricolage-grotesque-OFL.txt",
@@ -75,7 +78,7 @@ function goodSources(): { fonts: SourceEntry[] } {
         tool: "fonttools pyftsubset",
         toolVersion: "4.0.0",
         command: "pyftsubset in.ttf --flavor=woff2",
-        unicodes: "U+0020-007E",
+        unicodes: UNICODES,
         missing: [],
       },
     })),
@@ -716,6 +719,32 @@ describe("R14 and R15: sources.json and the licence files", () => {
       licenceFiles: [...LICENCE_FILES],
     });
     expect(has(problems, "sources.json", "R14")).toBe(true);
+  });
+
+  test("R14: cut.unicodes that leaves out part of Table B", () => {
+    const a = args();
+    at(a.sources.fonts, 3).cut.unicodes = "U+0020-007E,U+1EA0-1EF9";
+    const problems = checkSources(a);
+    expect(has(problems, "be-vietnam-pro-700.woff2", "R14")).toBe(true);
+    expect(problems.map((p) => p.message).join(" ")).toContain("U+00B7");
+  });
+
+  test("R14: cut.unicodes that is not a list of code points", () => {
+    const a = args();
+    at(a.sources.fonts, 3).cut.unicodes = "latin, vietnamese";
+    expect(has(checkSources(a), "be-vietnam-pro-700.woff2", "R14")).toBe(true);
+  });
+
+  test("R15: two families that name the same licence file", () => {
+    const a = args();
+    at(a.sources.fonts, 6).licenceFile = "licenses/be-vietnam-pro-OFL.txt";
+    expect(has(checkSources(a), "jetbrains-mono-500.woff2", "R15")).toBe(true);
+  });
+
+  test("R15: a file in licenses/ that no entry names", () => {
+    const a = args();
+    a.licenceFiles.push("licenses/other-OFL.txt");
+    expect(has(checkSources(a), "licenses/other-OFL.txt", "R15")).toBe(true);
   });
 
   test("R15: a licence file that does not exist", () => {
