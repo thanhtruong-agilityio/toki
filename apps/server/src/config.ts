@@ -1,5 +1,6 @@
 // The only reader of process.env in apps/server/src. One schema per area; a
 // later ticket adds its area here. The names come from docs/environment-config.md.
+import { parseEmail } from "@toki/shared";
 import { z } from "zod";
 import {
   mailConfigSchema,
@@ -27,6 +28,29 @@ const areas = {
     .object({ DATABASE_URL: z.string().min(1) })
     .transform((v) => ({ url: v.DATABASE_URL })),
   mail: mailConfigSchema,
+  // The values of the first set-up (TOKI-020 R1 to R4). Limits count code
+  // points, as the tables do. A refused value never reaches a message.
+  firstAdmin: z
+    .object({
+      FIRST_ADMIN_EMAIL: z
+        .string()
+        .transform((v) => parseEmail(v))
+        .refine((v): v is string => v !== null),
+      FIRST_ADMIN_NAME: z
+        .string()
+        .transform((v) => v.trim())
+        .refine((v) => [...v].length <= 80)
+        .optional(),
+      WORKSPACE_NAME: z
+        .string()
+        .transform((v) => v.trim())
+        .refine((v) => [...v].length >= 1 && [...v].length <= 100),
+    })
+    .transform((v) => ({
+      email: v.FIRST_ADMIN_EMAIL,
+      name: v.FIRST_ADMIN_NAME,
+      workspaceName: v.WORKSPACE_NAME,
+    })),
 };
 
 export type AreaName = keyof typeof areas;
@@ -36,6 +60,7 @@ export type Config = {
   server: z.output<(typeof areas)["server"]>;
   database: z.output<(typeof areas)["database"]>;
   mail?: MailConfig;
+  firstAdmin?: z.output<(typeof areas)["firstAdmin"]>;
 };
 
 // The variable names each area reads, for the check against .env.example.
@@ -43,6 +68,7 @@ export const configVariableNames: Record<AreaName, string[]> = {
   server: ["NODE_ENV", "SERVER_PORT", "SERVER_HOST", "LOG_LEVEL"],
   database: ["DATABASE_URL"],
   mail: mailVariableNames,
+  firstAdmin: ["FIRST_ADMIN_EMAIL", "FIRST_ADMIN_NAME", "WORKSPACE_NAME"],
 };
 
 // Carries variable names only: a value never reaches the message.

@@ -109,3 +109,89 @@ describe("configuration names and .env.example (R13)", () => {
     }
   });
 });
+
+describe("the first-admin area (R1 to R4)", () => {
+  const setup = {
+    FIRST_ADMIN_EMAIL: "Minh@Example.com ",
+    WORKSPACE_NAME: "Test Workspace",
+  };
+  const load = (env: Record<string, string | undefined>) =>
+    loadConfig(env, ["firstAdmin"]).firstAdmin;
+  const failing = (env: Record<string, string | undefined>) => {
+    try {
+      load(env);
+    } catch (error) {
+      return error as ConfigError;
+    }
+    throw new Error("loadConfig did not throw");
+  };
+
+  it("reads the three values and stores the email in its stored form", () => {
+    expect(load({ ...setup, FIRST_ADMIN_NAME: " Minh Tran " })).toEqual({
+      email: "minh@example.com",
+      name: "Minh Tran",
+      workspaceName: "Test Workspace",
+    });
+  });
+
+  it("accepts a missing, empty or blank first admin name as not given", () => {
+    for (const value of [undefined, "", "   "]) {
+      expect(load({ ...setup, FIRST_ADMIN_NAME: value }).name).toBeUndefined();
+    }
+  });
+
+  it("names the missing or blank required values", () => {
+    expect(failing({ WORKSPACE_NAME: "W" }).names).toEqual([
+      "FIRST_ADMIN_EMAIL",
+    ]);
+    expect(failing({ ...setup, WORKSPACE_NAME: "" }).names).toEqual([
+      "WORKSPACE_NAME",
+    ]);
+    expect(failing({ ...setup, WORKSPACE_NAME: "   " }).names).toEqual([
+      "WORKSPACE_NAME",
+    ]);
+  });
+
+  it("refuses a bad address by name and never prints the value", () => {
+    const refused = [
+      "not-an-address",
+      "a b@example.com",
+      `a@${"b".repeat(63)}.${"c".repeat(63)}.${"d".repeat(63)}.${"e".repeat(61)}`,
+      `${"a".repeat(65)}@example.com`,
+    ];
+    for (const value of refused) {
+      const error = failing({ ...setup, FIRST_ADMIN_EMAIL: value });
+      expect(error.names).toEqual(["FIRST_ADMIN_EMAIL"]);
+      expect(error.message).not.toContain(value);
+      expect(JSON.stringify(error)).not.toContain(value);
+    }
+  });
+
+  it("limits the workspace name to 100 and the first admin name to 80 characters", () => {
+    expect(load({ ...setup, WORKSPACE_NAME: "w".repeat(100) })).toBeTruthy();
+    expect(failing({ ...setup, WORKSPACE_NAME: "w".repeat(101) }).names).toEqual(
+      ["WORKSPACE_NAME"],
+    );
+    expect(load({ ...setup, FIRST_ADMIN_NAME: "n".repeat(80) })).toBeTruthy();
+    expect(
+      failing({ ...setup, FIRST_ADMIN_NAME: "n".repeat(81) }).names,
+    ).toEqual(["FIRST_ADMIN_NAME"]);
+    // Counted in code points: 80 emoji pass, 81 fail.
+    expect(load({ ...setup, FIRST_ADMIN_NAME: "😀".repeat(80) })).toBeTruthy();
+    expect(
+      failing({ ...setup, FIRST_ADMIN_NAME: "😀".repeat(81) }).names,
+    ).toEqual(["FIRST_ADMIN_NAME"]);
+  });
+
+  it("is not required by a caller that does not load the area", () => {
+    expect(() => loadConfig(valid, ["server", "database"])).not.toThrow();
+  });
+
+  it("reads exactly the three names of the inventory", () => {
+    expect(configVariableNames.firstAdmin).toEqual([
+      "FIRST_ADMIN_EMAIL",
+      "FIRST_ADMIN_NAME",
+      "WORKSPACE_NAME",
+    ]);
+  });
+});
