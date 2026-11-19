@@ -61,6 +61,20 @@ describe("the page (R4, R38)", () => {
     expect(t.calls.readWorkspaceName).toHaveBeenCalledTimes(1);
   });
 
+  test("the email rule is parseEmail of the shared package (R9)", async () => {
+    await openLogin();
+    const send = screen.getByRole("button", { name: "Send code" });
+    // parseEmail trims, so a padded address is valid; it refuses a leading dot in the local part.
+    await userEvent.type(emailField(), "  ada@example.com  ");
+    expect(send).toBeEnabled();
+    await userEvent.clear(emailField());
+    await userEvent.type(emailField(), ".ada@example.com");
+    expect(send).toBeDisabled();
+    await userEvent.clear(emailField());
+    await userEvent.type(emailField(), "a..da@example.com");
+    expect(send).toBeDisabled();
+  });
+
   test("a failed workspace read shows no name and no message", async () => {
     await openLogin({ calls: { readWorkspaceName: async () => null } });
     expect(screen.queryByText("Acme")).toBeNull();

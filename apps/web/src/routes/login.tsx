@@ -2,6 +2,7 @@ import { createRoute, useRouterState } from "@tanstack/react-router";
 import { markSignedIn } from "@toki/client-core";
 import { useTranslation } from "@toki/i18n/react";
 import { getPlatform } from "@toki/platform";
+import { CODE_LENGTH, parseEmail } from "@toki/shared";
 import {
   CodeStep,
   EmailStep,
@@ -17,7 +18,6 @@ import {
   type CodeRecord,
 } from "../auth/code-record";
 import { getAuthServices } from "../auth/services";
-import { CODE_LENGTH, isValidEmail } from "../auth/stand-ins";
 import { rootRoute } from "./__root";
 
 // What the code step opens with: the record, and the waits that are left of it.
@@ -28,6 +28,9 @@ type CodeStepState = {
 };
 type Step =
   { kind: "email"; address?: string } | ({ kind: "code" } & CodeStepState);
+
+// The rule of the server (TOKI-022 R7): the screen and the server accept the same addresses (R9).
+const isValidEmail = (address: string): boolean => parseEmail(address) !== null;
 
 function LoginPage() {
   const { t } = useTranslation();
