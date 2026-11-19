@@ -1,0 +1,32 @@
+{
+  "approved_auto": false,
+  "base": "main",
+  "branch": "feat/toki-020-first-admin-from-env",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-19T01:46:11Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-19T01:46:20Z",
+      "stage": "explore"
+    }
+  ],
+  "key": "TOKI-020",
+  "main_sha": "88f92548ad8c04d81489354f97e6b3d10f5549c9",
+  "metrics": {},
+  "mode": null,
+  "plan_approved": false,
+  "plan_hash": null,
+  "spec_commit": "cfcb225b25e89d6c577ce3cf27f495831b5d1773",
+  "spec_paths": [
+    "docs/specs/2026-11-17-first-admin-design.md"
+  ],
+  "stage": "explore",
+  "tier": "L",
+  "verifier": {
+    "result": null,
+    "round": 0
+  }
+}
