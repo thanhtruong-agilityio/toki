@@ -19,6 +19,8 @@ The three boundaries are enforced by lint in `eslint.config.js`; they are not op
   Source: lint rule `toki/platform-apis`.
 - A boundary is changed in `eslint.config.js` only; do not add an exception in a file.
   Source: header comment of `eslint.config.js` ("A boundary is changed only here").
+- `pnpm --filter @toki/tokens generate` rewrites `packages/tokens/src/tokens.css` from the token objects; the test of the package fails when the file is stale. Do not edit `tokens.css` by hand.
+  Source: `packages/tokens/package.json`; `docs/specs/2026-11-16-tokens-package-design.md`.
 
 ## External standard
 

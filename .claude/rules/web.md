@@ -20,6 +20,10 @@ Each statement is followed by its source. Rules of this project come first; rule
   Source: lint rule `toki/platform-apis` and the `no-restricted-syntax` block for `packages/ui-web` in `eslint.config.js`.
 - Lint does not check `apps/web`; at the time of the ticket `apps/web/src` held none of `Notification`, `localStorage`, `sessionStorage`, `indexedDB`, `navigator.serviceWorker`, `Audio` and `AudioContext`, and review is what keeps it so.
   Source: web-skeleton spec, R12.
+- The component preview page of the design system exists in development only: `pnpm --filter @toki/web dev`, then `http://localhost:5173/preview.html?look=calm&accent=teal`.
+  Source: `docs/specs/2026-11-16-component-preview-design.md`.
+- `pnpm --filter @toki/web run check:no-dev-pages` checks that no dev-only page is in the web build. The web build runs it last; a dist folder can be given with `-- --dist <dir>`.
+  Source: `apps/web/package.json`; `apps/web/scripts/check-no-dev-pages.mjs`.
 
 ## External standard
 
