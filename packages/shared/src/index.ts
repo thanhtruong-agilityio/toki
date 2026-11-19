@@ -8,3 +8,4 @@ export * from "./email.js";
 export * from "./auth/limits.js";
 export * from "./auth/schemas.js";
 export * from "./members/index.js";
+export * from "./channels/index.js";

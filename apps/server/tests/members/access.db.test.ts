@@ -211,12 +211,16 @@ describe("the list (R1, R3)", () => {
 describe("the registered routes (R3)", () => {
   it("are seven: one GET and six POST, with no PUT, PATCH or DELETE", () => {
     const tree = h.app.printRoutes({ commonPrefix: false });
-    const own = tree
-      .split("\n")
-      .filter((line) =>
-        /\/(members|invitations)|:userId|:invitationId/.test(line),
-      )
-      .map((line) => line.replace(/^[│├└─\s]+/, "").trim());
+    // The lines of the two branches of this work only: the top-level line and
+    // the lines indented under it, until the next top-level line.
+    const own: string[] = [];
+    let inside = false;
+    for (const line of tree.split("\n")) {
+      if (/^[├└]── /.test(line)) {
+        inside = /^[├└]── \/api\/v1\/(members|invitations)\b/.test(line);
+      }
+      if (inside) own.push(line.replace(/^[│├└─\s]+/, "").trim());
+    }
     expect(own).toEqual([
       "/api/v1/members (GET, HEAD)",
       "/:userId/role (POST)",

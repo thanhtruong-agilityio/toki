@@ -12,8 +12,15 @@ import {
 } from "./errors.js";
 import { registerHealth } from "./health.js";
 import { registerAuthHooks, registerAuthRoutes } from "./modules/auth/index.js";
-import { registerMembersRoutes } from "./modules/members/index.js";
+import {
+  channelRoutes,
+  type ChannelDepsInput,
+} from "./modules/conversations/index.js";
 import { createMailLayer, type MailLayer } from "./modules/mail/index.js";
+import {
+  getAccountsByIds,
+  registerMembersRoutes,
+} from "./modules/members/index.js";
 
 declare module "fastify" {
   interface FastifyInstance {
@@ -38,6 +45,14 @@ export type BuildAppOptions = {
   db?: Db;
   // The clock the auth module reads (TOKI-008 R19); the system clock by default.
   clock?: Clock;
+  // Replaces the recording of a change or a read of the channel routes. Only
+  // a test passes it (TOKI-029).
+  channelDeps?: Partial<
+    Pick<
+      ChannelDepsInput,
+      "getAccountsByIds" | "recordChange" | "getConversationFacts"
+    >
+  >;
 };
 
 export function buildApp({
@@ -47,6 +62,7 @@ export function buildApp({
   mail,
   db,
   clock = systemClock,
+  channelDeps,
 }: BuildAppOptions) {
   if (!mail && !config.mail) {
     throw new Error("buildApp needs `mail` or `config.mail`");
@@ -122,6 +138,9 @@ export function buildApp({
         clock,
         appOrigin: auth.appOrigin,
       });
+      await scope.register(
+        channelRoutes({ db, clock, getAccountsByIds, ...channelDeps }),
+      );
       await registerRoutes?.(scope);
     });
   } else {
