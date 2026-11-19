@@ -36,7 +36,19 @@
   ],
   "key": "TOKI-026",
   "main_sha": "42d71f05a87afaaa1558560a9c3deeed21d2604e",
-  "metrics": {},
+  "metrics": {
+    "tasks_done": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ]
+  },
   "mode": "manual",
   "plan_approved": true,
   "plan_hash": "e1dd1c25aeff4090d02f02c1eb9684e0a06b823dc515f67739d2ed571c01b816",
