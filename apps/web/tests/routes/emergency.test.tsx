@@ -211,6 +211,12 @@ describe("a browser that already has a session (R43)", () => {
         screen.getByRole("button", { name: "Sign out and continue" }),
       );
       expect(t.emergency.signInWithLink).toHaveBeenCalledTimes(1);
+      // The answer is shown with the question: the failure text, or the wait in whole minutes (R45).
+      expect(screen.getByRole("alert")).toHaveTextContent(
+        kind === "failed"
+          ? "Can't reach Toki. Try again."
+          : "Too many attempts from this network. Try again in 1 minute.",
+      );
       // The question is back, with its two buttons, and the bare button is not.
       expect(screen.getByText(/You are signed in as Ada/)).toBeInTheDocument();
       expect(screen.queryByRole("button", { name: "Sign in" })).toBeNull();

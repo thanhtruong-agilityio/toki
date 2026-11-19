@@ -110,6 +110,8 @@ function EmergencyPage() {
       <h1>{t("emergency.title")}</h1>
       {asking ? (
         <>
+          {/* The answer to the earlier attempt stays visible above the question (R45). */}
+          {message !== null ? <p role="alert">{message}</p> : null}
           <p>
             {t("emergency.switch.question", {
               current: session.user.displayName,
