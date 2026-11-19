@@ -8,6 +8,7 @@ import {
   IdParamSchema,
   INVITATION_BATCH_MAX,
   InviteBodySchema,
+  MemberListQuerySchema,
   type Clock,
 } from "@toki/shared";
 import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
@@ -33,6 +34,7 @@ import {
   requestHash,
   type RequestAction,
 } from "./idempotency.js";
+import { listMembers } from "./list.js";
 import {
   inviteBatch,
   resendInvitation,
@@ -126,6 +128,18 @@ export function registerMembersRoutes(
   }
   const keyOf = (request: FastifyRequest) =>
     IdempotencyKeySchema.parse(request.headers["idempotency-key"]);
+
+  scope.get("/members", (request) =>
+    guarded(async () => {
+      const actor = gate(request);
+      const query = MemberListQuerySchema.parse(request.query ?? {});
+      return listMembers(db, {
+        workspaceId: actor.workspaceId,
+        query,
+        now: new Date(clock.now()),
+      });
+    }),
+  );
 
   scope.post("/invitations", (request, reply) =>
     guarded(async () => {

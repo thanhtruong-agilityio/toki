@@ -1,5 +1,5 @@
 import { SESSION_IDLE_DAYS, type Transport } from "@toki/shared";
-import { and, eq, inArray, isNull, ne } from "drizzle-orm";
+import { and, eq, inArray, isNull, max, ne } from "drizzle-orm";
 import type { DbClient } from "../../db/client.js";
 import { AppError } from "../../errors.js";
 import { ErrorCodes } from "@toki/shared";
@@ -220,4 +220,21 @@ export async function checkSession(
     via: found.via,
     secret: found.secret,
   };
+}
+
+// ---- last use (TOKI-024 R25) ----
+
+// The latest `last_used_at` among the sessions of each person, ended or not,
+// in one grouped read. A person with no session has no entry.
+export async function getLastUsedAtByUser(
+  client: DbClient,
+  userIds: string[],
+): Promise<Map<string, Date>> {
+  if (userIds.length === 0) return new Map();
+  const rows = await client
+    .select({ userId: sessions.userId, at: max(sessions.lastUsedAt) })
+    .from(sessions)
+    .where(inArray(sessions.userId, userIds))
+    .groupBy(sessions.userId);
+  return new Map(rows.flatMap((r) => (r.at ? [[r.userId, r.at]] : [])));
 }
