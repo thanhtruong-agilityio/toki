@@ -1,10 +1,16 @@
 import {
+  canInviteMember,
+  canManageInvitations,
   canOpenAdminPage,
   ChangeRoleBodySchema,
+  ErrorCodes,
+  IdempotencyKeySchema,
   IdParamSchema,
+  INVITATION_BATCH_MAX,
+  InviteBodySchema,
   type Clock,
 } from "@toki/shared";
-import type { FastifyInstance, FastifyRequest } from "fastify";
+import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { ZodError } from "zod";
 import type { Db } from "../../db/client.js";
 import { AppError } from "../../errors.js";
@@ -19,6 +25,19 @@ import {
   type PersonResult,
 } from "./accounts.js";
 import { publishMemberChanged } from "./events.js";
+import {
+  claimRequest,
+  completeRequest,
+  pruneRequests,
+  releaseRequest,
+  requestHash,
+  type RequestAction,
+} from "./idempotency.js";
+import {
+  inviteBatch,
+  resendInvitation,
+  revokeInvitation,
+} from "./invitations.js";
 
 export type MembersDeps = {
   db: Db;
@@ -58,6 +77,105 @@ export function registerMembersRoutes(
   deps: MembersDeps,
 ) {
   const { db, clock } = deps;
+  const invitationDeps = {
+    db,
+    mail: deps.mail,
+    appOrigin: deps.appOrigin,
+  };
+
+  // The repeat rule (R13): claim the key, answer a repeat from the stored
+  // response, store a 200 and nothing else.
+  async function once<T>(
+    request: FastifyRequest,
+    reply: FastifyReply,
+    claim: {
+      actor: Account;
+      key: string;
+      action: RequestAction;
+      invitationId: string | null;
+      body: unknown;
+      now: Date;
+    },
+    work: () => Promise<T>,
+  ) {
+    const claimed = await claimRequest(db, {
+      workspaceId: claim.actor.workspaceId,
+      userId: claim.actor.id,
+      key: claim.key,
+      action: claim.action,
+      hash: requestHash(claim.action, claim.invitationId, claim.body),
+      now: claim.now,
+    });
+    if (claimed.kind === "replay") {
+      return reply.code(claimed.status).send(claimed.body);
+    }
+    try {
+      const body = await work();
+      await pruneRequests(db, claim.now, claimed.claimId);
+      await completeRequest(db, {
+        claimId: claimed.claimId,
+        status: 200,
+        body,
+        now: claim.now,
+      });
+      return body;
+    } catch (error) {
+      await releaseRequest(db, claimed.claimId);
+      throw error;
+    }
+  }
+  const keyOf = (request: FastifyRequest) =>
+    IdempotencyKeySchema.parse(request.headers["idempotency-key"]);
+
+  scope.post("/invitations", (request, reply) =>
+    guarded(async () => {
+      const actor = gate(request);
+      const body = InviteBodySchema.parse(request.body ?? {});
+      if (body.emails.length > INVITATION_BATCH_MAX) {
+        throw new AppError(
+          400,
+          ErrorCodes.batchTooLarge,
+          "Too many addresses in one batch.",
+          { max: INVITATION_BATCH_MAX },
+        );
+      }
+      const key = keyOf(request);
+      refuse(canInviteMember(actor, { role: body.role }));
+      const now = new Date(clock.now());
+      return once(
+        request,
+        reply,
+        { actor, key, action: "invite", invitationId: null, body, now },
+        () => inviteBatch(invitationDeps, { actor, ...body, now }),
+      );
+    }),
+  );
+
+  scope.post("/invitations/:invitationId/resend", (request, reply) =>
+    guarded(async () => {
+      const actor = gate(request);
+      const invitationId = param(request, "invitationId");
+      const key = keyOf(request);
+      refuse(canManageInvitations(actor));
+      const now = new Date(clock.now());
+      return once(
+        request,
+        reply,
+        { actor, key, action: "resend", invitationId, body: null, now },
+        () => resendInvitation(invitationDeps, { actor, invitationId, now }),
+      );
+    }),
+  );
+
+  scope.post("/invitations/:invitationId/revoke", (request) =>
+    guarded(async () => {
+      const actor = gate(request);
+      const invitationId = param(request, "invitationId");
+      refuse(canManageInvitations(actor));
+      const now = new Date(clock.now());
+      return revokeInvitation(invitationDeps, { actor, invitationId, now });
+    }),
+  );
 
   // After the commit: the listeners hear of a session only when it is really
   // ended, and of a change only when it is really made (R28, R40).
