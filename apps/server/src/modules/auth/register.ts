@@ -13,6 +13,8 @@ import { checkSession } from "./sessions.js";
 const LIMITED = new Set([
   `${API_PREFIX}/auth/codes`,
   `${API_PREFIX}/auth/sessions`,
+  // The route of the emergency link has its own count (TOKI-026 R49).
+  `${API_PREFIX}/auth/emergency-sessions`,
 ]);
 
 // One hook on every /api/v1 request, registered on the root so it also runs for

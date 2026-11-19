@@ -1,5 +1,6 @@
 import {
   CreateSessionBodySchema,
+  EmergencyBodySchema,
   ErrorCodes,
   RequestCodeBodySchema,
   CODE_RESEND_SECONDS,
@@ -23,6 +24,7 @@ import {
   listLiveSessions,
   SESSION_ID_PATTERN,
 } from "./devices.js";
+import { useEmergencyLink } from "./emergency.js";
 import { endSessionOfRequest } from "./sessions.js";
 
 declare module "fastify" {
@@ -122,6 +124,60 @@ export function registerAuthRoutes(
         return { user: result.user };
       }
       return { user: result.user, token: result.session.secret };
+    }),
+  );
+
+  // An emergency link for a session without a code (TOKI-026 R26 to R34). `POST` only: no `GET`
+  // signs anybody in. Log lines carry ids only, never the token, its hash or an address (R36).
+  scope.post("/auth/emergency-sessions", pub, (request, reply) =>
+    guarded(async () => {
+      const body = EmergencyBodySchema.parse(request.body ?? {});
+      const transport = body.transport ?? "cookie";
+      const result = await useEmergencyLink(db, {
+        token: body.token,
+        transport,
+        userAgent: request.headers["user-agent"],
+        request,
+      });
+      if (result.kind === "invalid") {
+        request.log.warn({ reason: "invalid" }, "emergency_link_rejected");
+        throw new AppError(
+          400,
+          ErrorCodes.emergencyLinkInvalid,
+          "This link is not valid.",
+        );
+      }
+      if (result.kind === "deactivated") {
+        request.log.warn(
+          {
+            reason: "deactivated",
+            userId: result.userId,
+            linkId: result.linkId,
+          },
+          "emergency_link_rejected",
+        );
+        throw new AppError(
+          400,
+          ErrorCodes.accountDeactivated,
+          "This account has been deactivated.",
+        );
+      }
+      request.log.info(
+        {
+          userId: result.account.id,
+          linkId: result.linkId,
+          sessionId: result.session.id,
+        },
+        "emergency_link_used",
+      );
+      if (transport === "cookie") {
+        reply.header(
+          "set-cookie",
+          sessionCookie(result.session.secret, development),
+        );
+        return { user: toUser(result.account) };
+      }
+      return { user: toUser(result.account), token: result.session.secret };
     }),
   );
 
