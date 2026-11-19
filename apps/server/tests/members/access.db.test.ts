@@ -9,6 +9,7 @@ let h: MemberHarness;
 let admin: Awaited<ReturnType<MemberHarness["admin"]>>;
 let member: Awaited<ReturnType<MemberHarness["person"]>>;
 let other: string;
+let invitationId: string;
 const NO_ONE = "0193f0a0-0000-7000-8000-00000000dead";
 
 beforeAll(async () => {
@@ -17,12 +18,20 @@ beforeAll(async () => {
   await h.admin("second-admin@example.com");
   member = await h.person("member@example.com");
   other = await h.addUser("other@example.com");
+  const made = await h.invite(admin, ["access-invited@example.com"]);
+  invitationId = h.body(made).results[0]!.invitation!.id;
+  h.mail.calls.length = 0;
 });
 afterAll(async () => {
   await h?.close();
 });
 
-type Case = { name: string; url: () => string; payload?: unknown };
+type Case = {
+  name: string;
+  url: () => string;
+  payload?: unknown;
+  key?: boolean;
+};
 const personRoutes: Case[] = [
   {
     name: "role",
@@ -32,7 +41,34 @@ const personRoutes: Case[] = [
   { name: "deactivate", url: () => `/members/${other}/deactivate` },
   { name: "reactivate", url: () => `/members/${other}/reactivate` },
 ];
-const routes: Case[] = [...personRoutes];
+const invitationRoutes: Case[] = [
+  {
+    name: "invite",
+    url: () => "/invitations",
+    payload: { emails: ["access-new@example.com"] },
+    key: true,
+  },
+  {
+    name: "resend",
+    url: () => `/invitations/${invitationId}/resend`,
+    key: true,
+  },
+  { name: "revoke", url: () => `/invitations/${invitationId}/revoke` },
+];
+const routes: Case[] = [...personRoutes, ...invitationRoutes];
+const send = (
+  who: Parameters<MemberHarness["post"]>[0],
+  c: Case,
+  url = c.url(),
+  payload = c.payload,
+  withKey = c.key,
+) =>
+  h.post(
+    who,
+    url,
+    payload,
+    withKey ? { headers: { "idempotency-key": h.key() } } : {},
+  );
 
 const counts = async () =>
   (
@@ -46,7 +82,7 @@ const counts = async () =>
 describe("a Member is refused on every route (R1, D-090)", () => {
   it.each(routes)("$name: 403 forbidden, and nothing changes", async (c) => {
     const before = await counts();
-    const res = await h.post(member, c.url(), c.payload);
+    const res = await send(member, c);
     expect(res.statusCode).toBe(403);
     expect(h.body(res).error.code).toBe("forbidden");
     expect(await counts()).toEqual(before);
@@ -58,16 +94,19 @@ describe("a Member is refused on every route (R1, D-090)", () => {
   it.each(routes)(
     "$name: still 403 with an invalid body, an unknown role and an id that is not a UUID",
     async (c) => {
-      const bad = c.url().replace(other, "not-a-uuid");
-      const missing = c.url().replace(other, NO_ONE);
-      for (const [url, payload] of [
-        [c.url(), { role: "owner" }],
-        [c.url(), { emails: "x" }],
-        [c.url(), []],
-        [bad, c.payload],
-        [missing, c.payload],
+      const id = c.url().includes(other) ? other : invitationId;
+      const bad = c.url().replace(id, "not-a-uuid");
+      const missing = c.url().replace(id, NO_ONE);
+      for (const [url, payload, withKey] of [
+        [c.url(), { role: "owner" }, c.key],
+        [c.url(), { emails: "x" }, c.key],
+        [c.url(), { emails: ["a@example.com"], role: "owner" }, c.key],
+        [c.url(), [], c.key],
+        [c.url(), c.payload, false],
+        [bad, c.payload, c.key],
+        [missing, c.payload, c.key],
       ] as const) {
-        const res = await h.post(member, url, payload);
+        const res = await send(member, c, url, payload, withKey);
         expect(res.statusCode, `${url} ${JSON.stringify(payload)}`).toBe(403);
         expect(h.body(res).error.code).toBe("forbidden");
       }
@@ -77,7 +116,7 @@ describe("a Member is refused on every route (R1, D-090)", () => {
 
 describe("without a session (R1)", () => {
   it.each(routes)("$name: 401 unauthenticated", async (c) => {
-    const res = await h.post(null, c.url(), c.payload);
+    const res = await send(null, c);
     expect(res.statusCode).toBe(401);
     expect(h.body(res).error.code).toBe("unauthenticated");
   });
@@ -85,7 +124,7 @@ describe("without a session (R1)", () => {
 
 describe("an Admin passes (R1)", () => {
   it.each(routes)("$name: 200", async (c) => {
-    const res = await h.post(admin, c.url(), c.payload);
+    const res = await send(admin, c);
     expect(res.statusCode).toBe(200);
   });
 });

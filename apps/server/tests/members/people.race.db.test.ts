@@ -17,6 +17,7 @@ afterAll(async () => {
 });
 beforeEach(async () => {
   await h.sql`truncate admin_actions, invitations, member_requests, login_codes, devices, sessions, users cascade`;
+  h.mail.calls.length = 0;
 });
 
 const admins = async () =>
@@ -179,5 +180,126 @@ describe("a change that fails leaves nothing (R28)", () => {
     expect(again.statusCode).toBe(200);
     expect(heard).toHaveLength(1);
     stop();
+  });
+});
+
+describe("invitations and person routes together (R39)", () => {
+  const PAIRS = 5;
+
+  it("refuses a batch whose actor was demoted while it waited, and stores no answer", async () => {
+    const a = await h.admin(mail("a"));
+    await h.admin(mail("b"));
+    let waiting!: ReturnType<typeof h.invite>;
+    await h.sql.begin(async (tx) => {
+      await tx`select id from users where workspace_id = ${h.workspaceId} order by id for no key update`;
+      await tx`update users set role = 'member' where id = ${a.id}`;
+      waiting = h.invite(a, [mail("x")]);
+      await someoneWaits();
+    });
+    const res = await waiting;
+    expect(res.statusCode).toBe(403);
+    expect(h.body(res).error.code).toBe("forbidden");
+    expect(await h.sql`select id from invitations`).toEqual([]);
+    expect(await h.sql`select id from member_requests`).toEqual([]);
+  });
+
+  it("stops a batch partway when the actor is no longer an Admin: the invitations made stay and are recorded", async () => {
+    const a = await h.admin(mail("a"));
+    await h.admin(mail("b"));
+    const third = mail("third");
+    // The actor is demoted in the transaction of the second address.
+    const second = mail("second");
+    await h.sql
+      .unsafe(`create function demote_in_test() returns trigger language plpgsql as $$
+      begin
+        if new.email = '${second}' then
+          update users set role = 'member' where id = '${a.id}';
+        end if;
+        return new;
+      end $$`);
+    await h.sql`create trigger demote_in_test_trg after insert on invitations
+      for each row execute function demote_in_test()`;
+    try {
+      const res = await h.invite(a, [mail("first"), second, third]);
+      expect(res.statusCode).toBe(403);
+      expect(h.body(res).error.code).toBe("forbidden");
+    } finally {
+      await h.sql`drop trigger demote_in_test_trg on invitations`;
+      await h.sql`drop function demote_in_test()`;
+    }
+    expect(await h.sql`select id from invitations`).toHaveLength(2);
+    expect(await h.invitationsOf(third)).toEqual([]);
+    expect(await h.actions()).toHaveLength(2);
+    expect(await h.sql`select id from member_requests`).toEqual([]);
+  });
+
+  it(`a batch that invites a deactivated person and a reactivation of that person at once finish without a deadlock (${PAIRS} times)`, async () => {
+    const a = await h.admin(mail("a"));
+    const b = await h.admin(mail("b"));
+    for (let i = 0; i < PAIRS; i += 1) {
+      const email = mail("old");
+      const old = await h.addUser(email, { status: "deactivated" });
+      const [x, y] = await Promise.all([
+        h.invite(a, [email]),
+        h.post(b, `/members/${old}/reactivate`),
+      ]);
+      expect([x.statusCode, y.statusCode]).toEqual([200, 200]);
+      expect((await h.user(old)).status).toBe("active");
+    }
+  });
+
+  it(`a batch and a deactivation of the acting Admin at once finish without a deadlock (${PAIRS} times)`, async () => {
+    for (let i = 0; i < PAIRS; i += 1) {
+      const a = await h.admin(mail("a"));
+      const b = await h.admin(mail("b"));
+      const [x, y] = await Promise.all([
+        h.invite(a, [mail("p"), mail("q")]),
+        h.post(b, `/members/${a.id}/deactivate`),
+      ]);
+      expect(y.statusCode).toBe(200);
+      expect([200, 401]).toContain(x.statusCode);
+    }
+  });
+
+  it(`a resend and a reactivation of the person at once finish without a deadlock (${PAIRS} times)`, async () => {
+    const a = await h.admin(mail("a"));
+    const b = await h.admin(mail("b"));
+    for (let i = 0; i < PAIRS; i += 1) {
+      const email = mail("old");
+      const old = await h.addUser(email, { status: "deactivated" });
+      const made = await h.invite(a, [email]);
+      const id = h.body(made).results[0]!.invitation!.id;
+      const [x, y] = await Promise.all([
+        h.post(a, `/invitations/${id}/resend`, undefined, {
+          headers: { "idempotency-key": h.key() },
+        }),
+        h.post(b, `/members/${old}/reactivate`),
+      ]);
+      expect(y.statusCode).toBe(200);
+      // The resend came first, or met the invitation the reactivation closed.
+      expect([200, 409]).toContain(x.statusCode);
+      if (x.statusCode === 409) {
+        expect(h.body(x).error.code).toBe("invitation_used");
+      }
+      expect((await h.invitation(id)).used_by).toBe(old);
+    }
+  });
+
+  it(`a revoke and a resend of one invitation at once leave it revoked or renewed, never both (${PAIRS} times)`, async () => {
+    const a = await h.admin(mail("a"));
+    const b = await h.admin(mail("b"));
+    for (let i = 0; i < PAIRS; i += 1) {
+      const made = await h.invite(a, [mail("p")]);
+      const id = h.body(made).results[0]!.invitation!.id;
+      const [x, y] = await Promise.all([
+        h.post(a, `/invitations/${id}/resend`, undefined, {
+          headers: { "idempotency-key": h.key() },
+        }),
+        h.post(b, `/invitations/${id}/revoke`),
+      ]);
+      expect(y.statusCode).toBe(200);
+      expect([200, 409]).toContain(x.statusCode);
+      expect((await h.invitation(id)).revoked_at).not.toBeNull();
+    }
   });
 });
