@@ -1,6 +1,7 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { createHarness, type Harness } from "../auth/test-harness.js";
 import type { Change } from "../../src/modules/conversations/changes.js";
+import { addMemberToGeneral } from "../../src/modules/conversations/index.js";
 import { insertConversation, insertConversationMember } from "../test-rows.js";
 import {
   bystander,
@@ -305,5 +306,54 @@ describe("archive and restore (S9)", () => {
     const [row] =
       await h.sql`select archived_at from conversations where id = ${id}`;
     expect(row!.archived_at).toBeNull();
+  });
+});
+
+describe("#general and a newcomer (S11)", () => {
+  it("addMemberToGeneral is not held back by a write that holds the #general row", async () => {
+    // The channel routes lock the conversation row FOR NO KEY UPDATE, so the
+    // key share that the member row of a newcomer takes does not wait
+    // (TOKI-028 hand-offs, TOKI-024 R39).
+    const admin: Person = await person(h, "lock-gen-admin", "admin");
+    const general = await insertConversation(h.sql, {
+      workspace_id: h.workspaceId,
+      created_by: admin.id,
+      name: "general",
+      is_general: true,
+    });
+    await insertConversationMember(h.sql, {
+      conversation_id: general,
+      user_id: admin.id,
+      workspace_id: h.workspaceId,
+    });
+    const added = await bystander(h, "lock-gen-added");
+    const newcomer = await bystander(h, "lock-gen-newcomer");
+    const held = holdFirst("members_added");
+    try {
+      const add = send(
+        h,
+        admin,
+        "POST",
+        `/api/v1/channels/${general}/members`,
+        {
+          userIds: [added],
+        },
+      );
+      await held.entered;
+      const joined = await Promise.race([
+        addMemberToGeneral(h.db, {
+          workspaceId: h.workspaceId,
+          userId: newcomer,
+          createdAt: new Date(h.clock.now()),
+        }),
+        new Promise<"waited">((r) => setTimeout(() => r("waited"), 3000)),
+      ]);
+      expect(joined).toBe(true);
+      held.release();
+      expect((await add).statusCode).toBe(200);
+    } finally {
+      held.done();
+    }
+    expect(await memberRows(h.sql, general)).toHaveLength(3);
   });
 });
