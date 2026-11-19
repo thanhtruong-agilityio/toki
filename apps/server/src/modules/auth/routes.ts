@@ -80,7 +80,9 @@ export function registerAuthRoutes(
       // changes nothing the client sees (R8).
       if (result.mail) {
         const mailInput = result.mail;
-        reply.raw.once("finish", () => {
+        // `close` fires whether the answer was written in full or the client
+        // dropped the connection first; the code exists either way.
+        reply.raw.once("close", () => {
           void mail.sendSignInMail(mailInput).catch(() => {});
         });
       }

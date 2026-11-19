@@ -114,15 +114,15 @@ export type RequestSecret = { secret: string; via: "header" | "cookie" };
 
 type HeaderSource = { headers: Record<string, string | string[] | undefined> };
 
-// The Authorization header wins when the request has one; otherwise the one
-// cookie of this environment.
+// A Bearer Authorization header wins when the request has one; otherwise the
+// one cookie of this environment.
 export function secretOfRequest(request: HeaderSource): RequestSecret | null {
   const authorization = request.headers.authorization;
   if (typeof authorization === "string") {
     const match = /^Bearer\s+(\S+)\s*$/i.exec(authorization);
-    // A header that is not a usable Bearer value counts as no secret, so a
-    // stale cookie is not used behind it either: a header is sent on purpose.
-    return match ? { secret: match[1]!, via: "header" } : null;
+    if (match) return { secret: match[1]!, via: "header" };
+    // A header of another scheme (Basic added by a proxy, say) is not ours: the
+    // cookie is still read.
   }
   const cookie = request.headers.cookie;
   const value = readCookie(

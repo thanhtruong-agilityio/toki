@@ -168,6 +168,23 @@ describe("the check (R24 to R27, R44)", () => {
     ).toBe("unauthenticated");
   });
 
+  it("reads the cookie when the Authorization header is of another scheme", async () => {
+    await h.addUser("basic@example.com");
+    const { secret } = await h.signIn("basic@example.com");
+    const res = await h.call({
+      method: "GET",
+      url: "/api/v1/protected",
+      headers: { authorization: "Basic dXNlcjpwYXNz", ...h.withCookie(secret) },
+    });
+    expect(res.statusCode).toBe(200);
+    const none = await h.call({
+      method: "GET",
+      url: "/api/v1/protected",
+      headers: { authorization: "Basic dXNlcjpwYXNz" },
+    });
+    expect(h.json(none).error.code).toBe("unauthenticated");
+  });
+
   it("answers 401 for an unknown path without a session and 404 with one (R44)", async () => {
     await h.addUser("path@example.com");
     const none = await h.call({ method: "GET", url: "/api/v1/does/not/exist" });

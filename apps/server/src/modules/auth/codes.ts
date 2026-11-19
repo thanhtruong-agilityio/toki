@@ -103,7 +103,10 @@ export async function requestCode(
           lte(loginCodes.createdAt, windowStart),
         ),
       )
-      .limit(PRUNE_BATCH);
+      .limit(PRUNE_BATCH)
+      // Two requests for different addresses prune the same old rows: locking
+      // them and skipping the ones another request holds avoids a deadlock.
+      .for("update", { skipLocked: true });
     await tx.delete(loginCodes).where(inArray(loginCodes.id, stale));
 
     const account = await findAccountByEmail(tx, email);

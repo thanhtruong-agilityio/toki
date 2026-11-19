@@ -277,3 +277,26 @@ describe("an address that has only an invitation (R1, R2, concern 1)", () => {
     expect(row!.user_id).toBeNull();
   });
 });
+
+describe("pruning together (R48)", () => {
+  it("answers every one of many parallel requests for different addresses while old rows are pruned", async () => {
+    const { insertLoginCode } = await import("../../tests/test-rows.js");
+    const old = new Date(h.clock.now() - 30 * 60_000);
+    for (let i = 0; i < 300; i++) {
+      await insertLoginCode(h.sql, {
+        workspace_id: h.workspaceId,
+        email: `stale${i}@example.com`,
+        created_at: old,
+        expires_at: new Date(old.getTime() + 600_000),
+      });
+    }
+    for (let round = 0; round < 5; round++) {
+      const results = await Promise.all(
+        Array.from({ length: 10 }, (_, i) =>
+          h.requestCode(`par${round}-${i}@example.com`),
+        ),
+      );
+      for (const res of results) expect(res.statusCode).toBe(200);
+    }
+  });
+});
