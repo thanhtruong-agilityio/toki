@@ -159,4 +159,9 @@ Grilling, round 1 (2026-11-19). The riskiest step is step 2.
 7. **The record drifts from the files.** R14 compares the SHA-256 on every build.
 8. **Safari is not checked by the builder.** It stays open in the pull request until the Dev has done it.
 
-Decisions the Dev took in this round are recorded here before approval.
+Decided by the Dev in this round (2026-11-19):
+
+- A file over the size limit with the default layout features: stop and report the size; the ligatures are not dropped to fit.
+- A test outside `apps/web` that fails because of the real fonts: stop and ask; it is not fixed in this pull request.
+- The version of a font with no release is the full commit SHA of its repository, with the version string stored in the font file; JetBrains Mono uses the tag `v2.304`.
+- Safari for R13 and the Bricolage comparison are done by the Dev after the pull request is opened, and are listed there as open until then.
