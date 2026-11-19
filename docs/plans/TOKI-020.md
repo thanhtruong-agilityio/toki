@@ -43,6 +43,10 @@ Each step: write the test, run it and see it fail for the right reason, then wri
 4. **Personal data in logs or errors.** Mitigation: log codes only; R13 test searches the whole captured output.
 5. **Config breaks other tests.** Required values are added at every start, so any test that starts the real server without them fails. Mitigation: step 11 searches for every `loadProcessConfig` / spawn of `main.ts`.
 
+## Files outside the steps
+
+`docs/plans/TOKI-020.state.json` is the record the `dev-state` tool writes and commits for every ticket (stage, approval hash, verifier rounds). It is tooling output, not a deliverable, and no step edits it by hand.
+
 ## Out of scope
 
 The tables (TOKI-019, TOKI-028), the invitation and last-Admin rules (TOKI-024), mail, sign-in, the first-entry screen and card, `/readyz`, migration order (TOKI-085), the installation guide (TOKI-087).
