@@ -1,5 +1,6 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { createHarness, type Harness } from "../auth/test-harness.js";
+import type { Change } from "../../src/modules/conversations/changes.js";
 import { insertConversation, insertConversationMember } from "../test-rows.js";
 import {
   bystander,
@@ -18,9 +19,18 @@ import {
 // sets up the only order that can happen: the second connection changes a
 // `users` row first and holds it; the request then waits on its `FOR SHARE`
 // read of that row and, after the commit, reads the result.
+// A test can hold the first write inside its transaction: `hook` runs where the
+// change is recorded, after the write and before the commit.
+let hook: ((change: Change) => Promise<void>) | undefined;
 let h: Harness;
 beforeAll(async () => {
-  h = await createHarness();
+  h = await createHarness({
+    channelDeps: {
+      recordChange: async (_tx, change) => {
+        await hook?.(change);
+      },
+    },
+  });
 });
 afterAll(async () => {
   await h?.close();
@@ -111,11 +121,16 @@ describe("create (S4)", () => {
 });
 
 // A public channel with one member, made by rows.
-async function openChannel(name: string, memberIds: string[]) {
+async function openChannel(
+  name: string,
+  memberIds: string[],
+  isPrivate = false,
+) {
   const id = await insertConversation(h.sql, {
     workspace_id: h.workspaceId,
     created_by: memberIds[0]!,
     name,
+    is_private: isPrivate,
   });
   for (const user_id of memberIds) {
     await insertConversationMember(h.sql, {
@@ -156,5 +171,81 @@ describe("join and add (S7)", () => {
     expect(res.statusCode).toBe(400);
     expect(jsonOf(res).error.code).toBe("invalid_member");
     expect(await memberRows(h.sql, id)).toHaveLength(1);
+  });
+});
+
+// Holds the first change of `type` inside its transaction until `release()`.
+function holdFirst(type: Change["type"]) {
+  let release!: () => void;
+  const gate = new Promise<void>((r) => (release = r));
+  let entered!: () => void;
+  const enteredP = new Promise<void>((r) => (entered = r));
+  let taken = false;
+  hook = async (change) => {
+    if (change.type === type && !taken) {
+      taken = true;
+      entered();
+      await gate;
+    }
+  };
+  return {
+    entered: enteredP,
+    release: () => {
+      release();
+    },
+    done: () => {
+      hook = undefined;
+    },
+  };
+}
+
+describe("leave and remove (S8)", () => {
+  it("two last members of a private channel leaving at the same moment leave it archived with no member", async () => {
+    const a: Person = await person(h, "lock-last-a");
+    const b: Person = await person(h, "lock-last-b");
+    const id = await openChannel("lock-last", [a.id, b.id], true);
+    const held = holdFirst("member_left");
+    try {
+      const first = send(h, a, "POST", `/api/v1/channels/${id}/leave`);
+      await held.entered;
+      // The first has deleted its row and holds the transaction open; the
+      // second must wait on the conversation row, not read the first's row.
+      const second = send(h, b, "POST", `/api/v1/channels/${id}/leave`);
+      await waitForLock(h.sql);
+      held.release();
+      const [x, y] = await Promise.all([first, second]);
+      expect([x.statusCode, y.statusCode]).toEqual([200, 200]);
+      expect(jsonOf(x).archived).toBe(false);
+      expect(jsonOf(y).archived).toBe(true);
+    } finally {
+      held.done();
+    }
+    expect(await memberRows(h.sql, id)).toHaveLength(0);
+    const [row] =
+      await h.sql`select archived_at from conversations where id = ${id}`;
+    expect(row!.archived_at).not.toBeNull();
+  });
+
+  it("a leave that meets an add of the same person waits for it and removes the person added", async () => {
+    const adder: Person = await person(h, "lock-adder-7");
+    const x: Person = await person(h, "lock-x-7");
+    const id = await openChannel("lock-leave-add", [adder.id]);
+    const held = holdFirst("members_added");
+    try {
+      const add = send(h, adder, "POST", `/api/v1/channels/${id}/members`, {
+        userIds: [x.id],
+      });
+      await held.entered;
+      const leave = send(h, x, "POST", `/api/v1/channels/${id}/leave`);
+      await waitForLock(h.sql);
+      held.release();
+      const [a, l] = await Promise.all([add, leave]);
+      expect(jsonOf(a).added).toEqual([x.id]);
+      expect(jsonOf(l)).toEqual({ changed: true, archived: false });
+    } finally {
+      held.done();
+    }
+    const rows = await memberRows(h.sql, id);
+    expect(rows.map((r) => r.user_id)).toEqual([adder.id]);
   });
 });

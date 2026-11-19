@@ -1,3 +1,4 @@
+import { z } from "zod";
 import type { FastifyPluginAsync, FastifyReply, FastifyRequest } from "fastify";
 import {
   BrowseChannelsQuerySchema,
@@ -25,10 +26,15 @@ import {
   createChannel,
   editChannelDetails,
   joinChannel,
+  leaveChannel,
+  removeMember,
 } from "./channels.js";
 import type { ChannelDeps, ChannelDepsInput } from "./deps.js";
 import { getConversationFacts as defaultGetConversationFacts } from "./facts.js";
 import { toSafeError } from "./safe-error.js";
+
+// The four routes with no body take no body, an empty body or `{}`.
+const NoBodySchema = z.strictObject({});
 
 type Handler = (
   request: FastifyRequest,
@@ -175,8 +181,30 @@ export function channelRoutes(input: ChannelDepsInput): FastifyPluginAsync {
         );
       }),
     );
-    scope.post("/channels/:id/leave", guarded(notBuilt));
-    scope.delete("/channels/:id/members/:userId", guarded(notBuilt));
+    scope.post(
+      "/channels/:id/leave",
+      guarded(async (request) => {
+        const account = request.account!;
+        const id = ChannelIdSchema.parse((request.params as { id: string }).id);
+        NoBodySchema.parse(request.body ?? {});
+        return leaveChannel(deps, { id: account.id, role: account.role }, id);
+      }),
+    );
+    scope.delete(
+      "/channels/:id/members/:userId",
+      guarded(async (request) => {
+        const account = request.account!;
+        const params = request.params as { id: string; userId: string };
+        const id = ChannelIdSchema.parse(params.id);
+        const userId = ChannelIdSchema.parse(params.userId);
+        return removeMember(
+          deps,
+          { id: account.id, role: account.role },
+          id,
+          userId,
+        );
+      }),
+    );
     scope.post("/channels/:id/archive", guarded(notBuilt));
     scope.post("/channels/:id/restore", guarded(notBuilt));
     scope.patch("/conversations/:id/settings", guarded(notBuilt));

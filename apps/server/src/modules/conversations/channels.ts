@@ -4,6 +4,8 @@ import {
   canAddPeopleToChannel,
   canEditChannelDetails,
   canJoinChannel,
+  canLeaveChannel,
+  canRemovePeopleFromChannel,
   type ChannelDetail,
   type ConversationFacts,
   type CreateChannelBodySchema,
@@ -411,6 +413,131 @@ export async function addMembers(
         });
       }
       return { added, alreadyMembers };
+    },
+  );
+}
+
+// Only a private channel is archived when its last member leaves (D-051,
+// TOKI-028 concern 3, TOKI-029 concern 1): an empty public channel can still
+// be joined by anyone.
+export const archivesWhenEmptied = (isPrivate: boolean) => isPrivate;
+
+// A person who is not a member of a public channel gets "nothing changed"
+// instead of the refusal of the function, and before `channel_is_general`
+// (R12): a repeat of a leave, or a leave after Undo, is harmless.
+const leavePermission: Permission = (actor, facts) => {
+  const decision = canLeaveChannel(actor, facts);
+  return !decision.allowed && decision.reason === "not_a_member"
+    ? { allowed: true }
+    : decision;
+};
+
+// R12. One transaction with the lock of the conversation row: the member row
+// is deleted and the people who remain are counted, the deactivated ones left
+// out (concern 9). Their status is read after the lock with no lock of its
+// own, because a `users` lock after the conversation lock would break the
+// order of R15; a reactivation that commits after the read finds the channel
+// archived, the same result as a reactivation a moment later.
+export async function leaveChannel(
+  deps: Writer,
+  account: { id: string; role: string },
+  id: string,
+): Promise<{ changed: boolean; archived: boolean }> {
+  return inConversationTx(
+    deps,
+    account,
+    id,
+    [],
+    leavePermission,
+    async ({ tx, actor, facts, now }) => {
+      if (!facts.isMember) {
+        return { changed: false, archived: facts.archived };
+      }
+      await tx
+        .delete(conversationMembers)
+        .where(
+          and(
+            eq(conversationMembers.conversationId, id),
+            eq(conversationMembers.userId, actor.id),
+          ),
+        );
+      await deps.recordChange(tx, {
+        type: "member_left",
+        actorId: actor.id,
+        conversationId: id,
+        userIds: [actor.id],
+        at: now,
+      });
+      let archived = facts.archived;
+      if (!archived && archivesWhenEmptied(facts.kind === "private_channel")) {
+        const rest = await tx
+          .select({ userId: conversationMembers.userId })
+          .from(conversationMembers)
+          .where(eq(conversationMembers.conversationId, id));
+        const accounts = await deps.getAccountsByIds(
+          tx,
+          rest.map((r) => r.userId),
+        );
+        if (!accounts.some((a) => a.status === "active")) {
+          await tx
+            .update(conversations)
+            .set({ archivedAt: now })
+            .where(eq(conversations.id, id));
+          archived = true;
+          await deps.recordChange(tx, {
+            type: "channel_archived",
+            actorId: actor.id,
+            conversationId: id,
+            userIds: [actor.id],
+            at: now,
+          });
+        }
+      }
+      return { changed: true, archived };
+    },
+  );
+}
+
+// R13: an Admin who is a member removes a person; removing oneself is its own
+// route (leave), which carries the last-member rule.
+export async function removeMember(
+  deps: Writer,
+  account: { id: string; role: string },
+  id: string,
+  userId: string,
+): Promise<{ changed: boolean }> {
+  return inConversationTx(
+    deps,
+    account,
+    id,
+    [],
+    canRemovePeopleFromChannel,
+    async ({ tx, actor, now }) => {
+      if (userId === actor.id) {
+        throw new AppError(
+          409,
+          ErrorCodes.selfTarget,
+          "Leave the channel instead of removing yourself.",
+        );
+      }
+      const removed = await tx
+        .delete(conversationMembers)
+        .where(
+          and(
+            eq(conversationMembers.conversationId, id),
+            eq(conversationMembers.userId, userId),
+          ),
+        )
+        .returning({ userId: conversationMembers.userId });
+      if (removed.length === 0) return { changed: false };
+      await deps.recordChange(tx, {
+        type: "member_removed",
+        actorId: actor.id,
+        conversationId: id,
+        userIds: [userId],
+        at: now,
+      });
+      return { changed: true };
     },
   );
 }
