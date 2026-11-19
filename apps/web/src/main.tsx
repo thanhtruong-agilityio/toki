@@ -5,11 +5,10 @@ import "@toki/ui-web/utilities.css";
 import { applyAppearance } from "@toki/ui-web";
 import { setPlatform } from "@toki/platform";
 import { createWebPlatform } from "@toki/platform/web";
-import { QueryClientProvider } from "@tanstack/react-query";
 import { RouterProvider } from "@tanstack/react-router";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { queryClient } from "./query-client";
+import { AppProviders } from "./app-providers";
 import { router } from "./router";
 
 // The web build of platform, chosen once before anything is mounted. The sound
@@ -22,8 +21,8 @@ applyAppearance({ look: "device" });
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <QueryClientProvider client={queryClient}>
+    <AppProviders>
       <RouterProvider router={router} />
-    </QueryClientProvider>
+    </AppProviders>
   </StrictMode>,
 );

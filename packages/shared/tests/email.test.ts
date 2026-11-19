@@ -56,4 +56,9 @@ describe("parseEmail", () => {
     expect(at(255)).toHaveLength(255);
     expect(parseEmail(at(255))).toBeNull();
   });
+  it("refuses a label of 64 characters and a non-ASCII letter, and lower-cases", () => {
+    expect(parseEmail(`a@${"b".repeat(64)}.com`)).toBeNull();
+    expect(parseEmail("á@example.com")).toBeNull();
+    expect(parseEmail("A@B.co")).toBe("a@b.co");
+  });
 });

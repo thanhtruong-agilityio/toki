@@ -9,10 +9,23 @@ import { I18nProvider } from "@toki/i18n/react";
 import type { Language } from "@toki/i18n";
 import { act, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, test, vi } from "vitest";
+import { markSignedIn } from "@toki/client-core";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 import { routeTree } from "../../src/router";
 import type { Role, SectionRow } from "../../src/layout/sections";
 import { AppShellRoute } from "../../src/routes/app-layout";
+import { setAuthServices } from "../../src/auth/services";
+import { clock } from "../../src/clock";
+import { timers } from "../../src/auth/timers";
+import { createFakeCalls, user } from "../support/auth-harness";
+
+// R42: the app opens at `/` only with a session. The stub answers `GET /auth/session` with a signed-in
+// person, and the state is the one the guard reads.
+beforeEach(() => {
+  const calls = createFakeCalls();
+  setAuthServices({ calls, openCalls: calls, clock, timers });
+  markSignedIn(user);
+});
 
 async function mount(language: Language, path = "/") {
   const router = createRouter({

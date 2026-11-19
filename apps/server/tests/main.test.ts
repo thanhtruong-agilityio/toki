@@ -52,6 +52,10 @@ const validEnv = (port: number) => ({
   SMTP_PORT: "1",
   SMTP_TLS: "none",
   MAIL_FROM_ADDRESS: "toki@example.com",
+  // The first set-up values (TOKI-020 R21): fake, on a reserved domain.
+  FIRST_ADMIN_EMAIL: "admin@example.com",
+  FIRST_ADMIN_NAME: "Test Admin",
+  WORKSPACE_NAME: "Test Workspace",
   // The auth area is required by the entry (TOKI-022); fake values only.
   AUTH_CODE_SECRET: "x".repeat(32),
   APP_ORIGIN: "http://localhost:5173",
@@ -174,5 +178,45 @@ describe("the started process", () => {
     proc.child.kill("SIGTERM");
     expect(await proc.exited).toBe(0);
     await new Promise<void>((resolve) => smtp.close(() => resolve()));
+  });
+
+  it("does not start without the first set-up values and names them, never the value (TOKI-020 R1, R3)", async () => {
+    for (const name of ["FIRST_ADMIN_EMAIL", "WORKSPACE_NAME"]) {
+      const env: Record<string, string> = { ...validEnv(await freePort()) };
+      delete env[name];
+      const proc = start(env);
+      expect(await proc.exited).toBe(1);
+      expect(proc.err()).toContain(name);
+      expect(proc.out()).toBe("");
+    }
+    const bad = "not-an-address-4d2f";
+    const proc = start({
+      ...validEnv(await freePort()),
+      FIRST_ADMIN_EMAIL: bad,
+    });
+    expect(await proc.exited).toBe(1);
+    expect(proc.err()).toContain("FIRST_ADMIN_EMAIL");
+    expect(proc.err() + proc.out()).not.toContain(bad);
+  });
+
+  it("listens with no database, logs the failed first attempt, and stops on SIGTERM during the wait (TOKI-020 R12, R20)", async () => {
+    const port = await freePort();
+    const proc = start(validEnv(port));
+    await until(() => proc.out().includes("listening"));
+    const health = await fetch(`http://127.0.0.1:${port}/healthz`);
+    expect(health.status).toBe(200);
+    await until(() => proc.out().includes("first_admin_failed"), 5000);
+    const line = proc
+      .out()
+      .split("\n")
+      .filter((l) => l.includes("first_admin_failed"))[0]!;
+    expect(JSON.parse(line)).toMatchObject({ attempt: 1, retry: true });
+    // The step is now waiting for its next attempt.
+    const stopped = Date.now();
+    proc.child.kill("SIGTERM");
+    expect(await proc.exited).toBe(0);
+    expect(Date.now() - stopped).toBeLessThan(3000);
+    expect(proc.out()).toContain("first_admin_stopped");
+    expect(proc.out()).not.toContain("admin@example.com");
   });
 });

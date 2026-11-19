@@ -38,6 +38,10 @@ export default defineConfig({
         SMTP_PORT: "1",
         SMTP_TLS: "none",
         MAIL_FROM_ADDRESS: "toki@example.com",
+        // The first set-up values (TOKI-020 R21): fake; the step finds no database and only logs.
+        FIRST_ADMIN_EMAIL: "admin@example.com",
+        FIRST_ADMIN_NAME: "Test Admin",
+        WORKSPACE_NAME: "Test Workspace",
         // And the auth values (TOKI-022); fake, nothing reads them in the e2e run.
         AUTH_CODE_SECRET: "e2e-code-secret-e2e-code-secret-00",
         APP_ORIGIN: "http://127.0.0.1:5173",
