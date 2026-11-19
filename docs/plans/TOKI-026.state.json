@@ -32,6 +32,10 @@
     {
       "at": "2026-11-19T07:52:55Z",
       "stage": "build"
+    },
+    {
+      "at": "2026-11-19T09:16:18Z",
+      "stage": "check"
     }
   ],
   "key": "TOKI-026",
@@ -56,10 +60,10 @@
   "spec_paths": [
     "docs/specs/2026-11-17-sessions-emergency-access-design.md"
   ],
-  "stage": "build",
+  "stage": "check",
   "tier": "L",
   "verifier": {
-    "result": null,
-    "round": 0
+    "result": "PASS",
+    "round": 3
   }
 }
