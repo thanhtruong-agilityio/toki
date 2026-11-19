@@ -136,6 +136,8 @@ function LoginPage() {
     const id = requestId.current;
     if (id === null) return { kind: "expired" };
     const answer = await calls.submitCode({ requestId: id, code: digits });
+    // A resend answered while this ran replaced the code: this answer is about the old one.
+    if (requestId.current !== id) return { kind: "left" };
     if (answer.kind === "ok") {
       removeCodeRecord(tab);
       requestId.current = null;

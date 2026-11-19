@@ -12,7 +12,10 @@ export function returnAddress(next: unknown, origin: string): string {
     return "/";
   }
   if (url.origin !== origin || url.pathname === "/login") return "/";
-  return url.pathname + url.search + url.hash;
+  // A path such as `/.//x` normalises to `//x`, which a browser reads as another origin.
+  const result = url.pathname + url.search + url.hash;
+  if (result.startsWith("//") || result.startsWith("/\\")) return "/";
+  return result;
 }
 
 export type GuardInput = {

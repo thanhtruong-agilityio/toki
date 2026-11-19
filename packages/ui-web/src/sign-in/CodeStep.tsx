@@ -300,7 +300,7 @@ export function CodeStep(props: CodeStepProps) {
       <div className="glinks">
         <Button
           variant="link"
-          disabled={checking}
+          disabled={checking || resending}
           onClick={onUseDifferentEmail}
         >
           {t("signIn.code.changeEmail")}

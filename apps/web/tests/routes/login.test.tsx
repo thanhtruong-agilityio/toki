@@ -206,6 +206,67 @@ describe("the code step and the tab record (R7, R15, R35)", () => {
     });
   });
 
+  test("'Use a different email' waits while a resend runs, so a late answer cannot write a record (R35)", async () => {
+    const t = await openLogin();
+    await toCodeStep(t);
+    const late = deferred<{
+      kind: "ok";
+      requestId: string;
+      expiresInSeconds: number;
+      resendAfterSeconds: number;
+    }>();
+    t.calls.requestCode.mockReturnValueOnce(late.promise);
+    t.timers.advance(60_000);
+    await userEvent.click(screen.getByRole("button", { name: "Resend code" }));
+    const link = screen.getByRole("button", { name: "Use a different email" });
+    expect(link).toBeDisabled();
+    await act(async () =>
+      late.resolve({
+        kind: "ok",
+        requestId: "req-2",
+        expiresInSeconds: 600,
+        resendAfterSeconds: 60,
+      }),
+    );
+    await t.settle();
+    expect(link).toBeEnabled();
+    await userEvent.click(link);
+    expect(record(t)).toBeNull();
+  });
+
+  test("a send answered for a requestId that a resend replaced changes nothing (R35)", async () => {
+    const t = await openLogin();
+    await toCodeStep(t);
+    const resent = deferred<{
+      kind: "ok";
+      requestId: string;
+      expiresInSeconds: number;
+      resendAfterSeconds: number;
+    }>();
+    const sent = deferred<{ kind: "expired" }>();
+    t.calls.requestCode.mockReturnValueOnce(resent.promise);
+    t.calls.submitCode.mockReturnValueOnce(sent.promise);
+    t.timers.advance(60_000);
+    await userEvent.click(screen.getByRole("button", { name: "Resend code" }));
+    await userEvent.type(codeField(), "123456");
+    expect(t.calls.submitCode).toHaveBeenCalledWith({
+      requestId: "req-1",
+      code: "123456",
+    });
+    await act(async () =>
+      resent.resolve({
+        kind: "ok",
+        requestId: "req-2",
+        expiresInSeconds: 600,
+        resendAfterSeconds: 60,
+      }),
+    );
+    await act(async () => sent.resolve({ kind: "expired" }));
+    await t.settle();
+    expect(record(t)).toMatchObject({ requestId: "req-2" });
+    expect(screen.queryByText("This code has expired")).toBeNull();
+  });
+
   test("after an accepted resend the record goes at the end of the new code, not the first (R15, R35)", async () => {
     const t = await openLogin();
     await toCodeStep(t);

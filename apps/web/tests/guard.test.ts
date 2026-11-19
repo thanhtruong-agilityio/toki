@@ -21,6 +21,8 @@ describe("the return address (R3)", () => {
     [""],
     ["\\\\other.example"],
     ["/\t/other.example"],
+    ["/.//evil.com"],
+    ["/a/../..//evil.com"],
     ["javascript:alert(1)"],
   ])("%j gives /", (next) => {
     expect(returnAddress(next, ORIGIN)).toBe("/");
