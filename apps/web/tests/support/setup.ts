@@ -11,3 +11,6 @@ import { afterEach } from "vitest";
 afterEach(() => {
   cleanup();
 });
+
+// jsdom has no scrolling; the router asks for it on every navigation.
+if (typeof window !== "undefined") window.scrollTo = () => {};

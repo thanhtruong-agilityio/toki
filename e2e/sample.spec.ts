@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { stubSignedIn } from "./support/session";
 
 // R11: the root page shows "Toki" and logs no error to the browser console.
 test("the root page shows Toki and logs no console error", async ({ page }) => {
@@ -8,6 +9,7 @@ test("the root page shows Toki and logs no console error", async ({ page }) => {
   });
   page.on("pageerror", (error) => errors.push(error.message));
 
+  await stubSignedIn(page);
   await page.goto("/");
 
   await expect(page.getByTestId("app-root")).toHaveText("Toki");
