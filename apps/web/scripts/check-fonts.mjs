@@ -313,7 +313,16 @@ function rowOf(declarations) {
 
 function isFontPreload(link) {
   const rel = typeof link.rel === "string" ? link.rel.toLowerCase() : "";
-  return rel.split(/\s+/).includes("preload") && link.as === "font";
+  const as = typeof link.as === "string" ? link.as.toLowerCase() : "";
+  return rel.split(/\s+/).includes("preload") && as === "font";
+}
+
+// True when the text of a source file imports a file named fonts.css: an
+// import, a require or a CSS @import. A comment that names the file does not.
+export function importsFontsCss(text) {
+  return /(?:\bimport\b|\bfrom\b|\brequire\b|@import)\s*(?:url\s*)?\(?\s*["'](?:[^"'\n]*\/)?fonts\.css(?:\?[^"'\n]*)?["']/.test(
+    text,
+  );
 }
 
 // ----------------------------------------------------------------- checks
@@ -1007,19 +1016,21 @@ export async function findProblems(webDir) {
     problems.push(...checkSources({ sources, fonts, licenceFiles }));
   }
 
-  // R2, R7.
+  // R2, R7. Each file under src is read once, for this and for R11.
   const cssPath = join(fontsDir, "fonts.css");
-  const srcFiles = existsSync(srcDir) ? filesUnder(srcDir) : [];
+  const srcFiles = (existsSync(srcDir) ? filesUnder(srcDir) : []).map(
+    (path) => ({ path, bytes: readFileSync(path) }),
+  );
   if (!existsSync(cssPath)) {
     problems.push(
       problem(`${FONTS_DIR}/fonts.css`, "R2", "the file is missing"),
     );
   } else {
     const importers = srcFiles
-      .filter((path) => /\.(?:[cm]?[jt]sx?|css|html)$/.test(path))
-      .filter((path) => path !== cssPath)
-      .filter((path) => readFileSync(path, "utf8").includes("fonts.css"))
-      .map((path) => slashes(relative(srcDir, path)));
+      .filter((file) => /\.(?:[cm]?[jt]sx?|css|html)$/.test(file.path))
+      .filter((file) => file.path !== cssPath)
+      .filter((file) => importsFontsCss(file.bytes.toString("utf8")))
+      .map((file) => slashes(relative(srcDir, file.path)));
     problems.push(
       ...checkCss({ css: readFileSync(cssPath, "utf8"), importers }),
     );
@@ -1053,9 +1064,9 @@ export async function findProblems(webDir) {
     ...checkNoFontService({
       files: [
         { name: "index.html", text: readFileSync(pagePath) },
-        ...srcFiles.map((path) => ({
-          name: slashes(relative(webDir, path)),
-          text: readFileSync(path),
+        ...srcFiles.map((file) => ({
+          name: slashes(relative(webDir, file.path)),
+          text: file.bytes,
         })),
         ...distFiles.map((path) => ({
           name: slashes(relative(webDir, path)),

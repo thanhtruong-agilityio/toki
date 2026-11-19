@@ -77,6 +77,7 @@ export function checkCss(input: {
   css: string;
   importers: string[];
 }): Problem[];
+export function importsFontsCss(text: string): boolean;
 export function checkPreload(input: { html: string }): Problem[];
 export function checkDist(input: {
   html: string;

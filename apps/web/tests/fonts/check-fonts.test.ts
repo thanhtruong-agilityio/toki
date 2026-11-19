@@ -11,6 +11,7 @@ import {
   checkPreload,
   checkSources,
   formatProblem,
+  importsFontsCss,
   isAllowed,
   main,
   parseCss,
@@ -450,6 +451,29 @@ describe("R2 and R7: fonts.css", () => {
   });
 });
 
+describe("R7: which text imports fonts.css", () => {
+  test.each([
+    'import "./fonts/fonts.css";',
+    "import './fonts/fonts.css'",
+    'import styles from "../fonts/fonts.css?inline";',
+    'const css = await import("./fonts/fonts.css");',
+    '@import "./fonts/fonts.css";',
+    '@import url("../fonts/fonts.css");',
+    'require("./fonts/fonts.css");',
+  ])("%s", (text) => {
+    expect(importsFontsCss(text)).toBe(true);
+  });
+
+  test.each([
+    "// fonts.css is linked by the page, not imported here",
+    'const note = "see fonts.css";',
+    'import "./app.css";\n// fonts.css comes from main.tsx',
+    'import "./other-fonts.css.ts";',
+  ])("not an import: %s", (text) => {
+    expect(importsFontsCss(text)).toBe(false);
+  });
+});
+
 describe("R8: the preload link of index.html", () => {
   test("the one link passes", () => {
     expect(checkPreload({ html: page(PRELOAD) })).toEqual([]);
@@ -470,6 +494,12 @@ describe("R8: the preload link of index.html", () => {
 
   test("two links", () => {
     const second = PRELOAD.replace("-400", "-600");
+    const problems = checkPreload({ html: page(PRELOAD + second) });
+    expect(has(problems, "index.html", "R8")).toBe(true);
+  });
+
+  test("a second link written in capitals is counted", () => {
+    const second = '<LINK REL="PRELOAD" AS="FONT" HREF="/src/fonts/x.woff2">';
     const problems = checkPreload({ html: page(PRELOAD + second) });
     expect(has(problems, "index.html", "R8")).toBe(true);
   });
