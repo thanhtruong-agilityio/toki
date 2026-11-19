@@ -1,11 +1,21 @@
 import type { FastifyPluginAsync, FastifyReply, FastifyRequest } from "fastify";
 import {
+  BrowseChannelsQuerySchema,
+  ChannelIdSchema,
+  ChannelMembersQuerySchema,
   CreateChannelBodySchema,
+  canReadConversation,
   ErrorCodes,
   canCreateChannel,
 } from "@toki/shared";
 import { AppError } from "../../errors.js";
-import { refusal } from "./access.js";
+import { checkAccess, refusal } from "./access.js";
+import {
+  listChannelMembers,
+  listChannels,
+  readChannelDetail,
+  toSummary,
+} from "./browse.js";
 import { recordChange as defaultRecordChange } from "./changes.js";
 import { createChannel } from "./channels.js";
 import type { ChannelDeps, ChannelDepsInput } from "./deps.js";
@@ -72,9 +82,49 @@ export function channelRoutes(input: ChannelDepsInput): FastifyPluginAsync {
         return { channel };
       }),
     );
-    scope.get("/channels", guarded(notBuilt));
-    scope.get("/channels/:id", guarded(notBuilt));
-    scope.get("/channels/:id/members", guarded(notBuilt));
+    scope.get(
+      "/channels",
+      guarded(async (request) => {
+        const account = request.account!;
+        const query = BrowseChannelsQuerySchema.parse(request.query);
+        return listChannels(deps, deps.db, account, query);
+      }),
+    );
+    scope.get(
+      "/channels/:id",
+      guarded(async (request) => {
+        const account = request.account!;
+        const id = ChannelIdSchema.parse((request.params as { id: string }).id);
+        // Anyone may read a public channel; the answer holds only what a
+        // non-member may see (D-116). Unknown, DM and hidden private: 404.
+        const facts = await checkAccess(
+          deps,
+          deps.db,
+          { id: account.id, role: account.role },
+          id,
+          () => ({ allowed: true }),
+        );
+        const detail = await readChannelDetail(deps, deps.db, account.id, id);
+        if (!detail) throw refusal("not_a_channel");
+        return { channel: facts.isMember ? detail : toSummary(detail) };
+      }),
+    );
+    scope.get(
+      "/channels/:id/members",
+      guarded(async (request) => {
+        const account = request.account!;
+        const id = ChannelIdSchema.parse((request.params as { id: string }).id);
+        const query = ChannelMembersQuerySchema.parse(request.query);
+        await checkAccess(
+          deps,
+          deps.db,
+          { id: account.id, role: account.role },
+          id,
+          canReadConversation,
+        );
+        return listChannelMembers(deps.db, id, query);
+      }),
+    );
     scope.patch("/channels/:id", guarded(notBuilt));
     scope.post("/channels/:id/join", guarded(notBuilt));
     scope.post("/channels/:id/members", guarded(notBuilt));
