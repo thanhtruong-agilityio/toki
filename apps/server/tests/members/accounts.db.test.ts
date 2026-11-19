@@ -2,7 +2,7 @@ import postgres, { type Sql } from "postgres";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { createDb } from "../../src/db/client.js";
 import { migrationsFolder, runMigrations } from "../../src/db/migrate.js";
-import { insertUser, insertWorkspace } from "../test-rows.js";
+import { insertInvitation, insertUser, insertWorkspace } from "../test-rows.js";
 import { createThrowawayDb } from "../throwaway-db.js";
 import {
   findAccountByEmail,
@@ -65,5 +65,16 @@ describe("account reads (R55)", () => {
       );
       expect(await getAccountById(tx, userId)).toEqual(expected());
     });
+  });
+});
+
+describe("an invited address (TOKI-024 R37)", () => {
+  it("has no account: Invited is a state of an invitation, not of users", async () => {
+    await insertInvitation(sql, {
+      workspace_id: ws,
+      invited_by: userId,
+      email: "invited@example.com",
+    });
+    expect(await findAccountByEmail(conn.db, "invited@example.com")).toBeNull();
   });
 });
