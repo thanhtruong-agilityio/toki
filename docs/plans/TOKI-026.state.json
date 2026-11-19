@@ -23,19 +23,28 @@
     {
       "at": "2026-11-19T07:48:43Z",
       "stage": "plan"
+    },
+    {
+      "at": "2026-11-19T07:52:12Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-19T07:52:55Z",
+      "stage": "build"
     }
   ],
   "key": "TOKI-026",
   "main_sha": "42d71f05a87afaaa1558560a9c3deeed21d2604e",
   "metrics": {},
-  "mode": null,
-  "plan_approved": false,
-  "plan_hash": null,
+  "mode": "manual",
+  "plan_approved": true,
+  "plan_hash": "e1dd1c25aeff4090d02f02c1eb9684e0a06b823dc515f67739d2ed571c01b816",
   "spec_commit": "914b517bfb2bd61535fb5df472d1b43eef4141ed",
   "spec_paths": [
     "docs/specs/2026-11-17-sessions-emergency-access-design.md"
   ],
-  "stage": "plan",
+  "stage": "build",
   "tier": "L",
   "verifier": {
     "result": null,
