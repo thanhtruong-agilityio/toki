@@ -12,4 +12,5 @@ export const nav = {
   conversations: "Hội thoại",
   search: "Tìm kiếm",
   admin: "Quản trị",
+  mainLabel: "Điều hướng chính",
 };

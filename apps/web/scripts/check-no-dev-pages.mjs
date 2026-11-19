@@ -7,7 +7,11 @@ import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 // The page name and the text that only that page holds.
-const PAGES = [{ name: "preview.html", marker: "preview-root" }];
+const PAGES = [
+  { name: "preview.html", marker: "preview-root" },
+  // The shell fixture of TOKI-015 (R32): `more-rows` is a test id that only it holds.
+  { name: "shell-fixture.html", marker: "more-rows" },
+];
 const TEXT_FILE = /\.(html|js|mjs|css|map|json|txt|svg|webmanifest)$/i;
 
 function filesUnder(dir) {
