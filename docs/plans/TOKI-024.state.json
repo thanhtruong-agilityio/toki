@@ -15,19 +15,28 @@
     {
       "at": "2026-11-19T07:43:13Z",
       "stage": "plan"
+    },
+    {
+      "at": "2026-11-19T07:44:24Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-19T07:44:24Z",
+      "stage": "build"
     }
   ],
   "key": "TOKI-024",
   "main_sha": "bba8f56bfd156bde25b711487fd67b3481eabff9",
   "metrics": {},
-  "mode": null,
-  "plan_approved": false,
-  "plan_hash": null,
+  "mode": "Auto to check",
+  "plan_approved": true,
+  "plan_hash": "0d40292410b749d8e8460da83f891ef1013ff0816dc95d7f053810816c5127f2",
   "spec_commit": "24a95cf0676668d0f3afd9f3dd2d07c578bc338f",
   "spec_paths": [
     "docs/specs/2026-11-17-member-management-api-design.md"
   ],
-  "stage": "plan",
+  "stage": "build",
   "tier": "L",
   "verifier": {
     "result": null,
