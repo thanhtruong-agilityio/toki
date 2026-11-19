@@ -130,7 +130,7 @@ describe("an Admin passes (R1)", () => {
 });
 
 describe("a permission function that cannot decide is a server error (R1)", () => {
-  it("answers 500 internal_error for fact_missing", async () => {
+  it("answers 500 internal_error when a permission function gives unknown_role", async () => {
     // The actor row with a role the functions do not know: unknown_role.
     const odd = await h.person("odd@example.com");
     await h.sql`alter table users drop constraint users_role_check`;

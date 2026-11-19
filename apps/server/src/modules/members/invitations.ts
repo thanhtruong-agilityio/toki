@@ -208,12 +208,15 @@ async function sendMails(
 const joinUrl = (deps: InvitationDeps, token: string) =>
   `${deps.appOrigin}/join#${token}`;
 
+// Housekeeping after the work is committed and the mails are handed over: its
+// failure must not turn the finished request into an error, which a retry
+// would process again (a second token and a second mail on a Resend).
 const pruneCodes = (deps: InvitationDeps, now: Date) =>
   pruneInvitationCodes(
     deps.db,
     new Date(now.getTime() - CODE_PRUNE_MS),
     PRUNE_LIMIT,
-  );
+  ).catch(() => 0);
 
 const isOpenEmailConflict = (error: unknown) => {
   const cause = (error as { cause?: unknown }).cause ?? error;

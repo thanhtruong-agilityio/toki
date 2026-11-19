@@ -269,6 +269,36 @@ describe("housekeeping that fails (R13)", () => {
   });
 });
 
+describe("housekeeping of invitation codes that fails (R33)", () => {
+  it("does not fail a finished resend, so a retry does not send a second mail", async () => {
+    const made = await h.invite(lan, [mail("a")]);
+    const id = h.body(made).results[0]!.invitation!.id;
+    h.mail.calls.length = 0;
+    await h.sql`insert into login_codes (id, workspace_id, created_at, purpose, email, user_id, request_hash, code_hash, expires_at)
+      values (${crypto.randomUUID()}, ${h.workspaceId}, ${new Date(h.clock.now() - 10 * 24 * HOUR)}, 'invitation', 'stale@example.com', null, ${"a".repeat(64)}, ${"b".repeat(64)}, ${new Date(h.clock.now() - 9 * 24 * HOUR)})`;
+    await h.sql
+      .unsafe(`create function refuse_code_prune() returns trigger language plpgsql as $$
+      begin raise exception 'the delete is refused in this test'; end $$`);
+    await h.sql`create trigger refuse_code_prune_trg before delete on login_codes
+      for each row execute function refuse_code_prune()`;
+    const key = h.key();
+    try {
+      const res = await h.post(lan, `/invitations/${id}/resend`, undefined, {
+        headers: { "idempotency-key": key },
+      });
+      expect(res.statusCode).toBe(200);
+    } finally {
+      await h.sql`drop trigger refuse_code_prune_trg on login_codes`;
+      await h.sql`drop function refuse_code_prune()`;
+    }
+    const retry = await h.post(lan, `/invitations/${id}/resend`, undefined, {
+      headers: { "idempotency-key": key },
+    });
+    expect(retry.statusCode).toBe(200);
+    expect(h.invitationMails()).toHaveLength(1);
+  });
+});
+
 describe("old answers (R13)", () => {
   it("removes a stored answer 24 hours old at the next batch and keeps a younger one", async () => {
     await h.invite(lan, [mail("a")], { key: "old" });
