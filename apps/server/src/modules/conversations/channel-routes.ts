@@ -1,5 +1,13 @@
 import type { FastifyPluginAsync, FastifyReply, FastifyRequest } from "fastify";
+import {
+  CreateChannelBodySchema,
+  ErrorCodes,
+  canCreateChannel,
+} from "@toki/shared";
+import { AppError } from "../../errors.js";
+import { refusal } from "./access.js";
 import { recordChange as defaultRecordChange } from "./changes.js";
+import { createChannel } from "./channels.js";
 import type { ChannelDeps, ChannelDepsInput } from "./deps.js";
 import { getConversationFacts as defaultGetConversationFacts } from "./facts.js";
 import { toSafeError } from "./safe-error.js";
@@ -34,9 +42,36 @@ export function channelRoutes(input: ChannelDepsInput): FastifyPluginAsync {
     getConversationFacts: defaultGetConversationFacts,
     ...input,
   };
-  void deps;
   return async (scope) => {
-    scope.post("/channels", guarded(notBuilt));
+    scope.post(
+      "/channels",
+      guarded(async (request, reply) => {
+        const account = request.account!;
+        // R1 step 1: the role is checked before the body is read, so a Member
+        // gets 403 whatever the body is.
+        const decision = canCreateChannel({
+          id: account.id,
+          role: account.role,
+        });
+        if (!decision.allowed) throw refusal(decision.reason);
+        const body = CreateChannelBodySchema.parse(request.body ?? {});
+        // Never reaches the check constraint of TOKI-028 R9.
+        if (body.name === "general") {
+          throw new AppError(
+            409,
+            ErrorCodes.channelNameTaken,
+            "A channel with this name already exists.",
+          );
+        }
+        const { created, channel } = await createChannel(
+          deps,
+          account.id,
+          body,
+        );
+        reply.code(created ? 201 : 200);
+        return { channel };
+      }),
+    );
     scope.get("/channels", guarded(notBuilt));
     scope.get("/channels/:id", guarded(notBuilt));
     scope.get("/channels/:id/members", guarded(notBuilt));
