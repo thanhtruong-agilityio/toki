@@ -7,6 +7,7 @@ import {
   text,
   timestamp,
   unique,
+  uniqueIndex,
   uuid,
 } from "drizzle-orm/pg-core";
 import { uuidv7 } from "uuidv7";
@@ -99,5 +100,38 @@ export const sessions = pgTable(
     index("sessions_user_id_live_idx")
       .on(t.userId)
       .where(sql`${t.endedAt} is null`),
+  ],
+);
+
+// The one-time links of `emergency:link` (TOKI-026 R25, R38, R48). Only the hash of the token is
+// stored. The foreign keys to workspaces and users are written as SQL in the migration, as for the
+// other tables; `session_id` has none, because a session row may be removed by the rules of
+// TOKI-019 and this row must outlive it.
+export const emergencyLinks = pgTable(
+  "emergency_links",
+  {
+    id: uuid("id")
+      .primaryKey()
+      .$defaultFn(() => uuidv7()),
+    workspaceId: uuid("workspace_id").notNull(),
+    userId: uuid("user_id").notNull(),
+    tokenHash: text("token_hash").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull(),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+    usedAt: timestamp("used_at", { withTimezone: true }),
+    cancelledAt: timestamp("cancelled_at", { withTimezone: true }),
+    sessionId: uuid("session_id"),
+  },
+  (t) => [
+    unique("emergency_links_token_hash_key").on(t.tokenHash),
+    check("emergency_links_token_hash_check", hash(t.tokenHash)),
+    check(
+      "emergency_links_expires_at_check",
+      sql`${t.expiresAt} > ${t.createdAt}`,
+    ),
+    // At most one link per person that is neither used nor cancelled (R48).
+    uniqueIndex("emergency_links_user_id_open_key")
+      .on(t.userId)
+      .where(sql`${t.usedAt} is null and ${t.cancelledAt} is null`),
   ],
 );
