@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { checkInvitationCode, createInvitationCode } from "./index.js";
+import { checkInvitationCode, createInvitationCode } from "../index.js";
 
 // No app is built in this file, so registerAuthHooks never ran: the code hash
 // has no key yet. The calls refuse before they touch the client.

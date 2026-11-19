@@ -82,7 +82,7 @@ describe("request a code (R1 to R9)", () => {
       expect(text.includes(requestId)).toBe(false);
       expect(text === code).toBe(false);
     }
-    const { hashCode, sha256 } = await import("./secrets.js");
+    const { hashCode, sha256 } = await import("../secrets.js");
     const { SECRET } = await import("./test-harness.js");
     expect(row!.request_hash).toBe(sha256(requestId));
     expect(row!.code_hash).toBe(hashCode(SECRET, requestId, code));
@@ -180,7 +180,7 @@ describe("limits (R4, R5, R6, R42)", () => {
 
   it("leaves an invitation's row untouched and does not count it (R47)", async () => {
     const e = "inv@example.com";
-    const { insertLoginCode } = await import("../../tests/test-rows.js");
+    const { insertLoginCode } = await import("../../../tests/test-rows.js");
     const id = await insertLoginCode(h.sql, {
       workspace_id: h.workspaceId,
       email: e,
@@ -198,7 +198,7 @@ describe("limits (R4, R5, R6, R42)", () => {
   });
 
   it("prunes at most 100 sign-in rows of any address that are 15 minutes old (R48)", async () => {
-    const { insertLoginCode } = await import("../../tests/test-rows.js");
+    const { insertLoginCode } = await import("../../../tests/test-rows.js");
     const old = new Date(h.clock.now() - 20 * 60_000);
     for (let i = 0; i < 105; i++) {
       await insertLoginCode(h.sql, {
@@ -254,7 +254,7 @@ describe("parallel requests for one address (R4, R5)", () => {
 
 describe("an address that has only an invitation (R1, R2, concern 1)", () => {
   it("answers like an unknown address, sends no mail, and returns a new requestId", async () => {
-    const { createInvitationCode } = await import("./index.js");
+    const { createInvitationCode } = await import("../index.js");
     const email = "invonly@example.com";
     await createInvitationCode(h.db, { email, secret: "o".repeat(43) });
     const mailBefore = h.mail.calls.length;
@@ -280,7 +280,7 @@ describe("an address that has only an invitation (R1, R2, concern 1)", () => {
 
 describe("pruning together (R48)", () => {
   it("answers every one of many parallel requests for different addresses while old rows are pruned", async () => {
-    const { insertLoginCode } = await import("../../tests/test-rows.js");
+    const { insertLoginCode } = await import("../../../tests/test-rows.js");
     const old = new Date(h.clock.now() - 30 * 60_000);
     for (let i = 0; i < 300; i++) {
       await insertLoginCode(h.sql, {

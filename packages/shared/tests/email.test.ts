@@ -3,7 +3,7 @@ import {
   EMAIL_LOCAL_MAX_LENGTH,
   EMAIL_MAX_LENGTH,
   parseEmail,
-} from "./index.js";
+} from "../src/index.js";
 
 describe("parseEmail", () => {
   it("trims and lower-cases a well-formed address", () => {

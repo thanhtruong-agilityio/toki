@@ -3,7 +3,7 @@ import {
   checkInvitationCode,
   createInvitationCode,
   pruneInvitationCodes,
-} from "./index.js";
+} from "../index.js";
 import { createHarness, type Harness } from "./test-harness.js";
 
 let h: Harness;
@@ -121,7 +121,7 @@ describe("invitation codes (R49)", () => {
 
 describe("pruneInvitationCodes (R51)", () => {
   it("deletes only invitation rows older than the time, at most `limit`, never a sign-in row", async () => {
-    const { insertLoginCode } = await import("../../tests/test-rows.js");
+    const { insertLoginCode } = await import("../../../tests/test-rows.js");
     const old = new Date(h.clock.now() - 9 * 86_400_000);
     for (let i = 0; i < 5; i++) {
       await insertLoginCode(h.sql, {

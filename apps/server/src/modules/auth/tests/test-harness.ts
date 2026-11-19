@@ -4,12 +4,12 @@
 import { createTestClock } from "@toki/shared";
 import postgres, { type Sql } from "postgres";
 import { Writable } from "node:stream";
-import { buildApp } from "../../app.js";
-import type { Config } from "../../config.js";
+import { buildApp } from "../../../app.js";
+import type { Config } from "../../../config.js";
 import { drizzle } from "drizzle-orm/postgres-js";
-import { migrationsFolder, runMigrations } from "../../db/migrate.js";
-import { fakeMail } from "../../tests/fake-mail.js";
-import { createThrowawayDb } from "../../tests/throwaway-db.js";
+import { migrationsFolder, runMigrations } from "../../../db/migrate.js";
+import { fakeMail } from "../../../tests/fake-mail.js";
+import { createThrowawayDb } from "../../../tests/throwaway-db.js";
 import type { FastifyInstance, InjectOptions } from "fastify";
 
 export const SECRET = "s".repeat(40);

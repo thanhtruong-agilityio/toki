@@ -13,7 +13,7 @@ import {
   RequestCodeResponseSchema,
   SESSION_IDLE_DAYS,
   UserSchema,
-} from "../index.js";
+} from "../../src/index.js";
 
 describe("limits (R38)", () => {
   it("holds the numbers of the spec", () => {
