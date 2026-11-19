@@ -48,7 +48,8 @@
   "stage": "check",
   "tier": "L",
   "verifier": {
+    "accepted_note": "Round 2 FAIL: only deviation is docs/plans/TOKI-020.state.json (the dev-state record) not named in the plan; accepted by the Dev as tooling output, no code deviation. All 21 AC covered.",
     "result": "FAIL",
-    "round": 1
+    "round": 2
   }
 }
