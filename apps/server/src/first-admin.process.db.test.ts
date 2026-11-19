@@ -68,11 +68,25 @@ const countRows = async (sql: postgres.Sql) =>
     ),
   );
 
+const readRows = async (sql: postgres.Sql) => ({
+  workspaces: await sql`select * from workspaces order by id`,
+  users: await sql`select * from users order by id`,
+  conversations: await sql`select * from conversations order by id`,
+  members: await sql`select * from conversation_members order by conversation_id, user_id`,
+});
+
 describe("the started process on an empty database (TOKI-020 R12)", () => {
   it("listens, answers /healthz and writes the four rows; a second start changes nothing", async () => {
-    const first = start(await freePort());
+    const firstPort = await freePort();
+    const first = start(firstPort);
     await until(() => first.out().includes("first_admin_created"));
+    expect((await fetch(`http://127.0.0.1:${firstPort}/healthz`)).status).toBe(200);
     expect(await countRows(t.sql)).toEqual([1, 1, 1, 1]);
+    const snapshot = await readRows(t.sql);
+    expect((snapshot.users[0] as { email: string }).email).toBe("admin@example.com");
+    expect((snapshot.users[0] as { display_name: string }).display_name).toBe("Test Admin");
+    expect((snapshot.workspaces[0] as { name: string }).name).toBe("Test Workspace");
+    expect((snapshot.conversations[0] as { name: string }).name).toBe("general");
     first.child.kill("SIGTERM");
     expect(await first.exited).toBe(0);
 
@@ -82,6 +96,7 @@ describe("the started process on an empty database (TOKI-020 R12)", () => {
     expect((await fetch(`http://127.0.0.1:${port}/healthz`)).status).toBe(200);
     await until(() => second.out().includes("first_admin_skipped"));
     expect(await countRows(t.sql)).toEqual([1, 1, 1, 1]);
+    expect(await readRows(t.sql)).toEqual(snapshot);
     second.child.kill("SIGTERM");
     expect(await second.exited).toBe(0);
   });

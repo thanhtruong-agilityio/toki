@@ -38,6 +38,10 @@ export default defineConfig({
         SMTP_PORT: "1",
         SMTP_TLS: "none",
         MAIL_FROM_ADDRESS: "toki@example.com",
+        // The first set-up values (TOKI-020 R21): fake; the step finds no database and only logs.
+        FIRST_ADMIN_EMAIL: "admin@example.com",
+        FIRST_ADMIN_NAME: "Test Admin",
+        WORKSPACE_NAME: "Test Workspace",
       },
     },
     {

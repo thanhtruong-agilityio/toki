@@ -12,6 +12,10 @@ import {
   type FirstAdminDeps,
   type FirstAdminHooks,
 } from "./first-admin.js";
+import {
+  getConversationFacts,
+  isConversationMember,
+} from "./modules/conversations/index.js";
 import { createMigratedDb } from "./tests/migrated-db.js";
 import { insertUser, insertWorkspace } from "./tests/test-rows.js";
 import { createThrowawayDb } from "./tests/throwaway-db.js";
@@ -155,6 +159,12 @@ describe("R5, R6, R17: an empty database", () => {
     await expect(
       t.sql`update conversations set archived_at = now() where is_general`,
     ).rejects.toMatchObject({ code: "23514" });
+    const [user] = await rows("users");
+    const [conv] = await rows("conversations");
+    expect(await isConversationMember(t.db, user!.id as string, conv!.id as string)).toBe(true);
+    expect(
+      (await getConversationFacts(t.db, user!.id as string, conv!.id as string))?.isGeneral,
+    ).toBe(true);
   });
 
   it("imports no mail layer and takes no mail dependency (R15)", () => {
@@ -274,7 +284,7 @@ describe("R10: one transaction", () => {
   });
 
   it("reports a real unique violation by code and constraint, never the address", async () => {
-    const { deps, lines } = setup();
+    const { deps, lines, calls } = setup();
     const result = await ensureFirstAdmin(deps, {
       afterWorkspace: async ({ tx, workspaceId }) => {
         const { sql } = await import("drizzle-orm");
@@ -292,6 +302,8 @@ describe("R10: one transaction", () => {
       attempt: 1,
       retry: false,
     });
+    // R18 (c): a failure off the list ends the step with no wait.
+    expect(calls.filter((c) => c === RETRY_DELAY_MS)).toEqual([]);
   });
 });
 
@@ -489,6 +501,49 @@ describe("R20: shutdown", () => {
     release();
     expect(await run).toBe("created");
     expect(await counts()).toEqual([1, 1, 1, 1]);
+  });
+});
+
+describe("R13: the app log stream", () => {
+  it("holds none of the personal values in the serialized log of the real app logger", async () => {
+    const { Writable } = await import("node:stream");
+    const { buildApp } = await import("./app.js");
+    let text = "";
+    const logStream = new Writable({
+      write(chunk, _enc, done) {
+        text += chunk.toString();
+        done();
+      },
+    });
+    const app = buildApp({
+      config: {
+        server: { env: "development", port: 0, host: "127.0.0.1", logLevel: "info" },
+        database: { url: t.url },
+      },
+      logStream,
+      mail: { send: async () => undefined } as never,
+    });
+    const runs: Promise<unknown>[] = [];
+    // created, skipped, and a real unique violation (its detail names the address)
+    runs.push(ensureFirstAdmin({ ...setup().deps, logger: app.log }));
+    await Promise.all(runs);
+    await ensureFirstAdmin({ ...setup().deps, logger: app.log });
+    await t.sql`truncate workspaces cascade`;
+    await ensureFirstAdmin({ ...setup().deps, logger: app.log }, {
+      afterWorkspace: async ({ tx, workspaceId }) => {
+        const { sql } = await import("drizzle-orm");
+        await tx.execute(sql`
+          insert into users (id, workspace_id, email, display_name, role, status, created_at)
+          values (${crypto.randomUUID()}, ${workspaceId}, ${EMAIL}, 'X', 'member', 'active', now())`);
+      },
+    });
+    await app.close();
+    const lines = text.split("\n").filter(Boolean).map((l) => JSON.parse(l) as Record<string, unknown>);
+    const names = lines.map((l) => l.msg);
+    expect(names).toEqual(
+      expect.arrayContaining(["first_admin_created", "first_admin_skipped", "first_admin_failed"]),
+    );
+    for (const secret of SECRETS) expect(text).not.toContain(secret);
   });
 });
 

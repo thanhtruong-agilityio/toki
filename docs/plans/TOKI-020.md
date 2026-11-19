@@ -12,26 +12,26 @@ The spec's Design section is the design: `ensureFirstAdmin(deps, hooks?)` in `ap
 
 - `config.ts` has areas `server`, `database`, `mail`; mail's schema lives in its module. `loadConfig` blanks empty values, and `ConfigError` carries names only. `main.ts` loads `["server","database","mail"]`, builds the app, and has no database client yet.
 - `createDb(url)` in `db/client.ts` returns `{ db, close }` and connects lazily. `Db = PostgresJsDatabase` is exported from `modules/conversations/facts.ts`; `createGeneralChannel` and `addMemberToGeneral` already exist (TOKI-028) and use it.
-- `workspace/index.ts` and `members/index.ts` export nothing (`export {}`). So `listWorkspaceIds`, `createWorkspace`, `countAccounts`, `createFirstAdminAccount` are new.
+- `workspace/index.ts` and `members/index.ts` hold only `export {}`. So `listWorkspaceIds`, `createWorkspace`, `countAccounts`, `createFirstAdminAccount` are new.
 - `packages/shared` has no `email.ts` and no `parseEmail`.
-- Process tests (`src/tests/main.test.ts`) and `config.test.ts` build fake environments; CI (`.github/workflows/ci.yml`) starts no server with a real environment.
+- Process tests (`src/tests/main.test.ts`) build fake environments, and the end-to-end run (`playwright.config.ts`, started by the CI job `e2e`) starts the real `main.ts` with a fake environment too.
 - `docs/environment-config.md` already names the three variables. It marks `FIRST_ADMIN_NAME` **Required: yes**, but R1 says optional. Plan: follow the spec and change that one cell to "no" in this PR.
 
 ## AC -> step -> test
 
 | Requirement | Step | Test |
 | :-- | :-- | :-- |
-| R16 | 1. `parseEmail` in `packages/shared/src/email.ts`, exported from `index.ts` | unit tests in `packages/shared` (well-formed and not, 254/255, 64/65 local part) |
+| R16 | 1. `parseEmail` in `packages/shared/src/email.ts`, exported from `index.ts` | unit tests in `packages/shared` (well-formed and not, 254/255, 64/65 local part); `src/tests/email-users.db.test.ts` (accepted addresses are stored, refused ones fail the table checks) |
 | R1 to R4 | 2. `firstAdmin` area in `config.ts` (names `FIRST_ADMIN_EMAIL`, `FIRST_ADMIN_NAME`, `WORKSPACE_NAME`), checks, limits | `src/tests/config.test.ts`: missing, blank, bad address, 100/101 and 80/81 limits, names only in the error, names present in `.env.example` (R2) |
-| R14 | 3. Four small functions and exports in `workspace` and `members` (`accounts.ts`); `db/advisory-locks.ts` | export-name test; `pnpm lint` |
-| R5, R6, R17 | 4. `ensureFirstAdmin` happy path: lock, counts, rows, display name | `first-admin.db.test.ts`: four rows, `minh` from address, `archived_at` update refused |
+| R14 | 3. Four small functions and exports: `workspace/workspaces.ts` and `members/accounts.ts`, each re-exported by its `index.ts`; `db/advisory-locks.ts` | `workspaces.db.test.ts` and `accounts.db.test.ts` (export names, no table, rollback); `pnpm lint` |
+| R5, R6, R17 | 4. `ensureFirstAdmin` happy path: lock, counts, rows, display name | `first-admin.db.test.ts`: four rows, `minh` from address, `archived_at` update refused, the Admin is a member of #general (`isConversationMember`, `getConversationFacts`) |
 | R7, R8 | 5. Skip / adopt one workspace / several workspaces | same file: counts after three runs, other variables ignored |
 | R9 | 6. Advisory lock check | two clients, hook `afterCount`, `pg_locks`, one `created` and one `skipped` |
 | R10, R11 | 7. One transaction, never throws, `failed` result | hooks that throw after each write; unreachable port; database with no migration |
-| R18, R19, R20 | 8. Retry list, 10 s statement and lock timeouts, attempt timeout, abort signal | fake `sleep` tests: attempts, delay, deadline, abort (no new attempt, one `first_admin_stopped` line) |
-| R13, R15 | 9. The log lines and nothing else; no mail import | captured log searched for address and name; import-line test |
+| R18, R19, R20 | 8. Retry list, 10 s statement and lock timeouts (the statement timeout is set after the advisory lock is taken: both at 10 s on the lock statement would make `57014` fire before `55P03`, so R19's `55P03` check could not pass), attempt timeout, abort signal | fake `sleep` tests: attempts, delay, deadline, abort (no new attempt, one `first_admin_stopped` line) |
+| R13, R15 | 9. The log lines and nothing else; no mail import | log lines of a recording logger and the serialized output of the app's own `logStream` searched for address, name and workspace name; import-line test |
 | R12 | 10. `main.ts`: build db client, call after `listen`, close hook | database-free process test (still listens, `/healthz` ok, Postgres down) and `first-admin.process.db.test.ts` |
-| R21 | 11. Fake values on `@example.com` and `Test Workspace` in every fake environment that starts the server or builds a config (`config.test.ts`, `main.test.ts`, others found by search); the one cell of `docs/environment-config.md` | `pnpm test:unit` and `pnpm test` pass; a start without the values exits 1 |
+| R21 | 11. Fake values on `@example.com` and `Test Workspace` in every fake environment that starts the server: `main.test.ts`, `first-admin.process.db.test.ts` and `playwright.config.ts` (the CI `e2e` job); the one cell of `docs/environment-config.md` | `pnpm test`, the database project and `pnpm test:e2e` pass; a start without the values exits 1 |
 
 Each step: write the test, run it and see it fail for the right reason, then write the code.
 
