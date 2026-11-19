@@ -66,6 +66,7 @@
   "mode": "Auto to check",
   "plan_approved": true,
   "plan_hash": "61618d189ca44f2ea4262b5b9e7755c47f3a59eda3d819caba8bf3dd99b28681",
+  "pr": "https://github.com/thanhtruong-agilityio/toki/pull/182",
   "spec_commit": "e3d6890e9ad8ecc576064954ff94cba4bea139b4",
   "spec_paths": [
     "docs/specs/2026-11-17-channel-api-design.md"
