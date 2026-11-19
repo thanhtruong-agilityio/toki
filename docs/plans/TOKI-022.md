@@ -25,7 +25,7 @@ The approved design is the spec. In short:
 | `Clock`, `TestClock` | Merged (`packages/shared/src/clock`) | Injected into `buildApp` |
 | Error body and registry | Merged (`apps/server/src/errors.ts`, `packages/shared/src/error.ts`) | Add the codes of R54 |
 | `parseEmail` (TOKI-020 R16, `packages/shared/src/email.ts`) | Not built; TOKI-020 is Ready for Dev | Build it exactly as TOKI-020 R16 writes it (spec R7); TOKI-020 then finds it present |
-| `app.mail.sendSignInMail` (TOKI-021 R6) | PR 159 open, not merged | Code against the `Mailer` type of that PR. If 159 is not merged when S4 starts, declare the decorator type in a test-only file and rebase when it lands; this ticket does not build the layer |
+| `app.mail.sendSignInMail` (TOKI-021 R6) | Merged (PR 159): `app.mail`, the `mail` option of `buildApp`, `src/tests/fake-mail.ts` | Call `app.mail.sendSignInMail`; tests pass the fake through the `mail` option. No decorator is declared here |
 | New environment values (concern 7) | Not in `config.ts` | Add one area `auth` with the code-hash secret and the app origin, and the rows in `docs/environment-config.md`; names are proposals for TOKI-096 |
 
 ## AC to step to test
@@ -54,8 +54,8 @@ Each new test is run and seen to fail for the right reason before its code. The 
 
 0. **S0 Prerequisites.**
    - `parseEmail` (`packages/shared/src/email.ts`) with its test.
-   - `buildApp` takes `db`, `mail` and `clock` (default `systemClock`); `main.ts` creates the database, passes it and closes it in `onClose`. `registerApi` hands `{ db, clock, mail, config }` to the auth module.
-   - Config area `auth`: the code-hash secret (minimum length checked), the app origin (a URL, compared as `new URL(x).origin`) and the trust-proxy address. Rows in `docs/environment-config.md` and in the example env file the config test reads; `main.ts` loads `"auth"`; every `Config` literal in tests gains `auth`.
+   - `buildApp` already takes `mail` (TOKI-021). Add `db` and `clock` (default `systemClock`); `main.ts` creates the database, passes it and closes it in `onClose`. `registerApi` hands `{ db, clock, mail: app.mail, config }` to the auth module.
+   - Config area `auth` (next to the `mail` area that main now has; `main.ts` loads `"server", "database", "mail", "auth"`): the code-hash secret (minimum length checked), the app origin (a URL, compared as `new URL(x).origin`) and the trust-proxy address. Rows in `docs/environment-config.md` and in the example env file the config test reads; `main.ts` loads `"auth"`; every `Config` literal in tests gains `auth`.
    - Read functions: `members` (find by email, get by id) and `workspace` (get the one workspace), the latter with a new `modules/workspace/index.ts`; each tested with a transaction.
 1. **S1 Shared package.** `limits.ts`, `schemas.ts`, the 10 new error codes (the key `unsupportedMediaType` exists and is reused), exports.
 2. **S2 Secrets.** `secrets.ts`.
@@ -98,7 +98,10 @@ Checked by the advisor (Opus); each point is a plan change. Claims about Fastify
 
 - **Riskiest: S7 (a hook on every request), then S6 under concurrency (R17, R43).** For S6: Two exchanges, ten parallel wrong tries and a failing session insert only prove anything against the real database with separate connections. Mitigation: the tests open real connections, not one shared transaction, and run the race 20 times.
 - **Hook order.** Fastify parses the body after `onRequest`; R56 and R46 must run before the body is read, and R45 must not refuse a no-body request. Mitigation: each rule has a test that sends the case that would pass if the order were wrong.
-- **`TOKI-021` not merged.** `app.mail` may not exist when S4 starts. Mitigation: the decorator type is declared only in tests until the PR lands; the first commit after the merge removes it.
 - **`parseEmail` written twice.** TOKI-020 may be built in parallel. Mitigation: the file follows TOKI-020 R16 word for word, so a later merge is a no-op or a trivial conflict.
 - **In-memory rate limit and trust proxy.** A wrong trust setting lets a client pick its address. Mitigation: the spoofing test of R56 runs with and without a proxy address.
 - **Account read after the session (R55).** Two reads in one transaction instead of one statement (decision 6). Mitigation: a test that deactivates the account between two requests and expects `account_deactivated`.
+
+## Update after main moved (2026-11-19)
+
+Main moved while the plan was approved: TOKI-021 (mail layer) is merged, tests of the server moved from `src/test` to `src/tests`, and a `mail` config area exists. The spec did not change (`dev-state drift`: no drift). The plan changes are the TOKI-021 row of the dependency table, S0 (`buildApp` already has `mail`) and the removal of the "TOKI-021 not merged" risk. Module tests stay beside their module; shared helpers come from `src/tests` (`fake-mail.ts`). The plan needs a new approval.
