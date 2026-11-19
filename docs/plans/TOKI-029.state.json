@@ -15,22 +15,61 @@
     {
       "at": "2026-11-19T07:58:47Z",
       "stage": "design"
+    },
+    {
+      "at": "2026-11-19T08:09:02Z",
+      "stage": "plan"
+    },
+    {
+      "at": "2026-11-19T08:11:27Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-19T08:11:27Z",
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-19T08:11:47Z",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-19T08:32:51Z",
+      "stage": "check"
+    },
+    {
+      "at": "2026-11-19T08:38:25Z",
+      "auto": false,
+      "stage": "approve"
     }
   ],
   "key": "TOKI-029",
   "main_sha": "321620dac959197891ac1cbbb13fe57a9aea5df9",
-  "metrics": {},
-  "mode": null,
-  "plan_approved": false,
-  "plan_hash": null,
+  "metrics": {
+    "steps_done": [
+      "S1",
+      "S2",
+      "S3",
+      "S4",
+      "S5",
+      "S6",
+      "S7",
+      "S8",
+      "S9",
+      "S10"
+    ]
+  },
+  "mode": "Auto to check",
+  "plan_approved": true,
+  "plan_hash": "61618d189ca44f2ea4262b5b9e7755c47f3a59eda3d819caba8bf3dd99b28681",
   "spec_commit": "e3d6890e9ad8ecc576064954ff94cba4bea139b4",
   "spec_paths": [
     "docs/specs/2026-11-17-channel-api-design.md"
   ],
-  "stage": "design",
+  "stage": "check",
   "tier": "L",
   "verifier": {
-    "result": null,
-    "round": 0
+    "result": "FAIL",
+    "round": 1
   }
 }
