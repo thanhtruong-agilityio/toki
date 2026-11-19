@@ -1,5 +1,10 @@
 /* The sign-in page: one centred card (docs/specs/2026-11-16-sign-in-screens-design.md,
    "Layout at the three widths"). Tokens only. */
+/* The browser's 8 px body margin would push the page 8 px past the window, so it would scroll at
+   360 x 560 (R29). Only while the sign-in page shows: base.css and app.css are Table-bound. */
+body:has(.gsign) {
+  margin: 0;
+}
 .gsign {
   min-height: 100vh;
   display: grid;

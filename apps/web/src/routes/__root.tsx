@@ -81,6 +81,16 @@ function RootComponent() {
       state: email === undefined ? undefined : { email },
     });
     markSignedOut();
+    // The email step was mounted behind the cover, which kept its focus request from taking; once
+    // the cover is gone the field gets the focus and the address is selected (R25, "Keyboard and
+    // screen readers").
+    requestAnimationFrame(() => {
+      const input = document.querySelector<HTMLInputElement>(
+        'input[type="email"]',
+      );
+      input?.focus();
+      input?.select();
+    });
   };
   const useDifferentEmail = async () => {
     await router.navigate({ to: "/login", search: {} });
