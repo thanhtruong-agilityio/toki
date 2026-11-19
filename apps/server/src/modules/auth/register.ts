@@ -31,19 +31,16 @@ export function registerAuthHooks(
   // A request that says it is JSON but has no body (a client that sends the
   // header on a DELETE) is not an error: the route's schema decides (R45, R33).
   // Malformed JSON stays a 400.
+  // The default parser keeps Fastify's refusal of __proto__ and constructor
+  // keys; only the empty body is let through.
+  const defaultParser = app.getDefaultJsonParser("error", "error");
   app.removeContentTypeParser("application/json");
   app.addContentTypeParser(
     "application/json",
     { parseAs: "string" },
-    (_request, body, done) => {
+    (request, body, done) => {
       if (body === "") return done(null, undefined);
-      try {
-        done(null, JSON.parse(body as string));
-      } catch (error) {
-        const failure = error as Error & { statusCode?: number };
-        failure.statusCode = 400;
-        done(failure, undefined);
-      }
+      defaultParser(request, body as string, done);
     },
   );
 

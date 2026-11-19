@@ -76,6 +76,14 @@ describe("the started process", () => {
     expect(health.status).toBe(200);
     expect(await health.json()).toEqual({ status: "ok" });
 
+    // TOKI-022 R24: the started entry runs the session check. No cookie or
+    // token is answered before any database is asked.
+    const guarded = await fetch(`http://127.0.0.1:${port}/api/v1/anything`);
+    expect(guarded.status).toBe(401);
+    expect(await guarded.json()).toMatchObject({
+      error: { code: "unauthenticated" },
+    });
+
     // R8: a request Node cannot parse (clientError).
     const raw = await new Promise<string>((resolve) => {
       const socket = connect(port, "127.0.0.1", () =>

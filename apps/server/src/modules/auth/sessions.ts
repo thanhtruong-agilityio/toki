@@ -185,10 +185,17 @@ export async function checkSession(
     new AppError(401, ErrorCodes.unauthenticated, "A session is required.");
   const found = secretOfRequest(request);
   if (!found) throw unauthenticated();
-  const session = await loadSession(client, found);
-  if (!session) throw unauthenticated();
-  const account = await getAccountById(client, session.userId);
-  if (!account) throw unauthenticated();
+  // The session and its account are read in one transaction (plan decision 6).
+  const { result: loaded } = await withTransaction(client, async (tx) => {
+    const found_ = await loadSession(tx, found);
+    if (!found_) return null;
+    return {
+      session: found_,
+      account: await getAccountById(tx, found_.userId),
+    };
+  });
+  if (!loaded || !loaded.account) throw unauthenticated();
+  const { session, account } = loaded;
   if (account.status === "deactivated") {
     throw new AppError(
       401,

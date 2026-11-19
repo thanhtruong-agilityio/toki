@@ -185,7 +185,12 @@ export async function exchangeCode(
       await db
         .select()
         .from(loginCodes)
-        .where(eq(loginCodes.requestHash, requestHash))
+        .where(
+          and(
+            eq(loginCodes.requestHash, requestHash),
+            eq(loginCodes.purpose, "sign_in"),
+          ),
+        )
         .limit(1)
     )[0];
 
@@ -284,6 +289,14 @@ export async function exchangeCode(
 
 // ---- invitation codes (R49, R51) ----
 
+// The code hash is keyed with a secret that registerAuthHooks sets; before
+// that, a call would hash with an empty key.
+function requireRegistered() {
+  if (runtime.codeSecret === "") {
+    throw new Error("The auth module is not registered on an app yet.");
+  }
+}
+
 // The code of an invitation: created inside the caller's transaction, so a
 // rolled-back invitation leaves no live code. The caller supplies a new secret
 // for every code, a resend included (`request_hash` is unique). It sends no
@@ -292,6 +305,7 @@ export async function createInvitationCode(
   client: DbClient,
   input: { email: string; secret: string },
 ): Promise<string> {
+  requireRegistered();
   const now = new Date(runtime.clock.now());
   const code = newCode();
   const { result } = await withTransaction(client, async (tx) => {
@@ -335,6 +349,7 @@ export async function checkInvitationCode(
   client: DbClient,
   input: { secret: string; code: string },
 ): Promise<InvitationCheck> {
+  requireRegistered();
   const requestHash = sha256(input.secret);
   for (let attempt = 0; attempt < 3; attempt++) {
     const now = runtime.clock.now();

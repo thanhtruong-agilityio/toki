@@ -57,12 +57,35 @@ describe("safety (R36, R37)", () => {
     await h.call({ method: "GET", url: "/api/v1/auth/session" });
     await h.call({ method: "GET", url: "/api/v1/auth/codes" });
     await h.call({ method: "GET", url: "/api/v1/auth/sessions" });
+    // and signed in, so the handlers really run
+    await h.addUser("get@example.com");
+    const { secret } = await h.signIn("get@example.com");
+    const mid = {
+      sessions:
+        await h.sql`select count(*)::int as n, count(ended_at)::int as e from sessions`,
+      codes: await h.sql`select count(*)::int as n from login_codes`,
+    };
+    for (const url of [
+      "/api/v1/auth/session",
+      "/api/v1/auth/workspace",
+      "/api/v1/protected",
+    ]) {
+      await h.call({ method: "GET", url, headers: h.withCookie(secret) });
+    }
+    const signedIn = {
+      sessions:
+        await h.sql`select count(*)::int as n, count(ended_at)::int as e from sessions`,
+      codes: await h.sql`select count(*)::int as n from login_codes`,
+    };
+    expect(signedIn).toEqual(mid);
     const after = {
       sessions:
         await h.sql`select count(*)::int as n, count(ended_at)::int as e from sessions`,
       codes: await h.sql`select count(*)::int as n from login_codes`,
     };
-    expect(after).toEqual(before);
+    // the sign-in in between added one session and one code; the GETs added none
+    expect(after.sessions[0]!.n).toBe(before.sessions[0]!.n + 1);
+    expect(after.codes[0]!.n).toBe(before.codes[0]!.n + 1);
   });
 
   it("writes no code, requestId, secret, cookie value or address to the log", async () => {

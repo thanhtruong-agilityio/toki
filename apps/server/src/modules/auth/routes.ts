@@ -8,6 +8,7 @@ import {
   type User,
 } from "@toki/shared";
 import type { FastifyInstance } from "fastify";
+import { ZodError } from "zod";
 import type { Db } from "../../db/client.js";
 import { AppError } from "../../errors.js";
 import type { MailLayer } from "../mail/index.js";
@@ -27,6 +28,18 @@ declare module "fastify" {
     // The account of the session, set by the session check (R55).
     account?: Account;
   }
+}
+
+// A failed query of Drizzle carries its parameters in the message, and the
+// shared handler logs it: an email address would reach the log (R37). A known
+// error passes; any other becomes an error that names only its kind.
+function guarded<T>(work: () => Promise<T>): Promise<T> {
+  return work().catch((error: unknown) => {
+    if (error instanceof AppError || error instanceof ZodError) throw error;
+    // No `cause`: the original error is the one that carries the parameters.
+    const kind = error instanceof Error ? error.name : "error";
+    throw new Error(`The sign-in request failed (${kind}).`);
+  });
 }
 
 export const toUser = (a: Account): User => ({
@@ -57,45 +70,49 @@ export function registerAuthRoutes(
   const development = config.development;
   const pub = { config: { public: true } };
 
-  scope.post("/auth/codes", pub, async (request, reply) => {
-    const body = RequestCodeBodySchema.parse(request.body ?? {});
-    const email = parseEmail(body.email);
-    if (email === null) throw invalid("email", "invalid_format");
-    const result = await requestCode(db, config.codeSecret, email);
-    // After the answer, and never awaited: a failing or silent mail layer
-    // changes nothing the client sees (R8).
-    if (result.mail) {
-      const mailInput = result.mail;
-      reply.raw.once("finish", () => {
-        void mail.sendSignInMail(mailInput).catch(() => {});
-      });
-    }
-    return {
-      requestId: result.requestId,
-      expiresInSeconds: CODE_TTL_SECONDS,
-      resendAfterSeconds: CODE_RESEND_SECONDS,
-    };
-  });
+  scope.post("/auth/codes", pub, (request, reply) =>
+    guarded(async () => {
+      const body = RequestCodeBodySchema.parse(request.body ?? {});
+      const email = parseEmail(body.email);
+      if (email === null) throw invalid("email", "invalid_format");
+      const result = await requestCode(db, config.codeSecret, email);
+      // After the answer, and never awaited: a failing or silent mail layer
+      // changes nothing the client sees (R8).
+      if (result.mail) {
+        const mailInput = result.mail;
+        reply.raw.once("finish", () => {
+          void mail.sendSignInMail(mailInput).catch(() => {});
+        });
+      }
+      return {
+        requestId: result.requestId,
+        expiresInSeconds: CODE_TTL_SECONDS,
+        resendAfterSeconds: CODE_RESEND_SECONDS,
+      };
+    }),
+  );
 
-  scope.post("/auth/sessions", pub, async (request, reply) => {
-    const body = CreateSessionBodySchema.parse(request.body ?? {});
-    const transport = body.transport ?? "cookie";
-    const result = await exchangeCode(db, config.codeSecret, {
-      requestId: body.requestId,
-      code: body.code,
-      transport,
-      userAgent: request.headers["user-agent"],
-      request,
-    });
-    if (transport === "cookie") {
-      reply.header(
-        "set-cookie",
-        sessionCookie(result.session.secret, development),
-      );
-      return { user: result.user };
-    }
-    return { user: result.user, token: result.session.secret };
-  });
+  scope.post("/auth/sessions", pub, (request, reply) =>
+    guarded(async () => {
+      const body = CreateSessionBodySchema.parse(request.body ?? {});
+      const transport = body.transport ?? "cookie";
+      const result = await exchangeCode(db, config.codeSecret, {
+        requestId: body.requestId,
+        code: body.code,
+        transport,
+        userAgent: request.headers["user-agent"],
+        request,
+      });
+      if (transport === "cookie") {
+        reply.header(
+          "set-cookie",
+          sessionCookie(result.session.secret, development),
+        );
+        return { user: result.user };
+      }
+      return { user: result.user, token: result.session.secret };
+    }),
+  );
 
   scope.get("/auth/session", async (request) => ({
     user: toUser(request.account!),

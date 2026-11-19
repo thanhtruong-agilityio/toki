@@ -45,4 +45,15 @@ describe("parseEmail", () => {
     expect(long.length).toBeGreaterThan(254);
     expect(parseEmail(long)).toBeNull();
   });
+  it("accepts 254 characters and refuses 255", () => {
+    const at = (total: number) => {
+      const tail = total - 65; // 64 + "@"
+      const c = tail - 63 - 1 - 63 - 1 - 4; // two full labels, then c, then ".com"
+      return `${"x".repeat(64)}@${"a".repeat(63)}.${"b".repeat(63)}.${"c".repeat(c)}.com`;
+    };
+    expect(at(254)).toHaveLength(254);
+    expect(parseEmail(at(254))).toBe(at(254));
+    expect(at(255)).toHaveLength(255);
+    expect(parseEmail(at(255))).toBeNull();
+  });
 });

@@ -109,4 +109,16 @@ describe("limit per network address (R56)", () => {
     });
     expect(h.json(res).error.code).toBe("rate_limited");
   });
+
+  it("counts a request that R5 refuses toward the 20", async () => {
+    const ip = "192.0.2.9";
+    await h.addUser("count@example.com");
+    expect((await codes("count@example.com", ip)).statusCode).toBe(200);
+    for (let i = 0; i < 19; i++) {
+      const res = await codes("count@example.com", ip);
+      expect(h.json(res).error.code).toBe("code_resend_too_soon");
+    }
+    const res = await codes("count@example.com", ip);
+    expect(h.json(res).error.code).toBe("rate_limited");
+  });
 });

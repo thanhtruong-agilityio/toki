@@ -61,13 +61,13 @@ describe("exchange (R10 to R16)", () => {
 
   it("refuses the right digits with another requestId (R11, R16)", async () => {
     await h.addUser("a@example.com");
-    await h.addUser("b@example.com");
+    const bId = await h.addUser("b@example.com");
     const a = await ask("a@example.com");
     const b = await ask("b@example.com");
     const res = await h.exchange(b.requestId, a.code);
-    expect(["code_incorrect", "code_expired"]).toContain(
-      h.json(res).error.code,
-    );
+    // b has an account and a code of its own: a's digits are simply wrong for it
+    expect(h.json(res).error.code).toBe("code_incorrect");
+    expect(await sessions(bId)).toHaveLength(0);
     const unknown = await h.exchange("x".repeat(43), a.code);
     expect(h.json(unknown).error.code).toBe("code_expired");
     expect(unknown.statusCode).toBe(400);
@@ -214,5 +214,73 @@ describe("concurrency (R17)", () => {
     const [row] =
       await h.sql`select wrong_tries from login_codes where email = 'race2@example.com'`;
     expect(row!.wrong_tries).toBe(5);
+  });
+});
+
+describe("an invitation's secret is not a sign-in requestId (R47)", () => {
+  it("answers code_expired and leaves the invitation's tries alone", async () => {
+    const { createInvitationCode } = await import("./index.js");
+    const secret = "inv-secret-".repeat(4);
+    await createInvitationCode(h.db, { email: "inv@example.com", secret });
+    for (let i = 0; i < 6; i++) {
+      const res = await h.exchange(secret, "123456");
+      expect(h.json(res).error.code).toBe("code_expired");
+    }
+    const [row] =
+      await h.sql`select wrong_tries from login_codes where purpose = 'invitation' and email = 'inv@example.com'`;
+    expect(row!.wrong_tries).toBe(0);
+  });
+});
+
+describe("forced interleaving (R17)", () => {
+  it("answers code_expired to an exchange that waits behind a concurrent winner", async () => {
+    const id = await h.addUser("forced@example.com");
+    const { requestId, code } = await ask("forced@example.com");
+    let late: Awaited<ReturnType<typeof h.exchange>> | undefined;
+    await h.sql.begin(async (tx) => {
+      // the "winner": marks the code used and keeps its transaction open
+      await tx`update login_codes set used_at = ${new Date(h.clock.now())} where email = 'forced@example.com'`;
+      late = undefined;
+      const pending = h.exchange(requestId, code).then((r) => (late = r));
+      await new Promise((resolve) => setTimeout(resolve, 150));
+      expect(late).toBeUndefined(); // it is waiting on the row lock, not answered
+      void pending;
+    });
+    await new Promise((resolve) => setTimeout(resolve, 150));
+    expect(late!.statusCode).toBe(400);
+    expect(h.json(late!).error.code).toBe("code_expired");
+    expect(await sessions(id)).toHaveLength(0);
+  });
+});
+
+describe("the races again, many times (R17)", () => {
+  it("never gives two sessions and never more than 5 tries, over 20 rounds", async () => {
+    for (let round = 0; round < 20; round++) {
+      const email = `loop${round}@example.com`;
+      const id = await h.addUser(email);
+      const { requestId, code } = await ask(email);
+      const results = await Promise.all([
+        h.exchange(requestId, code),
+        h.exchange(requestId, code),
+        h.exchange(requestId, code),
+      ]);
+      expect(
+        results.filter((r) => r.statusCode === 200),
+        `round ${round}`,
+      ).toHaveLength(1);
+      expect(await sessions(id)).toHaveLength(1);
+
+      const email2 = `loopw${round}@example.com`;
+      await h.addUser(email2);
+      const b = await ask(email2);
+      await Promise.all(
+        Array.from({ length: 10 }, () =>
+          h.exchange(b.requestId, wrong(b.code)),
+        ),
+      );
+      const [row] =
+        await h.sql`select wrong_tries from login_codes where email = ${email2}`;
+      expect(row!.wrong_tries, `round ${round}`).toBe(5);
+    }
   });
 });

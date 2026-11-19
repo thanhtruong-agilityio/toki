@@ -91,12 +91,18 @@ describe("request a code (R1 to R9)", () => {
 
   it("refuses a malformed address with 400 validation_failed and writes no row (R7)", async () => {
     const before = (await rows()).length;
-    for (const email of ["", "nope", "a@b", "x".repeat(255) + "@example.com"]) {
+    const mailBefore = h.mail.calls.length;
+    // 64 + 1 + 190 = 255 characters, every part valid: only the length refuses it
+    const tooLong = `${"x".repeat(64)}@${"a".repeat(63)}.${"b".repeat(63)}.${"c".repeat(58)}.com`;
+    expect(tooLong).toHaveLength(255);
+    for (const email of ["", "nope", "a@b", tooLong]) {
       const res = await h.requestCode(email);
       expect(res.statusCode, email).toBe(400);
       expect(h.json(res).error.code).toBe("validation_failed");
     }
+    await h.flush();
     expect((await rows()).length).toBe(before);
+    expect(h.mail.calls.length).toBe(mailBefore);
   });
 });
 
@@ -155,9 +161,9 @@ describe("limits (R4, R5, R6, R42)", () => {
     }
     const res = await h.requestCode(e);
     expect(h.json(res).error.code).toBe("code_request_limit");
-    expect(h.json(res).error.details.retryAfterSeconds).toBeGreaterThanOrEqual(
-      50,
-    );
+    // the 15-minute wait (900 - 254 = 646 s) is the longer one, not the 50 s of R5
+    expect(h.json(res).error.details.retryAfterSeconds).toBe(646);
+    expect(res.headers["retry-after"]).toBe("646");
   });
 
   it("an accepted request cancels the earlier code (R6)", async () => {

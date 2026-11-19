@@ -254,4 +254,23 @@ describe("transactions and reports (R50, R53)", () => {
     reportSessionsEnded(ended, "deactivated");
     expect(heard).toEqual([{ ids: [sid], reason: "deactivated" }]);
   });
+
+  it("leaves the session alive and reports nothing when endSessionOfRequest is rolled back", async () => {
+    await h.addUser("tx2@example.com");
+    const a = await h.signIn("tx2@example.com");
+    let ended: string | null = null;
+    await h.db
+      .transaction(async (tx) => {
+        ended = await endSessionOfRequest(
+          tx,
+          { headers: h.withCookie(a.secret) },
+          "signed_out",
+        );
+        throw new Error("rollback");
+      })
+      .catch(() => {});
+    expect(ended).toBe(await sessionId(a.secret));
+    expect((await get(a.secret)).statusCode).toBe(200);
+    expect(heard).toEqual([]);
+  });
 });
