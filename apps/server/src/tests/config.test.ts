@@ -109,3 +109,46 @@ describe("configuration names and .env.example (R13)", () => {
     }
   });
 });
+
+describe("auth area (TOKI-022)", () => {
+  const ok = {
+    AUTH_CODE_SECRET: "x".repeat(32),
+    APP_ORIGIN: "http://localhost:5173/",
+    NODE_ENV: "development",
+  };
+  it("reads the three names and the environment", () => {
+    expect(configVariableNames.auth).toEqual([
+      "AUTH_CODE_SECRET",
+      "APP_ORIGIN",
+      "TRUSTED_PROXY",
+      "NODE_ENV",
+    ]);
+  });
+  it("normalises the origin and marks development", () => {
+    const { auth } = loadConfig(ok, ["auth"]);
+    expect(auth.appOrigin).toBe("http://localhost:5173");
+    expect(auth.development).toBe(true);
+    expect(auth.trustedProxy).toBeUndefined();
+  });
+  it("counts anything but development as production", () => {
+    expect(loadConfig({ ...ok, NODE_ENV: "prod" }, ["auth"]).auth.development).toBe(false);
+    const { NODE_ENV: _drop, ...noEnv } = ok;
+    expect(loadConfig(noEnv, ["auth"]).auth.development).toBe(false);
+  });
+  it("stops on a missing or short secret and a bad origin, naming only the variable", () => {
+    for (const bad of [
+      { ...ok, AUTH_CODE_SECRET: undefined },
+      { ...ok, AUTH_CODE_SECRET: "short" },
+      { ...ok, APP_ORIGIN: "not a url" },
+      { ...ok, APP_ORIGIN: undefined },
+    ]) {
+      try {
+        loadConfig(bad, ["auth"]);
+        throw new Error("should have failed");
+      } catch (error) {
+        expect(error).toBeInstanceOf(ConfigError);
+        expect(JSON.stringify((error as ConfigError).names)).not.toContain("xxxx");
+      }
+    }
+  });
+});
