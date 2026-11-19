@@ -308,14 +308,15 @@ describe("counts and filters (R24)", () => {
 
 describe("search ignores Vietnamese diacritics (R24, concern 11)", () => {
   beforeEach(async () => {
-    await h.addUser("nguyen.van@example.com", { display_name: "Nguyễn Văn" });
-    await h.addUser("dao@example.com", { display_name: "Đào Thị" });
-    await h.addUser("ngoc@example.com", { display_name: "Ngọc" });
+    await h.addUser("u1@example.com", { display_name: "Nguyễn Văn" });
+    await h.addUser("u2@example.com", { display_name: "Đào Thị" });
+    await h.addUser("u3@example.com", { display_name: "Ngọc" });
     // The same name stored in decomposed form (NFD).
-    await h.addUser("decomposed@example.com", {
+    await h.addUser("u4@example.com", {
       display_name: "Trần Đức".normalize("NFD"),
     });
-    await invitation({ email: "anh@example.com" });
+    // An accented query finds an unaccented address.
+    await invitation({ email: "anh.u5@example.com" });
   });
 
   it.each([
@@ -326,7 +327,7 @@ describe("search ignores Vietnamese diacritics (R24, concern 11)", () => {
     ["tran duc", ["Trần Đức".normalize("NFD")]],
     ["Trần Đức", ["Trần Đức".normalize("NFD")]],
     ["đào", ["Đào Thị"]],
-    ["ánh", ["anh@example.com"]],
+    ["ánh", ["anh.u5@example.com"]],
   ])("%s finds %j", async (search, expected) => {
     const { body } = await list({ search });
     expect(names(body)).toEqual(expected);

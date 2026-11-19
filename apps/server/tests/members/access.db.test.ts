@@ -149,3 +149,49 @@ describe("a permission function that cannot decide is a server error (R1)", () =
     }
   });
 });
+
+describe("the list (R1, R3)", () => {
+  it("is refused to a Member with 403, whatever the query, and without a session with 401", async () => {
+    for (const query of ["", "?limit=0", "?status=revoked", "?cursor=zzz"]) {
+      const res = await h.get(member, `/members${query}`);
+      expect(res.statusCode, query).toBe(403);
+      expect(h.body(res).error.code).toBe("forbidden");
+    }
+    const anonymous = await h.get(null, "/members");
+    expect(anonymous.statusCode).toBe(401);
+  });
+
+  it("is passed by an Admin and changes no row of users, invitations, admin_actions or member_requests", async () => {
+    const before = await counts();
+    // Sessions made earlier share one time; move on so this request's is its own.
+    h.clock.advance(1000);
+    const res = await h.get(admin, "/members");
+    expect(res.statusCode).toBe(200);
+    expect(await counts()).toEqual(before);
+    // The one row it touches is the caller's own session (TOKI-022 R25).
+    const touched =
+      await h.sql`select user_id from sessions where last_used_at = ${new Date(h.clock.now())}`;
+    expect(touched.map((r) => r.user_id)).toEqual([admin.id]);
+  });
+});
+
+describe("the registered routes (R3)", () => {
+  it("are seven: one GET and six POST, with no PUT, PATCH or DELETE", () => {
+    const tree = h.app.printRoutes({ commonPrefix: false });
+    const own = tree
+      .split("\n")
+      .filter((line) =>
+        /\/(members|invitations)|:userId|:invitationId/.test(line),
+      )
+      .map((line) => line.replace(/^[│├└─\s]+/, "").trim());
+    expect(own).toEqual([
+      "/api/v1/members (GET, HEAD)",
+      "/:userId/role (POST)",
+      "/:userId/reactivate (POST)",
+      "/:userId/deactivate (POST)",
+      "/api/v1/invitations (POST)",
+      "/:invitationId/resend (POST)",
+      "/:invitationId/revoke (POST)",
+    ]);
+  });
+});
