@@ -4,6 +4,7 @@ import {
   canManageInvitations,
   ErrorCodes,
   INVITATION_LIFETIME_DAYS,
+  INVITATION_TOKEN_PATTERN,
   parseEmail,
   type Decision,
   type Invitation,
@@ -488,5 +489,103 @@ export function revokeInvitation(
       });
     }
     return { invitation: { ...fields(found), state: "revoked" as const } };
+  });
+}
+
+// ---- for the accept-an-invitation work (R19) ----
+
+export type FoundInvitation = {
+  id: string;
+  email: string;
+  role: MemberRole;
+  state: InvitationState;
+  accountId: string | null;
+  codeSerial: number;
+  codeIssuedAt: Date;
+  expiresAt: Date;
+};
+
+// The invitation of a Join link, or null. A token of the wrong shape finds
+// nothing without a query; a token replaced by a Resend finds nothing. Writes
+// nothing.
+export async function findInvitationByToken(
+  db: DbClient,
+  token: string,
+  now: Date,
+): Promise<FoundInvitation | null> {
+  if (!INVITATION_TOKEN_PATTERN.test(token)) return null;
+  const [row] = await db
+    .select()
+    .from(invitations)
+    .where(eq(invitations.tokenHash, hashToken(token)))
+    .limit(1);
+  if (!row) return null;
+  return {
+    id: row.id,
+    email: row.email,
+    role: row.role as MemberRole,
+    state: invitationState(row, now),
+    accountId: row.userId,
+    codeSerial: row.codeSerial,
+    codeIssuedAt: row.codeIssuedAt,
+    expiresAt: row.expiresAt,
+  };
+}
+
+export type ClosedError =
+  | "invitation_not_found"
+  | "invitation_used"
+  | "invitation_revoked"
+  | "invitation_expired";
+
+// Why an invitation in this state cannot be used to join, or null.
+export const closedError = (state: InvitationState): ClosedError | null =>
+  state === "pending" ? null : (`invitation_${state}` as ClosedError);
+
+// The invitation of a token, locked (FOR NO KEY UPDATE) and read again (R39).
+export async function lockInvitationByToken(
+  tx: DbClient,
+  token: string,
+): Promise<InvitationRow | null> {
+  if (!INVITATION_TOKEN_PATTERN.test(token)) return null;
+  const [row] = await tx
+    .select()
+    .from(invitations)
+    .where(eq(invitations.tokenHash, hashToken(token)))
+    .for("no key update");
+  return row ?? null;
+}
+
+export type IssuedCode =
+  | { ok: true; email: string; code: string }
+  | { ok: false; error: ClosedError }
+  | { ok: false; error: "resend_too_soon"; retryAfterSeconds: number };
+
+// The next code of a pending invitation, for "Resend code" (R19). The wait
+// between two codes is checked under the lock of the invitation row, so two
+// presses at once give one code. It sends no mail.
+export function issueInvitationCode(
+  db: Db,
+  input: { token: string; now: Date; minIntervalSeconds?: number },
+): Promise<IssuedCode> {
+  return db.transaction(async (tx): Promise<IssuedCode> => {
+    const row = await lockInvitationByToken(tx, input.token);
+    if (!row) return { ok: false, error: "invitation_not_found" };
+    const error = closedError(invitationState(row, input.now));
+    if (error) return { ok: false, error };
+    if (input.minIntervalSeconds !== undefined) {
+      const waitMs =
+        input.minIntervalSeconds * 1000 -
+        (input.now.getTime() - row.codeIssuedAt.getTime());
+      if (waitMs > 0) {
+        return {
+          ok: false,
+          error: "resend_too_soon",
+          retryAfterSeconds: Math.max(1, Math.ceil(waitMs / 1000)),
+        };
+      }
+    }
+    const { code } = await makeCode(tx, row, input.token, input.now);
+    return { ok: true, email: row.email, code };
   });
 }

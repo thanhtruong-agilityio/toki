@@ -26,6 +26,7 @@ export const EXPORTED_NAMES = [
   "listMemberIds",
   "createGeneralChannel",
   "addMemberToGeneral",
+  "getGeneralConversationId",
 ];
 
 describe("the public surface of the conversations module (R18)", () => {

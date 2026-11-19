@@ -6,4 +6,8 @@ export {
   isConversationMember,
   listMemberIds,
 } from "./facts.js";
-export { addMemberToGeneral, createGeneralChannel } from "./general.js";
+export {
+  addMemberToGeneral,
+  createGeneralChannel,
+  getGeneralConversationId,
+} from "./general.js";
