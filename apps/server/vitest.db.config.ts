@@ -11,7 +11,7 @@ loadRootEnv();
 export default defineConfig({
   test: {
     name: "server-db",
-    include: ["{src,test}/**/*.db.test.ts"],
+    include: ["{src,test,tests}/**/*.db.test.ts"],
     fileParallelism: false,
     globalSetup: ["./test/global-setup-db.ts"],
     setupFiles: ["./test/setup-file-db.ts"],

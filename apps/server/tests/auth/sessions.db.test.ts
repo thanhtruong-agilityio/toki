@@ -49,7 +49,7 @@ describe("cookie and token (R21, R22, R23)", () => {
     const { secret } = await h.signIn("hash@example.com", "cookie", {
       headers: { "user-agent": "U".repeat(2000) },
     });
-    const { sha256 } = await import("../secrets.js");
+    const { sha256 } = await import("../../src/modules/auth/secrets.js");
     const rows = await h.sql`select * from sessions where user_id = ${id}`;
     expect(rows).toHaveLength(1);
     const row = rows[0]!;

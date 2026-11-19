@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { hashCode, newCode, newSecret, sha256 } from "../secrets.js";
+import {
+  hashCode,
+  newCode,
+  newSecret,
+  sha256,
+} from "../../src/modules/auth/secrets.js";
 
 describe("secrets", () => {
   it("draws a code of 6 decimal digits, leading zeros kept", () => {

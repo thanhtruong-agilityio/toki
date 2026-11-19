@@ -4,8 +4,9 @@ import { createHarness, type Harness } from "./test-harness.js";
 // A source of secrets the test can force: the next secret is a fixed value, so
 // a session with that secret already stored makes the insert fail (R43).
 const forced: { next: string | null } = { next: null };
-vi.mock("../secrets.js", async (importOriginal) => {
-  const real = await importOriginal<typeof import("../secrets.js")>();
+vi.mock("../../src/modules/auth/secrets.js", async (importOriginal) => {
+  const real =
+    await importOriginal<typeof import("../../src/modules/auth/secrets.js")>();
   return {
     ...real,
     newSecret: () => {
@@ -29,7 +30,7 @@ afterAll(async () => {
 
 describe("marking the code used and creating the session are one transaction (R43)", () => {
   it("leaves the code unused when the session insert fails, and the same exchange then succeeds", async () => {
-    const { sha256 } = await import("../secrets.js");
+    const { sha256 } = await import("../../src/modules/auth/secrets.js");
     const id = await h.addUser("atomic@example.com");
     h.clock.advance(61_000);
     const asked = await h.requestCode("atomic@example.com");

@@ -219,7 +219,8 @@ describe("concurrency (R17)", () => {
 
 describe("an invitation's secret is not a sign-in requestId (R47)", () => {
   it("answers code_expired and leaves the invitation's tries alone", async () => {
-    const { createInvitationCode } = await import("../index.js");
+    const { createInvitationCode } =
+      await import("../../src/modules/auth/index.js");
     const secret = "inv-secret-".repeat(4);
     await createInvitationCode(h.db, { email: "inv@example.com", secret });
     for (let i = 0; i < 6; i++) {

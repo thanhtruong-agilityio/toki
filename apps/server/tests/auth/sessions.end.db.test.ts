@@ -7,8 +7,8 @@ import {
   onSessionsEnded,
   reportSessionsEnded,
   type EndReason,
-} from "../index.js";
-import { checkSession } from "../sessions.js";
+} from "../../src/modules/auth/index.js";
+import { checkSession } from "../../src/modules/auth/sessions.js";
 import { createHarness, type Harness } from "./test-harness.js";
 
 let h: Harness;
@@ -43,7 +43,7 @@ const del = (secret?: string) =>
     headers: secret ? h.withCookie(secret) : {},
   });
 const sessionId = async (secret: string) => {
-  const { sha256 } = await import("../secrets.js");
+  const { sha256 } = await import("../../src/modules/auth/secrets.js");
   return (
     await h.sql`select id from sessions where secret_hash = ${sha256(secret)}`
   )[0]!.id as string;

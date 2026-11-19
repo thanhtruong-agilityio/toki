@@ -208,7 +208,7 @@ The root `pnpm` scripts, run from the repository root under Node 22 (`.nvmrc`). 
 - `pnpm test` runs the unit tests and the server integration tests (Vitest).
 - `pnpm test:e2e` runs the end-to-end tests in `e2e/` (Playwright).
 - Neither exists yet: both are planned (TOKI-008). Until then a ticket is checked by the steps in its spec's Testing section.
-- Every test file lives in a folder named `tests`, never beside the source it tests. A package keeps them in `packages/<name>/tests/` (`apps/web/tests/` for the web app), a server module in `apps/server/src/modules/<module>/tests/` (inside the module, so the boundary rule of lint allows the test to import the module's own files), and a test that spans modules in `apps/server/src/tests/`. Test helpers sit in the same `tests` folder as the tests that use them. A new test goes there; an older test that sits elsewhere moves when its ticket touches it.
+- Every test file lives in a folder named `tests` at the root of its workspace, never beside the source it tests: `packages/<name>/tests/`, `apps/web/tests/`, `apps/server/tests/`. Inside it, a subfolder per area (`apps/server/tests/auth/`, `packages/shared/tests/clock/`), not a `tests` folder inside a module. Test helpers sit in the same `tests` folder as the tests that use them. A new test goes there; an older test that sits elsewhere moves when its ticket touches it.
 
 ## Boundary rules
 

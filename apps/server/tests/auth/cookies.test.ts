@@ -5,7 +5,7 @@ import {
   isDevelopment,
   readCookie,
   sessionCookie,
-} from "../cookies.js";
+} from "../../src/modules/auth/cookies.js";
 
 describe("cookies (R21, R26)", () => {
   it("treats only an explicit development value as development", () => {
