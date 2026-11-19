@@ -19,3 +19,8 @@ export {
   type SignInCalls,
   type SignInUser,
 } from "./auth/sign-in";
+export {
+  createEmergencyCalls,
+  type EmergencyCalls,
+  type EmergencyOutcome,
+} from "./auth/emergency";
