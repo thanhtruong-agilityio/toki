@@ -3,5 +3,7 @@ import type { Catalog } from "../../catalog";
 import { common } from "./common";
 import { mail } from "./mail";
 import { nav } from "./nav";
+import { sessionEnded } from "./sessionEnded";
+import { signIn } from "./signIn";
 
-export const vi: Catalog = { common, mail, nav };
+export const vi: Catalog = { common, mail, nav, sessionEnded, signIn };
