@@ -275,6 +275,9 @@ importers:
       '@tanstack/react-router':
         specifier: ^1.170.46
         version: 1.170.46(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
+      '@toki/client-core':
+        specifier: workspace:*
+        version: link:../../packages/client-core
       '@toki/i18n':
         specifier: workspace:*
         version: link:../../packages/i18n
