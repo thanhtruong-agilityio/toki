@@ -25,6 +25,10 @@ Each statement is followed by its source. Rules of this project come first; rule
   Source: server-skeleton spec, R12.
 - The server's own logger writes one JSON object per line to standard output; a startup failure goes to standard error.
   Source: server-skeleton spec, R6.
+- `pnpm db:generate` creates a migration from a change to the table definitions in `apps/server/src/modules/*/schema.ts`. Commit the whole `apps/server/migrations/` folder (the SQL file and `meta/`); never edit it by hand.
+  Source: `apps/server/src/db/README.md`; `.prettierignore`.
+- `pnpm db:migrate` applies every pending migration to the database in `DATABASE_URL` (it reads the root `.env` when it exists). It needs the services up in development.
+  Source: `apps/server/src/db/README.md`; `apps/server/package.json`.
 
 ## External standard
 

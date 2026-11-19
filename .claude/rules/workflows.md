@@ -25,7 +25,7 @@ Each statement is followed by its source. Rules of this project come first; rule
 - Spec readiness is decided by `.github/scripts/spec-ready.sh` with no network call and no model; change the rule there and in its test file together.
   Source: `.github/scripts/spec-ready.sh`; `.github/workflows/spec-ticket.yml`.
 - Use the logical status keys of `docs/ticket-config.yml`; never hard-code a tracker name in a workflow or script.
-  Source: `CLAUDE.md`, "From a requirement to a ticket".
+  Source: `.claude/rules/ticket.md`.
 
 ## Commands
 
