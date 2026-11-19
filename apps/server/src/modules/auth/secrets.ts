@@ -11,7 +11,9 @@ export function newSecret(): string {
 
 // 6 decimal digits, leading zeros kept, from a cryptographic source (R3).
 // `draw` is replaceable by a test only.
-export function newCode(draw: () => number = () => randomInt(0, 1_000_000)): string {
+export function newCode(
+  draw: () => number = () => randomInt(0, 1_000_000),
+): string {
   return String(draw()).padStart(6, "0");
 }
 

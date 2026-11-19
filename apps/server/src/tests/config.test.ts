@@ -131,7 +131,9 @@ describe("auth area (TOKI-022)", () => {
     expect(auth.trustedProxy).toBeUndefined();
   });
   it("counts anything but development as production", () => {
-    expect(loadConfig({ ...ok, NODE_ENV: "prod" }, ["auth"]).auth.development).toBe(false);
+    expect(
+      loadConfig({ ...ok, NODE_ENV: "prod" }, ["auth"]).auth.development,
+    ).toBe(false);
     const { NODE_ENV: _drop, ...noEnv } = ok;
     expect(loadConfig(noEnv, ["auth"]).auth.development).toBe(false);
   });
@@ -147,7 +149,9 @@ describe("auth area (TOKI-022)", () => {
         throw new Error("should have failed");
       } catch (error) {
         expect(error).toBeInstanceOf(ConfigError);
-        expect(JSON.stringify((error as ConfigError).names)).not.toContain("xxxx");
+        expect(JSON.stringify((error as ConfigError).names)).not.toContain(
+          "xxxx",
+        );
       }
     }
   });

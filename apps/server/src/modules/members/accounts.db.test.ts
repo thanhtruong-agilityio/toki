@@ -44,7 +44,9 @@ const expected = () => ({
 
 describe("account reads (R55)", () => {
   it("finds an account by its address, with workspaceId", async () => {
-    expect(await findAccountByEmail(conn.db, "sam@example.com")).toEqual(expected());
+    expect(await findAccountByEmail(conn.db, "sam@example.com")).toEqual(
+      expected(),
+    );
   });
   it("returns no account for an address with no users row", async () => {
     expect(await findAccountByEmail(conn.db, "nobody@example.com")).toBeNull();
@@ -55,7 +57,9 @@ describe("account reads (R55)", () => {
   });
   it("accepts an open transaction as client", async () => {
     await conn.db.transaction(async (tx) => {
-      expect(await findAccountByEmail(tx, "sam@example.com")).toEqual(expected());
+      expect(await findAccountByEmail(tx, "sam@example.com")).toEqual(
+        expected(),
+      );
       expect(await getAccountById(tx, userId)).toEqual(expected());
     });
   });
