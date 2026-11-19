@@ -11,19 +11,32 @@
     {
       "at": "2026-11-19T02:38:05Z",
       "stage": "explore"
+    },
+    {
+      "at": "2026-11-19T02:44:26Z",
+      "stage": "plan"
+    },
+    {
+      "at": "2026-11-19T02:45:08Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-19T02:45:09Z",
+      "stage": "build"
     }
   ],
   "key": "TOKI-023",
   "main_sha": "88f92548ad8c04d81489354f97e6b3d10f5549c9",
   "metrics": {},
-  "mode": null,
-  "plan_approved": false,
-  "plan_hash": null,
+  "mode": "auto-to-check",
+  "plan_approved": true,
+  "plan_hash": "f455511614867e3fa2bef760532ebf85bd6463f3dac187e1b9ebdb10d6a6327e",
   "spec_commit": "0ef519833a00a7b5d2ea9707855a5a48c4aa402e",
   "spec_paths": [
     "docs/specs/2026-11-16-sign-in-screens-design.md"
   ],
-  "stage": "explore",
+  "stage": "build",
   "tier": "M",
   "verifier": {
     "result": null,
