@@ -1,7 +1,5 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
-
 ## What the project is
 
 Toki is an internal team chat for one company: channels, direct messages, threads and files, and later tasks, calendar, video meetings, a guest portal, automations, mail and AI summaries.
@@ -20,8 +18,6 @@ Read these, in this order, before you start work on a ticket:
 
 ## Repository layout
 
-The phase 1 tree. A folder marked "planned" does not exist yet; the ticket named delivers it.
-
 ```
 toki/
 ├─ apps/
@@ -34,14 +30,17 @@ toki/
 │  ├─ i18n/          vi and en translations
 │  ├─ platform/      Platform interface + web and native implementations
 │  └─ ui-web/        React DOM components + CSS carried over from the prototype
-├─ infra/            not created: TOKI-003 put the development compose file at the root, as `docker-compose.dev.yml`
-├─ e2e/              planned (TOKI-008): Playwright end-to-end tests
+├─ e2e/              Playwright end-to-end tests
+├─ scripts/          Development services: up, down, reset
+├─ tools/            Lint rules and the bundle size check
 └─ docs/             intents, specs, plans and reference documents
 ```
 
-`apps/mobile`, `apps/desktop` and `packages/ui-native` belong to later phases and are not part of this tree.
+There is no `infra/` folder: the development compose file is `docker-compose.dev.yml` at the root. `apps/mobile`, `apps/desktop` and `packages/ui-native` belong to later phases.
 
-# Working agreements
+The repository is built ticket by ticket. Check the tree for what exists: a folder or command named in a spec may not be built yet. For code that does not exist yet, the spec of your ticket is the source of truth; do not infer the structure from another ticket's spec.
+
+## Working agreements
 
 - One ticket per branch, named `<type>/<ticket>-<slug>` (ticket id in lowercase). Never commit or push to `main`, `master`, `develop` or `release/*`.
   - Example: `docs/toki-095-claude-md-sections`.
@@ -68,22 +67,16 @@ Say in one line what you are asking it. If its guidance conflicts with the code 
 
 ## Never do
 
-What Claude must not do in this repository, collected from rules that already exist. Each line names its source.
+Each line names its source.
 
 1. Merge a pull request, force-push, or push to `main`, `master`, `develop` or `release/*`. Source: Working agreements above.
 2. Commit a secret or a `.env` file. Source: `docs/environment-config.md` ("Secrets live in `.env`, never in git") and `.gitignore`.
 3. Import a file of another server module other than its public entry file `index.ts`. Source: lint rule `toki/module-entry`; `docs/specs/2026-11-12-server-skeleton-design.md`, R17.
 4. Use a DOM or browser API in `client-core`, `shared`, `i18n` or `tokens`. Source: lint rule `toki/client-core-globals`.
 5. Use the notification, storage, service worker or audio API directly in `ui-web`, instead of going through `platform`. Source: lint rule `toki/platform-apis`.
-6. Add a tool that runs code to the `PR review` workflow, or put text from a comment or a pull request into a `run:` script other than through `env:`. Source: Review on request below.
+6. Add a tool that runs code to the `PR review` workflow, or put text from a comment or a pull request into a `run:` script other than through `env:`. Source: `.claude/rules/workflows.md`.
 7. Hard-code a tracker status name instead of the logical keys of `docs/ticket-config.yml`. Source: From a requirement to a ticket below.
 8. Work around a command that `.claude/settings.json` denies. Source: Claude configuration below.
-
-## State of the repository
-
-The repository is built ticket by ticket, starting from workflow files and documents only. The pnpm workspace, the two apps and the six packages arrive with TOKI-001, and each later foundation ticket adds its own folders and commands. Check the tree for what exists; a folder or command named in a spec may not be built yet. The ticket that adds a command also adds it to the Commands section below.
-
-Until a piece of code exists, its spec in `docs/specs/` is the source of truth for what it will look like. Read the spec of the ticket you work on; do not infer the structure from another ticket's spec.
 
 ## From a requirement to a ticket
 
@@ -92,123 +85,70 @@ Work reaches development through documents, not through tickets written by hand:
 1. An intent, `docs/intents/<slug>.md`: problem, proposed outcome, affected users and systems, constraints, open questions.
 2. A spec, `docs/specs/<date>-<slug>-design.md`. Its header carries an `Intent:` line with the path of the intent and a `Ticket:` line with the key (`TOKI-NNN`). Its body has the requirements (`R1`, `R2`, ...), the design, the testing, a table of how each constraint of the intent is met, "Open questions from the intent" and "Areas of concern".
 3. Intent and spec go to `main` in one pull request on the branch `spec/<slug>`.
-4. When that pull request is merged, the `Spec ticket` workflow (`.github/workflows/spec-ticket.yml`) gives each spec it touches a GitHub issue titled `<intent title> (<KEY>)`, created when missing. `.github/scripts/spec-ready.sh` decides the status without a network call or a model: a spec with no open question or concern gets the `accepted` status, and a spec with one gets the `blocked` status and a comment that lists what is open. An issue that is closed, or already in development or later, is left alone. A spec with no `Ticket:` line or no intent file gets no ticket; the gaps go into a comment on the pull request.
-5. Development of the ticket happens on its ticket branch, with its plan in `docs/plans/<KEY>.md` (the first development ticket creates the folder).
+4. When that pull request is merged, the `Spec ticket` workflow (`.github/workflows/spec-ticket.yml`) gives each spec a GitHub issue titled `<intent title> (<KEY>)`: status `accepted` when the spec is ready, `blocked` with a comment that lists what is open when it is not.
+5. Development of the ticket happens on its ticket branch, with its plan in `docs/plans/<KEY>.md`.
 
-The wording of a spec is therefore read by a script. To be ready, a spec needs all of:
-
-- a `Ticket:` line, an `Intent:` line whose file exists, and a Requirements section;
-- in every numbered item of "Areas of concern", one of "Decided", "Answered", "Accepted" or "Settled" (capitalised; "Answered in part" does not count), placed after the item's last open marker ("Not decided", "Not answered", "not a decision", "Still open", in any case). An item with no open marker still needs the decision word;
-- for every line of "Open questions from the intent" that says "Not answered", a reference to an existing "concern N".
-
-`spec-ready.sh` and its test file `spec-ready.test.sh` hold the exact rule.
+A script reads the wording of a spec to decide whether it is ready. The wording rule is in `.claude/rules/specs.md`; the exact rule is `.github/scripts/spec-ready.sh`. Check a spec with `/spec-check` before its pull request.
 
 `docs/ticket-config.yml` maps the logical statuses (`intent`, `blocked`, `spec-review`, `accepted`, `in-dev`, `in-review`, `in-qa`, `done`) to the names on the tracker, and holds the labels and the thresholds the cl skills read. Use the logical keys; do not hard-code a tracker name.
 
-## Commands
-
-Run from the repository root.
-
-```bash
-# Rewrite packages/tokens/src/tokens.css from the token objects (the test of the package fails when the file is stale)
-pnpm --filter @toki/tokens generate
-
-# Test the tokens package
-pnpm --filter @toki/tokens test
-
-# Test the readiness rule (the workflow runs this before it touches a ticket)
-bash .github/scripts/spec-ready.test.sh
-
-# Check one spec: exit 0 ready, exit 1 gaps (one "- " line each), exit 2 wrong usage
-bash .github/scripts/spec-ready.sh docs/specs/<file>.md
-
-# Print what the workflow would write for one spec, without writing it.
-# It reads the issues first: needs jq, network access and an authenticated gh.
-# It prints "left alone" and no DRY-RUN line when the ticket needs no change.
-DRY_RUN=1 bash .github/scripts/spec-ticket.sh docs/specs/<file>.md
-
-# Test the Claude hooks (branch slug, lock file, format): feeds each hook a tool call and checks the exit code
-bash .claude/hooks/hooks.test.sh
-
-# Test the lint rules: the name on an icon-only button (the 36 cases of TOKI-012) and the import ban on the web implementation of platform (TOKI-018)
-pnpm test:lint-rules
-
-# Test the platform package (storage, notifications, file picking, sound)
-pnpm --filter @toki/platform test
-
-# Test the base components of ui-web
-pnpm --filter @toki/ui-web test
-
-# Check that no dev-only page (the component preview) is in the web build (run last by the web build; a dist folder can be given with `-- --dist <dir>`)
-pnpm --filter @toki/web run check:no-dev-pages
-
-# Open the component preview page of the design system (development server only)
-pnpm --filter @toki/web dev   # then http://localhost:5173/preview.html?look=calm&accent=teal
-
-# Test the rule that reads a review request from a comment
-bash .github/scripts/review-request.test.sh
-
-# Read one comment: exit 0 when it mentions @reviewer, exit 1 when it does not ask for a review
-printf '%s' '@reviewer' | bash .github/scripts/review-request.sh
-
-# Lint the whole repository (ESLint; a warning fails too), under Node 22
-pnpm lint
-
-# Check the format (Prettier), or rewrite badly formatted files
-pnpm format:check
-pnpm format
-
-# Start Postgres, MinIO and Mailpit and wait until all three are healthy (needs Docker and a root .env).
-# The first run builds the MinIO image from source: a few minutes and about 3 GB of free Docker disk.
-pnpm dev:up
-
-# Stop the three services; their data stays in the named volumes
-pnpm dev:down
-
-# Wipe development data: all three stores, or one. Each refuses unless NODE_ENV is development.
-# dev:reset:db then applies every migration, so the tables exist and hold no row.
-pnpm dev:reset
-pnpm dev:reset:db
-pnpm dev:reset:files
-pnpm dev:reset:mail
-
-# Create a migration from a change to the table definitions in apps/server/src/modules/*/schema.ts.
-# Commit the whole apps/server/migrations/ folder (the SQL file and meta/).
-pnpm db:generate
-
-# Apply every pending migration to the database in DATABASE_URL (reads the root .env when it exists).
-# Needs the services up for development. See apps/server/src/db/README.md.
-pnpm db:migrate
-
-# Test the reset scripts. Part 1 (the guard) needs no Docker; part 2 needs the services up
-# and WIPES the development data. Run it whenever a script in scripts/ changes.
-bash scripts/smoke.test.sh
-```
-
-The `Spec ticket` workflow can also be run by hand on GitHub, for one spec or for all, with a `dry_run` input.
-
 ## Common commands
 
-The root `pnpm` scripts, run from the repository root under Node 22 (`.nvmrc`). The workflow scripts are in Commands above.
+The root `pnpm` scripts, run from the repository root under Node 22 (`.nvmrc`) with the pnpm version of `package.json`.
 
-| Command | What it does | Status |
-| :---- | :---- | :---- |
-| `pnpm install` | Install the workspace | works (TOKI-001) |
-| `pnpm typecheck` | Type-check every package | works (TOKI-001) |
-| `pnpm lint` | ESLint, including the boundary rules; a warning fails | works (TOKI-002) |
-| `pnpm format`, `pnpm format:check` | Prettier: rewrite, or check only | works (TOKI-002) |
-| `pnpm dev` | Run the `dev` script of each package that has one | works (TOKI-001) |
-| `pnpm dev:up`, `pnpm dev:down` | Start or stop Postgres, MinIO and Mailpit | works (TOKI-003) |
-| `pnpm dev:reset`, `pnpm dev:reset:db`, `pnpm dev:reset:files`, `pnpm dev:reset:mail` | Wipe development data; `dev:reset:db` also applies the migrations | works (TOKI-003, TOKI-005) |
-| `pnpm db:generate`, `pnpm db:migrate` | Create a migration from the table definitions; apply every pending migration | works (TOKI-005) |
-| `pnpm test`, `pnpm test:e2e` | Run the tests (see Running tests) | planned (TOKI-008) |
+| Command | What it does |
+| :---- | :---- |
+| `pnpm install` | Install the workspace |
+| `pnpm typecheck` | Type-check every package |
+| `pnpm lint` | ESLint, including the boundary rules; a warning fails |
+| `pnpm format`, `pnpm format:check` | Prettier: rewrite, or check only |
+| `pnpm test`, `pnpm test:e2e` | Run the tests (see Running tests) |
+| `pnpm build`, `pnpm size` | Build every package; check the bundle size against `tools/bundle-size/limit.json` |
+| `pnpm i18n:check` | Check the vi and en translations |
+| `pnpm dev` | Run the `dev` script of each package that has one |
+| `pnpm dev:up`, `pnpm dev:down` | Start Postgres, MinIO and Mailpit and wait until healthy (needs Docker and a root `.env`; the first run builds MinIO from source: a few minutes, about 3 GB of Docker disk), or stop them and keep their data |
+| `pnpm dev:reset`, `pnpm dev:reset:db`, `pnpm dev:reset:files`, `pnpm dev:reset:mail` | Wipe development data, all stores or one; each refuses unless `NODE_ENV` is `development`. `dev:reset:db` then applies every migration |
+| `pnpm db:generate` | Create a migration from a change to `apps/server/src/modules/*/schema.ts`. Commit the whole `apps/server/migrations/` folder |
+| `pnpm db:migrate` | Apply every pending migration to `DATABASE_URL` (needs the services up). See `apps/server/src/db/README.md` |
+
+## Commands
+
+Commands that are not in the table above. Run from the repository root.
+
+```bash
+# One package: test, or any script of its package.json
+pnpm --filter @toki/<name> test
+
+# Rewrite packages/tokens/src/tokens.css from the token objects (the package test fails when the file is stale)
+pnpm --filter @toki/tokens generate
+
+# Component preview page of the design system (development server only)
+pnpm --filter @toki/web dev   # then http://localhost:5173/preview.html?look=calm&accent=teal
+
+# Check that no dev-only page is in the web build (run last by the web build; `-- --dist <dir>` for another folder)
+pnpm --filter @toki/web run check:no-dev-pages
+
+# Test the lint rules
+pnpm test:lint-rules
+
+# Test the Claude hooks
+bash .claude/hooks/hooks.test.sh
+
+# Test the reset scripts. Part 2 needs the services up and WIPES the development data.
+# Run it whenever a script in scripts/ changes.
+bash scripts/smoke.test.sh
+
+# Check one spec before its pull request (exit 0 ready, 1 gaps, 2 wrong usage)
+bash .github/scripts/spec-ready.sh docs/specs/<file>.md
+```
+
+The commands that test the workflow scripts are in `.claude/rules/workflows.md`.
 
 ## Running tests
 
-- `pnpm test` runs the unit tests and the server integration tests (Vitest).
+- `pnpm test` runs the unit tests and the server integration tests (Vitest), then the tests of the build scripts and the lint rules.
 - `pnpm test:e2e` runs the end-to-end tests in `e2e/` (Playwright).
-- Neither exists yet: both are planned (TOKI-008). Until then a ticket is checked by the steps in its spec's Testing section.
-- Every test file lives in a folder named `tests` at the root of its workspace, never beside the source it tests: `packages/<name>/tests/`, `apps/web/tests/`, `apps/server/tests/`. Inside it, a subfolder per area (`apps/server/tests/auth/`, `packages/shared/tests/clock/`), not a `tests` folder inside a module. Test helpers sit in the same `tests` folder as the tests that use them. The exceptions are `e2e/` (its own folder), and the tests of a build script or a lint rule, which sit beside their tool in `scripts/`, `tools/` and `apps/web/scripts/`.
+- Every test file lives in a folder named `tests` at the root of its workspace, never beside the source it tests: `packages/<name>/tests/`, `apps/web/tests/`, `apps/server/tests/`, with a subfolder per area (`apps/server/tests/auth/`) and the helpers beside the tests that use them. The exceptions are `e2e/`, and the tests of a build script or a lint rule, which sit beside their tool in `scripts/`, `tools/` and `apps/web/scripts/`.
 
 ## Boundary rules
 
@@ -232,28 +172,29 @@ The rules live only in `eslint.config.js` and `tools/lint-rules/`. Change a boun
 | `.github/pull_request_template.md` | The pull request template |
 | `docs/adr/`, `docs/handoff/`, `docs/tickets/` | Written by the cl plugins when used: decisions, hand-off notes, ticket files |
 
-A reference document (an inventory, a guide) is one file, `docs/<topic>.md`. TOKI-096 uses this for `docs/environment-config.md`.
+A reference document (an inventory, a guide) is one file, `docs/<topic>.md`, for example `docs/environment-config.md`.
 
 ## Process
 
 Work goes intent -> spec -> ticket (see "From a requirement to a ticket"). Work with no accepted intent starts by writing one; do not start on code.
 
-A pull request that creates a folder or command which this file marks as planned or not created removes that mark in the same pull request.
+A pull request that adds a command adds it to this file: a root script to Common commands, any other to Commands. A pull request that creates a folder or command which this file marks as planned removes that mark.
 
 ## Review on request
 
-A comment that mentions `@reviewer` on an open pull request starts the `PR review` workflow (`.github/workflows/pr-review.yml`), which reviews the pull request with Claude. The review instructions are the `prompt` of its last step. The review posts inline comments and one summary comment that ends with a `<!-- review:{"sha":...} -->` marker. It never approves or merges.
+The `PR review` workflow (`.github/workflows/pr-review.yml`) reviews a pull request with Claude. It starts when a comment on an open pull request mentions `@reviewer`, and by itself when the owner, a member or a collaborator opens a pull request or marks it ready for review. It posts inline comments and one summary comment; it never approves or merges. A push to an open pull request does not start a review.
 
-The same review also starts, with no comment, when a pull request is opened or marked ready for review by the owner, a member or a collaborator of the repository (`pull_request_target`, `opened` and `ready_for_review`). A draft, a bot's pull request and a pull request from anyone else wait for a `@reviewer` comment. A push to an open pull request does not start a review. The trigger runs the file on `main`, so a change to `pr-review.yml` takes effect only after it is merged.
-
-Anyone may ask, so the run treats the pull request as untrusted: the workspace is `main`, the head of the pull request is only read under `pr-head/`, and Claude has read and comment tools only. Keep it that way when you change the workflow: do not add a tool that runs code, and do not put text from a comment or a pull request into a `run:` script except through `env:`.
-
-The workflow needs the repository secret `CLAUDE_CODE_OAUTH_TOKEN`. Like every `issue_comment` workflow, it runs the version on `main`, not the one on the pull request.
+The run treats the pull request as untrusted. The rules for changing the workflow are in `.claude/rules/workflows.md`.
 
 ## Claude configuration
 
 `.claude/settings.json` enables the `cl-core`, `cl-dev`, `cl-ba-qa` and `cl-lead` plugins from the `cl` marketplace, and sets the advisor model. It denies `gh pr merge`, force-push, `git branch -D` and the deletion of a remote branch; do not work around a denied command.
 
-A `Stop` hook runs `.claude/hooks/notify-on-finish.sh`, which shows a desktop notification when Claude finishes a turn (`osascript` on macOS, `notify-send` on Linux, nothing elsewhere). It runs in the background and always exits 0.
+Hooks in `.claude/hooks/`:
 
-Three more hooks run in this repository: `.claude/hooks/check-branch-slug.sh` refuses `git push` and `gh pr create` from a branch with no slug (for example `feat/toki-002`; rename it first), `.claude/hooks/block-lockfile-edit.sh` refuses an Edit or Write of `pnpm-lock.yaml` (not a change made through the shell), and `.claude/hooks/format-after-edit.sh` runs Prettier on a file after an edit and never fails the call. Rules that load by area are in `.claude/rules/` (`server`, `web`, `packages`, `typescript`, `specs`, `workflows`), and the project command `/spec-check` checks a spec before its pull request.
+- `check-branch-slug.sh` refuses `git push` and `gh pr create` from a branch with no slug (for example `feat/toki-002`). Rename the branch before its pull request is opened; a later rename closes the pull request.
+- `block-lockfile-edit.sh` refuses an Edit or Write of `pnpm-lock.yaml`; change it through `pnpm`.
+- `format-after-edit.sh` runs Prettier on a file after an edit.
+- `notify-on-finish.sh` shows a desktop notification when a turn ends.
+
+Rules that load by area are in `.claude/rules/` (`server`, `web`, `packages`, `typescript`, `specs`, `workflows`). The project command `/spec-check` checks a spec before its pull request.
