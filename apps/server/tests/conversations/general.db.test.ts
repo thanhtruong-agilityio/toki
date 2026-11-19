@@ -5,6 +5,7 @@ import {
   addMemberToGeneral,
   createGeneralChannel,
   getConversationFacts,
+  getGeneralConversationId,
   isConversationMember,
 } from "../../src/modules/conversations/index.js";
 
@@ -273,5 +274,24 @@ describe("addMemberToGeneral (R26)", () => {
         `conversation_id = '${general}' and user_id = '${person}'`,
       ),
     ).toBe(1);
+  });
+});
+
+describe("getGeneralConversationId (TOKI-024 R20)", () => {
+  it("gives the id of the workspace's #general", async () => {
+    const { workspaceId, adminId } = await workspaceWithAdmin();
+    const id = await createGeneralChannel(t.db, {
+      workspaceId,
+      createdBy: adminId,
+      createdAt: NOW,
+    });
+    expect(await getGeneralConversationId(t.db, workspaceId)).toBe(id);
+  });
+
+  it("throws when the workspace has no #general", async () => {
+    const { workspaceId } = await workspaceWithAdmin();
+    await expect(getGeneralConversationId(t.db, workspaceId)).rejects.toThrow(
+      `workspace ${workspaceId} has no #general channel`,
+    );
   });
 });

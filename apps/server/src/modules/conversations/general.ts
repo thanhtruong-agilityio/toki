@@ -33,29 +33,38 @@ export async function createGeneralChannel(
   return id;
 }
 
+// The id of the workspace's #general. Throws when there is none.
+export async function getGeneralConversationId(
+  tx: Db,
+  workspaceId: string,
+): Promise<string> {
+  const [general] = await tx
+    .select({ id: conversations.id })
+    .from(conversations)
+    .where(
+      and(
+        eq(conversations.workspaceId, workspaceId),
+        eq(conversations.isGeneral, true),
+      ),
+    )
+    .limit(1);
+  if (!general) {
+    throw new Error(`workspace ${workspaceId} has no #general channel`);
+  }
+  return general.id;
+}
+
 // True when the row was added, false when the person already was a member (the
 // row that exists is not changed). Throws when the workspace has no #general.
 export async function addMemberToGeneral(
   tx: Db,
   input: { workspaceId: string; userId: string; createdAt: Date },
 ): Promise<boolean> {
-  const [general] = await tx
-    .select({ id: conversations.id })
-    .from(conversations)
-    .where(
-      and(
-        eq(conversations.workspaceId, input.workspaceId),
-        eq(conversations.isGeneral, true),
-      ),
-    )
-    .limit(1);
-  if (!general) {
-    throw new Error(`workspace ${input.workspaceId} has no #general channel`);
-  }
+  const generalId = await getGeneralConversationId(tx, input.workspaceId);
   const added = await tx
     .insert(conversationMembers)
     .values({
-      conversationId: general.id,
+      conversationId: generalId,
       userId: input.userId,
       workspaceId: input.workspaceId,
       notificationLevel: null,

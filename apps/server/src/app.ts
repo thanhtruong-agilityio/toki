@@ -17,7 +17,10 @@ import {
   type ChannelDepsInput,
 } from "./modules/conversations/index.js";
 import { createMailLayer, type MailLayer } from "./modules/mail/index.js";
-import { getAccountsByIds } from "./modules/members/index.js";
+import {
+  getAccountsByIds,
+  registerMembersRoutes,
+} from "./modules/members/index.js";
 
 declare module "fastify" {
   interface FastifyInstance {
@@ -129,6 +132,12 @@ export function buildApp({
     registerAuthHooks(app, { db, clock, config: auth });
     registerApi(app, async (scope) => {
       registerAuthRoutes(scope, { db, mail: app.mail, config: auth });
+      registerMembersRoutes(scope, {
+        db,
+        mail: app.mail,
+        clock,
+        appOrigin: auth.appOrigin,
+      });
       await scope.register(
         channelRoutes({ db, clock, getAccountsByIds, ...channelDeps }),
       );

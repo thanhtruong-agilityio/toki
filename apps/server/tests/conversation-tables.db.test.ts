@@ -1117,7 +1117,10 @@ describe("R23: one TRUNCATE empties every table", () => {
           );
           expect(row!.n, `${table} has a row before`).toBeGreaterThan(0);
         }
-        await db.unsafe(`truncate ${tables.join(", ")}`);
+        // Tables of later tickets that point to users (TOKI-024): a TRUNCATE
+        // with no CASCADE must name them too. They hold no row here.
+        const later = ["invitations", "admin_actions", "member_requests"];
+        await db.unsafe(`truncate ${[...tables, ...later].join(", ")}`);
         for (const table of tables) {
           const [row] = await db.unsafe(
             `select count(*)::int as n from ${table}`,

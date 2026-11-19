@@ -8,6 +8,7 @@ export {
   createSession,
   endSessionOfRequest,
   endSessionsOfUser,
+  getLastUsedAtByUser,
   onSessionsEnded,
   reportSessionsEnded,
 } from "./sessions.js";

@@ -176,3 +176,65 @@ export function insertDirectConversation(
     return id;
   });
 }
+
+// `invited_by` is required: the Admin who made the invitation.
+export function insertInvitation(
+  sql: Sql,
+  values: { workspace_id: string; invited_by: string } & Values,
+): Promise<string> {
+  const id = crypto.randomUUID();
+  return insert(sql, "invitations", {
+    id,
+    email: `${id}@example.com`,
+    role: "member",
+    user_id: null,
+    token_hash: hex(`invitation:${id}`),
+    code_serial: 0,
+    code_issued_at: FIXED,
+    mail_status: "sent",
+    created_at: FIXED,
+    sent_at: FIXED,
+    expires_at: new Date("2026-01-08T00:00:00.000Z"),
+    used_at: null,
+    used_by: null,
+    revoked_at: null,
+    ...values,
+  });
+}
+
+export function insertAdminAction(
+  sql: Sql,
+  values: { workspace_id: string; actor_id: string } & Values,
+): Promise<string> {
+  const id = crypto.randomUUID();
+  return insert(sql, "admin_actions", {
+    id,
+    action: "role_changed",
+    target_user_id: null,
+    target_email: null,
+    detail: {},
+    created_at: FIXED,
+    ...values,
+  });
+}
+
+export function insertMemberRequest(
+  sql: Sql,
+  values: { workspace_id: string; user_id: string } & Values,
+): Promise<string> {
+  const id = crypto.randomUUID();
+  return insert(sql, "member_requests", {
+    id,
+    request_key: `key-${id}`,
+    action: "invite",
+    request_hash: hex(`request:${id}`),
+    state: "pending",
+    claim_id: crypto.randomUUID(),
+    response_status: null,
+    response_body: null,
+    created_at: FIXED,
+    claimed_at: FIXED,
+    completed_at: null,
+    ...values,
+  });
+}
