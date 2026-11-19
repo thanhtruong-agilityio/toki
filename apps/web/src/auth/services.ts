@@ -1,5 +1,9 @@
-import { createSignInCalls, reportUnauthenticated } from "@toki/client-core";
-import type { SignInCalls } from "@toki/client-core";
+import {
+  createEmergencyCalls,
+  createSignInCalls,
+  reportUnauthenticated,
+} from "@toki/client-core";
+import type { EmergencyCalls, SignInCalls } from "@toki/client-core";
 import type { Clock } from "@toki/shared";
 import { clock } from "../clock";
 import { createFetchApi } from "./fetch-api";
@@ -14,6 +18,8 @@ import { timers, type Timers } from "./timers";
 export type AuthServices = {
   calls: SignInCalls;
   openCalls: SignInCalls;
+  // The call of the emergency link page (TOKI-026): a public route, so it reports no 401.
+  emergency: EmergencyCalls;
   clock: Clock;
   timers: Timers;
 };
@@ -26,6 +32,7 @@ function build(): AuthServices {
       createFetchApi({ timers, onUnauthenticated: reportUnauthenticated }),
     ),
     openCalls: createSignInCalls(createFetchApi({ timers })),
+    emergency: createEmergencyCalls(createFetchApi({ timers })),
     clock,
     timers,
   };

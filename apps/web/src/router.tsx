@@ -1,6 +1,7 @@
 import { createRouter } from "@tanstack/react-router";
 import { rootRoute } from "./routes/__root";
 import { appLayoutRoute } from "./routes/app-layout";
+import { emergencyRoute } from "./routes/emergency";
 import { indexRoute } from "./routes/index";
 import { loginRoute } from "./routes/login";
 
@@ -10,6 +11,7 @@ import { loginRoute } from "./routes/login";
 export const routeTree = rootRoute.addChildren([
   appLayoutRoute.addChildren([indexRoute]),
   loginRoute,
+  emergencyRoute,
 ]);
 
 export const router = createRouter({ routeTree });

@@ -1,6 +1,7 @@
 import { act } from "@testing-library/react";
 import { vi } from "vitest";
 import type {
+  EmergencyCalls,
   CodeRequestOutcome,
   CodeSubmitOutcome,
   SessionReadOutcome,
@@ -54,6 +55,16 @@ export function createFakeCalls(
     over.readWorkspaceName ?? (async () => "Acme"),
   );
   return { requestCode, submitCode, readSession, readWorkspaceName };
+}
+
+// The fake call of the emergency link page: one `vi.fn`, a signed-in answer unless the test gives its own.
+export function createFakeEmergency(
+  over: Partial<{ signInWithLink: EmergencyCalls["signInWithLink"] }> = {},
+) {
+  const signInWithLink = vi.fn<EmergencyCalls["signInWithLink"]>(
+    over.signInWithLink ?? (async () => ({ kind: "ok", user })),
+  );
+  return { signInWithLink };
 }
 
 // A `timers` object the test moves by hand; `advance` moves the test clock and runs what falls due.
