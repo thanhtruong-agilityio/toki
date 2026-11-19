@@ -1,13 +1,10 @@
 // The session state of the web app (TOKI-023, R39). It holds one value and tells listeners when it changes.
 // It touches no storage, no address and no timer, and it empties no store: the screens react to it.
 
-export type SessionUser = {
-  id: string;
-  email: string;
-  displayName: string;
-  role: "member" | "admin";
-  language: "en" | "vi";
-};
+import type { User } from "@toki/shared";
+
+// The user of the session is the shared `User` (TOKI-022); kept under its name for the callers.
+export type SessionUser = User;
 
 export type SessionState =
   | { status: "unknown" }

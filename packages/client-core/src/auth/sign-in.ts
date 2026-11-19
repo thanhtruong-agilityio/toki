@@ -1,3 +1,12 @@
+import {
+  CreateSessionResponseSchema,
+  CurrentSessionResponseSchema,
+  ErrorCodes,
+  RequestCodeResponseSchema,
+  WorkspaceNameResponseSchema,
+  type User,
+} from "@toki/shared";
+
 // The four calls of the sign-in screens (TOKI-023, R43). The client is an argument: this file has no
 // request layer, no DOM, no timer and no clock. It maps what a request ended with to the outcomes the
 // screens show, and it changes no session state: a 401 is reported to the session store by the hook of
@@ -22,15 +31,8 @@ export type ApiRequest = (
   init: { method: "GET" | "POST"; body?: unknown },
 ) => Promise<ApiResult>;
 
-// Local types for the answers of docs/specs/2026-11-16-sign-in-api-design.md, until the shared schemas
-// of TOKI-022 are on `main` (plan, decision 4).
-export type SignInUser = {
-  id: string;
-  email: string;
-  displayName: string;
-  role: "member" | "admin";
-  language: "en" | "vi";
-};
+// The user of the answers is the shared `User` (TOKI-022); kept under its old name for the callers.
+export type SignInUser = User;
 
 export type CodeRequestOutcome =
   | {
@@ -71,10 +73,11 @@ export type SignInCalls = {
   readWorkspaceName(): Promise<string | null>;
 };
 
-const SESSION_CODES = [
-  "unauthenticated",
-  "session_ended",
-  "account_deactivated",
+// The codes of a 401 that end a session (R1, R24, R26), from the shared registry.
+const SESSION_CODES: readonly string[] = [
+  ErrorCodes.unauthenticated,
+  ErrorCodes.sessionEnded,
+  ErrorCodes.accountDeactivated,
 ];
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -83,22 +86,6 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 
 function isSeconds(value: unknown): value is number {
   return typeof value === "number" && Number.isFinite(value) && value >= 0;
-}
-
-// A field the shape does not know is dropped (as the shared client does).
-function readUser(value: unknown): SignInUser | null {
-  if (!isRecord(value)) return null;
-  const { id, email, displayName, role, language } = value;
-  if (
-    typeof id !== "string" ||
-    typeof email !== "string" ||
-    typeof displayName !== "string" ||
-    (role !== "member" && role !== "admin") ||
-    (language !== "en" && language !== "vi")
-  ) {
-    return null;
-  }
-  return { id, email, displayName, role, language };
 }
 
 function detail(result: ApiResult, name: string): unknown {
@@ -128,18 +115,20 @@ export function createSignInCalls(api: ApiRequest): SignInCalls {
         body: { email },
       });
       if (result.ok) {
-        const d = result.data;
+        // A 200 body that does not fit the shared schema is `invalid_response` (R22).
+        const parsed = RequestCodeResponseSchema.safeParse(result.data);
         if (
-          isRecord(d) &&
-          typeof d.requestId === "string" &&
-          isSeconds(d.expiresInSeconds) &&
-          isSeconds(d.resendAfterSeconds)
+          parsed.success &&
+          isSeconds(parsed.data.expiresInSeconds) &&
+          isSeconds(parsed.data.resendAfterSeconds)
         ) {
+          const { requestId, expiresInSeconds, resendAfterSeconds } =
+            parsed.data;
           return {
             kind: "ok",
-            requestId: d.requestId,
-            expiresInSeconds: d.expiresInSeconds,
-            resendAfterSeconds: d.resendAfterSeconds,
+            requestId,
+            expiresInSeconds,
+            resendAfterSeconds,
           };
         }
         return { kind: "failed" };
@@ -150,14 +139,14 @@ export function createSignInCalls(api: ApiRequest): SignInCalls {
       if (result.kind !== "http") return { kind: "failed" };
       const retry = detail(result, "retryAfterSeconds");
       switch (result.code) {
-        case "validation_failed":
+        case ErrorCodes.validationFailed:
           return { kind: "invalid" };
-        case "code_request_limit":
-        case "rate_limited":
+        case ErrorCodes.codeRequestLimit:
+        case ErrorCodes.rateLimited:
           return isSeconds(retry)
             ? { kind: "limit", retryAfterSeconds: retry }
             : { kind: "failed" };
-        case "code_resend_too_soon":
+        case ErrorCodes.codeResendTooSoon:
           return isSeconds(retry)
             ? { kind: "tooSoon", retryAfterSeconds: retry }
             : { kind: "failed" };
@@ -172,25 +161,27 @@ export function createSignInCalls(api: ApiRequest): SignInCalls {
         body: { requestId, code },
       });
       if (result.ok) {
-        const user = isRecord(result.data) ? readUser(result.data.user) : null;
-        return user ? { kind: "ok", user } : { kind: "failed" };
+        const parsed = CreateSessionResponseSchema.safeParse(result.data);
+        return parsed.success
+          ? { kind: "ok", user: parsed.data.user }
+          : { kind: "failed" };
       }
       if (result.kind === "network" || result.kind === "timeout") {
         return { kind: "network" };
       }
       if (result.kind !== "http") return { kind: "failed" };
       switch (result.code) {
-        case "code_incorrect": {
+        case ErrorCodes.codeIncorrect: {
           const tries = detail(result, "triesLeft");
           return isSeconds(tries)
             ? { kind: "incorrect", triesLeft: tries }
             : { kind: "failed" };
         }
-        case "code_locked":
+        case ErrorCodes.codeLocked:
           return { kind: "locked" };
-        case "code_expired":
+        case ErrorCodes.codeExpired:
           return { kind: "expired" };
-        case "account_deactivated":
+        case ErrorCodes.accountDeactivated:
           return { kind: "deactivated" };
         default:
           return { kind: "failed" };
@@ -200,8 +191,10 @@ export function createSignInCalls(api: ApiRequest): SignInCalls {
     async readSession() {
       const result = await run("/auth/session", { method: "GET" });
       if (result.ok) {
-        const user = isRecord(result.data) ? readUser(result.data.user) : null;
-        return user ? { kind: "ok", user } : { kind: "failed" };
+        const parsed = CurrentSessionResponseSchema.safeParse(result.data);
+        return parsed.success
+          ? { kind: "ok", user: parsed.data.user }
+          : { kind: "failed" };
       }
       if (result.kind === "network" || result.kind === "timeout") {
         return { kind: "network" };
@@ -219,11 +212,9 @@ export function createSignInCalls(api: ApiRequest): SignInCalls {
 
     async readWorkspaceName() {
       const result = await run("/auth/workspace", { method: "GET" });
-      if (result.ok && isRecord(result.data)) {
-        const name = result.data.name;
-        if (typeof name === "string") return name;
-      }
-      return null;
+      if (!result.ok) return null;
+      const parsed = WorkspaceNameResponseSchema.safeParse(result.data);
+      return parsed.success ? parsed.data.name : null;
     },
   };
 }

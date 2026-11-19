@@ -157,6 +157,11 @@ for (const look of LOOKS) {
                 refused(429, "code_resend_too_soon", { retryAfterSeconds: 30 }),
               t.tooSoon,
             ],
+            // The limit per network address reads as the limit per address (TOKI-022 R56).
+            [
+              () => refused(429, "rate_limited", { retryAfterSeconds: 600 }),
+              t.tooMany,
+            ],
           ];
           for (const [reply, text] of emailCases) {
             stub.script.codes = reply;
@@ -179,6 +184,11 @@ for (const look of LOOKS) {
             [() => refused(400, "code_locked"), t.locked],
             [() => "abort", t.network],
             [() => refused(500, "internal_error"), t.general],
+            // No row in the screens spec: the general failure, the step stays (sign-in.test.ts).
+            [
+              () => refused(429, "rate_limited", { retryAfterSeconds: 90 }),
+              t.general,
+            ],
             [() => refused(400, "code_expired"), t.expired],
           ];
           for (const [reply, text] of codeCases) {

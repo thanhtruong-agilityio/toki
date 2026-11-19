@@ -79,6 +79,26 @@ describe("requestCode: POST /auth/codes (R7, R12, R13, R19, R21, R22, R37)", () 
     ).toEqual({ kind: "tooSoon", retryAfterSeconds: 12 });
   });
 
+  it("a 200 with a negative or non-numeric wait is the general failure", async () => {
+    for (const data of [
+      { requestId: "r", expiresInSeconds: -1, resendAfterSeconds: 60 },
+      { requestId: "r", expiresInSeconds: 600, resendAfterSeconds: -5 },
+      { requestId: "r", expiresInSeconds: "600", resendAfterSeconds: 60 },
+    ]) {
+      expect(await calls(ok(data)).calls.requestCode("a@example.com")).toEqual({
+        kind: "failed",
+      });
+    }
+  });
+
+  it("an answer that does not fit is the outcome of invalid_response", async () => {
+    expect(
+      await calls({ ok: false, kind: "invalid_response" }).calls.requestCode(
+        "a@example.com",
+      ),
+    ).toEqual({ kind: "failed" });
+  });
+
   it("429 rate_limited reads as the limit of the API spec", async () => {
     expect(
       await calls(
@@ -192,6 +212,17 @@ describe("submitCode: POST /auth/sessions (R11, R16 to R22)", () => {
     expect(await calls(result).calls.submitCode(input)).toEqual({
       kind: "failed",
     });
+  });
+
+  // The screens spec has no row for `rate_limited` on this route (the API spec says to show the wait and
+  // keep the code step). The narrowest reading: the general failure message (R22), the step and the
+  // requestId stay, the person can press again; the server refuses until the wait ends and counts no try.
+  it("429 rate_limited is the general failure, with or without a wait", async () => {
+    for (const details of [{ retryAfterSeconds: 90 }, undefined]) {
+      expect(
+        await calls(http(429, "rate_limited", details)).calls.submitCode(input),
+      ).toEqual({ kind: "failed" });
+    }
   });
 
   it.each(["network", "timeout"] as const)("%s is network", async (kind) => {
