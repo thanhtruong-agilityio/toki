@@ -132,7 +132,7 @@ const BODY_FAMILIES = [
 ];
 const FONT_FILE = /\.(woff2?|ttf|otf|eot|ttc)$/i;
 const FONT_SERVICES = ["fonts.googleapis.com", "fonts.gstatic.com"];
-const FONTS_DIR = "src/fonts";
+const FONTS_DIR = "assets/fonts";
 const BUILD_COMMAND = "pnpm --filter ./apps/web build";
 
 function problem(file, requirement, message) {
@@ -343,7 +343,7 @@ export function importsFontsCss(text) {
 
 // ----------------------------------------------------------------- checks
 
-// R1. `present`: the names in src/fonts. `tracked`: every path git tracks
+// R1. `present`: the names in assets/fonts. `tracked`: every path git tracks
 // under apps/web, relative to it.
 export function checkFileSet({ present, tracked }) {
   const problems = [];
@@ -799,7 +799,7 @@ export function checkNoFontService({ files }) {
   return problems;
 }
 
-// R14 and R15. `licenceFiles`: the files under src/fonts/licenses, written
+// R14 and R15. `licenceFiles`: the files under assets/fonts/licenses, written
 // as `licenses/<name>`.
 export function checkSources({ sources, fonts, licenceFiles }) {
   const problems = [];
@@ -1077,11 +1077,16 @@ export async function findProblems(webDir) {
     problems.push(...checkSources({ sources, fonts, licenceFiles }));
   }
 
-  // R2, R7. Each file under src is read once, for this and for R11.
+  // R2, R7. Each file under src and assets is read once, for this and for
+  // R11; only a file under src can be an importer.
   const cssPath = join(fontsDir, "fonts.css");
-  const srcFiles = (existsSync(srcDir) ? filesUnder(srcDir) : []).map(
-    (path) => ({ path, bytes: readFileSync(path) }),
-  );
+  const read = (dir) =>
+    (existsSync(dir) ? filesUnder(dir) : []).map((path) => ({
+      path,
+      bytes: readFileSync(path),
+    }));
+  const srcFiles = read(srcDir);
+  const assetFiles = read(join(webDir, "assets"));
   if (!existsSync(cssPath)) {
     problems.push(
       problem(`${FONTS_DIR}/fonts.css`, "R2", "the file is missing"),
@@ -1089,7 +1094,6 @@ export async function findProblems(webDir) {
   } else {
     const importers = srcFiles
       .filter((file) => /\.(?:[cm]?[jt]sx?|css|html)$/.test(file.path))
-      .filter((file) => file.path !== cssPath)
       .filter((file) => importsFontsCss(file.bytes.toString("utf8")))
       .map((file) => slashes(relative(srcDir, file.path)));
     problems.push(
@@ -1120,12 +1124,12 @@ export async function findProblems(webDir) {
     }),
   );
 
-  // R11: index.html, src and dist.
+  // R11: index.html, src, assets and dist.
   problems.push(
     ...checkNoFontService({
       files: [
         { name: "index.html", text: readFileSync(pagePath) },
-        ...srcFiles.map((file) => ({
+        ...[...srcFiles, ...assetFiles].map((file) => ({
           name: slashes(relative(webDir, file.path)),
           text: file.bytes,
         })),

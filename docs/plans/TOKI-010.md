@@ -32,7 +32,7 @@ Local commands: prefix with `export PATH="$HOME/.nvm/versions/node/v22.23.5/bin:
 | R7 `body` rule, single importer | 1, 3 | `check-fonts.test.ts` "R7": a second rule, a second declaration, another family list, a second importer under `src`, reformatted white space still passes |
 | R8 one preload link | 1, 3 | `check-fonts.test.ts` "R8": no link, two links, no `crossorigin`, a wrong `type`, a wrong file |
 | R9 seven hashed files in `dist`, own address, no `data:font` | 1, 3 | `check-fonts.test.ts` "R9": six files, an `https://` url, a `data:font` text, a name with no hash; then the real build |
-| R10 preload `href` equals the built CSS url | 1, 3 | `check-fonts.test.ts` "R10": an unrewritten `/src/fonts/...` href, a file that is not in `dist`; then the real build |
+| R10 preload `href` equals the built CSS url | 1, 3 | `check-fonts.test.ts` "R10": an unrewritten `/assets/fonts/...` href, a file that is not in `dist`; then the real build |
 | R11 no font service named | 1, 3 | `check-fonts.test.ts` "R11": the text in a `src` file and in a `dist` file |
 | R12 one font request on `/no-such-page` | 5 | By hand in Chromium on `vite preview`: network list filtered to fonts, `document.fonts` after `document.fonts.ready`; recorded in the pull request |
 | R13 Vietnamese sample line in each family | 5 | By hand in Chromium (the builder) and in Safari (the Dev), with a page that is not committed; recorded in the pull request |
@@ -52,7 +52,7 @@ The spec is the design. This section adds only what the repository and the order
 4. **No parsing library.** The script has a small tokenizer for CSS (comments removed; at-rules, rules, declarations) and for `<link>` tags with their attributes. It must read both the Prettier-formatted source and Vite's minified output, where a `url()` may have double quotes, single quotes or none.
 5. **Tests** are one Vitest file, `apps/web/tests/fonts/check-fonts.test.ts`, picked up by the root `vitest.config.ts` (`projects: ["apps/*", ...]`), so the root `package.json` is not touched. `apps/web/scripts/check-fonts.d.mts` gives the types; `scripts/` is not in the `include` of `apps/web/tsconfig.json`, so `fontkit`'s missing types never reach `tsc`. The by-hand list of the spec's Testing for R16 is automated here and repeated once on the real tree.
 6. **Build script:** `vite build && pnpm run check:no-dev-pages && pnpm run check:fonts`. The spec says `build` ends with `check:fonts`.
-7. **`main.tsx`** imports `./fonts/fonts.css` first, before `@toki/tokens/tokens.css`; `packages/ui-web/tests/styles/order.test.ts` already expects that order.
+7. **`main.tsx`** imports `../assets/fonts/fonts.css` first, before `@toki/tokens/tokens.css`; `packages/ui-web/tests/styles/order.test.ts` already expects that order.
 8. **Cutting the fonts** happens once, outside the repository, in a Python virtual environment in the session's scratch folder.
    - Sources: JetBrains Mono release `v2.304` (`JetBrainsMono-2.304.zip`, the static `JetBrainsMono-Medium.ttf`); Be Vietnam Pro at commit `804e62d81abb` of `bettergui/BeVietnamPro` (`fonts/ttf`, Regular, Medium, SemiBold, Bold); Bricolage Grotesque at commit `84745e5b9626` of `ateliertriay/bricolage` (`fonts/variable`). The two repositories without a release are pinned by commit; `sources.json` records the full SHA as the version, with the version string stored in the font.
    - Bricolage Grotesque: `fonttools varLib.instancer` first, with `wght` at 600 or 700 and `opsz` and `wdth` pinned to their default values, then the subset. After it the file has no `fvar` table and `OS/2.usWeightClass` is 600 or 700; `--update-name-table` is used and the weight is set by hand if the instancer leaves it wrong.
@@ -68,10 +68,10 @@ The spec is the design. This section adds only what the repository and the order
 | `apps/web/scripts/check-fonts.d.mts` (new) | 1 | Types of the exported functions |
 | `apps/web/tests/fonts/check-fonts.test.ts` (new) | 1, 2 | The tests of the table above |
 | `apps/web/package.json`, `pnpm-lock.yaml` | 1, 3 | `fontkit` 2.0.4; the script `check:fonts`; the end of `build` |
-| `apps/web/src/fonts/*.woff2` (seven, new) | 2 | Table A |
-| `apps/web/src/fonts/sources.json` (new) | 2 | R14 |
-| `apps/web/src/fonts/licenses/*.txt` (three, new) | 2 | R15 |
-| `apps/web/src/fonts/fonts.css` (new) | 3 | R2, R7 |
+| `apps/web/assets/fonts/*.woff2` (seven, new) | 2 | Table A |
+| `apps/web/assets/fonts/sources.json` (new) | 2 | R14 |
+| `apps/web/assets/fonts/licenses/*.txt` (three, new) | 2 | R15 |
+| `apps/web/assets/fonts/fonts.css` (new) | 3 | R2, R7 |
 | `apps/web/src/main.tsx` | 3 | The first import |
 | `apps/web/index.html` | 3 | The preload link |
 
@@ -83,7 +83,7 @@ A problem is `{ file: string, requirement: string, message: string }`. Every che
 - `parseCss(text)` returns `{ fontFaces: Declarations[], rules: { selector, declarations }[] }`, where `Declarations` is `{ [property]: string }` with white space collapsed.
 - `parseLinks(html)` returns one `{ [attribute]: string | true }` per `<link>` tag.
 - `readFont(path)` returns `FontFacts`: `{ file, bytes, isWoff2, axes: string[], italic, weight, codePoints: Set<number>, sha256 }`. It is the only function that uses `fontkit`.
-- `checkFileSet({ present, tracked })`: R1. `present` is the names in `src/fonts`, `tracked` the font files git tracks under `apps/web`.
+- `checkFileSet({ present, tracked })`: R1. `present` is the names in `assets/fonts`, `tracked` the font files git tracks under `apps/web`.
 - `checkFonts({ fonts, sources })`: R3, R4, R5, R6.
 - `checkCss({ css, importers })`: R2, R7. `importers` is the files under `src` whose text names `fonts.css`.
 - `checkPreload({ html })`: R8.
@@ -107,12 +107,12 @@ Files: `apps/web/scripts/check-fonts.mjs`, `apps/web/scripts/check-fonts.d.mts`,
 
 ### Step 2: the seven files, their record and their licences
 
-Files: `apps/web/src/fonts/*.woff2`, `apps/web/src/fonts/sources.json`, `apps/web/src/fonts/licenses/*.txt`, `apps/web/tests/fonts/check-fonts.test.ts`.
+Files: `apps/web/assets/fonts/*.woff2`, `apps/web/assets/fonts/sources.json`, `apps/web/assets/fonts/licenses/*.txt`, `apps/web/tests/fonts/check-fonts.test.ts`.
 
 - [ ] In the scratch folder: `python3 -m venv venv`, `venv/bin/pip install fonttools brotli`; record the two versions.
 - [ ] Download the three pinned sources (Design 8) into their own empty folders. Read each `OFL.txt`; stop if one reserves the name or forbids the subset.
 - [ ] With `fonttools ttx -t cmap` or a short script, list for each upstream file the code points of Table B it lacks. A Vietnamese letter missing: stop and ask the Dev. A sign or a combining mark missing: note it for `sources.json`.
-- [ ] Instance Bricolage Grotesque at 600 and 700, cut the seven files (Design 8), and copy them into `apps/web/src/fonts/` with the names of Table A.
+- [ ] Instance Bricolage Grotesque at 600 and 700, cut the seven files (Design 8), and copy them into `apps/web/assets/fonts/` with the names of Table A.
 - [ ] Add to the test file the block "the real files": `readFont` on each of the seven gives WOFF2, no axis, upright, the weight of its row; `checkFonts` and `checkSources` on the real folder return no problem. See it fail before `sources.json` exists.
 - [ ] Write `sources.json` (one entry per file with every field of R14, the SHA-256 from `shasum -a 256`) and the three licence files. Tests pass.
 - [ ] A file over 51,200 bytes or a total over 307,200: stop and report the sizes to the Dev (concern 5).
@@ -120,11 +120,11 @@ Files: `apps/web/src/fonts/*.woff2`, `apps/web/src/fonts/sources.json`, `apps/we
 
 ### Step 3: the CSS, the import, the preload, the build
 
-Files: `apps/web/src/fonts/fonts.css`, `apps/web/src/main.tsx`, `apps/web/index.html`, `apps/web/package.json`.
+Files: `apps/web/assets/fonts/fonts.css`, `apps/web/src/main.tsx`, `apps/web/index.html`, `apps/web/package.json`.
 
 - [ ] Write `fonts.css`: seven `@font-face` rules in the order of Table A, each with `font-family`, `font-style: normal`, `font-weight`, `font-display: swap` and `src: url("./<file>") format("woff2")`; then `body { font-family: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }`.
-- [ ] `main.tsx`: add `import "./fonts/fonts.css";` as the first line.
-- [ ] `index.html`: add `<link rel="preload" as="font" type="font/woff2" crossorigin href="/src/fonts/be-vietnam-pro-400.woff2" />` in `head`.
+- [ ] `main.tsx`: add `import "../assets/fonts/fonts.css";` as the first line.
+- [ ] `index.html`: add `<link rel="preload" as="font" type="font/woff2" crossorigin href="/assets/fonts/be-vietnam-pro-400.woff2" />` in `head`.
 - [ ] `package.json`: `"build": "vite build && pnpm run check:no-dev-pages && pnpm run check:fonts"`.
 - [ ] `corepack pnpm --filter ./apps/web build` exits 0 and prints the OK line of `check:fonts`. If Vite leaves the preload `href` unrewritten, R10 fails here: then the fix is in how the link names the file, not in the check.
 - [ ] `corepack pnpm format` on the new files, then build again (R7: reformatting must not break the check).
@@ -165,3 +165,7 @@ Decided by the Dev in this round (2026-11-19):
 - A test outside `apps/web` that fails because of the real fonts: stop and ask; it is not fixed in this pull request.
 - The version of a font with no release is the full commit SHA of its repository, with the version string stored in the font file; JetBrains Mono uses the tag `v2.304`.
 - Safari for R13 and the Bricolage comparison are done by the Dev after the pull request is opened, and are listed there as open until then.
+
+Decided by the Dev after the pull request was opened (2026-11-19):
+
+- The fonts folder is `apps/web/assets/fonts/`, not the spec's `apps/web/src/fonts/`: the seven files, `fonts.css`, `sources.json` and `licenses/` moved there as they are. `main.tsx` imports `../assets/fonts/fonts.css`, the preload `href` in `index.html` is `/assets/fonts/be-vietnam-pro-400.woff2`, and `check:fonts` reads the new folder and also searches `assets/` for a font service (R11). The requirements keep their meaning with the new path. The spec, and the specs of TOKI-015 and TOKI-016 that name `/src/fonts/fonts.css`, still carry the old path.

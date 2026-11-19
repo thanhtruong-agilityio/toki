@@ -44,6 +44,11 @@
     {
       "at": "2026-11-19T04:39:38Z",
       "stage": "ship"
+    },
+    {
+      "at": "2026-11-19T07:06:28Z",
+      "auto": false,
+      "stage": "approve"
     }
   ],
   "key": "TOKI-010",
@@ -51,7 +56,7 @@
   "metrics": {},
   "mode": "Auto to PR",
   "plan_approved": true,
-  "plan_hash": "1006878d507754c862a9a178eef6d0d92cad36b3fbff4e2017f86c23cbb80389",
+  "plan_hash": "252f45f95981ba38a5cf1f0f59de98e28a46e82201adfa7c3c786f2a484fe4fc",
   "spec_commit": "1315d7f83870ac57b86d65260b92602bfa9b7b97",
   "spec_paths": [
     "docs/specs/2026-11-16-self-hosted-fonts-design.md"

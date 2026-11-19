@@ -86,7 +86,7 @@ function goodSources(): { fonts: SourceEntry[] } {
 }
 
 const PRELOAD =
-  '<link rel="preload" as="font" type="font/woff2" crossorigin href="/src/fonts/be-vietnam-pro-400.woff2" />';
+  '<link rel="preload" as="font" type="font/woff2" crossorigin href="/assets/fonts/be-vietnam-pro-400.woff2" />';
 
 function page(head: string): string {
   return `<!doctype html><html><head><meta charset="UTF-8" />${head}</head><body><div id="root"></div></body></html>`;
@@ -229,13 +229,13 @@ describe("parseCss and parseLinks", () => {
 
 describe("R1: the set of font files", () => {
   const present = TABLE_A.map((row) => row.file);
-  const tracked = present.map((file) => `src/fonts/${file}`);
+  const tracked = present.map((file) => `assets/fonts/${file}`);
 
   test("the seven files and nothing else pass", () => {
     expect(
       checkFileSet({
         present: [...present, "fonts.css", "sources.json"],
-        tracked: [...tracked, "src/fonts/fonts.css", "index.html"],
+        tracked: [...tracked, "assets/fonts/fonts.css", "index.html"],
       }),
     ).toEqual([]);
   });
@@ -352,7 +352,7 @@ describe("R3 to R6: what the font files hold", () => {
     expect(checkFonts({ fonts, sources: goodSources() })).toEqual([]);
     at(fonts, 0).bytes = 43_885;
     const problems = checkFonts({ fonts, sources: goodSources() });
-    expect(has(problems, "src/fonts", "R6")).toBe(true);
+    expect(has(problems, "assets/fonts", "R6")).toBe(true);
   });
 });
 
@@ -502,7 +502,8 @@ describe("R8: the preload link of index.html", () => {
   });
 
   test("a second link written in capitals is counted", () => {
-    const second = '<LINK REL="PRELOAD" AS="FONT" HREF="/src/fonts/x.woff2">';
+    const second =
+      '<LINK REL="PRELOAD" AS="FONT" HREF="/assets/fonts/x.woff2">';
     const problems = checkPreload({ html: page(PRELOAD + second) });
     expect(has(problems, "index.html", "R8")).toBe(true);
   });
@@ -770,11 +771,11 @@ describe("R16: the command", () => {
   test("a problem line names the file and the requirement", () => {
     expect(
       formatProblem({
-        file: "src/fonts/fonts.css",
+        file: "assets/fonts/fonts.css",
         requirement: "R2",
         message: "eight rules",
       }),
-    ).toBe("check:fonts: src/fonts/fonts.css: R2: eight rules");
+    ).toBe("check:fonts: assets/fonts/fonts.css: R2: eight rules");
   });
 
   test("without dist/index.html it fails and names the build command", async () => {
@@ -793,7 +794,7 @@ describe("R16: the command", () => {
 
 // The seven committed files, read with the font library, against the record.
 describe("the real files (R3 to R6, R14, R15)", () => {
-  const fontsDir = join(import.meta.dirname, "../../src/fonts");
+  const fontsDir = join(import.meta.dirname, "../../assets/fonts");
   const readAll = () =>
     Promise.all(TABLE_A.map((row) => readFont(join(fontsDir, row.file))));
 
