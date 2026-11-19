@@ -72,6 +72,23 @@ export function insertLoginCode(
   });
 }
 
+export function insertEmergencyLink(
+  sql: Sql,
+  values: { workspace_id: string; user_id: string } & Values,
+): Promise<string> {
+  const id = crypto.randomUUID();
+  return insert(sql, "emergency_links", {
+    id,
+    token_hash: hex(`link:${id}`),
+    created_at: FIXED,
+    expires_at: LATER,
+    used_at: null,
+    cancelled_at: null,
+    session_id: null,
+    ...values,
+  });
+}
+
 export function insertSession(
   sql: Sql,
   values: { workspace_id: string; user_id: string } & Values,
