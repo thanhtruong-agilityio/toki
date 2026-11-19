@@ -6,6 +6,7 @@ import {
   AddMembersBodySchema,
   ChannelMembersQuerySchema,
   JoinChannelBodySchema,
+  UpdateSettingsBodySchema,
   CreateChannelBodySchema,
   EditChannelBodySchema,
   canReadConversation,
@@ -34,6 +35,7 @@ import {
 import type { ChannelDeps, ChannelDepsInput } from "./deps.js";
 import { getConversationFacts as defaultGetConversationFacts } from "./facts.js";
 import { toSafeError } from "./safe-error.js";
+import { updateSettings } from "./settings.js";
 
 // The four routes with no body take no body, an empty body or `{}`.
 const NoBodySchema = z.strictObject({});
@@ -53,11 +55,6 @@ const guarded =
       throw toSafeError(error);
     }
   };
-
-// A route whose step is not built yet.
-const notBuilt: Handler = async () => {
-  throw new Error("This channel route is not built yet.");
-};
 
 // The twelve routes of the channel API (TOKI-029). Registered in the /api/v1
 // scope, so the session hook of the app has already put the account on every
@@ -225,6 +222,19 @@ export function channelRoutes(input: ChannelDepsInput): FastifyPluginAsync {
         return restoreChannel(deps, { id: account.id, role: account.role }, id);
       }),
     );
-    scope.patch("/conversations/:id/settings", guarded(notBuilt));
+    scope.patch(
+      "/conversations/:id/settings",
+      guarded(async (request) => {
+        const account = request.account!;
+        const id = ChannelIdSchema.parse((request.params as { id: string }).id);
+        const patch = UpdateSettingsBodySchema.parse(request.body ?? {});
+        return updateSettings(
+          deps,
+          { id: account.id, role: account.role },
+          id,
+          patch,
+        );
+      }),
+    );
   };
 }
