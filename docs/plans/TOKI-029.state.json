@@ -41,6 +41,10 @@
       "at": "2026-11-19T08:38:25Z",
       "auto": false,
       "stage": "approve"
+    },
+    {
+      "at": "2026-11-19T08:42:04Z",
+      "stage": "ship"
     }
   ],
   "key": "TOKI-029",
@@ -66,10 +70,10 @@
   "spec_paths": [
     "docs/specs/2026-11-17-channel-api-design.md"
   ],
-  "stage": "check",
+  "stage": "ship",
   "tier": "L",
   "verifier": {
-    "result": "FAIL",
-    "round": 1
+    "result": "PASS",
+    "round": 2
   }
 }
