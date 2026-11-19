@@ -2,7 +2,7 @@ import { sql } from "drizzle-orm";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { createDb } from "../../db/client.js";
 import { migrationsFolder, runMigrations } from "../../db/migrate.js";
-import { createThrowawayDb } from "../../test/throwaway-db.js";
+import { createThrowawayDb } from "../../tests/throwaway-db.js";
 import { workspaces } from "./schema.js";
 
 let throwaway: Awaited<ReturnType<typeof createThrowawayDb>>;

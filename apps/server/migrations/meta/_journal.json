@@ -15,6 +15,13 @@
       "when": 1794996172359,
       "tag": "0001_account_tables",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794997528704,
+      "tag": "0002_conversation_tables",
+      "breakpoints": true
     }
   ]
 }

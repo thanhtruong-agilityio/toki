@@ -33,6 +33,11 @@ export default defineConfig({
         SERVER_HOST: "127.0.0.1",
         LOG_LEVEL: "warn",
         DATABASE_URL: "postgres://e2e:e2e@127.0.0.1:1/e2e_test",
+        // The server entry needs the mail values; nothing listens here, as with the database.
+        SMTP_HOST: "127.0.0.1",
+        SMTP_PORT: "1",
+        SMTP_TLS: "none",
+        MAIL_FROM_ADDRESS: "toki@example.com",
       },
     },
     {
