@@ -34,6 +34,15 @@ export const ErrorCodes = {
   sessionEnded: "session_ended",
   originNotAllowed: "origin_not_allowed",
   rateLimited: "rate_limited",
+  batchTooLarge: "batch_too_large",
+  invitationNotFound: "invitation_not_found",
+  invitationUsed: "invitation_used",
+  invitationRevoked: "invitation_revoked",
+  invitationExpired: "invitation_expired",
+  lastAdmin: "last_admin",
+  selfTarget: "self_target",
+  requestInProgress: "request_in_progress",
+  idempotencyKeyReused: "idempotency_key_reused",
 } as const;
 
 export type ErrorCode = (typeof ErrorCodes)[keyof typeof ErrorCodes];
