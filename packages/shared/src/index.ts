@@ -2,3 +2,5 @@ export * from "./error.js";
 export * from "./clock/clock.js";
 export * from "./clock/test-clock.js";
 export * from "./datetime/index.js";
+export * from "./conversations.js";
+export * from "./permissions/index.js";
