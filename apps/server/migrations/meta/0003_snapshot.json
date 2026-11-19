@@ -1,110 +1,9 @@
 {
-  "id": "d2a31f03-a2d3-426d-a639-1f161f5d60c0",
+  "id": "bb910ed9-d481-4257-808e-2bd13c72f4c1",
   "prevId": "7e7af3aa-e52e-411f-8014-22ce3d975810",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.emergency_links": {
-      "name": "emergency_links",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "workspace_id": {
-          "name": "workspace_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "user_id": {
-          "name": "user_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "token_hash": {
-          "name": "token_hash",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "expires_at": {
-          "name": "expires_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "used_at": {
-          "name": "used_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "cancelled_at": {
-          "name": "cancelled_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "session_id": {
-          "name": "session_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": false
-        }
-      },
-      "indexes": {
-        "emergency_links_user_id_open_key": {
-          "name": "emergency_links_user_id_open_key",
-          "columns": [
-            {
-              "expression": "user_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "where": "\"emergency_links\".\"used_at\" is null and \"emergency_links\".\"cancelled_at\" is null",
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "emergency_links_token_hash_key": {
-          "name": "emergency_links_token_hash_key",
-          "nullsNotDistinct": false,
-          "columns": [
-            "token_hash"
-          ]
-        }
-      },
-      "policies": {},
-      "checkConstraints": {
-        "emergency_links_token_hash_check": {
-          "name": "emergency_links_token_hash_check",
-          "value": "\"emergency_links\".\"token_hash\" ~ '^[0-9a-f]{64}$'"
-        },
-        "emergency_links_expires_at_check": {
-          "name": "emergency_links_expires_at_check",
-          "value": "\"emergency_links\".\"expires_at\" > \"emergency_links\".\"created_at\""
-        }
-      },
-      "isRLSEnabled": false
-    },
     "public.login_codes": {
       "name": "login_codes",
       "schema": "",
@@ -641,6 +540,459 @@
         "conversations_dm_key_size_check": {
           "name": "conversations_dm_key_size_check",
           "value": "\"conversations\".\"kind\" not in ('dm', 'group_dm') or (\"conversations\".\"dm_key\" is not null and ((\"conversations\".\"kind\" = 'dm' and cardinality(string_to_array(\"conversations\".\"dm_key\", ',')) = 2) or (\"conversations\".\"kind\" = 'group_dm' and cardinality(string_to_array(\"conversations\".\"dm_key\", ',')) between 3 and 8)))"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.admin_actions": {
+      "name": "admin_actions",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "workspace_id": {
+          "name": "workspace_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "actor_id": {
+          "name": "actor_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "action": {
+          "name": "action",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "target_user_id": {
+          "name": "target_user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "target_email": {
+          "name": "target_email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "detail": {
+          "name": "detail",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "admin_actions_actor_id_fkey": {
+          "name": "admin_actions_actor_id_fkey",
+          "tableFrom": "admin_actions",
+          "tableTo": "users",
+          "columnsFrom": [
+            "actor_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        },
+        "admin_actions_target_user_id_fkey": {
+          "name": "admin_actions_target_user_id_fkey",
+          "tableFrom": "admin_actions",
+          "tableTo": "users",
+          "columnsFrom": [
+            "target_user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "admin_actions_action_check": {
+          "name": "admin_actions_action_check",
+          "value": "\"admin_actions\".\"action\" in ('invitation_created', 'invitation_resent', 'invitation_revoked', 'role_changed', 'account_deactivated', 'account_reactivated')"
+        },
+        "admin_actions_target_email_check": {
+          "name": "admin_actions_target_email_check",
+          "value": "\"admin_actions\".\"target_email\" = lower(\"admin_actions\".\"target_email\") and \"admin_actions\".\"target_email\" !~ '[[:space:]]'"
+        },
+        "admin_actions_target_email_length_check": {
+          "name": "admin_actions_target_email_length_check",
+          "value": "char_length(\"admin_actions\".\"target_email\") <= 254"
+        },
+        "admin_actions_detail_check": {
+          "name": "admin_actions_detail_check",
+          "value": "jsonb_typeof(\"admin_actions\".\"detail\") = 'object'"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.invitations": {
+      "name": "invitations",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "workspace_id": {
+          "name": "workspace_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "role": {
+          "name": "role",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "invited_by": {
+          "name": "invited_by",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "token_hash": {
+          "name": "token_hash",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "code_serial": {
+          "name": "code_serial",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "code_issued_at": {
+          "name": "code_issued_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "mail_status": {
+          "name": "mail_status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sent_at": {
+          "name": "sent_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "expires_at": {
+          "name": "expires_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "used_at": {
+          "name": "used_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "used_by": {
+          "name": "used_by",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "revoked_at": {
+          "name": "revoked_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "invitations_open_email_key": {
+          "name": "invitations_open_email_key",
+          "columns": [
+            {
+              "expression": "workspace_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "email",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "where": "\"invitations\".\"used_at\" is null and \"invitations\".\"revoked_at\" is null",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "invitations_user_id_fkey": {
+          "name": "invitations_user_id_fkey",
+          "tableFrom": "invitations",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        },
+        "invitations_invited_by_fkey": {
+          "name": "invitations_invited_by_fkey",
+          "tableFrom": "invitations",
+          "tableTo": "users",
+          "columnsFrom": [
+            "invited_by"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        },
+        "invitations_used_by_fkey": {
+          "name": "invitations_used_by_fkey",
+          "tableFrom": "invitations",
+          "tableTo": "users",
+          "columnsFrom": [
+            "used_by"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "invitations_token_hash_key": {
+          "name": "invitations_token_hash_key",
+          "nullsNotDistinct": false,
+          "columns": [
+            "token_hash"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "invitations_email_check": {
+          "name": "invitations_email_check",
+          "value": "\"invitations\".\"email\" = lower(\"invitations\".\"email\") and \"invitations\".\"email\" !~ '[[:space:]]'"
+        },
+        "invitations_email_length_check": {
+          "name": "invitations_email_length_check",
+          "value": "char_length(\"invitations\".\"email\") <= 254"
+        },
+        "invitations_role_check": {
+          "name": "invitations_role_check",
+          "value": "\"invitations\".\"role\" in ('member', 'admin')"
+        },
+        "invitations_token_hash_check": {
+          "name": "invitations_token_hash_check",
+          "value": "\"invitations\".\"token_hash\" ~ '^[0-9a-f]{64}$'"
+        },
+        "invitations_code_serial_check": {
+          "name": "invitations_code_serial_check",
+          "value": "\"invitations\".\"code_serial\" >= 0"
+        },
+        "invitations_mail_status_check": {
+          "name": "invitations_mail_status_check",
+          "value": "\"invitations\".\"mail_status\" in ('sent', 'failed')"
+        },
+        "invitations_expires_at_check": {
+          "name": "invitations_expires_at_check",
+          "value": "\"invitations\".\"expires_at\" > \"invitations\".\"sent_at\""
+        },
+        "invitations_closed_check": {
+          "name": "invitations_closed_check",
+          "value": "\"invitations\".\"used_at\" is null or \"invitations\".\"revoked_at\" is null"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.member_requests": {
+      "name": "member_requests",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "workspace_id": {
+          "name": "workspace_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "request_key": {
+          "name": "request_key",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "action": {
+          "name": "action",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "request_hash": {
+          "name": "request_hash",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "state": {
+          "name": "state",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "claim_id": {
+          "name": "claim_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "response_status": {
+          "name": "response_status",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "response_body": {
+          "name": "response_body",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "claimed_at": {
+          "name": "claimed_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "completed_at": {
+          "name": "completed_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "member_requests_user_id_fkey": {
+          "name": "member_requests_user_id_fkey",
+          "tableFrom": "member_requests",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "member_requests_user_id_request_key_key": {
+          "name": "member_requests_user_id_request_key_key",
+          "nullsNotDistinct": false,
+          "columns": [
+            "user_id",
+            "request_key"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "member_requests_request_key_check": {
+          "name": "member_requests_request_key_check",
+          "value": "\"member_requests\".\"request_key\" ~ '^[A-Za-z0-9_-]{1,64}$'"
+        },
+        "member_requests_action_check": {
+          "name": "member_requests_action_check",
+          "value": "\"member_requests\".\"action\" in ('invite', 'resend')"
+        },
+        "member_requests_request_hash_check": {
+          "name": "member_requests_request_hash_check",
+          "value": "\"member_requests\".\"request_hash\" ~ '^[0-9a-f]{64}$'"
+        },
+        "member_requests_state_check": {
+          "name": "member_requests_state_check",
+          "value": "\"member_requests\".\"state\" in ('pending', 'done')"
+        },
+        "member_requests_done_check": {
+          "name": "member_requests_done_check",
+          "value": "(\"member_requests\".\"state\" = 'done') = (\"member_requests\".\"response_status\" is not null) and (\"member_requests\".\"state\" = 'done') = (\"member_requests\".\"response_body\" is not null)"
         }
       },
       "isRLSEnabled": false

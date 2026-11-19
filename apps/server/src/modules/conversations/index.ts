@@ -6,6 +6,10 @@ export {
   isConversationMember,
   listMemberIds,
 } from "./facts.js";
-export { addMemberToGeneral, createGeneralChannel } from "./general.js";
+export {
+  addMemberToGeneral,
+  createGeneralChannel,
+  getGeneralConversationId,
+} from "./general.js";
 export { channelRoutes } from "./channel-routes.js";
 export type { ChannelDepsInput } from "./deps.js";

@@ -26,6 +26,7 @@ export const EXPORTED_NAMES = [
   "listMemberIds",
   "createGeneralChannel",
   "addMemberToGeneral",
+  "getGeneralConversationId",
   "channelRoutes",
 ];
 
