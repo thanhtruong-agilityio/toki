@@ -167,6 +167,17 @@ describe("join, R10", () => {
     expect(await rowOf(other, lone.id)).toBeUndefined();
   });
 
+  it("stores a level that equals the default of a channel as null, as the settings route does", async () => {
+    const id = await channel("jn-default-level");
+    await join(member, id, {
+      settings: { notificationLevel: "mentions", isMuted: true },
+    });
+    expect(await rowOf(id, member.id)).toMatchObject({
+      notification_level: null,
+      is_muted: true,
+    });
+  });
+
   it("ignores the settings when the person is already a member", async () => {
     const id = await channel("jn-settings-member", {
       members: [admin.id, member.id],

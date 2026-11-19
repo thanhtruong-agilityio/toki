@@ -86,6 +86,10 @@ const badCursor = () =>
     { issues: [{ path: ["cursor"], code: "invalid_cursor" }] },
   );
 
+// The shape of `created_at::text`: what the cursor of a page of members holds.
+const DB_TIME =
+  /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}(\.\d{1,6})?([+-]\d{2}(:\d{2})?)?$/;
+
 function decodeCursor(cursor: string): string {
   if (!/^[A-Za-z0-9_-]+$/.test(cursor)) throw badCursor();
   return Buffer.from(cursor, "base64url").toString("utf8");
@@ -191,7 +195,7 @@ export async function listChannelMembers(
     if (!at || !userId || rest.length > 0 || !UUID_PATTERN.test(userId)) {
       throw badCursor();
     }
-    if (Number.isNaN(Date.parse(at))) throw badCursor();
+    if (!DB_TIME.test(at)) throw badCursor();
     conditions.push(
       sql`(${conversationMembers.createdAt}, ${conversationMembers.userId}) > (${at}::timestamptz, ${userId}::uuid)`,
     );

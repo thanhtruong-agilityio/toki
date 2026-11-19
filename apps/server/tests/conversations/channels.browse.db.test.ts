@@ -352,6 +352,23 @@ describe("members, R8", () => {
     expect(jsonOf(archived).members).toHaveLength(1);
   });
 
+  it("refuses a cursor whose time is not what the database writes, with 400", async () => {
+    const id = await channel("mem-cursor", { members: [member.id] });
+    const bad = ["1", "yesterday", "2026-01-01", "Tue Jan 01 2026"].map((at) =>
+      Buffer.from(`${at}|${member.id}`).toString("base64url"),
+    );
+    for (const cursor of bad) {
+      const res = await send(
+        h,
+        member,
+        "GET",
+        `/api/v1/channels/${id}/members?cursor=${cursor}`,
+      );
+      expect(res.statusCode, cursor).toBe(400);
+      expect(jsonOf(res).error.code).toBe("validation_failed");
+    }
+  });
+
   it("refuses a limit above 100 and a bad cursor with 400", async () => {
     const id = await channel("mem-query", { members: [member.id] });
     for (const q of ["?limit=101", "?cursor=%25%25", "?search=a"]) {

@@ -8,6 +8,7 @@ import {
   canLeaveChannel,
   canRemovePeopleFromChannel,
   canRestoreChannel,
+  effectiveNotificationLevel,
   type ChannelDetail,
   type ConversationFacts,
   type CreateChannelBodySchema,
@@ -27,11 +28,6 @@ import { conversationMembers, conversations } from "./schema.js";
 // locks in the order of TOKI-024 R39 (R15): the `users` rows `FOR SHARE` in id
 // order in one statement, then the conversation row `FOR NO KEY UPDATE`, then
 // the member rows.
-
-type Writer = Pick<
-  ChannelDeps,
-  "db" | "clock" | "getAccountsByIds" | "recordChange" | "getConversationFacts"
->;
 
 // Locks the account rows of the actor and of the people the request names, and
 // the conversation row when there is one. The actor is read again from the
@@ -107,7 +103,7 @@ type CreateBody = z.output<typeof CreateChannelBodySchema>;
 // request: the insert meets the unique name and the primary key without an
 // error, and the row that is there decides whether this is a repeat.
 export async function createChannel(
-  deps: Writer,
+  deps: ChannelDeps,
   actorId: string,
   body: CreateBody,
 ): Promise<{ created: boolean; channel: ChannelDetail }> {
@@ -228,7 +224,7 @@ type Locked = {
 // row, reads the actor and the facts again, and runs the write. A refusal
 // before the lock costs no lock; a refusal after it is the one that counts.
 export async function inConversationTx<T>(
-  deps: Writer,
+  deps: ChannelDeps,
   account: { id: string; role: string },
   conversationId: string,
   otherIds: readonly string[],
@@ -266,7 +262,7 @@ type EditBody = z.output<typeof EditChannelBodySchema>;
 // R9: only the given fields are written, so two people changing two fields at
 // once both keep their change; setting what is stored changes nothing.
 export async function editChannelDetails(
-  deps: Writer,
+  deps: ChannelDeps,
   account: { id: string; role: string },
   id: string,
   body: EditBody,
@@ -318,7 +314,7 @@ export async function editChannelDetails(
 // mute and star the person had). A person who is already a member changes
 // nothing and the values are ignored.
 export async function joinChannel(
-  deps: Writer,
+  deps: ChannelDeps,
   account: { id: string; role: string },
   id: string,
   settings: SettingsPatch = {},
@@ -336,7 +332,14 @@ export async function joinChannel(
           conversationId: id,
           userId: actor.id,
           workspaceId: actor.workspaceId,
-          notificationLevel: settings.notificationLevel ?? null,
+          // The default of the kind is stored as null, as R22 does, so a later
+          // change of the default applies to this person too.
+          notificationLevel:
+            settings.notificationLevel === undefined ||
+            settings.notificationLevel ===
+              effectiveNotificationLevel("channel", null)
+              ? null
+              : settings.notificationLevel,
           isMuted: settings.isMuted ?? false,
           isStarred: settings.isStarred ?? false,
           createdAt: now,
@@ -365,7 +368,7 @@ export async function joinChannel(
 // the people who are already members are skipped. The new rows have the
 // defaults: a person who is added again does not get the old level back.
 export async function addMembers(
-  deps: Writer,
+  deps: ChannelDeps,
   account: { id: string; role: string },
   id: string,
   userIds: readonly string[],
@@ -441,7 +444,7 @@ const leavePermission: Permission = (actor, facts) => {
 // order of R15; a reactivation that commits after the read finds the channel
 // archived, the same result as a reactivation a moment later.
 export async function leaveChannel(
-  deps: Writer,
+  deps: ChannelDeps,
   account: { id: string; role: string },
   id: string,
 ): Promise<{ changed: boolean; archived: boolean }> {
@@ -503,7 +506,7 @@ export async function leaveChannel(
 // R13: an Admin who is a member removes a person; removing oneself is its own
 // route (leave), which carries the last-member rule.
 export async function removeMember(
-  deps: Writer,
+  deps: ChannelDeps,
   account: { id: string; role: string },
   id: string,
   userId: string,
@@ -548,7 +551,7 @@ export async function removeMember(
 // changes nothing (the conflict that TOKI-027 leaves to the API, D-111).
 // Members, files and history are kept.
 export async function archiveChannel(
-  deps: Writer,
+  deps: ChannelDeps,
   account: { id: string; role: string },
   id: string,
 ): Promise<{ channel: ChannelDetail; changed: boolean }> {
@@ -584,7 +587,7 @@ export async function archiveChannel(
 // never reaches this: the access check answers 404 first. Restoring an active
 // channel changes nothing and adds no member row.
 export async function restoreChannel(
-  deps: Writer,
+  deps: ChannelDeps,
   account: { id: string; role: string },
   id: string,
 ): Promise<{ channel: ChannelDetail; changed: boolean }> {
