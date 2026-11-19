@@ -90,7 +90,11 @@ describe("the log and the error bodies (R32)", () => {
     const a = mail("mailfail");
     h.mail.failFor.add(a);
     await h.invite(lan, [a]);
-    expect(h.logText()).not.toMatch(/mail/i);
+    // The mail layer logs a failure once (TOKI-021 R14); this module adds
+    // none. The fake layer logs nothing, so the log holds no word of it.
+    expect(h.logText()).not.toMatch(
+      /sendInvitationMail|mail_not_sent|unavailable|mail failed/i,
+    );
   });
 });
 
