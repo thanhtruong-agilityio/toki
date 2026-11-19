@@ -81,7 +81,13 @@ function EmergencyPage() {
 
   // A browser that already has a session asks first (D-080, R43): the card shows the question and its
   // two buttons in place of the one button, so one press of the confirmation is the one request.
-  const asking = session.status === "signedIn" && view.kind === "ready";
+  // After an answer the person can try again (`failed`, `rateLimited`), so the question comes back with
+  // every retry: the confirmation given for the earlier attempt does not cover a new request.
+  const retryable =
+    view.kind === "ready" ||
+    view.kind === "failed" ||
+    view.kind === "rateLimited";
+  const asking = session.status === "signedIn" && retryable;
   const refuse = () => {
     forgetToken();
     void router.navigate({ to: "/", replace: true });

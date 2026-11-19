@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { act, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import type { EmergencyOutcome } from "@toki/client-core";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { deferred, user } from "../support/auth-harness";
 import { loadApp } from "../support/load-app";
@@ -191,6 +192,34 @@ describe("a browser that already has a session (R43)", () => {
     expect(t.emergency.signInWithLink).toHaveBeenCalledTimes(1);
     expect(t.emergency.signInWithLink).toHaveBeenCalledWith(TOKEN, "cookie");
   });
+
+  test.each(["failed", "rateLimited"] as const)(
+    "asks again after a %s answer, so a retry never replaces the session without the question",
+    async (kind) => {
+      const answers: EmergencyOutcome[] = [
+        kind === "failed"
+          ? { kind: "failed" }
+          : { kind: "rateLimited", retryAfterSeconds: 60 },
+        { kind: "ok", user },
+      ];
+      let n = 0;
+      const t = await openEmergency(
+        { emergency: { signInWithLink: async () => answers[n++]! } },
+        "signedIn",
+      );
+      await userEvent.click(
+        screen.getByRole("button", { name: "Sign out and continue" }),
+      );
+      expect(t.emergency.signInWithLink).toHaveBeenCalledTimes(1);
+      // The question is back, with its two buttons, and the bare button is not.
+      expect(screen.getByText(/You are signed in as Ada/)).toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: "Sign in" })).toBeNull();
+      await userEvent.click(
+        screen.getByRole("button", { name: "Sign out and continue" }),
+      );
+      expect(t.emergency.signInWithLink).toHaveBeenCalledTimes(2);
+    },
+  );
 
   test("the question is in Vietnamese when the language is Vietnamese", async () => {
     await openEmergency({ language: "vi" }, "signedIn");

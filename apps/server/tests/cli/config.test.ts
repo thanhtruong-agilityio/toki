@@ -67,6 +67,17 @@ describe("readCliConfig (TOKI-026 R22)", () => {
     }
   });
 
+  it("accepts an origin the server accepts: an explicit default port or capital letters", () => {
+    expect(
+      readCliConfig({ ...base, APP_ORIGIN: "https://toki.example.com:443" })
+        .origin,
+    ).toBe("https://toki.example.com");
+    expect(
+      readCliConfig({ ...base, APP_ORIGIN: "HTTPS://Toki.Example.com/" })
+        .origin,
+    ).toBe("https://toki.example.com");
+  });
+
   it("accepts a trailing slash and keeps the port", () => {
     expect(
       readCliConfig({ ...base, APP_ORIGIN: "https://toki.example.com:8443/" })

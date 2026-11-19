@@ -6,12 +6,12 @@
 // wrong call. It imports no mail code (R23): `config.ts` here, the narrow `auth/cli.ts`, and the entry
 // of the `members` module, never the whole configuration or the index of `auth`.
 import { parseEmail, systemClock } from "@toki/shared";
-import os from "node:os";
 import pino from "pino";
 import { createDb } from "../db/client.js";
 import { issueEmergencyLink } from "../modules/auth/cli.js";
 import { findAccountByEmail } from "../modules/members/index.js";
 import { CliConfigError, readCliConfig } from "./config.js";
+import { operatorName } from "./operator.js";
 
 // The logger of the server with standard error as its destination, written at once so a line is not
 // lost when the process ends.
@@ -19,7 +19,7 @@ const logger = pino(
   { base: null, level: "info" },
   pino.destination({ dest: 2, sync: true }),
 );
-const operator = os.userInfo().username;
+const operator = operatorName();
 
 async function main(args: string[]): Promise<number> {
   if (args.length !== 1) {

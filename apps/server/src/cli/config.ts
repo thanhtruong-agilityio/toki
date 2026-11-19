@@ -43,11 +43,18 @@ export function readCliConfig(env: Env): CliConfig {
 
   const originText = value(env, "APP_ORIGIN");
   const url = originText === undefined ? null : parseUrl(originText);
+  // The parsed address is the origin alone: no path, query, fragment or credentials. Judged on the
+  // parsed URL, so an address the server accepts (an explicit default port, capital letters) is
+  // accepted here too.
   const plain =
     url !== null &&
     (url.protocol === "https:" || url.protocol === "http:") &&
-    // No path, query, fragment or credentials: the text is the origin, with at most one slash.
-    originText!.replace(/\/$/, "") === url.origin;
+    url.pathname === "/" &&
+    url.search === "" &&
+    url.hash === "" &&
+    url.username === "" &&
+    url.password === "" &&
+    !/[?#]/.test(originText!);
   // `http://` is accepted only in development (R22).
   const secure = url?.protocol === "https:" || !production;
   if (!plain || !secure) failing.push("APP_ORIGIN");
