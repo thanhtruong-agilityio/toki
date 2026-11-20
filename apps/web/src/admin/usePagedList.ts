@@ -110,7 +110,9 @@ function reducer<Row, Meta>(
 
 export type PagedList<Row, Meta> = State<Row, Meta> & {
   loadMore(): void;
-  reload(): void;
+  // Resolves when the request has been answered or has failed, or was replaced by a newer one, so a
+  // caller can act on the rows that are then held (the focus rule of R19). It never rejects.
+  reload(): Promise<void>;
 };
 
 export function usePagedList<Row, Meta, Query>(
@@ -161,7 +163,7 @@ export function usePagedList<Row, Meta, Query>(
   }, []);
 
   const start = useCallback(
-    (limit: number | undefined) => {
+    (limit: number | undefined): Promise<void> => {
       const mine = ++generation.current;
       first.current?.abort();
       more.current?.abort();
@@ -172,7 +174,7 @@ export function usePagedList<Row, Meta, Query>(
       asked.current = new Set();
       dispatch({ type: "refreshStart" });
       const { options: current } = latest.current;
-      current
+      return current
         .fetchPage({
           query: current.query,
           limit,
@@ -195,7 +197,7 @@ export function usePagedList<Row, Meta, Query>(
 
   // The first page, and again on every change of query.
   useEffect(() => {
-    start(undefined);
+    void start(undefined);
   }, [options.query, start]);
 
   // Nothing is kept or answered once the page is gone.
@@ -242,9 +244,9 @@ export function usePagedList<Row, Meta, Query>(
       );
   }, [fail]);
 
-  const reload = useCallback(() => {
+  const reload = useCallback((): Promise<void> => {
     const { options: current, shown } = latest.current;
-    start(current.reloadLimit?.(shown));
+    return start(current.reloadLimit?.(shown));
   }, [start]);
 
   return { ...state, loadMore, reload };

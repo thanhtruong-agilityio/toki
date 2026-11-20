@@ -87,6 +87,8 @@ export type FakeCall = {
   method: string;
   path: string;
   query: Record<string, string>;
+  headers: Record<string, string>;
+  body: unknown;
 };
 
 export type FakeAdminServerOptions = {
@@ -94,8 +96,11 @@ export type FakeAdminServerOptions = {
   channels?: ChannelSummary[];
   // Awaited before a call is answered: a test holds a request here and lets it go when it likes.
   gate?: (call: FakeCall) => Promise<void> | undefined;
-  // A Response to answer a call with, instead of the model's answer.
-  fail?: (call: FakeCall) => Response | undefined;
+  // A Response to answer a call with, instead of the model's answer; an Error is thrown, which the
+  // client sees as a network error. Asked when the call arrives, before the model changes.
+  fail?: (call: FakeCall) => Response | Error | undefined;
+  // The result of a Resend, "invited" unless a test says otherwise.
+  resendResult?: (invitationId: string) => "invited" | "mail_not_sent";
   // Answers a call even after its signal was aborted, like a server answer already on the wire, so
   // a test can prove that the page itself drops a late answer and does not rely on the abort.
   ignoreAbort?: boolean;
@@ -168,12 +173,76 @@ export function createFakeAdminServer(options: FakeAdminServerOptions = {}) {
     };
   }
 
+  const notFound = (code: string) =>
+    json(404, { error: { code, message: "none" } });
+
+  const accountOf = (row: FakeMember) => ({
+    member: {
+      id: row.userId,
+      email: row.email,
+      displayName: row.displayName,
+      role: row.role,
+      status: row.status === "deactivated" ? "deactivated" : "active",
+    },
+  });
+
+  // The change routes of TOKI-024, applied to the model when the call arrives (R20 to R30).
+  function post(call: FakeCall): Response | undefined {
+    const invitationRoute = /^\/invitations\/([^/]+)\/(resend|revoke)$/.exec(
+      call.path,
+    );
+    if (invitationRoute) {
+      const id = decodeURIComponent(invitationRoute[1]!);
+      const index = state.members.findIndex((row) => row.invitation?.id === id);
+      const row = state.members[index];
+      if (!row?.invitation) return notFound("invitation_not_found");
+      if (invitationRoute[2] === "revoke") {
+        state.members = state.members.filter((_, i) => i !== index);
+        return json(200, {
+          invitation: { ...row.invitation, state: "revoked" },
+        });
+      }
+      const result = options.resendResult?.(id) ?? "invited";
+      const invitation = {
+        ...row.invitation,
+        mailStatus:
+          result === "invited" ? ("sent" as const) : ("failed" as const),
+      };
+      state.members = state.members.map((m, i) =>
+        i === index ? { ...m, invitation } : m,
+      );
+      return json(200, { result, invitation });
+    }
+    const memberRoute =
+      /^\/members\/([^/]+)\/(role|deactivate|reactivate)$/.exec(call.path);
+    if (memberRoute) {
+      const id = decodeURIComponent(memberRoute[1]!);
+      const index = state.members.findIndex((row) => row.userId === id);
+      const row = state.members[index];
+      if (!row) return notFound("not_found");
+      const body = call.body as { role?: "member" | "admin" } | undefined;
+      const changed: FakeMember =
+        memberRoute[2] === "role"
+          ? { ...row, role: body?.role ?? row.role }
+          : {
+              ...row,
+              status:
+                memberRoute[2] === "deactivate" ? "deactivated" : "active",
+            };
+      state.members = state.members.map((m, i) => (i === index ? changed : m));
+      return json(200, accountOf(changed));
+    }
+    return undefined;
+  }
+
   const fetchImpl = async (input: string, init: RequestInit = {}) => {
     const url = new URL(input, "http://localhost");
     const call: FakeCall = {
       method: init.method ?? "GET",
       path: url.pathname.replace(/^\/api\/v1/, ""),
       query: Object.fromEntries(url.searchParams.entries()),
+      headers: Object.fromEntries(new Headers(init.headers).entries()),
+      body: init.body === undefined ? undefined : JSON.parse(String(init.body)),
     };
     calls.push(call);
     const aborted = new Promise<never>((_, reject) => {
@@ -184,16 +253,20 @@ export function createFakeAdminServer(options: FakeAdminServerOptions = {}) {
     });
     // The answer is what the model holds when the call arrives, as on a real server: a call that
     // is held and let go later still carries the older data.
+    const failure = options.fail?.(call);
     let answer: Response | undefined;
-    if (call.method === "GET" && call.path === "/members")
-      answer = json(200, listMembers(call.query));
-    else if (call.method === "GET" && call.path === "/channels")
-      answer = json(200, listChannels(call.query));
+    if (failure === undefined) {
+      if (call.method === "GET" && call.path === "/members")
+        answer = json(200, listMembers(call.query));
+      else if (call.method === "GET" && call.path === "/channels")
+        answer = json(200, listChannels(call.query));
+      else if (call.method === "POST") answer = post(call);
+    }
     const gated = options.gate?.(call);
     if (gated) await Promise.race([gated, aborted]);
     if (!options.ignoreAbort && init.signal?.aborted)
       throw new DOMException("aborted", "AbortError");
-    const failure = options.fail?.(call);
+    if (failure instanceof Error) throw failure;
     if (failure) return failure;
     return (
       answer ?? json(404, { error: { code: "not_found", message: "none" } })

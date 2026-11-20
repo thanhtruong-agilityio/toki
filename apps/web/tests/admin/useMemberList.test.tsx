@@ -300,7 +300,9 @@ describe("reload after a change (R10)", () => {
       },
     });
     await ready(result);
-    act(() => result.current.reload());
+    act(() => {
+      void result.current.reload();
+    });
     server.setMembers([person({ n: 1, displayName: "After" })]);
     await act(async () => result.current.reload());
     await waitFor(() =>

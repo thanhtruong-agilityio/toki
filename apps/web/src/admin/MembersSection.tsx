@@ -2,18 +2,13 @@ import { classifyApiError } from "@toki/client-core";
 import { useTranslation } from "@toki/i18n/react";
 import type { MemberStatus } from "@toki/shared";
 import { Button, Chip, ChipGroup, EmptyState, Field } from "@toki/ui-web";
-import {
-  useEffect,
-  useId,
-  useRef,
-  useState,
-  type ReactNode,
-  type Ref,
-} from "react";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { timers } from "../client";
 import type { MemberRowView } from "./adminApi";
 import "./admin.css";
 import { MemberRow } from "./MemberRow";
+import { RowActions } from "./RowActions";
+import { useAdminAction } from "./useAdminAction";
 import { useDateContext } from "./useDateContext";
 import { useLoadMore } from "./useLoadMore";
 import type { useMemberList } from "./useMemberList";
@@ -35,9 +30,8 @@ const CHIPS: Array<{ status: MemberStatus | undefined; label: string }> = [
 export type MembersSectionProps = {
   list: MemberList;
   actor: { id: string; role: string };
-  // The focus goes here when the row that opened a dialog has gone (R19).
-  headingRef?: Ref<HTMLHeadingElement>;
-  // The last cell of a row (R15); the actions of Task 7 are drawn through this.
+  // The last cell of a row. By default Resend and Revoke on an invitation and the menu of a person
+  // (R15); a test passes its own.
   renderActions?: (
     row: MemberRowView,
     context: { nameCellId: string },
@@ -52,7 +46,6 @@ const rowKey = (row: MemberRowView) =>
 export function MembersSection({
   list,
   actor,
-  headingRef,
   renderActions,
 }: MembersSectionProps) {
   const { t } = useTranslation();
@@ -60,6 +53,9 @@ export function MembersSection({
   const headingId = useId();
   const idBase = useId();
   const { setQuery } = list;
+  // The focus goes to the heading when the row that opened a dialog has gone (R19).
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const actions = useAdminAction({ reload: list.reload, headingRef });
 
   // Search: the displayed text is set at once and the query's search after 300 ms without a key.
   const [text, setText] = useState("");
@@ -100,7 +96,10 @@ export function MembersSection({
       {unreadable ? null : (
         <Button
           size="sm"
-          onClick={() => (list.moreFailed ? list.loadMore() : list.reload())}
+          onClick={() => {
+            if (list.moreFailed) list.loadMore();
+            else void list.reload();
+          }}
         >
           {t("admin.error.retry")}
         </Button>
@@ -164,7 +163,19 @@ export function MembersSection({
                   actorId={actor.id}
                   ctx={ctx}
                   nameCellId={nameCellId}
-                  actions={renderActions?.(row, { nameCellId })}
+                  actions={
+                    renderActions ? (
+                      renderActions(row, { nameCellId })
+                    ) : (
+                      <RowActions
+                        row={row}
+                        actor={actor}
+                        activeAdminCount={list.activeAdminCount}
+                        nameCellId={nameCellId}
+                        actions={actions}
+                      />
+                    )
+                  }
                   // Focus entering the last row asks the next page too, so a person with a keyboard
                   // only can reach it (R9).
                   onFocus={index === last ? list.loadMore : undefined}
@@ -207,6 +218,7 @@ export function MembersSection({
         ))}
       </ChipGroup>
       {content}
+      {actions.dialogs}
     </section>
   );
 }

@@ -8,7 +8,6 @@ import {
   within,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { I18nProvider } from "@toki/i18n/react";
 import type { MemberStatus } from "@toki/shared";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { AdminForbiddenContext } from "../../src/admin/AdminForbiddenContext";
@@ -26,6 +25,7 @@ import {
   type FakeMember,
 } from "../support/fakeAdminServer";
 import { installFakeIntersectionObserver } from "../support/fakeIntersection";
+import { Providers } from "../support/providers";
 
 let io: ReturnType<typeof installFakeIntersectionObserver>;
 
@@ -59,11 +59,11 @@ function setup(
 ) {
   const server = createFakeAdminServer(options).install();
   const view = render(
-    <I18nProvider language="en">
+    <Providers>
       <AdminForbiddenContext.Provider value={() => undefined}>
         <Harness {...props} />
       </AdminForbiddenContext.Provider>
-    </I18nProvider>,
+    </Providers>,
   );
   return { server, ...view };
 }
