@@ -11,19 +11,32 @@
     {
       "at": "2026-11-20T10:11:33Z",
       "stage": "explore"
+    },
+    {
+      "at": "2026-11-20T10:18:52Z",
+      "stage": "plan"
+    },
+    {
+      "at": "2026-11-20T10:21:32Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-20T10:22:18Z",
+      "stage": "build"
     }
   ],
   "key": "TOKI-033",
   "main_sha": "230759d5911a31c3476a295b92527aa2c1736714",
   "metrics": {},
-  "mode": null,
-  "plan_approved": false,
-  "plan_hash": null,
+  "mode": "auto-to-check",
+  "plan_approved": true,
+  "plan_hash": "55a90230790bfb84a8cbb738b932b1de7a0fe5175b354ea7415303942fb88977",
   "spec_commit": "77429de2256d63fe51049ae71f6beb366e6b9061",
   "spec_paths": [
     "docs/specs/2026-11-17-conversation-list-design.md"
   ],
-  "stage": "explore",
+  "stage": "build",
   "tier": "L",
   "verifier": {
     "result": null,
