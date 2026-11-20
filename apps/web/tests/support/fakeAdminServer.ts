@@ -231,5 +231,11 @@ export const errorBody = (code: string) => ({
   error: { code, message: "m" },
 });
 
-export const failWith = (status: number, code: string) =>
-  json(status, errorBody(code));
+// An error answer; `requestId` goes where the server puts it (details.requestId).
+export const failWith = (status: number, code: string, requestId?: string) =>
+  json(
+    status,
+    requestId === undefined
+      ? errorBody(code)
+      : { error: { code, message: "m", details: { requestId } } },
+  );
