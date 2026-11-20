@@ -26,3 +26,18 @@ Not compared by eye with the prototype: the prototype is not in the repository o
 - Focus, 1100 px: icon rail on the left, the list in a column beside it, same groups and rows; the heading "Conversations" and the search field sit tight to the top with the Focus padding. The current row is a dark teal fill.
 - Calm and Focus, 360 px: the list fills the screen above the bottom bar (Home tab only); rows are taller (52 px), the chips are 40 px, the search field is at 16 px from the edge like the heading. The Direct messages group is cut by the bottom bar at 700 px height (scrolls).
 - Nothing looked broken or overlapping. The `+` on Direct messages and the Browse channels row are not drawn (their openers are registered by TOKI-034), so they were not looked at.
+
+## R14, the header button and the '+'
+
+The browser test measures the controls the pane draws (rows, chips, `.sec`). The header button and the '+' are not drawn until TOKI-034 registers the openers, so the real pane has none of them yet. The test appends the same `IconButton` markup (`ib sm`) in `.ch` and `.sech` at narrow width and reads its height under the real stylesheet (at least 40 px, from the narrow `.ib` `min-height`). It fails when that rule is lowered (checked by setting it to 30 px). It checks the stylesheet, not the component.
+
+## Deviations from the plan, declared
+
+- Only `packages/ui-web/tests/components/exports.test.ts` needed the export-test fix. Plan Design point 1 said two files; the other one needed no change.
+- `apps/web/tests/router.test.ts` gains one test, for `conversationRoute`, which the plan did not list.
+- Test seam files not in the plan: `apps/web/tests/support/conversation-store.ts` (a real `createConversationStore` over a fake api, behind a mock of `src/client`), `apps/web/tests/support/pane-harness.tsx` (the pane in a memory router) and `e2e/support/fixtures.ts` (the bootstrap fixtures). `apps/web/tests/support/load-app.tsx` uses the same seam, so a signed-in `loadApp()` makes no real fetch.
+- R13 e2e injects a stand-in `button.sec-add`, because no opener exists until TOKI-034; it checks the stylesheet, not the component.
+- R11 e2e checks the empty box against the end of the list content, because the Browse channels row is not drawn until TOKI-034.
+- R30 collapsed-total e2e calls `store.setUnread` through `/src/client.ts` on the Vite dev server, because TOKI-053 owns the unread data.
+- The 4 `test.fixme` in `e2e/component-preview.spec.ts` (lines about 522, 1061, 1067 and 1068) predate this branch and wait for the fonts of TOKI-010.
+- The by-eye comparison with the prototype is NOT done. The prototype is not in the repository, so the person who opens the pull request does it and records the result in the pull request.
