@@ -119,7 +119,9 @@ export function createApiClient(options: ApiClientOptions) {
         }
         let value: unknown;
         try {
-          value = JSON.parse(text ?? "");
+          // An empty body is read as no value, so a schema that accepts
+          // `undefined` (`z.unknown()`) takes it and any other fails.
+          value = text === "" ? undefined : JSON.parse(text ?? "");
         } catch {
           throw new ApiError({
             kind: "invalid_response",

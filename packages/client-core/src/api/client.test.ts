@@ -156,6 +156,14 @@ describe("a good answer (R3)", () => {
     expect(await none()).toBeUndefined();
   });
 
+  it("reads an empty 2xx body as no value: a schema that accepts undefined takes it, another fails", async () => {
+    const { api } = make([new Response("", { status: 200 }), new Response("", { status: 200 })]);
+    expect(
+      await api.request({ method: "GET", path: "/x", schema: z.unknown() }),
+    ).toBeUndefined();
+    expect((await fail(get(api))).kind).toBe("invalid_response");
+  });
+
   it("requestWithStatus returns the status with the data", async () => {
     const { api } = make([json({ ok: true }, 201)]);
     expect(
