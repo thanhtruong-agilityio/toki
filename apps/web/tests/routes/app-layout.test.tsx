@@ -67,13 +67,13 @@ describe("the layout route in English (R30, R31)", () => {
     ).toHaveTextContent("Toki");
   });
 
-  test("one Home link, current, and no role-only item", async () => {
+  test("one Home link, current, then Preferences, and no role-only item", async () => {
     await mount("en");
     // The sidebar's item and the bottom bar's tab: one link each (jsdom
     // applies no CSS, so both are in the tree).
     const nav = screen.getByRole("navigation");
     const links = [...nav.querySelectorAll<HTMLElement>("a.ni")];
-    expect(links.map((a) => a.textContent)).toEqual(["Home"]);
+    expect(links.map((a) => a.textContent)).toEqual(["Home", "Preferences"]);
     expect(links[0]).toHaveAttribute("aria-current", "page");
     expect(links[0]).toHaveAttribute("href", "/");
     expect(nav.querySelectorAll("a.nt")).toHaveLength(1);
