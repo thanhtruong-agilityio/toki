@@ -225,6 +225,46 @@ describe("more on scroll (R9)", () => {
     expect(result.current.hasMore).toBe(true);
   });
 
+  it("is loading, not failed, while a retry after a failed first load is awaited (verifier round 4)", async () => {
+    let fail = true;
+    const gate = hold();
+    const { result } = setup({
+      members: [person({ n: 1 })],
+      fail: () => (fail ? failWith(500, "internal_error") : undefined),
+      gate: () => (fail ? undefined : gate.promise),
+    });
+    await waitFor(() => expect(result.current.status).toBe("failed"));
+    fail = false;
+    act(() => {
+      void result.current.reload();
+    });
+    await waitFor(() => expect(result.current.isRefreshing).toBe(true));
+    expect(result.current.status).toBe("loading");
+    expect(result.current.error).toBeNull();
+    gate.release();
+    await ready(result);
+  });
+
+  it("has nothing more to load while a refresh is awaited, and again when it brings a next page (verifier round 4)", async () => {
+    const gate = hold();
+    let hold2 = false;
+    const { result } = setup({
+      members: manyMembers(120),
+      gate: () => (hold2 ? gate.promise : undefined),
+    });
+    await ready(result);
+    expect(result.current.hasMore).toBe(true);
+    hold2 = true;
+    act(() => {
+      void result.current.reload();
+    });
+    await waitFor(() => expect(result.current.isRefreshing).toBe(true));
+    expect(result.current.hasMore).toBe(false);
+    gate.release();
+    await waitFor(() => expect(result.current.isRefreshing).toBe(false));
+    expect(result.current.hasMore).toBe(true);
+  });
+
   it("never asks twice for one cursor", async () => {
     const gate = hold();
     const { result, server } = setup({

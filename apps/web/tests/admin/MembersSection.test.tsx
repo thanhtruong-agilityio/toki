@@ -375,6 +375,25 @@ describe("states (R14)", () => {
     expect(calls(server).length).toBeGreaterThanOrEqual(2);
   });
 
+  it("shows the loading line, not an empty section, while a Retry after a failed first load waits", async () => {
+    let fail = true;
+    const gate = hold();
+    setup({
+      members: manyMembers(2),
+      fail: () => (fail ? failWith(500, "internal_error") : undefined),
+      gate: () => (fail ? undefined : gate.promise),
+    });
+    await screen.findByText("Could not load the members.");
+    fail = false;
+    await userEvent.click(screen.getByRole("button", { name: "Retry" }));
+    expect(await screen.findByRole("status")).toHaveTextContent(
+      "Loading members",
+    );
+    expect(screen.queryByText("Could not load the members.")).toBeNull();
+    gate.release();
+    await screen.findByRole("table");
+  });
+
   it("shows no error ID line when the error has none", async () => {
     setup({ fail: () => failWith(500, "internal_error") });
     await screen.findByText("Could not load the members.");

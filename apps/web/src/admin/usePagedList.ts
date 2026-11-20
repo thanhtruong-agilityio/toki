@@ -64,8 +64,14 @@ function reducer<Row, Meta>(
       // loading: the flag must not wait for an answer that will never be used.
       return {
         ...state,
+        // A retry after a failed first load shows the loading line again (R14), not an empty section.
+        status: state.status === "failed" ? "loading" : state.status,
         isRefreshing: true,
         isLoadingMore: false,
+        // The cursor is cleared while the request waits, so nothing can be loaded until it answers.
+        // `loaded` says again whether a next page exists, which also makes the scroll watcher look
+        // again at a sentinel that is still in view.
+        hasMore: false,
         error: null,
         moreFailed: false,
       };
