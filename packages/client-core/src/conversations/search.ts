@@ -6,8 +6,8 @@ export function foldSearchText(text: string): string {
   if (typeof text !== "string") return "";
   return text
     .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .replace(/[đĐ]/g, "d")
+    .replace(/[\u0300-\u036F]/g, "")
+    .replace(/[\u0111\u0110]/g, "d")
     .toLowerCase();
 }
 

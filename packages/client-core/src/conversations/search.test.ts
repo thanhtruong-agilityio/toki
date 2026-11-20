@@ -35,7 +35,8 @@ describe("matches (R19)", () => {
   });
 
   it("ignores diacritics on both sides", () => {
-    expect(find("an")).toEqual(["Anh", "Ánh"]);
+    expect(find("an")).toEqual(["Anh", "Ánh", "Tran", "Trần"]);
+    expect(find("anh")).toEqual(["Anh", "Ánh"]);
     expect(find("tran")).toEqual(["Tran", "Trần"]);
     expect(find("Ánh")).toEqual(["Anh", "Ánh"]);
     expect(find("dao")).toEqual(["Đào Thị Mai"]);
