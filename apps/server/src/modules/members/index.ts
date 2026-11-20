@@ -7,6 +7,8 @@ export {
   getAccountsByIds,
 } from "./accounts.js";
 export type { Account, AccountFacts } from "./accounts.js";
+export { listPeople } from "./people.js";
+export type { Person } from "./people.js";
 export { onMemberChanged } from "./events.js";
 export type { MemberChange } from "./events.js";
 export { registerMembersRoutes } from "./routes.js";
