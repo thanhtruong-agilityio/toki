@@ -73,6 +73,20 @@ Order of work: the platform and client-core pieces first (no UI), then the web p
 - Lockfile and `client.ts` can conflict with open branches (TOKI-025 touches `sections.ts` and `common`); rebase, do not merge by hand.
 - Roll back: delete `apps/web/src/account/`, `routes/preferences.tsx`, `sessions.ts`, `tabs.ts`, the `account` namespace and the e2e file; revert the one line in `client.ts`, the `sections.ts` row, the `Platform` member and the `AppShellRoute` split.
 
+## Build notes
+
+What the build found, none of it a change of a requirement. The plan was edited after the Dev approved it (this section and the `otherBrowser` line of Design), so it needs the Dev's approval again before the pull request.
+
+- `personHue` is in `apps/web/src/people/person-hue.ts`, the path TOKI-033 R28 names, with the formula of that spec (FNV-1a 32-bit over the lower-cased UTF-8 id, modulo 360) and a table test of values computed apart. TOKI-033 keeps the file.
+- The guard race of step 6 did not show: the test of the final history entry (the real route tree and guard) ends on `/login` with no search. `endLocalSession` uses `router.history.replace("/login")` after `markSignedOut()`; no flag was added to `guard.ts`.
+- `SectionPage` draws its own `div.secbody`, so the page holds a `div.prefs` inside it, not `div.secbody.prefs`.
+- Table B names a key `account.devices.browser.other` that the i18n check refuses; the key is `otherBrowser` (Design).
+- The 360 px overlap of a toast with the bottom bar is not asserted in the browser test and is left for the review by eye.
+- Tests of step 7 were written together with the component, not before it; the order was not as the plan says. Two overlapping reads are tested on the hook.
+- The three sign-in browser tests (`layout 360, 719, 720 px calm en`) timed out once in a full run under load and passed in a run of their own (50 of 50).
+- `pnpm --filter @toki/client-core test` and `pnpm lint:boundaries` do not exist; the client-core tests run with the root `vitest`, and the import rule is checked by the exports map and the existing lint.
+- Not run here: the `server-db` projects (no database). `tests/main.test.ts` of the server fails here on the mail values; no server file is changed by this ticket.
+
 ## Grilling (L, up to two rounds)
 
 Round 1 (Opus, read-only): ten findings, all taken into this plan.
