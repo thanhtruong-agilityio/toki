@@ -132,6 +132,10 @@ export const twelve = (): Workspace =>
     direct(uuid(115), [EM]),
   ]);
 
+// A name no sidebar row can hold at 360 px, for the ellipsis check of R14.
+export const LONG_NAME =
+  "a-channel-with-a-name-that-is-much-too-long-for-any-row-of-the-sidebar";
+
 // `count` conversations in all: the twelve and then channels with a number in the name, one in ten
 // of them a direct message with a person of the workspace.
 function many(count: number): Workspace {
@@ -139,9 +143,11 @@ function many(count: number): Workspace {
   const others = [ALEX, THU, NGOC, BINH, CHI, EM];
   for (let i = base.conversations.length; i < count; i += 1) {
     base.conversations.push(
-      i % 10 === 0
-        ? direct(uuid(1000 + i), [others[i % others.length]!])
-        : channel(uuid(1000 + i), `channel-${String(i).padStart(3, "0")}`),
+      i === 12
+        ? channel(uuid(1000 + i), LONG_NAME)
+        : i % 10 === 0
+          ? direct(uuid(1000 + i), [others[i % others.length]!])
+          : channel(uuid(1000 + i), `channel-${String(i).padStart(3, "0")}`),
     );
   }
   return base;
