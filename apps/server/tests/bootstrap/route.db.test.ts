@@ -39,6 +39,7 @@ beforeAll(async () => {
     status: "deactivated",
   });
   zoe = await bystander(h, "zoe", { display_name: "Zoe" });
+  await bystander(h, "second-admin", { display_name: "Bea", role: "admin" });
 
   const channel = async (
     name: string,
@@ -177,6 +178,22 @@ describe("the parts (R3, R5)", () => {
   it("holds the workspace and every person with four keys, ordered by lower-cased name", async () => {
     const answer = answerOf(await get(ada));
     expect(answer.workspace).toEqual({ id: h.workspaceId, name: "Acme" });
+    // Complete: every account of the workspace, with exactly four keys each.
+    const [{ n }] = await h.sql<
+      { n: number }[]
+    >`select count(*)::int as n from users where workspace_id = ${h.workspaceId}`;
+    expect(answer.members).toHaveLength(n);
+    for (const m of answer.members) {
+      expect(Object.keys(m).sort()).toEqual([
+        "displayName",
+        "id",
+        "role",
+        "status",
+      ]);
+    }
+    expect(
+      answer.members.filter((m) => m.role === "admin").length,
+    ).toBeGreaterThanOrEqual(2);
     const named = answer.members.filter((m) =>
       ["Ada", "sam", "Dee", "Zoe"].includes(m.displayName),
     );
@@ -289,6 +306,24 @@ describe("the conversations (R6, R7, R8, R18, R19)", () => {
       notificationLevel: "all",
       isStarred: true,
     });
+  });
+
+  it("gives a direct message with no stored level the level all, and the other person's own mute", async () => {
+    const his = answerOf(await get(sam));
+    const dm = his.conversations.find((c) => c.id === ids.dm)!;
+    expect(dm).toMatchObject({
+      notificationLevel: "all",
+      isMuted: false,
+      isStarred: false,
+    });
+    await h.sql`update conversation_members set is_muted = true where conversation_id = ${ids.dm} and user_id = ${ada.id}`;
+    const mine = answerOf(await get(ada));
+    const hers = answerOf(await get(sam));
+    expect(mine.conversations.find((c) => c.id === ids.dm)!.isMuted).toBe(true);
+    expect(hers.conversations.find((c) => c.id === ids.dm)!.isMuted).toBe(
+      false,
+    );
+    await h.sql`update conversation_members set is_muted = false where conversation_id = ${ids.dm} and user_id = ${ada.id}`;
   });
 
   it("keeps a direct message with a deactivated person, with the person in members", async () => {

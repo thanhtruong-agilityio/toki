@@ -97,10 +97,37 @@ describe("BootstrapResponse (R2, R17)", () => {
     const inMember = body();
     (inMember.members[0] as Record<string, unknown>).extra = 1;
     expect(ok(inMember)).toBe(false);
-    for (const i of [0, 1]) {
+    for (const i of [0, 1, 2]) {
       const inEntry = body();
       (inEntry.conversations[i] as Record<string, unknown>).extra = 1;
       expect(ok(inEntry), `entry ${i}`).toBe(false);
+    }
+  });
+
+  it("rejects the keys that other tickets add later (R12)", () => {
+    const keys = [
+      "unreadCount",
+      "draft",
+      "presence",
+      "jobTitle",
+      "timeZone",
+      "statusText",
+      "preferences",
+      "description",
+      "createdBy",
+      "lastMessageAt",
+    ];
+    for (const key of keys) {
+      const top = { ...body(), [key]: 1 };
+      expect(ok(top), `top ${key}`).toBe(false);
+      const inMember = body();
+      (inMember.members[0] as Record<string, unknown>)[key] = 1;
+      expect(ok(inMember), `member ${key}`).toBe(false);
+      for (const i of [0, 1, 2]) {
+        const inEntry = body();
+        (inEntry.conversations[i] as Record<string, unknown>)[key] = 1;
+        expect(ok(inEntry), `entry ${i} ${key}`).toBe(false);
+      }
     }
   });
 

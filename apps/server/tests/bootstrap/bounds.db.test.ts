@@ -212,5 +212,16 @@ describe("the number of statements does not grow with the answer (R14)", () => {
     );
     expect(a.transaction.at(-1)!.toLowerCase()).toBe("commit");
     expect(a.transaction).toHaveLength(7);
+    // The five reads in between, by what each selects.
+    const reads = a.transaction.slice(1, -1).map((q) => q.toLowerCase());
+    expect(reads[0]).toMatch(/from "users"/); // the account
+    expect(reads[0]).toMatch(/"email"/);
+    expect(reads[1]).toMatch(/from "users"/); // the facts by ids
+    expect(reads[1]).not.toMatch(/"email"/);
+    expect(reads[2]).toMatch(/from "workspaces"/);
+    expect(reads[3]).toMatch(/from "users"/); // the people
+    expect(reads[3]).toMatch(/collate "c"/);
+    expect(reads[4]).toMatch(/from "conversations"/);
+    expect(reads[4]).toMatch(/inner join "conversation_members"/);
   });
 });

@@ -18,6 +18,7 @@ describe("listPeople (TOKI-031 R5, R15)", () => {
       insertUser(t.sql, { workspace_id: ws, display_name, ...extra });
     const zed = await make("zed");
     const bob = await make("Bob", { role: "admin" });
+    const root = await make("Root", { role: "admin" });
     const bobLower = await make("bob");
     const ann = await make("Ann", { status: "deactivated" });
     const ine = await make("Éva");
@@ -25,7 +26,7 @@ describe("listPeople (TOKI-031 R5, R15)", () => {
     const rows = await listPeople(t.db, ws);
     // "bob" and "Bob" tie once lower-cased: the id decides, in byte order.
     const bobs = [bob, bobLower].sort();
-    expect(rows.map((r) => r.id)).toEqual([ann, ...bobs, zed, ine]);
+    expect(rows.map((r) => r.id)).toEqual([ann, ...bobs, root, zed, ine]);
     expect(rows.find((r) => r.id === ann)).toEqual({
       id: ann,
       displayName: "Ann",
