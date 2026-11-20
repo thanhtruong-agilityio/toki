@@ -29,6 +29,7 @@ export const EXPORTED_NAMES = [
   "getGeneralConversationId",
   "channelRoutes",
   "directRoutes",
+  "listConversationSummaries",
 ];
 
 describe("the public surface of the conversations module (R18)", () => {

@@ -48,17 +48,22 @@ export async function createHarness(
     registerRoutes?: (scope: FastifyInstance) => void;
     mail?: ReturnType<typeof fakeMail>["layer"];
     channelDeps?: BuildAppOptions["channelDeps"];
+    bootstrapDeps?: BuildAppOptions["bootstrapDeps"];
   } = {},
 ) {
   const throwaway = await createThrowawayDb();
   await runMigrations(throwaway.url, migrationsFolder);
   // The app's own connection records the statements it runs (R41).
   const statements: string[] = [];
+  // The same statements with the id of the connection that ran each, so a
+  // test can tell the statements of one transaction from the rest (TOKI-031 R14).
+  const statementLog: { connection: number; query: string }[] = [];
   const appClient = postgres(throwaway.url, {
     max: 12,
     onnotice: () => {},
-    debug: (_connection, query) => {
+    debug: (connection, query) => {
       statements.push(query);
+      statementLog.push({ connection, query });
     },
   });
   const db = drizzle(appClient);
@@ -96,6 +101,7 @@ export async function createHarness(
     mail: options.mail ?? mail.layer,
     logStream,
     channelDeps: options.channelDeps,
+    bootstrapDeps: options.bootstrapDeps,
     registerRoutes: (scope) => {
       scope.get("/protected", async (request) => ({
         id: request.account!.id,
@@ -219,6 +225,7 @@ export async function createHarness(
     sql,
     db,
     statements,
+    statementLog,
     clock,
     mail,
     workspaceId,

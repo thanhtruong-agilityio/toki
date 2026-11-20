@@ -1,0 +1,55 @@
+{
+  "approved_auto": false,
+  "base": "main",
+  "branch": "feat/toki-031-bootstrap-endpoint",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-20T02:24:00Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-20T02:24:02Z",
+      "stage": "explore"
+    },
+    {
+      "at": "2026-11-20T02:57:07Z",
+      "stage": "plan"
+    },
+    {
+      "at": "2026-11-20T02:57:07Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-20T03:12:50Z",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-20T03:26:46Z",
+      "stage": "check"
+    },
+    {
+      "at": "2026-11-20T03:47:21Z",
+      "auto": false,
+      "stage": "approve"
+    }
+  ],
+  "key": "TOKI-031",
+  "main_sha": "88f92548ad8c04d81489354f97e6b3d10f5549c9",
+  "metrics": {},
+  "mode": "Auto to check",
+  "plan_approved": true,
+  "plan_hash": "89c73fb3d5c87df750f3d1aaef0b0dff69dc2edeba0caea663e7cafff8d8ce35",
+  "pr": 186,
+  "spec_commit": "c32be4241e39bf596ecaaf043e0bde0351627f40",
+  "spec_paths": [
+    "docs/specs/2026-11-17-bootstrap-endpoint-design.md"
+  ],
+  "stage": "check",
+  "tier": "L",
+  "verifier": {
+    "result": "PASS",
+    "round": 4
+  }
+}

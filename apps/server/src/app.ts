@@ -10,6 +10,7 @@ import {
   frameworkErrors,
   registerErrorHandling,
 } from "./errors.js";
+import { bootstrapRoutes, type BootstrapDeps } from "./bootstrap/index.js";
 import { registerHealth } from "./health.js";
 import { registerAuthHooks, registerAuthRoutes } from "./modules/auth/index.js";
 import {
@@ -54,6 +55,8 @@ export type BuildAppOptions = {
       "getAccountsByIds" | "recordChange" | "getConversationFacts"
     >
   >;
+  // Replaces a read of the bootstrap route. Only a test passes it (TOKI-031).
+  bootstrapDeps?: BootstrapDeps;
 };
 
 export function buildApp({
@@ -64,6 +67,7 @@ export function buildApp({
   db,
   clock = systemClock,
   channelDeps,
+  bootstrapDeps,
 }: BuildAppOptions) {
   if (!mail && !config.mail) {
     throw new Error("buildApp needs `mail` or `config.mail`");
@@ -143,6 +147,7 @@ export function buildApp({
         channelRoutes({ db, clock, getAccountsByIds, ...channelDeps }),
       );
       await scope.register(directRoutes({ db, clock, getAccountsByIds }));
+      await scope.register(bootstrapRoutes({ db, ...bootstrapDeps }));
       await registerRoutes?.(scope);
     });
   } else {

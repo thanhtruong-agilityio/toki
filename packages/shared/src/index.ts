@@ -12,3 +12,4 @@ export * from "./auth/schemas.js";
 export * from "./members/index.js";
 export * from "./channels/index.js";
 export * from "./direct-conversations.js";
+export * from "./bootstrap/index.js";
