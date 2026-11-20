@@ -49,6 +49,8 @@ export async function createHarness(
     mail?: ReturnType<typeof fakeMail>["layer"];
     channelDeps?: BuildAppOptions["channelDeps"];
     bootstrapDeps?: BuildAppOptions["bootstrapDeps"];
+    // Test seams of the accept route (TOKI-097); the fields are set by the test as it goes.
+    joinHooks?: BuildAppOptions["joinHooks"];
     // The size of the app's own pool, so a test can show that a request holds one connection.
     maxConnections?: number;
   } = {},
@@ -104,6 +106,7 @@ export async function createHarness(
     logStream,
     channelDeps: options.channelDeps,
     bootstrapDeps: options.bootstrapDeps,
+    joinHooks: options.joinHooks,
     registerRoutes: (scope) => {
       scope.get("/protected", async (request) => ({
         id: request.account!.id,

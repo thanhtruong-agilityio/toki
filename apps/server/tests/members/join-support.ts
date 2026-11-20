@@ -65,3 +65,13 @@ export const markUsed = (h: MemberHarness, made: Made) =>
 // 7 days of the invitation and one second.
 export const pastTheSevenDays = (h: MemberHarness) =>
   h.clock.advance(7 * 24 * 3600 * 1000 + 1000);
+
+// The cookie of an answer: its name, value and attributes.
+export function cookieOf(res: { headers: Record<string, unknown> }) {
+  const header = res.headers["set-cookie"];
+  const text = Array.isArray(header) ? header[0] : header;
+  if (typeof text !== "string") return null;
+  const [pair, ...attrs] = text.split(";").map((p) => p.trim());
+  const [name, ...rest] = pair!.split("=");
+  return { name: name!, value: rest.join("="), attrs, header: text };
+}

@@ -3,11 +3,17 @@ import {
   INVITATION_RESEND_SECONDS,
   type InvitationLookupResponse,
 } from "@toki/shared";
-import type { Db } from "../../db/client.js";
-import { checkCodeRequestLimits } from "../auth/index.js";
+import type { Db, Tx } from "../../db/client.js";
+import {
+  checkCodeRequestLimits,
+  checkInvitationCode,
+  type InvitationCheck,
+} from "../auth/index.js";
 import { getWorkspace } from "../workspace/index.js";
+import { acceptInvitation } from "./accept.js";
 import {
   closedError,
+  codeSecret,
   findInvitationByToken,
   issueInvitationCode,
   type ClosedError,
@@ -99,4 +105,79 @@ export async function resendInvitationCode(
     }
     return { ok: false, error: issued.error };
   });
+}
+
+// Test seams of the accept (TOKI-097). Only a test sets them; each runs at the place its name says.
+export type JoinHooks = {
+  // After the code is checked and before the transaction opens (a race of R16).
+  afterCodeCheck?: () => Promise<void>;
+  // In the transaction, after `acceptInvitation` answered ok and before the commit; a throw rolls back (R19).
+  inTransaction?: (tx: Tx) => Promise<void>;
+  // After the commit and the report of the ended sessions, before the session is made; a throw is a
+  // failure of the session (R15, R19).
+  afterCommit?: () => Promise<void>;
+};
+
+export type AcceptResult =
+  | { kind: "refused"; error: ClosedError }
+  | { kind: "code"; check: Exclude<InvitationCheck, { result: "ok" }> }
+  | { kind: "account_active" }
+  | {
+      kind: "ok";
+      accountId: string;
+      generalConversationId: string;
+      endedSessionIds: string[];
+    };
+
+class Rollback extends Error {
+  constructor(readonly refusal: ClosedError) {
+    super("rollback");
+  }
+}
+
+// The steps of an accept up to the commit (R10 to R12, R16, R18, R44). The checks run in this order and
+// each stops the request: the token, the state, then the code (R11), so a refusal of the first group
+// uses up no try. The code check comes before the transaction of `acceptInvitation` (concern 10): an
+// accept that fails after the code leaves the invitation pending and the code used up. `account_active`
+// commits (the invitation is closed, R44); any other refusal rolls back (R16). What follows the
+// commit (the report, the replaced session, the new session) is the route's.
+export async function acceptWithCode(
+  db: Db,
+  input: { token: string; code: string; now: Date; hooks?: JoinHooks },
+): Promise<AcceptResult> {
+  const { token, code, now, hooks } = input;
+  const found = await findInvitationByToken(db, token, now);
+  if (!found) return { kind: "refused", error: "invitation_not_found" };
+  const closed = closedError(found.state);
+  if (closed) return { kind: "refused", error: closed };
+
+  const check = await checkInvitationCode(db, {
+    secret: codeSecret(token, found.codeSerial),
+    code,
+  });
+  if (check.result !== "ok") return { kind: "code", check };
+  await hooks?.afterCodeCheck?.();
+
+  try {
+    return await db.transaction(async (tx): Promise<AcceptResult> => {
+      const out = await acceptInvitation(tx, { token, now });
+      if (!out.ok) {
+        // A value, not a throw: the transaction commits and keeps the invitation closed.
+        if (out.error === "account_active") return { kind: "account_active" };
+        throw new Rollback(out.error);
+      }
+      await hooks?.inTransaction?.(tx);
+      return {
+        kind: "ok",
+        accountId: out.account.id,
+        generalConversationId: out.generalConversationId,
+        endedSessionIds: out.endedSessionIds,
+      };
+    });
+  } catch (error) {
+    if (error instanceof Rollback) {
+      return { kind: "refused", error: error.refusal };
+    }
+    throw error;
+  }
 }

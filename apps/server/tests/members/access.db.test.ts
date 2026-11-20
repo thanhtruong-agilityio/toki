@@ -223,7 +223,11 @@ describe("the registered routes (R3)", () => {
     }
     // The three public routes of the Join page sit under the same prefix; they are POST only.
     const join = own.filter((l) => /^\/(lookup|codes|sessions) /.test(l));
-    expect(join.sort()).toEqual(["/codes (POST)", "/lookup (POST)"]);
+    expect(join.sort()).toEqual([
+      "/codes (POST)",
+      "/lookup (POST)",
+      "/sessions (POST)",
+    ]);
     own.splice(0, own.length, ...own.filter((l) => !join.includes(l)));
     // The tree lists the branches in an order that follows the routes registered under the same
     // prefix, so the lines are compared as a set.

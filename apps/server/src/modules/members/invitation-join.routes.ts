@@ -1,4 +1,5 @@
 import {
+  AcceptInvitationBodySchema,
   CODE_TTL_SECONDS,
   ErrorCodes,
   INVITATION_RESEND_SECONDS,
@@ -10,14 +11,31 @@ import type { FastifyInstance } from "fastify";
 import { ZodError } from "zod";
 import type { Db } from "../../db/client.js";
 import { AppError } from "../../errors.js";
+import {
+  createSession,
+  endSessionOfRequest,
+  reportSessionsEnded,
+  sessionCookie,
+} from "../auth/index.js";
 import type { MailLayer } from "../mail/index.js";
-import { lookupInvitation, resendInvitationCode } from "./invitation-join.js";
+import { getAccountById } from "./accounts.js";
+import {
+  acceptWithCode,
+  lookupInvitation,
+  resendInvitationCode,
+  type JoinHooks,
+} from "./invitation-join.js";
 import type { ClosedError } from "./invitations.js";
+
+export type { JoinHooks };
 
 export type InvitationJoinDeps = {
   db: Db;
   mail: MailLayer;
   clock: Clock;
+  // Whether the cookie is the one of a development environment (TOKI-022 R21).
+  development: boolean;
+  hooks?: JoinHooks;
 };
 
 // An invitation that cannot be used: 409 with its own code, 404 when no invitation has the token (R8).
@@ -67,7 +85,7 @@ export function registerInvitationJoinRoutes(
   scope: FastifyInstance,
   deps: InvitationJoinDeps,
 ) {
-  const { db, mail, clock } = deps;
+  const { db, mail, clock, development, hooks } = deps;
   const pub = { config: { public: true } };
 
   scope.post("/invitations/lookup", pub, (request) =>
@@ -112,6 +130,61 @@ export function registerInvitationJoinRoutes(
       return {
         expiresInSeconds: CODE_TTL_SECONDS,
         resendAfterSeconds: INVITATION_RESEND_SECONDS,
+      };
+    }),
+  );
+
+  scope.post("/invitations/sessions", pub, (request, reply) =>
+    guarded(async () => {
+      const body = AcceptInvitationBodySchema.parse(request.body ?? {});
+      const out = await acceptWithCode(db, {
+        token: body.token,
+        code: body.code,
+        now: new Date(clock.now()),
+        hooks,
+      });
+      if (out.kind === "refused") throw closedAnswer(out.error);
+      // The address has an active account: the invitation is closed and no session is made (R44).
+      if (out.kind === "account_active") {
+        throw closedAnswer("invitation_used");
+      }
+      if (out.kind === "code") {
+        const { check } = out;
+        if (check.result === "incorrect") {
+          throw new AppError(
+            400,
+            ErrorCodes.codeIncorrect,
+            "The code is incorrect.",
+            { triesLeft: check.triesLeft },
+          );
+        }
+        throw check.result === "locked"
+          ? new AppError(400, ErrorCodes.codeLocked, "The code is locked.")
+          : new AppError(400, ErrorCodes.codeExpired, "The code has expired.");
+      }
+
+      // After the commit, in this order (R15, R21, R19): report the sessions `acceptInvitation` ended,
+      // so a failure of the session below does not lose the report; end the session of this browser;
+      // make the new one.
+      reportSessionsEnded(out.endedSessionIds, "deactivated");
+      await hooks?.afterCommit?.();
+      await endSessionOfRequest(db, request, "replaced", { only: "cookie" });
+      // `acceptInvitation` returns no workspace id and no language: the account is read by id (R10).
+      const account = await getAccountById(db, out.accountId);
+      if (!account) throw new Error("The account of an accept was not found.");
+      const session = await createSession(db, account, "cookie", {
+        userAgent: request.headers["user-agent"],
+      });
+      reply.header("set-cookie", sessionCookie(session.secret, development));
+      return {
+        user: {
+          id: account.id,
+          email: account.email,
+          displayName: account.displayName,
+          role: account.role,
+          language: account.language,
+        },
+        generalConversationId: out.generalConversationId,
       };
     }),
   );

@@ -1,4 +1,5 @@
 // The exports of the module, listed here so index.ts names no table (R21 of TOKI-019).
+export { sessionCookie } from "./cookies.js";
 export { authConfigSchema, authVariableNames } from "./config.js";
 export type { AuthConfig } from "./config.js";
 export { registerAuthHooks } from "./register.js";

@@ -34,7 +34,10 @@ import {
   requestHash,
   type RequestAction,
 } from "./idempotency.js";
-import { registerInvitationJoinRoutes } from "./invitation-join.routes.js";
+import {
+  registerInvitationJoinRoutes,
+  type JoinHooks,
+} from "./invitation-join.routes.js";
 import { listMembers } from "./list.js";
 import {
   inviteBatch,
@@ -48,6 +51,10 @@ export type MembersDeps = {
   clock: Clock;
   // The app's own origin, the one the Origin rule reads (R11).
   appOrigin: string;
+  // Whether the session cookie is the one of a development environment (TOKI-097).
+  development: boolean;
+  // Test seams of the accept route; only a test passes them (TOKI-097).
+  joinHooks?: JoinHooks;
 };
 
 // A failed query of Drizzle carries its parameters in the message, and the
@@ -87,7 +94,13 @@ export function registerMembersRoutes(
   };
 
   // The three public routes of the Join page (TOKI-097): no session, no role.
-  registerInvitationJoinRoutes(scope, { db, mail: deps.mail, clock });
+  registerInvitationJoinRoutes(scope, {
+    db,
+    mail: deps.mail,
+    clock,
+    development: deps.development,
+    hooks: deps.joinHooks,
+  });
 
   // The repeat rule (R13): claim the key, answer a repeat from the stored
   // response, store a 200 and nothing else.

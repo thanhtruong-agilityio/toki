@@ -19,6 +19,10 @@ afterAll(async () => {
 const routes = () => [
   { url: "/api/v1/invitations/lookup", payload: { token: made.token } },
   { url: "/api/v1/invitations/codes", payload: { token: made.token } },
+  {
+    url: "/api/v1/invitations/sessions",
+    payload: { token: made.token, code: "000000" },
+  },
 ];
 
 const rowCounts = async () =>
