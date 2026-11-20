@@ -1,0 +1,32 @@
+{
+  "approved_auto": false,
+  "base": "github/main",
+  "branch": "feat/toki-099-account-menu-devices",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-20T09:37:40Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-20T09:42:55Z",
+      "stage": "plan"
+    }
+  ],
+  "key": "TOKI-099",
+  "main_sha": "db25011a8af34283aec9ad2d18d4e43325604b37",
+  "metrics": {},
+  "mode": null,
+  "plan_approved": false,
+  "plan_hash": null,
+  "spec_commit": "8df8aaf438e0f525cf460d2dfb1a37bc2cac6745",
+  "spec_paths": [
+    "docs/specs/2026-11-17-account-menu-devices-design.md"
+  ],
+  "stage": "plan",
+  "tier": "L",
+  "verifier": {
+    "result": null,
+    "round": 0
+  }
+}
