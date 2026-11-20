@@ -4,8 +4,14 @@ import {
   type InvitationLookupResponse,
 } from "@toki/shared";
 import type { Db } from "../../db/client.js";
+import { checkCodeRequestLimits } from "../auth/index.js";
 import { getWorkspace } from "../workspace/index.js";
-import { findInvitationByToken } from "./invitations.js";
+import {
+  closedError,
+  findInvitationByToken,
+  issueInvitationCode,
+  type ClosedError,
+} from "./invitations.js";
 
 // What is left of a wait, in whole seconds rounded up and never below 0 (R4).
 const secondsLeft = (total: number, ageMs: number) =>
@@ -34,4 +40,63 @@ export async function lookupInvitation(
     codeExpiresInSeconds: secondsLeft(CODE_TTL_SECONDS, age),
     resendAfterSeconds: secondsLeft(INVITATION_RESEND_SECONDS, age),
   };
+}
+
+export type ResendResult =
+  | { ok: true; email: string; code: string }
+  | { ok: false; error: ClosedError }
+  | {
+      ok: false;
+      error: "request_limit" | "resend_too_soon";
+      retryAfterSeconds: number;
+    };
+
+// "Resend code" (R6, R7, R8, R50, R51). The refusals of an invitation that cannot be used come first
+// (R8, R50), then, in one transaction on one connection, the count of the address (the lock of the
+// address, then both purposes' rows) and `issueInvitationCode`, which locks the invitation row and
+// holds the 60 seconds of the invitation. The lock order is the same on every path: address, then
+// invitation row (`acceptInvitation` and the Admin routes never take the address lock).
+//
+// `issueInvitationCode` is typed to take the database. Given a transaction, Drizzle opens a savepoint
+// on the same connection, and `createInvitationCode` joins the caller's transaction, so the request
+// holds one connection: with two (one for the lock, one for the code) a full pool of requests that
+// wait for the same address lock could leave the first with no connection to finish on. The cast is
+// the only one, and a test reads the statements and shows one connection.
+export async function resendInvitationCode(
+  db: Db,
+  input: { token: string; now: Date },
+): Promise<ResendResult> {
+  const { token, now } = input;
+  const found = await findInvitationByToken(db, token, now);
+  if (!found) return { ok: false, error: "invitation_not_found" };
+  const closed = closedError(found.state);
+  if (closed) return { ok: false, error: closed };
+
+  return db.transaction(async (tx): Promise<ResendResult> => {
+    const limits = await checkCodeRequestLimits(tx, {
+      email: found.email,
+      now,
+    });
+    if (limits.result !== "ok") {
+      return {
+        ok: false,
+        error: limits.result,
+        retryAfterSeconds: limits.retryAfterSeconds,
+      };
+    }
+    const issued = await issueInvitationCode(tx as unknown as Db, {
+      token,
+      now,
+      minIntervalSeconds: INVITATION_RESEND_SECONDS,
+    });
+    if (issued.ok) return { ok: true, email: issued.email, code: issued.code };
+    if (issued.error === "resend_too_soon") {
+      return {
+        ok: false,
+        error: "resend_too_soon",
+        retryAfterSeconds: issued.retryAfterSeconds,
+      };
+    }
+    return { ok: false, error: issued.error };
+  });
 }

@@ -87,7 +87,7 @@ export function registerMembersRoutes(
   };
 
   // The three public routes of the Join page (TOKI-097): no session, no role.
-  registerInvitationJoinRoutes(scope, { db, clock });
+  registerInvitationJoinRoutes(scope, { db, mail: deps.mail, clock });
 
   // The repeat rule (R13): claim the key, answer a repeat from the stored
   // response, store a 200 and nothing else.

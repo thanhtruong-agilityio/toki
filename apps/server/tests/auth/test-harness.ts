@@ -49,6 +49,8 @@ export async function createHarness(
     mail?: ReturnType<typeof fakeMail>["layer"];
     channelDeps?: BuildAppOptions["channelDeps"];
     bootstrapDeps?: BuildAppOptions["bootstrapDeps"];
+    // The size of the app's own pool, so a test can show that a request holds one connection.
+    maxConnections?: number;
   } = {},
 ) {
   const throwaway = await createThrowawayDb();
@@ -59,7 +61,7 @@ export async function createHarness(
   // test can tell the statements of one transaction from the rest (TOKI-031 R14).
   const statementLog: { connection: number; query: string }[] = [];
   const appClient = postgres(throwaway.url, {
-    max: 12,
+    max: options.maxConnections ?? 12,
     onnotice: () => {},
     debug: (connection, query) => {
       statements.push(query);

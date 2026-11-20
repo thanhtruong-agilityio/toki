@@ -18,6 +18,7 @@ afterAll(async () => {
 // The three public routes of the Join page, with a body each (R22, R23).
 const routes = () => [
   { url: "/api/v1/invitations/lookup", payload: { token: made.token } },
+  { url: "/api/v1/invitations/codes", payload: { token: made.token } },
 ];
 
 const rowCounts = async () =>
