@@ -162,7 +162,8 @@
    "Việt",
    "Trần",
    "Nguyễn"
-  ]
+  ],
+  "ticketsSynced": "2026-11-20"
  },
  "overview": {
   "summary": "Toki là ứng dụng chat nội bộ cho một công ty: kênh, tin nhắn riêng, thread và file; về sau thêm công việc, lịch, họp video, cổng cho khách, tự động hóa, mail và tóm tắt bằng AI. Mỗi công ty tự chạy một bản trên server của mình.",
@@ -3879,10 +3880,12 @@
        "size": "M",
        "needs": [],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #9",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 63
       },
       {
        "id": "096",
@@ -3891,10 +3894,12 @@
        "size": "M",
        "needs": [],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #10",
         "fix": "Spec yêu cầu giá trị cho kho backup; backup đã hoãn (Q40)."
-       }
+       },
+       "status": "done",
+       "issue": 65
       }
      ]
     },
@@ -3911,7 +3916,9 @@
         "state": "merged",
         "pr": "PR #1",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 47
       },
       {
        "id": "002",
@@ -3925,7 +3932,9 @@
         "state": "merged",
         "pr": "PR #2",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 45
       },
       {
        "id": "003",
@@ -3937,10 +3946,12 @@
         "096"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #3",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 46
       },
       {
        "id": "004",
@@ -3953,10 +3964,12 @@
        ],
        "open": "Định dạng lỗi trả về cho client",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #4",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 40
       },
       {
        "id": "005",
@@ -3968,10 +3981,12 @@
         "004"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #5",
         "fix": "Spec nhắc tới tài khoản Owner (TOKI-020); vai trò Owner đã bỏ (Q43)."
-       }
+       },
+       "status": "done",
+       "issue": 103
       },
       {
        "id": "006",
@@ -3983,10 +3998,12 @@
         "096"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #6",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 110
       },
       {
        "id": "007",
@@ -3997,10 +4014,12 @@
         "002"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #7",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 43
       },
       {
        "id": "008",
@@ -4013,10 +4032,12 @@
         "007"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #8",
         "fix": "Spec ghi danh sách trình duyệt cần test là còn mở; đã có quyết định (Q67)."
-       }
+       },
+       "status": "done",
+       "issue": 44
       }
      ]
     },
@@ -4033,10 +4054,12 @@
        ],
        "open": "Cấu trúc file nguồn của token",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #15",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 16
       },
       {
        "id": "010",
@@ -4047,10 +4070,12 @@
         "006"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #25",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 26
       },
       {
        "id": "011",
@@ -4061,10 +4086,12 @@
         "006"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #29",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 30
       },
       {
        "id": "018",
@@ -4078,10 +4105,12 @@
         "008"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #21",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 23
       },
       {
        "id": "012",
@@ -4096,10 +4125,12 @@
         "018"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #33",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 34
       },
       {
        "id": "013",
@@ -4111,10 +4142,12 @@
         "012"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #31",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 32
       },
       {
        "id": "014",
@@ -4125,10 +4158,12 @@
         "012"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #38",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 39
       },
       {
        "id": "015",
@@ -4146,10 +4181,12 @@
         "017"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #41",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 42
       },
       {
        "id": "016",
@@ -4168,10 +4205,12 @@
         "014"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #36",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 37
       },
       {
        "id": "017",
@@ -4184,10 +4223,12 @@
         "007"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #22",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 24
       },
       {
        "id": "093",
@@ -4201,10 +4242,12 @@
         "017"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #56",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 57
       },
       {
        "id": "094",
@@ -4215,10 +4258,12 @@
         "001"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #27",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 28
       }
      ]
     }
@@ -4242,10 +4287,12 @@
         "005"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #62",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 64
       },
       {
        "id": "020",
@@ -4256,10 +4303,12 @@
         "019"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #71",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 73
       },
       {
        "id": "021",
@@ -4272,10 +4321,12 @@
        ],
        "open": "Nội dung và giao diện thư",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #61",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 113
       },
       {
        "id": "022",
@@ -4288,10 +4339,12 @@
         "021"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #17",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 18
       },
       {
        "id": "023",
@@ -4306,10 +4359,12 @@
         "032"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #19",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 20
       },
       {
        "id": "027",
@@ -4320,10 +4375,12 @@
         "019"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #60",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 112
       },
       {
        "id": "024",
@@ -4338,10 +4395,12 @@
         "028"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #74",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 116
       },
       {
        "id": "025",
@@ -4353,10 +4412,12 @@
         "093"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #92",
         "fix": ""
-       }
+       },
+       "status": "accepted",
+       "issue": 126
       },
       {
        "id": "026",
@@ -4368,10 +4429,12 @@
         "023"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #72",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 115
       },
       {
        "id": "097",
@@ -4387,10 +4450,12 @@
         "024"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #75",
         "fix": ""
-       }
+       },
+       "status": "accepted",
+       "issue": 76
       },
       {
        "id": "099",
@@ -4408,10 +4473,12 @@
         "094"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #90",
         "fix": ""
-       }
+       },
+       "status": "accepted",
+       "issue": 91
       }
      ]
     },
@@ -4427,10 +4494,12 @@
         "019"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #66",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 114
       },
       {
        "id": "029",
@@ -4444,10 +4513,12 @@
         "028"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #81",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 119
       },
       {
        "id": "030",
@@ -4462,10 +4533,12 @@
         "029"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #80",
         "fix": ""
-       }
+       },
+       "status": "in-review",
+       "issue": 118
       },
       {
        "id": "031",
@@ -4478,10 +4551,12 @@
         "030"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #79",
         "fix": ""
-       }
+       },
+       "status": "in-review",
+       "issue": 117
       },
       {
        "id": "032",
@@ -4496,10 +4571,12 @@
         "031"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #82",
         "fix": ""
-       }
+       },
+       "status": "in-dev",
+       "issue": 120
       },
       {
        "id": "033",
@@ -4518,10 +4595,12 @@
         "032"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #84",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 122
       },
       {
        "id": "034",
@@ -4541,10 +4620,12 @@
         "093"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #83",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 121
       },
       {
        "id": "035",
@@ -4557,10 +4638,12 @@
         "094"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #85",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 123
       },
       {
        "id": "098",
@@ -4576,10 +4659,12 @@
         "093"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #89",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 125
       },
       {
        "id": "100",
@@ -4594,10 +4679,12 @@
         "093"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #86",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 87
       },
       {
        "id": "101",
@@ -4613,10 +4700,12 @@
         "093"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #88",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 124
       }
      ]
     }

@@ -37,7 +37,7 @@
    ]
   ]
  },
- "built": "16 Nov 2026",
+ "built": "20 Nov 2026",
  "overview": {
   "summary": "Toki is an internal team chat for one company: channels, direct messages, threads and files, and later tasks, calendar, video meetings, a guest portal, automations, mail and AI summaries. Each company runs its own copy on its own server.",
   "product": [
@@ -5919,6 +5919,8 @@
   }
  ],
  "tagline": "Everything agreed for Toki in one place: the prototype itself, the requirements read from it, user flows per role, every question and gap with its answer, the technical design, and the phase 1 plan.",
+ "ticketsSynced": "2026-11-20",
+ "repo": "github.com/thanhtruong-agilityio/toki",
  "intents": [
   {
    "id": "I16",
@@ -10976,10 +10978,12 @@
        "scope": "`CLAUDE.md` (what the project is, repository layout, common commands, boundary rules, where documents live); enable the cl plugins and create `docs/intents`, `docs/specs`, `docs/plans`; permissions and hooks in `.claude/settings.json`; move the Blueprint sources into `docs/blueprint/`",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #9",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 63
       },
       {
        "id": "TOKI-096",
@@ -10987,10 +10991,12 @@
        "scope": "An inventory of every environment variable (name, purpose, required or not, default, who supplies it); `.env.example` matching the inventory; the list of values that must come from outside (domain, mail account, VPS); how secrets are kept per environment",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #10",
         "fix": "The spec asks for a backup storage value; backup is deferred (D-092)."
-       }
+       },
+       "status": "done",
+       "issue": 65
       }
      ]
     },
@@ -11007,7 +11013,9 @@
         "state": "merged",
         "pr": "PR #1",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 47
       },
       {
        "id": "TOKI-002",
@@ -11018,7 +11026,9 @@
         "state": "merged",
         "pr": "PR #2",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 45
       },
       {
        "id": "TOKI-003",
@@ -11026,10 +11036,12 @@
        "scope": "(1) `infra/docker-compose.dev.yml` runs Postgres, MinIO and Mailpit. (2) Scripts in the root `package.json`: `dev:up` starts the services; `dev:down` stops them and keeps data; four reset scripts: `dev:reset:db` wipes Postgres and re-runs migrations, `dev:reset:files` empties the MinIO bucket, `dev:reset:mail` clears the Mailpit inbox, and `dev:reset` does all three. No reset touches `.env` or the test database, and every reset refuses to run in production. A partial reset can leave references between the three (messages pointing at deleted files, old codes in the inbox); `dev:reset` is the one that returns a clean state. As specified: `dev:reset:db` only wipes here (TOKI-005 adds the migration step), and `dev:up` creates the development file bucket",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #3",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 46
       },
       {
        "id": "TOKI-004",
@@ -11037,10 +11049,12 @@
        "scope": "Read and validate environment variables, /healthz, structured logs, one error format, the /api/v1 prefix. As specified: also a minimal Vitest setup in `apps/server` and the error response schema in `packages/shared`",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #4",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 40
       },
       {
        "id": "TOKI-005",
@@ -11048,10 +11062,12 @@
        "scope": "Postgres connection, the migration workflow, the first table. As specified: also adds the migration step to `dev:reset:db` and chooses the UUIDv7 generator",
        "size": "S",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #5",
         "fix": "The spec names an Owner account (TOKI-020); the Owner role was removed (D-152)."
-       }
+       },
+       "status": "done",
+       "issue": 103
       },
       {
        "id": "TOKI-006",
@@ -11059,10 +11075,12 @@
        "scope": "Router, Query, an empty page, dev proxy to the server. As specified: also a plain not-found view and a 200 KB check on the initial JavaScript",
        "size": "S",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #6",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 110
       },
       {
        "id": "TOKI-007",
@@ -11070,10 +11088,12 @@
        "scope": "Lint, type check, tests, build, bundle size limit. Runs six checks: the i18n check of TOKI-017 is a sixth job.",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #7",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 43
       },
       {
        "id": "TOKI-008",
@@ -11081,10 +11101,12 @@
        "scope": "Vitest against a real Postgres, Playwright running one sample test, a controllable clock. As specified: also the end-to-end job and the Postgres service in CI, and a separate test database. The clock `now()` returns epoch milliseconds; names the web-server command for `pnpm test:e2e`; lists `ui-web` in its Vitest projects.",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #8",
         "fix": "The spec lists the browsers to test as open; they are decided (D-108)."
-       }
+       },
+       "status": "done",
+       "issue": 44
       }
      ]
     },
@@ -11098,10 +11120,12 @@
        "scope": "Calm and Focus palettes, 4 accents, density, radii, shadows; exported as CSS variables and as objects for React Native",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #15",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 16
       },
       {
        "id": "TOKI-010",
@@ -11109,10 +11133,12 @@
        "scope": "Three fonts subset to Latin and Vietnamese, with the main one preloaded",
        "size": "S",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #25",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 26
       },
       {
        "id": "TOKI-011",
@@ -11120,10 +11146,12 @@
        "scope": "The prototype's roughly 60 icons as components. 43 icons, not 'roughly 60': the rest are drawn only by features after phase 1 or never drawn.",
        "size": "S",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #29",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 30
       },
       {
        "id": "TOKI-018",
@@ -11131,10 +11159,12 @@
        "scope": "Interface for notifications, storage, file picking and sound; the web implementation. Its import ban is added to the boundary rules of TOKI-002. The ban on importing the web implementation, with its fixture, goes into the boundary rules of TOKI-002.",
        "size": "S",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #21",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 23
       },
       {
        "id": "TOKI-012",
@@ -11142,10 +11172,12 @@
        "scope": "Button, IconButton, Chip, Switch, Field, Select, Tag, Badge; icon-only buttons must have a name, checked by lint (D-075). The lint rule for icon-only buttons goes into the ESLint config of TOKI-002. Owns the `font: inherit` rule for form controls, `.ic{flex:none}`, and the contract the other `ui-web` tickets follow (folder layout, `forwardRef`, test set-up, `componentExamples`).",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #33",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 34
       },
       {
        "id": "TOKI-013",
@@ -11153,10 +11185,12 @@
        "scope": "Avatar, PresenceDot, EmptyState centred in the content area (D-074), Toast placed above the composer with an Undo button (D-069, D-078). Toast, its 5 s timer and `useToastAnchor`; the Undo helper itself is TOKI-093.",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #31",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 32
       },
       {
        "id": "TOKI-014",
@@ -11164,10 +11198,12 @@
        "scope": "Menu, Modal, Sheet; focus trapped inside and returned on close, Esc in order, menus usable with arrow keys (D-075). Layers report `escape`, `outside` or `close` and never close themselves; the guard that decides is TOKI-093.",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #38",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 39
       },
       {
        "id": "TOKI-015",
@@ -11175,10 +11211,12 @@
        "scope": "Calm, Focus, and narrow under 720px with BottomTabs. Per D-068: smallest size 360 × 560; from 720 to 1099px side panels overlay the chat; navigation and the tab row scroll; the conversation list is the main area of the sidebar. Also owns `.tab`, the 15 px narrow body size (to be confirmed), the toast anchor mount, the account card as a trigger button, the look-attribute function, and role rules for sections. The shell's `/` test needs a session from TOKI-023, which is in M2: TOKI-023 R42 gives the shell test a stubbed signed-in session, so either build order works.",
        "size": "L",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #41",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 42
       },
       {
        "id": "TOKI-016",
@@ -11186,10 +11224,12 @@
        "scope": "One page listing every component in both looks, for comparison with the prototype. A second Vite entry `preview.html`, kept out of the production build.",
        "size": "S",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #36",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 37
       },
       {
        "id": "TOKI-017",
@@ -11197,10 +11237,12 @@
        "scope": "Translation framework, English by default, automatic check for missing keys. Its missing-translation check is added to the CI workflow of TOKI-007. The missing-translation check is a job named `i18n`; also owns `nav.*` (14 keys).",
        "size": "S",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #22",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 24
       },
       {
        "id": "TOKI-093",
@@ -11208,10 +11250,12 @@
        "scope": "A confirmation dialog that names its target, a 5-second Undo toast, and a guard against closing a form that has content (D-069, D-070). Builds the Undo helper, the confirmation dialog and the form guard on the Toast of TOKI-013 and the layers of TOKI-014; the call sites belong to the tickets that name it as a need.",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #56",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 57
       },
       {
        "id": "TOKI-094",
@@ -11219,10 +11263,12 @@
        "scope": "Validation and formatting in shared: required fields, no past where a future time is needed, the year shown when it differs, one format with 24-hour time everywhere (D-073, D-123). Builds the whole date string with English names in `names.ts` and takes a language code; time zone and the year position are open questions.",
        "size": "S",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #27",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 28
       }
      ]
     }
@@ -11255,10 +11301,12 @@
        "scope": "users, login_codes, sessions, devices",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #62",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 64
       },
       {
        "id": "TOKI-020",
@@ -11266,10 +11314,12 @@
        "scope": "Create the first Admin, the workspace and #general when the database is empty; #general cannot be left or archived (D-034, F01)",
        "size": "S",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #71",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 73
       },
       {
        "id": "TOKI-021",
@@ -11277,10 +11327,12 @@
        "scope": "A configurable mail layer (D-027) and two templates in English and Vietnamese: the sign-in mail carries the 6-digit code only, with no button (D-157); the invitation mail names the workspace and the inviter and carries the Join button and a 6-digit code (D-149) Registers its listener through `onSessionsEnded` of TOKI-022.",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #61",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 113
       },
       {
        "id": "TOKI-022",
@@ -11288,10 +11340,12 @@
        "scope": "Request a code, exchange it for a session, sign out; cookie and token. A 6-digit code is valid 10 minutes, works once, only for the request that asked for it, and is locked after the 5th wrong try (D-136, D-137). At most 5 requests per email in 15 minutes, a resend only after 60 seconds, and a new code cancels the earlier one (D-038, D-082). The answer is the same whether or not the address is a member (BR-04); a deactivated account is refused after a correct code (F05). A session lasts 30 days and renews on every use (D-011, D-138). Nothing in the mail signs anyone in without the code (D-157). Signing out ends the session for every tab of that browser at once (D-093)",
        "size": "L",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #17",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 18
       },
       {
        "id": "TOKI-023",
@@ -11299,10 +11353,12 @@
        "scope": "Enter email; the 'Check your email' step with the 6-digit field, the line 'The code works for 10 minutes', 'Use a different email' and 'Resend code' enabled after 60 seconds (D-082, D-136); the 7 error cases of F05, with the tries left and the locked code (D-137); the 'Your session has ended' screen (F07). Errors show under the field (D-104). There is no welcome screen (D-083). Owns the session state in client-core that reacts when a request comes back unauthenticated; the cross-tab signal on Sign out is TOKI-099.",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #19",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 20
       },
       {
        "id": "TOKI-027",
@@ -11310,10 +11366,12 @@
        "scope": "Member and Admin rules in shared, used by both server and client",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #60",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 112
       },
       {
        "id": "TOKI-024",
@@ -11321,10 +11379,12 @@
        "scope": "Invite with the role Member or Admin (D-153), up to 50 addresses per batch (D-134); each address reports its own result and those already sent stay when mail fails (D-099); resend and revoke; an invitation lasts 7 days and works once (D-037). A deactivated person can be invited again (D-094). Change role, deactivate, reactivate: deactivation ends every session at once (BR-29); nobody deactivates themselves; the last Admin cannot be demoted or deactivated (D-153). The server refuses every request from a Member (D-090), ignores a repeat of the same request (D-111) and records each action: who, what, to whom, when (D-110)",
        "size": "L",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #74",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 116
       },
       {
        "id": "TOKI-025",
@@ -11332,10 +11392,12 @@
        "scope": "Opens only for Admins; a Member sees 'You do not have access to this page' (D-090). Member table with name, email, role, status (Invited, Active, Deactivated) and last active; search, a status chip with a total for each status, the first 50 rows and more on scroll (D-109). 'Invite members': several addresses, role Member or Admin with Member by default, each row showing 'Invited' or 'Mail not sent' with Resend (D-153, D-099); Revoke asks for confirmation. Row menu: Change role, Deactivate, Reactivate, each with a confirmation that names the person (D-061, D-069); the entries are locked, with the reason, on the Admin's own row and on the last Admin (D-153) Takes its idempotency keys from the id generator of TOKI-098; the build order (the ids part of TOKI-098 as its own pull request, first) is to decide. Owns the shared role words `common.role.*` (the Vietnamese wording is a proposal; D-188 is Open).",
        "size": "L",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #92",
         "fix": ""
-       }
+       },
+       "status": "accepted",
+       "issue": 126
       },
       {
        "id": "TOKI-026",
@@ -11343,10 +11405,12 @@
        "scope": "List your own sessions with device kind, browser and last use; sign out one device or all others; a session ended this way is refused on its next request (D-158, F07). A server command prints a one-time sign-in link valid 10 minutes for one member, refuses an address that is not in the workspace or is deactivated, and logs every use (D-159)",
        "size": "S",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #72",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 115
       },
       {
        "id": "TOKI-097",
@@ -11354,10 +11418,12 @@
        "scope": "Join in the mail opens the code step with the email filled in; the link alone signs nobody in (D-149). The code is valid 10 minutes; 'Resend code' sends a new one after 60 seconds and cancels the old one (D-136, D-082); the 5th wrong try locks it (D-137). On success the person is in #general and lands there, with no welcome step (D-083, D-034); the display name is the part of the email before @ (D-150); a deactivated person gets the same account back with its history and channels (D-094). Pages for an expired, a revoked and an unrecognised invitation; a used one leads to sign-in (D-081). A person signed in as someone else is asked before anything changes (D-080)",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #75",
         "fix": ""
-       }
+       },
+       "status": "accepted",
+       "issue": 76
       },
       {
        "id": "TOKI-099",
@@ -11365,10 +11431,12 @@
        "scope": "The account card's menu: Set status, Pause notifications, Focus time, Preferences, Sign out; an entry appears when its own ticket is built. 'Sign out' in the account menu, and in the More sheet on narrow screens (D-158, D-067). A 'Signed-in devices' section in Preferences: each row shows the device kind, browser and last use, and the current one is labelled 'This device'; 'Sign out' beside another device and 'Sign out all other devices', each asking for confirmation (D-158, D-069). Owns the account menu content and renders the Menu on the shell's trigger; owns the cross-tab signal on Sign out and the sign-out call; and the confirmation for signing out other devices. Also owns the conversation-store reset on Sign out (`endLocalSession`) and reads the shared role words `common.role.*`, which TOKI-025 owns.",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #90",
         "fix": ""
-       }
+       },
+       "status": "accepted",
+       "issue": 91
       }
      ]
     },
@@ -11390,10 +11458,12 @@
        "scope": "conversations, conversation_members, the DM de-duplication key",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #66",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 114
       },
       {
        "id": "TOKI-029",
@@ -11401,10 +11471,12 @@
        "scope": "Create (Admin only; a Member's request is refused, D-084, D-090), browse, join, leave, edit topic and description, add people, remove people, archive and restore. Names are lowercase letters, digits and hyphens, up to 80 characters; the server never creates two channels with one name, also when two requests arrive together and against archived channels (D-040, D-115, D-128); topic up to 250 characters (D-101); public or private is fixed and there is no rename (D-040, D-105). A channel that is not joined cannot be read, and joining gives the full history (D-116, D-029). Every write requires membership (D-077). Any member edits the topic and adds people (D-041, D-090); an Admin removes people and archives only where a member, never in #general (D-085, D-047, D-034). A private channel is rejoined only when a member adds the person back, and the last member leaving archives it (D-051)",
        "size": "L",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #81",
         "fix": ""
-       }
+       },
+       "status": "done",
+       "issue": 119
       },
       {
        "id": "TOKI-030",
@@ -11412,10 +11484,12 @@
        "scope": "Open a DM, create a group of up to 8; groups cannot gain or lose people (D-045, F25)",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #80",
         "fix": ""
-       }
+       },
+       "status": "in-review",
+       "issue": 118
       },
       {
        "id": "TOKI-031",
@@ -11423,10 +11497,12 @@
        "scope": "One call returning yourself, the workspace, members, conversations, unread counts and the current event number",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #79",
         "fix": ""
-       }
+       },
+       "status": "in-review",
+       "issue": 117
       },
       {
        "id": "TOKI-032",
@@ -11434,10 +11510,12 @@
        "scope": "A client typed from the shared schemas; the list already grouped and filtered. Uses the error schema built in TOKI-004 Also builds the one client and store in `apps/web/src/client.ts` and registers the 401 hook; TOKI-023 supplies `reportUnauthenticated`.",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #82",
         "fix": ""
-       }
+       },
+       "status": "in-dev",
+       "issue": 120
       },
       {
        "id": "TOKI-033",
@@ -11445,10 +11523,12 @@
        "scope": "Starred, Channels, Direct messages groups; collapse; All, Unread, Mentions filters; search by name. The Direct messages heading has a '+' that starts a DM or a group: on hover on desktop, always visible on touch and narrow screens (D-086, D-154); there is no pencil icon (D-155). A '+ Browse channels' row closes the list; nothing in the list creates a channel (D-084). A filter that matches nothing shows its own empty state (D-074). Each conversation has its own address, and Back closes an open panel first (D-089) Also builds the list-actions registry, `personHue`, the route `/c/$conversationId` and the shell panel slots. Overlaps TOKI-054 on the filter chips and list badges (to decide).",
        "size": "L",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #84",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 122
       },
       {
        "id": "TOKI-034",
@@ -11456,10 +11536,12 @@
        "scope": "Browse channels: search, name, topic and member count, 'Join' or 'Open', an 'Archived' label, the first 50 and more on scroll (D-109), 'No channels match' centred (D-074); a channel that is not joined shows no messages, here or from a link, only its name and topic with Join (D-116); no button creates a channel (D-084). The picker opened by the '+' on Direct messages: a people search showing the first 50 (D-109); each person pressed becomes a removable chip; Start opens the DM for one chip or a group DM for more; a person beyond 8, counting yourself, is refused (D-086, D-017)",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #83",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 121
       },
       {
        "id": "TOKI-035",
@@ -11467,10 +11549,12 @@
        "scope": "Name, topic, members, notification level, mute, star, leave. Defaults: Mentions only for channels, All messages for DMs (D-046). Mute also hides the unread badge and bold; the level 'Nothing' only stops toast, push and sound (D-103). Any member edits the topic and description in place; the name cannot be changed (D-105). Leaving a public channel happens at once with Undo for 5 seconds; leaving a private channel asks for confirmation that says a member must invite you back, with no Undo (D-156, D-061); the last member is told the channel will be archived (D-051); #general has no Leave (D-034). Owns Back closing an open panel before leaving the conversation (D-089). No ticket yet owns the request that saves the notification level, mute and star (to decide).",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #85",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 123
       },
       {
        "id": "TOKI-098",
@@ -11478,10 +11562,12 @@
        "scope": "A '+' on the 'Channels' list of the Admin page opens the Create channel dialog (D-151). In phase 1 that list shows every channel with its member count; the busiest ranking comes with Analytics (D-183): Name, a Private switch off by default, Topic (optional, up to 250 characters), Add people (optional) (D-101). A space typed in the name becomes a hyphen and capitals become lowercase (D-127). Errors show under the field; Create is disabled until the form is valid and while the request runs (D-104, D-111); a name already in use is refused by the server and the field says so (D-115). Closing with content asks whether to discard (D-070). The new channel opens at once (D-076). A Member has no way to open this dialog (D-084) Also builds the UUIDv7 generator `newId` in `packages/shared`, which TOKI-025 uses.",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #89",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 125
       },
       {
        "id": "TOKI-100",
@@ -11489,10 +11575,12 @@
        "scope": "Add people: a search that lists only people not yet in the channel, the first 50 shown and more on scroll (D-109); choose one or more and press Add; any member can do it, in private channels too (D-090). Remove a person: offered only to an Admin who is a member of the channel, never in #general, with a confirmation that names the person (D-085, D-047, D-069)",
        "size": "S",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #86",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 87
       },
       {
        "id": "TOKI-101",
@@ -11500,10 +11588,12 @@
        "scope": "Archive: offered only to an Admin who is a member, never for #general (D-047, D-034); the confirmation names the channel and its member count (D-061, D-069). Afterwards the channel leaves everyone's list, its composer is replaced by 'This channel has been archived' and its history stays readable (D-029). Browse channels shows it with an 'Archived' label and gives Admins a 'Restore' button (F26)",
        "size": "S",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #88",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 124
       }
      ]
     }

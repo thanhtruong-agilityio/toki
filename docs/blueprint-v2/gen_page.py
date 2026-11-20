@@ -9,9 +9,10 @@ Run:   python3 gen_page.py
 Then:  python3 ~/.claude/skills/prototype-blueprint/scripts/build_page.py --data en=page.en.json --data vi=page.vi.json \\
            --prototype ../blueprint/prototype/index.html --out toki-blueprint.html --title "Toki Blueprint"
 """
-import contextlib, io, json, pathlib, re, sys
+import contextlib, datetime, io, json, pathlib, re, sys
 
 HERE = pathlib.Path(__file__).parent
+BUILT = datetime.date.today()
 BP = HERE.parent / "blueprint"
 sys.path.insert(0, str(BP))
 before = {l: (BP / f"blueprint.{l}.json").read_text(encoding="utf-8") for l in ("en", "vi")}
@@ -184,7 +185,7 @@ def build(lang):
         areas = []
         for a, a_en in zip(m["areas"], m_en["areas"]):
             areas.append(dict(name=a["name"], frs=AREA_FR.get(a_en["name"], "").split(),
-                              tickets=[dict(id=B["meta"].get("ticketPrefix", "") + t["id"], title=t["title"], scope=t["scope"], size=t["size"], spec=t.get("spec")) for t in a["tickets"]]))
+                              tickets=[dict(id=B["meta"].get("ticketPrefix", "") + t["id"], title=t["title"], scope=t["scope"], size=t["size"], spec=t.get("spec"), **{k: t[k] for k in ("status", "issue") if k in t}) for t in a["tickets"]]))
         milestones.append(dict(id=m["id"], name=m["name"], goal=m["goal"], exit=m["exit"], areas=areas))
 
     out = dict(
@@ -193,13 +194,14 @@ def build(lang):
         writtenNote=en("Drafted by Claude under Q19 and reviewed against the decisions on 13 Nov 2026: 8 journeys rewritten, 16 corrected, 19 unchanged. The phase-1 journeys are accepted as the baseline (Q85).||Do Claude soạn theo Q19 và đã được rà đối chiếu với các quyết định ngày 13/11/2026: 8 hành trình viết lại, 16 sửa, 19 giữ nguyên. Các hành trình phase 1 được chấp nhận làm nền (Q85)."),
         changes=dict(title=en("How this page was reorganised on 13 Nov 2026||Trang này được sắp xếp lại thế nào ngày 13/11/2026"),
                      head=en(["Before||Trước đây", "Now||Bây giờ", "Why||Vì sao"]), rows=[en(r) for r in CHANGES]),
-        built="16 Nov 2026" if lang == "en" else "16/11/2026", overview=B["overview"], counts=dict(actions=151),
+        built=BUILT.strftime("%-d %b %Y" if lang == "en" else "%d/%m/%Y"), overview=B["overview"], counts=dict(actions=151),
         screens=[dict(name=en(s[0]), purpose=en(s[1]), actions=en(s[2]), phase=en(s[3])) for s in GA.SCREENS],
         findings=findings, dupes=en(GV.DUPES), conflicts=en(GV.CONFLICTS), depends=en(GV.DEPENDS),
         decisions=dec, charts=charts,
         written=[dict(id=f["id"], group=f["group"], title=f["title"], roles=f["roles"], context=f.get("context", ""), steps=f["steps"], cases=f.get("cases", []), phase=f["phase"]) for f in B["flows"]],
         scope=B["requirements"]["sections"][0]["blocks"], roles=B["roles"], capabilities=B["capabilities"], states=B["states"], eventMatrix=B.get("eventMatrix"),
         reqMore=B["requirements"]["sections"][1:], stillOpen=B.get("open", []), tagline=B["meta"].get("tagline", ""),
+        ticketsSynced=B["meta"].get("ticketsSynced", ""), repo=B["meta"].get("repo", ""),
         intents=B.get("intents", []), plan=B.get("plan", {}), roadmapOutro=(B.get("roadmap") or {}).get("outro", ""),
         rules=[en(r) for r in GV.BR_ROWS], frs=frs,
         nfr=[dict(id=f"NFR-{i:02d}", text=en(n[0]), src=n[1].replace(" ", ", "), measure=en(n[2])) for i, n in enumerate(GV.NFR, 1)],

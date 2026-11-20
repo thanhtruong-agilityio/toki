@@ -68,4 +68,6 @@ python3 $S/build_page.py --data en=page.en.json --data vi=page.vi.json \
         --prototype ../blueprint/prototype/index.html --out toki-blueprint.html --title "Toki Blueprint"
 ```
 
+To refresh the ticket progress shown on the Overview and Plan tabs, run `python3 sync_tickets.py` in `docs/blueprint` before `gen_page.py`. It reads the issues and pull requests with `gh` and writes each ticket's `status`, `issue` and spec state into both data files.
+
 Publish `toki-blueprint.html`. The format and the shape of `page.<lang>.json` are described in the skill's `references/page-format.md`.
