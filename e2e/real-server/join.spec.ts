@@ -99,6 +99,8 @@ test("press Join in the mail, enter the code from the mail, land at the address 
   const alice = await invite("alice@example.com");
   const { context, page } = await newPerson(browser);
   const sent = posts(page);
+  const consoleLines: string[] = [];
+  page.on("console", (message) => consoleLines.push(message.text()));
 
   await page.goto(alice.link);
   await expect(
@@ -133,12 +135,18 @@ test("press Join in the mail, enter the code from the mail, land at the address 
   expect(conversations.map((c) => c.id)).toContain(id);
 
   // The address and the code are in no storage and not in the address bar after each step (R43)
+  const token = alice.link.split("#")[1]!;
   const stored = await page.evaluate(() =>
     JSON.stringify([
       Object.entries(localStorage),
       Object.entries(sessionStorage),
+      history.state,
     ]),
   );
+  // after the steps the token is in no storage, no history state, no address and no console line (R43)
+  expect(stored).not.toContain(token);
+  expect(page.url()).not.toContain(token);
+  expect(consoleLines.join("\n")).not.toContain(token);
   for (const secret of ["alice@example.com", alice.code]) {
     expect(stored).not.toContain(secret);
     expect(page.url()).not.toContain(secret);

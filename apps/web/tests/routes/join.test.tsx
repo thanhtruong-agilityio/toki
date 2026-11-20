@@ -99,6 +99,32 @@ describe("opening the page (R25, R26, R28, R43)", () => {
     setItem.mockRestore();
   });
 
+  test("after a resend, an accept and the hand-off to /c/<id> the token is in no storage, console, address or router state (R43)", async () => {
+    const setItem = vi.spyOn(Storage.prototype, "setItem");
+    const t = await openJoin({
+      invitation: {
+        lookupInvitation: async () =>
+          lookupOf({ ...PENDING, resendAfterSeconds: 0 }),
+      },
+    });
+    await userEvent.click(resendButton());
+    await t.settle();
+    await userEvent.type(codeField(), "123456");
+    await t.settle();
+    expect(t.router.state.location.pathname).toBe("/c/g1");
+    const everywhere = JSON.stringify([
+      window.location.href,
+      window.history.state,
+      t.router.state.location,
+      Object.entries(localStorage),
+      Object.entries(sessionStorage),
+      consoleCalls,
+      setItem.mock.calls,
+    ]);
+    expect(everywhere).not.toContain(TOKEN);
+    setItem.mockRestore();
+  });
+
   test("closing the page and opening Toki again leaves nobody signed in (R28)", async () => {
     const t = await openJoin();
     expect(t.session.getSessionState().status).toBe("signedOut");
@@ -160,6 +186,7 @@ describe("a link that cannot be used (R34, R35)", () => {
       });
       const heading = screen.getByRole("heading", { name: title });
       expect(heading).toHaveFocus();
+      expect(heading).toHaveAttribute("tabindex", "-1");
       if (line) expect(screen.getByText(line)).toBeInTheDocument();
       expect(screen.queryByLabelText("Code")).toBeNull();
       expect(screen.queryByRole("button")).toBeNull();
@@ -259,6 +286,7 @@ describe("the question for a person signed in as someone else (R36, R41, R46)", 
       name: "You are signed in as ada@example.com. Sign out to continue as sam@example.com?",
     });
     expect(heading).toHaveFocus();
+    expect(heading).toHaveAttribute("tabindex", "-1");
     expect(screen.queryByLabelText("Code")).toBeNull();
     expect(screen.getAllByRole("button").map((b) => b.textContent)).toEqual([
       "Sign out and continue",
