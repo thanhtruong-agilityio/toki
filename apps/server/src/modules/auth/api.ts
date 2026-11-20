@@ -14,8 +14,9 @@ export {
 } from "./sessions.js";
 export type { EndReason } from "./sessions.js";
 export {
+  checkCodeRequestLimits,
   checkInvitationCode,
   createInvitationCode,
   pruneInvitationCodes,
 } from "./codes.js";
-export type { InvitationCheck } from "./codes.js";
+export type { CodeRequestLimits, InvitationCheck } from "./codes.js";

@@ -35,8 +35,57 @@ export type RequestedCode = {
   mail: { to: string; code: string; language: "en" | "vi" } | null;
 };
 
-// R1 to R9, R40 to R42, R47, R48. The same statements run for every address
-// (R41): the code is drawn and hashed also when no mail will follow.
+export type CodeRequestLimits =
+  | { result: "ok" }
+  | {
+      result: "request_limit" | "resend_too_soon";
+      retryAfterSeconds: number;
+    };
+
+// The count of code requests of one address, shared by the sign-in request and "Resend code" of an
+// invitation (TOKI-097 R50 to R53): rows of both purposes count, 5 in 15 minutes and 60 seconds
+// between two. It takes the lock of the address, so one request per address passes at a time; the lock
+// lasts as long as the transaction of the caller. It reads, and writes nothing. When both limits
+// apply the answer is `request_limit` with the longer wait (R51).
+export async function checkCodeRequestLimits(
+  client: DbClient,
+  input: { email: string; now: Date },
+): Promise<CodeRequestLimits> {
+  const { email } = input;
+  const now = input.now.getTime();
+  await client.execute(sql`select pg_advisory_xact_lock(hashtext(${email}))`);
+
+  const counted = await client
+    .select({ createdAt: loginCodes.createdAt })
+    .from(loginCodes)
+    .where(
+      and(
+        inArray(loginCodes.purpose, ["sign_in", "invitation"]),
+        eq(loginCodes.email, email),
+        gt(loginCodes.createdAt, new Date(now - WINDOW_MS)),
+      ),
+    )
+    .orderBy(asc(loginCodes.createdAt));
+  const last = counted.at(-1)?.createdAt.getTime();
+  const waits: number[] = [];
+  let limited = false;
+  if (counted.length >= CODE_REQUESTS_MAX) {
+    limited = true;
+    waits.push(counted[0]!.createdAt.getTime() + WINDOW_MS - now);
+  }
+  if (last !== undefined && now - last < RESEND_MS) {
+    waits.push(last + RESEND_MS - now);
+  }
+  if (waits.length === 0) return { result: "ok" };
+  return {
+    result: limited ? "request_limit" : "resend_too_soon",
+    retryAfterSeconds: seconds(Math.max(...waits)),
+  };
+}
+
+// R1 to R9, R40 to R42, R47, R48, and R50 to R53 of TOKI-097 for what counts.
+// The same statements run for every address (R41): the code is drawn and
+// hashed also when no mail will follow.
 export async function requestCode(
   db: Db,
   secret: string,
@@ -45,39 +94,16 @@ export async function requestCode(
   const now = runtime.clock.now();
   const nowDate = new Date(now);
   return db.transaction(async (tx) => {
-    // One request per address at a time, so two cannot both pass the limits.
-    await tx.execute(sql`select pg_advisory_xact_lock(hashtext(${email}))`);
-
-    const windowStart = new Date(now - WINDOW_MS);
-    const counted = await tx
-      .select({ createdAt: loginCodes.createdAt })
-      .from(loginCodes)
-      .where(
-        and(
-          eq(loginCodes.purpose, "sign_in"),
-          eq(loginCodes.email, email),
-          gt(loginCodes.createdAt, windowStart),
-        ),
-      )
-      .orderBy(asc(loginCodes.createdAt));
-    const last = counted.at(-1)?.createdAt.getTime();
-    const waits: number[] = [];
-    let limited = false;
-    if (counted.length >= CODE_REQUESTS_MAX) {
-      limited = true;
-      waits.push(counted[0]!.createdAt.getTime() + WINDOW_MS - now);
-    }
-    if (last !== undefined && now - last < RESEND_MS) {
-      waits.push(last + RESEND_MS - now);
-    }
-    if (waits.length > 0) {
+    const limits = await checkCodeRequestLimits(tx, { email, now: nowDate });
+    if (limits.result !== "ok") {
+      const limited = limits.result === "request_limit";
       throw new AppError(
         429,
         limited ? ErrorCodes.codeRequestLimit : ErrorCodes.codeResendTooSoon,
         limited
           ? "Too many code requests for this address."
           : "A new code was requested too recently.",
-        { retryAfterSeconds: seconds(Math.max(...waits)) },
+        { retryAfterSeconds: limits.retryAfterSeconds },
       );
     }
 
@@ -92,6 +118,8 @@ export async function requestCode(
           isNull(loginCodes.cancelledAt),
         ),
       );
+
+    const windowStart = new Date(now - WINDOW_MS);
 
     // R48: up to 100 sign-in rows, of any address, that count for no limit.
     const stale = tx

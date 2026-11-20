@@ -28,19 +28,23 @@
       "at": "2026-11-20T09:41:19Z",
       "auto": false,
       "stage": "approve"
+    },
+    {
+      "at": "2026-11-20T09:41:35Z",
+      "stage": "build"
     }
   ],
   "key": "TOKI-097",
   "main_sha": "f300394971549c8bc17e73e5d63f60ebef4edee9",
   "metrics": {},
-  "mode": null,
+  "mode": "auto-to-check",
   "plan_approved": true,
   "plan_hash": "d435c1d9920871f7f27d0ccc7c2c390a8444ca08f618c57495d3fbc433344020",
   "spec_commit": "11be268d1019dc49f7dfdc5b977adfbf2dbf5036",
   "spec_paths": [
     "docs/specs/2026-11-17-accept-invitation-design.md"
   ],
-  "stage": "plan",
+  "stage": "build",
   "tier": "L",
   "verifier": {
     "result": null,
