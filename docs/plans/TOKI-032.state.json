@@ -41,6 +41,7 @@
   "mode": "Auto to check",
   "plan_approved": true,
   "plan_hash": "26c0b145b30f8749c8366709527482cdacb4e096a9a710fe6d9d44258fbd1a15",
+  "pr": 187,
   "spec_commit": "929376f9844e65fbd0094d5edc86f38a812e3b25",
   "spec_paths": [
     "docs/specs/2026-11-17-client-core-design.md"
