@@ -12,7 +12,7 @@ import {
 } from "react";
 import { ConfirmAction, useOnlineGate } from "../patterns";
 import { useForbidden } from "./AdminForbiddenContext";
-import { actionOutcome } from "./actionOutcome";
+import { actionOutcome, failedMessage } from "./actionOutcome";
 import {
   changeRole,
   deactivateMember,
@@ -21,7 +21,7 @@ import {
   revokeInvitation,
   type MemberRowView,
 } from "./adminApi";
-import { useKeyPerId } from "./useKeyPerId";
+import type { KeyPerId } from "./useKeyPerId";
 
 type Pending =
   | { action: "changeRole"; row: MemberRowView; role: MemberRole }
@@ -48,16 +48,18 @@ export type AdminActions = {
 export function useAdminAction({
   reload,
   headingRef,
+  keys,
 }: {
   reload: () => Promise<void>;
   headingRef: RefObject<HTMLElement | null>;
+  // One map of keys for the page, shared with the invite dialog's Resend buttons (R20).
+  keys: KeyPerId;
 }): AdminActions {
   const { t } = useTranslation();
   const { show } = useToasts();
   // Only Resend calls the gate: a confirmation goes through `ConfirmAction`, which calls it itself.
   const { ensureOnline } = useOnlineGate();
   const forbidden = useForbidden();
-  const keys = useKeyPerId();
 
   const [pending, setPending] = useState<Pending | null>(null);
   const [busy, setBusy] = useState(false);
@@ -86,16 +88,15 @@ export function useAdminAction({
     [reload],
   );
 
-  const failedText = (error: unknown) => {
-    const base = t("common.error.actionFailed");
-    // A 5xx adds the error ID when the error has one (D-131, D-126).
-    return error instanceof ApiError &&
-      error.status !== null &&
-      error.status >= 500 &&
-      error.requestId
-      ? `${base} ${t("admin.error.id", { id: error.requestId })}`
-      : base;
-  };
+  // A 5xx adds the error ID when the error has one (D-131, D-126).
+  const failedText = (error: unknown) =>
+    failedMessage(
+      t,
+      error instanceof ApiError && error.status !== null && error.status >= 500
+        ? error
+        : null,
+      { withId: "text" },
+    ).message;
 
   // The one rule of R19 for every request of the page.
   const handleError = (error: unknown, opener: Opener) => {

@@ -31,3 +31,5 @@ export function useKeyPerId() {
 
   return { keyFor, succeeded, failed, drop };
 }
+
+export type KeyPerId = ReturnType<typeof useKeyPerId>;

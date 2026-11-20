@@ -105,3 +105,28 @@
     color: var(--muted);
   }
 }
+
+.adm-heading-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.adm-hint {
+  margin: 4px 0 8px;
+  color: var(--muted);
+  font-size: 11.5px;
+}
+
+.adm-results {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.adm-results li {
+  padding: 6px 0;
+  border-bottom: 1px solid var(--line);
+  overflow-wrap: anywhere;
+}

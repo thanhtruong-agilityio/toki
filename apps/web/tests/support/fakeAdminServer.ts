@@ -101,6 +101,8 @@ export type FakeAdminServerOptions = {
   fail?: (call: FakeCall) => Response | Error | undefined;
   // The result of a Resend, "invited" unless a test says otherwise.
   resendResult?: (invitationId: string) => "invited" | "mail_not_sent";
+  // What the mail layer does for a new invitation: "invited" unless a test says otherwise.
+  inviteResult?: (email: string) => "invited" | "mail_not_sent";
   // Answers a call even after its signal was aborted, like a server answer already on the wire, so
   // a test can prove that the page itself drops a late answer and does not rely on the abort.
   ignoreAbort?: boolean;
@@ -186,8 +188,43 @@ export function createFakeAdminServer(options: FakeAdminServerOptions = {}) {
     },
   });
 
+  let invited = 0;
+
+  // POST /invitations (TOKI-024 R4 to R8): each address has its own result. An address that holds
+  // "bad" is one the server refuses although the client check accepts it.
+  function invite(call: FakeCall): Response {
+    const body = call.body as { emails: string[]; role: "member" | "admin" };
+    if (body.emails.length > 50) return json(400, errorBody("batch_too_large"));
+    const results = body.emails.map((email) => {
+      if (email.includes("bad")) return { email, result: "invalid_email" };
+      if (state.members.some((m) => m.kind === "account" && m.email === email))
+        return { email, result: "already_member" };
+      if (
+        state.members.some((m) => m.kind === "invitation" && m.email === email)
+      )
+        return { email, result: "already_invited" };
+      const result = options.inviteResult?.(email) ?? "invited";
+      invited += 1;
+      const base = invitation({ n: 900 + invited });
+      const row: FakeMember = {
+        ...base,
+        email,
+        role: body.role,
+        invitation: {
+          ...(base.invitation as NonNullable<typeof base.invitation>),
+          role: body.role,
+          mailStatus: result === "invited" ? "sent" : "failed",
+        },
+      };
+      state.members = [...state.members, row];
+      return { email, result, invitation: row.invitation };
+    });
+    return json(200, { results });
+  }
+
   // The change routes of TOKI-024, applied to the model when the call arrives (R20 to R30).
   function post(call: FakeCall): Response | undefined {
+    if (call.path === "/invitations") return invite(call);
     const invitationRoute = /^\/invitations\/([^/]+)\/(resend|revoke)$/.exec(
       call.path,
     );

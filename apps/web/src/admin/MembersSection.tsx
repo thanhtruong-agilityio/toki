@@ -10,6 +10,8 @@ import { MemberRow } from "./MemberRow";
 import { RowActions } from "./RowActions";
 import { useAdminAction } from "./useAdminAction";
 import { useDateContext } from "./useDateContext";
+import type { KeyPerId } from "./useKeyPerId";
+import { useKeyPerId } from "./useKeyPerId";
 import { useLoadMore } from "./useLoadMore";
 import type { useMemberList } from "./useMemberList";
 
@@ -30,6 +32,9 @@ const CHIPS: Array<{ status: MemberStatus | undefined; label: string }> = [
 export type MembersSectionProps = {
   list: MemberList;
   actor: { id: string; role: string };
+  // The page's idempotency keys, shared with the invite dialog (R20); the section makes its own when
+  // it is rendered alone.
+  keys?: KeyPerId;
   // The last cell of a row. By default Resend and Revoke on an invitation and the menu of a person
   // (R15); a test passes its own.
   renderActions?: (
@@ -46,6 +51,7 @@ const rowKey = (row: MemberRowView) =>
 export function MembersSection({
   list,
   actor,
+  keys,
   renderActions,
 }: MembersSectionProps) {
   const { t } = useTranslation();
@@ -55,7 +61,12 @@ export function MembersSection({
   const { setQuery } = list;
   // The focus goes to the heading when the row that opened a dialog has gone (R19).
   const headingRef = useRef<HTMLHeadingElement>(null);
-  const actions = useAdminAction({ reload: list.reload, headingRef });
+  const ownKeys = useKeyPerId();
+  const actions = useAdminAction({
+    reload: list.reload,
+    headingRef,
+    keys: keys ?? ownKeys,
+  });
 
   // Search: the displayed text is set at once and the query's search after 300 ms without a key.
   const [text, setText] = useState("");

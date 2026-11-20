@@ -56,3 +56,21 @@ export function keepsKey(error: unknown): boolean {
       return false;
   }
 }
+
+// The text of a failure that the page cannot explain better (R19, R22): "That did not work", and the
+// error ID when the error has one (D-131, D-126).
+export function failedMessage(
+  t: (
+    key: "common.error.actionFailed" | "admin.error.id",
+    params?: { id: string },
+  ) => string,
+  error: unknown,
+  { withId }: { withId: "text" | "separate" },
+): { message: string; errorId: string | null } {
+  const message = t("common.error.actionFailed");
+  const id = error instanceof ApiError ? error.requestId : null;
+  const line = id ? t("admin.error.id", { id }) : null;
+  return withId === "text" && line
+    ? { message: `${message} ${line}`, errorId: null }
+    : { message, errorId: line };
+}
