@@ -1,4 +1,10 @@
-import { ErrorCodes, UserSchema, type User } from "@toki/shared";
+import {
+  AcceptInvitationResponseSchema,
+  ErrorCodes,
+  InvitationLookupResponseSchema,
+  ResendInvitationCodeResponseSchema,
+  type User,
+} from "@toki/shared";
 import type { ApiRequest, ApiResult } from "./sign-in";
 
 export type { ApiRequest, ApiResult };
@@ -57,45 +63,12 @@ const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === "object" && value !== null;
 const isSeconds = (value: unknown): value is number =>
   typeof value === "number" && Number.isFinite(value) && value >= 0;
-const isText = (value: unknown): value is string => typeof value === "string";
 
 function detail(result: ApiResult, name: string): unknown {
   if (result.ok || result.kind !== "http" || !isRecord(result.details)) {
     return undefined;
   }
   return result.details[name];
-}
-
-// Read leniently: a field the server adds later breaks nothing and is dropped (as TOKI-022 R38 says of
-// every answer); a field that is missing or of the wrong type is the general failure.
-function readLookup(data: unknown): InvitationLookup | null {
-  if (!isRecord(data)) return null;
-  switch (data.state) {
-    case "pending":
-      return isText(data.email) &&
-        isText(data.workspaceName) &&
-        isSeconds(data.codeExpiresInSeconds) &&
-        isSeconds(data.resendAfterSeconds)
-        ? {
-            state: "pending",
-            email: data.email,
-            workspaceName: data.workspaceName,
-            codeExpiresInSeconds: data.codeExpiresInSeconds,
-            resendAfterSeconds: data.resendAfterSeconds,
-          }
-        : null;
-    case "expired":
-    case "revoked":
-      return isText(data.workspaceName)
-        ? { state: data.state, workspaceName: data.workspaceName }
-        : null;
-    case "used":
-      return isText(data.email) ? { state: "used", email: data.email } : null;
-    case "unknown":
-      return { state: "unknown" };
-    default:
-      return null;
-  }
 }
 
 // The answers that say the link cannot be used (R8, R16): 409 with the state, 404 for no invitation.
@@ -134,8 +107,11 @@ export function createInvitationCalls(api: ApiRequest): InvitationCalls {
     async lookupInvitation(token) {
       const result = await run("/invitations/lookup", { token });
       if (result.ok) {
-        const lookup = readLookup(result.data);
-        return lookup ? { kind: "ok", lookup } : { kind: "failed" };
+        // The shared schema: a field added later is dropped, a missing or mistyped one is the failure.
+        const parsed = InvitationLookupResponseSchema.safeParse(result.data);
+        return parsed.success
+          ? { kind: "ok", lookup: parsed.data }
+          : { kind: "failed" };
       }
       if (noAnswer(result)) return { kind: "network" };
       if (
@@ -150,15 +126,11 @@ export function createInvitationCalls(api: ApiRequest): InvitationCalls {
     async resendInvitationCode(token) {
       const result = await run("/invitations/codes", { token });
       if (result.ok) {
-        const data = result.data;
-        return isRecord(data) &&
-          isSeconds(data.expiresInSeconds) &&
-          isSeconds(data.resendAfterSeconds)
-          ? {
-              kind: "ok",
-              expiresInSeconds: data.expiresInSeconds,
-              resendAfterSeconds: data.resendAfterSeconds,
-            }
+        const parsed = ResendInvitationCodeResponseSchema.safeParse(
+          result.data,
+        );
+        return parsed.success
+          ? { kind: "ok", ...parsed.data }
           : { kind: "failed" };
       }
       if (noAnswer(result)) return { kind: "network" };
@@ -178,17 +150,9 @@ export function createInvitationCalls(api: ApiRequest): InvitationCalls {
     async acceptInvitation(token, code) {
       const result = await run("/invitations/sessions", { token, code });
       if (result.ok) {
-        const data = result.data;
-        if (!isRecord(data) || !isText(data.generalConversationId)) {
-          return { kind: "failed" };
-        }
-        const user = UserSchema.safeParse(data.user);
-        return user.success
-          ? {
-              kind: "ok",
-              user: user.data,
-              generalConversationId: data.generalConversationId,
-            }
+        const parsed = AcceptInvitationResponseSchema.safeParse(result.data);
+        return parsed.success
+          ? { kind: "ok", ...parsed.data }
           : { kind: "failed" };
       }
       if (noAnswer(result)) return { kind: "network" };

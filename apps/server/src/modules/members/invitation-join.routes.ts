@@ -1,10 +1,13 @@
 import {
   AcceptInvitationBodySchema,
+  AcceptInvitationResponseSchema,
   CODE_TTL_SECONDS,
   ErrorCodes,
   INVITATION_RESEND_SECONDS,
   InvitationLookupBodySchema,
+  InvitationLookupResponseSchema,
   ResendInvitationCodeBodySchema,
+  ResendInvitationCodeResponseSchema,
   type Clock,
 } from "@toki/shared";
 import type { FastifyInstance } from "fastify";
@@ -91,7 +94,9 @@ export function registerInvitationJoinRoutes(
   scope.post("/invitations/lookup", pub, (request) =>
     guarded(async () => {
       const body = InvitationLookupBodySchema.parse(request.body ?? {});
-      return lookupInvitation(db, body.token, new Date(clock.now()));
+      return InvitationLookupResponseSchema.parse(
+        await lookupInvitation(db, body.token, new Date(clock.now())),
+      );
     }),
   );
 
@@ -127,10 +132,10 @@ export function registerInvitationJoinRoutes(
       reply.raw.once("close", () => {
         void mail.sendInvitationCode(mailInput).catch(() => {});
       });
-      return {
+      return ResendInvitationCodeResponseSchema.parse({
         expiresInSeconds: CODE_TTL_SECONDS,
         resendAfterSeconds: INVITATION_RESEND_SECONDS,
-      };
+      });
     }),
   );
 
@@ -176,7 +181,7 @@ export function registerInvitationJoinRoutes(
         userAgent: request.headers["user-agent"],
       });
       reply.header("set-cookie", sessionCookie(session.secret, development));
-      return {
+      return AcceptInvitationResponseSchema.parse({
         user: {
           id: account.id,
           email: account.email,
@@ -185,7 +190,7 @@ export function registerInvitationJoinRoutes(
           language: account.language,
         },
         generalConversationId: out.generalConversationId,
-      };
+      });
     }),
   );
 }

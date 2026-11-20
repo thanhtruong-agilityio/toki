@@ -86,16 +86,19 @@ describe("lookup answer (R1)", () => {
     expect(parse({ state: "used" }).success).toBe(false);
   });
 
-  it("is strict: a field that must never be returned (role, inviter) is refused", () => {
+  it("drops a field outside the shape when it parses (a role, an inviter), so the server cannot send one (R1)", () => {
     const parse = (value: unknown) =>
-      InvitationLookupResponseSchema.safeParse(value);
-    expect(parse({ state: "unknown", role: "admin" }).success).toBe(false);
+      InvitationLookupResponseSchema.parse(value);
+    expect(parse({ state: "unknown", role: "admin" })).toEqual({
+      state: "unknown",
+    });
+    expect(parse({ state: "used", email: "a@b.c", invitedBy: "u1" })).toEqual({
+      state: "used",
+      email: "a@b.c",
+    });
     expect(
-      parse({ state: "used", email: "a@b.c", invitedBy: "u1" }).success,
-    ).toBe(false);
-    expect(
-      parse({ state: "expired", workspaceName: "Acme", role: "admin" }).success,
-    ).toBe(false);
+      parse({ state: "expired", workspaceName: "Acme", role: "admin" }),
+    ).toEqual({ state: "expired", workspaceName: "Acme" });
   });
 });
 
@@ -123,12 +126,13 @@ describe("codes and sessions answers", () => {
     expect(AcceptInvitationResponseSchema.safeParse({ user }).success).toBe(
       false,
     );
+    // a token added to the answer is dropped, not passed on (D-083)
     expect(
-      AcceptInvitationResponseSchema.safeParse({
+      AcceptInvitationResponseSchema.parse({
         user,
         generalConversationId: "c1",
         token: "x",
-      }).success,
-    ).toBe(false);
+      }),
+    ).toEqual({ user, generalConversationId: "c1" });
   });
 });

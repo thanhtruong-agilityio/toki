@@ -36,6 +36,10 @@
     {
       "at": "2026-11-20T10:11:44Z",
       "stage": "build"
+    },
+    {
+      "at": "2026-11-20T10:47:55Z",
+      "stage": "check"
     }
   ],
   "key": "TOKI-097",
@@ -48,10 +52,10 @@
   "spec_paths": [
     "docs/specs/2026-11-17-accept-invitation-design.md"
   ],
-  "stage": "build",
+  "stage": "check",
   "tier": "L",
   "verifier": {
-    "result": null,
-    "round": 0
+    "result": "FAIL",
+    "round": 1
   }
 }

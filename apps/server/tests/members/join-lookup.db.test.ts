@@ -147,7 +147,7 @@ describe("the lookup of an invitation (R1 to R5)", () => {
     expect(body.codeExpiresInSeconds).toBe(541);
   });
 
-  it("changes nothing for every state, and signs nobody in (R5)", async () => {
+  it("changes no row and sends no mail for every state, and signs nobody in (R5)", async () => {
     const made = await makeInvitation(h, lan, fresh());
     const snapshot = async () =>
       JSON.stringify([
@@ -155,21 +155,25 @@ describe("the lookup of an invitation (R1 to R5)", () => {
         await h.sql`select id, ended_at from sessions order by id`,
         await h.sql`select * from invitations order by id`,
         await h.sql`select * from users order by id`,
+        await h.sql`select * from conversation_members order by user_id, conversation_id`,
       ]);
-    const mailsBefore = h.mail.calls.length;
-    const before = await snapshot();
-    for (const token of [made.token, "A".repeat(43), "short"]) {
+    const probe = async (token: string) => {
+      const mails = h.mail.calls.length;
+      const before = await snapshot();
       const res = await lookup(h, token);
       expect(res.headers["set-cookie"]).toBeUndefined();
+      expect(await snapshot()).toBe(before);
+      expect(h.mail.calls.length).toBe(mails);
+    };
+    // pending, a token of the right shape that no invitation has, and one of the wrong shape
+    for (const token of [made.token, "A".repeat(43), "short"]) {
+      await probe(token);
     }
+    // used: the state is made first, then the lookup is shown to change nothing
     await markUsed(h, made);
-    await lookup(h, made.token);
-    expect(h.mail.calls.length).toBe(mailsBefore);
-    // the only change is the one the test made itself
-    const after = await snapshot();
-    expect(after).not.toBe(before);
-    const probe = await h.get(null, "/members");
-    expect(probe.statusCode).toBe(401);
+    await probe(made.token);
+    // and a lookup signs nobody in
+    expect((await h.get(null, "/members")).statusCode).toBe(401);
     const session = await h.call({
       method: "GET",
       url: "/api/v1/auth/session",

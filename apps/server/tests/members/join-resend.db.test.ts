@@ -323,7 +323,7 @@ describe("the count shared with sign-in (R50 to R54)", () => {
       headers: { "idempotency-key": h.key() },
     });
     expect(res.statusCode).toBe(200);
-    expect((await codeRows(made.email)).length).toBeGreaterThan(before - 1);
+    expect((await codeRows(made.email)).length).toBe(before + 1);
   });
 
   it("a sign-in request and a Resend at the same moment with 4 rows give one acceptance and one code_request_limit (R50, R52)", async () => {

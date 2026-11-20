@@ -16,32 +16,33 @@ export const AcceptInvitationBodySchema = z.object({
   code: z.string().regex(new RegExp(`^[0-9]{${CODE_LENGTH}}$`)),
 });
 
-// Strict, so that a field the answer must never carry (a role, an inviter, an id) is refused
-// when the server checks its own answer (R1).
+// Not strict, as every answer of TOKI-022 (R38): a field added later breaks no client, and parsing drops it.
+// The server parses its own answer with these, so a field outside the shape is never sent (R1); the
+// integration tests compare each answer with its exact fields.
 export const InvitationLookupResponseSchema = z.discriminatedUnion("state", [
-  z
-    .object({
-      state: z.literal("pending"),
-      email: z.string(),
-      workspaceName: z.string(),
-      codeExpiresInSeconds: z.number(),
-      resendAfterSeconds: z.number(),
-    })
-    .strict(),
-  z.object({ state: z.literal("expired"), workspaceName: z.string() }).strict(),
-  z.object({ state: z.literal("revoked"), workspaceName: z.string() }).strict(),
-  z.object({ state: z.literal("used"), email: z.string() }).strict(),
-  z.object({ state: z.literal("unknown") }).strict(),
+  z.object({
+    state: z.literal("pending"),
+    email: z.string(),
+    workspaceName: z.string(),
+    codeExpiresInSeconds: z.number(),
+    resendAfterSeconds: z.number(),
+  }),
+  z.object({ state: z.literal("expired"), workspaceName: z.string() }),
+  z.object({ state: z.literal("revoked"), workspaceName: z.string() }),
+  z.object({ state: z.literal("used"), email: z.string() }),
+  z.object({ state: z.literal("unknown") }),
 ]);
 export type InvitationLookupResponse = z.infer<
   typeof InvitationLookupResponseSchema
 >;
 
-export const ResendInvitationCodeResponseSchema = z
-  .object({ expiresInSeconds: z.number(), resendAfterSeconds: z.number() })
-  .strict();
+export const ResendInvitationCodeResponseSchema = z.object({
+  expiresInSeconds: z.number(),
+  resendAfterSeconds: z.number(),
+});
 
 // No token in the answer (R10, D-083).
-export const AcceptInvitationResponseSchema = z
-  .object({ user: UserSchema, generalConversationId: z.string() })
-  .strict();
+export const AcceptInvitationResponseSchema = z.object({
+  user: UserSchema,
+  generalConversationId: z.string(),
+});
