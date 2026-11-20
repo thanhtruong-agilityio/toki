@@ -1,45 +1,28 @@
 {
-  "approved_auto": true,
+  "approved_auto": false,
   "base": "github/main",
-  "branch": "feat/toki-098-uuidv7-ids",
+  "branch": "feat/toki-098",
   "deployed_sha": null,
   "history": [
     {
-      "at": "2026-11-20T09:47:12Z",
+      "at": "2026-11-20T10:09:52Z",
       "stage": "pick"
-    },
-    {
-      "at": "2026-11-20T09:47:44Z",
-      "stage": "plan"
-    },
-    {
-      "at": "2026-11-20T09:47:45Z",
-      "auto": true,
-      "stage": "approve"
-    },
-    {
-      "at": "2026-11-20T09:47:45Z",
-      "stage": "build"
-    },
-    {
-      "at": "2026-11-20T09:51:01Z",
-      "stage": "check"
     }
   ],
   "key": "TOKI-098",
-  "main_sha": "3ea3cba5c4626f6348db2751090cae0caceff415",
+  "main_sha": "139e5a6718fdb0268a0e34241c3f3b837078ce5a",
   "metrics": {},
-  "mode": "Auto to PR",
-  "plan_approved": true,
-  "plan_hash": "27b5c66551708e448b92d7a1c6f6d288e300cfa9d70f39f8f82dd51c2c340fd3",
+  "mode": null,
+  "plan_approved": false,
+  "plan_hash": null,
   "spec_commit": "d1dbb5f815b8ea538d6e0d2b7f58d9680e09cc9e",
   "spec_paths": [
     "docs/specs/2026-11-17-create-channel-dialog-design.md"
   ],
-  "stage": "check",
-  "tier": "S",
+  "stage": "pick",
+  "tier": "M",
   "verifier": {
-    "result": "PASS",
-    "round": 1
+    "result": null,
+    "round": 0
   }
 }
