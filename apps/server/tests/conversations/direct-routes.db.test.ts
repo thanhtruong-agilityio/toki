@@ -1,5 +1,10 @@
 import { ErrorResponseSchema, OpenDirectResponseSchema } from "@toki/shared";
+import Fastify from "fastify";
+import { Writable } from "node:stream";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { registerErrorHandling } from "../../src/errors.js";
+import { directRoutes } from "../../src/modules/conversations/index.js";
+import { getAccountsByIds } from "../../src/modules/members/index.js";
 import { createHarness, type Harness } from "../auth/test-harness.js";
 import {
   bystander,
@@ -88,7 +93,11 @@ describe("the route (R1)", () => {
   it("a deactivated account is 401 account_deactivated", async () => {
     const gone = await person(h, "r-gone");
     await h.sql`update users set status = 'deactivated' where id = ${gone.id}`;
+    const before = await tables();
+    const others = await otherCounts();
     const res = await post(gone, { userIds: [member.id] });
+    expect(await tables()).toEqual(before);
+    expect(await otherCounts()).toEqual(others);
     expect(res.statusCode).toBe(401);
     expect(errorOf(res).code).toBe("account_deactivated");
   });
@@ -116,7 +125,9 @@ describe("the body (R2)", () => {
     expect(await tables()).toEqual(before);
   });
 
-  it("a form-encoded body is 415 and a foreign Origin is 403", async () => {
+  it("a form-encoded body is 415 and a foreign Origin is 403, and both tables and every other table are unchanged", async () => {
+    const before = await tables();
+    const others = await otherCounts();
     const form = await h.call({
       method: "POST",
       url: URL_PATH,
@@ -136,6 +147,8 @@ describe("the body (R2)", () => {
     });
     expect(foreign.statusCode).toBe(403);
     expect(errorOf(foreign).code).toBe("origin_not_allowed");
+    expect(await tables()).toEqual(before);
+    expect(await otherCounts()).toEqual(others);
   });
 
   it.each([
@@ -202,6 +215,7 @@ describe("the outcomes (R3, R5, R6, R9, R10)", () => {
     const p = await person(h, "r-codes");
     const before = await tables();
     const eight = Array.from({ length: 8 }, () => crypto.randomUUID());
+    used.push(...eight);
     const big = await post(p, { userIds: eight });
     expect(big.statusCode).toBe(400);
     expect(errorOf(big)).toMatchObject({
@@ -211,11 +225,15 @@ describe("the outcomes (R3, R5, R6, R9, R10)", () => {
     const self = await post(p, { userIds: [p.id] });
     expect(errorOf(self).code).toBe("direct_with_self");
     expect(self.statusCode).toBe(400);
-    const unknown = await post(p, { userIds: [crypto.randomUUID()] });
+    const unknownId = crypto.randomUUID();
+    used.push(unknownId);
+    const unknown = await post(p, { userIds: [unknownId] });
     expect(unknown.statusCode).toBe(404);
     expect(errorOf(unknown)).toMatchObject({ code: "not_found" });
     expect(errorOf(unknown).details).toBeUndefined();
     const gone = await bystander(h, "r-gone-2", { status: "deactivated" });
+    used.push(gone);
+    const others = await otherCounts();
     const deactivated = await post(p, { userIds: [gone] });
     expect(deactivated.statusCode).toBe(409);
     expect(errorOf(deactivated)).toMatchObject({
@@ -223,6 +241,7 @@ describe("the outcomes (R3, R5, R6, R9, R10)", () => {
       details: { userIds: [gone] },
     });
     expect(await tables()).toEqual(before);
+    expect(await otherCounts()).toEqual(others);
   });
 
   it("the order of the checks: 8 ids that do not exist are group_too_large; self with an unknown id is direct_with_self; an existing set with a deactivated person is 200", async () => {
@@ -234,6 +253,71 @@ describe("the outcomes (R3, R5, R6, R9, R10)", () => {
     expect(again.statusCode).toBe(200);
     const mixed = await post(p, { userIds: [p.id, crypto.randomUUID()] });
     expect(errorOf(mixed).code).toBe("direct_with_self");
+  });
+});
+
+describe("a failure inside the request (R20)", () => {
+  it("answers 500 and the log holds a Postgres code and a constraint name and no id", async () => {
+    // The real route with an account read that reports an id for which `users`
+    // has no row, so the foreign key of the member insert fails.
+    const caller = await bystander(h, "r-fk-caller");
+    const ghost = crypto.randomUUID();
+    const lines: string[] = [];
+    const app = Fastify({
+      logger: {
+        level: "info",
+        stream: new Writable({
+          write(chunk, _e, done) {
+            lines.push(chunk.toString());
+            done();
+          },
+        }),
+      },
+    });
+    registerErrorHandling(app);
+    app.addHook("onRequest", async (request) => {
+      (request as unknown as { account: unknown }).account = {
+        id: caller,
+        role: "member",
+      };
+    });
+    await app.register(
+      directRoutes({
+        db: h.db,
+        clock: h.clock,
+        getAccountsByIds: async (client, ids, options) => [
+          ...(await getAccountsByIds(client, ids, options)),
+          ...(ids.includes(ghost)
+            ? [
+                {
+                  id: ghost,
+                  workspaceId: h.workspaceId,
+                  role: "member",
+                  status: "active" as const,
+                },
+              ]
+            : []),
+        ],
+      }),
+      { prefix: "/api/v1" },
+    );
+    const before = await tables();
+    const res = await app.inject({
+      method: "POST",
+      url: URL_PATH,
+      payload: { userIds: [ghost] },
+    });
+    await app.close();
+    expect(res.statusCode).toBe(500);
+    expect(errorOf(res).code).toBe("internal_error");
+    const log = lines.join("");
+    expect(log).toContain("23503");
+    expect(log).toContain("conversation_members_user_id_fkey");
+    expect(log).not.toContain(ghost);
+    expect(log).not.toContain(caller);
+    expect(log).not.toContain("insert into");
+    expect(res.body).not.toContain(ghost);
+    expect(await tables()).toEqual(before);
   });
 });
 

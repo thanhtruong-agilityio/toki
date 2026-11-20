@@ -122,11 +122,32 @@ describe("create, R11 and R18", () => {
     const all = [a, ...others].map((u) => u.id).sort();
     expect(res.conversation.memberIds).toEqual(all);
     const members =
-      await h.sql`select user_id from conversation_members where conversation_id = ${res.conversation.id} order by user_id`;
+      await h.sql`select * from conversation_members where conversation_id = ${res.conversation.id} order by user_id`;
     expect(members.map((m) => m.user_id)).toEqual(all);
+    for (const m of members) {
+      expect(m).toMatchObject({
+        workspace_id: h.workspaceId,
+        notification_level: null,
+        is_muted: false,
+        is_starred: false,
+      });
+      expect(m.created_at).toEqual(new Date(h.clock.now()));
+    }
     const [row] =
-      await h.sql`select kind, dm_key from conversations where id = ${res.conversation.id}`;
-    expect(row).toMatchObject({ kind: "group_dm", dm_key: all.join(",") });
+      await h.sql`select * from conversations where id = ${res.conversation.id}`;
+    expect(row).toMatchObject({
+      workspace_id: h.workspaceId,
+      kind: "group_dm",
+      name: null,
+      topic: null,
+      description: null,
+      is_private: true,
+      is_general: false,
+      dm_key: all.join(","),
+      created_by: a.id,
+      archived_at: null,
+    });
+    expect(row!.created_at).toEqual(new Date(h.clock.now()));
   });
 
   it("an Admin and a Member can both open", async () => {
@@ -200,9 +221,11 @@ describe("an existing conversation, R9 and R12", () => {
     const b = await user();
     const first = await open(a, [b.id]);
     await h.sql`update users set status = 'deactivated' where id = ${b.id}`;
+    const before = await snapshot();
     const again = await open(a, [b.id]);
     expect(again.status).toBe(200);
     expect(again.conversation.id).toBe(first.conversation.id);
+    expect(await snapshot()).toEqual(before);
   });
 
   it("is one conversation for the same people in any order and letter case, and another for a set that differs by one person (R12, R14)", async () => {
@@ -221,8 +244,8 @@ describe("an existing conversation, R9 and R12", () => {
     ).toBe(3);
     // The first group still has exactly its three people.
     const members =
-      await h.sql`select user_id from conversation_members where conversation_id = ${g1.conversation.id}`;
-    expect(members).toHaveLength(3);
+      await h.sql`select user_id from conversation_members where conversation_id = ${g1.conversation.id} order by user_id`;
+    expect(members.map((m) => m.user_id)).toEqual([a.id, b.id, c.id].sort());
   });
 });
 
@@ -243,6 +266,14 @@ describe("people, R6, R7, R8, R10", () => {
       status: 409,
       code: "person_deactivated",
       details: { userIds: [gone.id, gone2.id].sort() },
+    });
+    const third = await user();
+    const oneOfThree = await refused(() =>
+      open(a, [fine.id, gone.id, third.id]),
+    );
+    expect(oneOfThree).toMatchObject({
+      status: 409,
+      details: { userIds: [gone.id] },
     });
     await h.sql`update users set status = 'active' where id = ${gone.id}`;
     expect((await open(a, [gone.id])).status).toBe(201);
@@ -271,6 +302,11 @@ describe("people, R6, R7, R8, R10", () => {
       open(a, [b.id, c.id, crypto.randomUUID()]),
     );
     expect(error).toMatchObject({ status: 404 });
+    const otherWorkspace = crypto.randomUUID();
+    await h.sql`insert into workspaces (id, name, created_at) values (${otherWorkspace}, 'Other group', now())`;
+    const foreign = await user({ workspace_id: otherWorkspace });
+    const elsewhere = await refused(() => open(a, [b.id, c.id, foreign.id]));
+    expect(elsewhere).toMatchObject({ status: 404, code: "not_found" });
   });
 });
 
@@ -588,22 +624,33 @@ describe("locks, R22", () => {
     expect(await counts()).toEqual(before);
   });
 
-  it("a create and a person route that locks every users row in id order finish without a deadlock", async () => {
-    const a = await user();
-    const b = await user();
-    const res = await Promise.race([
-      whileHeld(
-        async (tx) => {
-          // What the person routes of TOKI-024 do: every row, in id order,
-          // FOR NO KEY UPDATE, then a change of one of them.
-          await tx`select id from users where workspace_id = ${h.workspaceId} order by id for no key update`;
-          await tx`update users set display_name = 'Renamed' where id = ${b.id}`;
-        },
-        () => open(a, [b.id]),
-      ),
-      new Promise<"deadlock">((r) => setTimeout(() => r("deadlock"), 10_000)),
-    ]);
-    expect(res).not.toBe("deadlock");
-    expect(res).toMatchObject({ value: { status: 201 } });
+  it("a create and a person route that locks every users row in id order, started together, finish without a deadlock", async () => {
+    // What the person routes of TOKI-024 do: every row, in id order, FOR NO KEY
+    // UPDATE, then a change of one of them. Both sides lock in id order, so
+    // 40P01 (deadlock detected) must never happen; the pairs are started at
+    // the same moment and repeated.
+    const other = secondConnection(h);
+    try {
+      for (let i = 0; i < 20; i += 1) {
+        const a = await user();
+        const b = await user();
+        const [created, person] = await Promise.race([
+          Promise.allSettled([
+            open(a, [b.id]),
+            other.begin(async (tx) => {
+              await tx`select id from users where workspace_id = ${h.workspaceId} order by id for no key update`;
+              await tx`update users set display_name = 'Renamed' where id = ${b.id}`;
+            }),
+          ]),
+          new Promise<"deadlock">((r) =>
+            setTimeout(() => r("deadlock"), 10_000),
+          ),
+        ]);
+        expect(created, `round ${i}`).toMatchObject({ status: "fulfilled" });
+        expect(person, `round ${i}`).toMatchObject({ status: "fulfilled" });
+      }
+    } finally {
+      await other.end();
+    }
   });
 });

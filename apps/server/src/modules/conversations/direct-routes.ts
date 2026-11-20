@@ -1,5 +1,8 @@
 import type { FastifyPluginAsync } from "fastify";
 import {
+  DIRECT_CONVERSATION_MAX_OTHERS,
+  ErrorCodes,
+  GROUP_DM_MAX_PEOPLE,
   OpenDirectBodySchema,
   canCreateDirectConversation,
 } from "@toki/shared";
@@ -7,7 +10,6 @@ import { refusal } from "./access.js";
 import type { DirectDeps } from "./deps.js";
 import { planDirectConversation } from "./direct.js";
 import { AppError } from "../../errors.js";
-import { ErrorCodes, DIRECT_CONVERSATION_MAX_OTHERS } from "@toki/shared";
 import { openDirect, type OpenDirectResult } from "./direct-open.js";
 import { toSafeError } from "./safe-error.js";
 
@@ -39,7 +41,7 @@ export async function handleOpenDirect(
       ErrorCodes.groupTooLarge,
       "A group has too many people.",
       {
-        max: DIRECT_CONVERSATION_MAX_OTHERS + 1,
+        max: GROUP_DM_MAX_PEOPLE,
         maxOthers: DIRECT_CONVERSATION_MAX_OTHERS,
       },
     );

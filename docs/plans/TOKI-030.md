@@ -88,3 +88,11 @@ Each step writes its test first, sees it fail for the stated reason, writes the 
 - **Needs an install.** The new worktree has no `node_modules`: `corepack pnpm install` under Node 22 comes first.
 - **Local Postgres.** The database tests need a `TEST_DATABASE_URL`. This session may not read `.env`, so it runs a container of its own (`toki-029-test-pg` on port 55435 is still up) and passes the URL in the shell.
 - **Size.** One route, but the spec is long; each step is its own commit.
+
+## Files added during the build
+
+None of these changes behaviour; each is the smallest home for something the steps already require.
+
+- `apps/server/src/modules/conversations/deps.ts` gains the `DirectDeps` type (S3), next to `ChannelDeps`, so `direct-open.ts`, `direct-routes.ts` and `app.ts` share it without a cycle.
+- `apps/server/tests/conversations/direct-routes.db.test.ts` also holds the route-level proof of R20 for a failed insert: a second app with the real route and an account read that reports an id with no `users` row.
+- `docs/plans/TOKI-030.state.json` is the workflow state file, committed with the plan as in the other tickets.
