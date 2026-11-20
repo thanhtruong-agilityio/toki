@@ -116,3 +116,13 @@ The harness already records the text of each statement (`debug`) but drops the c
 - A statement count that the recorder reads wrong would pass R14 for the wrong reason: step 4 tests the recorder first and the count test also asserts the exact statement texts it sees.
 - `string_to_array` of `dm_key` returns text, not uuid: the test of R7 compares it with the key order.
 - The harness change (connection id) must not break the tests that use it: the full suite is run after step 4.
+
+## Files added during the build
+
+Not named above, needed by the steps:
+
+- `apps/server/src/bootstrap/read-tx.ts` and `tests/bootstrap/read-tx.db.test.ts`: the snapshot helper of the design, with its own test (step 4).
+- `BootstrapDeps` also holds `getAccountById` and `getWorkspace` (replaceable by a test), and `buildApp` gets a `bootstrapDeps` option next to `channelDeps`, so the route tests can show the body of the 500 (R4) and of the in-snapshot 401 (R10). The test harness passes it through and keeps `statementLog` (the statements with their connection id) beside `statements`.
+- `tests/bootstrap/{build,route,bounds}.db.test.ts`: build and seam tests; route tests; size, count and statement tests (R9, R14, R20). `tests/conversations/summaries.db.test.ts` and `tests/members/list-people.db.test.ts` hold the tests of the two reads.
+- R7's "a pair of ids whose byte order differs from the default collation" cannot exist for lower-case hex UUID text (digits sort before letters and the hyphens sit at fixed places in every collation). The statement orders `collate "C"` as the spec says and the test pins the byte order of mixed ids; the collation of the names in `listPeople` is proved to matter (a mutation without `collate "C"` fails its test).
+- The hand check of the spec (`dev:reset:db`, first Admin, sign in, read the endpoint) is not done here: it needs the local `.env`. It is left to the person who merges, with the expected answer (one workspace, one member, #general, `eventNumber` 0).
