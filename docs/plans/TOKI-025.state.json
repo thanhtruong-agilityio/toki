@@ -1,0 +1,36 @@
+{
+  "approved_auto": false,
+  "base": "main",
+  "branch": "feat/toki-025-admin-page",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-20T09:36:08Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-20T09:37:50Z",
+      "stage": "explore"
+    },
+    {
+      "at": "2026-11-20T09:45:03Z",
+      "stage": "plan"
+    }
+  ],
+  "key": "TOKI-025",
+  "main_sha": "88f92548ad8c04d81489354f97e6b3d10f5549c9",
+  "metrics": {},
+  "mode": null,
+  "plan_approved": false,
+  "plan_hash": null,
+  "spec_commit": "b365e42924aebd285bce8c6466c35ab8ea54e29a",
+  "spec_paths": [
+    "docs/specs/2026-11-17-admin-page-design.md"
+  ],
+  "stage": "plan",
+  "tier": "L",
+  "verifier": {
+    "result": null,
+    "round": 0
+  }
+}
