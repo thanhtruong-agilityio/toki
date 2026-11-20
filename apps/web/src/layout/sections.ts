@@ -30,6 +30,18 @@ export const sections: SectionRow[] = [
     match: (pathname) => pathname === "/" || pathname.startsWith("/c/"),
     tab: true,
   },
+  // Preferences (TOKI-099 R21). Calm hides it and reaches it through the account menu; the Focus
+  // rail and the More sheet show it. Rows that come later (people, admin) are inserted above this
+  // one: the prototype's order is home, people, admin, preferences (line 1199).
+  {
+    id: "preferences",
+    icon: "settings",
+    labelKey: "nav.preferences",
+    to: "/prefs",
+    match: (pathname) => pathname.startsWith("/prefs"),
+    calmHidden: true,
+    more: true,
+  },
 ];
 
 // The rows a person sees. With no known role only the rows with no `roles` are
