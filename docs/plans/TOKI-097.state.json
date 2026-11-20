@@ -45,6 +45,10 @@
       "at": "2026-11-20T11:00:35Z",
       "auto": false,
       "stage": "approve"
+    },
+    {
+      "at": "2026-11-20T11:01:15Z",
+      "stage": "ship"
     }
   ],
   "key": "TOKI-097",
@@ -58,7 +62,7 @@
   "spec_paths": [
     "docs/specs/2026-11-17-accept-invitation-design.md"
   ],
-  "stage": "check",
+  "stage": "ship",
   "tier": "L",
   "verifier": {
     "accepted_with_note": "3 rounds FAIL; findings fixed in the branch; round-3 fixes checked by tests, no 4th round (Dev accepted 2026-11-20)",

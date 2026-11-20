@@ -10,6 +10,8 @@ import type { Language } from "@toki/i18n";
 import { act, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { markSignedIn } from "@toki/client-core";
+import { setPlatform } from "@toki/platform";
+import { createWebPlatform } from "@toki/platform/web";
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { routeTree } from "../../src/router";
 import type { Role, SectionRow } from "../../src/layout/sections";
@@ -36,6 +38,8 @@ beforeEach(() => {
     clock,
     timers,
   });
+  // The account menu listens to the other tabs through the platform (TOKI-099 R12).
+  setPlatform(createWebPlatform());
   markSignedIn(user);
 });
 
@@ -66,22 +70,23 @@ describe("the layout route in English (R30, R31)", () => {
     ).toHaveTextContent("Toki");
   });
 
-  test("one Home link, current, and no role-only item", async () => {
+  test("one Home link, current, then Preferences, and no role-only item", async () => {
     await mount("en");
     // The sidebar's item and the bottom bar's tab: one link each (jsdom
     // applies no CSS, so both are in the tree).
     const nav = screen.getByRole("navigation");
     const links = [...nav.querySelectorAll<HTMLElement>("a.ni")];
-    expect(links.map((a) => a.textContent)).toEqual(["Home"]);
+    expect(links.map((a) => a.textContent)).toEqual(["Home", "Preferences"]);
     expect(links[0]).toHaveAttribute("aria-current", "page");
     expect(links[0]).toHaveAttribute("href", "/");
     expect(nav.querySelectorAll("a.nt")).toHaveLength(1);
     expect(document.querySelector('a.ni[data-id="admin"]')).toBeNull();
   });
 
-  test("gives the shell no list, no panel, no workspace and no account", async () => {
+  test("gives the shell no list, no panel and no workspace, and the card of the signed-in person (TOKI-099 R1)", async () => {
     await mount("en");
-    expect(document.querySelector(".convs, .side, .ws, .usercard")).toBeNull();
+    expect(document.querySelector(".convs, .side, .ws")).toBeNull();
+    expect(document.querySelectorAll(".usercard")).toHaveLength(1);
   });
 
   test("a plain click on Home goes through the router", async () => {

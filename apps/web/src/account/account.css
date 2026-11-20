@@ -1,0 +1,47 @@
+/* Table A of the spec: the section "Signed-in devices". Values from the
+   prototype's .setrow and .lbl, with flex-wrap so that a row wraps at 360 px. */
+.devs {
+  display: flex;
+  flex-direction: column;
+}
+.devrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+.devrow:last-child {
+  border-bottom: 0;
+}
+.devname {
+  flex: 1 1 200px;
+  min-width: 0;
+}
+.devtitle {
+  font-weight: 600;
+}
+.devnow {
+  margin-left: 8px;
+  font-size: 11.5px;
+  font-weight: 600;
+}
+.devfoot {
+  padding-top: 12px;
+}
+.devshead {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-2);
+  margin: 12px 0 4px;
+}
+.acct-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}

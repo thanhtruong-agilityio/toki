@@ -33,6 +33,7 @@ export {
   type EmergencyCalls,
   type EmergencyOutcome,
 } from "./auth/emergency";
+export { createSessionsApi, type SessionsApi } from "./auth/sessions";
 export {
   createApiClient,
   type ApiClient,
