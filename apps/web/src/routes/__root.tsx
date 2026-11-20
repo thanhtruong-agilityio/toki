@@ -13,6 +13,7 @@ import { sessionMemory } from "../auth/session-memory";
 import { getAuthServices } from "../auth/services";
 import { decideGuard } from "../guard";
 import { useSession } from "../useSession";
+import { NotFoundView } from "./NotFoundView";
 
 declare module "@tanstack/react-router" {
   // The flag of R40: a route that carries `public` is let through by the guard for every session state
@@ -121,5 +122,5 @@ function RootComponent() {
 
 export const rootRoute = createRootRoute({
   component: RootComponent,
-  notFoundComponent: () => <p>Page not found</p>,
+  notFoundComponent: NotFoundView,
 });

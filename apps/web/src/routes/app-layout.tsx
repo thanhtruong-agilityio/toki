@@ -12,6 +12,7 @@ import {
   type Role,
   type SectionRow,
 } from "../layout/sections";
+import { SessionSetsProvider } from "../shell/session-sets";
 import { rootRoute } from "./__root";
 
 // The one component that wires the shell to the app: translations, the section
@@ -38,19 +39,21 @@ export function AppShellRoute({
     calmHidden: row.calmHidden,
   }));
   return (
-    <AppShell
-      sections={navSections}
-      currentSection={currentSectionId(rows, pathname) ?? ""}
-      onNavigate={(section) => {
-        void router.navigate({ to: section.href });
-      }}
-      labels={{
-        mainNavigation: t("nav.mainLabel"),
-        conversations: t("nav.conversations"),
-      }}
-    >
-      <Outlet />
-    </AppShell>
+    <SessionSetsProvider>
+      <AppShell
+        sections={navSections}
+        currentSection={currentSectionId(rows, pathname) ?? ""}
+        onNavigate={(section) => {
+          void router.navigate({ to: section.href });
+        }}
+        labels={{
+          mainNavigation: t("nav.mainLabel"),
+          conversations: t("nav.conversations"),
+        }}
+      >
+        <Outlet />
+      </AppShell>
+    </SessionSetsProvider>
   );
 }
 
