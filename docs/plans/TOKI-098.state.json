@@ -7,6 +7,10 @@
     {
       "at": "2026-11-20T10:09:52Z",
       "stage": "pick"
+    },
+    {
+      "at": "2026-11-20T10:09:56Z",
+      "stage": "plan"
     }
   ],
   "key": "TOKI-098",
@@ -19,7 +23,7 @@
   "spec_paths": [
     "docs/specs/2026-11-17-create-channel-dialog-design.md"
   ],
-  "stage": "pick",
+  "stage": "plan",
   "tier": "M",
   "verifier": {
     "result": null,
