@@ -28,7 +28,9 @@
   ],
   "key": "TOKI-033",
   "main_sha": "230759d5911a31c3476a295b92527aa2c1736714",
-  "metrics": {},
+  "metrics": {
+    "size_baseline": 149973
+  },
   "mode": "auto-to-check",
   "plan_approved": true,
   "plan_hash": "55a90230790bfb84a8cbb738b932b1de7a0fe5175b354ea7415303942fb88977",
