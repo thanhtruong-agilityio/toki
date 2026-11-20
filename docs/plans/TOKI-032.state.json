@@ -28,6 +28,11 @@
     {
       "at": "2026-11-20T04:13:43Z",
       "stage": "check"
+    },
+    {
+      "at": "2026-11-20T09:29:26Z",
+      "auto": false,
+      "stage": "approve"
     }
   ],
   "key": "TOKI-032",
@@ -35,7 +40,7 @@
   "metrics": {},
   "mode": "Auto to check",
   "plan_approved": true,
-  "plan_hash": "cbb422e21b05630d14d68244e63bd2687a216413058db67909f499ee15f3ab02",
+  "plan_hash": "26c0b145b30f8749c8366709527482cdacb4e096a9a710fe6d9d44258fbd1a15",
   "spec_commit": "929376f9844e65fbd0094d5edc86f38a812e3b25",
   "spec_paths": [
     "docs/specs/2026-11-17-client-core-design.md"
