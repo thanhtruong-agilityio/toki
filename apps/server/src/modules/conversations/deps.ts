@@ -1,4 +1,4 @@
-import type { Clock } from "@toki/shared";
+import type { Clock, Decision } from "@toki/shared";
 import type { DbClient } from "../../db/client.js";
 import type { RecordChange } from "./changes.js";
 import type { getConversationFacts } from "./facts.js";
@@ -34,3 +34,15 @@ export type ChannelDepsInput = Pick<
   "db" | "clock" | "getAccountsByIds"
 > &
   Partial<Pick<ChannelDeps, "recordChange" | "getConversationFacts">>;
+
+// The dependencies of `POST /api/v1/direct-conversations` (TOKI-030). The
+// permission function has a real default; a test replaces it (R4, R7).
+export type DirectDeps = Pick<
+  ChannelDeps,
+  "db" | "clock" | "getAccountsByIds"
+> & {
+  canCreateDirectConversation?: (person: {
+    id: string;
+    role: string;
+  }) => Decision;
+};
