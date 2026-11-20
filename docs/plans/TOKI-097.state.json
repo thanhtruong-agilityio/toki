@@ -55,7 +55,8 @@
   "stage": "check",
   "tier": "L",
   "verifier": {
-    "result": "FAIL",
+    "accepted_with_note": "3 rounds FAIL; findings fixed in the branch; round-3 fixes checked by tests, no 4th round (Dev accepted 2026-11-20)",
+    "result": "PASS",
     "round": 3
   }
 }
