@@ -198,6 +198,29 @@ describe("a row (R15, R16)", () => {
     ]);
   });
 
+  test("a date other than today reads as 'Last used Mon 16 Nov 09:00'; in Vietnamese the mixed form", async () => {
+    ctx.value = { ...english, now: Date.parse("2026-11-23T12:00:00Z") };
+    list([row({ lastUsedAt: "2026-11-16T09:00:00Z" }), laptop]);
+    await mount();
+    expect(screen.getByText("Last used Mon 16 Nov 09:00")).toBeTruthy();
+  });
+
+  test("the Vietnamese time line of another day keeps the English weekday and month (TOKI-094 R8)", async () => {
+    ctx.value = {
+      ...english,
+      language: "vi",
+      now: Date.parse("2026-11-23T12:00:00Z"),
+      dayWords: {
+        today: "Hôm nay",
+        tomorrow: "Ngày mai",
+        yesterday: "Hôm qua",
+      },
+    };
+    list([row({ lastUsedAt: "2026-11-16T09:00:00Z" }), laptop]);
+    await mount("vi");
+    expect(screen.getByText("Dùng lần cuối Mon 16 Nov 09:00")).toBeTruthy();
+  });
+
   test("in Vietnamese the day word of the time line is Vietnamese", async () => {
     ctx.value = {
       ...english,
