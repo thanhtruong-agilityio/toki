@@ -154,6 +154,11 @@ const card = () => document.querySelector<HTMLButtonElement>("button.ucard")!;
 const menuItems = () => screen.queryAllByRole("menuitem");
 
 describe("the account card (R1, R2)", () => {
+  test("the shell has one toast region", async () => {
+    await mountApp();
+    expect(document.querySelectorAll(".toasts")).toHaveLength(1);
+  });
+
   test("is a button named Your account menu with the name and the role", async () => {
     await mountApp();
     expect(card()).toHaveAccessibleName("Your account menu");
@@ -394,6 +399,8 @@ describe("Sign out (R7, R9, R11)", () => {
     expect(screen.getAllByText("That did not work. Try again.")).toHaveLength(
       1,
     );
+    // One toast region for the whole shell: a second provider would add a second one.
+    expect(document.querySelectorAll(".toasts")).toHaveLength(1);
     expect(getSessionState().status).toBe("signedIn");
     expect(posted).toEqual([]);
     expect(card()).not.toHaveAttribute("aria-busy");

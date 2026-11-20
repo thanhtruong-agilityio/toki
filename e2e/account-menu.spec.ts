@@ -37,7 +37,10 @@ const DEVICES = [
 type Stub = { requests: string[]; signedIn: () => boolean };
 
 // One stub for a whole browser context: the session is shared by its pages, as the cookie is.
-async function stub(context: BrowserContext): Promise<Stub> {
+async function stub(
+  context: BrowserContext,
+  options: { failEnd?: boolean } = {},
+): Promise<Stub> {
   let signedIn = true;
   const requests: string[] = [];
   await context.route("**/api/v1/auth/**", async (route) => {
@@ -64,6 +67,9 @@ async function stub(context: BrowserContext): Promise<Stub> {
       return json(200, { sessions: DEVICES });
     }
     if (path.startsWith("/auth/sessions") && request.method() === "DELETE") {
+      if (options.failEnd) {
+        return json(500, { error: { code: "internal", message: "no" } });
+      }
       return route.fulfill({ status: 204 });
     }
     return route.fallback();
@@ -164,6 +170,34 @@ for (const name of LOOKS) {
         ]);
         await page.keyboard.press("Escape");
         await expect(page.getByRole("menu")).toHaveCount(0);
+      });
+    }
+
+    for (const size of [
+      { width: 360, height: 560 },
+      { width: 719, height: 800 },
+    ]) {
+      test(`a toast does not cover the bottom bar at ${size.width}px`, async ({
+        page,
+        context,
+      }) => {
+        await stub(context, { failEnd: true });
+        await look(page, name);
+        await page.setViewportSize(size);
+        await page.goto("/prefs");
+        await page.getByRole("button", { name: /^Sign out Safari/ }).click();
+        await page
+          .getByRole("dialog")
+          .getByRole("button", { name: "Sign out", exact: true })
+          .click();
+        const toast = page.locator(".toast").first();
+        await expect(toast).toBeVisible();
+        await expect(page.locator(".toasts")).toHaveCount(1);
+        const bar = await page.getByRole("navigation").boundingBox();
+        const box = await toast.boundingBox();
+        expect(bar && box).toBeTruthy();
+        // The toast ends above the bar.
+        expect(box!.y + box!.height).toBeLessThanOrEqual(bar!.y + 0.5);
       });
     }
 
