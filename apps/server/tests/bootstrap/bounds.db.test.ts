@@ -197,7 +197,7 @@ describe("the number of statements does not grow with the answer (R14)", () => {
       people: 3,
       channels: 1,
       dms: 1,
-      groups: 0,
+      groups: 1,
     });
     const big = await fill(ordinary);
     const a = await count(small.h, small.reader);
