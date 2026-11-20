@@ -263,15 +263,20 @@ export function ConversationListPane() {
           state: pathname === "/" ? { fromList: true } : undefined,
         });
       }}
-      empty={{
-        title: t("conversationList.empty.title"),
-        description: t("conversationList.empty.description"),
-        actionLabel: t("conversationList.empty.clear"),
-        onAction: () => {
-          setQuery("");
-          choose({ filter: "all" });
-        },
-      }}
+      // Before the first data there is nothing to match, so no empty state (R11, R24).
+      empty={
+        status === "ready"
+          ? {
+              title: t("conversationList.empty.title"),
+              description: t("conversationList.empty.description"),
+              actionLabel: t("conversationList.empty.clear"),
+              onAction: () => {
+                setQuery("");
+                choose({ filter: "all" });
+              },
+            }
+          : undefined
+      }
     />
   );
 }

@@ -93,18 +93,27 @@ describe("the layout route in English (R30, R31)", () => {
     expect(document.querySelector('a.ni[data-id="admin"]')).toBeNull();
   });
 
-  test("gives the shell no list, no panel, no workspace and no account", async () => {
+  test("gives the shell the conversation list, the workspace and no panel (R24)", async () => {
     await mount("en");
-    expect(document.querySelector(".convs, .side, .ws, .usercard")).toBeNull();
+    expect(document.querySelector("aside.convs div.clist")).not.toBeNull();
+    expect(document.querySelector(".ws .wsn")).toHaveTextContent("Acme");
+    expect(document.querySelector(".side")).toBeNull();
   });
 
-  test("a plain click on Home goes through the router", async () => {
-    const router = await mount("en");
+  test("a plain click on Home on a narrow window goes through the router to `/`", async () => {
+    vi.stubGlobal("matchMedia", (query: string) => ({
+      matches: query === "(max-width: 719px)",
+      media: query,
+      addEventListener() {},
+      removeEventListener() {},
+    }));
+    const router = await mount("en", "/c/gen");
     const spy = vi.spyOn(router, "navigate");
     await userEvent.click(
       screen.getByRole("navigation").querySelector("a.ni")!,
     );
     expect(spy).toHaveBeenCalledWith({ to: "/" });
+    vi.unstubAllGlobals();
   });
 });
 

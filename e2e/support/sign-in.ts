@@ -1,4 +1,5 @@
 import type { Locator, Page, Route } from "@playwright/test";
+import { stubBootstrap } from "./bootstrap";
 
 // Helpers of e2e/sign-in.spec.ts (TOKI-023 R29 to R34). The server of TOKI-022 cannot be seeded yet
 // (TOKI-008), so every answer of `/api/v1/auth/*` is a stub in the browser. Fake data only: the
@@ -114,6 +115,8 @@ export async function stubAuth(
   page: Page,
   overrides: Partial<Script> = {},
 ): Promise<Stub> {
+  // The signed-in app loads the workspace as soon as its layout shows (TOKI-033 R32).
+  await stubBootstrap(page);
   const stub: Stub = {
     script: { ...defaultScript(), ...overrides },
     requests: [],

@@ -99,7 +99,8 @@ export type ConversationListProps = Omit<
     row: ConversationRowData,
     event: MouseEvent<HTMLAnchorElement>,
   ) => void;
-  empty: {
+  // Missing while the store holds no data (idle, loading, failed): `div.clist` then draws no empty state.
+  empty?: {
     title: string;
     description: string;
     actionLabel: string;
@@ -282,7 +283,7 @@ export const ConversationList = forwardRef<
             </div>
           );
         })}
-        {total === 0 && (
+        {total === 0 && empty && (
           <EmptyState
             icon="search"
             filtered

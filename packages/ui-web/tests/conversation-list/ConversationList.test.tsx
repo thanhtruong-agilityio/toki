@@ -684,7 +684,7 @@ describe("the empty state (R11)", () => {
       <ConversationList
         {...props({
           groups: [group("channels", [])],
-          empty: { ...props().empty, onAction },
+          empty: { ...props().empty!, onAction },
         })}
       />,
     );
@@ -701,6 +701,16 @@ describe("the empty state (R11)", () => {
 
     rerender(<ConversationList {...props()} />);
     expect(container.querySelector(".empty")).toBeNull();
+  });
+
+  test("with no `empty` given, an empty list draws no empty state (the store has no data yet)", () => {
+    const { container } = render(
+      <ConversationList
+        {...props({ groups: [group("channels", [])], empty: undefined })}
+      />,
+    );
+    expect(container.querySelector(".empty")).toBeNull();
+    expect(container.querySelector("div.clist")).not.toBeNull();
   });
 
   test("rows that a collapsed group holds are rows: no empty state", () => {
