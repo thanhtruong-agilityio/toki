@@ -1,4 +1,8 @@
 export const common = {
+  today: "Hôm nay",
+  tomorrow: "Ngày mai",
+  yesterday: "Hôm qua",
+  role: { member: "Thành viên", admin: "Admin" },
   undo: "Hoàn tác",
   cancel: "Hủy",
   discard: {

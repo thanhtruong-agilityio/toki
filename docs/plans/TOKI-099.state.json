@@ -20,19 +20,23 @@
     {
       "at": "2026-11-20T09:44:16Z",
       "stage": "approve"
+    },
+    {
+      "at": "2026-11-20T09:45:23Z",
+      "stage": "build"
     }
   ],
   "key": "TOKI-099",
   "main_sha": "db25011a8af34283aec9ad2d18d4e43325604b37",
   "metrics": {},
-  "mode": null,
+  "mode": "auto-to-check",
   "plan_approved": true,
   "plan_hash": "89800580639405f2880b69485b31d8c4c06315cd4eb3651bb927e9bdb50aea2d",
   "spec_commit": "8df8aaf438e0f525cf460d2dfb1a37bc2cac6745",
   "spec_paths": [
     "docs/specs/2026-11-17-account-menu-devices-design.md"
   ],
-  "stage": "approve",
+  "stage": "build",
   "tier": "L",
   "verifier": {
     "result": null,

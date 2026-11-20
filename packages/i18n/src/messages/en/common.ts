@@ -1,4 +1,8 @@
 export const common = {
+  today: "Today",
+  tomorrow: "Tomorrow",
+  yesterday: "Yesterday",
+  role: { member: "Member", admin: "Admin" },
   undo: "Undo",
   cancel: "Cancel",
   discard: {
