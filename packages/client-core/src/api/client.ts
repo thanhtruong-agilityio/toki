@@ -92,11 +92,11 @@ export function createApiClient(options: ApiClientOptions) {
       const hasBody = request.body !== undefined;
       if (hasBody) headers["Content-Type"] = "application/json";
 
-      const send = options.fetch ?? fetch;
+      const doFetch = options.fetch ?? fetch;
       let response: Response;
       let text: string | undefined;
       try {
-        response = await send(url, {
+        response = await doFetch(url, {
           method: request.method,
           headers,
           body: hasBody ? JSON.stringify(request.body) : undefined,
@@ -109,6 +109,8 @@ export function createApiClient(options: ApiClientOptions) {
           !response.ok ||
           (response.status !== 204 && !isUndefinedSchema(request.schema));
         if (wanted) text = await response.text();
+        // Release a body nobody reads.
+        else void response.body?.cancel().catch(() => undefined);
       } catch {
         throw endedWith();
       }
