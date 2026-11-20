@@ -1,6 +1,6 @@
 {
   "approved_auto": false,
-  "base": "main",
+  "base": "github/main",
   "branch": "feat/toki-025-admin-page",
   "deployed_sha": null,
   "history": [
@@ -35,12 +35,12 @@
     }
   ],
   "key": "TOKI-025",
-  "main_sha": "88f92548ad8c04d81489354f97e6b3d10f5549c9",
+  "main_sha": "db25011a8af34283aec9ad2d18d4e43325604b37",
   "metrics": {},
   "mode": "auto-to-check",
   "plan_approved": true,
   "plan_hash": "b8e2cc79be83f83f78e03b972ede26c7ac3c4cb677893d7a203d59934167fdd5",
-  "spec_commit": "b365e42924aebd285bce8c6466c35ab8ea54e29a",
+  "spec_commit": "006f932b3682248e99939e98b5d1ae47bc70524c",
   "spec_paths": [
     "docs/specs/2026-11-17-admin-page-design.md"
   ],

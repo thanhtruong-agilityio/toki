@@ -4,86 +4,79 @@ import { createUuidV7Generator } from "../../src/ids/uuid-v7.js";
 const PATTERN =
   /^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
 
-function make(now: number, bytes: number[] | Uint8Array) {
-  const randomBytes = vi.fn(() => Uint8Array.from(bytes));
-  const next = createUuidV7Generator({
+const bytes = (...hex: number[]) => Uint8Array.from(hex);
+const filled = (value: number, length = 10) =>
+  new Uint8Array(length).fill(value);
+
+function make(now: number, random: Uint8Array) {
+  const randomBytes = vi.fn<(length: number) => Uint8Array>(() => random);
+  const generate = createUuidV7Generator({
     clock: { now: () => now },
     randomBytes,
   });
-  return { next, randomBytes };
+  return { generate, randomBytes };
 }
 
-const hex = (s: string) => s.split(" ").map((h) => parseInt(h, 16));
-
-describe("createUuidV7Generator (R33)", () => {
-  it("gives the RFC 9562 appendix B.2 example", () => {
-    const { next } = make(1645557742000, hex("0c c3 18 c4 dc 0c 0c 07 39 8f"));
-    expect(next()).toBe("017f22e2-79b0-7cc3-98c4-dc0c0c07398f");
+describe("createUuidV7Generator (R1)", () => {
+  it("makes the RFC 9562 appendix B.2 example", () => {
+    const { generate } = make(
+      1645557742000,
+      bytes(0x0c, 0xc3, 0x18, 0xc4, 0xdc, 0x0c, 0x0c, 0x07, 0x39, 0x8f),
+    );
+    expect(generate()).toBe("017f22e2-79b0-7cc3-98c4-dc0c0c07398f");
   });
 
-  it("maps clock 0 with ten ff bytes", () => {
-    const { next } = make(0, new Array(10).fill(0xff));
-    expect(next()).toBe("00000000-0000-7fff-bfff-ffffffffffff");
-  });
-
-  it("maps clock 0 with ten 00 bytes", () => {
-    const { next } = make(0, new Array(10).fill(0));
-    expect(next()).toBe("00000000-0000-7000-8000-000000000000");
-  });
-
-  it("maps the largest clock with ten 00 bytes", () => {
-    const { next } = make(2 ** 48 - 1, new Array(10).fill(0));
-    expect(next()).toBe("ffffffff-ffff-7000-8000-000000000000");
-  });
-
-  it("floors a fractional clock", () => {
-    const bytes = hex("0c c3 18 c4 dc 0c 0c 07 39 8f");
-    expect(make(1645557742000.9, bytes).next()).toBe(
-      make(1645557742000, bytes).next(),
+  it("makes the edge ids", () => {
+    expect(make(0, filled(0xff)).generate()).toBe(
+      "00000000-0000-7fff-bfff-ffffffffffff",
+    );
+    expect(make(0, filled(0)).generate()).toBe(
+      "00000000-0000-7000-8000-000000000000",
+    );
+    expect(make(2 ** 48 - 1, filled(0)).generate()).toBe(
+      "ffffffff-ffff-7000-8000-000000000000",
     );
   });
 
-  it("asks randomBytes once per call for 10 bytes", () => {
-    const { next, randomBytes } = make(5, new Array(10).fill(1));
-    next();
+  it("floors a clock that returns a fraction", () => {
+    const r = bytes(0x0c, 0xc3, 0x18, 0xc4, 0xdc, 0x0c, 0x0c, 0x07, 0x39, 0x8f);
+    expect(make(1645557742000.9, r).generate()).toBe(
+      make(1645557742000, r).generate(),
+    );
+  });
+
+  it("asks for 10 random bytes, once per call", () => {
+    const { generate, randomBytes } = make(5, filled(1));
+    generate();
     expect(randomBytes).toHaveBeenCalledTimes(1);
     expect(randomBytes).toHaveBeenCalledWith(10);
   });
 
-  it("makes 1000 distinct ids of the v7 form with a seeded source", () => {
-    // mulberry32: a small seeded generator whose low bits are as good as its high bits.
+  it("makes 1000 valid, different ids from a seeded source", () => {
     let seed = 12345;
-    const rand = () => {
-      seed = (seed + 0x6d2b79f5) | 0;
-      let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
-      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-      return (t ^ (t >>> 14)) >>> 0;
+    const next = () => {
+      seed = (seed * 1664525 + 1013904223) >>> 0;
+      return seed;
     };
-    const next = createUuidV7Generator({
-      clock: { now: () => 1_700_000_000_000 },
-      randomBytes: (n) => Uint8Array.from({ length: n }, () => rand() & 0xff),
+    const generate = createUuidV7Generator({
+      clock: { now: () => 1700000000000 },
+      randomBytes: (length) => Uint8Array.from({ length }, () => next() >>> 24),
     });
-    const ids = new Set<string>();
-    for (let i = 0; i < 1000; i += 1) {
-      const id = next();
-      expect(id).toMatch(PATTERN);
-      expect(id).toHaveLength(36);
-      ids.add(id);
-    }
-    expect(ids.size).toBe(1000);
+    const ids = Array.from({ length: 1000 }, () => generate());
+    for (const id of ids) expect(id).toMatch(PATTERN);
+    expect(new Set(ids).size).toBe(1000);
   });
 
   it.each([-1, 2 ** 48, Number.NaN, Number.POSITIVE_INFINITY])(
-    "throws for the clock %s before asking for random bytes",
+    "throws for a clock of %s without asking for random bytes",
     (now) => {
-      const { next, randomBytes } = make(now, new Array(10).fill(0));
-      expect(next).toThrow(Error);
+      const { generate, randomBytes } = make(now, filled(0));
+      expect(() => generate()).toThrow(Error);
       expect(randomBytes).not.toHaveBeenCalled();
     },
   );
 
-  it("throws when randomBytes returns fewer than 10 bytes", () => {
-    const { next } = make(1, new Array(9).fill(0));
-    expect(next).toThrow(Error);
+  it("throws when the random source returns fewer than 10 bytes", () => {
+    expect(() => make(1, filled(0, 9)).generate()).toThrow(Error);
   });
 });

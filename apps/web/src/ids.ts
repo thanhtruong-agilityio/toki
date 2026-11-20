@@ -1,10 +1,11 @@
 import { createUuidV7Generator } from "@toki/shared";
 import { clock } from "./clock";
 
-// The one file of apps/web/src that touches a random source (TOKI-025 R33). Every other file that
-// needs a unique id imports `newId`. `crypto.randomUUID` is not used: it exists only in secure
-// contexts, and Toki is self-hosted, so an Admin may reach it over plain http on a LAN address.
-export const newId = createUuidV7Generator({
+// The web app's one source of ids (TOKI-098 R2). This is the one file of apps/web/src that touches
+// a random source: every other file that needs a unique id imports `newId`.
+// `crypto.getRandomValues` works on a page served without HTTPS, unlike `crypto.randomUUID`, which
+// needs a secure context (Toki is self-hosted, D-028).
+export const newId: () => string = createUuidV7Generator({
   clock,
   randomBytes: (length) => crypto.getRandomValues(new Uint8Array(length)),
 });
