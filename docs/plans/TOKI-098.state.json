@@ -11,19 +11,28 @@
     {
       "at": "2026-11-20T10:09:56Z",
       "stage": "plan"
+    },
+    {
+      "at": "2026-11-20T10:11:47Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-20T10:12:21Z",
+      "stage": "build"
     }
   ],
   "key": "TOKI-098",
   "main_sha": "139e5a6718fdb0268a0e34241c3f3b837078ce5a",
   "metrics": {},
-  "mode": null,
-  "plan_approved": false,
-  "plan_hash": null,
+  "mode": "Auto to check",
+  "plan_approved": true,
+  "plan_hash": "13b13a916471ee5b21a6c8e0a29c91c461c50e034b2693f1bdb3a0c5ef0ccf91",
   "spec_commit": "d1dbb5f815b8ea538d6e0d2b7f58d9680e09cc9e",
   "spec_paths": [
     "docs/specs/2026-11-17-create-channel-dialog-design.md"
   ],
-  "stage": "plan",
+  "stage": "build",
   "tier": "M",
   "verifier": {
     "result": null,
