@@ -9,11 +9,12 @@ import type { Db, Tx } from "../db/client.js";
 // hands `fn` a scoped client, which `drizzle(client)` cannot wrap (it has no
 // `options`), so the handle is built from the session, as Drizzle does inside
 // its own transaction. This is the only place that knows about the driver.
+const dialect = new PgDialect();
+
 export function inReadSnapshot<T>(
   db: Db,
   fn: (tx: Tx) => Promise<T>,
 ): Promise<T> {
-  const dialect = new PgDialect();
   return db.$client.begin(
     "isolation level repeatable read read only",
     async (scoped) => {

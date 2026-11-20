@@ -30,6 +30,13 @@ export type BootstrapDeps = {
 
 const internal = (message: string) => new Error(message);
 
+// A column the table checks keep non-null; a null here is a broken row, not
+// something to hide behind a default.
+function required<T>(value: T | null, what: string): T {
+  if (value === null) throw internal(`A conversation has no ${what}.`);
+  return value;
+}
+
 // The six parts of the answer from one snapshot (R10). Only the id of the
 // account is used: the account itself is read again inside the snapshot.
 export async function buildBootstrap(
@@ -89,7 +96,7 @@ export async function buildBootstrap(
         return {
           id: s.id,
           kind: "channel",
-          name: s.name ?? "",
+          name: required(s.name, "channel name"),
           topic: s.topic,
           isPrivate: s.isPrivate,
           isGeneral: s.isGeneral,
@@ -109,7 +116,7 @@ export async function buildBootstrap(
         notificationLevel: level,
         isMuted: s.isMuted,
         isStarred: s.isStarred,
-        memberIds: s.memberIds ?? [],
+        memberIds: required(s.memberIds, "direct message members"),
       };
     });
     return {
