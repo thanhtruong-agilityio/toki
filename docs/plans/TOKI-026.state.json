@@ -36,6 +36,10 @@
     {
       "at": "2026-11-19T09:16:18Z",
       "stage": "check"
+    },
+    {
+      "at": "2026-11-19T09:39:24Z",
+      "stage": "ship"
     }
   ],
   "key": "TOKI-026",
@@ -56,11 +60,12 @@
   "mode": "manual",
   "plan_approved": true,
   "plan_hash": "e1dd1c25aeff4090d02f02c1eb9684e0a06b823dc515f67739d2ed571c01b816",
+  "pr": "https://github.com/thanhtruong-agilityio/toki/pull/184",
   "spec_commit": "914b517bfb2bd61535fb5df472d1b43eef4141ed",
   "spec_paths": [
     "docs/specs/2026-11-17-sessions-emergency-access-design.md"
   ],
-  "stage": "check",
+  "stage": "ship",
   "tier": "L",
   "verifier": {
     "result": "PASS",
