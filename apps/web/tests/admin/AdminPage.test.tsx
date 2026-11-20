@@ -15,6 +15,24 @@ import { installFakeIntersectionObserver } from "../support/fakeIntersection";
 import { Providers } from "../support/providers";
 import { user } from "../support/auth-harness";
 
+// The button and its dialog are TOKI-098's: here a stand-in that calls `onCreated` with an id, as the
+// dialog does, and that the page's list must answer by reloading.
+vi.mock("../../src/features/create-channel/CreateChannelButton", () => ({
+  CreateChannelButton: ({
+    onCreated,
+  }: {
+    onCreated?: (id: string) => void;
+  }) => (
+    <button
+      type="button"
+      data-testid="create-channel-stand-in"
+      onClick={() => onCreated?.("c-new")}
+    >
+      plus
+    </button>
+  ),
+}));
+
 vi.mock("../../src/admin/notices", () => ({
   AdminNotices: () => <p data-testid="notices">a notice</p>,
 }));
@@ -99,15 +117,23 @@ describe("the Admin page (TOKI-025 R1, R25, R27)", () => {
     ).toBeTruthy();
   });
 
-  it("draws no plus in the Channels heading, since TOKI-098 has not landed", async () => {
-    setup();
+  it("places the Create channel button of TOKI-098 once in the Channels heading, and its onCreated reloads the channel list", async () => {
+    const { server } = setup();
     const heading = await screen.findByRole("heading", {
       level: 2,
       name: "Channels",
     });
-    expect(
-      within(heading.parentElement as HTMLElement).queryByRole("button"),
-    ).toBeNull();
+    const plus = within(heading.parentElement as HTMLElement).getAllByTestId(
+      "create-channel-stand-in",
+    );
+    expect(plus).toHaveLength(1);
+    const before = server.calls.filter((c) => c.path === "/channels").length;
+    await userEvent.click(plus[0]!);
+    await waitFor(() =>
+      expect(server.calls.filter((c) => c.path === "/channels")).toHaveLength(
+        before + 1,
+      ),
+    );
   });
 
   it("leaves the Invite members button out when the permission function refuses", async () => {

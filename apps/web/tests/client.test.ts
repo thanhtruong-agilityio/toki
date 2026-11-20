@@ -15,12 +15,18 @@ const jsonResponse = (status: number, body: unknown) =>
   });
 
 describe("the wiring file (TOKI-032 R25)", () => {
-  test("exports api, timers and conversations, and no sessions or clock", async () => {
+  test("exports api, timers, conversations and sessions (TOKI-099 R13), and no clock", async () => {
     const mod = await import("../src/client");
-    expect(Object.keys(mod).sort()).toEqual(["api", "conversations", "timers"]);
+    expect(Object.keys(mod).sort()).toEqual([
+      "api",
+      "conversations",
+      "sessions",
+      "timers",
+    ]);
     expect(typeof mod.api.request).toBe("function");
     expect(typeof mod.timers.after).toBe("function");
     expect(typeof mod.conversations.load).toBe("function");
+    expect(typeof mod.sessions.list).toBe("function");
   });
 
   test("a 401 with a session code on a call reaches the session state through the hook", async () => {

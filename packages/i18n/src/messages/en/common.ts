@@ -1,11 +1,11 @@
 export const common = {
-  undo: "Undo",
-  cancel: "Cancel",
-  close: "Close",
-  role: { member: "Member", admin: "Admin" },
   today: "Today",
   tomorrow: "Tomorrow",
   yesterday: "Yesterday",
+  role: { member: "Member", admin: "Admin" },
+  undo: "Undo",
+  cancel: "Cancel",
+  close: "Close",
   discard: {
     title: "Discard what you typed?",
     message: 'What you typed in "{name}" will be lost.',

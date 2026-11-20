@@ -3,6 +3,7 @@ import { canInviteMember } from "@toki/shared";
 import { Button, SectionPage } from "@toki/ui-web";
 import { useRef, useState } from "react";
 import { useSession } from "../useSession";
+import { CreateChannelButton } from "../features/create-channel/CreateChannelButton";
 import { ChannelsSection } from "./ChannelsSection";
 import { InviteDialog } from "./InviteDialog";
 import { MembersSection } from "./MembersSection";
@@ -49,7 +50,13 @@ export function AdminPage() {
         <AdminNotices />
       </div>
       {actor ? <MembersSection list={list} actor={actor} keys={keys} /> : null}
-      <ChannelsSection />
+      {/* The "+" of TOKI-098 sits in the heading; `reload` takes no argument, and the dialog calls
+          `onCreated` with the new channel's id (R25). */}
+      <ChannelsSection
+        headingAction={(reload) => (
+          <CreateChannelButton onCreated={() => reload()} />
+        )}
+      />
       {canInvite ? (
         <InviteDialog
           open={inviteOpen}

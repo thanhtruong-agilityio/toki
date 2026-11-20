@@ -15,6 +15,7 @@ describe("createWebPlatform", () => {
       "notifications",
       "sound",
       "storage",
+      "tabs",
     ]);
     expect(Object.keys(platform.storage).sort()).toEqual(["device", "tab"]);
   });

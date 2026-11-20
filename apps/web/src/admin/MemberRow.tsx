@@ -3,7 +3,7 @@ import { formatDate, formatDateTime, type FormatContext } from "@toki/shared";
 import { Avatar, Tag } from "@toki/ui-web";
 import type { FocusEventHandler, ReactNode } from "react";
 import type { MemberRowView } from "./adminApi";
-import { personHue } from "./personHue";
+import { personHue } from "../people/person-hue";
 
 // The glyph for a value that is not there (R13).
 const NONE = "—";

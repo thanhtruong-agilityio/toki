@@ -6,6 +6,8 @@ import {
 } from "@tanstack/react-router";
 import { act, render, screen, within } from "@testing-library/react";
 import { markSignedIn } from "@toki/client-core";
+import { setPlatform } from "@toki/platform";
+import { createWebPlatform } from "@toki/platform/web";
 import { I18nProvider } from "@toki/i18n/react";
 import type { Language } from "@toki/i18n";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
@@ -23,6 +25,8 @@ import {
 let fetchMock: ReturnType<typeof vi.fn>;
 
 beforeEach(() => {
+  // The account menu of the shell listens to the other tabs through the platform (TOKI-099 R12).
+  setPlatform(createWebPlatform());
   fetchMock = vi.fn(async () => new Response("{}", { status: 200 }));
   vi.stubGlobal("fetch", fetchMock);
   setAuthServices({
