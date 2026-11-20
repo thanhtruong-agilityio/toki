@@ -169,6 +169,13 @@ describe("the lookup of an invitation (R1 to R5)", () => {
     for (const token of [made.token, "A".repeat(43), "short"]) {
       await probe(token);
     }
+    // expired and revoked read the workspace name: they change nothing either
+    const revoked = await makeInvitation(h, lan, fresh());
+    await revoke(h, lan, revoked);
+    await probe(revoked.token);
+    const aging = await makeInvitation(h, lan, fresh());
+    pastTheSevenDays(h);
+    await probe(aging.token);
     // used: the state is made first, then the lookup is shown to change nothing
     await markUsed(h, made);
     await probe(made.token);
