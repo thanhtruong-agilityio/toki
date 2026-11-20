@@ -30,6 +30,19 @@ export const sections: SectionRow[] = [
     match: (pathname) => pathname === "/" || pathname.startsWith("/c/"),
     tab: true,
   },
+  // The order of the prototype's list is people, admin, preferences (TOKI-025 R2), so the row does
+  // not depend on which ticket merges first: People (TOKI-079) goes before it and Preferences
+  // (TOKI-099) after it.
+  {
+    id: "admin",
+    icon: "shield",
+    labelKey: "nav.admin",
+    to: "/admin",
+    match: (pathname) =>
+      pathname === "/admin" || pathname.startsWith("/admin/"),
+    roles: ["admin"],
+    more: true,
+  },
   // Preferences (TOKI-099 R21). Calm hides it and reaches it through the account menu; the Focus
   // rail and the More sheet show it. Rows that come later (people, admin) are inserted above this
   // one: the prototype's order is home, people, admin, preferences (line 1199).
