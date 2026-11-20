@@ -1,5 +1,6 @@
 import type {
   BootstrapConversation,
+  BootstrapPerson,
   BootstrapResponse,
   DirectConversationEntry,
 } from "@toki/shared";
@@ -42,6 +43,16 @@ type Op = "add" | "remove" | "settings";
 
 function asApiError(error: unknown): ApiError {
   return error instanceof ApiError ? error : new ApiError({ kind: "network" });
+}
+
+// A copy of a record without one key.
+function without<T>(
+  record: Readonly<Record<string, T>>,
+  key: string,
+): Record<string, T> {
+  const copy = { ...record };
+  delete copy[key];
+  return copy;
 }
 
 function sameEntry(a: BootstrapConversation, b: BootstrapConversation) {
@@ -120,8 +131,7 @@ export function createConversationStore({ api }: { api: StoreApi }) {
         conversations = { ...conversations, [channel.id]: entry };
       }
     } else if (held) {
-      const { [channel.id]: _gone, ...rest } = conversations;
-      conversations = rest;
+      conversations = without(conversations, channel.id);
     }
     const heldDetail = state.details[channel.id];
     const details =
@@ -135,13 +145,10 @@ export function createConversationStore({ api }: { api: StoreApi }) {
   }
 
   function removeChannel(id: string, keepDetail?: ChannelRead): void {
-    const { [id]: _entry, ...conversations } = state.conversations;
-    let details = state.details;
-    if (keepDetail) details = { ...details, [id]: keepDetail };
-    else {
-      const { [id]: _detail, ...rest } = details;
-      details = rest;
-    }
+    const conversations = without(state.conversations, id);
+    const details = keepDetail
+      ? { ...state.details, [id]: keepDetail }
+      : without(state.details, id);
     const changedEntries = id in state.conversations;
     const changedDetails = keepDetail
       ? !state.details[id] || !sameRead(state.details[id]!, keepDetail)
@@ -404,8 +411,7 @@ export function createConversationStore({ api }: { api: StoreApi }) {
   }
   function clearUnread(id: string): void {
     if (!(id in state.unread)) return;
-    const { [id]: _gone, ...rest } = state.unread;
-    commit({ ...state, unread: rest });
+    commit({ ...state, unread: without(state.unread, id) });
   }
 
   // ---- reads (R17, R21 to R23): they send no request
@@ -450,16 +456,18 @@ export function createConversationStore({ api }: { api: StoreApi }) {
     reset,
     getList,
     getConversationName,
-    getConversation: (id: string) => state.conversations[id],
+    getConversation: (id: string): BootstrapConversation | undefined =>
+      state.conversations[id],
     hasConversation: (id: string) => id in state.conversations,
     getGeneralId: () =>
       Object.values(state.conversations).find((c) => c.isGeneral)?.id ?? null,
-    getPerson: (id: string) => state.people[id],
+    getPerson: (id: string): BootstrapPerson | undefined => state.people[id],
     getPeople: () => state.peopleList,
     getUser: () => state.user,
     getWorkspace: () => state.workspace,
     getEventNumber: () => state.eventNumber,
-    getChannelDetail: (id: string) => state.details[id],
+    getChannelDetail: (id: string): ChannelRead | undefined =>
+      state.details[id],
     getMemberCount(id: string): number | undefined {
       const entry = state.conversations[id];
       if (entry && entry.kind !== "channel") return entry.memberIds.length;

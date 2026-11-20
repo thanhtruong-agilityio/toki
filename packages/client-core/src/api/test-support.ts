@@ -46,7 +46,7 @@ export function fakeFetch(answers: Answer[] | Answer = []) {
     if (next === "never") {
       return new Promise<Response>((_resolve, reject) => {
         init?.signal?.addEventListener("abort", () =>
-          reject(new DOMException("aborted", "AbortError")),
+          reject(Object.assign(new Error("aborted"), { name: "AbortError" })),
         );
       });
     }

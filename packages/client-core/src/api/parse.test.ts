@@ -26,7 +26,13 @@ describe("lenient (R3): unknown keys are dropped at every level", () => {
   });
 
   it("drops one added key at the top, in user, in workspace, in a member, in a channel and in a direct entry", () => {
-    const body = bootstrapBody() as unknown as Record<string, any>;
+    const body = bootstrapBody() as unknown as {
+      [key: string]: unknown;
+      user: Record<string, unknown>;
+      workspace: Record<string, unknown>;
+      members: Record<string, unknown>[];
+      conversations: Record<string, unknown>[];
+    };
     body.extra = 1;
     body.user.extra = 1;
     body.workspace.extra = 1;

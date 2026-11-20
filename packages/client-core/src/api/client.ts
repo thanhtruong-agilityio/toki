@@ -92,7 +92,7 @@ export function createApiClient(options: ApiClientOptions) {
       const hasBody = request.body !== undefined;
       if (hasBody) headers["Content-Type"] = "application/json";
 
-      const send = options.fetch ?? globalThis.fetch;
+      const send = options.fetch ?? fetch;
       let response: Response;
       let text: string | undefined;
       try {

@@ -125,3 +125,7 @@ export function readAnswer(schema: AnySchema, value: unknown): ReadResult {
     ? { ok: true, data: parsed.data }
     : { ok: false, reason: "mismatch" };
 }
+
+// A schema that accepts any answer as it is. For a caller that reads the answer
+// itself (the sign-in calls of the web app); no unknown key is dropped.
+export const anyAnswer = z.unknown();
