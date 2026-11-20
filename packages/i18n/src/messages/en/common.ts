@@ -5,6 +5,7 @@ export const common = {
   role: { member: "Member", admin: "Admin" },
   undo: "Undo",
   cancel: "Cancel",
+  close: "Close",
   discard: {
     title: "Discard what you typed?",
     message: 'What you typed in "{name}" will be lost.',

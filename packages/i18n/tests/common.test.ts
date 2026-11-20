@@ -12,6 +12,8 @@ const tableB: Array<[string, string, string]> = [
   ["common.role.member", "Member", "Thành viên"],
   ["common.role.admin", "Admin", "Admin"],
   ["common.cancel", "Cancel", "Hủy"],
+  // Added by TOKI-098 (first to land); the same text as TOKI-034 Table T.
+  ["common.close", "Close", "Đóng"],
   [
     "common.discard.title",
     "Discard what you typed?",

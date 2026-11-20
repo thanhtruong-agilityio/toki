@@ -5,6 +5,7 @@ export const common = {
   role: { member: "Thành viên", admin: "Admin" },
   undo: "Hoàn tác",
   cancel: "Hủy",
+  close: "Đóng",
   discard: {
     title: "Bỏ nội dung bạn đã nhập?",
     message: 'Nội dung bạn đã nhập trong "{name}" sẽ bị mất.',
