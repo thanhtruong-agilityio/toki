@@ -7,6 +7,8 @@ import { createTranslator } from "../src/translate";
 const tableB: Array<[string, string, string]> = [
   ["common.undo", "Undo", "Hoàn tác"],
   ["common.cancel", "Cancel", "Hủy"],
+  // Added by TOKI-098 (first to land); the same text as TOKI-034 Table T.
+  ["common.close", "Close", "Đóng"],
   [
     "common.discard.title",
     "Discard what you typed?",
@@ -49,7 +51,7 @@ function flatten(value: unknown, prefix: string): string[] {
 }
 
 describe("common catalogue (TOKI-093 R24)", () => {
-  it("holds exactly the ten keys of Table B in both languages", () => {
+  it("holds exactly the eleven keys of Table B in both languages", () => {
     const keys = tableB.map(([key]) => key).sort();
     expect(
       flatten((en as Record<string, unknown>).common, "common").sort(),
