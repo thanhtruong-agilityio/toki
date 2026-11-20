@@ -10,11 +10,9 @@ import { GROUP_DM_MAX_PEOPLE, NOTIFICATION_LEVELS } from "./conversations.js";
 export const DIRECT_CONVERSATION_MAX_OTHERS = GROUP_DM_MAX_PEOPLE - 1;
 
 // An id in any letter case; the key is built from the lower-case form.
-const PersonIdSchema = z
-  .string()
-  .regex(
-    /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
-  );
+const UUID_SHAPE =
+  /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
+const PersonIdSchema = z.string().regex(UUID_SHAPE);
 
 // More than 7 others is `group_too_large`, an answer of its own with
 // `details` (R5), so the schema allows up to the workspace size (NFR-04) and
@@ -43,7 +41,8 @@ export const DirectConversationEntrySchema = z.strictObject({
   notificationLevel: z.enum(NOTIFICATION_LEVELS),
   isMuted: z.boolean(),
   isStarred: z.boolean(),
-  memberIds: z.array(z.string()),
+  // The ids of its people, each with the shape of a UUID (TOKI-031 R17).
+  memberIds: z.array(PersonIdSchema),
 });
 export type DirectConversationEntry = z.infer<
   typeof DirectConversationEntrySchema
