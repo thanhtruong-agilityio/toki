@@ -251,8 +251,10 @@ describe("the outcomes (R3, R5, R6, R9, R10)", () => {
     await h.sql`update users set status = 'deactivated' where id = ${b}`;
     const again = await post(p, { userIds: [b] });
     expect(again.statusCode).toBe(200);
+    const before = await tables();
     const mixed = await post(p, { userIds: [p.id, crypto.randomUUID()] });
     expect(errorOf(mixed).code).toBe("direct_with_self");
+    expect(await tables()).toEqual(before);
   });
 });
 

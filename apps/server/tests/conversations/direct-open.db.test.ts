@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres, { type Sql } from "postgres";
@@ -60,6 +61,18 @@ async function refused(p: () => Promise<unknown>) {
   expect(await snapshot()).toEqual(before);
   return error;
 }
+
+describe("a group never gains or loses people (R14)", () => {
+  it("no source file of the change updates or deletes conversation_members", () => {
+    const dir = new URL("../../src/modules/conversations/", import.meta.url);
+    for (const file of ["direct.ts", "direct-open.ts", "direct-routes.ts"]) {
+      const text = readFileSync(new URL(file, dir), "utf8");
+      expect(text, file).not.toMatch(
+        /update\(conversationMembers|delete\(conversationMembers|update conversation_members|delete from conversation_members/i,
+      );
+    }
+  });
+});
 
 describe("create, R11 and R18", () => {
   it("writes a dm: every column of both tables, and answers 201 with the entry", async () => {
