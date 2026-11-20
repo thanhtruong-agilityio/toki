@@ -424,7 +424,10 @@ describe("the controls that need an opener (R25, R33)", () => {
       /^BUTTON:[a-z]*:[a-z-]*:Clear filter$/,
     ];
     for (const c of member) {
-      expect(allowed.some((re) => re.test(c)), c).toBe(true);
+      expect(
+        allowed.some((re) => re.test(c)),
+        c,
+      ).toBe(true);
     }
     expect(member.some((c) => /create/i.test(c))).toBe(false);
   });
