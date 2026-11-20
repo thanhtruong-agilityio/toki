@@ -80,6 +80,10 @@ describe("createChannel.css (R20)", () => {
 
   test("every colour is a variable and every variable is a token", () => {
     expect(css).not.toMatch(/#[0-9a-fA-F]{3,8}\b|rgba?\(|hsla?\(|color-mix\(/);
+    // A named colour in a colour property is refused too; `transparent` and `inherit` are allowed.
+    const named =
+      /\b(color|background|background-color|border-color)\s*:\s*(?!var\(|transparent\b|inherit\b|currentcolor\b)[a-z]+\s*[;}]/i;
+    expect(css).not.toMatch(named);
     for (const m of css.matchAll(/var\(--([a-z0-9-]+)\)/g)) {
       expect(tokens, m[1]).toContain(`--${m[1]}:`);
     }

@@ -20,6 +20,10 @@
     {
       "at": "2026-11-20T10:12:21Z",
       "stage": "build"
+    },
+    {
+      "at": "2026-11-20T10:40:33Z",
+      "stage": "check"
     }
   ],
   "key": "TOKI-098",
@@ -32,10 +36,10 @@
   "spec_paths": [
     "docs/specs/2026-11-17-create-channel-dialog-design.md"
   ],
-  "stage": "build",
+  "stage": "check",
   "tier": "M",
   "verifier": {
-    "result": null,
-    "round": 0
+    "result": "FAIL",
+    "round": 1
   }
 }

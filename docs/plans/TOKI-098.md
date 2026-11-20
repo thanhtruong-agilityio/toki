@@ -37,3 +37,11 @@ The stand-ins are the only code that is thrown away; every test of the screen mo
 - **A stand-in drifts from the real API.** Mitigation: its props are exactly the ones R9 and TOKI-034 R18 name; the tests mock `deps.ts`, so they do not depend on the stand-in.
 - **Lint boundary rules (TOKI-002)** may refuse something in `deps.ts` (it imports the client, the store and a router). Check `pnpm lint` after step 4.
 - **Merge order with TOKI-034/033:** whichever lands second replaces the stand-ins; the pull request says so and lists them.
+
+## Amendment after the first verifier round (2026-11-20)
+
+The verifier found these files that the plan did not name; they are accepted and listed here so that the plan matches the diff:
+- `features/create-channel/PeoplePickerStandIn.tsx`: the stand-in picker in its own file, because `deps.ts` cannot hold JSX; `deps.ts` re-exports it.
+- `packages/i18n` `picker` namespace (en, vi, both `index.ts`), three keys only (`picker.search.label`, `picker.empty`, `picker.chip.remove`, the texts of TOKI-034 Table T): R9 uses them and the typed `t` refuses a key that is not in the catalogue. TOKI-034's `picker.ts` is a superset; the one that lands second merges.
+- Tests live in `apps/web/tests/features/create-channel/` (the repository's convention; `vitest.config.ts` only includes `tests/**`), with a shared `fakeDeps.tsx` and `support.ts`; the i18n tests are in `packages/i18n/tests/`.
+- A sixth result kind `silent` of `submitCreateChannel` for an `unauthenticated` or `ignore` class (R14: no line, Create enabled), which the five kinds of R11 cannot express.
