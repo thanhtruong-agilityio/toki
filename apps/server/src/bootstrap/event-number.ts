@@ -6,6 +6,7 @@ import type { Tx } from "../db/client.js";
 // transaction it is given; it owns the numbering and the two conditions of
 // the spec (an event is written in the transaction of its change; no gap that
 // an open transaction can still fill).
-export async function readEventNumber(_tx: Tx): Promise<number> {
+export async function readEventNumber(tx: Tx): Promise<number> {
+  void tx; // read nothing until the log exists
   return 0;
 }
