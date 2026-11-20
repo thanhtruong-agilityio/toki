@@ -37,6 +37,10 @@
       "at": "2026-11-20T02:05:23Z",
       "auto": false,
       "stage": "approve"
+    },
+    {
+      "at": "2026-11-20T02:09:36Z",
+      "stage": "ship"
     }
   ],
   "key": "TOKI-030",
@@ -49,10 +53,10 @@
   "spec_paths": [
     "docs/specs/2026-11-17-dm-api-design.md"
   ],
-  "stage": "check",
+  "stage": "ship",
   "tier": "M",
   "verifier": {
-    "result": "FAIL",
-    "round": 1
+    "result": "PASS",
+    "round": 3
   }
 }
