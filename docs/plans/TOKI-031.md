@@ -21,7 +21,7 @@ apps/server/src/bootstrap/
 └─ event-number.ts    readEventNumber(tx): returns 0 until TOKI-036
 apps/server/src/app.ts                        registers bootstrapRoutes next to channelRoutes
 apps/server/tests/bootstrap/                  the route, build and statement-count tests
-apps/server/tests/members/people.db.test.ts, apps/server/tests/conversations/summaries.db.test.ts
+apps/server/tests/members/list-people.db.test.ts, apps/server/tests/conversations/summaries.db.test.ts
 packages/shared/tests/bootstrap-schemas.test.ts
 ```
 
@@ -93,18 +93,18 @@ The harness already records the text of each statement (`debug`) but drops the c
 | R6 which conversations come and which do not; leaving and archiving | 3, 7 | `summaries.db.test.ts`; `route.db.test.ts` |
 | R7 channel and dm entries, exact keys, order in byte collation, `memberIds` of 8 | 1, 3, 7 | `bootstrap-schemas.test.ts`; `summaries.db.test.ts`; `route.db.test.ts` |
 | R8 own level, mute, star; defaults per kind; no other person's values | 3, 5, 7 | `summaries.db.test.ts`; `route.db.test.ts` |
-| R9 500 conversations, no cursor | 7 | `route.db.test.ts` |
+| R9 500 conversations, no cursor | 7 | `bounds.db.test.ts` |
 | R10 snapshot with four concurrent changes; isolation, read-only, refused `update` (own test); deactivated inside the snapshot is 401 | 5 | `build.db.test.ts` |
 | R11 0 today; fake returning 41 gets the same transaction | 5 | `build.db.test.ts` |
 | R12 no key outside the schema, no seeded text | 1, 7 | `bootstrap-schemas.test.ts`; `route.db.test.ts` |
 | R13 `no-store`, media type, no row changed, route listed | 6 | `route.db.test.ts` |
-| R14 7 or fewer statements, equal on both fixtures, equal totals | 4, 7 | `statements.db.test.ts` |
+| R14 7 or fewer statements, equal on both fixtures, equal totals | 4, 7 | `bounds.db.test.ts` |
 | R15 two reads, two workspaces, empty list, deleted member row, export list, lint | 2, 3 | `list-people.db.test.ts`; `summaries.db.test.ts`; `exports.test.ts`; `pnpm lint` |
 | R16 folder, imports, no module imports `bootstrap` | 6 | `route.db.test.ts`; `pnpm lint` |
 | R17 schemas, each rejected case | 1 | `bootstrap-schemas.test.ts` |
 | R18 nothing of a conversation left out, no ids of private conversations | 7 | `route.db.test.ts` |
 | R19 deactivated person stays; reactivated | 7 | `route.db.test.ts` |
-| R20 body under 250,000 and 400,000 bytes | 7 | `size.db.test.ts` |
+| R20 body under 250,000 and 400,000 bytes | 7 | `bounds.db.test.ts` |
 
 ## What can break, and the riskiest step
 
@@ -129,3 +129,4 @@ Not named above, needed by the steps:
 - `packages/shared/src/bootstrap/index.ts` (one export line) and the export in the package index.
 - R15's "a conversation and a member row of the second workspace are not returned": the database holds no state in which one person has a member row in a conversation of another workspace (the composite foreign key ties the row's workspace to the conversation's), so the two `workspace_id` conditions of `listConversationSummaries` cannot be shown to matter by any reachable data. The test asks for the other workspace and for a person with no rows there and expects nothing; the conditions stay as a second guard.
 - The harness workspace is named `Acme`, not `Test Workspace`; the tests assert the name that the fixture holds.
+- `docs/plans/TOKI-031.state.json` is the workflow state of the ticket, kept in the branch as in earlier tickets.
