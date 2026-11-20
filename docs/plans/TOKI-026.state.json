@@ -40,6 +40,10 @@
     {
       "at": "2026-11-19T09:39:24Z",
       "stage": "ship"
+    },
+    {
+      "at": "2026-11-20T01:38:51Z",
+      "stage": "ci"
     }
   ],
   "key": "TOKI-026",
@@ -65,7 +69,7 @@
   "spec_paths": [
     "docs/specs/2026-11-17-sessions-emergency-access-design.md"
   ],
-  "stage": "ship",
+  "stage": "ci",
   "tier": "L",
   "verifier": {
     "result": "PASS",
