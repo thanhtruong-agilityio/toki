@@ -28,6 +28,11 @@
     {
       "at": "2026-11-20T10:18:25Z",
       "stage": "check"
+    },
+    {
+      "at": "2026-11-20T10:42:24Z",
+      "auto": false,
+      "stage": "approve"
     }
   ],
   "key": "TOKI-099",
@@ -35,7 +40,7 @@
   "metrics": {},
   "mode": "auto-to-check",
   "plan_approved": true,
-  "plan_hash": "89800580639405f2880b69485b31d8c4c06315cd4eb3651bb927e9bdb50aea2d",
+  "plan_hash": "751da9097448a22c663faed8ba80197c3a9aa0f1c759c06dfb33259495b5bf06",
   "spec_commit": "8df8aaf438e0f525cf460d2dfb1a37bc2cac6745",
   "spec_paths": [
     "docs/specs/2026-11-17-account-menu-devices-design.md"
