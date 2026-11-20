@@ -11,6 +11,8 @@ export {
   createGeneralChannel,
   getGeneralConversationId,
 } from "./general.js";
+export { listConversationSummaries } from "./summaries.js";
+export type { ConversationSummary } from "./summaries.js";
 export { channelRoutes } from "./channel-routes.js";
 export type { ChannelDepsInput } from "./deps.js";
 export { directRoutes } from "./direct-routes.js";
