@@ -28,6 +28,11 @@
     {
       "at": "2026-11-20T03:26:46Z",
       "stage": "check"
+    },
+    {
+      "at": "2026-11-20T03:47:21Z",
+      "auto": false,
+      "stage": "approve"
     }
   ],
   "key": "TOKI-031",
@@ -35,7 +40,7 @@
   "metrics": {},
   "mode": "Auto to check",
   "plan_approved": true,
-  "plan_hash": "a8220caf27b590d36909d28472a56622493056bfe117d552128dfe4b63017381",
+  "plan_hash": "89c73fb3d5c87df750f3d1aaef0b0dff69dc2edeba0caea663e7cafff8d8ce35",
   "spec_commit": "c32be4241e39bf596ecaaf043e0bde0351627f40",
   "spec_paths": [
     "docs/specs/2026-11-17-bootstrap-endpoint-design.md"
