@@ -1,6 +1,7 @@
 import { describe, expect, test } from "vitest";
 import { router, routeTree } from "../src/router";
 import { appLayoutRoute } from "../src/routes/app-layout";
+import { conversationRoute } from "../src/routes/conversation";
 import { indexRoute } from "../src/routes/index";
 import { rootRoute } from "../src/routes/__root";
 
@@ -20,6 +21,17 @@ describe("the route tree (R30)", () => {
     expect(routeTree.children).toContain(appLayoutRoute);
     expect(routeTree.children).not.toContain(indexRoute);
     expect(appLayoutRoute.children).toContain(indexRoute);
+  });
+
+  test("the conversation route is /c/$conversationId, a child of appLayoutRoute, with no search parameter (R21)", () => {
+    expect(conversationRoute.options.getParentRoute()).toBe(appLayoutRoute);
+    expect(appLayoutRoute.children).toContain(conversationRoute);
+    const options = conversationRoute.options as unknown as { path?: string };
+    expect(options.path).toBe("/c/$conversationId");
+    const validate = conversationRoute.options.validateSearch as (
+      search: Record<string, unknown>,
+    ) => unknown;
+    expect(validate({ panel: "details", x: 1 })).toEqual({});
   });
 
   test("the router is built from the tree", () => {
