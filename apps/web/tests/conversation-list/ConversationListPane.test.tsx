@@ -188,6 +188,21 @@ describe("the unread total of a collapsed group (R15, concern 18)", () => {
     expect(count("channels")).toBeNull();
   });
 
+  test("the total follows a row being muted", async () => {
+    await withCounts([
+      ["a", 2],
+      ["b", 3],
+    ]);
+    expect(count("channels")).toBe("5");
+    const body = workspaceBody([
+      channel("a", "a"),
+      channel("b", "b", { isMuted: true }),
+    ]);
+    h.answer(body);
+    await act(async () => void (await h.store.refresh()));
+    expect(count("channels")).toBe("2");
+  });
+
   test("the total follows a change of the store at once", async () => {
     await withCounts([
       ["a", 2],
@@ -196,6 +211,19 @@ describe("the unread total of a collapsed group (R15, concern 18)", () => {
     expect(count("channels")).toBe("5");
     act(() => h.store.setUnread("a", { count: 0, mention: false }));
     expect(count("channels")).toBe("3");
+  });
+});
+
+describe("a big store (R15)", () => {
+  test("500 rows draw without error, each once", async () => {
+    const many = Array.from({ length: 500 }, (_, i) =>
+      channel(`c${i}`, `channel-${String(i).padStart(3, "0")}`),
+    );
+    h = useFakeStore(workspaceBody(many));
+    await h.loadNow();
+    await mountPane();
+    expect(rowNames("channels")).toHaveLength(500);
+    expect(new Set(rowNames("channels")).size).toBe(500);
   });
 });
 
@@ -281,6 +309,20 @@ describe("what is remembered on the device (R18, R19)", () => {
     await userEvent.click(heading("channels"));
     expect(heading("channels")).toHaveAttribute("aria-expanded", "true");
     expect(JSON.parse(device.data.get(COLLAPSED)!).value).toEqual([]);
+  });
+
+  test("a collapsed group stays collapsed when a new conversation arrives", async () => {
+    device = fakeDevice();
+    await mountPane();
+    await userEvent.click(heading("channels"));
+    expect(heading("channels")).toHaveAttribute("aria-expanded", "false");
+    const body = world();
+    body.conversations.push(channel("new", "fresh"));
+    h.answer(body);
+    await act(async () => void (await h.store.refresh()));
+    expect(h.store.getState().conversations).toHaveProperty("new");
+    expect(heading("channels")).toHaveAttribute("aria-expanded", "false");
+    expect(rowNames("channels")).toEqual([]);
   });
 
   test("a storage that refuses to write leaves the state in memory", async () => {
@@ -372,11 +414,34 @@ describe("the controls that need an opener (R25, R33)", () => {
     await h.loadNow();
     await mountPane({ actions: opener });
     expect(controls()).toEqual(member);
+    const allowed = [
+      /^BUTTON:[a-z]*:[a-z-]*:Browse channels$/, // the header button and the Browse row
+      /^INPUT:search:[^:]*:/, // the search field
+      /^BUTTON:[a-z]*:chip:(All|Unread|Mentions)$/, // the chips
+      /^BUTTON:[a-z]*:sec:/, // a group heading
+      /^BUTTON:[a-z]*:[a-z-]*:New message$/, // the '+'
+      /^A:[a-z]*:cr:/, // a row
+      /^BUTTON:[a-z]*:[a-z-]*:Clear filter$/,
+    ];
+    for (const c of member) {
+      expect(allowed.some((re) => re.test(c)), c).toBe(true);
+    }
     expect(member.some((c) => /create/i.test(c))).toBe(false);
   });
 });
 
 describe("the texts (R27)", () => {
+  test("in English the headings, chips and placeholder are English", async () => {
+    await mountPane({ language: "en" });
+    expect(heading("starred")).toHaveTextContent("Starred");
+    expect(heading("channels")).toHaveTextContent("Channels");
+    expect(heading("direct")).toHaveTextContent("Direct messages");
+    expect(screen.getByRole("button", { name: "All" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Unread" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Mentions" })).toBeTruthy();
+    expect(screen.getByPlaceholderText("Search conversations")).toBeTruthy();
+  });
+
   test("in Vietnamese the headings, chips and placeholder are Vietnamese", async () => {
     await mountPane({ language: "vi" });
     expect(heading("starred")).toHaveTextContent("Đã gắn sao");
@@ -416,6 +481,22 @@ describe("the list follows the store (R29)", () => {
     expect(group("channels")!.querySelector("a.cr.un .nm")).toHaveTextContent(
       "general",
     );
+  });
+
+  test("a mute changes the row: it no longer counts as unread", async () => {
+    await mountPane();
+    act(() => h.store.setUnread("gen", { count: 5, mention: false }));
+    expect(group("channels")!.querySelector("a.cr.un .nm")).toHaveTextContent(
+      "general",
+    );
+    const body = world();
+    body.conversations = body.conversations.map((c) =>
+      c.id === "gen" ? { ...c, isMuted: true } : c,
+    );
+    h.answer(body);
+    await act(async () => void (await h.store.refresh()));
+    expect(group("channels")!.querySelector("a.cr.un")).toBeNull();
+    expect(rowNames("channels")).toContain("general");
   });
 
   test("a refresh in progress does not re-render the pane", async () => {
