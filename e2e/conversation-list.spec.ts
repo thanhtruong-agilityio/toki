@@ -148,6 +148,27 @@ for (const look of LOOKS) {
             .first()
             .evaluate((el) => el.getBoundingClientRect().height);
           expect(sec).toBeGreaterThanOrEqual(40);
+          // The header button and the '+' are not drawn until TOKI-034 registers the openers, so the
+          // test puts the same IconButton markup (`ib sm`) where the pane puts it and measures what the
+          // real stylesheet gives it.
+          const small = await page.evaluate(() => {
+            const make = (parent: Element) => {
+              const button = document.createElement("button");
+              button.type = "button";
+              button.className = "ib sm";
+              button.setAttribute("aria-label", "x");
+              parent.append(button);
+              const box = button.getBoundingClientRect();
+              return { height: box.height, width: box.width };
+            };
+            return [
+              make(document.querySelector(".ch")!),
+              make(document.querySelector(".sech")!),
+            ];
+          });
+          for (const box of small) {
+            expect(box.height).toBeGreaterThanOrEqual(40);
+          }
         } else if (width === 1100) {
           expect(rowHeight).toBeCloseTo(32, 0);
         }
