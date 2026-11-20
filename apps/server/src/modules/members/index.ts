@@ -12,6 +12,7 @@ export type { Person } from "./people.js";
 export { onMemberChanged } from "./events.js";
 export type { MemberChange } from "./events.js";
 export { registerMembersRoutes } from "./routes.js";
+export type { JoinHooks } from "./invitation-join.js";
 export { acceptInvitation } from "./accept.js";
 export type { AcceptedInvitation } from "./accept.js";
 export {

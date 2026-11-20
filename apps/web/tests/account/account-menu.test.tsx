@@ -29,7 +29,11 @@ import { clock } from "../../src/clock";
 import { conversations, sessions, timers } from "../../src/client";
 import { AppShellRoute } from "../../src/routes/app-layout";
 import { routeTree } from "../../src/router";
-import { createFakeCalls, createFakeEmergency } from "../support/auth-harness";
+import {
+  createFakeCalls,
+  createFakeEmergency,
+  createFakeInvitation,
+} from "../support/auth-harness";
 
 const SAM = {
   id: "00000000-0000-4000-8000-0000000000aa",
@@ -63,6 +67,8 @@ beforeEach(() => {
   setAuthServices({
     calls: createFakeCalls(),
     emergency: createFakeEmergency(),
+    invitation: createFakeInvitation(),
+    resetConversations: () => {},
     clock,
     timers,
   });

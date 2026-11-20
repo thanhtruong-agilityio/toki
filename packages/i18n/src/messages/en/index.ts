@@ -4,6 +4,7 @@ import { admin } from "./admin";
 import { common } from "./common";
 import { createChannel } from "./createChannel";
 import { emergency } from "./emergency";
+import { join } from "./join";
 import { mail } from "./mail";
 import { nav } from "./nav";
 import { picker } from "./picker";
@@ -16,6 +17,7 @@ export const en = {
   common,
   createChannel,
   emergency,
+  join,
   mail,
   nav,
   picker,

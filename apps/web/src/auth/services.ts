@@ -1,8 +1,17 @@
-import { createEmergencyCalls, createSignInCalls } from "@toki/client-core";
-import type { EmergencyCalls, SignInCalls, Timers } from "@toki/client-core";
+import {
+  createEmergencyCalls,
+  createInvitationCalls,
+  createSignInCalls,
+} from "@toki/client-core";
+import type {
+  EmergencyCalls,
+  InvitationCalls,
+  SignInCalls,
+  Timers,
+} from "@toki/client-core";
 import type { Clock } from "@toki/shared";
 import { clock } from "../clock";
-import { api, timers } from "../client";
+import { api, conversations, timers } from "../client";
 import { toApiRequest } from "./request-adapter";
 
 // What the sign-in wiring needs from outside: the calls, the clock and the timers. The app builds them
@@ -14,6 +23,10 @@ export type AuthServices = {
   calls: SignInCalls;
   // The call of the emergency link page (TOKI-026): a public route.
   emergency: EmergencyCalls;
+  // The three calls of the Join page (TOKI-097): public routes, the token is an argument.
+  invitation: InvitationCalls;
+  // Empties the conversation store of an earlier person before another is signed in (TOKI-097 R33).
+  resetConversations: () => void;
   clock: Clock;
   timers: Timers;
 };
@@ -25,6 +38,8 @@ function build(): AuthServices {
   return {
     calls: createSignInCalls(request),
     emergency: createEmergencyCalls(request),
+    invitation: createInvitationCalls(request),
+    resetConversations: () => conversations.reset(),
     clock,
     timers,
   };

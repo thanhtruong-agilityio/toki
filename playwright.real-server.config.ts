@@ -38,7 +38,9 @@ export default defineConfig({
             SERVER_HOST: "127.0.0.1",
             LOG_LEVEL: "warn",
             SMTP_HOST: "127.0.0.1",
-            SMTP_PORT: "1",
+            // The e2e/support/smtp-sink.ts of the Join tests listens here and keeps the mails; with no sink a mail fails
+            // as it did when nothing listened.
+            SMTP_PORT: "2526",
             SMTP_TLS: "none",
             MAIL_FROM_ADDRESS: "toki@example.com",
             FIRST_ADMIN_EMAIL: "admin@example.com",

@@ -2,4 +2,5 @@ export * from "./components";
 export * from "./icons";
 export * from "./layout";
 export * from "./appearance";
+export * from "./join";
 export * from "./sign-in";

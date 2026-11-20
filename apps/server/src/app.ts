@@ -22,6 +22,7 @@ import { createMailLayer, type MailLayer } from "./modules/mail/index.js";
 import {
   getAccountsByIds,
   registerMembersRoutes,
+  type JoinHooks,
 } from "./modules/members/index.js";
 
 declare module "fastify" {
@@ -57,6 +58,8 @@ export type BuildAppOptions = {
   >;
   // Replaces a read of the bootstrap route. Only a test passes it (TOKI-031).
   bootstrapDeps?: BootstrapDeps;
+  // Test seams of the accept route of the Join page. Only a test passes it (TOKI-097).
+  joinHooks?: JoinHooks;
 };
 
 export function buildApp({
@@ -68,6 +71,7 @@ export function buildApp({
   clock = systemClock,
   channelDeps,
   bootstrapDeps,
+  joinHooks,
 }: BuildAppOptions) {
   if (!mail && !config.mail) {
     throw new Error("buildApp needs `mail` or `config.mail`");
@@ -142,6 +146,8 @@ export function buildApp({
         mail: app.mail,
         clock,
         appOrigin: auth.appOrigin,
+        development: auth.development,
+        joinHooks,
       });
       await scope.register(
         channelRoutes({ db, clock, getAccountsByIds, ...channelDeps }),

@@ -5,6 +5,7 @@ import * as components from "../../src/components/index";
 import * as entry from "../../src/index";
 import * as appearance from "../../src/appearance";
 import * as shell from "../../src/layout";
+import * as join from "../../src/join";
 import * as signIn from "../../src/sign-in";
 import type {
   DialogCloseReason,
@@ -168,13 +169,14 @@ describe("exports (R1, R2)", () => {
       Object.keys(components).filter((name) => name.endsWith("Icon")),
     ).toEqual([]);
     // The shell and appearance exports come from their own modules (TOKI-015 R1);
-    // the sign-in pieces from src/sign-in (TOKI-023).
+    // the sign-in pieces from src/sign-in (TOKI-023) and the Join pages from src/join (TOKI-097).
     const extra = Object.keys(entry).filter(
       (name) =>
         !(name in components) &&
         !(name in appearance) &&
         !(name in shell) &&
-        !(name in signIn),
+        !(name in signIn) &&
+        !(name in join),
     );
     expect(
       extra.filter((name) => !name.endsWith("Icon") && name !== "iconNames"),
