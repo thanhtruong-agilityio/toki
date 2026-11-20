@@ -343,7 +343,7 @@ describe("the signal of another tab (R12)", () => {
   test("a signedOut message ends this tab with no request, and a malformed one does nothing", async () => {
     const fetchSpy = vi.fn();
     vi.stubGlobal("fetch", fetchSpy);
-    const router = await mountApp("en", "/prefs");
+    const router = await mountApp("en", "/");
     act(() => emit({ type: "other" }));
     act(() => emit({}));
     expect(getSessionState().status).toBe("signedIn");
