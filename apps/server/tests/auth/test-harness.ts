@@ -48,6 +48,7 @@ export async function createHarness(
     registerRoutes?: (scope: FastifyInstance) => void;
     mail?: ReturnType<typeof fakeMail>["layer"];
     channelDeps?: BuildAppOptions["channelDeps"];
+    bootstrapDeps?: BuildAppOptions["bootstrapDeps"];
   } = {},
 ) {
   const throwaway = await createThrowawayDb();
@@ -100,6 +101,7 @@ export async function createHarness(
     mail: options.mail ?? mail.layer,
     logStream,
     channelDeps: options.channelDeps,
+    bootstrapDeps: options.bootstrapDeps,
     registerRoutes: (scope) => {
       scope.get("/protected", async (request) => ({
         id: request.account!.id,
