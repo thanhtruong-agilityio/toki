@@ -1,5 +1,11 @@
 import {
+  AddMembersResponseSchema,
   BootstrapResponse,
+  BrowseChannelsResponseSchema,
+  ChangeChannelResponseSchema,
+  ChannelMembersResponseSchema,
+  LeaveChannelResponseSchema,
+  RemoveMemberResponseSchema,
   ChannelDetailSchema,
   ChannelResponseSchema,
   ChannelSummarySchema,
@@ -140,6 +146,59 @@ describe("lenient (R3): a union picks its branch by its keys", () => {
         (c) => c.kind,
       ),
     ).toEqual(["channel", "channel", "channel", "dm", "dm", "group_dm"]);
+  });
+});
+
+describe("lenient: the schema types of the shared response schemas", () => {
+  it("walks every response schema the client reads, and they use only the listed types", () => {
+    const schemas = [
+      BootstrapResponse,
+      CreateChannelResponseSchema,
+      GetChannelResponseSchema,
+      ChannelResponseSchema,
+      OpenDirectResponseSchema,
+      UpdateSettingsResponseSchema,
+      ErrorResponseSchema,
+      BrowseChannelsResponseSchema,
+      ChannelMembersResponseSchema,
+      ChangeChannelResponseSchema,
+      AddMembersResponseSchema,
+      LeaveChannelResponseSchema,
+      RemoveMemberResponseSchema,
+    ];
+    const seen = new Set<string>();
+    const visit = (schema: unknown): void => {
+      const def = (schema as { _zod: { def: Record<string, unknown> } })._zod
+        .def;
+      seen.add(def.type as string);
+      if (def.type === "object")
+        Object.values(def.shape as object).forEach(visit);
+      if (def.type === "array") visit(def.element);
+      if (def.type === "union") (def.options as unknown[]).forEach(visit);
+      if (["optional", "nullable"].includes(def.type as string))
+        visit(def.innerType);
+    };
+    for (const schema of schemas) {
+      visit(schema);
+      expect(() => lenient(schema)).not.toThrow();
+    }
+    // A new type in a shared schema must be decided here, not found in production.
+    expect([...seen].sort()).toEqual(
+      [
+        "array",
+        "boolean",
+        "enum",
+        "literal",
+        "null",
+        "nullable",
+        "number",
+        "object",
+        "optional",
+        "string",
+        "union",
+        "unknown",
+      ].sort(),
+    );
   });
 });
 

@@ -22,7 +22,8 @@ packages/client-core/
 └─ src/
    ├─ index.ts                       adds the exports of R1 and the types of R27
    ├─ api/{client,errors,parse,classify}.ts   (+ *.test.ts)
-   └─ conversations/{store,merge,names,search,selectors}.ts   (+ *.test.ts, contract.test.ts as the type test)
+   └─ conversations/{store,merge,names,search,selectors}.ts   (+ *.test.ts)
+   └─ contract.test.ts, exports.test.ts   (src/, the R27 type test and the R1 export list)
 apps/web/
 ├─ package.json                      @toki/client-core is already a dependency; nothing to add (no zod)
 ├─ src/timers.ts                     createTimers(host)
@@ -89,7 +90,7 @@ Vitest in `packages/client-core` (unit, no clock, fake `fetch`, fake `timers`, f
 | R24 no text, no time | 7 | `conversations/no-text.test.ts`, package.json check |
 | R25 wiring | 8 | `apps/web/tests/timers.test.ts`, `client.test.ts` (imports `api`, `timers`, `conversations`; the search for `createApiClient(` covers `apps/web/src`), `auth/request-adapter.test.ts`, `auth/open-read-real-client.test.ts`; `pnpm --filter ./apps/web build`; `pnpm ls --filter @toki/client-core` and `pnpm typecheck` for the dependency |
 | R26 answers after a later change | 6 | `conversations/store.order.test.ts` |
-| R27 contract | 7 | `conversations/contract.test.ts` (type test) |
+| R27 contract | 7 | `contract.test.ts` (type test, in `src/`) |
 
 ## What can break, and the riskiest step
 
@@ -113,3 +114,4 @@ Not named above, needed by the steps:
 - `pnpm-lock.yaml` and `packages/client-core/package.json` (`zod` 4.6.7, the version of `@toki/shared`), and `docs/plans/TOKI-032.state.json`.
 - R16's search of the package for `refresh(` and R24's search for texts with a space are shell searches run once (`grep`), not tests: the client-core package has no Node types, so a test cannot read files. Results: `refresh(` is defined once and called once (in `restoreChannel`) outside tests; the only English sentences are the fixed developer messages of R4. `scripts/check-clock-use.sh` reports nothing in `packages/client-core/src` (its nine hits are in `apps/server/src`, older than this ticket).
 - The hand check of the spec (call `conversations.load()` from the browser console with the server running) needs a running server and the first Admin; it is left to the person who merges. The hand check "a 401 on `bootstrap` shows the session-ended modal" is covered by `tests/client.test.ts` and `open-read-real-client.test.ts` with a fake `fetch`.
+- Tests added or changed after the first verifier round: error-path and one-listener-call tests for every command; the restore case asserts exactly three listener calls (its answer, the start of the refresh that sets `isRefreshing`, and the refresh's result): the spec's Check says two, but R10 also asks for `isRefreshing` true during the refresh, which is its own change of state, so the spec's two counts cannot both hold; a test that every shared response schema walks and uses only the listed types; an invalid-body test for every typed method; `src/exports.test.ts` for R1. The walk also accepts the leaf types `any`, `never`, `void`, `date`, `bigint`, `nan`, `symbol` and the wrappers `nonoptional` and `default`, which no shared response schema uses today.

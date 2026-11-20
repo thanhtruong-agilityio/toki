@@ -187,6 +187,63 @@ describe("typed methods (R9)", () => {
     );
   });
 
+  it("every method rejects a body of the wrong shape with invalid_response", async () => {
+    const calls: [
+      string,
+      (api: ReturnType<typeof make>["api"]) => Promise<unknown>,
+    ][] = [
+      ["bootstrap", (a) => a.bootstrap()],
+      ["create", (a) => a.channels.create({ id: id(1), name: "x" })],
+      ["list", (a) => a.channels.list()],
+      ["get", (a) => a.channels.get(id(1))],
+      ["members", (a) => a.channels.members(id(1))],
+      ["update", (a) => a.channels.update(id(1), { topic: "t" })],
+      ["join", (a) => a.channels.join(id(1))],
+      ["addMembers", (a) => a.channels.addMembers(id(1), [id(2)])],
+      ["leave", (a) => a.channels.leave(id(1))],
+      ["removeMember", (a) => a.channels.removeMember(id(1), id(2))],
+      ["archive", (a) => a.channels.archive(id(1))],
+      ["restore", (a) => a.channels.restore(id(1))],
+      ["open", (a) => a.directConversations.open([id(2)])],
+      [
+        "saveSettings",
+        (a) => a.conversations.saveSettings(id(1), { isMuted: true }),
+      ],
+    ];
+    for (const [name, call] of calls) {
+      const { api } = make(() => json({ wrong: true }));
+      expect((await rejects(call(api)))?.kind, name).toBe("invalid_response");
+    }
+  });
+
+  it("update sends PATCH to /channels/{id}, and the answers of leave, archive, restore and removeMember are returned", async () => {
+    const { api, fetch } = make([
+      json({ channel: detailBody(), changed: true }),
+      json({ changed: true, archived: false }),
+      json({ channel: detailBody(), changed: false }),
+      json({ channel: detailBody(), changed: true }),
+      json({ changed: false }),
+    ]);
+    await api.channels.update(id(11), { topic: "t" });
+    expect(fetch.calls[0]!.method).toBe("PATCH");
+    expect(fetch.calls[0]!.url).toBe(`/api/v1/channels/${id(11)}`);
+    expect(await api.channels.leave(id(11))).toEqual({
+      changed: true,
+      archived: false,
+    });
+    expect(await api.channels.archive(id(11))).toEqual({
+      channel: detailBody(),
+      changed: false,
+    });
+    expect(await api.channels.restore(id(11))).toEqual({
+      channel: detailBody(),
+      changed: true,
+    });
+    expect(await api.channels.removeMember(id(11), id(2))).toEqual({
+      changed: false,
+    });
+  });
+
   it("types: the typed methods take no headers or timeoutMs", () => {
     const { api } = make(() => json({}));
     expectTypeOf(api.channels.list).parameter(0).not.toHaveProperty("headers");

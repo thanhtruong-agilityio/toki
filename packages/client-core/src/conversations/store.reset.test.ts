@@ -127,11 +127,13 @@ describe("reset and stale answers (R11)", () => {
     expect(calls()).toBe(afterLoad + 1);
   });
 
-  it("a load that was reset away leaves status idle, and a reset while loading with no data calls the listener", async () => {
-    const { fake, store } = make();
+  it("a load that was reset away leaves status idle, and the reset while loading calls the listener once", async () => {
+    const { fake, store, calls } = make();
     fake.answer("bootstrap", deferred());
     void store.load();
+    const before = calls();
     store.reset();
     expect(store.getState().status).toBe("idle");
+    expect(calls()).toBe(before + 1);
   });
 });

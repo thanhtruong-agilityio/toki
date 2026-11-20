@@ -255,7 +255,8 @@ describe("restoreChannel", () => {
       isStarred: true,
     });
     expect(store.getChannelDetail(id(60))).toEqual(restored);
-    expect(calls()).toBeGreaterThanOrEqual(2); // its own answer and the refresh's
+    // The restore's own answer, the start of the refresh (isRefreshing) and its result.
+    expect(calls()).toBe(3);
   });
 
   it("does not reject for a failed refresh: the entry keeps the defaults and the error is set", async () => {
@@ -397,4 +398,80 @@ describe("readChannel and details (R14)", () => {
     expect(store.getChannelDetail(id(73))).toBeUndefined(); // no longer a member
     expect(store.getChannelDetail(id(12))).toBeUndefined(); // contradicted
   });
+});
+
+describe("every command: one listener call on success, none and a rejection on an error (R15)", () => {
+  const cases: {
+    name: string;
+    answer: [string, unknown];
+    run: (
+      store: Awaited<ReturnType<typeof loaded>>["store"],
+    ) => Promise<unknown>;
+    error: string;
+  }[] = [
+    {
+      name: "createChannel",
+      answer: ["channels.create", { channel: detailBody(90), created: true }],
+      run: (s) => s.createChannel({ id: id(90), name: "x" }),
+      error: "channels.create",
+    },
+    {
+      name: "leaveChannel",
+      answer: ["channels.leave", { changed: true, archived: false }],
+      run: (s) => s.leaveChannel(id(11)),
+      error: "channels.leave",
+    },
+    {
+      name: "editChannel",
+      answer: [
+        "channels.update",
+        { channel: { ...detailBody(11), topic: "T2" }, changed: true },
+      ],
+      run: (s) => s.editChannel(id(11), { topic: "T2" }),
+      error: "channels.update",
+    },
+    {
+      name: "archiveChannel",
+      answer: [
+        "channels.archive",
+        { channel: { ...detailBody(11), archived: true }, changed: true },
+      ],
+      run: (s) => s.archiveChannel(id(11)),
+      error: "channels.archive",
+    },
+    {
+      name: "readChannel",
+      answer: ["channels.get", { channel: detailBody(91) }],
+      run: (s) => s.readChannel(id(91)),
+      error: "channels.get",
+    },
+    {
+      name: "joinChannel",
+      answer: ["channels.join", { channel: detailBody(92), changed: true }],
+      run: (s) => s.joinChannel(id(92)),
+      error: "channels.join",
+    },
+  ];
+
+  it.each(cases)(
+    "$name: one listener call on success",
+    async ({ answer, run }) => {
+      const { fake, store, calls } = await loaded();
+      fake.answer(answer[0], answer[1]);
+      await run(store);
+      expect(calls()).toBe(1);
+    },
+  );
+
+  it.each(cases)(
+    "$name: an error changes nothing, calls no listener and rejects",
+    async ({ run, error }) => {
+      const { fake, store, calls } = await loaded();
+      const before = store.getState();
+      fake.answer(error, httpError(500));
+      await expect(run(store)).rejects.toMatchObject({ status: 500 });
+      expect(store.getState()).toBe(before);
+      expect(calls()).toBe(0);
+    },
+  );
 });

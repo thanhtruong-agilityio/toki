@@ -129,7 +129,7 @@ describe("the adapter of the sign-in calls (TOKI-032 R25)", () => {
     expect(hook).not.toHaveBeenCalled();
   });
 
-  test("a failed fetch is network, a body that is not JSON is invalid_response, and the timer is timeout", async () => {
+  test("a failed fetch is network, and a body that is not JSON is invalid_response", async () => {
     const down = setup(async () => {
       throw new TypeError("Failed to fetch");
     });
@@ -143,16 +143,6 @@ describe("the adapter of the sign-in calls (TOKI-032 R25)", () => {
       ok: false,
       kind: "invalid_response",
     });
-
-    const slow = setup(
-      () => new Promise<Response>(() => {}), // never answers
-    );
-    const pending = slow.request("/x", { method: "GET" });
-    await Promise.resolve();
-    // The fake timer function of the setup fires the abort, but the fetch of
-    // this test ignores the signal, so read the kind through an aborting fetch.
-    expect(slow.fired).toHaveLength(1);
-    void pending;
   });
 
   test("the timeout of the client ends the request with timeout", async () => {

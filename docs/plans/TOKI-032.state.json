@@ -24,6 +24,10 @@
     {
       "at": "2026-11-20T03:59:00Z",
       "stage": "build"
+    },
+    {
+      "at": "2026-11-20T04:13:43Z",
+      "stage": "check"
     }
   ],
   "key": "TOKI-032",
@@ -36,10 +40,10 @@
   "spec_paths": [
     "docs/specs/2026-11-17-client-core-design.md"
   ],
-  "stage": "build",
+  "stage": "check",
   "tier": "L",
   "verifier": {
-    "result": null,
-    "round": 0
+    "result": "FAIL",
+    "round": 1
   }
 }

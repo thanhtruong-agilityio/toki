@@ -139,7 +139,7 @@ describe("subscription and snapshots (R12)", () => {
     await store.load();
     expect(calls).toBe(2); // loading, ready
     const kept = store.getState();
-    const keptList = kept.conversations;
+    const keptCopy = JSON.stringify(kept);
 
     const detail = detailBody(11);
     fake.answer(
@@ -151,7 +151,11 @@ describe("subscription and snapshots (R12)", () => {
     const afterFirst = calls;
     await store.joinChannel(id(11)); // same entry and detail: no change
     expect(calls).toBe(afterFirst);
-    expect(kept.conversations).toBe(keptList);
+    // A snapshot given out is not altered by later changes (conversations and
+    // details both changed by the join).
+    expect(JSON.stringify(kept)).toBe(keptCopy);
+    expect(store.getState()).not.toBe(kept);
+    expect(Object.keys(store.getState().details)).toContain(id(11));
     expect(store.getState()).toBe(store.getState());
 
     stop();

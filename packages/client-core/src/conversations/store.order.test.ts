@@ -90,7 +90,7 @@ describe("answers that arrive after a later change (R26)", () => {
     expect(store.getChannelDetail(id(80))).toBeDefined();
   });
 
-  it("the same for createChannel, openDirect and restoreChannel", async () => {
+  it("the same for createChannel and openDirect", async () => {
     const { fake, store } = await loaded();
     const gate = deferred<unknown>();
     fake.answer("bootstrap", gate);
