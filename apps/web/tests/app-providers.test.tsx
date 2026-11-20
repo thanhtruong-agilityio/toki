@@ -18,6 +18,7 @@ import { routeTree } from "../src/router";
 import {
   createFakeCalls,
   createFakeEmergency,
+  createFakeInvitation,
   user,
 } from "./support/auth-harness";
 
@@ -28,6 +29,8 @@ beforeEach(() => {
   setAuthServices({
     calls,
     emergency: createFakeEmergency(),
+    invitation: createFakeInvitation(),
+    resetConversations: () => {},
     clock,
     timers,
   });

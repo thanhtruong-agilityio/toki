@@ -1,3 +1,6 @@
+// The first import: it takes the token of a Join link from the address before anything else loads
+// (TOKI-097 R26). The router reads the address when its module loads, so nothing may come before it.
+import "./join/capture-on-load";
 import "../assets/fonts/fonts.css";
 import "@toki/tokens/tokens.css";
 import "@toki/ui-web/base.css";

@@ -20,6 +20,7 @@ import { timers } from "../../src/client";
 import {
   createFakeCalls,
   createFakeEmergency,
+  createFakeInvitation,
   user,
 } from "../support/auth-harness";
 
@@ -30,6 +31,8 @@ beforeEach(() => {
   setAuthServices({
     calls,
     emergency: createFakeEmergency(),
+    invitation: createFakeInvitation(),
+    resetConversations: () => {},
     clock,
     timers,
   });
