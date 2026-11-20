@@ -16,7 +16,7 @@ import type { Role, SectionRow } from "../../src/layout/sections";
 import { AppShellRoute } from "../../src/routes/app-layout";
 import { setAuthServices } from "../../src/auth/services";
 import { clock } from "../../src/clock";
-import { timers } from "../../src/auth/timers";
+import { timers } from "../../src/client";
 import {
   createFakeCalls,
   createFakeEmergency,
@@ -29,7 +29,6 @@ beforeEach(() => {
   const calls = createFakeCalls();
   setAuthServices({
     calls,
-    openCalls: calls,
     emergency: createFakeEmergency(),
     clock,
     timers,
