@@ -1,0 +1,32 @@
+{
+  "approved_auto": false,
+  "base": "github/main",
+  "branch": "feat/toki-030-dm-api",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-20T01:46:38Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-20T01:46:52Z",
+      "stage": "explore"
+    }
+  ],
+  "key": "TOKI-030",
+  "main_sha": "bc8b10b9659cf73272800f66e6e10514f635bc7e",
+  "metrics": {},
+  "mode": null,
+  "plan_approved": false,
+  "plan_hash": null,
+  "spec_commit": "d0dd0398ea665d2749f3f0b00c210834076002a4",
+  "spec_paths": [
+    "docs/specs/2026-11-17-dm-api-design.md"
+  ],
+  "stage": "explore",
+  "tier": "M",
+  "verifier": {
+    "result": null,
+    "round": 0
+  }
+}
