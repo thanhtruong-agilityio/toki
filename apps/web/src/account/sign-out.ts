@@ -94,10 +94,18 @@ export function createSignOut(deps: SignOutDeps): () => Promise<SignOutResult> {
       try {
         await deps.callSignOut();
       } catch {
-        // (6) the call failed. When another tab has meanwhile ended this tab
-        // the person is signed out already: no toast for a failure that no
-        // longer matters.
-        if (deps.sessionStatus() !== "signedIn") return "done";
+        // (6) the call failed. The state says what that means: signed out
+        // already (another tab ended this one): nothing more to do. `ended`
+        // (the call itself was answered 401, so the server session is gone):
+        // the person did ask to leave, so the local session ends here too, with
+        // the store emptied, rather than a modal over the first person's data.
+        // Still signed in: the call really failed, so one toast and no change.
+        const status = deps.sessionStatus();
+        if (status === "signedOut") return "done";
+        if (status === "ended") {
+          deps.end();
+          return "done";
+        }
         deps.toast(deps.failedText);
         return "failed";
       }
@@ -108,6 +116,9 @@ export function createSignOut(deps: SignOutDeps): () => Promise<SignOutResult> {
       }
       return "done";
     } catch {
+      // Something after the call threw (the local end, a platform call): the
+      // person is told, and pressing again is answered by the state.
+      deps.toast(deps.failedText);
       return "failed";
     } finally {
       setRunning(false);

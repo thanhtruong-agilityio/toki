@@ -156,4 +156,16 @@ describe("tabs (R10)", () => {
     const sender = created.find((c) => c !== created[0]);
     expect(sender?.closed).toBe(true);
   });
+
+  test("a subscribe in the same tick as a post with no listener keeps its channel", async () => {
+    const a = createTabs();
+    a.post({ type: "signedOut" });
+    const heard = vi.fn();
+    a.subscribe(heard);
+    await Promise.resolve();
+    await Promise.resolve();
+    // The channel of b is still open: another tab's message reaches it.
+    new FakeChannel("toki:tabs").postMessage({ type: "signedOut" });
+    expect(heard).toHaveBeenCalledTimes(1);
+  });
 });

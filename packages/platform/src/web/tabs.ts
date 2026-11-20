@@ -63,7 +63,12 @@ export function createTabs(): Platform["tabs"] {
       }
       // With no listener here the channel is not kept; the message has been
       // handed to the browser before the close, which runs after this turn.
-      if (listeners.size === 0) queueMicrotask(close);
+      // A listener may subscribe before the microtask runs: close only if none did.
+      if (listeners.size === 0) {
+        queueMicrotask(() => {
+          if (listeners.size === 0) close();
+        });
+      }
     },
     subscribe(listener) {
       if (!open()) return () => {};

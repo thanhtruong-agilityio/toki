@@ -88,6 +88,7 @@ What the build found, none of it a change of a requirement. The plan was edited 
 - Tests of step 7 were written together with the component, not before it; the order was not as the plan says. Two overlapping reads are tested on the hook.
 - The three sign-in browser tests (`layout 360, 719, 720 px calm en`) timed out once in a full run under load and passed in a run of their own (50 of 50).
 - `pnpm --filter @toki/client-core test` and `pnpm lint:boundaries` do not exist; the client-core tests run with the root `vitest`, and the import rule is checked by the exports map and `apps/web/tests/account/imports.test.ts`.
+- Review fixes: the channel of `tabs` is closed in a microtask only when no listener has subscribed meanwhile; a sign-out whose call is answered 401 (state `ended`) ends the local session, with the store emptied; a failure after the call (the local end throwing) shows the toast. Not fixed, left for the Dev: the tab signal clears the running flag of an in-flight call, and the day words of the device rows are read at the last list read.
 - Not run here: the `server-db` projects (no database). `tests/main.test.ts` of the server fails here on the mail values; no server file is changed by this ticket.
 
 ## Grilling (L, up to two rounds)

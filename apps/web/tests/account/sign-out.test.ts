@@ -143,13 +143,14 @@ describe("sign out, the six paths (R7)", () => {
     expect(seen).toEqual([true, false]);
   });
 
-  test("never rejects, even when a dependency throws", async () => {
+  test("never rejects, and when the local end throws after the call it says so with one toast", async () => {
     const s = setup({
       end: () => {
         throw new Error("boom");
       },
     });
     await expect(createSignOut(s.deps)()).resolves.toBe("failed");
+    expect(s.calls).toEqual(["api", "signal", "toast:FAILED"]);
     expect(isSigningOut()).toBe(false);
   });
 });
@@ -236,6 +237,19 @@ describe("a tab signal that arrives during the call", () => {
     s.api.release();
     expect(await pending).toBe("done");
     expect(s.calls).toEqual(["api"]);
+  });
+
+  test("a call answered 401 that ended the session ends the local session, with no toast and no signal", async () => {
+    let status = "signedIn";
+    const s = setup({}, () => status, false);
+    const pending = createSignOut(s.deps)();
+    await Promise.resolve();
+    await Promise.resolve();
+    status = "ended"; // reportUnauthenticated ran on the 401
+    s.api.fail(Object.assign(new Error("401"), { kind: "http", status: 401 }));
+    expect(await pending).toBe("done");
+    expect(s.calls).toEqual(["api", "end"]);
+    expect(isSigningOut()).toBe(false);
   });
 
   test("a failure after the state became signed out shows no toast", async () => {
