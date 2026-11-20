@@ -2,6 +2,7 @@ import { ErrorResponseSchema } from "@toki/shared";
 import type { z } from "zod";
 import { isSessionCode } from "./classify";
 import { ApiError } from "./errors";
+import { buildMethods } from "./methods";
 import { readAnswer } from "./parse";
 
 // The API client (TOKI-032 R2, R5 to R7). One request core, no retry, no
@@ -160,6 +161,7 @@ export function createApiClient(options: ApiClientOptions) {
     setOnUnauthenticated(hook: ((code: string) => void) | null): void {
       onUnauthenticated = hook;
     },
+    ...buildMethods(send),
   };
   return api;
 }
