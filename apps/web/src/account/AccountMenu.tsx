@@ -6,6 +6,7 @@ import {
   MenuSeparator,
   type MenuTriggerMenuProps,
 } from "@toki/ui-web";
+import "./account.css";
 import { useAccountEntries, type AccountItem } from "./account-entries";
 import { useSigningOut } from "./sign-out";
 
@@ -47,7 +48,7 @@ export function AccountMenu({
             : [item(entry, entry.id ?? `entry-${index}`)],
         )}
       </Menu>
-      <span className="sr" role="status">
+      <span className="acct-status" role="status">
         {signingOut ? t("account.signingOut") : ""}
       </span>
     </>

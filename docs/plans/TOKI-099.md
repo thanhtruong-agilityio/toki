@@ -81,6 +81,9 @@ What the build found, none of it a change of a requirement. The plan was edited 
 - The guard race of step 6 did not show: the test of the final history entry (the real route tree and guard) ends on `/login` with no search. `endLocalSession` uses `router.history.replace("/login")` after `markSignedOut()`; no flag was added to `guard.ts`.
 - `SectionPage` draws its own `div.secbody`, so the page holds a `div.prefs` inside it, not `div.secbody.prefs`.
 - Table B names a key `account.devices.browser.other` that the i18n check refuses; the key is `otherBrowser` (Design).
+- Test files changed that the plan did not name: `apps/web/tests/client.test.ts` (the exports now hold `sessions`), `packages/platform/tests/web/index.test.ts` (five members), `packages/i18n/tests/common.test.ts` (the five new `common` keys), `apps/web/tests/routes/app-layout.test.tsx` (a platform, the card, the Preferences link) and `apps/web/tests/layout/sections.test.ts`. The state file `docs/plans/TOKI-099.state.json` is changed by `dev-state`.
+- The browser test stubs `**/api/v1/auth/**` and `bootstrap`; the shell sends no bootstrap call yet, so that stub only records one.
+- The status element of R7 uses the class `acct-status` of Table A. An import test of `apps/web/src/account` stands for the rule of R24.
 - The 360 px overlap of a toast with the bottom bar is not asserted in the browser test and is left for the review by eye.
 - Tests of step 7 were written together with the component, not before it; the order was not as the plan says. Two overlapping reads are tested on the hook.
 - The three sign-in browser tests (`layout 360, 719, 720 px calm en`) timed out once in a full run under load and passed in a run of their own (50 of 50).

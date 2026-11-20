@@ -1,6 +1,9 @@
-import { afterEach, describe, expect, test } from "vitest";
+import { getSessionState, markSignedIn } from "@toki/client-core";
+import { afterEach, describe, expect, test, vi } from "vitest";
+import { conversations } from "../../src/client";
 import {
   createSignOut,
+  endLocalSession,
   isSigningOut,
   registerBeforeSignOut,
   subscribeSigningOut,
@@ -246,5 +249,36 @@ describe("a tab signal that arrives during the call", () => {
     expect(await pending).toBe("done");
     expect(s.calls).toEqual(["api"]);
     expect(isSigningOut()).toBe(false);
+  });
+});
+
+describe("the end of the local session (R9)", () => {
+  test("empties the store, then sets signedOut, then replaces the address with /login, in this order", () => {
+    markSignedIn({
+      id: "00000000-0000-4000-8000-0000000000aa",
+      email: "sam@example.com",
+      displayName: "Sam",
+      role: "member",
+      language: "en",
+    });
+    const seen: string[] = [];
+    vi.spyOn(conversations, "reset").mockImplementation(() => {
+      seen.push(`reset:${getSessionState().status}`);
+    });
+    endLocalSession({
+      history: {
+        replace: (href: string) =>
+          void seen.push(`replace:${href}:${getSessionState().status}`),
+      },
+    });
+    expect(seen).toEqual(["reset:signedIn", "replace:/login:signedOut"]);
+    vi.restoreAllMocks();
+  });
+
+  test("twice changes nothing more", () => {
+    const replace = vi.fn();
+    endLocalSession({ history: { replace } });
+    endLocalSession({ history: { replace } });
+    expect(getSessionState().status).toBe("signedOut");
   });
 });

@@ -22,6 +22,7 @@ import {
 import userEvent from "@testing-library/user-event";
 import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
+import { setConnectionCheck } from "../../src/patterns/online";
 import { useRegisterAccountEntry } from "../../src/account/account-entries";
 import { setAuthServices } from "../../src/auth/services";
 import { clock } from "../../src/clock";
@@ -108,6 +109,45 @@ async function mountWith(children: ReactNode, language: Language = "en") {
   });
   await screen.findByTestId("shell");
   return router;
+}
+
+// Fills the real conversation store through the real client with a made-up bootstrap.
+async function fillStore() {
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(async () =>
+      Response.json({
+        user: SAM,
+        workspace: { id: "01930b7e-7a53-7c2e-9f1a-000000000090", name: "Acme" },
+        members: [
+          {
+            id: SAM.id,
+            displayName: "Sam Lê",
+            role: "member",
+            status: "active",
+          },
+        ],
+        conversations: [
+          {
+            id: "01930b7e-7a53-7c2e-9f1a-000000000010",
+            kind: "channel",
+            name: "general",
+            topic: null,
+            isPrivate: false,
+            isGeneral: true,
+            notificationLevel: "mentions",
+            isMuted: false,
+            isStarred: false,
+            memberIds: null,
+          },
+        ],
+        eventNumber: 1,
+      }),
+    ),
+  );
+  await conversations.load();
+  expect(conversations.getState().status).toBe("ready");
+  vi.unstubAllGlobals();
 }
 
 const card = () => document.querySelector<HTMLButtonElement>("button.ucard")!;
@@ -198,6 +238,48 @@ describe("the menu and its entries (R4, R5, R23)", () => {
     expect(screen.getAllByRole("separator")).toHaveLength(1);
   });
 
+  test("with pause and focus both registered: two headings and two separators; with only setStatus: no separator", async () => {
+    function Both() {
+      useRegisterAccountEntry("pause", {
+        id: "pause",
+        heading: "Pause notifications",
+        items: [{ label: "30 minutes", onSelect: () => {} }],
+      });
+      useRegisterAccountEntry("focus", {
+        id: "focus",
+        heading: "Focus time",
+        items: [{ label: "25 minutes", onSelect: () => {} }],
+      });
+      return null;
+    }
+    await mountWith(<Both />);
+    await userEvent.click(card());
+    expect(screen.getAllByRole("group")).toHaveLength(2);
+    expect(
+      screen.getByRole("group", { name: "Pause notifications" }),
+    ).toBeTruthy();
+    expect(screen.getByRole("group", { name: "Focus time" })).toBeTruthy();
+    expect(screen.getAllByRole("separator")).toHaveLength(2);
+  });
+
+  test("with only setStatus registered there is no separator", async () => {
+    function Only() {
+      useRegisterAccountEntry("setStatus", {
+        label: "Set status",
+        onSelect: () => {},
+      });
+      return null;
+    }
+    await mountWith(<Only />);
+    await userEvent.click(card());
+    expect(menuItems().map((i) => i.textContent)).toEqual([
+      "Set status",
+      "Preferences",
+      "Sign out",
+    ]);
+    expect(screen.queryAllByRole("separator")).toHaveLength(0);
+  });
+
   test("the menu is not inside the card", async () => {
     await mountApp();
     await userEvent.click(card());
@@ -245,41 +327,7 @@ describe("focus and keys (R6)", () => {
 
 describe("Sign out (R7, R9, R11)", () => {
   test("asks for no confirmation, calls the server and ends on /login with no next and no store", async () => {
-    // Fill the real store through the real client with a made-up bootstrap.
-    const me = SAM.id;
-    vi.stubGlobal(
-      "fetch",
-      vi.fn(async () =>
-        Response.json({
-          user: SAM,
-          workspace: {
-            id: "01930b7e-7a53-7c2e-9f1a-000000000090",
-            name: "Acme",
-          },
-          members: [
-            { id: me, displayName: "Sam Lê", role: "member", status: "active" },
-          ],
-          conversations: [
-            {
-              id: "01930b7e-7a53-7c2e-9f1a-000000000010",
-              kind: "channel",
-              name: "general",
-              topic: null,
-              isPrivate: false,
-              isGeneral: true,
-              notificationLevel: "mentions",
-              isMuted: false,
-              isStarred: false,
-              memberIds: null,
-            },
-          ],
-          eventNumber: 1,
-        }),
-      ),
-    );
-    await conversations.load();
-    expect(conversations.getState().status).toBe("ready");
-    vi.unstubAllGlobals();
+    await fillStore();
 
     const call = vi.spyOn(sessions, "signOut").mockResolvedValue(undefined);
     const router = await mountApp("en", "/prefs");
@@ -298,6 +346,39 @@ describe("Sign out (R7, R9, R11)", () => {
     expect(router.history.location.href).toBe("/login");
     expect(conversations.getState().status).toBe("idle");
     expect(document.body.textContent).not.toContain("general");
+  });
+
+  test("the same result when AppShellRoute is unmounted before markSignedOut() is called", async () => {
+    await fillStore();
+    vi.spyOn(sessions, "signOut").mockResolvedValue(undefined);
+    // The layout goes away at the moment the store is reset, as a state change would unmount it.
+    const reset = conversations.reset.bind(conversations);
+    vi.spyOn(conversations, "reset").mockImplementation(() => {
+      cleanup();
+      reset();
+    });
+    const router = await mountApp("en", "/prefs");
+    await userEvent.click(card());
+    await userEvent.click(screen.getByRole("menuitem", { name: "Sign out" }));
+    await waitFor(() => expect(getSessionState().status).toBe("signedOut"));
+    expect(conversations.getState().status).toBe("idle");
+    expect(router.history.location.href).toBe("/login");
+  });
+
+  test("offline: Sign out calls nothing, the explanation shows and the person stays signed in (R20)", async () => {
+    const call = vi.spyOn(sessions, "signOut");
+    setConnectionCheck(() => false);
+    await mountApp();
+    await userEvent.click(card());
+    await userEvent.click(screen.getByRole("menuitem", { name: "Sign out" }));
+    expect(
+      await screen.findByText(
+        "You are offline. Try again when the connection is back.",
+      ),
+    ).toBeTruthy();
+    expect(call).not.toHaveBeenCalled();
+    expect(getSessionState().status).toBe("signedIn");
+    setConnectionCheck(null);
   });
 
   test("a failed call leaves the person signed in with one toast and no signal", async () => {
@@ -341,6 +422,7 @@ describe("Sign out (R7, R9, R11)", () => {
 
 describe("the signal of another tab (R12)", () => {
   test("a signedOut message ends this tab with no request, and a malformed one does nothing", async () => {
+    await fillStore();
     const fetchSpy = vi.fn();
     vi.stubGlobal("fetch", fetchSpy);
     const router = await mountApp("en", "/");
@@ -354,6 +436,7 @@ describe("the signal of another tab (R12)", () => {
     });
     expect(router.state.location.pathname).toBe("/login");
     expect(router.state.location.search).toEqual({});
+    expect(conversations.getState().status).toBe("idle");
     expect(fetchSpy).not.toHaveBeenCalled();
     expect(posted).toEqual([]);
     vi.unstubAllGlobals();

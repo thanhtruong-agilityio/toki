@@ -68,6 +68,16 @@ async function stub(context: BrowserContext): Promise<Stub> {
     }
     return route.fallback();
   });
+  // The shell sends no bootstrap call yet (the list of conversations is a later ticket); a call to it
+  // would show in `requests` and fail the test of the second tab.
+  await context.route("**/api/v1/bootstrap", async (route) => {
+    requests.push("GET /bootstrap");
+    await route.fulfill({
+      status: 404,
+      contentType: "application/json",
+      body: "{}",
+    });
+  });
   return { requests, signedIn: () => signedIn };
 }
 
@@ -136,6 +146,26 @@ for (const name of LOOKS) {
         state.requests.slice(before).filter((r) => r !== "GET /auth/workspace"),
       ).toEqual(["DELETE /auth/session"]);
     });
+
+    for (const width of [720, 1100]) {
+      test(`the menu opens at ${width}px with Preferences and Sign out`, async ({
+        page,
+        context,
+      }) => {
+        await stub(context);
+        await look(page, name);
+        await page.setViewportSize({ width, height: 800 });
+        await page.goto("/");
+        await page.getByTestId("shell").waitFor();
+        await page.getByRole("button", { name: "Your account menu" }).click();
+        await expect(page.getByRole("menuitem")).toHaveText([
+          "Preferences",
+          "Sign out",
+        ]);
+        await page.keyboard.press("Escape");
+        await expect(page.getByRole("menu")).toHaveCount(0);
+      });
+    }
 
     test("there is no card under 720 px", async ({ page, context }) => {
       await stub(context);

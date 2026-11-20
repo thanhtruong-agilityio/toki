@@ -11,13 +11,16 @@ import { SignedInDevices } from "../../src/account/SignedInDevices";
 import { setConnectionCheck } from "../../src/patterns/online";
 
 // The date context is fixed: 12:00 UTC on Mon 16 Nov 2026, in UTC.
-vi.mock("../../src/account/use-date-context", () => ({
-  useDateContext: () => ({
+const ctx = vi.hoisted(() => ({
+  value: {
     timeZone: "UTC",
     now: Date.parse("2026-11-16T12:00:00Z"),
     language: "en",
     dayWords: { today: "Today", tomorrow: "Tomorrow", yesterday: "Yesterday" },
-  }),
+  },
+}));
+vi.mock("../../src/account/use-date-context", () => ({
+  useDateContext: () => ctx.value,
 }));
 
 const row = (over: Partial<SessionItem> = {}): SessionItem => ({
@@ -66,7 +69,9 @@ const list = (...rows: SessionItem[][]) => {
   return spy;
 };
 
+const english = { ...ctx.value };
 afterEach(() => {
+  ctx.value = { ...english };
   vi.restoreAllMocks();
   setConnectionCheck(null);
 });
@@ -155,12 +160,19 @@ describe("a row (R15, R16)", () => {
     expect(screen.getByText("Other browser · Tablet")).toBeTruthy();
   });
 
-  test("a bad date leaves the time line out and shows no Invalid Date or NaN", async () => {
-    list([row({ lastUsedAt: "not a date" }), laptop]);
-    await mount();
-    expect(document.body.textContent).not.toMatch(/Invalid Date|NaN/);
-    expect(screen.getAllByText(/^Last used/)).toHaveLength(1);
-  });
+  test.each(["not a date", "", "x"])(
+    "a bad date %j leaves the time line out and shows no Invalid Date or NaN",
+    async (lastUsedAt) => {
+      list([row({ lastUsedAt }), laptop]);
+      await mount();
+      expect(document.body.textContent).not.toMatch(/Invalid Date|NaN/);
+      expect(screen.getAllByText(/^Last used/)).toHaveLength(1);
+      // The button of the row is named by the title alone.
+      expect(
+        screen.getByRole("button", { name: "Sign out Safari · Phone" }),
+      ).toBeTruthy();
+    },
+  );
 
   test("a button on every other row and none on the current one, with a name that names the device", async () => {
     list([phone, laptop]);
@@ -184,6 +196,22 @@ describe("a row (R15, R16)", () => {
       "Sign out Safari · Phone (last used Today 09:00), 1 of 2",
       "Sign out Safari · Phone (last used Today 09:00), 2 of 2",
     ]);
+  });
+
+  test("in Vietnamese the day word of the time line is Vietnamese", async () => {
+    ctx.value = {
+      ...english,
+      language: "vi",
+      dayWords: {
+        today: "Hôm nay",
+        tomorrow: "Ngày mai",
+        yesterday: "Hôm qua",
+      },
+    };
+    list([phone, laptop]);
+    await mount("vi");
+    expect(screen.getByText("Dùng lần cuối Hôm nay 15:00")).toBeTruthy();
+    expect(screen.getByText("Dùng lần cuối Hôm nay 09:00")).toBeTruthy();
   });
 
   test("in Vietnamese the words are Vietnamese", async () => {
@@ -211,6 +239,7 @@ describe("the confirmation for one device (R17)", () => {
     for (const close of [
       () => userEvent.click(screen.getByRole("button", { name: "Cancel" })),
       () => userEvent.keyboard("{Escape}"),
+      () => userEvent.click(document.querySelector(".scrim") as HTMLElement),
     ]) {
       const dialog = await openOne();
       expect(dialog).toHaveTextContent("Sign out this device?");
@@ -445,6 +474,29 @@ describe("offline (R20)", () => {
     await userEvent.click(
       within(screen.getByRole("dialog")).getByRole("button", {
         name: "Sign out",
+      }),
+    );
+    expect(end).not.toHaveBeenCalled();
+    expect(screen.getByRole("dialog")).toBeTruthy();
+    expect(
+      await screen.findByText(
+        "You are offline. Try again when the connection is back.",
+      ),
+    ).toBeTruthy();
+  });
+
+  test("the confirmation for all other devices calls nothing while offline", async () => {
+    list([laptop, phone], [laptop, phone]);
+    const end = vi.spyOn(sessions, "endOthers");
+    await mount();
+    await userEvent.click(
+      screen.getByRole("button", { name: "Sign out all other devices" }),
+    );
+    const dialog = await screen.findByRole("dialog");
+    setConnectionCheck(() => false);
+    await userEvent.click(
+      within(dialog).getByRole("button", {
+        name: "Sign out all other devices",
       }),
     );
     expect(end).not.toHaveBeenCalled();
