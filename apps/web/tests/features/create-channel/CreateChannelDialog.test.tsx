@@ -325,20 +325,15 @@ describe("people (R9)", () => {
     expect(names).toHaveLength(3);
   });
 
-  test("with 201 candidates the 201st press shows the limit and adds nobody", () => {
+  test("the picker gets 201 candidates, a maximum of 200 and the limit message (the press past the maximum is the picker's)", () => {
     fake.people = [fake.people[0]!, ...makePeople(201)];
     setup();
-    const rows = () =>
-      Array.from(document.querySelectorAll<HTMLButtonElement>("button.prow"));
-    expect(rows()).toHaveLength(201);
-    for (let i = 0; i < 200; i++) fireEvent.click(rows()[i]!);
-    expect(screen.queryByText("You can add up to 200 people.")).toBeNull();
-    fireEvent.click(rows()[200]!);
-    expect(
-      screen.getByText("You can add up to 200 people."),
-    ).toBeInTheDocument();
-    expect(rows().filter((r) => r.ariaPressed === "true")).toHaveLength(200);
-  }, 30_000);
+    expect(fake.pickerProps!.people).toHaveLength(201);
+    expect(fake.pickerProps!.max).toBe(200);
+    expect(fake.pickerProps!.limitMessage).toBe(
+      "You can add up to 200 people.",
+    );
+  });
 });
 
 describe("the state of Create (R10)", () => {

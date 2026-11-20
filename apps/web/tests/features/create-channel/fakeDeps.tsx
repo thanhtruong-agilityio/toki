@@ -1,5 +1,6 @@
 import { vi } from "vitest";
 import { useSyncExternalStore } from "react";
+import type { PeoplePickerProps as PickerProps } from "../../../src/features/create-channel/PeoplePickerStandIn";
 
 // A fake `deps.ts` for the tests of the screens (R3): the role, the signed-in
 // person and the people are plain data that a test changes, and the store's
@@ -36,6 +37,8 @@ export const fake = {
   refresh: vi.fn(async () => {}),
   newId: vi.fn(),
   opened: vi.fn(),
+  // The props the dialog gave the picker at its last render.
+  pickerProps: null as null | PickerProps,
 };
 
 let counter = 0;
@@ -79,7 +82,10 @@ export async function makeDepsMock() {
   return {
     ApiError: core.ApiError,
     classifyApiError: core.classifyApiError,
-    PeoplePicker: standIn.PeoplePicker,
+    PeoplePicker: (props: Parameters<typeof standIn.PeoplePicker>[0]) => {
+      fake.pickerProps = props;
+      return standIn.PeoplePicker(props);
+    },
     personHue: () => 7,
     newId: (...args: []) => fake.newId(...args),
     conversations: {
