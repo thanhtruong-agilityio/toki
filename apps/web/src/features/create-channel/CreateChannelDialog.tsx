@@ -116,7 +116,7 @@ function CreateChannelForm({
       nameRef.current.setSelectionRange(caret.current, caret.current);
     }
     caret.current = null;
-  });
+  }, [nameText]);
   useEffect(() => {
     if (!focusAsk) return;
     (focusAsk.to === "name" ? nameRef : createRef).current?.focus();
@@ -174,9 +174,16 @@ function CreateChannelForm({
         setRefusedName(sentName);
         return settle("name");
       case "invalidMember": {
-        await conversations.refresh();
+        let refreshed = true;
+        try {
+          await conversations.refresh();
+        } catch {
+          // `refresh()` never rejects (TOKI-032 R10); if it ever does, the dialog
+          // must not stay busy for ever.
+          refreshed = false;
+        }
         if (!mounted.current) return;
-        if (conversations.getState().error !== null) {
+        if (!refreshed || conversations.getState().error !== null) {
           setFailure("actionFailed");
         } else {
           const active = new Set(

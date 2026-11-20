@@ -29,6 +29,10 @@
       "at": "2026-11-20T10:44:12Z",
       "auto": false,
       "stage": "approve"
+    },
+    {
+      "at": "2026-11-20T10:44:27Z",
+      "stage": "check"
     }
   ],
   "key": "TOKI-098",
@@ -44,7 +48,7 @@
   "stage": "check",
   "tier": "M",
   "verifier": {
-    "result": "FAIL",
-    "round": 1
+    "result": "PASS",
+    "round": 2
   }
 }

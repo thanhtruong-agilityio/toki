@@ -626,6 +626,17 @@ describe("the other answers (R14)", () => {
       memberIds: ["p1", "p2"],
     });
   });
+
+  test("invalid_member with a refresh that rejects does not leave the dialog busy", async () => {
+    fake.createChannel.mockRejectedValue(http(400, "invalid_member"));
+    fake.refresh.mockRejectedValue(new Error("boom"));
+    const { user } = setup();
+    await typeName(user);
+    await user.click(create());
+    expect(line()).toBeInTheDocument();
+    expect(create()).not.toHaveAttribute("aria-busy");
+    expect(screen.getByRole("button", { name: /Cancel/ })).toBeEnabled();
+  });
 });
 
 describe("an attempt (R15)", () => {
