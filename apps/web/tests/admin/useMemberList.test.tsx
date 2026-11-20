@@ -167,6 +167,26 @@ describe("more on scroll (R9)", () => {
     expect(server.calls).toHaveLength(before);
   });
 
+  it("asks no page with the old cursor while a new first page is awaited (verifier finding)", async () => {
+    const gate = hold();
+    const { result, server } = setup({
+      members: manyMembers(120),
+      gate: (call) =>
+        call.query.search === "member" ? gate.promise : undefined,
+    });
+    await ready(result);
+    // The old query still holds the cursor "o:50". A new query starts a new generation.
+    act(() => result.current.setQuery({ search: "member" }));
+    await waitFor(() => expect(result.current.isRefreshing).toBe(true));
+    act(() => result.current.loadMore());
+    // No request was made with the cursor of the earlier rows.
+    expect(cursorCalls(server)).toHaveLength(0);
+    gate.release();
+    await waitFor(() => expect(result.current.isRefreshing).toBe(false));
+    expect(cursorCalls(server)).toHaveLength(0);
+    expect(result.current.rows).toHaveLength(50);
+  });
+
   it("never asks twice for one cursor", async () => {
     const gate = hold();
     const { result, server } = setup({

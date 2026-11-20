@@ -179,6 +179,11 @@ export function InviteDialog({
         case "forbidden":
           forbidden();
           break;
+        case "stale":
+          // The invitation has gone or was used: the page was out of date (R19).
+          void reload();
+          show({ text: t("admin.error.stale") });
+          break;
         case "inProgress":
           show({ text: t("admin.error.inProgress") });
           break;

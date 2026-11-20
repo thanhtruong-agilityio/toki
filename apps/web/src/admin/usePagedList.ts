@@ -172,6 +172,9 @@ export function usePagedList<Row, Meta, Query>(
       more.current = null;
       loadingMore.current = false;
       asked.current = new Set();
+      // The cursor of the rows being replaced does not match the new first page: no load-more may use
+      // it while the page is awaited (R6).
+      cursor.current = null;
       dispatch({ type: "refreshStart" });
       const { options: current } = latest.current;
       return current

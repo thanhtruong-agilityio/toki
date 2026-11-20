@@ -515,6 +515,27 @@ describe("the result step (R23)", () => {
     expect(resend?.headers["idempotency-key"]).toHaveLength(36);
   });
 
+  it("a Resend in the result step that finds the invitation gone follows R19: reload and say the page was stale", async () => {
+    const { reload } = await setup({
+      inviteResult: () => "mail_not_sent",
+      fail: (call) =>
+        call.method === "POST" && /\/resend$/.test(call.path)
+          ? failWith(404, "invitation_not_found")
+          : undefined,
+    });
+    type("new@example.com");
+    await userEvent.click(send());
+    const list = await within(box()).findByRole("list", { name: "Results" });
+    expect(reload).toHaveBeenCalledTimes(1);
+    await userEvent.click(within(list).getByRole("button", { name: "Resend" }));
+    await waitFor(() =>
+      expect(toastText()).toContain(
+        "This page was out of date. It has been refreshed.",
+      ),
+    );
+    expect(reload).toHaveBeenCalledTimes(2);
+  });
+
   it("Esc and the close button also close the result step without asking", async () => {
     await setup();
     type("new@example.com");

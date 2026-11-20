@@ -28,6 +28,10 @@
     {
       "at": "2026-11-20T09:46:31Z",
       "stage": "build"
+    },
+    {
+      "at": "2026-11-20T10:35:30Z",
+      "stage": "check"
     }
   ],
   "key": "TOKI-025",
@@ -40,10 +44,10 @@
   "spec_paths": [
     "docs/specs/2026-11-17-admin-page-design.md"
   ],
-  "stage": "build",
+  "stage": "check",
   "tier": "L",
   "verifier": {
-    "result": null,
-    "round": 0
+    "result": "FAIL",
+    "round": 1
   }
 }

@@ -135,6 +135,38 @@ describe("the table (R11)", () => {
   });
 });
 
+describe("dates (R30)", () => {
+  it("a real ISO string from the server shows a formatted date and time in the cell and in the invitation line, and null or a bad string shows a dash", async () => {
+    setup({
+      members: [
+        person({
+          n: 1,
+          displayName: "Real",
+          lastActiveAt: "2026-01-03T10:00:00.000Z",
+        }),
+        person({ n: 2, displayName: "Never", lastActiveAt: null }),
+        person({ n: 3, displayName: "Odd", lastActiveAt: "not a date" }),
+        invitation({ n: 4 }),
+      ],
+    });
+    await screen.findByRole("table");
+    const cellOf = (name: string) =>
+      screen
+        .getByText(name, { selector: "b" })
+        .closest("tr")!
+        .querySelectorAll("td")[3]!;
+    expect(cellOf("Real").textContent).toMatch(/\d{2}:\d{2}$/);
+    expect(cellOf("Real").textContent).not.toBe("—");
+    expect(cellOf("Never").textContent).toBe("—");
+    expect(cellOf("Odd").textContent).toBe("—");
+    const invited = screen
+      .getByText("invitee004@example.com", { selector: "b" })
+      .closest("td")!;
+    expect(invited.textContent).toMatch(/Invited by Lan · \w{3} \d{1,2} \w{3}/);
+    expect(invited.textContent).not.toContain("Invalid");
+  });
+});
+
 describe("search (R7)", () => {
   it("sends one request for five key presses inside 300 ms and two when they are 301 ms apart", async () => {
     vi.useFakeTimers({ shouldAdvanceTime: true });
