@@ -53,7 +53,7 @@ Say in one line what you are asking it. If its guidance conflicts with the code 
 
 1. Merge a pull request, force-push, or push to `main`, `master`, `develop` or `release/*`. Source: Working agreements above.
 2. Commit a secret or a `.env` file. Source: `docs/environment-config.md` ("Secrets live in `.env`, never in git") and `.gitignore`.
-3. Import a file of another server module other than its public entry file `index.ts`. Source: lint rule `toki/module-entry`; `docs/specs/2026-11-12-server-skeleton-design.md`, R17.
+3. Import a file of another server module other than its public entry file `index.ts` (a command entry under `apps/server/src/cli/` may also import a module's `cli.ts`). Source: lint rule `toki/module-entry`; `docs/specs/2026-11-12-server-skeleton-design.md`, R17; `docs/specs/2026-11-17-sessions-emergency-access-design.md`, R23.
 4. Use a DOM or browser API in `client-core`, `shared`, `i18n` or `tokens`. Source: lint rule `toki/client-core-globals`.
 5. Use the notification, storage, service worker or audio API directly in `ui-web`, instead of going through `platform`. Source: lint rule `toki/platform-apis`.
 6. Add a tool that runs code to the `PR review` workflow, or put text from a comment or a pull request into a `run:` script other than through `env:`. Source: `.claude/rules/workflows.md`.
@@ -82,6 +82,13 @@ The root `pnpm` scripts, run from the repository root under Node 22 (`.nvmrc`) w
 ```bash
 # One package: test, or any script of its package.json
 pnpm --filter @toki/<name> test
+
+# Print a one-time sign-in link, valid 10 minutes, for one member when mail is down. Standard output
+# holds the link alone; the log line and every explanation go to standard error. Exit 0 a link was
+# printed, 1 refused (no account, deactivated, or another run for the member at the same moment) or a
+# bad configuration or failure, 2 wrong call. Needs DATABASE_URL and APP_ORIGIN; the form without
+# --silent adds pnpm header lines to standard output.
+pnpm --silent emergency:link <email>
 
 # Check one spec before its pull request (exit 0 ready, 1 gaps, 2 wrong usage)
 bash .github/scripts/spec-ready.sh docs/specs/<file>.md

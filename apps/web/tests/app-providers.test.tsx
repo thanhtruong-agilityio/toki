@@ -15,13 +15,23 @@ import { setAuthServices } from "../src/auth/services";
 import { timers } from "../src/auth/timers";
 import { clock } from "../src/clock";
 import { routeTree } from "../src/router";
-import { createFakeCalls, user } from "./support/auth-harness";
+import {
+  createFakeCalls,
+  createFakeEmergency,
+  user,
+} from "./support/auth-harness";
 
 beforeEach(() => {
   localStorage.clear();
   setPlatform(createWebPlatform());
   const calls = createFakeCalls();
-  setAuthServices({ calls, openCalls: calls, clock, timers });
+  setAuthServices({
+    calls,
+    openCalls: calls,
+    emergency: createFakeEmergency(),
+    clock,
+    timers,
+  });
   markSignedIn(user);
 });
 

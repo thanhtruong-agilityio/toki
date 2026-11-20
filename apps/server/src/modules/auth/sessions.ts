@@ -18,7 +18,9 @@ export class AccountNotActiveError extends Error {
   }
 }
 
-const IDLE_MS = SESSION_IDLE_DAYS * 24 * 60 * 60 * 1000;
+// The 30 days without use after which a session is over (TOKI-022 R25). The list of sessions reads
+// the same rule (TOKI-026 R2), so the list and the check cannot disagree.
+export const IDLE_MS = SESSION_IDLE_DAYS * 24 * 60 * 60 * 1000;
 
 // ---- listeners (R50) ----
 

@@ -16,6 +16,7 @@ import {
   insertConversation,
   insertConversationMember,
   insertDevice,
+  insertEmergencyLink,
   insertDirectConversation,
   insertLoginCode,
   insertSession,
@@ -1075,7 +1076,7 @@ describe("R22: a conversation is never deleted", () => {
 });
 
 describe("R23: one TRUNCATE empties every table", () => {
-  it("empties the seven tables named, with no CASCADE", async () => {
+  it("empties the eight tables named, with no CASCADE", async () => {
     const t = await createThrowawayDb();
     try {
       await runMigrations(t.url, migrationsFolder);
@@ -1093,6 +1094,7 @@ describe("R23: one TRUNCATE empties every table", () => {
           workspace_id: w,
         });
         await insertLoginCode(db, { workspace_id: w, user_id: u });
+        await insertEmergencyLink(db, { workspace_id: w, user_id: u });
         const session = await insertSession(db, {
           workspace_id: w,
           user_id: u,
@@ -1106,6 +1108,7 @@ describe("R23: one TRUNCATE empties every table", () => {
           "workspaces",
           "users",
           "login_codes",
+          "emergency_links",
           "sessions",
           "devices",
           "conversations",

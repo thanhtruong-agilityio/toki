@@ -34,6 +34,8 @@ export const ErrorCodes = {
   sessionEnded: "session_ended",
   originNotAllowed: "origin_not_allowed",
   rateLimited: "rate_limited",
+  currentSession: "current_session",
+  emergencyLinkInvalid: "emergency_link_invalid",
   batchTooLarge: "batch_too_large",
   invitationNotFound: "invitation_not_found",
   invitationUsed: "invitation_used",

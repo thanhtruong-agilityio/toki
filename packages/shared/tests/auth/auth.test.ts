@@ -9,9 +9,16 @@ import {
   CODE_TTL_SECONDS,
   CreateSessionBodySchema,
   CreateSessionResponseSchema,
+  BROWSERS,
+  DEVICE_KINDS,
+  EMERGENCY_LINK_TTL_SECONDS,
+  EmergencyBodySchema,
+  EmergencyResponseSchema,
   ErrorCodes,
   RequestCodeResponseSchema,
   SESSION_IDLE_DAYS,
+  SessionItemSchema,
+  SessionsResponseSchema,
   UserSchema,
 } from "../../src/index.js";
 
@@ -83,9 +90,89 @@ describe("error registry (R54)", () => {
       "origin_not_allowed",
       "unsupported_media_type",
       "rate_limited",
+      "current_session",
+      "emergency_link_invalid",
     ]) {
       expect(values).toContain(code);
     }
     expect(new Set(values).size).toBe(values.length);
+  });
+});
+
+describe("emergency link and session list contracts (TOKI-026 R24, R37)", () => {
+  const token = "A".repeat(43);
+  const user = {
+    id: "1",
+    email: "sam@example.com",
+    displayName: "Sam",
+    role: "member",
+    language: "en",
+  };
+
+  it("holds the 10 minutes of a link", () => {
+    expect(EMERGENCY_LINK_TTL_SECONDS).toBe(600);
+  });
+
+  it("holds the closed value lists of a row", () => {
+    expect([...DEVICE_KINDS]).toEqual([
+      "desktop",
+      "phone",
+      "tablet",
+      "unknown",
+    ]);
+    expect([...BROWSERS]).toEqual([
+      "chrome",
+      "edge",
+      "safari",
+      "firefox",
+      "other",
+      "unknown",
+    ]);
+  });
+
+  it("parses a list of sessions with the five fields", () => {
+    const item = {
+      id: "0190f6a0-0000-7000-8000-000000000000",
+      current: true,
+      deviceKind: "desktop",
+      browser: "chrome",
+      lastUsedAt: "2026-11-19T07:00:00.000Z",
+    };
+    expect(SessionItemSchema.parse(item)).toEqual(item);
+    expect(
+      SessionsResponseSchema.parse({ sessions: [item] }).sessions,
+    ).toHaveLength(1);
+  });
+
+  it("accepts a 43-character base64url token and nothing else", () => {
+    expect(EmergencyBodySchema.safeParse({ token }).success).toBe(true);
+    expect(
+      EmergencyBodySchema.safeParse({ token: "a-_Z09".repeat(7) + "a" })
+        .success,
+    ).toBe(true);
+    for (const bad of [
+      "A".repeat(42),
+      "A".repeat(44),
+      "A".repeat(42) + "+",
+      "A".repeat(42) + "=",
+      "A".repeat(42) + "/",
+      "",
+    ]) {
+      expect(EmergencyBodySchema.safeParse({ token: bad }).success).toBe(false);
+    }
+  });
+
+  it("takes an optional transport of the sign-in API", () => {
+    expect(
+      EmergencyBodySchema.parse({ token, transport: "token" }).transport,
+    ).toBe("token");
+    expect(
+      EmergencyBodySchema.safeParse({ token, transport: "x" }).success,
+    ).toBe(false);
+  });
+
+  it("parses the answer with and without a token", () => {
+    expect(EmergencyResponseSchema.parse({ user }).token).toBeUndefined();
+    expect(EmergencyResponseSchema.parse({ user, token: "t" }).token).toBe("t");
   });
 });

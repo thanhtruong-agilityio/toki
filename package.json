@@ -18,6 +18,7 @@
     "i18n:check": "pnpm --filter @toki/i18n check",
     "test": "vitest run && node --test tools/bundle-size/check.test.mjs apps/web/scripts/check-no-dev-pages.test.mjs && pnpm run test:lint-rules",
     "test:e2e": "playwright test",
+    "test:e2e:real": "playwright test -c playwright.real-server.config.ts --pass-with-no-tests",
     "build": "pnpm -r --if-present run build",
     "size": "node tools/bundle-size/check.mjs",
     "dev": "pnpm -r --parallel --if-present run dev",
@@ -29,8 +30,9 @@
     "dev:reset:mail": "bash scripts/reset-mail.sh",
     "db:generate": "pnpm --filter @toki/server run db:generate",
     "db:migrate": "pnpm --filter @toki/server run db:migrate",
+    "emergency:link": "pnpm --silent --filter @toki/server run emergency:link",
     "lint": "eslint . --max-warnings 0",
-    "test:lint-rules": "node --test tools/lint-rules/icon-only-button-name.test.mjs tools/lint-rules/platform-boundary.test.mjs",
+    "test:lint-rules": "node --test tools/lint-rules/icon-only-button-name.test.mjs tools/lint-rules/platform-boundary.test.mjs tools/lint-rules/module-entry.test.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },

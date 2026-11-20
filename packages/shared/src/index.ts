@@ -5,6 +5,8 @@ export * from "./datetime/index.js";
 export * from "./conversations.js";
 export * from "./permissions/index.js";
 export * from "./email.js";
+export * from "./auth/devices.js";
+export * from "./auth/emergency.js";
 export * from "./auth/limits.js";
 export * from "./auth/schemas.js";
 export * from "./members/index.js";

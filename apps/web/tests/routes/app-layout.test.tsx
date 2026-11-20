@@ -17,13 +17,23 @@ import { AppShellRoute } from "../../src/routes/app-layout";
 import { setAuthServices } from "../../src/auth/services";
 import { clock } from "../../src/clock";
 import { timers } from "../../src/auth/timers";
-import { createFakeCalls, user } from "../support/auth-harness";
+import {
+  createFakeCalls,
+  createFakeEmergency,
+  user,
+} from "../support/auth-harness";
 
 // R42: the app opens at `/` only with a session. The stub answers `GET /auth/session` with a signed-in
 // person, and the state is the one the guard reads.
 beforeEach(() => {
   const calls = createFakeCalls();
-  setAuthServices({ calls, openCalls: calls, clock, timers });
+  setAuthServices({
+    calls,
+    openCalls: calls,
+    emergency: createFakeEmergency(),
+    clock,
+    timers,
+  });
   markSignedIn(user);
 });
 

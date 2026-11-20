@@ -13,6 +13,8 @@ import { checkSession } from "./sessions.js";
 const LIMITED = new Set([
   `${API_PREFIX}/auth/codes`,
   `${API_PREFIX}/auth/sessions`,
+  // The route of the emergency link has its own count (TOKI-026 R49).
+  `${API_PREFIX}/auth/emergency-sessions`,
 ]);
 
 // One hook on every /api/v1 request, registered on the root so it also runs for
@@ -63,6 +65,7 @@ export function registerAuthHooks(
     if (route.config?.public) return;
     const checked = await checkSession(db, request);
     request.account = checked.account;
+    request.sessionId = checked.sessionId;
     // The cookie lives as long as the session (R26).
     if (checked.via === "cookie") {
       reply.header(

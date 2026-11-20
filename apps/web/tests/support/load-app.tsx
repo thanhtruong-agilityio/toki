@@ -1,6 +1,10 @@
 import { act, render, screen } from "@testing-library/react";
 import { vi } from "vitest";
-import { createFakeCalls, createFakeTimers } from "./auth-harness";
+import {
+  createFakeCalls,
+  createFakeEmergency,
+  createFakeTimers,
+} from "./auth-harness";
 
 // The session state of client-core is one value for the page and cannot go back to `unknown`, so every
 // test loads the app anew: the modules of the workspace (the store, the router, the memory of the
@@ -11,6 +15,7 @@ export async function loadApp(
     language?: "en" | "vi";
     calls?: Parameters<typeof createFakeCalls>[0];
     openCalls?: Parameters<typeof createFakeCalls>[0];
+    emergency?: Parameters<typeof createFakeEmergency>[0];
     /** Extra routes under the root, for a test of the flag `public`. */
     extraRoutes?: boolean;
   } = {},
@@ -51,7 +56,8 @@ export async function loadApp(
   const timers = createFakeTimers(clock);
   const calls = createFakeCalls(options.calls);
   const openCalls = createFakeCalls(options.openCalls);
-  services.setAuthServices({ calls, openCalls, clock, timers });
+  const emergency = createFakeEmergency(options.emergency);
+  services.setAuthServices({ calls, openCalls, emergency, clock, timers });
 
   let tree = router.routeTree;
   if (options.extraRoutes) {
@@ -86,6 +92,7 @@ export async function loadApp(
     router: app,
     calls,
     openCalls,
+    emergency,
     clock,
     timers,
     mount,

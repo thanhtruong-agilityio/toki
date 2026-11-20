@@ -222,6 +222,10 @@ export default tseslint.config(
           modulesDirs: ["apps/server/src/modules"].map((dir) =>
             path.join(import.meta.dirname, dir),
           ),
+          // The command entries may also import a module's narrow `cli` entry (TOKI-026 R23).
+          cliDirs: ["apps/server/src/cli"].map((dir) =>
+            path.join(import.meta.dirname, dir),
+          ),
         },
       ],
     },

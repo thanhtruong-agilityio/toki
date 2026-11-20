@@ -29,6 +29,13 @@
       "when": 1795074803437,
       "tag": "0003_member_management",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1795081174876,
+      "tag": "0004_emergency_links",
+      "breakpoints": true
     }
   ]
 }

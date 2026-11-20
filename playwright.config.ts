@@ -8,6 +8,8 @@ const SERVER_PORT = 3000;
 
 export default defineConfig({
   testDir: "./e2e",
+  // The flows that need a database have their own config (playwright.real-server.config.ts).
+  testIgnore: "real-server/**",
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: 0,

@@ -1,5 +1,6 @@
 import {
   CreateSessionBodySchema,
+  EmergencyBodySchema,
   ErrorCodes,
   RequestCodeBodySchema,
   CODE_RESEND_SECONDS,
@@ -17,6 +18,13 @@ import { getWorkspace } from "../workspace/index.js";
 import { exchangeCode, requestCode } from "./codes.js";
 import type { AuthConfig } from "./config.js";
 import { clearedCookie, sessionCookie } from "./cookies.js";
+import {
+  endOneSession,
+  endOtherSessions,
+  listLiveSessions,
+  SESSION_ID_PATTERN,
+} from "./devices.js";
+import { useEmergencyLink } from "./emergency.js";
 import { endSessionOfRequest } from "./sessions.js";
 
 declare module "fastify" {
@@ -27,6 +35,9 @@ declare module "fastify" {
   interface FastifyRequest {
     // The account of the session, set by the session check (R55).
     account?: Account;
+    // The id of the session of the request, set by the session check
+    // (TOKI-026 R3, R11).
+    sessionId?: string;
   }
 }
 
@@ -116,6 +127,60 @@ export function registerAuthRoutes(
     }),
   );
 
+  // An emergency link for a session without a code (TOKI-026 R26 to R34). `POST` only: no `GET`
+  // signs anybody in. Log lines carry ids only, never the token, its hash or an address (R36).
+  scope.post("/auth/emergency-sessions", pub, (request, reply) =>
+    guarded(async () => {
+      const body = EmergencyBodySchema.parse(request.body ?? {});
+      const transport = body.transport ?? "cookie";
+      const result = await useEmergencyLink(db, {
+        token: body.token,
+        transport,
+        userAgent: request.headers["user-agent"],
+        request,
+      });
+      if (result.kind === "invalid") {
+        request.log.warn({ reason: "invalid" }, "emergency_link_rejected");
+        throw new AppError(
+          400,
+          ErrorCodes.emergencyLinkInvalid,
+          "This link is not valid.",
+        );
+      }
+      if (result.kind === "deactivated") {
+        request.log.warn(
+          {
+            reason: "deactivated",
+            userId: result.userId,
+            linkId: result.linkId,
+          },
+          "emergency_link_rejected",
+        );
+        throw new AppError(
+          400,
+          ErrorCodes.accountDeactivated,
+          "This account has been deactivated.",
+        );
+      }
+      request.log.info(
+        {
+          userId: result.account.id,
+          linkId: result.linkId,
+          sessionId: result.session.id,
+        },
+        "emergency_link_used",
+      );
+      if (transport === "cookie") {
+        reply.header(
+          "set-cookie",
+          sessionCookie(result.session.secret, development),
+        );
+        return { user: toUser(result.account) };
+      }
+      return { user: toUser(result.account), token: result.session.secret };
+    }),
+  );
+
   scope.get("/auth/session", async (request) => ({
     user: toUser(request.account!),
   }));
@@ -125,6 +190,41 @@ export function registerAuthRoutes(
     reply.header("set-cookie", clearedCookie(development));
     return reply.code(204).send();
   });
+
+  // The signed-in person's own sessions and how to end the others (TOKI-026
+  // R1 to R16). None is public: each needs a session.
+  scope.get("/auth/sessions", (request) =>
+    guarded(async () => ({
+      sessions: await listLiveSessions(
+        db,
+        request.account!.id,
+        request.sessionId!,
+      ),
+    })),
+  );
+
+  scope.delete("/auth/sessions/:sessionId", (request, reply) =>
+    guarded(async () => {
+      const { sessionId } = request.params as { sessionId: string };
+      if (!SESSION_ID_PATTERN.test(sessionId)) {
+        throw invalid("sessionId", "invalid_format");
+      }
+      await endOneSession(
+        db,
+        request.account!.id,
+        request.sessionId!,
+        sessionId.toLowerCase(),
+      );
+      return reply.code(204).send();
+    }),
+  );
+
+  scope.delete("/auth/sessions", (request, reply) =>
+    guarded(async () => {
+      await endOtherSessions(db, request.account!.id, request.sessionId!);
+      return reply.code(204).send();
+    }),
+  );
 
   scope.get("/auth/workspace", pub, async () => {
     const workspace = await getWorkspace(db);

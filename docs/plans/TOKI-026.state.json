@@ -1,0 +1,78 @@
+{
+  "approved_auto": false,
+  "base": "github/main",
+  "branch": "feat/toki-026-sessions-emergency-access",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-19T07:37:12Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-19T07:37:12Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-19T07:38:02Z",
+      "stage": "explore"
+    },
+    {
+      "at": "2026-11-19T07:42:53Z",
+      "stage": "design"
+    },
+    {
+      "at": "2026-11-19T07:48:43Z",
+      "stage": "plan"
+    },
+    {
+      "at": "2026-11-19T07:52:12Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-19T07:52:55Z",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-19T09:16:18Z",
+      "stage": "check"
+    },
+    {
+      "at": "2026-11-19T09:39:24Z",
+      "stage": "ship"
+    },
+    {
+      "at": "2026-11-20T01:38:51Z",
+      "stage": "ci"
+    }
+  ],
+  "key": "TOKI-026",
+  "main_sha": "42d71f05a87afaaa1558560a9c3deeed21d2604e",
+  "metrics": {
+    "tasks_done": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ]
+  },
+  "mode": "manual",
+  "plan_approved": true,
+  "plan_hash": "e1dd1c25aeff4090d02f02c1eb9684e0a06b823dc515f67739d2ed571c01b816",
+  "pr": "https://github.com/thanhtruong-agilityio/toki/pull/184",
+  "spec_commit": "914b517bfb2bd61535fb5df472d1b43eef4141ed",
+  "spec_paths": [
+    "docs/specs/2026-11-17-sessions-emergency-access-design.md"
+  ],
+  "stage": "ci",
+  "tier": "L",
+  "verifier": {
+    "result": "PASS",
+    "round": 3
+  }
+}

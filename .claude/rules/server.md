@@ -19,7 +19,7 @@ Each statement is followed by its source. Rules of this project come first; rule
   Source: server-skeleton spec, R9.
 - Every route is registered under `/api/v1`; the only path outside it is `/healthz`.
   Source: server-skeleton spec, R5 and R10.
-- A module lives in `apps/server/src/modules/<name>/`, and its only public entry is `index.ts`. Another module or a file outside `modules/` imports that file and nothing else of it.
+- A module lives in `apps/server/src/modules/<name>/`, and its only public entry is `index.ts`. Another module or a file outside `modules/` imports that file and nothing else of it. The one exception: a command entry under `apps/server/src/cli/` may also import a module's narrow `cli.ts`, which exists for a command that must not reach the module's index (the index of `auth` reaches the mail layer).
   Source: server-skeleton spec, R17; lint rule `toki/module-entry` in `eslint.config.js`.
 - The server does not translate the `message` of an error body.
   Source: server-skeleton spec, R12.
