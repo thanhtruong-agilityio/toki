@@ -41,6 +41,7 @@
   "mode": "Auto to check",
   "plan_approved": true,
   "plan_hash": "89c73fb3d5c87df750f3d1aaef0b0dff69dc2edeba0caea663e7cafff8d8ce35",
+  "pr": 186,
   "spec_commit": "c32be4241e39bf596ecaaf043e0bde0351627f40",
   "spec_paths": [
     "docs/specs/2026-11-17-bootstrap-endpoint-design.md"
