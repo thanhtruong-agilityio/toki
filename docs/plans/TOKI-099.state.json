@@ -33,6 +33,10 @@
       "at": "2026-11-20T10:42:24Z",
       "auto": false,
       "stage": "approve"
+    },
+    {
+      "at": "2026-11-20T10:46:32Z",
+      "stage": "ship"
     }
   ],
   "key": "TOKI-099",
@@ -41,11 +45,12 @@
   "mode": "auto-to-check",
   "plan_approved": true,
   "plan_hash": "751da9097448a22c663faed8ba80197c3a9aa0f1c759c06dfb33259495b5bf06",
+  "pr": 199,
   "spec_commit": "8df8aaf438e0f525cf460d2dfb1a37bc2cac6745",
   "spec_paths": [
     "docs/specs/2026-11-17-account-menu-devices-design.md"
   ],
-  "stage": "check",
+  "stage": "ship",
   "tier": "L",
   "verifier": {
     "result": "PASS",
