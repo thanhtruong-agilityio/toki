@@ -1,3 +1,4 @@
+import type { FastifyPluginAsync } from "fastify";
 import {
   OpenDirectBodySchema,
   canCreateDirectConversation,
@@ -8,6 +9,7 @@ import { planDirectConversation } from "./direct.js";
 import { AppError } from "../../errors.js";
 import { ErrorCodes, DIRECT_CONVERSATION_MAX_OTHERS } from "@toki/shared";
 import { openDirect, type OpenDirectResult } from "./direct-open.js";
+import { toSafeError } from "./safe-error.js";
 
 // Everything the route decides (R3): the permission of the account, the body,
 // the people and the size, then the transaction. The account is an argument,
@@ -43,4 +45,27 @@ export async function handleOpenDirect(
     );
   }
   return openDirect(deps, account.id, plan);
+}
+
+// The route (R1). It takes the account that the session check put on the
+// request, calls the handler and turns its result into a status and a body.
+// The handler runs through `toSafeError`, so a failed insert logs a Postgres
+// code and a constraint name and no id (R20).
+export function directRoutes(deps: DirectDeps): FastifyPluginAsync {
+  return async (scope) => {
+    scope.post("/direct-conversations", async (request, reply) => {
+      try {
+        const account = request.account!;
+        const result = await handleOpenDirect(
+          deps,
+          { id: account.id, role: account.role },
+          request.body,
+        );
+        reply.code(result.status);
+        return { conversation: result.conversation };
+      } catch (error) {
+        throw toSafeError(error);
+      }
+    });
+  };
 }

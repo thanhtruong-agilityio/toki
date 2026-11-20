@@ -14,6 +14,7 @@ import { registerHealth } from "./health.js";
 import { registerAuthHooks, registerAuthRoutes } from "./modules/auth/index.js";
 import {
   channelRoutes,
+  directRoutes,
   type ChannelDepsInput,
 } from "./modules/conversations/index.js";
 import { createMailLayer, type MailLayer } from "./modules/mail/index.js";
@@ -141,6 +142,7 @@ export function buildApp({
       await scope.register(
         channelRoutes({ db, clock, getAccountsByIds, ...channelDeps }),
       );
+      await scope.register(directRoutes({ db, clock, getAccountsByIds }));
       await registerRoutes?.(scope);
     });
   } else {

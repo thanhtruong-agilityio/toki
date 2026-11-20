@@ -13,3 +13,5 @@ export {
 } from "./general.js";
 export { channelRoutes } from "./channel-routes.js";
 export type { ChannelDepsInput } from "./deps.js";
+export { directRoutes } from "./direct-routes.js";
+export type { DirectDeps } from "./deps.js";
