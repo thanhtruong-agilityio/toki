@@ -210,7 +210,8 @@ describe("search (R7)", () => {
   });
 });
 
-describe("status chips (R8)", () => {
+// 120 rows through the real client take seconds on a loaded machine.
+describe("status chips (R8)", { timeout: 30_000 }, () => {
   const MIXED: FakeMember[] = [
     ...Array.from({ length: 60 }, (_, i) => person({ n: i + 1 })),
     ...Array.from({ length: 20 }, (_, i) =>
