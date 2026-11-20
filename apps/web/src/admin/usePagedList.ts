@@ -86,10 +86,15 @@ function reducer<Row, Meta>(
         ...state,
         status: state.status === "ready" ? "ready" : "failed",
         isRefreshing: false,
+        // The cursor was cleared when the refresh started, so there is nothing to load until a
+        // reload works; the Retry line is the way on.
+        hasMore: false,
         error: action.error,
       };
     case "moreStart":
-      return { ...state, isLoadingMore: true, moreFailed: false };
+      // The error of an earlier failed page is cleared when the retry starts, so the Retry line does
+      // not stay beside a request that is running.
+      return { ...state, isLoadingMore: true, moreFailed: false, error: null };
     case "moreLoaded": {
       const seen = new Set(state.rows.map(action.rowKey));
       const added = action.page.rows.filter((row) => {
@@ -104,6 +109,7 @@ function reducer<Row, Meta>(
         meta: action.page.meta,
         hasMore: action.page.nextCursor !== null,
         isLoadingMore: false,
+        error: null,
       };
     }
     case "moreFailed":

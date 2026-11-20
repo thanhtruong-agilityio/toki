@@ -207,6 +207,24 @@ describe("more on scroll (R9)", () => {
     gate.release();
   });
 
+  it("has nothing more to load after a refresh failed, until a reload works (verifier round 3)", async () => {
+    let fail = false;
+    const { result } = setup({
+      members: manyMembers(120),
+      fail: () => (fail ? failWith(500, "internal_error") : undefined),
+    });
+    await ready(result);
+    expect(result.current.hasMore).toBe(true);
+    fail = true;
+    await act(async () => result.current.reload());
+    await waitFor(() => expect(result.current.error).not.toBeNull());
+    expect(result.current.hasMore).toBe(false);
+    fail = false;
+    await act(async () => result.current.reload());
+    await waitFor(() => expect(result.current.error).toBeNull());
+    expect(result.current.hasMore).toBe(true);
+  });
+
   it("never asks twice for one cursor", async () => {
     const gate = hold();
     const { result, server } = setup({
@@ -255,6 +273,8 @@ describe("more on scroll (R9)", () => {
     await act(async () => result.current.loadMore());
     await waitFor(() => expect(result.current.rows).toHaveLength(100));
     expect(result.current.moreFailed).toBe(false);
+    // The error of the failed page is gone once the retry worked (verifier round 3).
+    expect(result.current.error).toBeNull();
     expect(cursorCalls(server).map((c) => c.query.cursor)).toEqual([
       "o:50",
       "o:50",

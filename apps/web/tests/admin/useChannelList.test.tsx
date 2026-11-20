@@ -125,6 +125,37 @@ describe("the channel list (R32)", () => {
     await waitFor(() => expect(none.result.current.status).toBe("failed"));
   });
 
+  it("is not busy and has no old error when a refresh fails after it cancelled a load-more, and clears the error when a retry works (verifier rounds 2 and 3)", async () => {
+    const gate = hold();
+    let failCursor = false;
+    const { result } = setup({
+      channels: manyChannels(120),
+      ignoreAbort: true,
+      gate: (call) => (call.query.cursor ? gate.promise : undefined),
+      fail: (call) =>
+        failCursor && call.query.cursor
+          ? failWith(500, "internal_error")
+          : undefined,
+    });
+    await ready(result);
+    act(() => result.current.loadMore());
+    await waitFor(() => expect(result.current.isLoadingMore).toBe(true));
+    await act(async () => result.current.reload());
+    await waitFor(() => expect(result.current.isRefreshing).toBe(false));
+    expect(result.current.isLoadingMore).toBe(false);
+    gate.release();
+
+    // A later page fails, then the retry works: no error is left beside the new rows.
+    failCursor = true;
+    await act(async () => result.current.loadMore());
+    await waitFor(() => expect(result.current.moreFailed).toBe(true));
+    failCursor = false;
+    await act(async () => result.current.loadMore());
+    await waitFor(() => expect(result.current.rows).toHaveLength(100));
+    expect(result.current.error).toBeNull();
+    expect(result.current.moreFailed).toBe(false);
+  });
+
   it("tells the page on a 403", async () => {
     const { forbidden } = setup({ fail: () => failWith(403, "forbidden") });
     await waitFor(() => expect(forbidden).toHaveBeenCalledTimes(1));
