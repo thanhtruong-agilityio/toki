@@ -68,3 +68,46 @@ The harness already records the text of each statement (`debug`) but drops the c
 - Database tests of the two reads on two workspaces, in their own folders.
 - Route and build tests on the real Postgres with `createHarness` (R1 to R14, R18 to R20); the 500-conversation fixtures are inserted by SQL in a few statements.
 - Commands (Node 22): `pnpm --filter @toki/server exec vitest run --config vitest.db.config.ts tests/bootstrap` with `TEST_DATABASE_URL` set to the ticket's test Postgres (a container on a free loopback port, URL given in the shell, never written to `.env`); `pnpm exec vitest run packages/shared/tests`; `pnpm typecheck`; `pnpm lint`; `pnpm format:check`.
+
+## Steps (test first, each step ends with its tests green)
+
+1. **Schemas** (`packages/shared`): `bootstrap/schemas.ts`, `memberIds` UUID check in `direct-conversations.ts`, index export. Unit tests first (R2, R3, R7, R17 cases).
+2. **`listPeople`** (`members/people.ts`, export). Database test on two workspaces (R5, R15).
+3. **`listConversationSummaries`** (`conversations/summaries.ts`, export, `EXPORTED_NAMES` of the export-list test). Database test on two workspaces (R6, R7, R15).
+4. **Statement recorder in the harness** (connection id kept). Test the recorder on one plain transaction before relying on it.
+5. **`buildBootstrap` and `readEventNumber`**: the transaction opened with `db.$client.begin(...)`; seams `afterAccount`, `getAccountsByIds`, `readEventNumber`. Tests of R3, R4, R10, R11 and R19 call it directly.
+6. **Route and registration** (`bootstrap/routes.ts`, `index.ts`, `app.ts`): R1, R13, R16 (route listed, no path outside `/api/v1`, no import of `bootstrap` inside `modules/`).
+7. **Fixtures and bounds**: R2 (strict parse and added keys), R5, R6, R7, R8, R9, R12, R14, R18, R20 on the route.
+8. Hand check once (R: Testing, last bullet), whole-repository `pnpm test`, lint, typecheck, format.
+
+## AC to step to test
+
+| Req | Step | Test |
+|---|---|---|
+| R1 session of each role, three 401 codes, no workspace data in them | 6 | `tests/bootstrap/route.db.test.ts` |
+| R2 five keys, strict parse, one added key at each level | 1, 7 | `bootstrap-schemas.test.ts`; `route.db.test.ts` |
+| R3 `user` equals `/auth/session`, only email in the body | 5, 6 | `build.db.test.ts`; `route.db.test.ts` |
+| R4 workspace name and id; a different `workspaceId` is 500; null workspace is 500 | 5 | `build.db.test.ts` (seam) |
+| R5 people complete, order, four keys, no emails | 2, 7 | `people.db.test.ts`; `route.db.test.ts` |
+| R6 which conversations come and which do not; leaving and archiving | 3, 7 | `summaries.db.test.ts`; `route.db.test.ts` |
+| R7 channel and dm entries, exact keys, order in byte collation, `memberIds` of 8 | 1, 3, 7 | `bootstrap-schemas.test.ts`; `summaries.db.test.ts`; `route.db.test.ts` |
+| R8 own level, mute, star; defaults per kind; no other person's values | 3, 5, 7 | `summaries.db.test.ts`; `route.db.test.ts` |
+| R9 500 conversations, no cursor | 7 | `route.db.test.ts` |
+| R10 snapshot with four concurrent changes; isolation, read-only, refused `update` (own test); deactivated inside the snapshot is 401 | 5 | `build.db.test.ts` |
+| R11 0 today; fake returning 41 gets the same transaction | 5 | `build.db.test.ts` |
+| R12 no key outside the schema, no seeded text | 1, 7 | `bootstrap-schemas.test.ts`; `route.db.test.ts` |
+| R13 `no-store`, media type, no row changed, route listed | 6 | `route.db.test.ts` |
+| R14 7 or fewer statements, equal on both fixtures, equal totals | 4, 7 | `statements.db.test.ts` |
+| R15 two reads, two workspaces, empty list, deleted member row, export list, lint | 2, 3 | `people.db.test.ts`; `summaries.db.test.ts`; `exports.test.ts`; `pnpm lint` |
+| R16 folder, imports, no module imports `bootstrap` | 6 | `route.db.test.ts`; `pnpm lint` |
+| R17 schemas, each rejected case | 1 | `bootstrap-schemas.test.ts` |
+| R18 nothing of a conversation left out, no ids of private conversations | 7 | `route.db.test.ts` |
+| R19 deactivated person stays; reactivated | 7 | `route.db.test.ts` |
+| R20 body under 250,000 and 400,000 bytes | 7 | `size.db.test.ts` |
+
+## What can break, and the riskiest step
+
+- **Step 5, the transaction.** `db.$client.begin("isolation level repeatable read read only", ...)` hands the code a `drizzle(sql)` handle; if the `$client` of a `Db` built by `createDb` is not the postgres-js client, or the handle does not take part in the open transaction, the reads run on other connections and R10 fails silently. The R10 test (a second connection commits during the snapshot) and the `show transaction_*` checks prove it; they are written before the code.
+- A statement count that the recorder reads wrong would pass R14 for the wrong reason: step 4 tests the recorder first and the count test also asserts the exact statement texts it sees.
+- `string_to_array` of `dm_key` returns text, not uuid: the test of R7 compares it with the key order.
+- The harness change (connection id) must not break the tests that use it: the full suite is run after step 4.
