@@ -35,6 +35,18 @@ vi.mock("../../src/client", async () =>
   (await import("../support/conversation-store")).clientModule(),
 );
 
+// R32 (c) test: with `blindSession` on, the subscription of (b) hears nothing, so only the read at
+// unmount can reset the store.
+const blind = vi.hoisted(() => ({ on: false }));
+vi.mock("@toki/client-core", async (original) => {
+  const actual = await original<typeof import("@toki/client-core")>();
+  return {
+    ...actual,
+    subscribeSession: (listener: () => void) =>
+      blind.on ? () => {} : actual.subscribeSession(listener),
+  };
+});
+
 const rows: SectionRow[] = [
   {
     id: "home",
@@ -372,6 +384,36 @@ describe("the life of the store (R32)", () => {
     markSignedOut();
     view.unmount();
     expect(h.store.getState().status).toBe("idle");
+  });
+
+  describe("(c) alone, when (b) heard nothing", () => {
+    beforeEach(() => {
+      blind.on = true;
+    });
+    afterEach(() => {
+      blind.on = false;
+    });
+
+    test("the session left signedIn, then unmount: the store is reset", async () => {
+      await real();
+      const { view } = await mount();
+      await act(async () => {});
+      expect(h.store.getState().status).toBe("ready");
+      markSignedOut();
+      expect(h.store.getState().status).toBe("ready");
+      view.unmount();
+      expect(h.store.getState().status).toBe("idle");
+    });
+
+    test("another person signed in, then unmount: the store is reset", async () => {
+      await real();
+      const { view } = await mount();
+      await act(async () => {});
+      signedIn("someone-else");
+      expect(h.store.getState().status).toBe("ready");
+      view.unmount();
+      expect(h.store.getState().status).toBe("idle");
+    });
   });
 
   test("`seen` holds the ids while ready and is empty after a reset", async () => {

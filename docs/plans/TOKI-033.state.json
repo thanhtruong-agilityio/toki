@@ -24,6 +24,10 @@
     {
       "at": "2026-11-20T10:22:18Z",
       "stage": "build"
+    },
+    {
+      "at": "2026-11-20T11:10:48Z",
+      "stage": "check"
     }
   ],
   "key": "TOKI-033",
@@ -38,10 +42,10 @@
   "spec_paths": [
     "docs/specs/2026-11-17-conversation-list-design.md"
   ],
-  "stage": "build",
+  "stage": "check",
   "tier": "L",
   "verifier": {
-    "result": null,
-    "round": 0
+    "result": "FAIL",
+    "round": 1
   }
 }
