@@ -159,3 +159,24 @@ describe("the layout route for a Member and for an Admin (R36)", () => {
     expect(ids()).toEqual(["home", "activity", "people"]);
   });
 });
+
+describe("the role of the shell comes from the session (TOKI-025 R2)", () => {
+  test("a signed-in Admin sees the Admin entry without a role prop", async () => {
+    markSignedIn({ ...user, role: "admin" });
+    await mount("en");
+    const links = [
+      ...screen.getByRole("navigation").querySelectorAll<HTMLElement>("a.ni"),
+    ];
+    expect(links.map((a) => a.textContent)).toEqual(["Home", "Admin"]);
+    expect(document.querySelector('a.ni[data-id="admin"]')).toHaveAttribute(
+      "href",
+      "/admin",
+    );
+  });
+
+  test("a signed-in Member does not", async () => {
+    markSignedIn({ ...user, role: "member" });
+    await mount("en");
+    expect(document.querySelector('a.ni[data-id="admin"]')).toBeNull();
+  });
+});

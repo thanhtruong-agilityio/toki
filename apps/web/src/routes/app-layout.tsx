@@ -12,13 +12,14 @@ import {
   type Role,
   type SectionRow,
 } from "../layout/sections";
+import { useSession } from "../useSession";
 import { rootRoute } from "./__root";
 
 // The one component that wires the shell to the app: translations, the section
 // list, the router's navigation and the current path. The tickets that own the
 // workspace, the account, the list and the panel extend it here (R30).
-// `role` and `rows` are for tests: the route renders with none (no session
-// state yet), and a test gives the role and the list it wants (R36).
+// `role` and `rows` are for tests: the route renders with none and reads the role from the
+// session, and a test gives the role and the list it wants (R36).
 export function AppShellRoute({
   role,
   rows: list,
@@ -26,8 +27,12 @@ export function AppShellRoute({
   const { t } = useTranslation();
   const router = useRouter();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  // No session state exists yet (TOKI-023 adds it), so no role is known.
-  const rows = visibleSections(role, list);
+  // The role is the session's (TOKI-025 R2): with no session no role is known, so a role-only
+  // row such as Admin is not drawn. The server repeats every check, so this only shapes the screen.
+  const session = useSession();
+  const sessionRole =
+    session.status === "signedIn" ? session.user.role : undefined;
+  const rows = visibleSections(role ?? sessionRole, list);
   const navSections: NavSection[] = rows.map((row) => ({
     id: row.id,
     icon: row.icon,
