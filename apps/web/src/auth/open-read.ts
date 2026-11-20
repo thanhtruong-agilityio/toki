@@ -15,7 +15,17 @@ let started = false;
 export async function readSessionOnOpen(isPublic: boolean): Promise<void> {
   if (started) return;
   started = true;
-  const result = await getAuthServices().openCalls.readSession();
+  const result = await getAuthServices().calls.readSession();
+  // The client reports a 401 to the session state as it arrives, before this
+  // line: with the code `account_deactivated` that is the state `ended`. On a
+  // public route any 401 is no session and no modal (R40), so say so first.
+  if (
+    isPublic &&
+    result.kind === "unauthenticated" &&
+    getSessionState().status === "ended"
+  ) {
+    markSignedOut();
+  }
   if (getSessionState().status !== "unknown") return;
   if (result.kind === "ok") markSignedIn(result.user);
   else if (result.kind === "unauthenticated") {

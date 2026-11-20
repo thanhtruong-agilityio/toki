@@ -9,6 +9,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@toki/shared": "workspace:*"
+    "@toki/shared": "workspace:*",
+    "zod": "4.6.7"
   }
 }

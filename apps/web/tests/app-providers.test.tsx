@@ -12,7 +12,7 @@ import { beforeEach, describe, expect, test } from "vitest";
 import { AppProviders } from "../src/app-providers";
 import { LANGUAGE_KEY, readDeviceLanguage } from "../src/auth/language";
 import { setAuthServices } from "../src/auth/services";
-import { timers } from "../src/auth/timers";
+import { timers } from "../src/client";
 import { clock } from "../src/clock";
 import { routeTree } from "../src/router";
 import {
@@ -27,7 +27,6 @@ beforeEach(() => {
   const calls = createFakeCalls();
   setAuthServices({
     calls,
-    openCalls: calls,
     emergency: createFakeEmergency(),
     clock,
     timers,

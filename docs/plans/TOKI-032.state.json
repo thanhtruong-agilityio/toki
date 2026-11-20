@@ -1,0 +1,55 @@
+{
+  "approved_auto": false,
+  "base": "main",
+  "branch": "feat/toki-032-client-core",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-20T03:54:35Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-20T03:54:35Z",
+      "stage": "explore"
+    },
+    {
+      "at": "2026-11-20T03:59:00Z",
+      "stage": "plan"
+    },
+    {
+      "at": "2026-11-20T03:59:00Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-20T03:59:00Z",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-20T04:13:43Z",
+      "stage": "check"
+    },
+    {
+      "at": "2026-11-20T09:29:26Z",
+      "auto": false,
+      "stage": "approve"
+    }
+  ],
+  "key": "TOKI-032",
+  "main_sha": "88f92548ad8c04d81489354f97e6b3d10f5549c9",
+  "metrics": {},
+  "mode": "Auto to check",
+  "plan_approved": true,
+  "plan_hash": "26c0b145b30f8749c8366709527482cdacb4e096a9a710fe6d9d44258fbd1a15",
+  "pr": 187,
+  "spec_commit": "929376f9844e65fbd0094d5edc86f38a812e3b25",
+  "spec_paths": [
+    "docs/specs/2026-11-17-client-core-design.md"
+  ],
+  "stage": "check",
+  "tier": "L",
+  "verifier": {
+    "result": "PASS",
+    "round": 4
+  }
+}

@@ -13,26 +13,26 @@ describe("opening Toki: the session read (R1, R2, R44)", () => {
   test("while the session is read the page shows the background only", async () => {
     const read = deferred<SessionReadOutcome>();
     const t = await loadApp({
-      openCalls: { readSession: () => read.promise },
+      calls: { readSession: () => read.promise },
     });
     await t.mount();
     expect(t.session.getSessionState()).toEqual({ status: "unknown" });
     expect(document.body.textContent).toBe("");
     expect(app()).toBeNull();
     expect(screen.queryByLabelText("Email")).toBeNull();
-    expect(t.openCalls.readSession).toHaveBeenCalledTimes(1);
+    expect(t.calls.readSession).toHaveBeenCalledTimes(1);
 
     read.resolve({ kind: "ok", user });
     await t.settle();
     expect(t.session.getSessionState()).toEqual({ status: "signedIn", user });
     expect(await screen.findByTestId("shell")).toBeInTheDocument();
-    expect(t.openCalls.readSession).toHaveBeenCalledTimes(1);
+    expect(t.calls.readSession).toHaveBeenCalledTimes(1);
   });
 
   test("401 unauthenticated opens /login with the opened address as next", async () => {
     const t = await loadApp({
       path: "/nope?x=1",
-      openCalls: {
+      calls: {
         readSession: async () => ({
           kind: "unauthenticated",
           code: "unauthenticated",
@@ -50,7 +50,7 @@ describe("opening Toki: the session read (R1, R2, R44)", () => {
 
   test("401 session_ended opens /login, with no modal", async () => {
     const t = await loadApp({
-      openCalls: {
+      calls: {
         readSession: async () => ({
           kind: "unauthenticated",
           code: "session_ended",
@@ -89,7 +89,7 @@ describe("opening Toki: the session read (R1, R2, R44)", () => {
 
   test("opened as deactivated: the modal over the page background, with the link and no app", async () => {
     const t = await loadApp({
-      openCalls: {
+      calls: {
         readSession: async () => ({
           kind: "unauthenticated",
           code: "account_deactivated",
@@ -140,7 +140,7 @@ describe("a session that ends while the app is showing (R24 to R27)", () => {
     const t = await loadApp();
     t.session.markSignedIn(user);
     await t.mount();
-    expect(t.openCalls.readSession).not.toHaveBeenCalled();
+    expect(t.calls.readSession).not.toHaveBeenCalled();
   });
 
   test("'Sign in again' opens /login with the address showing and the last email filled in", async () => {
@@ -183,7 +183,7 @@ describe("a route with the flag public (R40, R44)", () => {
     const t = await loadApp({
       path: "/join",
       extraRoutes: true,
-      openCalls: { readSession: () => read.promise },
+      calls: { readSession: () => read.promise },
     });
     await t.mount();
     expect(screen.queryByTestId("join-page")).toBeNull();

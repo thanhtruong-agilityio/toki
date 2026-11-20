@@ -24,3 +24,30 @@ export {
   type EmergencyCalls,
   type EmergencyOutcome,
 } from "./auth/emergency";
+export {
+  createApiClient,
+  type ApiClient,
+  type ApiClientOptions,
+  type QueryValue,
+  type RequestOptions,
+  type Timers,
+} from "./api/client";
+export { ApiError, type ApiErrorInit, type ApiErrorKind } from "./api/errors";
+export { classifyApiError, type ErrorScreen } from "./api/classify";
+export { anyAnswer } from "./api/parse";
+export {
+  createConversationStore,
+  type ConversationStore,
+  type StoreApi,
+} from "./conversations/store";
+export { foldSearchText } from "./conversations/search";
+export type {
+  ChannelRead,
+  ConversationList,
+  ConversationState,
+  ConversationStatus,
+  ListFilter,
+  ListRow,
+  SettingsValues,
+  Unread,
+} from "./conversations/types";

@@ -64,7 +64,7 @@ describe("reaching the page (TOKI-026 R40)", () => {
     const read = deferred<{ kind: "ok"; user: typeof user }>();
     const t = await loadApp({
       path: "/emergency",
-      openCalls: { readSession: () => read.promise },
+      calls: { readSession: () => read.promise },
     });
     await t.mount();
     expect(screen.queryByRole("button")).toBeNull();
@@ -75,7 +75,7 @@ describe("reaching the page (TOKI-026 R40)", () => {
   test("a 401 account_deactivated on the session read is no session and shows no modal", async () => {
     const t = await openEmergency(
       {
-        openCalls: {
+        calls: {
           readSession: async () => ({
             kind: "unauthenticated",
             code: "account_deactivated",

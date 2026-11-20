@@ -14,7 +14,6 @@ export async function loadApp(
     path?: string;
     language?: "en" | "vi";
     calls?: Parameters<typeof createFakeCalls>[0];
-    openCalls?: Parameters<typeof createFakeCalls>[0];
     emergency?: Parameters<typeof createFakeEmergency>[0];
     /** Extra routes under the root, for a test of the flag `public`. */
     extraRoutes?: boolean;
@@ -55,9 +54,8 @@ export async function loadApp(
   const clock = shared.createTestClock();
   const timers = createFakeTimers(clock);
   const calls = createFakeCalls(options.calls);
-  const openCalls = createFakeCalls(options.openCalls);
   const emergency = createFakeEmergency(options.emergency);
-  services.setAuthServices({ calls, openCalls, emergency, clock, timers });
+  services.setAuthServices({ calls, emergency, clock, timers });
 
   let tree = router.routeTree;
   if (options.extraRoutes) {
@@ -91,7 +89,6 @@ export async function loadApp(
   return {
     router: app,
     calls,
-    openCalls,
     emergency,
     clock,
     timers,
