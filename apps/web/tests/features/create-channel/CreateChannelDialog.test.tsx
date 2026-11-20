@@ -325,22 +325,20 @@ describe("people (R9)", () => {
     expect(names).toHaveLength(3);
   });
 
-  test("with 201 candidates the 201st press shows the limit and adds nobody", async () => {
+  test("with 201 candidates the 201st press shows the limit and adds nobody", () => {
     fake.people = [fake.people[0]!, ...makePeople(201)];
-    const { user } = setup();
-    for (let i = 1; i <= 200; i++) {
-      await user.click(
-        screen.getByRole("button", {
-          name: new RegExp(`Person ${String(i).padStart(3, "0")}$`),
-        }),
-      );
-    }
-    await user.click(screen.getByRole("button", { name: /Person 201$/ }));
+    setup();
+    const rows = () =>
+      Array.from(document.querySelectorAll<HTMLButtonElement>("button.prow"));
+    expect(rows()).toHaveLength(201);
+    for (let i = 0; i < 200; i++) fireEvent.click(rows()[i]!);
+    expect(screen.queryByText("You can add up to 200 people.")).toBeNull();
+    fireEvent.click(rows()[200]!);
     expect(
       screen.getByText("You can add up to 200 people."),
     ).toBeInTheDocument();
-    expect(screen.getAllByRole("button", { pressed: true })).toHaveLength(200);
-  }, 60_000);
+    expect(rows().filter((r) => r.ariaPressed === "true")).toHaveLength(200);
+  }, 30_000);
 });
 
 describe("the state of Create (R10)", () => {
@@ -442,7 +440,7 @@ describe("sending (R11, R12)", () => {
     },
   );
 
-  test("a dialog unmounted before the answer calls nothing", async () => {
+  test("a dialog unmounted before the answer closes and opens nothing, and leaves onCreated to its owner's check", async () => {
     const request = hold();
     const onClose = vi.fn();
     const onOpenConversation = vi.fn();
@@ -454,7 +452,7 @@ describe("sending (R11, R12)", () => {
     await request.resolve("late");
     expect(onClose).not.toHaveBeenCalled();
     expect(onOpenConversation).not.toHaveBeenCalled();
-    expect(onCreated).not.toHaveBeenCalled();
+    expect(onCreated).toHaveBeenCalledWith("late");
   });
 
   test("offline sends nothing, the dialog stays and the toast explains", async () => {

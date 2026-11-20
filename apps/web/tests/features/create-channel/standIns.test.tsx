@@ -7,11 +7,19 @@ import {
   within,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import {
+  createMemoryHistory,
+  createRootRoute,
+  createRoute,
+  createRouter,
+  RouterProvider,
+} from "@tanstack/react-router";
 import { useState } from "react";
 import { afterEach, describe, expect, test, vi } from "vitest";
 import { conversations } from "../../../src/client";
 import {
   personHue,
+  useOpenConversation,
   useCurrentRole,
   useCurrentUserId,
   usePeople,
@@ -148,5 +156,31 @@ describe("stand-in PeoplePicker (R18 of TOKI-034)", () => {
       within(document.body).getByRole("button", { name: "Remove Lan Nguyễn" }),
     ).toBeDisabled();
     await act(async () => {});
+  });
+});
+
+describe("stand-in navigation (TOKI-033 route /c/$conversationId)", () => {
+  test("opens /c/{id} with the router", async () => {
+    const user = userEvent.setup();
+    function Opener() {
+      const open = useOpenConversation();
+      return (
+        <button type="button" onClick={() => open("abc")}>
+          go
+        </button>
+      );
+    }
+    const root = createRootRoute({ component: Opener });
+    const index = createRoute({
+      getParentRoute: () => root,
+      path: "/",
+    });
+    const router = createRouter({
+      routeTree: root.addChildren([index]),
+      history: createMemoryHistory({ initialEntries: ["/"] }),
+    });
+    render(<RouterProvider router={router} />);
+    await user.click(await screen.findByRole("button", { name: "go" }));
+    expect(router.state.location.pathname).toBe("/c/abc");
   });
 });

@@ -159,13 +159,14 @@ function CreateChannelForm({
       attempt,
       values: { name, isPrivate, topic, memberIds: selected },
     });
-    // The command has updated the store whatever happens here; a dialog that is
-    // gone has nobody to tell (R12).
+    // The command has updated the store whatever happens here. `onCreated`
+    // checks its own owner (`useCreateChannelDialog`); a dialog that is gone has
+    // nobody else to tell (R12).
+    if (result.kind === "created") onCreated?.(result.id);
     if (!mounted.current) return;
     switch (result.kind) {
       case "created":
         busyRef.current = false;
-        onCreated?.(result.id);
         onClose();
         onOpenConversation(result.id);
         return;
