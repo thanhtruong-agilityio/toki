@@ -34,6 +34,7 @@ import {
   requestHash,
   type RequestAction,
 } from "./idempotency.js";
+import { registerInvitationJoinRoutes } from "./invitation-join.routes.js";
 import { listMembers } from "./list.js";
 import {
   inviteBatch,
@@ -84,6 +85,9 @@ export function registerMembersRoutes(
     mail: deps.mail,
     appOrigin: deps.appOrigin,
   };
+
+  // The three public routes of the Join page (TOKI-097): no session, no role.
+  registerInvitationJoinRoutes(scope, { db, clock });
 
   // The repeat rule (R13): claim the key, answer a repeat from the stored
   // response, store a 200 and nothing else.

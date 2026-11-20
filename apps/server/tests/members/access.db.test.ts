@@ -209,7 +209,7 @@ describe("the list (R1, R3)", () => {
 });
 
 describe("the registered routes (R3)", () => {
-  it("are seven: one GET and six POST, with no PUT, PATCH or DELETE", () => {
+  it("are seven: one GET and six POST, with no PUT, PATCH or DELETE (the three public routes of the Join page, TOKI-097, are counted in join-hardening)", () => {
     const tree = h.app.printRoutes({ commonPrefix: false });
     // The lines of the two branches of this work only: the top-level line and
     // the lines indented under it, until the next top-level line.
@@ -221,14 +221,22 @@ describe("the registered routes (R3)", () => {
       }
       if (inside) own.push(line.replace(/^[│├└─\s]+/, "").trim());
     }
-    expect(own).toEqual([
-      "/api/v1/members (GET, HEAD)",
-      "/:userId/role (POST)",
-      "/:userId/reactivate (POST)",
-      "/:userId/deactivate (POST)",
-      "/api/v1/invitations (POST)",
-      "/:invitationId/resend (POST)",
-      "/:invitationId/revoke (POST)",
-    ]);
+    // The three public routes of the Join page sit under the same prefix; they are POST only.
+    const join = own.filter((l) => /^\/(lookup|codes|sessions) /.test(l));
+    expect(join.sort()).toEqual(["/lookup (POST)"]);
+    own.splice(0, own.length, ...own.filter((l) => !join.includes(l)));
+    // The tree lists the branches in an order that follows the routes registered under the same
+    // prefix, so the lines are compared as a set.
+    expect([...own].sort()).toEqual(
+      [
+        "/api/v1/members (GET, HEAD)",
+        "/:userId/role (POST)",
+        "/:userId/reactivate (POST)",
+        "/:userId/deactivate (POST)",
+        "/api/v1/invitations (POST)",
+        "/:invitationId/resend (POST)",
+        "/:invitationId/revoke (POST)",
+      ].sort(),
+    );
   });
 });
