@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 import { deferred, user } from "../support/auth-harness";
 import { loadApp } from "../support/load-app";
 import type { SessionReadOutcome } from "@toki/client-core";
@@ -134,6 +134,23 @@ describe("a session that ends while the app is showing (R24 to R27)", () => {
     expect(
       screen.getByRole("button", { name: "Sign in again" }),
     ).toBeInTheDocument();
+  });
+
+  test("a signed-in mount fetches nothing: the store is the fake one", async () => {
+    const fetchSpy = vi.fn(() => {
+      throw new Error("a real fetch in jsdom");
+    });
+    vi.stubGlobal("fetch", fetchSpy);
+    try {
+      const t = await loadApp();
+      t.session.markSignedIn(user);
+      await t.mount();
+      expect(await screen.findByTestId("shell")).toBeInTheDocument();
+      await t.settle();
+      expect(fetchSpy).not.toHaveBeenCalled();
+    } finally {
+      vi.unstubAllGlobals();
+    }
   });
 
   test("the session is not read again when the state is already known", async () => {

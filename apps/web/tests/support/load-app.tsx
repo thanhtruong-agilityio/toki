@@ -6,6 +6,12 @@ import {
   createFakeTimers,
 } from "./auth-harness";
 
+// The conversation store behind `src/client` is a real store over a fake api (the seam of
+// `conversation-store.ts`), so a signed-in mount never fetches /api/v1/bootstrap in jsdom.
+vi.mock("../../src/client", async () =>
+  (await import("./conversation-store")).clientModule(),
+);
+
 // The session state of client-core is one value for the page and cannot go back to `unknown`, so every
 // test loads the app anew: the modules of the workspace (the store, the router, the memory of the
 // page) are made again, React and the router library stay.
@@ -50,6 +56,7 @@ export async function loadApp(
   platform.setPlatform(platformWeb.createWebPlatform());
   memory.sessionMemory.reset();
   openRead.resetSessionOnOpen();
+  (await import("./conversation-store")).useFakeStore();
 
   const clock = shared.createTestClock();
   const timers = createFakeTimers(clock);
