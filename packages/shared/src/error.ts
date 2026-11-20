@@ -50,6 +50,9 @@ export const ErrorCodes = {
   channelIsGeneral: "channel_is_general",
   invalidMember: "invalid_member",
   selfTarget: "self_target",
+  directWithSelf: "direct_with_self",
+  groupTooLarge: "group_too_large",
+  personDeactivated: "person_deactivated",
 } as const;
 
 export type ErrorCode = (typeof ErrorCodes)[keyof typeof ErrorCodes];

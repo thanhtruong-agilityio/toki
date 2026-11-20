@@ -28,6 +28,7 @@ export const EXPORTED_NAMES = [
   "addMemberToGeneral",
   "getGeneralConversationId",
   "channelRoutes",
+  "directRoutes",
 ];
 
 describe("the public surface of the conversations module (R18)", () => {
@@ -73,8 +74,12 @@ describe("R24: no test or source of this change imports another module's table",
       "../../src/modules/conversations/changes.ts",
       "../../src/modules/conversations/channel-routes.ts",
       "../../src/modules/conversations/deps.ts",
+      "../../src/modules/conversations/direct.ts",
+      "../../src/modules/conversations/direct-open.ts",
+      "../../src/modules/conversations/direct-routes.ts",
       "../../src/modules/conversations/safe-error.ts",
       "channels.access.test.ts",
+      "direct.test.ts",
       "channels.safe-error.test.ts",
       "facts.test.ts",
       "facts.db.test.ts",
