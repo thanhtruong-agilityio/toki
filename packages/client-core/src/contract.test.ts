@@ -93,6 +93,8 @@ describe("the contract for the screens (R27)", () => {
       .parameter(0)
       .toEqualTypeOf<((code: string) => void) | null>();
     expectTypeOf(api.bootstrap).toBeFunction();
+    // beyond the table: the same call with the status of the answer
+    expectTypeOf(api.requestWithStatus).toBeFunction();
     expectTypeOf(api.channels.list).toBeFunction();
     expectTypeOf(api.directConversations.open).toBeFunction();
     expectTypeOf(api.conversations.saveSettings).toBeFunction();
