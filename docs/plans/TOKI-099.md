@@ -63,7 +63,7 @@ Order of work: the platform and client-core pieces first (no UI), then the web p
 ## What can break, and the riskiest step
 
 - Riskiest step: 5, Sign out. The order of the six steps is the contract (a failed call must leave the person signed in; the signal and the reset must not depend on an effect of a layout that the state change unmounts). The 10 s task window must use `timers.after` from the web app, not `setTimeout`, so the test can fire it. A never-settling task must not hold the call: race the tasks against the timer and cancel the timer when the tasks settle first.
-- Step 6: the split of `AppShellRoute` and the two `ToastProvider`s. A test must fail if the toast of a failed sign-out is rendered twice or not at all; the real provider is used, not a stand-in.
+- Step 6: `AccountHost` inside the one `ToastProvider` of the shell. A test must fail if the toast of a failed sign-out is rendered twice or not at all; the real provider is used, not a stand-in.
 - Step 6: `endLocalSession` runs from the tab listener while `AppShellRoute` is mounted and from `signOut`; it must be safe to call twice (`reset()` of an empty store and `markSignedOut()` of a signed-out state are no-ops, which the tests assert).
 - Step 5: the running flag is module-level; tests must reset it between cases or they leak into each other.
 - Step 2: `schema: z.undefined()` with a 204; the schema library is the one of `@toki/shared`, not a second copy.
