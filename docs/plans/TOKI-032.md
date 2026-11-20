@@ -99,3 +99,17 @@ Vitest in `packages/client-core` (unit, no clock, fake `fetch`, fake `timers`, f
 - A snapshot or selector that returns a new object each call would pass a one-call test: the tests compare with `===` after a change that touches nothing they read.
 
 - Comments in `packages/client-core/src` must not contain `setTimeout(`, `setInterval(` or `new Date()`: `scripts/check-clock-use.sh` greps comments too. The store uses no `structuredClone`, `TextEncoder`, `crypto` or `globalThis` (not on the allow list of rule 1).
+
+## Files added during the build
+
+Not named above, needed by the steps:
+
+- `packages/client-core/src/api/fixtures.ts`, `api/test-support.ts`, `conversations/test-support.ts`: shared fakes and made-up bodies for the tests (a fake `fetch`, fake `timers`, a fake store `api` with deferred answers, the rich bootstrap body).
+- `packages/client-core/src/conversations/types.ts`: the state and list types. `ConversationState` has one key beyond the spec's list, `peopleList`, the array that `getPeople()` returns by reference (R22).
+- `conversations/selectors.ts` (`buildList`, `compareDirect`), `selectors.names-once.test.ts` (a counter on the name function through `vi.mock`), `store.reset.test.ts`, `store.commands.test.ts`, `store.order.test.ts`, `merge.test.ts`, `contract.test.ts` (R27 as a type test).
+- `api/methods.ts` (+ `methods.test.ts`): the typed methods of R9, built from the same `send` as `request`.
+- `api.requestWithStatus` (a member beyond the contract table, see Design 2) and `anyAnswer` (a passthrough schema), exported for the web adapter. An empty 2xx body is read as no value and goes through the schema (so `z.unknown()` takes it and a strict schema gives `invalid_response`); the sign-in calls needed this where the stand-in returned `undefined`.
+- `apps/web`: `src/timers.ts`, `src/client.ts`, `src/auth/request-adapter.ts` as planned; deleted `src/auth/fetch-api.ts`, `src/auth/timers.ts` and `tests/auth/fetch-api.test.ts`; changed `src/auth/services.ts`, `src/auth/open-read.ts` (the `markSignedOut()` step for a public route, only when the state is already `ended`), and in `tests/`: `support/load-app.tsx`, `routes/root.test.tsx`, `routes/emergency.test.tsx`, `routes/app-layout.test.tsx`, `app-providers.test.tsx` (the `openCalls` option and the old `auth/timers` import go). New tests: `timers.test.ts`, `client.test.ts`, `auth/request-adapter.test.ts`, `auth/open-read-real-client.test.ts`.
+- `pnpm-lock.yaml` and `packages/client-core/package.json` (`zod` 4.6.7, the version of `@toki/shared`), and `docs/plans/TOKI-032.state.json`.
+- R16's search of the package for `refresh(` and R24's search for texts with a space are shell searches run once (`grep`), not tests: the client-core package has no Node types, so a test cannot read files. Results: `refresh(` is defined once and called once (in `restoreChannel`) outside tests; the only English sentences are the fixed developer messages of R4. `scripts/check-clock-use.sh` reports nothing in `packages/client-core/src` (its nine hits are in `apps/server/src`, older than this ticket).
+- The hand check of the spec (call `conversations.load()` from the browser console with the server running) needs a running server and the first Admin; it is left to the person who merges. The hand check "a 401 on `bootstrap` shows the session-ended modal" is covered by `tests/client.test.ts` and `open-read-real-client.test.ts` with a fake `fetch`.
