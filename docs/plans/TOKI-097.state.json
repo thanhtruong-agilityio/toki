@@ -53,6 +53,7 @@
   "mode": "auto-to-check",
   "plan_approved": true,
   "plan_hash": "54a9bb6daca9a460d642f9b30e830bfbc4a9158cc69edde9417018664a7d4155",
+  "pr": 203,
   "spec_commit": "11be268d1019dc49f7dfdc5b977adfbf2dbf5036",
   "spec_paths": [
     "docs/specs/2026-11-17-accept-invitation-design.md"
