@@ -11,22 +11,48 @@
     {
       "at": "2026-11-20T01:46:52Z",
       "stage": "explore"
+    },
+    {
+      "at": "2026-11-20T01:51:04Z",
+      "stage": "plan"
+    },
+    {
+      "at": "2026-11-20T01:51:21Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-20T01:51:21Z",
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-20T01:51:21Z",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-20T02:00:54Z",
+      "stage": "check"
+    },
+    {
+      "at": "2026-11-20T02:05:23Z",
+      "auto": false,
+      "stage": "approve"
     }
   ],
   "key": "TOKI-030",
   "main_sha": "bc8b10b9659cf73272800f66e6e10514f635bc7e",
   "metrics": {},
-  "mode": null,
-  "plan_approved": false,
-  "plan_hash": null,
+  "mode": "Auto to check",
+  "plan_approved": true,
+  "plan_hash": "da49db052e7bba7f3a036159119df6e6a7adef9a6edf949b29ec4e45be66bdd8",
   "spec_commit": "d0dd0398ea665d2749f3f0b00c210834076002a4",
   "spec_paths": [
     "docs/specs/2026-11-17-dm-api-design.md"
   ],
-  "stage": "explore",
+  "stage": "check",
   "tier": "M",
   "verifier": {
-    "result": null,
-    "round": 0
+    "result": "FAIL",
+    "round": 1
   }
 }
