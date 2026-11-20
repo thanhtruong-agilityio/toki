@@ -89,6 +89,8 @@ export type StoreHarness = {
   /** Loads the store and lets the answer land. */
   loadNow(): Promise<void>;
   bootstrapCalls(): number;
+  /** The next `bootstrap()` waits until the returned function is called. */
+  holdNext(): () => void;
 };
 
 export function createStoreHarness(
@@ -96,9 +98,13 @@ export function createStoreHarness(
 ): StoreHarness {
   let next = body;
   let calls = 0;
+  let gate: Promise<void> | null = null;
   const api = {
     bootstrap: async () => {
       calls += 1;
+      const wait = gate;
+      gate = null;
+      if (wait) await wait;
       return structuredClone(next);
     },
   } as unknown as StoreApi;
@@ -108,6 +114,11 @@ export function createStoreHarness(
     answer: (b) => void (next = b),
     loadNow: () => store.load(),
     bootstrapCalls: () => calls,
+    holdNext() {
+      let release!: () => void;
+      gate = new Promise<void>((resolve) => void (release = resolve));
+      return release;
+    },
   };
 }
 
