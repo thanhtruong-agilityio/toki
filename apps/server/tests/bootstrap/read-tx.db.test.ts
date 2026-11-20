@@ -31,7 +31,9 @@ describe("inReadSnapshot (TOKI-031 R10, R14)", () => {
 
     const mine = h.statementLog.slice(before);
     const connection = mine[0]!.connection;
-    expect(new Set(mine.map((s) => s.connection))).toEqual(new Set([connection]));
+    expect(new Set(mine.map((s) => s.connection))).toEqual(
+      new Set([connection]),
+    );
     expect(mine[0]!.query.toLowerCase()).toBe(
       "begin isolation level repeatable read read only",
     );
@@ -45,8 +47,10 @@ describe("inReadSnapshot (TOKI-031 R10, R14)", () => {
     const id = await h.addUser("ro@example.com");
     await expect(
       inReadSnapshot(h.db, (tx) =>
-        tx.execute(`update users set language = 'vi' where id = '${id}'` as never),
+        tx.execute(
+          `update users set language = 'vi' where id = '${id}'` as never,
+        ),
       ),
-    ).rejects.toMatchObject({ code: "25006" });
+    ).rejects.toMatchObject({ cause: { code: "25006" } });
   });
 });

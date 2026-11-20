@@ -1,8 +1,5 @@
 import { PgDialect } from "drizzle-orm/pg-core";
-import {
-  PostgresJsDatabase,
-  PostgresJsSession,
-} from "drizzle-orm/postgres-js";
+import { PostgresJsDatabase, PostgresJsSession } from "drizzle-orm/postgres-js";
 import type { Db, Tx } from "../db/client.js";
 
 // Runs `fn` in one read-only transaction at repeatable read, so every read
