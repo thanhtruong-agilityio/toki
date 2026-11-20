@@ -1,5 +1,5 @@
 import type { Clock, Decision } from "@toki/shared";
-import type { DbClient } from "../../db/client.js";
+import type { Db, DbClient } from "../../db/client.js";
 import type { RecordChange } from "./changes.js";
 import type { getConversationFacts } from "./facts.js";
 
@@ -37,10 +37,10 @@ export type ChannelDepsInput = Pick<
 
 // The dependencies of `POST /api/v1/direct-conversations` (TOKI-030). The
 // permission function has a real default; a test replaces it (R4, R7).
-export type DirectDeps = Pick<
-  ChannelDeps,
-  "db" | "clock" | "getAccountsByIds"
-> & {
+export type DirectDeps = Pick<ChannelDeps, "clock" | "getAccountsByIds"> & {
+  // The database, not a transaction: the request opens its own transaction
+  // and sets its isolation level, which a nested one cannot (R22).
+  db: Db;
   canCreateDirectConversation?: (person: {
     id: string;
     role: string;

@@ -16,12 +16,15 @@ const PersonIdSchema = z
     /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
   );
 
-// No upper bound here: more than 7 others is `group_too_large`, an answer of
-// its own with `details` (R5).
+// More than 7 others is `group_too_large`, an answer of its own with
+// `details` (R5), so the schema allows up to the workspace size (NFR-04) and
+// stops a longer list before anything is checked per item.
+const USER_IDS_MAX = 200;
 export const OpenDirectBodySchema = z.strictObject({
   userIds: z
     .array(PersonIdSchema)
     .min(1)
+    .max(USER_IDS_MAX)
     .refine(
       (ids) => new Set(ids.map((id) => id.toLowerCase())).size === ids.length,
     ),

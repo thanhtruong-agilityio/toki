@@ -29,6 +29,11 @@ describe("OpenDirectBodySchema (R2)", () => {
     expect(ok(Array.from({ length: 8 }, (_, i) => id(i + 1)))).toBe(true);
   });
 
+  it("takes up to 200 ids so the size rule can answer, and refuses more", () => {
+    expect(ok(Array.from({ length: 200 }, (_, i) => id(i + 1)))).toBe(true);
+    expect(ok(Array.from({ length: 201 }, (_, i) => id(i + 1)))).toBe(false);
+  });
+
   it("takes an id in any letter case", () => {
     expect(ok([id(1).toUpperCase()])).toBe(true);
   });

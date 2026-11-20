@@ -194,7 +194,14 @@ export async function openDirect(
       // Another request made the same conversation between the read and the
       // insert (the insert waited for it to commit): read it by the key.
       const made = await findByKey(tx, caller.workspaceId, plan.key, caller.id);
-      return { status: 200, conversation: entryOf(made!) };
+      if (!made) {
+        // The insert met the key, so the row is there, and the caller is a
+        // person of the key, so their member row is there (TOKI-028 R21).
+        throw new Error(
+          "The conversation of the key has no member row of the caller.",
+        );
+      }
+      return { status: 200, conversation: entryOf(made) };
     },
     { isolationLevel: "read committed" },
   );
