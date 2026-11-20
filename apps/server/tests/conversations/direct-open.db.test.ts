@@ -1,3 +1,6 @@
+import { sql } from "drizzle-orm";
+import { drizzle } from "drizzle-orm/postgres-js";
+import postgres, { type Sql } from "postgres";
 import { ZodError } from "zod";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { AppError } from "../../src/errors.js";
@@ -5,6 +8,7 @@ import type { DirectDeps } from "../../src/modules/conversations/deps.js";
 import { handleOpenDirect } from "../../src/modules/conversations/direct-routes.js";
 import { getAccountsByIds } from "../../src/modules/members/index.js";
 import { createHarness, type Harness } from "../auth/test-harness.js";
+import { secondConnection, waitForLock } from "./channel-helpers.js";
 
 let h: Harness;
 let deps: DirectDeps;
@@ -410,5 +414,196 @@ describe("the caller and the permission function, R4 and R7", () => {
       },
     });
     expect(seen).toEqual(["caller:admin", "caller:member", "other:member"]);
+  });
+});
+
+// ---- S5: two requests at the same moment, locks and isolation (R13, R22)
+
+describe("the same set at the same moment, R13", () => {
+  // Each request runs on its own connection: one pool of n, one drizzle client.
+  async function together(
+    requests: { who: User; ids: string[] }[],
+    wrap?: (d: DirectDeps) => DirectDeps,
+  ) {
+    const pool = postgres(h.config.database.url, {
+      max: requests.length,
+      onnotice: () => {},
+    });
+    try {
+      const base: DirectDeps = { ...deps, db: drizzle(pool) };
+      const d = wrap ? wrap(base) : base;
+      return await Promise.all(
+        requests.map((r) => handleOpenDirect(d, r.who, { userIds: r.ids })),
+      );
+    } finally {
+      await pool.end();
+    }
+  }
+  const REPEAT = 20;
+
+  it(`a dm from both people together: one 201, one 200, one id, one row and a row for each person, ${REPEAT} times`, async () => {
+    for (let i = 0; i < REPEAT; i += 1) {
+      const a = await user();
+      const b = await user();
+      const before = await counts();
+      const res = await together([
+        { who: a, ids: [b.id] },
+        { who: b, ids: [a.id] },
+      ]);
+      expect(res.map((r) => r.status).sort()).toEqual([200, 201]);
+      expect(res[0]!.conversation.id).toBe(res[1]!.conversation.id);
+      const after = await counts();
+      expect([after.c - before.c, after.m - before.m]).toEqual([1, 2]);
+    }
+  });
+
+  it(`a group of 4 from its four members together: one 201, three 200, ${REPEAT} times`, async () => {
+    for (let i = 0; i < REPEAT; i += 1) {
+      const people = await Promise.all([user(), user(), user(), user()]);
+      const before = await counts();
+      const res = await together(
+        people.map((p) => ({
+          who: p,
+          ids: people.filter((o) => o !== p).map((o) => o.id),
+        })),
+      );
+      expect(res.map((r) => r.status).sort()).toEqual([200, 200, 200, 201]);
+      expect(new Set(res.map((r) => r.conversation.id)).size).toBe(1);
+      const after = await counts();
+      expect([after.c - before.c, after.m - before.m]).toEqual([1, 4]);
+    }
+  });
+
+  it(`10 requests of one person for one dm together: one 201, nine 200, ${REPEAT} times`, async () => {
+    for (let i = 0; i < REPEAT; i += 1) {
+      const a = await user();
+      const b = await user();
+      const before = await counts();
+      const res = await together(
+        Array.from({ length: 10 }, () => ({ who: a, ids: [b.id] })),
+      );
+      expect(res.filter((r) => r.status === 201)).toHaveLength(1);
+      expect(res.filter((r) => r.status === 200)).toHaveLength(9);
+      expect(new Set(res.map((r) => r.conversation.id)).size).toBe(1);
+      const after = await counts();
+      expect([after.c - before.c, after.m - before.m]).toEqual([1, 2]);
+    }
+  });
+
+  it("the transaction is READ COMMITTED even on a connection whose default is REPEATABLE READ", async () => {
+    const pool = postgres(h.config.database.url, {
+      max: 2,
+      onnotice: () => {},
+      connection: { default_transaction_isolation: "repeatable read" },
+    });
+    try {
+      const [outside] = await pool`show transaction_isolation`;
+      // The default of this connection is the stricter one: the test would
+      // prove nothing otherwise.
+      expect(outside!.transaction_isolation).toBe("repeatable read");
+      let inside: string | undefined;
+      const spy: DirectDeps = {
+        ...deps,
+        db: drizzle(pool),
+        getAccountsByIds: async (client, ids, options) => {
+          const rows = await getAccountsByIds(client, ids, options);
+          const shown = await client.execute(sql`show transaction_isolation`);
+          inside = (shown[0] as { transaction_isolation: string })
+            .transaction_isolation;
+          return rows;
+        },
+      };
+      const a = await user();
+      const b = await user();
+      expect((await open(a, [b.id], spy)).status).toBe(201);
+      expect(inside).toBe("read committed");
+    } finally {
+      await pool.end();
+    }
+  });
+});
+
+describe("locks, R22", () => {
+  // Runs `change` in a transaction on a second connection, holds it, starts
+  // `request`, waits until something waits on a lock, commits, and returns
+  // what the request returned or threw.
+  async function whileHeld(
+    change: (tx: Sql) => Promise<unknown>,
+    request: () => Promise<unknown>,
+  ) {
+    const other = secondConnection(h);
+    try {
+      let release!: () => void;
+      const gate = new Promise<void>((r) => (release = r));
+      let held!: () => void;
+      const heldP = new Promise<void>((r) => (held = r));
+      const holder = other.begin(async (tx) => {
+        await change(tx as unknown as Sql);
+        held();
+        await gate;
+      });
+      await heldP;
+      const pending = request().then(
+        (value) => ({ value }),
+        (error: unknown) => ({ error }),
+      );
+      await waitForLock(h.sql);
+      release();
+      await holder;
+      return await pending;
+    } finally {
+      await other.end();
+    }
+  }
+
+  it("a person deactivated while the create waits is refused with 409 and no row", async () => {
+    const a = await user();
+    const b = await user();
+    const before = await counts();
+    const res = await whileHeld(
+      (tx) => tx`update users set status = 'deactivated' where id = ${b.id}`,
+      () => open(a, [b.id]),
+    );
+    expect(res).toMatchObject({
+      error: {
+        status: 409,
+        code: "person_deactivated",
+        details: { userIds: [b.id] },
+      },
+    });
+    expect(await counts()).toEqual(before);
+  });
+
+  it("a caller deactivated while their own request waits gets 401", async () => {
+    const a = await user();
+    const b = await user();
+    const before = await counts();
+    const res = await whileHeld(
+      (tx) => tx`update users set status = 'deactivated' where id = ${a.id}`,
+      () => open(a, [b.id]),
+    );
+    expect(res).toMatchObject({
+      error: { status: 401, code: "account_deactivated" },
+    });
+    expect(await counts()).toEqual(before);
+  });
+
+  it("a create and a person route that locks every users row in id order finish without a deadlock", async () => {
+    const a = await user();
+    const b = await user();
+    const res = await Promise.race([
+      whileHeld(
+        async (tx) => {
+          // What the person routes of TOKI-024 do: every row, in id order,
+          // FOR NO KEY UPDATE, then a change of one of them.
+          await tx`select id from users where workspace_id = ${h.workspaceId} order by id for no key update`;
+          await tx`update users set display_name = 'Renamed' where id = ${b.id}`;
+        },
+        () => open(a, [b.id]),
+      ),
+      new Promise<"deadlock">((r) => setTimeout(() => r("deadlock"), 10_000)),
+    ]);
+    expect(res).not.toBe("deadlock");
+    expect(res).toMatchObject({ value: { status: 201 } });
   });
 });
