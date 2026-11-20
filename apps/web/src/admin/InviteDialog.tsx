@@ -99,6 +99,9 @@ export function InviteDialog({
   };
 
   const edit = (change: () => void) => {
+    // While a request runs the form is locked: an edit would change the key of a request that may be
+    // retried, and the results would no longer match what the field shows.
+    if (busyRef.current) return;
     change();
     // A change of the text or the role makes the next press a new request (R22).
     keys.drop(INVITE_KEY);
@@ -251,6 +254,7 @@ export function InviteDialog({
               rows={4}
               value={text}
               error={fieldError}
+              readOnly={busy}
               aria-describedby={`${hintId} ${errorIdId}`}
               onChange={(event) => edit(() => setText(event.target.value))}
             />
@@ -263,6 +267,7 @@ export function InviteDialog({
             <Select
               label={t("admin.invite.role.label")}
               fullWidth
+              disabled={busy}
               value={role}
               options={[
                 { value: "member", label: t("common.role.member") },

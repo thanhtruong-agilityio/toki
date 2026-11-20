@@ -130,8 +130,9 @@ function reducer<Row, Meta>(
 
 export type PagedList<Row, Meta> = State<Row, Meta> & {
   loadMore(): void;
-  // Resolves when the request has been answered or has failed, or was replaced by a newer one, so a
-  // caller can act on the rows that are then held (the focus rule of R19). It never rejects.
+  // Resolves when the latest request has been answered or has failed (a reload that was replaced
+  // resolves with the one that replaced it), or when the page went away, so a caller can act on the
+  // rows that are then held (the focus rule of R19). It never rejects.
   reload(): Promise<void>;
 };
 
@@ -165,6 +166,14 @@ export function usePagedList<Row, Meta, Query>(
   const cursor = useRef<string | null>(null);
   const loadingMore = useRef(false);
   const asked = useRef(new Set<string>());
+  // The callers of `start` wait here until the latest generation has settled, whichever request
+  // they started: a reload that was replaced resolves with the one that replaced it.
+  const waiters = useRef<Array<() => void>>([]);
+  const settle = useCallback(() => {
+    const done = waiters.current;
+    waiters.current = [];
+    for (const resolve of done) resolve();
+  }, []);
 
   const fail = useCallback((error: unknown, source: "refresh" | "more") => {
     // A request that was cancelled is not a failure.
@@ -197,25 +206,30 @@ export function usePagedList<Row, Meta, Query>(
       cursor.current = null;
       dispatch({ type: "refreshStart" });
       const { options: current } = latest.current;
-      return current
-        .fetchPage({
-          query: current.query,
-          limit,
-          signal: controller.signal,
-        })
-        .then(
-          (page) => {
-            if (mine !== generation.current) return;
-            cursor.current = page.nextCursor;
-            dispatch({ type: "loaded", page });
-          },
-          (error: unknown) => {
-            if (mine !== generation.current) return;
-            fail(error, "refresh");
-          },
-        );
+      return new Promise<void>((resolve) => {
+        waiters.current.push(resolve);
+        current
+          .fetchPage({
+            query: current.query,
+            limit,
+            signal: controller.signal,
+          })
+          .then(
+            (page) => {
+              if (mine !== generation.current) return;
+              cursor.current = page.nextCursor;
+              dispatch({ type: "loaded", page });
+              settle();
+            },
+            (error: unknown) => {
+              if (mine !== generation.current) return;
+              fail(error, "refresh");
+              settle();
+            },
+          );
+      });
     },
-    [fail],
+    [fail, settle],
   );
 
   // The first page, and again on every change of query.
@@ -229,8 +243,10 @@ export function usePagedList<Row, Meta, Query>(
       generation.current += 1;
       first.current?.abort();
       more.current?.abort();
+      // Nobody is left waiting for an answer that will be dropped.
+      settle();
     },
-    [],
+    [settle],
   );
 
   const loadMore = useCallback(() => {

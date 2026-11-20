@@ -299,6 +299,8 @@ export function createFakeAdminServer(options: FakeAdminServerOptions = {}) {
         answer = json(200, listChannels(call.query));
       else if (call.method === "POST") answer = post(call);
     }
+    // Not every call waits on it: an abort that nobody awaits is not an unhandled rejection.
+    aborted.catch(() => undefined);
     const gated = options.gate?.(call);
     if (gated) await Promise.race([gated, aborted]);
     if (!options.ignoreAbort && init.signal?.aborted)

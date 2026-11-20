@@ -415,6 +415,40 @@ describe("reload after a change (R10)", () => {
     expect(result.current.rows).toHaveLength(50);
   });
 
+  it("a reload that was replaced resolves only when the later one has settled (review)", async () => {
+    const second = hold();
+    let calls = 0;
+    const { result } = setup({
+      members: [person({ n: 1, displayName: "Before" })],
+      gate: () => {
+        calls += 1;
+        // The initial load is call 1; the first reload is call 2 (aborted); the second is call 3.
+        return calls === 3 ? second.promise : undefined;
+      },
+    });
+    await ready(result);
+    let firstDone = false;
+    let secondDone = false;
+    act(() => {
+      void result.current.reload().then(() => {
+        firstDone = true;
+      });
+    });
+    act(() => {
+      void result.current.reload().then(() => {
+        secondDone = true;
+      });
+    });
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 50));
+    });
+    expect(firstDone).toBe(false);
+    expect(secondDone).toBe(false);
+    second.release();
+    await waitFor(() => expect(secondDone).toBe(true));
+    expect(firstDone).toBe(true);
+  });
+
   it("keeps the later of two reloads started in quick succession", async () => {
     const first = hold();
     let calls = 0;

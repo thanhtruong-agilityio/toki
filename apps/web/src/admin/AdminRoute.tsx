@@ -14,8 +14,10 @@ export function AdminRoute({
   page: Page = AdminPage,
 }: { page?: ComponentType } = {}) {
   const session = useSession();
-  const [forbidden, setForbidden] = useState(false);
+  // The person a 403 was seen for: another person who signs in is not held out by it.
+  const [forbiddenFor, setForbiddenFor] = useState<string | null>(null);
   const person = session.status === "signedIn" ? session.user : undefined;
+  const forbidden = person !== undefined && forbiddenFor === person.id;
   if (
     person === undefined ||
     !canOpenAdminPage({ id: person.id, role: person.role }).allowed ||
@@ -24,7 +26,7 @@ export function AdminRoute({
     return <NoAccess />;
   }
   return (
-    <AdminForbiddenContext.Provider value={() => setForbidden(true)}>
+    <AdminForbiddenContext.Provider value={() => setForbiddenFor(person.id)}>
       <Page />
     </AdminForbiddenContext.Provider>
   );

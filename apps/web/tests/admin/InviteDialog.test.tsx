@@ -252,6 +252,38 @@ describe("sending (R22)", () => {
     await within(box()).findByRole("list", { name: "Results" });
   });
 
+  it("locks the field and the role while the request runs, so an edit cannot change the key or the text (review)", async () => {
+    const gate = hold();
+    let fail = true;
+    const { server } = await setup({
+      gate: (call) =>
+        call.method === "POST" && fail ? gate.promise : undefined,
+      fail: (call) =>
+        call.method === "POST" && fail
+          ? failWith(500, "internal_error")
+          : undefined,
+    });
+    type("a@example.com");
+    await userEvent.click(send());
+    await waitFor(() => expect(inviteCalls(server)).toHaveLength(1));
+    expect(field()).toHaveAttribute("readonly");
+    expect(
+      within(box()).getByRole("combobox", { name: "Role" }),
+    ).toBeDisabled();
+    type("a@example.com, b@example.com");
+    expect(field()).toHaveValue("a@example.com");
+    fail = true;
+    gate.release();
+    expect(
+      await within(box()).findByText("That did not work. Try again."),
+    ).toBeTruthy();
+    // The text did not change while the request ran, so the retry keeps the key.
+    fail = false;
+    await userEvent.click(send());
+    await within(box()).findByRole("list", { name: "Results" });
+    expect(keyOf(server, 1)).toBe(keyOf(server, 0));
+  });
+
   it("ignores Esc while it runs even when the form had no text to guard", async () => {
     const gate = hold();
     await setup({

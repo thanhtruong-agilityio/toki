@@ -43,6 +43,24 @@ describe("AdminRoute (TOKI-025 R3, R4, R19)", () => {
     expect(screen.queryByRole("button")).toBeNull();
   });
 
+  test("the no-access view of one Admin does not follow another Admin who signs in (review)", async () => {
+    await mount("admin");
+    await userEvent.click(
+      screen.getByRole("button", { name: "send a request" }),
+    );
+    expect(
+      screen.getByRole("heading", {
+        name: "You do not have access to this page",
+      }),
+    ).toBeInTheDocument();
+    await act(async () => {
+      markSignedIn({ ...user, id: "other-admin", role: "admin" });
+    });
+    expect(
+      screen.getByRole("button", { name: "send a request" }),
+    ).toBeInTheDocument();
+  });
+
   test("a Member never gets the page, so the page's code does not run", async () => {
     await mount("member");
     expect(screen.queryByRole("button", { name: "send a request" })).toBeNull();
