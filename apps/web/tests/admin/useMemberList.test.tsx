@@ -265,6 +265,33 @@ describe("more on scroll (R9)", () => {
     expect(result.current.hasMore).toBe(true);
   });
 
+  it("takes the counts of a later page too (moreLoaded x meta)", async () => {
+    const { result, server } = setup({ members: manyMembers(120) });
+    await ready(result);
+    expect(result.current.counts.active).toBe(120);
+    server.setMembers([...manyMembers(120), person({ n: 121 })]);
+    await act(async () => result.current.loadMore());
+    await waitFor(() => expect(result.current.counts.active).toBe(121));
+  });
+
+  it("is failed with an unreadable error when a later page does not fit the schema", async () => {
+    const { result } = setup({
+      members: manyMembers(120),
+      fail: (call) =>
+        call.query.cursor
+          ? new Response("{}", {
+              status: 200,
+              headers: { "content-type": "application/json" },
+            })
+          : undefined,
+    });
+    await ready(result);
+    await act(async () => result.current.loadMore());
+    await waitFor(() => expect(result.current.moreFailed).toBe(true));
+    expect(result.current.error).toMatchObject({ kind: "invalid_response" });
+    expect(result.current.rows).toHaveLength(50);
+  });
+
   it("never asks twice for one cursor", async () => {
     const gate = hold();
     const { result, server } = setup({

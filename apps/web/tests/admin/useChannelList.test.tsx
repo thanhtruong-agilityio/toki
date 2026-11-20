@@ -156,6 +156,30 @@ describe("the channel list (R32)", () => {
     expect(result.current.moreFailed).toBe(false);
   });
 
+  it("a reload that fails after it cancelled a load-more leaves nothing busy and keeps the rows", async () => {
+    const gate = hold();
+    let failFirstPage = false;
+    const { result } = setup({
+      channels: manyChannels(120),
+      ignoreAbort: true,
+      gate: (call) => (call.query.cursor ? gate.promise : undefined),
+      fail: (call) =>
+        failFirstPage && !call.query.cursor
+          ? failWith(500, "internal_error")
+          : undefined,
+    });
+    await ready(result);
+    act(() => result.current.loadMore());
+    await waitFor(() => expect(result.current.isLoadingMore).toBe(true));
+    failFirstPage = true;
+    await act(async () => result.current.reload());
+    await waitFor(() => expect(result.current.error).not.toBeNull());
+    expect(result.current.isLoadingMore).toBe(false);
+    expect(result.current.isRefreshing).toBe(false);
+    expect(result.current.rows).toHaveLength(50);
+    gate.release();
+  });
+
   it("tells the page on a 403", async () => {
     const { forbidden } = setup({ fail: () => failWith(403, "forbidden") });
     await waitFor(() => expect(forbidden).toHaveBeenCalledTimes(1));

@@ -394,6 +394,31 @@ describe("states (R14)", () => {
     await screen.findByRole("table");
   });
 
+  it("keeps the rows of the earlier query when a change of query fails, and offers Retry (decision of the Dev: a refresh never empties the table)", async () => {
+    vi.useFakeTimers({ shouldAdvanceTime: true });
+    const { server } = setup({
+      members: [
+        person({ n: 1, displayName: "Lan" }),
+        person({ n: 2, displayName: "Minh" }),
+      ],
+      fail: (call) =>
+        call.query.search === "lan"
+          ? failWith(500, "internal_error")
+          : undefined,
+    });
+    const box = await screen.findByRole("textbox", { name: "Search members" });
+    fireEvent.change(box, { target: { value: "lan" } });
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(301);
+    });
+    expect(
+      await screen.findByText("Could not load the members."),
+    ).toBeInTheDocument();
+    expect(bodyRows()).toHaveLength(2);
+    expect(screen.getByRole("button", { name: "Retry" })).toBeTruthy();
+    expect(calls(server).at(-1)?.query.search).toBe("lan");
+  });
+
   it("shows no error ID line when the error has none", async () => {
     setup({ fail: () => failWith(500, "internal_error") });
     await screen.findByText("Could not load the members.");
