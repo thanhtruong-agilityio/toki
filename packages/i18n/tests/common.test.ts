@@ -3,7 +3,8 @@ import { en } from "../src/messages/en";
 import { vi as viMessages } from "../src/messages/vi";
 import { createTranslator } from "../src/translate";
 
-// A copy of Table B of the TOKI-093 spec: key, English, Vietnamese (proposals, D-139).
+// A copy of Table B of the TOKI-093 spec: key, English, Vietnamese (proposals, D-139), and the
+// six keys that TOKI-025 R28 adds (the dialog's close label, the two role words, the three day words).
 const tableB: Array<[string, string, string]> = [
   ["common.undo", "Undo", "Hoàn tác"],
   ["common.cancel", "Cancel", "Hủy"],
@@ -39,6 +40,12 @@ const tableB: Array<[string, string, string]> = [
     "Could not undo. Try again.",
     "Không hoàn tác được. Hãy thử lại.",
   ],
+  ["common.close", "Close", "Đóng"],
+  ["common.role.member", "Member", "Thành viên"],
+  ["common.role.admin", "Admin", "Admin"],
+  ["common.today", "Today", "Hôm nay"],
+  ["common.tomorrow", "Tomorrow", "Ngày mai"],
+  ["common.yesterday", "Yesterday", "Hôm qua"],
 ];
 
 function flatten(value: unknown, prefix: string): string[] {
@@ -49,7 +56,7 @@ function flatten(value: unknown, prefix: string): string[] {
 }
 
 describe("common catalogue (TOKI-093 R24)", () => {
-  it("holds exactly the ten keys of Table B in both languages", () => {
+  it("holds exactly the sixteen keys of Table B and TOKI-025 R28 in both languages", () => {
     const keys = tableB.map(([key]) => key).sort();
     expect(
       flatten((en as Record<string, unknown>).common, "common").sort(),
