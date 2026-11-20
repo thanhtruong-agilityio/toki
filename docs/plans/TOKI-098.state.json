@@ -24,6 +24,11 @@
     {
       "at": "2026-11-20T10:40:33Z",
       "stage": "check"
+    },
+    {
+      "at": "2026-11-20T10:44:12Z",
+      "auto": false,
+      "stage": "approve"
     }
   ],
   "key": "TOKI-098",
@@ -31,7 +36,7 @@
   "metrics": {},
   "mode": "Auto to check",
   "plan_approved": true,
-  "plan_hash": "13b13a916471ee5b21a6c8e0a29c91c461c50e034b2693f1bdb3a0c5ef0ccf91",
+  "plan_hash": "c7decca1fce1de5760c640ceabc6c17dce7131063a37df80490ea473c65678bd",
   "spec_commit": "d1dbb5f815b8ea538d6e0d2b7f58d9680e09cc9e",
   "spec_paths": [
     "docs/specs/2026-11-17-create-channel-dialog-design.md"
