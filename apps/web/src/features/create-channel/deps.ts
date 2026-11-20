@@ -33,13 +33,8 @@ export const useCurrentUserId = () =>
 export const useCurrentRole = () =>
   useConversationSelector((store) => store.getUser()?.role ?? null);
 
-// TODO(TOKI-033): replace with `personHue` (TOKI-033 R28). A stable hash of the
-// id to 0-359.
-export function personHue(id: string): number {
-  let hash = 0;
-  for (const char of id) hash = (hash * 31 + char.codePointAt(0)!) % 360;
-  return hash;
-}
+// `personHue` (TOKI-033 R28) is on `main` since TOKI-099.
+export { personHue } from "../../people/person-hue";
 
 // TODO(TOKI-033): the route `/c/$conversationId` (TOKI-033 R20) does not exist,
 // so the call is untyped; replace with the typed navigation.

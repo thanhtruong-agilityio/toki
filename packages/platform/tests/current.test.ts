@@ -21,6 +21,7 @@ function fake(): Platform {
     },
     files: { pick: async () => [] },
     sound: { play: async () => true },
+    tabs: { post() {}, subscribe: () => () => {} },
   };
 }
 
