@@ -87,7 +87,7 @@ Vitest in `packages/client-core` (unit, no clock, fake `fetch`, fake `timers`, f
 | R21 the list | 7 | `conversations/selectors.test.ts` |
 | R22 stable results | 7 | `conversations/selectors.test.ts` |
 | R23 lookups | 7 | `conversations/selectors.test.ts` |
-| R24 no text, no time | 7 | `conversations/no-text.test.ts`, package.json check |
+| R24 no text, no time | 7 | a one-time `grep` (no Node types in client-core for a test), `scripts/check-clock-use.sh`, and the `package.json` check |
 | R25 wiring | 8 | `apps/web/tests/timers.test.ts`, `client.test.ts` (imports `api`, `timers`, `conversations`; the search for `createApiClient(` covers `apps/web/src`), `auth/request-adapter.test.ts`, `auth/open-read-real-client.test.ts`; `pnpm --filter ./apps/web build`; `pnpm ls --filter @toki/client-core` and `pnpm typecheck` for the dependency |
 | R26 answers after a later change | 6 | `conversations/store.order.test.ts` |
 | R27 contract | 7 | `contract.test.ts` (type test, in `src/`) |

@@ -451,9 +451,17 @@ describe("every command: one listener call on success, none and a rejection on a
       run: (s) => s.joinChannel(id(92)),
       error: "channels.join",
     },
+    {
+      name: "restoreChannel",
+      answer: ["channels.restore", { channel: detailBody(93), changed: true }],
+      run: (s) => s.restoreChannel(id(93)),
+      error: "channels.restore",
+    },
   ];
 
-  it.each(cases)(
+  // restoreChannel makes three listener calls on success (its answer, the start
+  // of its refresh, the refresh's result); the other commands make one.
+  it.each(cases.filter((c) => c.name !== "restoreChannel"))(
     "$name: one listener call on success",
     async ({ answer, run }) => {
       const { fake, store, calls } = await loaded();
