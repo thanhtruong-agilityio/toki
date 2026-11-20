@@ -28,17 +28,19 @@ vi.mock("../../src/client", async () =>
 function stubWidth(initial: number) {
   let width = initial;
   const listeners = new Set<() => void>();
-  vi.stubGlobal("matchMedia", (query: string): Partial<MediaQueryList> => ({
+  const media = (query: string) => ({
     get matches() {
       return query === "(max-width: 719px)" ? width < 720 : false;
     },
     media: query,
-    addEventListener: (_: string, fn: () => void) => {
+    addEventListener(_type: string, fn: () => void) {
       listeners.add(fn);
     },
-    removeEventListener: (_: string, fn: () => void) =>
-      void listeners.delete(fn),
-  }));
+    removeEventListener(_type: string, fn: () => void) {
+      listeners.delete(fn);
+    },
+  });
+  vi.stubGlobal("matchMedia", media);
   return async (next: number) => {
     width = next;
     await act(async () => {
