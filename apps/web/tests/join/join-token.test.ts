@@ -73,6 +73,20 @@ describe("the token of the Join link (R26, R43, R48)", () => {
     }
   });
 
+  it("takes the token of /join/ with a trailing slash too, and removes the fragment", () => {
+    const { win, replaceState } = windowAt("/join/", "", `#${TOKEN}`);
+    mod.captureJoinToken(win);
+    expect(mod.getJoinToken()).toBe(TOKEN);
+    expect(replaceState).toHaveBeenCalledWith(expect.anything(), "", "/join/");
+  });
+
+  it("does not take the fragment of a path that only starts with /join", () => {
+    const { win, replaceState } = windowAt("/joined", "", `#${TOKEN}`);
+    mod.captureJoinToken(win);
+    expect(mod.getJoinToken()).toBeNull();
+    expect(replaceState).not.toHaveBeenCalled();
+  });
+
   it("takes nothing from another path, and leaves its fragment for the page that owns it (the emergency link)", () => {
     const { win, replaceState } = windowAt("/emergency", "", `#${TOKEN}`);
     mod.captureJoinToken(win);

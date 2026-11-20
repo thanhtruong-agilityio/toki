@@ -24,7 +24,8 @@ let taken = false;
  * emergency link). It reads the address once: a second call changes nothing.
  */
 export function captureJoinToken(win: Win): void {
-  if (taken || win.location.pathname !== "/join") return;
+  // `/join` and `/join/` are the same page for the router; a path of another page is left alone.
+  if (taken || win.location.pathname.replace(/\/+$/, "") !== "/join") return;
   const hash = win.location.hash;
   if (hash === "") return;
   taken = true;

@@ -34,11 +34,13 @@ test.beforeAll(async () => {
   sink = await startSmtpSink(SMTP_PORT);
   admin = await request.newContext({ baseURL: WEB });
   // The first set-up runs just after the server starts: ask for a code only once the workspace exists.
-  for (let i = 0; i < 60; i += 1) {
-    const res = await admin.get("/api/v1/auth/workspace");
-    if (res.ok()) break;
-    await new Promise((resolve) => setTimeout(resolve, 500));
+  let ready = false;
+  for (let i = 0; i < 60 && !ready; i += 1) {
+    ready = (await admin.get("/api/v1/auth/workspace")).ok();
+    if (!ready) await new Promise((resolve) => setTimeout(resolve, 500));
   }
+  // A code asked for before the account exists uses up a request of the address: stop with the cause.
+  expect(ready, "the first set-up never made the workspace").toBe(true);
   const before = sink.mails.length;
   const asked = await admin.post("/api/v1/auth/codes", {
     data: { email: ADMIN },

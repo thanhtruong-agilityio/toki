@@ -144,15 +144,17 @@ function JoinPage() {
 
   // A used invitation leads to the normal sign-in, with the address in the navigation state and never
   // in the address (R34). A person with a session then sees the app (TOKI-023 R2).
+  // Depends on the address, not on `view`: that object is made again on every render.
+  const loginEmail = view.kind === "login" ? view.email : null;
   useEffect(() => {
-    if (view.kind === "login") {
+    if (loginEmail !== null) {
       void router.navigate({
         to: "/login",
         replace: true,
-        state: { email: view.email },
+        state: { email: loginEmail },
       });
     }
-  }, [view, router]);
+  }, [loginEmail, router]);
 
   switch (view.kind) {
     case "checking":
