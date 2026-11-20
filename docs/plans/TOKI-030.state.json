@@ -49,6 +49,7 @@
   "mode": "Auto to check",
   "plan_approved": true,
   "plan_hash": "da49db052e7bba7f3a036159119df6e6a7adef9a6edf949b29ec4e45be66bdd8",
+  "pr": "https://github.com/thanhtruong-agilityio/toki/pull/185",
   "spec_commit": "d0dd0398ea665d2749f3f0b00c210834076002a4",
   "spec_paths": [
     "docs/specs/2026-11-17-dm-api-design.md"
