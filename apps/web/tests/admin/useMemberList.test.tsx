@@ -187,6 +187,26 @@ describe("more on scroll (R9)", () => {
     expect(result.current.rows).toHaveLength(50);
   });
 
+  it("is not busy any more when a refresh fails after it cancelled a load-more (verifier round 2)", async () => {
+    const gate = hold();
+    const { result } = setup({
+      members: manyMembers(120),
+      ignoreAbort: true,
+      // A reload asks with a limit: it fails. The load-more has a cursor: it is held.
+      gate: (call) => (call.query.cursor ? gate.promise : undefined),
+      fail: (call) =>
+        call.query.limit ? failWith(500, "internal_error") : undefined,
+    });
+    await ready(result);
+    act(() => result.current.loadMore());
+    await waitFor(() => expect(result.current.isLoadingMore).toBe(true));
+    await act(async () => result.current.reload());
+    await waitFor(() => expect(result.current.error).not.toBeNull());
+    expect(result.current.isRefreshing).toBe(false);
+    expect(result.current.isLoadingMore).toBe(false);
+    gate.release();
+  });
+
   it("never asks twice for one cursor", async () => {
     const gate = hold();
     const { result, server } = setup({

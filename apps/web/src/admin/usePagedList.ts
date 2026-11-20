@@ -60,7 +60,15 @@ function reducer<Row, Meta>(
 ): State<Row, Meta> {
   switch (action.type) {
     case "refreshStart":
-      return { ...state, isRefreshing: true, error: null, moreFailed: false };
+      // A new generation cancels a load-more in flight, and its answer is dropped, so it is no longer
+      // loading: the flag must not wait for an answer that will never be used.
+      return {
+        ...state,
+        isRefreshing: true,
+        isLoadingMore: false,
+        error: null,
+        moreFailed: false,
+      };
     case "loaded":
       return {
         status: "ready",
