@@ -60,7 +60,7 @@ describe("createUuidV7Generator (R1)", () => {
     };
     const generate = createUuidV7Generator({
       clock: { now: () => 1700000000000 },
-      randomBytes: (length) => Uint8Array.from({ length }, () => next() & 0xff),
+      randomBytes: (length) => Uint8Array.from({ length }, () => next() >>> 24),
     });
     const ids = Array.from({ length: 1000 }, () => generate());
     for (const id of ids) expect(id).toMatch(PATTERN);
