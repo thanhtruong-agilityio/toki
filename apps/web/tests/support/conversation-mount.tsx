@@ -9,22 +9,29 @@ import {
   type RouterHistory,
 } from "@tanstack/react-router";
 import { act, render } from "@testing-library/react";
+import { I18nProvider } from "@toki/i18n/react";
+import { ToastProvider } from "@toki/ui-web";
 import { type ReactNode } from "react";
 import { validatePanelSearch } from "../../src/conversation/useDetailsPanel";
-import { Providers } from "./providers";
 
 // A memory router with the route of the conversation (`validateSearch` of the real one) that draws
 // `draw(conversationId)` inside the providers of the patterns, and `/` as the list. A test passes a
 // path (or its own history, to reload) and gets the router back.
 export async function mountConversation(
   draw: (conversationId: string) => ReactNode,
-  options: { path?: string; history?: RouterHistory } = {},
+  options: {
+    path?: string;
+    history?: RouterHistory;
+    language?: "en" | "vi";
+  } = {},
 ) {
   const root = createRootRoute({
     component: () => (
-      <Providers>
-        <Outlet />
-      </Providers>
+      <I18nProvider language={options.language}>
+        <ToastProvider>
+          <Outlet />
+        </ToastProvider>
+      </I18nProvider>
     ),
   });
   const Page = () => {

@@ -1,8 +1,9 @@
 import type { ChannelRead } from "@toki/client-core";
 import type { BootstrapConversation, ConversationFacts } from "@toki/shared";
-import { useEffect } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { conversations } from "../client";
 import { useConversationSelector } from "../conversation-list/use-conversations";
+import { readFailure } from "./readFailure";
 
 // The kind of a store entry as the permission functions of `@toki/shared` name it (plan, decision 3).
 export function panelKind(
@@ -50,4 +51,41 @@ export function useConversation(id: string) {
   const detail = useConversationSelector((s) => s.getChannelDetail(id));
   const memberCount = useConversationSelector((s) => s.getMemberCount(id));
   return { entry, name, detail, memberCount };
+}
+
+export type DetailRead = {
+  status: "loading" | "ready" | "failed";
+  error: unknown;
+  retry: () => void;
+};
+
+// The panel's own read of the channel when it opens (R7, R14): it shares a request in flight with
+// the header, reports a failure, hands `no_access` to the page and offers a Retry.
+export function useDetailRead(
+  id: string,
+  enabled: boolean,
+  onNoAccess: () => void,
+): DetailRead {
+  const [state, setState] = useState<Pick<DetailRead, "status" | "error">>({
+    status: "loading",
+    error: null,
+  });
+  const latest = useRef(onNoAccess);
+  latest.current = onNoAccess;
+  const run = useCallback(() => {
+    setState((s) =>
+      s.status === "loading" ? s : { status: "loading", error: null },
+    );
+    readChannelOnce(id).then(
+      () => setState({ status: "ready", error: null }),
+      (error: unknown) => {
+        if (readFailure(error) === "no_access") latest.current();
+        setState({ status: "failed", error });
+      },
+    );
+  }, [id]);
+  useEffect(() => {
+    if (enabled) run();
+  }, [enabled, run]);
+  return { ...state, retry: run };
 }
