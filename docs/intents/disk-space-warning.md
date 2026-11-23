@@ -24,7 +24,7 @@ Source: D-106, D-191 (proposal), requirement NFR-15, journey F39 ("When the disk
 - A Member who is refused is told why in the interface; every text goes through i18n and English is the default. Source: D-106, project rule.
 - The disk can only be filled for real on a test machine; the checks must run without a real disk. Source: NFR-15 ("Fill a test disk to 80% and to 95%"), the test harness of TOKI-008.
 - Routes under `/api/v1`, one error format and one registry of error codes. Source: D-125.
-- Milestone M4, size S; the ticket has no dependency in the plan. Source: Toki Blueprint, ticket TOKI-103.
+- Milestone M4, size S; the plan line has no dependency, and the work builds on merged tickets only (the spec's Plan changes list them; TOKI-058 needs this ticket). Source: Toki Blueprint, ticket TOKI-103.
 
 ## Open questions
 - Which disk is measured: the volume that holds the files or the one that holds the database? (D-191 is open and proposes the volume that stores files.)
