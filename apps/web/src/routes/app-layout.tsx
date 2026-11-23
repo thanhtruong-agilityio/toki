@@ -23,6 +23,7 @@ import { conversations } from "../client";
 import { ConversationListPane } from "../conversation-list/ConversationListPane";
 import { viewFallback } from "../conversation-list/last-viewed";
 import { ListActionsProvider } from "../conversation-list/list-actions";
+import { ConversationStarters } from "../features/ConversationStarters";
 import { useConversationSelector } from "../conversation-list/use-conversations";
 import { personHue } from "../people/person-hue";
 import { useSession } from "../useSession";
@@ -230,6 +231,8 @@ function ShellBody({
         }}
       >
         <Outlet />
+        {/* Inside the shell, which mounts the toast provider the dialogs' join and offline toasts use. */}
+        <ConversationStarters />
         {user ? <AccountHost menuProps={trigger.menuProps} /> : null}
       </AppShell>
     </AccountEntriesProvider>

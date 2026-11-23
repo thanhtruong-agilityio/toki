@@ -34,3 +34,23 @@ export function ownSources(): Array<{ name: string; text: string }> {
   }
   return out;
 }
+
+const PROPS = ["label", "placeholder", "title", "aria-label", "closeLabel"];
+
+// The visible words a source file holds in a JSX text or a string prop (R3): every text must come
+// from `t(...)`.
+export function words(source: string): string[] {
+  const found: string[] = [];
+  for (const m of source.matchAll(
+    />([^<>{}=;()?:,|&]*[A-Za-z][^<>{}=;()?:,|&]*)</g,
+  )) {
+    if (/^\s*$/.test(m[1]!)) continue;
+    found.push(m[1]!.trim());
+  }
+  for (const prop of PROPS) {
+    for (const m of source.matchAll(new RegExp(`\\b${prop}="([^"]*)"`, "g"))) {
+      found.push(`${prop}=${m[1]}`);
+    }
+  }
+  return found;
+}

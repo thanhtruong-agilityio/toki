@@ -19,16 +19,10 @@ export type NewMessageDialogProps = {
 
 type Failure = "deactivated" | "tooLarge" | "failed" | null;
 
-// The state starts again at every opening: the inner component has a new key each time `open` turns
-// true, so the chosen people and the search text are empty (R21).
+// Nothing of the form is mounted while the dialog is closed, so its state starts again at every
+// opening (R21) and a closed dialog needs no provider and asks nothing.
 export function NewMessageDialog(props: NewMessageDialogProps) {
-  const [wasOpen, setWasOpen] = useState(props.open);
-  const [session, setSession] = useState(0);
-  if (props.open !== wasOpen) {
-    setWasOpen(props.open);
-    if (props.open) setSession(session + 1);
-  }
-  return <NewMessageForm key={session} {...props} />;
+  return props.open ? <NewMessageForm {...props} /> : null;
 }
 
 function NewMessageForm({

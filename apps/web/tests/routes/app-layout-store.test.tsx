@@ -6,6 +6,7 @@ import {
   createRouter,
   RouterProvider,
 } from "@tanstack/react-router";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { act, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { I18nProvider } from "@toki/i18n/react";
@@ -100,9 +101,11 @@ async function mount(
 ) {
   const root = createRootRoute({
     component: () => (
-      <I18nProvider language="en">
-        <AppShellRoute rows={rows} />
-      </I18nProvider>
+      <QueryClientProvider client={new QueryClient()}>
+        <I18nProvider language="en">
+          <AppShellRoute rows={rows} />
+        </I18nProvider>
+      </QueryClientProvider>
     ),
   });
   const page = () => (
@@ -158,6 +161,23 @@ afterEach(() => vi.unstubAllGlobals());
 const clist = () => document.querySelector("div.clist")!;
 const names = () =>
   [...document.querySelectorAll(".cr .nm")].map((n) => n.textContent);
+
+describe("the dialogs of TOKI-034 (R30)", () => {
+  test("the layout mounts ConversationStarters: the Browse control opens Browse channels and the New message control opens the picker", async () => {
+    await mount();
+    const user = userEvent.setup();
+    const browse = screen.getAllByRole("button", { name: "Browse channels" });
+    await user.click(browse[0]!);
+    expect(
+      await screen.findByRole("dialog", { name: "Browse channels" }),
+    ).toBeTruthy();
+    await user.keyboard("{Escape}");
+    await user.click(screen.getByRole("button", { name: "New message" }));
+    expect(
+      await screen.findByRole("dialog", { name: "New message" }),
+    ).toBeTruthy();
+  });
+});
 
 describe("what the layout draws (R24)", () => {
   test("(a) before the load: header, search, chips and a busy div.clist with no row and no empty state", async () => {
