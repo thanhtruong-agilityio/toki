@@ -28,7 +28,9 @@
   ],
   "key": "TOKI-034",
   "main_sha": "88f92548ad8c04d81489354f97e6b3d10f5549c9",
-  "metrics": {},
+  "metrics": {
+    "step": 7
+  },
   "mode": "auto-to-pr",
   "plan_approved": true,
   "plan_hash": "74c386e6ad2df114d994422ca57e5756686d7f2c16a021811cf1bcdad9277914",
