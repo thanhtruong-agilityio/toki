@@ -51,3 +51,12 @@ Each was checked against the code. Items 1 and 2 differ from the spec's wording 
 - **`removeRows` with a deactivated Admin or a missing detail** denies by the shared rule; the R4 table covers a missing fact.
 - **Boundary lint:** `membership/deps.ts` imports the client; run `pnpm lint` after step 3, not at the end.
 - **Merge with TOKI-101**, which edits `DetailsPanel.tsx` on other lines: rebase before the pull request.
+
+## Amendment after the build (2026-11-23)
+
+So that the plan matches the diff:
+- `membership/noAccess.tsx` (finding 2) and `membership/deps.ts` hooks `useChannelName`, `useConversationEntry`, `useChannelDetail`, `useCurrentUser`: files and exports the plan did not list.
+- The Remove selector is `.btn.sm.mbr-remove`: the first rename (`.mrow .mbr-remove`) still tripped `css.test.ts`, which refuses `.mrow` in any other CSS file. The spec (R5, Table C) carries the same names.
+- `RemoveMemberDialog` keeps the last target while it closes, because `ConfirmDialog` refuses a blank name; `AddPeopleButton` takes an optional `buttonRef` for the focus rule of R14.
+- Tests live in `apps/web/tests/conversation/membership/` with a `fakeDeps.tsx` and a `sources.test.ts` (R1, R2, R3, R17, R19 scans).
+- **R18 (browser checks at five widths) is not done.** It needs the app with a database and 120 members, and the `.env` that holds the test database is off limits to the agent; the Dev runs it, or accepts it as a follow-up. The pull request says so.
