@@ -41,6 +41,10 @@
       "at": "2026-11-23T08:18:23Z",
       "auto": false,
       "stage": "approve"
+    },
+    {
+      "at": "2026-11-23T08:19:30Z",
+      "stage": "ship"
     }
   ],
   "key": "TOKI-100",
@@ -49,11 +53,12 @@
   "mode": "auto-to-check",
   "plan_approved": true,
   "plan_hash": "6da6c55091d61a744cfcd1b68cff2630a92d6353db13a0e97a15731b87f1e1d6",
+  "pr": 246,
   "spec_commit": "ee54bec173fd73741b2193572a625560b9c0369b",
   "spec_paths": [
     "docs/specs/2026-11-17-add-remove-people-design.md"
   ],
-  "stage": "check",
+  "stage": "ship",
   "tier": "M",
   "verifier": {
     "result": "PASS",
