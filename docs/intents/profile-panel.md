@@ -32,7 +32,7 @@ A Profile panel opens on the right when a person presses a name, an avatar or a 
 - Time is shown in 24 hours for every person and every language. Source: Toki Blueprint, D-123.
 - A deactivated person is labelled "Deactivated" and has no Message button; their old messages stay. Source: Toki Blueprint, flows F31 and F41.
 - A person's own profile has Set status and Edit profile and no Message button. Source: Toki Blueprint, flow F31, FR-42 (TS-190).
-- No screen sets presence by hand. Source: Toki Blueprint, D-121 and FR-45 (TS-206).
+- No screen sets presence by hand. Source: Toki Blueprint, D-036 and FR-45 (TS-206).
 - Back closes the side panel first, then returns to the previous place; from 720 px to 1099 px a profile overlays the chat, from 1100 px it is a column, under 720 px it is the whole screen. Source: Toki Blueprint, D-089 and D-068.
 - Actions that write are blocked with an explanation while the connection is down. Source: Toki Blueprint, D-079.
 - Every wording that the prototype does not contain is a proposal and every text goes through `@toki/i18n`; English is the default language. Source: Toki Blueprint, D-139 and D-018.
