@@ -24,19 +24,23 @@
     {
       "at": "2026-11-23T07:52:01Z",
       "stage": "approve"
+    },
+    {
+      "at": "2026-11-23T07:52:45Z",
+      "stage": "build"
     }
   ],
   "key": "TOKI-100",
   "main_sha": "48c78fd019ce5a9592637652f8fc732ae611d540",
   "metrics": {},
-  "mode": null,
+  "mode": "auto-to-check",
   "plan_approved": true,
   "plan_hash": "47bbe7e21f4f25447c98628b3b63a4f07e3a575532b1dad169f63be4b7cd95fc",
   "spec_commit": "ee54bec173fd73741b2193572a625560b9c0369b",
   "spec_paths": [
     "docs/specs/2026-11-17-add-remove-people-design.md"
   ],
-  "stage": "approve",
+  "stage": "build",
   "tier": "M",
   "verifier": {
     "result": null,
