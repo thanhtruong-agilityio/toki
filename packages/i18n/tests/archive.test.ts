@@ -54,7 +54,11 @@ describe("archive catalogue (TOKI-101 R3, R22)", () => {
         string,
         unknown
       >;
-      expect(Object.keys(own).map((k) => `archive.${k}`).sort()).toEqual(keys);
+      expect(
+        Object.keys(own)
+          .map((k) => `archive.${k}`)
+          .sort(),
+      ).toEqual(keys);
     }
   });
 
@@ -81,7 +85,8 @@ describe("archive catalogue (TOKI-101 R3, R22)", () => {
   });
 
   it("flattens to plain strings or plural objects only", () => {
-    expect(flatten((en as Record<string, unknown>).archive, "archive").length)
-      .toBeGreaterThanOrEqual(13);
+    expect(
+      flatten((en as Record<string, unknown>).archive, "archive").length,
+    ).toBeGreaterThanOrEqual(13);
   });
 });
