@@ -15,7 +15,7 @@ The sender can remove a card. The card then disappears for everybody and does no
 - The worker process of the job queue (TOKI-064), which runs the fetch.
 - The shared package (`packages/shared`): the preview shape on the message entry and its limits.
 - The web app and `client-core`: the card under the message, the × on it, the event that adds or removes it.
-- The neighbouring work: text formatting (TOKI-049), which gives the list of links of a text; attachment cards (TOKI-062), which owns the card's look; the message component (TOKI-042), which gives the place under the text.
+- The neighbouring work: text formatting (TOKI-049), which gives the list of links of a text; attachment cards (TOKI-062), which owns the card's look, the place under the text and the seam that this work fills.
 
 ## Constraints
 - Link previews are part of phase 1; the card shows title, description and site name. Source: D-014, F12, FR-37.
