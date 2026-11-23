@@ -17,6 +17,7 @@ import { AppShellRoute } from "../../src/routes/app-layout";
 import { user } from "../support/auth-harness";
 import {
   detail,
+  http,
   useFakeApi,
   type FakeApiHarness,
 } from "../support/conversation-api";
@@ -194,5 +195,30 @@ describe("the panel in the shell's slot (R10, R11)", () => {
     await act(async () => void (await router.navigate({ to: "/" })));
     expect(screen.getByTestId("home")).toBeInTheDocument();
     expect(screen.getByTestId("shell")).not.toHaveAttribute("data-panel");
+  });
+});
+
+describe("a read answered no access (R14)", () => {
+  test("a refresh that fails raises no unhandled rejection and the page stays not found", async () => {
+    // A plain function: a vi.fn tracks the promise it returns and so counts it as handled.
+    let calls = 0;
+    const store = h.store as { refresh: () => Promise<void> };
+    store.refresh = () => {
+      calls += 1;
+      return Promise.reject(new Error("offline"));
+    };
+    h.api.channels.members.mockRejectedValue(http(404));
+    const unhandled = vi.fn();
+    process.on("unhandledRejection", unhandled);
+    try {
+      await inShell("/c/c1?panel=details");
+      await act(async () => {});
+      await new Promise((r) => setTimeout(r, 20));
+    } finally {
+      process.off("unhandledRejection", unhandled);
+    }
+    expect(calls).toBe(1);
+    expect(unhandled).not.toHaveBeenCalled();
+    expect(screen.queryByTestId("conversation-page")).toBeNull();
   });
 });

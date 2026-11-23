@@ -25,7 +25,8 @@ export function ConversationPage({
   const [noAccess, setNoAccess] = useState(false);
   const onNoAccess = useCallback(() => {
     setNoAccess(true);
-    void conversations.refresh();
+    // A failed refresh leaves the not-found view as it is.
+    conversations.refresh().catch(() => {});
   }, []);
 
   useShellPanel(
