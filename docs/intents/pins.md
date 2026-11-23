@@ -15,8 +15,8 @@ Pinning and unpinning reach the other members live. A deleted message leaves the
 - The server app (`apps/server`): a table of pins, three routes (pin, unpin, list), the system line and the two events, in the `messages` module and, for the events, the handler of the `realtime` module.
 - The shared package (`packages/shared`): the `pinned` key of the message entry, the schemas of the three routes, one new system-line type, two event kinds and one error code.
 - `client-core`: a store of the pinned lists, two event handlers on the sync engine, three API methods.
-- The web app (`apps/web`): the Pinned tab, and the hook that the message menu calls to pin and unpin.
-- The neighbouring work: the message component (the label and the line's text), the message menu, the tab row of the conversation view, edit and delete, and the seed data.
+- The web app (`apps/web`): the Pinned tab, the 'Pinned' label entry of the message component, and the hook that the message menu calls to pin and unpin.
+- The neighbouring work: the message component (the header and the line's text), the message menu, the tab row of the conversation view, edit and delete, and the seed data.
 
 ## Constraints
 - Any Member or Admin who is a member of a conversation can pin and unpin any message in it; Guests are not built in phase 1. Source: FR-36, AC-096, D-090; `canPinMessage` of TOKI-027.
