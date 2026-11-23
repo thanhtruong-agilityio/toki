@@ -29,7 +29,7 @@ Nothing on screen is built here. The cards, the placeholder and the viewer are T
 - No virus scanning in phase 1. Source: D-186.
 - Every change of data reaches clients through `recordChange` and the event handler; nothing else writes an event. Source: TOKI-036, "The event contract".
 - A job carries identifiers only, is safe to run twice, reads the clock only through the clock it is given and uses the dependencies it is given. Source: TOKI-064 R7, R13, R19.
-- One server for about 200 people on a single machine. Source: D-004, NFR-07.
+- One server on a single machine for about 200 people. Source: D-004, NFR-07 (single machine); D-009, NFR-13 (about 200 people).
 - Every text on a screen goes through the i18n catalogue; English is the default. Source: TOKI-017 (this ticket adds no text).
 - Milestone M4, size M. Needs TOKI-058 and TOKI-064. Source: Toki Blueprint plan, ticket TOKI-060.
 
