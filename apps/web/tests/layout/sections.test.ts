@@ -18,8 +18,33 @@ const paths: Record<string, string> = {
 };
 
 describe("the section list (R10, R30)", () => {
-  test("holds the Home row only, for now", () => {
-    expect(sections.map((s) => s.id)).toEqual(["home"]);
+  test("holds the Home, Admin and Preferences rows, for now", () => {
+    expect(sections.map((s) => s.id)).toEqual(["home", "admin", "preferences"]);
+  });
+
+  test("the Admin row sits after People and before Preferences, whichever of them exist (TOKI-025 R2)", () => {
+    const ids = visibleSections("admin").map((s) => s.id);
+    const at = ids.indexOf("admin");
+    expect(at).toBeGreaterThan(-1);
+    if (ids.includes("people"))
+      expect(at).toBeGreaterThan(ids.indexOf("people"));
+    if (ids.includes("preferences"))
+      expect(at).toBeLessThan(ids.indexOf("preferences"));
+  });
+
+  test("the Admin row (TOKI-025 R2)", () => {
+    const admin = sections.find((s) => s.id === "admin")!;
+    expect(admin.icon).toBe("shield");
+    expect(admin.labelKey).toBe("nav.admin");
+    expect(admin.to).toBe("/admin");
+    expect(admin.roles).toEqual(["admin"]);
+    expect(admin.more).toBe(true);
+    expect(admin.tab).toBeUndefined();
+    expect(admin.calmHidden).toBeUndefined();
+    expect(admin.match("/admin")).toBe(true);
+    expect(admin.match("/admin/anything")).toBe(true);
+    expect(admin.match("/administrator")).toBe(false);
+    expect(admin.match("/")).toBe(false);
   });
 
   test("every row is a phase 1 section with its path", () => {
@@ -48,6 +73,24 @@ describe("the section list (R10, R30)", () => {
     expect(home.match("/cx")).toBe(false);
   });
 
+  test("the Preferences row (TOKI-099 R21)", () => {
+    const row = sections.find((s) => s.id === "preferences")!;
+    expect(row.icon).toBe("settings");
+    expect(row.labelKey).toBe("nav.preferences");
+    expect(row.to).toBe("/prefs");
+    expect(row.calmHidden).toBe(true);
+    expect(row.more).toBe(true);
+    expect(row.roles).toBeUndefined();
+    expect(row.match("/prefs")).toBe(true);
+    expect(row.match("/prefs/anything")).toBe(true);
+    expect(row.match("/")).toBe(false);
+  });
+
+  test("Preferences is the last row of every role, so a row added later goes above it", () => {
+    for (const role of ["member", "admin"] as const)
+      expect(visibleSections(role).at(-1)?.id).toBe("preferences");
+  });
+
   test("every label key is a message of the catalog", () => {
     const t = createTranslator("en");
     for (const row of sections) expect(t(row.labelKey)).not.toBe(row.labelKey);
@@ -55,13 +98,25 @@ describe("the section list (R10, R30)", () => {
 });
 
 describe("visibleSections (R36)", () => {
+  test("only an admin sees the Admin row", () => {
+    expect(visibleSections("admin").map((s) => s.id)).toContain("admin");
+    expect(visibleSections("member").map((s) => s.id)).not.toContain("admin");
+    expect(visibleSections(undefined).map((s) => s.id)).not.toContain("admin");
+  });
   test("with no known role, only the rows with no roles", () => {
-    expect(visibleSections().map((s) => s.id)).toEqual(["home"]);
+    expect(visibleSections().map((s) => s.id)).toEqual(["home", "preferences"]);
     expect(visibleSections(undefined).every((s) => !s.roles)).toBe(true);
   });
   test("member and admin see the rows with no roles", () => {
-    expect(visibleSections("member").map((s) => s.id)).toEqual(["home"]);
-    expect(visibleSections("admin").map((s) => s.id)).toEqual(["home"]);
+    expect(visibleSections("member").map((s) => s.id)).toEqual([
+      "home",
+      "preferences",
+    ]);
+    expect(visibleSections("admin").map((s) => s.id)).toEqual([
+      "home",
+      "admin",
+      "preferences",
+    ]);
   });
   test("filters a list that is given (the shell fixture's)", () => {
     const rows = [

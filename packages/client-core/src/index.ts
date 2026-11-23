@@ -20,10 +20,20 @@ export {
   type SignInUser,
 } from "./auth/sign-in";
 export {
+  createInvitationCalls,
+  type ClosedState,
+  type InvitationCalls,
+  type InvitationLookup,
+  type JoinResendOutcome,
+  type JoinSendOutcome,
+  type LookupOutcome,
+} from "./auth/invitation";
+export {
   createEmergencyCalls,
   type EmergencyCalls,
   type EmergencyOutcome,
 } from "./auth/emergency";
+export { createSessionsApi, type SessionsApi } from "./auth/sessions";
 export {
   createApiClient,
   type ApiClient,

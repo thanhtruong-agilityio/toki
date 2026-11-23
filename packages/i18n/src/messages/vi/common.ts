@@ -1,6 +1,13 @@
 export const common = {
+  today: "Hôm nay",
+  tomorrow: "Ngày mai",
+  yesterday: "Hôm qua",
+  role: { member: "Thành viên", admin: "Admin" },
   undo: "Hoàn tác",
   cancel: "Hủy",
+  back: "Quay lại",
+  closePanel: "Đóng bảng",
+  close: "Đóng",
   discard: {
     title: "Bỏ nội dung bạn đã nhập?",
     message: 'Nội dung bạn đã nhập trong "{name}" sẽ bị mất.',

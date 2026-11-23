@@ -1,0 +1,132 @@
+/* The Admin page (TOKI-025 Table B). The prototype has no members table, so the whole table is
+   decided here, with the prototype's own values where it has them: the table look is .ctable, the
+   chips are .chip, the search is .field and the toolbar is .toolbar. Every colour is a token. */
+
+.adm-section {
+  margin-block: 0 24px;
+}
+
+.adm-section > h2 {
+  margin: 0 0 8px;
+  font-size: 15px;
+}
+
+.adm-toolbar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.adm-count {
+  color: var(--muted);
+}
+
+.adm-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 12.5px;
+}
+
+.adm-table th,
+.adm-table td {
+  text-align: left;
+  padding: 8px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+}
+
+.adm-table th {
+  font-weight: 600;
+  color: var(--muted);
+  font-size: 11.5px;
+}
+
+.adm-name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.adm-name b,
+.adm-name .adm-sub {
+  overflow-wrap: anywhere;
+}
+
+.adm-sub {
+  display: block;
+  color: var(--muted);
+  font-size: 11.5px;
+}
+
+.adm-actions {
+  white-space: nowrap;
+}
+
+/* The reason line inside a menu item (R17). */
+.adm-lock {
+  display: block;
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+.adm-error {
+  color: var(--ink-2);
+}
+
+@media (max-width: 719px) {
+  /* The header row is hidden visually and not from a screen reader (R26). */
+  .adm-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  .adm-table tr {
+    display: block;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 8px 12px;
+    margin-bottom: 8px;
+  }
+
+  .adm-table td {
+    display: block;
+    border-bottom: 0;
+    padding: 4px 0;
+  }
+
+  .adm-table td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 11.5px;
+    color: var(--muted);
+  }
+}
+
+.adm-heading-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.adm-hint {
+  margin: 4px 0 8px;
+  color: var(--muted);
+  font-size: 11.5px;
+}
+
+.adm-results {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.adm-results li {
+  padding: 6px 0;
+  border-bottom: 1px solid var(--line);
+  overflow-wrap: anywhere;
+}

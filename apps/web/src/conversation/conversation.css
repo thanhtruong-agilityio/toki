@@ -1,0 +1,130 @@
+/* The conversation header and the Details panel (TOKI-035 Table C). The rules are the prototype's,
+   as written, except the media condition (719/720 px). `.mrow` is owned here; the picker and Browse
+   draw their rows with their own class. Every colour is a token. */
+
+.mh {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px 0;
+  min-height: 56px;
+}
+
+[data-eff="focus"] .mh {
+  padding: 10px 16px 0;
+  min-height: 48px;
+}
+
+.mh .back {
+  display: none;
+}
+
+.mh h1 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.mh .topic {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin-top: 1px;
+}
+
+.later-ic {
+  color: var(--accent-text);
+}
+
+.dp-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.dp-topic {
+  color: var(--ink-2);
+}
+
+.dp-empty {
+  text-align: center;
+  padding: 16px 0;
+  color: var(--muted);
+}
+
+.dp-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.mrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  width: 100%;
+}
+
+.mrow-main {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+
+.setrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.setrow:last-child {
+  border-bottom: 0;
+}
+
+.opt {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+}
+
+.dp-leave {
+  margin-top: 16px;
+}
+
+.dp-leave .leave {
+  color: var(--danger);
+}
+
+@media (max-width: 719px) {
+  .mh {
+    padding-left: max(10px, env(safe-area-inset-left, 0px));
+    padding-right: max(10px, env(safe-area-inset-right, 0px));
+    padding-top: max(8px, env(safe-area-inset-top, 0px));
+    min-height: 56px;
+  }
+
+  .mh .back {
+    display: inline-grid;
+  }
+
+  .mh .memb {
+    padding: 0 6px;
+  }
+
+  .opt {
+    min-height: 40px;
+  }
+}

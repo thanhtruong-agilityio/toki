@@ -1,6 +1,8 @@
 import { describe, expect, test } from "vitest";
 import { router, routeTree } from "../src/router";
+import { adminRoute } from "../src/routes/admin";
 import { appLayoutRoute } from "../src/routes/app-layout";
+import { conversationRoute } from "../src/routes/conversation";
 import { indexRoute } from "../src/routes/index";
 import { rootRoute } from "../src/routes/__root";
 
@@ -20,6 +22,27 @@ describe("the route tree (R30)", () => {
     expect(routeTree.children).toContain(appLayoutRoute);
     expect(routeTree.children).not.toContain(indexRoute);
     expect(appLayoutRoute.children).toContain(indexRoute);
+  });
+
+  test("the conversation route is /c/$conversationId, a child of appLayoutRoute, with the one search parameter panel=details (R21, TOKI-035 R8)", () => {
+    expect(conversationRoute.options.getParentRoute()).toBe(appLayoutRoute);
+    expect(appLayoutRoute.children).toContain(conversationRoute);
+    const options = conversationRoute.options as unknown as { path?: string };
+    expect(options.path).toBe("/c/$conversationId");
+    const validate = conversationRoute.options.validateSearch as (
+      search: Record<string, unknown>,
+    ) => unknown;
+    expect(validate({ panel: "details", x: 1 })).toEqual({ panel: "details" });
+    expect(validate({ panel: "other", x: 1 })).toEqual({});
+  });
+
+  test("the Admin route is a child of appLayoutRoute with the path /admin and no search (TOKI-025 R1)", () => {
+    expect(adminRoute.options.getParentRoute()).toBe(appLayoutRoute);
+    const options: { path?: string; validateSearch?: unknown } =
+      adminRoute.options;
+    expect(options.path).toBe("/admin");
+    expect(appLayoutRoute.children).toContain(adminRoute);
+    expect(options.validateSearch).toBeUndefined();
   });
 
   test("the router is built from the tree", () => {

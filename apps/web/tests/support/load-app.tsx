@@ -3,8 +3,15 @@ import { vi } from "vitest";
 import {
   createFakeCalls,
   createFakeEmergency,
+  createFakeInvitation,
   createFakeTimers,
 } from "./auth-harness";
+
+// The conversation store behind `src/client` is a real store over a fake api (the seam of
+// `conversation-store.ts`), so a signed-in mount never fetches /api/v1/bootstrap in jsdom.
+vi.mock("../../src/client", async () =>
+  (await import("./conversation-store")).clientModule(),
+);
 
 // The session state of client-core is one value for the page and cannot go back to `unknown`, so every
 // test loads the app anew: the modules of the workspace (the store, the router, the memory of the
@@ -15,6 +22,10 @@ export async function loadApp(
     language?: "en" | "vi";
     calls?: Parameters<typeof createFakeCalls>[0];
     emergency?: Parameters<typeof createFakeEmergency>[0];
+    invitation?: Parameters<typeof createFakeInvitation>[0];
+    /** The fragment of the address, as the browser had it when the Join page was opened. The page
+     * takes it once when it loads (TOKI-097 R26); none means the address has no fragment. */
+    token?: string;
     /** Extra routes under the root, for a test of the flag `public`. */
     extraRoutes?: boolean;
   } = {},
@@ -50,20 +61,44 @@ export async function loadApp(
   platform.setPlatform(platformWeb.createWebPlatform());
   memory.sessionMemory.reset();
   openRead.resetSessionOnOpen();
+  (await import("./conversation-store")).useFakeStore();
 
   const clock = shared.createTestClock();
   const timers = createFakeTimers(clock);
   const calls = createFakeCalls(options.calls);
   const emergency = createFakeEmergency(options.emergency);
-  services.setAuthServices({ calls, emergency, clock, timers });
+  const invitation = createFakeInvitation(options.invitation);
+  const order: string[] = [];
+  const resetConversations = vi.fn(() => {
+    order.push("reset");
+  });
+  services.setAuthServices({
+    calls,
+    emergency,
+    invitation,
+    resetConversations,
+    clock,
+    timers,
+  });
+  // The browser opened the Join link: the address holds the fragment until the page takes it (R26).
+  // Other tests set their own address before they load the app.
+  if (options.token !== undefined || options.path === "/join") {
+    window.history.replaceState(
+      null,
+      "",
+      `${options.path ?? "/"}${options.token ? `#${options.token}` : ""}`,
+    );
+    const joinToken = await import("../../src/join/join-token");
+    joinToken.captureJoinToken(window);
+  }
 
   let tree = router.routeTree;
   if (options.extraRoutes) {
     const join = rr.createRoute({
       getParentRoute: () => rootMod.rootRoute,
-      path: "/join",
+      path: "/public-probe",
       staticData: { public: true },
-      component: () => <p data-testid="join-page">Join</p>,
+      component: () => <p data-testid="join-page">Probe</p>,
     });
     const children = router.routeTree.children as unknown as readonly unknown[];
     tree = rootMod.rootRoute.addChildren([...children, join] as never) as never;
@@ -90,6 +125,9 @@ export async function loadApp(
     router: app,
     calls,
     emergency,
+    invitation,
+    resetConversations,
+    order,
     clock,
     timers,
     mount,

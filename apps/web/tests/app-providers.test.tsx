@@ -9,6 +9,7 @@ import { setPlatform } from "@toki/platform";
 import { createWebPlatform } from "@toki/platform/web";
 import { act, render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, test } from "vitest";
+import { vi } from "vitest";
 import { AppProviders } from "../src/app-providers";
 import { LANGUAGE_KEY, readDeviceLanguage } from "../src/auth/language";
 import { setAuthServices } from "../src/auth/services";
@@ -16,22 +17,38 @@ import { timers } from "../src/client";
 import { clock } from "../src/clock";
 import { routeTree } from "../src/router";
 import {
+  channel,
+  ME,
+  useFakeStore,
+  workspaceBody,
+} from "./support/conversation-store";
+import {
   createFakeCalls,
   createFakeEmergency,
+  createFakeInvitation,
   user,
 } from "./support/auth-harness";
 
-beforeEach(() => {
+vi.mock("../src/client", async () =>
+  (await import("./support/conversation-store")).clientModule(),
+);
+
+beforeEach(async () => {
+  await useFakeStore(
+    workspaceBody([channel("gen", "general", { isGeneral: true })]),
+  ).loadNow();
   localStorage.clear();
   setPlatform(createWebPlatform());
   const calls = createFakeCalls();
   setAuthServices({
     calls,
     emergency: createFakeEmergency(),
+    invitation: createFakeInvitation(),
+    resetConversations: () => {},
     clock,
     timers,
   });
-  markSignedIn(user);
+  markSignedIn({ ...user, id: ME });
 });
 
 async function mountApp() {
@@ -54,7 +71,7 @@ describe("the providers of main.tsx (plan decision 5)", () => {
     await mountApp();
     expect(screen.getByRole("navigation")).toHaveAccessibleName("Main");
     expect(document.querySelector("a.ni")?.textContent).toBe("Home");
-    expect(screen.getByTestId("app-root")).toHaveTextContent("Toki");
+    expect(screen.queryByTestId("app-root")).toBeNull();
   });
 
   test("a language that is not one of ours is English", async () => {

@@ -31,7 +31,7 @@ test.describe("page and controls (R1, R4)", () => {
     await stubSignedIn(page);
     const response = await page.goto("/");
     expect(response?.status()).toBe(200);
-    await expect(page.getByTestId("app-root")).toHaveText("Toki");
+    await expect(page.getByTestId("shell")).toBeVisible();
   });
 
   test("R4: no address gives calm, teal and the look's own density", async ({

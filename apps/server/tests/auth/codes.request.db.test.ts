@@ -179,7 +179,7 @@ describe("limits (R4, R5, R6, R42)", () => {
     expect(h.json(res).error.code).toBe("code_expired");
   });
 
-  it("leaves an invitation's row untouched and does not count it (R47)", async () => {
+  it("leaves an invitation's row untouched: a sign-in request cancels no invitation code (R52)", async () => {
     const e = "inv@example.com";
     const { insertLoginCode } = await import("../test-rows.js");
     const id = await insertLoginCode(h.sql, {
@@ -189,6 +189,8 @@ describe("limits (R4, R5, R6, R42)", () => {
       created_at: new Date(h.clock.now()),
       expires_at: new Date(h.clock.now() + 600_000),
     });
+    // 61 seconds later the 60 seconds shared with the invitation code have passed.
+    h.clock.advance(61_000);
     for (let i = 0; i < 3; i++) {
       expect((await h.requestCode(e)).statusCode).toBe(200);
       h.clock.advance(61_000);
@@ -196,6 +198,24 @@ describe("limits (R4, R5, R6, R42)", () => {
     const [row] =
       await h.sql`select cancelled_at from login_codes where id = ${id}`;
     expect(row!.cancelled_at).toBeNull();
+  });
+
+  it("counts an invitation's row for the 60 seconds (R51, R52)", async () => {
+    const e = "inv2@example.com";
+    const { insertLoginCode } = await import("../test-rows.js");
+    await insertLoginCode(h.sql, {
+      workspace_id: h.workspaceId,
+      email: e,
+      purpose: "invitation",
+      created_at: new Date(h.clock.now() - 30_000),
+      expires_at: new Date(h.clock.now() + 570_000),
+    });
+    const res = await h.requestCode(e);
+    expect(res.statusCode).toBe(429);
+    expect(h.json(res).error.code).toBe("code_resend_too_soon");
+    expect(h.json(res).error.details.retryAfterSeconds).toBe(30);
+    h.clock.advance(30_000);
+    expect((await h.requestCode(e)).statusCode).toBe(200);
   });
 
   it("prunes at most 100 sign-in rows of any address that are 15 minutes old (R48)", async () => {

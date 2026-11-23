@@ -3,6 +3,7 @@ import { createFiles } from "./files";
 import { createNotifications } from "./notifications";
 import { createSound } from "./sound";
 import { createStorage } from "./storage";
+import { createTabs } from "./tabs";
 
 export type WebPlatformOptions = {
   // The address of the audio file of each sound name.
@@ -17,5 +18,6 @@ export function createWebPlatform(options: WebPlatformOptions = {}): Platform {
     storage: createStorage(),
     files: createFiles(),
     sound: createSound(options.sounds),
+    tabs: createTabs(),
   };
 }

@@ -16,6 +16,12 @@ const tableA: Array<[string, "undo" | "confirm" | "none", string, string]> = [
   ["deleteOwnMessage", "confirm", "AC-031, D-043, F16", "TOKI-047"],
   ["deleteMemberMessage", "confirm", "F42, D-049", "TOKI-047"],
   ["leavePrivateChannel", "confirm", "D-051, D-156, AC-055", "TOKI-035"],
+  [
+    "leavePublicChannelLastMember",
+    "confirm",
+    "D-051, D-069, AC-056; concern 2 of the TOKI-035 spec",
+    "TOKI-035",
+  ],
   ["archiveChannel", "confirm", "D-061, F26", "TOKI-101"],
   [
     "removeFromChannel",
@@ -49,11 +55,11 @@ const tableA: Array<[string, "undo" | "confirm" | "none", string, string]> = [
 ];
 
 describe("actionPatterns (R10)", () => {
-  it("holds exactly the 18 rows of Table A", () => {
+  it("holds exactly the 19 rows of Table A (the 18 of TOKI-093 and the last-member row of TOKI-035)", () => {
     expect(Object.keys(actionPatterns).sort()).toEqual(
       tableA.map(([id]) => id).sort(),
     );
-    expect(Object.keys(actionPatterns)).toHaveLength(18);
+    expect(Object.keys(actionPatterns)).toHaveLength(19);
   });
 
   it.each(tableA)("%s: %s, %s, %s", (id, pattern, source, owner) => {
