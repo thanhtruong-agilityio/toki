@@ -16,8 +16,8 @@ The cards and the window are built once, so the Files tab and the Files page reu
 - Members and Admins, who read messages that carry files, images and links, and open their details. Guests are not in phase 1 (D-152).
 - The web app (`apps/web`): the place under the text of a message that the message component provides, and one details window for the whole signed-in app.
 - The component package (`packages/ui-web`): the card, icon and image components and their styles (`.card`, `.fic`).
-- The shared package (`packages/shared`): one formatter for a file size.
-- File storage (TOKI-058), thumbnails (TOKI-060) and link previews (TOKI-061), which supply the data the cards show; the composer (TOKI-059) and the Files tab and page (TOKI-063), which use the same card parts or the same window.
+- The i18n package (`packages/i18n`): the file size formatter, owned by TOKI-059; this work imports it.
+- File storage (TOKI-058), thumbnails (TOKI-060) and link previews (TOKI-061), which supply the data the cards show (TOKI-061 draws its link cards through the seam this work provides); the composer (TOKI-059) and the Files tab and page (TOKI-063), which use the same card parts or the same window.
 
 ## Constraints
 - A file is always downloaded and never run in the browser; every type is accepted. Source: D-095, F18.
