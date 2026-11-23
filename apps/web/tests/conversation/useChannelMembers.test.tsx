@@ -127,6 +127,55 @@ describe("a person the store does not hold (decision of the grilling round)", ()
   });
 });
 
+describe("a refresh that fails does not spoil a ready list", () => {
+  test("the list stays ready, error stays null and onNoAccess is not called", async () => {
+    await setup(3);
+    h.memberRows.c1 = [...members(3), { userId: "ghost", joinedAt: "x" }];
+    const refresh = vi.spyOn(h.store, "refresh").mockRejectedValue(http(404));
+    const { result, onNoAccess } = mount();
+    await waitFor(() => expect(refresh).toHaveBeenCalledTimes(1));
+    await act(async () => {});
+    expect(result.current.status).toBe("ready");
+    expect(result.current.error).toBeNull();
+    expect(result.current.rows).toHaveLength(3);
+    expect(onNoAccess).not.toHaveBeenCalled();
+  });
+});
+
+describe("a read for a previous id", () => {
+  test("does not block the new id's read and its result is ignored", async () => {
+    await setup(3);
+    h.memberRows.c2 = members(2);
+    const original = h.api.channels.members.getMockImplementation() as (
+      id: string,
+      q: object,
+    ) => Promise<unknown>;
+    let release: () => void = () => {};
+    h.api.channels.members.mockImplementation(async (id: string, q: object) => {
+      if (id === "c1") await new Promise<void>((r) => void (release = r));
+      return original(id, q);
+    });
+    const onNoAccess = vi.fn();
+    const { result, rerender } = renderHook(
+      ({ id }) => useChannelMembers(id, onNoAccess),
+      { initialProps: { id: "c1" } },
+    );
+    await waitFor(() =>
+      expect(h.api.channels.members).toHaveBeenCalledTimes(1),
+    );
+    rerender({ id: "c2" });
+    await waitFor(() => expect(result.current.status).toBe("ready"));
+    expect(h.api.channels.members.mock.calls.map((c) => c[0])).toEqual([
+      "c1",
+      "c2",
+    ]);
+    expect(result.current.ids).toEqual(["p1", "p2"]);
+    await act(async () => release());
+    expect(result.current.ids).toEqual(["p1", "p2"]);
+    expect(result.current.rows).toHaveLength(2);
+  });
+});
+
 describe("failure and reload (R13, R14)", () => {
   test("a failed first read is failed with the error and no rows; reload recovers", async () => {
     await setup(3);

@@ -56,33 +56,47 @@ export function useChannelMembers(
   const [error, setError] = useState<unknown>(null);
   const people = useConversationSelector((s) => s.getState().people);
   const held = useRef(false);
-  const running = useRef<Promise<void> | null>(null);
+  // The read in flight and the id it reads: a read for another id is neither shared nor applied.
+  const running = useRef<{ id: string; promise: Promise<void> } | null>(null);
+  const current = useRef(id);
+  current.current = id;
   const latest = useRef(onNoAccess);
   latest.current = onNoAccess;
 
   const reload = useCallback((): Promise<void> => {
-    if (running.current) return running.current;
-    const run = (async () => {
+    if (running.current?.id === id) return running.current.promise;
+    const slot: { id: string; promise: Promise<void> } = {
+      id,
+      promise: Promise.resolve(),
+    };
+    slot.promise = (async () => {
       try {
         const next = await readAll(id);
+        if (current.current !== id) return;
         held.current = true;
         setIds(next);
         setStatus("ready");
         setError(null);
         const state = conversations.getState();
         if (next.some((userId) => state.people[userId] === undefined)) {
-          await conversations.refresh();
+          // A failed refresh only leaves the row out: the list is ready.
+          try {
+            await conversations.refresh();
+          } catch {
+            // ignored
+          }
         }
       } catch (failure) {
+        if (current.current !== id) return;
         setError(failure);
         if (readFailure(failure) === "no_access") latest.current();
         if (!held.current) setStatus("failed");
       } finally {
-        running.current = null;
+        if (running.current === slot) running.current = null;
       }
     })();
-    running.current = run;
-    return run;
+    running.current = slot;
+    return slot.promise;
   }, [id]);
 
   useEffect(() => {
