@@ -52,14 +52,15 @@
   "mode": "auto-to-check",
   "plan_approved": true,
   "plan_hash": "4b8c84cbc65c448bb517daff4e09d9c3237279741ea695e19d6f6cab22517276",
-  "spec_commit": "6f197758f9a4f6809b11b0b75b07585a4dc622d3",
+  "spec_commit": "25cd44351dd794cd8c84972358d7a5045f0d9d24",
   "spec_paths": [
     "docs/specs/2026-11-17-archive-restore-channel-design.md"
   ],
   "stage": "drift",
   "tier": "L",
   "verifier": {
-    "result": "FAIL",
-    "round": 2
+    "note": "Two FAIL rounds; the Dev (Thanh Truong) fixed the DM scope and accepted the rest on 2026-11-23",
+    "result": "PASS",
+    "round": 3
   }
 }
