@@ -222,8 +222,15 @@ for (const look of LOOKS) {
             contentMid: (top + bottom) / 2,
             boxMid: (box.top + box.bottom) / 2,
             bottom: box.bottom,
-            // No Browse channels row yet (TOKI-034 registers the opener): the box ends where the list's content ends.
-            listEnd: lb.bottom - pad,
+            // The Browse channels row is last (R8, drawn now that TOKI-034 registers the opener): the box
+            // ends where that row's margin begins, and where the list's content ends when there is none.
+            listEnd: (() => {
+              const browse = list.querySelector(".cr.browse");
+              return browse
+                ? browse.getBoundingClientRect().top -
+                    Number.parseFloat(getComputedStyle(browse).marginTop)
+                : lb.bottom - pad;
+            })(),
           };
         });
         expect(Math.abs(m.contentMid - m.boxMid)).toBeLessThanOrEqual(1);
@@ -293,19 +300,12 @@ for (const look of LOOKS) {
   });
 }
 
-// R13. The opener of the '+' is registered by TOKI-034, so the list draws no '+' yet; the test puts
-// the same button in the heading row (class `sec-add`) and reads what the real stylesheet does to it.
+// R13. TOKI-034 registers the opener of the '+', so the list draws the real button (class `sec-add`)
+// in the heading row; the test reads what the real stylesheet does to it.
 const addButton = async (page: Page) => {
-  await page.evaluate(() => {
-    const head = document.querySelector('.cgroup[data-group="direct"] .sech')!;
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "sec-add";
-    button.setAttribute("aria-label", "Start a direct message");
-    button.textContent = "+";
-    head.append(button);
-  });
-  return page.locator(".sec-add");
+  const button = page.locator(".sec-add");
+  await expect(button).toHaveCount(1);
+  return button;
 };
 const opacity = (page: Page) =>
   page
