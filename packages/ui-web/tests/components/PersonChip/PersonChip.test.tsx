@@ -43,7 +43,7 @@ describe("PersonChip (TOKI-034 R17)", () => {
     expect(onRemove).toHaveBeenCalledTimes(1);
   });
 
-  test("with removeLabel empty the text is the name and the initials, nothing else (R3)", () => {
+  test("with removeLabel empty the text is the initials and the name, nothing else (R3)", () => {
     const { container } = render(
       <PersonChip
         name="Lan Nguyễn"
@@ -52,7 +52,8 @@ describe("PersonChip (TOKI-034 R17)", () => {
         onRemove={() => {}}
       />,
     );
-    expect(container.textContent).toBe("Lan NguyễnLN");
+    // R17 puts the Avatar before span.nm, so the initials come first (R3 words it the other way round).
+    expect(container.textContent).toBe("LNLan Nguyễn");
   });
 
   test("a long name is in a cut span and the chip is no wider than its parent", () => {
