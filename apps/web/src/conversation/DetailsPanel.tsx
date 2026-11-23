@@ -1,5 +1,6 @@
 import { useTranslation } from "@toki/i18n/react";
 import { SidePanel } from "@toki/ui-web";
+import { ArchiveSection } from "../channel-archive/ArchiveSection";
 import "./conversation.css";
 import { AboutSection } from "./AboutSection";
 import { LeaveSection } from "./LeaveSection";
@@ -70,6 +71,10 @@ export function DetailsPanel({
             />
           </>
         )}
+        <ArchiveSection
+          conversationId={conversationId}
+          onNoAccess={onNoAccess}
+        />
         <LeaveSection conversationId={conversationId} onNoAccess={onNoAccess} />
       </div>
     </SidePanel>

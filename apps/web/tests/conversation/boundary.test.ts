@@ -15,6 +15,7 @@ const code = (f: string) =>
 // the shell's slot, the conversation list's binding of the store, the patterns, the avatar colour
 // the not-found view and the unjoined channel's body (TOKI-034).
 const ALLOWED_RELATIVE = [
+  "../channel-archive/ArchiveSection",
   "../client",
   "../clock",
   "../conversation-list/use-conversations",
