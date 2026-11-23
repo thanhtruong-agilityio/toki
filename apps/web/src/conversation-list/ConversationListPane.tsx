@@ -5,6 +5,7 @@ import { getPlatform } from "@toki/platform";
 import {
   ConversationList,
   conversationGroupIds,
+  isCount,
   type ConversationGroup,
   type ConversationGroupId,
   type ConversationRowData,
@@ -20,16 +21,13 @@ import {
 import { useListActions, type ListAction } from "./list-actions";
 import { useConversationSelector } from "./use-conversations";
 
-// A count that counts: finite and above 0 (the rule of R7).
-const counts = (value: number): boolean => Number.isFinite(value) && value > 0;
-
 // The total shown on a collapsed heading (R15, concern 18): muted rows and rows with a bad count add 0.
 export function collapsedTotal(
   rows: ReadonlyArray<{ isMuted: boolean; unreadCount: number }>,
 ): number {
   let total = 0;
   for (const row of rows) {
-    if (!row.isMuted && counts(row.unreadCount)) total += row.unreadCount;
+    if (!row.isMuted && isCount(row.unreadCount)) total += row.unreadCount;
   }
   return total;
 }
@@ -82,6 +80,10 @@ export function ConversationListPane() {
   const [query, setQuery] = useState("");
 
   const list = useConversationSelector((s) => s.getList({ filter, query }));
+  // R15: a collapsed heading totals the whole group, whatever the search and the filter keep.
+  const everyRow = useConversationSelector((s) =>
+    s.getList({ filter: "all", query: "" }),
+  );
 
   function choose(next: {
     filter?: ListFilter;
@@ -147,6 +149,11 @@ export function ConversationListPane() {
       channels: t("conversationList.group.channels"),
       direct: t("conversationList.group.direct"),
     };
+    const mentionLabel = t("conversationList.row.mention");
+    const mutedLabel = t("conversationList.row.muted");
+    const privateLabel = t("conversationList.row.private");
+    const starredLabel = t("conversationList.row.starred");
+    const deactivatedLabel = t("conversationList.row.deactivated");
     const toRow = (row: ListRow): ConversationRowData => {
       const person =
         row.otherPersonId === null ? undefined : people[row.otherPersonId];
@@ -165,19 +172,17 @@ export function ConversationListPane() {
               }
             : undefined,
         unreadCount: row.unreadCount,
-        unreadLabel: counts(row.unreadCount)
+        unreadLabel: isCount(row.unreadCount)
           ? t("conversationList.row.unread", { count: row.unreadCount })
           : undefined,
         hasMention: row.hasMention,
-        mentionLabel: t("conversationList.row.mention"),
+        mentionLabel,
         isMuted: row.isMuted,
-        mutedLabel: t("conversationList.row.muted"),
-        privateLabel: t("conversationList.row.private"),
-        starredLabel: t("conversationList.row.starred"),
+        mutedLabel,
+        privateLabel,
+        starredLabel,
         deactivatedLabel:
-          person?.status === "deactivated"
-            ? t("conversationList.row.deactivated")
-            : undefined,
+          person?.status === "deactivated" ? deactivatedLabel : undefined,
         current: row.id === currentId,
       };
     };
@@ -201,7 +206,7 @@ export function ConversationListPane() {
         };
       }
       if (isCollapsed) {
-        const total = collapsedTotal(list[id]);
+        const total = collapsedTotal(everyRow[id]);
         group.unreadCount = total;
         group.unreadLabel = t("conversationList.group.unread", {
           count: total,
@@ -209,7 +214,17 @@ export function ConversationListPane() {
       }
       return group;
     });
-  }, [list, people, collapsed, filter, query, currentId, startDirect, t]);
+  }, [
+    list,
+    everyRow,
+    people,
+    collapsed,
+    filter,
+    query,
+    currentId,
+    startDirect,
+    t,
+  ]);
 
   const filterOptions = useMemo(
     () =>
@@ -223,7 +238,7 @@ export function ConversationListPane() {
   return (
     <ConversationList
       title={t("nav.conversations")}
-      aria-busy={status === "ready" ? undefined : true}
+      aria-busy={status === "idle" || status === "loading" ? true : undefined}
       browse={
         browseChannels
           ? {

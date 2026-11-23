@@ -179,11 +179,11 @@ describe("what the layout draws (R24)", () => {
     });
   });
 
-  test("a failed load draws the same and no empty state", async () => {
+  test("a failed load draws no rows, no aria-busy and no empty state", async () => {
     h.answer(undefined as never);
     await mount();
     expect(h.store.getState().status).toBe("failed");
-    expect(clist()).toHaveAttribute("aria-busy", "true");
+    expect(clist()).not.toHaveAttribute("aria-busy");
     expect(document.querySelector(".cr:not(.browse)")).toBeNull();
     expect(screen.queryByText("No conversations match")).toBeNull();
   });

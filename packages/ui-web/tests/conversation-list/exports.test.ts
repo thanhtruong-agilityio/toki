@@ -28,7 +28,12 @@ describe("conversation list exports (R1)", () => {
     expect(Object.keys(list).sort()).toEqual([
       "ConversationList",
       "conversationGroupIds",
+      "isCount",
     ]);
+    expect(list.isCount(3)).toBe(true);
+    expect(list.isCount(0)).toBe(false);
+    expect(list.isCount(NaN)).toBe(false);
+    expect(list.isCount(undefined)).toBe(false);
     expect(list.conversationGroupIds).toEqual([
       "starred",
       "channels",

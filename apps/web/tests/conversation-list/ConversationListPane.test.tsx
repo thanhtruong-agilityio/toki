@@ -203,6 +203,19 @@ describe("the unread total of a collapsed group (R15, concern 18)", () => {
     expect(count("channels")).toBe("2");
   });
 
+  test("a search keeps the total of the whole group", async () => {
+    await withCounts([
+      ["alpha", 1],
+      ["beta", 1],
+      ["gamma", 1],
+      ["delta", 1],
+      ["omega", 1],
+    ]);
+    expect(count("channels")).toBe("5");
+    await userEvent.type(screen.getByRole("searchbox"), "ga");
+    expect(count("channels")).toBe("5");
+  });
+
   test("the total follows a change of the store at once", async () => {
     await withCounts([
       ["a", 2],
@@ -663,6 +676,15 @@ describe("before the data (R24)", () => {
       "true",
     );
     expect(document.querySelectorAll("a.cr")).toHaveLength(0);
+  });
+
+  test("a failed first load is not busy", async () => {
+    h = useFakeStore(world());
+    h.answer(undefined as never);
+    await h.loadNow();
+    expect(h.store.getState().status).toBe("failed");
+    await mountPane();
+    expect(document.querySelector(".clist")).not.toHaveAttribute("aria-busy");
   });
 
   test("a ready store is not busy", async () => {

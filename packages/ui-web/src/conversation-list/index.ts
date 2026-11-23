@@ -1,4 +1,8 @@
-export { ConversationList, conversationGroupIds } from "./ConversationList";
+export {
+  ConversationList,
+  conversationGroupIds,
+  isCount,
+} from "./ConversationList";
 export type {
   ConversationGroup,
   ConversationGroupId,

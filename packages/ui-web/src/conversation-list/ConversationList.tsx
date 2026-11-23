@@ -109,7 +109,7 @@ export type ConversationListProps = Omit<
 };
 
 // A count draws only when it is a finite number above 0 (R7).
-function isCount(value: number | undefined): value is number {
+export function isCount(value: number | undefined): value is number {
   return typeof value === "number" && Number.isFinite(value) && value > 0;
 }
 
