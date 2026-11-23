@@ -65,7 +65,8 @@ export function UnjoinedChannel({
         if (
           error instanceof ApiError &&
           error.kind === "http" &&
-          (error.status === 404 || error.status === 403)
+          // A malformed id (400) can never succeed either: Retry would be pointless.
+          (error.status === 404 || error.status === 403 || error.status === 400)
         ) {
           setRead({ kind: "gone" });
           latest.current.onNotFound();

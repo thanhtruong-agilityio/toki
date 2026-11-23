@@ -78,7 +78,7 @@ describe("UnjoinedChannel (TOKI-034 R16)", () => {
     expect(container.textContent).toBe("");
   });
 
-  test.each([404, 403])(
+  test.each([404, 403, 400])(
     "(d) a %s calls onNotFound once and draws nothing of the channel",
     async (status) => {
       fake.readChannel.mockRejectedValue(http(status, ErrorCodes.notFound));
