@@ -37,7 +37,7 @@
    ]
   ]
  },
- "built": "20 Nov 2026",
+ "built": "23 Nov 2026",
  "overview": {
   "summary": "Toki is an internal team chat for one company: channels, direct messages, threads and files, and later tasks, calendar, video meetings, a guest portal, automations, mail and AI summaries. Each company runs its own copy on its own server.",
   "product": [
@@ -10993,7 +10993,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #10",
-        "fix": "The spec asks for a backup storage value; backup is deferred (D-092)."
+        "fix": ""
        },
        "status": "done",
        "issue": 65
@@ -11064,7 +11064,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #5",
-        "fix": "The spec names an Owner account (TOKI-020); the Owner role was removed (D-152)."
+        "fix": ""
        },
        "status": "done",
        "issue": 103
@@ -11620,63 +11620,99 @@
        "title": "messages and events tables",
        "scope": "UUIDv7, pagination indexes, a numbered event log. Reuses the UUIDv7 generator chosen in TOKI-005 Owns the conditions of the event number; until then the bootstrap endpoint returns 0.",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "merged",
+        "pr": "PR #198",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-037",
        "title": "Message API",
-       "scope": "Idempotent send, paged loading, loading around one message; up to 10,000 characters and 10 files per message (D-042) Owns hiding a new DM from the other person until its first message (proposed, undecided) and refuses posts to an archived channel.",
+       "scope": "Idempotent send, paged loading, loading around one message; up to 10,000 characters and 10 files per message (D-042) Owns hiding a new DM from the other person until its first message (proposed, undecided) and refuses posts to an archived channel. Also builds the one entry builder `buildMessageEntry` with injected readers for reactions, pins and mentions, and exports the message text schema.",
        "size": "L",
-       "spec": null
+       "spec": {
+        "state": "merged",
+        "pr": "PR #197",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-038",
        "title": "WebSocket gateway",
        "scope": "Authentication, the map of who listens to which conversation, events pushed to the right people",
        "size": "L",
-       "spec": null
+       "spec": {
+        "state": "merged",
+        "pr": "PR #200",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-039",
        "title": "Reconnect",
-       "scope": "Growing retry delay, fetching what was missed, a full reload after a long absence",
+       "scope": "Growing retry delay, fetching what was missed, a full reload after a long absence Also builds `GET /api/v1/events` and the one wiring file `apps/web/src/realtime.ts`.",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #210",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-040",
        "title": "client-core: sync engine",
-       "scope": "Apply events to the cache; optimistic send. A message sent offline waits and sends itself when the connection returns; once online there is one automatic try, then the message is marked 'Not sent' for a manual Retry or Delete (D-097, D-079). A waiting message is kept in the browser across a reload and dropped when someone else signs in there (D-132). A request with no answer after 10 seconds counts as failed (D-126)",
+       "scope": "Apply events to the cache; optimistic send. A message sent offline waits and sends itself when the connection returns; once online there is one automatic try, then the message is marked 'Not sent' for a manual Retry or Delete (D-097, D-079). A waiting message is kept in the browser across a reload and dropped when someone else signs in there (D-132). A request with no answer after 10 seconds counts as failed (D-126) Runs several handlers per event kind in registration order, and exposes `patchMessage`, `applyMessage` and `setLastMessageAt` for later tickets.",
        "size": "L",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #211",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-041",
        "title": "Virtualised message list",
-       "scope": "Reverse scroll, stick to bottom, hold position when loading older messages, a New messages button; opens at the New divider when there are unread messages (D-052) Also draws the readable history of an archived channel, passed by TOKI-101 as `ArchivedHistory`.",
+       "scope": "Reverse scroll, stick to bottom, hold position when loading older messages, a New messages button; opens at the New divider when there are unread messages (D-052) Also draws the readable history of an archived channel, passed by TOKI-101 as `ArchivedHistory`. Owns the rows, grouping, day dividers and the `conversationTabs` list; a hidden message is skipped through `isHidden`.",
        "size": "L",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #218",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-042",
        "title": "Message component",
-       "scope": "Avatar, name, 24-hour time (D-123), grouping within 5 minutes, day dividers. Send states beside the time: faded until confirmed, 'Waiting to send', and a red 'Not sent' with Retry and Delete, where Delete asks nothing (D-087). Grey system lines for join, leave, add, pin and channel creation, including a newcomer joining #general; a system line raises no unread count and no notification (D-100). Adds the `common` keys for Today, Tomorrow and Yesterday and the glue that passes them to the date formatter.",
+       "scope": "Avatar, name, 24-hour time (D-123), grouping within 5 minutes, day dividers. Send states beside the time: faded until confirmed, 'Waiting to send', and a red 'Not sent' with Retry and Delete, where Delete asks nothing (D-087). Grey system lines for join, leave, add, pin and channel creation, including a newcomer joining #general; a system line raises no unread count and no notification (D-100). Adds the `common` keys for Today, Tomorrow and Yesterday and the glue that passes them to the date formatter. Owns the `messageExtensions` object that 046 to 052 fill; its hook-using members are components.",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #221",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-043",
        "title": "Composer",
        "scope": "Enter sends, Shift+Enter makes a new line, no send while composing a Vietnamese word, auto-grow, local draft. Registers the composer with the toast anchor of TOKI-013.",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #217",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-044",
        "title": "Typing indicator",
        "scope": "A typing signal over WebSocket that clears itself",
        "size": "S",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #209",
+        "fix": ""
+       }
       }
      ]
     },
@@ -11696,65 +11732,101 @@
       {
        "id": "TOKI-045",
        "title": "Threads",
-       "scope": "API, thread panel, Also send to channel. One level deep. The root author, everyone who replied and everyone mentioned follow the thread automatically; there is no 'Unfollow thread' (D-119). When the root is deleted the thread stays under a 'Message deleted' line, and a reply being written is still sent (D-013, D-096). Each thread has its own address; Back closes the panel first (D-089). From 720 to 1099px the panel overlays the chat (D-068). Owns `.tlink`.",
+       "scope": "API, thread panel, Also send to channel. One level deep. The root author, everyone who replied and everyone mentioned follow the thread automatically; there is no 'Unfollow thread' (D-119). When the root is deleted the thread stays under a 'Message deleted' line, and a reply being written is still sent (D-013, D-096). Each thread has its own address; Back closes the panel first (D-089). From 720 to 1099px the panel overlays the chat (D-068). Owns `.tlink`. Owns `recomputeThreadSummary`, `ThreadSummary` with `summaryVersion` and `isFresher`.",
        "size": "L",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #214",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-046",
        "title": "Reactions",
        "scope": "8 fixed emoji, add and remove, the list of who reacted",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #215",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-047",
        "title": "Edit and delete",
        "scope": "Edit in place, the edited label, soft delete that keeps the thread, confirmation before deleting; a deleted message's files leave storage; an admin deleting someone's message shows a distinct line and tells the author (D-043, D-049, F16, F42)",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #213",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-048",
        "title": "Pins and the Pinned tab",
        "scope": "Pin, unpin, the pinned list",
        "size": "S",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #216",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-049",
        "title": "Text formatting",
        "scope": "Bold, italic, code, links; safe rendering with no raw HTML. Owns `.lnk`.",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #225",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-050",
        "title": "Mentions",
-       "scope": "People and @channel, a suggestion popup that matches with or without diacritics, a tinted background on messages that mention you; only conversation members are suggested (D-058); a name typed for someone outside the conversation notifies nobody and offers the sender 'Add them' (D-135); any member can use @channel, with confirmation in channels of 20 or more (D-041)",
+       "scope": "People and @channel, a suggestion popup that matches with or without diacritics, a tinted background on messages that mention you; only conversation members are suggested (D-058); a name typed for someone outside the conversation notifies nobody and offers the sender 'Add them' (D-135); any member can use @channel, with confirmation in channels of 20 or more (D-041) Owns and exports `mapText` and the mention writer `saveMentions`.",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #222",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-051",
        "title": "Synced drafts",
        "scope": "Drafts per conversation and thread, synced across devices, the Draft label",
        "size": "S",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #219",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-052",
        "title": "Message action bar",
        "scope": "Hover on desktop, tap on narrow screens, the More menu, copy",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #226",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-081",
        "title": "Prototype seed data",
        "scope": "A `dev:seed` script that loads the prototype's sample workspace: Hugepig Studio, 8 people with the roles Member and Admin only (D-152), the sample channels, DMs, messages, threads, reactions and pins. Used for development after a reset and by the end-to-end tests; it never runs in production, which starts with #general only (D-031, D-147). Sample files and images join the seed in TOKI-063, once file storage exists",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #220",
+        "fix": ""
+       }
       }
      ]
     }
@@ -12095,7 +12167,7 @@
       {
        "id": "TOKI-084",
        "title": "Production image and Compose",
-       "scope": "Dockerfile, Compose, Caddyfile, automatic TLS Builds every entry under `src/cli/`, including the emergency-link command of TOKI-026.",
+       "scope": "Dockerfile, Compose, Caddyfile, automatic TLS Builds named entries under `src/cli/` and leaves out the seed files of TOKI-081 from the production image.",
        "size": "M",
        "spec": null
       },

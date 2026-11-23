@@ -3782,7 +3782,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #10",
-        "fix": "The spec asks for a backup storage value; backup is deferred (Q40)."
+        "fix": ""
        },
        "status": "done",
        "issue": 65
@@ -3869,7 +3869,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #5",
-        "fix": "The spec names an Owner account (TOKI-020); the Owner role was removed (Q43)."
+        "fix": ""
        },
        "status": "done",
        "issue": 103
@@ -4613,17 +4613,27 @@
        "size": "M",
        "needs": [
         "028"
-       ]
+       ],
+       "spec": {
+        "state": "merged",
+        "pr": "PR #198",
+        "fix": ""
+       }
       },
       {
        "id": "037",
        "title": "Message API",
-       "scope": "Idempotent send, paged loading, loading around one message; up to 10,000 characters and 10 files per message (G9) Owns hiding a new DM from the other person until its first message (proposed, undecided) and refuses posts to an archived channel.",
+       "scope": "Idempotent send, paged loading, loading around one message; up to 10,000 characters and 10 files per message (G9) Owns hiding a new DM from the other person until its first message (proposed, undecided) and refuses posts to an archived channel. Also builds the one entry builder `buildMessageEntry` with injected readers for reactions, pins and mentions, and exports the message text schema.",
        "size": "L",
        "needs": [
         "036"
        ],
-       "open": "Page size"
+       "open": "Page size",
+       "spec": {
+        "state": "merged",
+        "pr": "PR #197",
+        "fix": ""
+       }
       },
       {
        "id": "038",
@@ -4631,50 +4641,78 @@
        "scope": "Authentication, the map of who listens to which conversation, events pushed to the right people",
        "size": "L",
        "needs": [
-        "036"
-       ]
+        "036",
+        "037"
+       ],
+       "spec": {
+        "state": "merged",
+        "pr": "PR #200",
+        "fix": ""
+       }
       },
       {
        "id": "039",
        "title": "Reconnect",
-       "scope": "Growing retry delay, fetching what was missed, a full reload after a long absence",
+       "scope": "Growing retry delay, fetching what was missed, a full reload after a long absence Also builds `GET /api/v1/events` and the one wiring file `apps/web/src/realtime.ts`.",
        "size": "M",
        "needs": [
+        "036",
         "038"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #210",
+        "fix": ""
+       }
       },
       {
        "id": "040",
        "title": "client-core: sync engine",
-       "scope": "Apply events to the cache; optimistic send. A message sent offline waits and sends itself when the connection returns; once online there is one automatic try, then the message is marked 'Not sent' for a manual Retry or Delete (D-097, D-079). A waiting message is kept in the browser across a reload and dropped when someone else signs in there (D-132). A request with no answer after 10 seconds counts as failed (D-126)",
+       "scope": "Apply events to the cache; optimistic send. A message sent offline waits and sends itself when the connection returns; once online there is one automatic try, then the message is marked 'Not sent' for a manual Retry or Delete (D-097, D-079). A waiting message is kept in the browser across a reload and dropped when someone else signs in there (D-132). A request with no answer after 10 seconds counts as failed (D-126) Runs several handlers per event kind in registration order, and exposes `patchMessage`, `applyMessage` and `setLastMessageAt` for later tickets.",
        "size": "L",
        "needs": [
         "037",
-        "038"
-       ]
+        "038",
+        "039"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #211",
+        "fix": ""
+       }
       },
       {
        "id": "041",
        "title": "Virtualised message list",
-       "scope": "Reverse scroll, stick to bottom, hold position when loading older messages, a New messages button; opens at the New divider when there are unread messages (OQ3) Also draws the readable history of an archived channel, passed by TOKI-101 as `ArchivedHistory`.",
+       "scope": "Reverse scroll, stick to bottom, hold position when loading older messages, a New messages button; opens at the New divider when there are unread messages (OQ3) Also draws the readable history of an archived channel, passed by TOKI-101 as `ArchivedHistory`. Owns the rows, grouping, day dividers and the `conversationTabs` list; a hidden message is skipped through `isHidden`.",
        "size": "L",
        "needs": [
         "040",
         "101"
        ],
-       "open": "Which virtualisation library"
+       "open": "Which virtualisation library",
+       "spec": {
+        "state": "pr",
+        "pr": "PR #218",
+        "fix": ""
+       }
       },
       {
        "id": "042",
        "title": "Message component",
-       "scope": "Avatar, name, 24-hour time (D-123), grouping within 5 minutes, day dividers. Send states beside the time: faded until confirmed, 'Waiting to send', and a red 'Not sent' with Retry and Delete, where Delete asks nothing (D-087). Grey system lines for join, leave, add, pin and channel creation, including a newcomer joining #general; a system line raises no unread count and no notification (D-100). Adds the `common` keys for Today, Tomorrow and Yesterday and the glue that passes them to the date formatter.",
+       "scope": "Avatar, name, 24-hour time (D-123), grouping within 5 minutes, day dividers. Send states beside the time: faded until confirmed, 'Waiting to send', and a red 'Not sent' with Retry and Delete, where Delete asks nothing (D-087). Grey system lines for join, leave, add, pin and channel creation, including a newcomer joining #general; a system line raises no unread count and no notification (D-100). Adds the `common` keys for Today, Tomorrow and Yesterday and the glue that passes them to the date formatter. Owns the `messageExtensions` object that 046 to 052 fill; its hook-using members are components.",
        "size": "M",
        "needs": [
         "017",
         "041",
         "093",
         "094"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #221",
+        "fix": ""
+       }
       },
       {
        "id": "043",
@@ -4683,7 +4721,12 @@
        "size": "M",
        "needs": [
         "040"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #217",
+        "fix": ""
+       }
       },
       {
        "id": "044",
@@ -4692,7 +4735,12 @@
        "size": "S",
        "needs": [
         "038"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #209",
+        "fix": ""
+       }
       }
      ]
     },
@@ -4702,11 +4750,19 @@
       {
        "id": "045",
        "title": "Threads",
-       "scope": "API, thread panel, Also send to channel. One level deep. The root author, everyone who replied and everyone mentioned follow the thread automatically; there is no 'Unfollow thread' (D-119). When the root is deleted the thread stays under a 'Message deleted' line, and a reply being written is still sent (D-013, D-096). Each thread has its own address; Back closes the panel first (D-089). From 720 to 1099px the panel overlays the chat (D-068). Owns `.tlink`.",
+       "scope": "API, thread panel, Also send to channel. One level deep. The root author, everyone who replied and everyone mentioned follow the thread automatically; there is no 'Unfollow thread' (D-119). When the root is deleted the thread stays under a 'Message deleted' line, and a reply being written is still sent (D-013, D-096). Each thread has its own address; Back closes the panel first (D-089). From 720 to 1099px the panel overlays the chat (D-068). Owns `.tlink`. Owns `recomputeThreadSummary`, `ThreadSummary` with `summaryVersion` and `isFresher`.",
        "size": "L",
        "needs": [
-        "040"
-       ]
+        "035",
+        "040",
+        "042",
+        "043"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #214",
+        "fix": ""
+       }
       },
       {
        "id": "046",
@@ -4714,8 +4770,16 @@
        "scope": "8 fixed emoji, add and remove, the list of who reacted",
        "size": "M",
        "needs": [
-        "040"
-       ]
+        "040",
+        "042",
+        "045",
+        "093"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #215",
+        "fix": ""
+       }
       },
       {
        "id": "047",
@@ -4723,9 +4787,19 @@
        "scope": "Edit in place, the edited label, soft delete that keeps the thread, confirmation before deleting; a deleted message's files leave storage; an admin deleting someone's message shows a distinct line and tells the author (G10, G16, F16, F42)",
        "size": "M",
        "needs": [
+        "037",
+        "038",
         "040",
+        "042",
+        "043",
+        "045",
         "093"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #213",
+        "fix": ""
+       }
       },
       {
        "id": "048",
@@ -4734,8 +4808,15 @@
        "size": "S",
        "needs": [
         "040",
+        "041",
+        "042",
         "093"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #216",
+        "fix": ""
+       }
       },
       {
        "id": "049",
@@ -4743,18 +4824,30 @@
        "scope": "Bold, italic, code, links; safe rendering with no raw HTML. Owns `.lnk`.",
        "size": "M",
        "needs": [
-        "042"
-       ]
+        "042",
+        "043"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #225",
+        "fix": ""
+       }
       },
       {
        "id": "050",
        "title": "Mentions",
-       "scope": "People and @channel, a suggestion popup that matches with or without diacritics, a tinted background on messages that mention you; only conversation members are suggested (D-058); a name typed for someone outside the conversation notifies nobody and offers the sender 'Add them' (D-135); any member can use @channel, with confirmation in channels of 20 or more (D-041)",
+       "scope": "People and @channel, a suggestion popup that matches with or without diacritics, a tinted background on messages that mention you; only conversation members are suggested (D-058); a name typed for someone outside the conversation notifies nobody and offers the sender 'Add them' (D-135); any member can use @channel, with confirmation in channels of 20 or more (D-041) Owns and exports `mapText` and the mention writer `saveMentions`.",
        "size": "M",
        "needs": [
+        "042",
         "043",
         "093"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #222",
+        "fix": ""
+       }
       },
       {
        "id": "051",
@@ -4762,8 +4855,14 @@
        "scope": "Drafts per conversation and thread, synced across devices, the Draft label",
        "size": "S",
        "needs": [
+        "039",
         "043"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #219",
+        "fix": ""
+       }
       },
       {
        "id": "052",
@@ -4772,7 +4871,12 @@
        "size": "M",
        "needs": [
         "042"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #226",
+        "fix": ""
+       }
       },
       {
        "id": "081",
@@ -4782,8 +4886,14 @@
        "needs": [
         "045",
         "046",
-        "048"
-       ]
+        "048",
+        "050"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #220",
+        "fix": ""
+       }
       }
      ]
     }
@@ -4818,7 +4928,8 @@
        "scope": "Unread counts per conversation, synced across devices. Read when the conversation is open, the window is in use and the list is at the bottom (D-052). Grey system lines such as 'Minh joined' raise no count (D-100); thread replies do not raise the channel's count (F14); leaving a channel clears its count (D-133); nobody sees who has read a message (D-048) Fills the unread data of the client store (`setUnread`) and adds unread counts to the bootstrap answer.",
        "size": "L",
        "needs": [
-        "040"
+        "040",
+        "041"
        ]
       },
       {
@@ -4901,6 +5012,7 @@
        "scope": "A worker fetches title and description and refuses internal addresses; the sender can remove the card (F12)",
        "size": "M",
        "needs": [
+        "049",
         "064"
        ]
       },
@@ -5179,7 +5291,7 @@
       {
        "id": "084",
        "title": "Production image and Compose",
-       "scope": "Dockerfile, Compose, Caddyfile, automatic TLS Builds every entry under `src/cli/`, including the emergency-link command of TOKI-026.",
+       "scope": "Dockerfile, Compose, Caddyfile, automatic TLS Builds named entries under `src/cli/` and leaves out the seed files of TOKI-081 from the production image.",
        "size": "M",
        "needs": [
         "004"
