@@ -61,15 +61,22 @@ function NewMessageForm({
     [people, currentUserId],
   );
 
+  // A chosen person the store no longer lists as active (after a refresh) is dropped from the choice: it
+  // has no chip, and sending it would be refused again.
+  const chosen = useMemo(() => {
+    const listed = new Set(candidates.map((c) => c.id));
+    return selected.filter((id) => listed.has(id));
+  }, [selected, candidates]);
+
   // Only the chosen people count as content; the search text does not (R24, concern 4).
   const guard = useFormGuard({
-    hasContent: hasFormContent({ people: selected }),
+    hasContent: hasFormContent({ people: chosen }),
     formName: t("picker.title"),
     onClose: () => onClose(),
   });
 
   const start = async () => {
-    if (selected.length === 0 || busyRef.current) return;
+    if (chosen.length === 0 || busyRef.current) return;
     busyRef.current = true;
     setBusy(true);
     setFailure(null);
@@ -78,7 +85,7 @@ function NewMessageForm({
       openDirect: (ids) => conversations.openDirect(ids),
       onClose,
       onOpenConversation,
-      userIds: selected,
+      userIds: chosen,
     });
     busyRef.current = false;
     if (!mounted.current) return;
@@ -121,7 +128,7 @@ function NewMessageForm({
             <Button
               variant="primary"
               type="button"
-              disabled={selected.length === 0 || busy}
+              disabled={chosen.length === 0 || busy}
               aria-busy={busy ? "true" : undefined}
               onClick={() => void start()}
             >
@@ -133,7 +140,7 @@ function NewMessageForm({
         <div onFocusCapture={guard.trackFocus}>
           <PeoplePicker
             people={candidates}
-            selected={selected}
+            selected={chosen}
             onChange={(ids) => {
               setSelected(ids);
               setFailure(null);

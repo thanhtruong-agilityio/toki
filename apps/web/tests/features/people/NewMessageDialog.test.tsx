@@ -300,4 +300,42 @@ describe("NewMessageDialog (TOKI-034 R21 to R25)", () => {
     await user.keyboard("{Enter}");
     expect(rows()[1]).toHaveAttribute("aria-pressed", "false");
   });
+
+  test("a chosen person who leaves the list is dropped from the choice, not sent (review: invisible chip)", async () => {
+    const user = userEvent.setup();
+    const { rerender } = render(<Host />);
+    await user.click(row(1));
+    await user.click(row(2));
+    // The store now holds person 2 as deactivated (for example after refresh()).
+    fake.people = fake.people.map((p) =>
+      p.id === "p2" ? { ...p, status: "deactivated" as const } : p,
+    );
+    rerender(<Host />);
+    expect(
+      screen.queryByRole("button", { name: "Remove Person 002" }),
+    ).toBeNull();
+    await user.click(start());
+    expect(fake.openDirect).toHaveBeenCalledWith(["p1"]);
+  });
+
+  test("a 409 with no named ids still drops the people the store no longer lists", async () => {
+    const user = userEvent.setup();
+    fake.openDirect.mockRejectedValue(
+      http(409, ErrorCodes.personDeactivated, null),
+    );
+    const { rerender } = render(<Host />);
+    await user.click(row(1));
+    await user.click(row(2));
+    await user.click(start());
+    fake.people = fake.people.map((p) =>
+      p.id === "p2" ? { ...p, status: "deactivated" as const } : p,
+    );
+    rerender(<Host />);
+    expect(
+      screen.queryByRole("button", { name: "Remove Person 002" }),
+    ).toBeNull();
+    expect(
+      screen.getByRole("button", { name: "Remove Person 001" }),
+    ).toBeInTheDocument();
+  });
 });

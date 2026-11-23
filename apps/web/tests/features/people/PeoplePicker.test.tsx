@@ -208,4 +208,36 @@ describe("PeoplePicker (TOKI-034 R18 to R20)", () => {
     expect(rowsOf()).toHaveLength(50);
     expect(list.scrollTop).toBe(0);
   });
+
+  test("the limit message stays when the parent passes a new array with the same ids (review)", async () => {
+    const user = userEvent.setup();
+    const ids = ["p1"];
+    const { rerender } = render(
+      <PeoplePicker
+        people={people}
+        selected={ids}
+        onChange={() => {}}
+        max={1}
+        limitMessage="Up to 8 people, counting you"
+        searchLabel="Search people"
+        emptyText="No people match"
+        removeLabel={(n) => `Remove ${n}`}
+      />,
+    );
+    await user.click(screen.getByRole("button", { name: /Person 002/ }));
+    expect(screen.getByRole("alert")).toBeInTheDocument();
+    rerender(
+      <PeoplePicker
+        people={people}
+        selected={[...ids]}
+        onChange={() => {}}
+        max={1}
+        limitMessage="Up to 8 people, counting you"
+        searchLabel="Search people"
+        emptyText="No people match"
+        removeLabel={(n) => `Remove ${n}`}
+      />,
+    );
+    expect(screen.getByRole("alert")).toBeInTheDocument();
+  });
 });

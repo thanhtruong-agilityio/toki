@@ -1,5 +1,6 @@
 import { Avatar, EmptyState, PersonChip } from "@toki/ui-web";
 import {
+  useMemo,
   useRef,
   useState,
   type ChangeEvent,
@@ -50,15 +51,18 @@ export function PeoplePicker({
   } | null>(null);
   const ownInput = useRef<HTMLInputElement | null>(null);
   const input = inputRef ?? ownInput;
-  const matches = matchPeople(people, text);
+  const matches = useMemo(() => matchPeople(people, text), [people, text]);
   const visible = matches.slice(0, shown);
   const more = useMoreOnScroll({
     enabled: matches.length > shown,
     onMore: () => setShown((n) => n + WINDOW),
   });
-  const byId = new Map(people.map((p) => [p.id, p]));
+  const byId = useMemo(() => new Map(people.map((p) => [p.id, p])), [people]);
   const showLimit =
-    limited !== null && limited.selected === selected && limited.text === text;
+    limited !== null &&
+    limited.text === text &&
+    limited.selected.length === selected.length &&
+    limited.selected.every((id, i) => id === selected[i]);
 
   const onText = (event: ChangeEvent<HTMLInputElement>) => {
     setText(event.target.value);
