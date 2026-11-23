@@ -1,0 +1,32 @@
+{
+  "approved_auto": false,
+  "base": "github/main",
+  "branch": "feat/toki-100-add-remove-people",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-20T10:31:03Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-20T10:31:04Z",
+      "stage": "explore"
+    }
+  ],
+  "key": "TOKI-100",
+  "main_sha": "48c78fd019ce5a9592637652f8fc732ae611d540",
+  "metrics": {},
+  "mode": null,
+  "plan_approved": false,
+  "plan_hash": null,
+  "spec_commit": "ee54bec173fd73741b2193572a625560b9c0369b",
+  "spec_paths": [
+    "docs/specs/2026-11-17-add-remove-people-design.md"
+  ],
+  "stage": "explore",
+  "tier": "M",
+  "verifier": {
+    "result": null,
+    "round": 0
+  }
+}
