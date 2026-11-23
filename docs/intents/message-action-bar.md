@@ -12,16 +12,16 @@ The bar has the smile button (it opens the reaction picker of TOKI-046), Reply i
 ## Affected users and systems
 - Every Member and Admin who reads a conversation or a thread, on a desktop, a tablet or a phone.
 - The web app (`apps/web`): a new folder for the bar and its menu, one entry in the message extensions of TOKI-042, the texts of both languages in `packages/i18n`.
-- The platform package (`packages/platform`): a clipboard member, with its web implementation, and the lint rule that keeps `ui-web` from using the clipboard directly.
+- The platform package (`packages/platform`): a clipboard member, with its web implementation.
 - The work whose actions the bar hosts: reactions (TOKI-046), edit and delete (TOKI-047), pins (TOKI-048), threads (TOKI-045); the message component (TOKI-042) and the list (TOKI-041).
 
 ## Constraints
 - No feature may be hover-only or desktop-only; every action has an entry point on narrow and touch screens. Source: D-067, NFR-02.
 - On a screen narrower than 720 px, tapping a message shows its action bar directly under the message, never over the text; every control is at least 40 px tall. Source: F38.
-- Hover on a desktop; on narrow screens, tap the message to show the action bar. Source: F39.
+- Hover on a desktop; on narrow screens, tap the message to show the action bar. Source: F14 (the Reply in thread button and the tap), F38.
 - Every icon-only button has a name for screen readers; menus work with arrow keys. Source: D-075, NFR-03.
 - A reply inside a thread has no "Reply in thread" action, in the bar or in the More menu. Source: AC-087, TS-136.
-- Reactions work in a conversation that is not archived by a member; a person sees the actions the permission functions allow. Source: D-077, BR-11, TOKI-027.
+- Reactions work in a conversation that is not archived by a member; a person sees the actions the permission functions allow. Source: D-077, F26, TOKI-027.
 - Pin and unpin are in the More menu of a message. Source: FR-36, AC-096.
 - When the connection drops, every action other than sending is blocked with an explanation, never a false success. Source: D-079.
 - Components reach the device's features only through the platform package. Source: technical design, TOKI-018.
