@@ -13,7 +13,7 @@ The component has a small, fixed set of places that other work fills: the text (
 - Every Member and Admin who reads a conversation or a thread.
 - The web app (`apps/web`): a new message folder under `conversation/`, the stand-in row of TOKI-041, and the texts of both languages in `packages/i18n`.
 - The sync engine of TOKI-040 (its `retry` and `discard`), the date rules of TOKI-094, the patterns of TOKI-093.
-- The work that fills the places: formatting (TOKI-049), mentions (TOKI-050), the action bar (TOKI-052), files (TOKI-058), reactions (TOKI-046), threads (TOKI-045), edit and delete (TOKI-047), pins (TOKI-048), the profile panel (TOKI-057).
+- The work that fills the places: formatting (TOKI-049), mentions (TOKI-050), the action bar (TOKI-052), files (TOKI-062), reactions (TOKI-046), threads (TOKI-045), edit and delete (TOKI-047), pins (TOKI-048), the profile panel (TOKI-057).
 
 ## Constraints
 - Time is shown in 24 hours for everyone. Source: D-123.
