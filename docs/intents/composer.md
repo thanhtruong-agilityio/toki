@@ -17,11 +17,12 @@ It does not build mentions, formatting buttons, synced drafts, attachments, the 
 - Neighbouring work: the sync engine (TOKI-040), the typing sender (TOKI-044), the message list (TOKI-041), mentions (TOKI-050), synced drafts (TOKI-051), attachments (TOKI-058, TOKI-059), threads (TOKI-045), formatting (TOKI-049), the archived channel page (TOKI-101).
 
 ## Constraints
-- Enter sends, Shift+Enter makes a new line, the field grows to 160 px and then scrolls; the placeholder is "Message #name". Source: journey F11, the prototype (`composerHtml`, `.cbox textarea`).
+- Enter sends, Shift+Enter makes a new line, the field grows to 160 px and then scrolls; the placeholder is "Message #name". Source: journey F11, the prototype (`composerHtml`, `.cbox textarea`). F11 gives no rule for a touch device.
+- The composer is part of the Messages tab only, not of the Pinned tab or later tabs. Source: journeys F10 and F11, the prototype (`S.tab==='messages'`).
 - Mid-word while typing Vietnamese, Enter finishes the word and does not send. Source: journey F11.
 - A message has 1 to 10,000 characters; a text of only spaces or line breaks is not sent; the counter appears near the limit and Send is locked beyond it. Source: D-042, FR-09, AC-024, TS-037, TS-038, journey F11.
 - The composer sends through the sync engine: the message shows at once, a message pressed offline waits, one that fails is "Not sent". The composer keeps the focus after sending. Source: journey F11, D-079, D-097, D-087, TOKI-040.
-- Unsent text is kept per conversation, is text only (no files), is back on return, survives a sign-in of the same person and is dropped when someone else signs in on that browser. Source: FR-38, D-168, D-132, decisions of the product owner of 2026-11-19 in the specs of TOKI-023 (concern 8) and TOKI-099 (concern 10).
+- Unsent text is kept per conversation, is text only (no files), is back on return, survives a sign-in of the same person and is dropped when someone else signs in on that browser. Source: FR-38, D-168, decisions of the product owner of 2026-11-19 in the specs of TOKI-023 (concern 8) and TOKI-099 (concern 10), which apply the pattern of D-132 (a waiting message is dropped when someone else signs in) to drafts.
 - The composer tells the typing indicator when the person types and when they stop. Source: TOKI-044 R9.
 - Toasts never cover the composer, which registers with `useToastAvoid`. Source: D-078, TOKI-013 concern 8, TOKI-015 R25.
 - From 720 to 1099 px a side panel overlays the chat, and the layout of the composer in that case belongs to this ticket. Source: TOKI-015 concern 5 (decided by the product owner on 2026-11-18), D-068.
@@ -36,4 +37,5 @@ It does not build mentions, formatting buttons, synced drafts, attachments, the 
 - Where does the composer sit when a side panel overlays the chat from 720 to 1099 px?
 - What does the composer offer to mentions, drafts, attachments and the thread box, which are built later?
 - When does the counter appear and what does it say?
-- Which ticket builds the Emoji button of the prototype's toolbar?
+- What does Enter do on a phone, whose soft keyboard has no Shift+Enter?
+- Which ticket builds the Emoji button that journey F12 lists in the toolbar, and what does it insert (D-017: 8 fixed emoji, no picker)?
