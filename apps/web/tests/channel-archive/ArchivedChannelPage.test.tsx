@@ -216,6 +216,17 @@ describe("the read of the page (R16)", () => {
     expect(h.api.channels.get).toHaveBeenCalledTimes(1);
   });
 
+  test("a rejected read is not kept: the next mount reads again", async () => {
+    const id = await setup();
+    h.api.channels.get.mockRejectedValueOnce(http(500));
+    await show(id, { held: false });
+    expect(h.api.channels.get).toHaveBeenCalledTimes(1);
+    document.body.innerHTML = "";
+    // `show` clears the spy, so one call here is a new request, not the stored one.
+    await show(id, { held: false });
+    expect(h.api.channels.get).toHaveBeenCalledTimes(1);
+  });
+
   test("a 404 draws the not-found view", async () => {
     const id = await setup();
     h.api.channels.get.mockRejectedValueOnce(http(404));

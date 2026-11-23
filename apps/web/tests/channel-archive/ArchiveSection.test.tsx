@@ -147,18 +147,24 @@ describe("where Archive is offered (R8)", () => {
 });
 
 describe("nothing deletes a channel (R12)", () => {
-  test.each([["admin"], ["member"]] as const)(
-    "the buttons of the panel for a %s hold no delete action",
-    async (role) => {
-      await setup(role);
-      await open("c1");
-      await flush();
-      for (const text of buttons())
-        expect(text).not.toMatch(/delete|remove channel/i);
-      const extra = role === "admin" ? ["Archive channel"] : ([] as string[]);
-      expect(buttons().filter((text) => /archive/i.test(text))).toEqual(extra);
-    },
-  );
+  test("an Admin's buttons are a Member's plus Archive channel, and none is a delete action", async () => {
+    await setup("member");
+    await open("c1");
+    await flush();
+    const member = buttons();
+    document.body.innerHTML = "";
+    await setup("admin");
+    await open("c1");
+    await flush();
+    const admin = buttons();
+    expect(admin.filter((text) => !member.includes(text))).toEqual([
+      "Archive channel",
+    ]);
+    expect(admin.length).toBe(member.length + 1);
+    for (const text of [...admin, ...member]) {
+      expect(text).not.toMatch(/delete|remove channel/i);
+    }
+  });
 });
 
 describe("the press (R9)", () => {
@@ -329,6 +335,7 @@ describe("Confirm (R10, R11)", () => {
     expect(dialog()).toBeNull();
     expect(screen.getAllByText(FAILED)).toHaveLength(1);
     expect(onNoAccess).not.toHaveBeenCalled();
+    expect(document.activeElement).toBe(archiveButton());
   });
 
   test("a 500 keeps the dialog open, busy off, with the failure toast", async () => {

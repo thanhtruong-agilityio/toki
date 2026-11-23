@@ -58,6 +58,49 @@ describe("the sources of the folder", () => {
     for (const file of sources)
       expect(comparesRole(file.text), file.name).toBe(false);
   });
+  test("no source holds a style attribute or an !important (R4)", () => {
+    for (const file of sources.filter((s) => /\.tsx?$/.test(s.name))) {
+      expect(file.text, file.name).not.toMatch(/\bstyle=/);
+      expect(file.text, file.name).not.toMatch(/!important/);
+    }
+  });
+  test("the files of R1 exist and index.ts exports its names", async () => {
+    const names = sources.map((s) => s.name);
+    for (const file of [
+      "deps.ts",
+      "access.ts",
+      "archiveFlow.ts",
+      "restoreFlow.ts",
+      "ArchiveSection.tsx",
+      "useArchiveChannel.ts",
+      "ArchivedChannelPage.tsx",
+      "ArchivedHeader.tsx",
+      "ArchivedNotice.tsx",
+      "ArchivedHistory.tsx",
+      "archivedDetail.ts",
+      "RestoreButton.tsx",
+      "useRestoreChannel.ts",
+      "archive.css",
+      "index.ts",
+    ]) {
+      expect(names, file).toContain(file);
+    }
+    const index = (await import("../../src/channel-archive/index")) as Record<
+      string,
+      unknown
+    >;
+    for (const name of [
+      "ArchiveSection",
+      "ArchivedChannelPage",
+      "ArchivedHistory",
+      "RestoreButton",
+      "canOfferArchive",
+      "canOfferRestore",
+      "isArchivedMember",
+    ]) {
+      expect(index, name).toHaveProperty(name);
+    }
+  });
   test("nothing deletes a channel (R12)", () => {
     for (const file of sources)
       expect(mentionsDelete(file.text), file.name).toBe(false);

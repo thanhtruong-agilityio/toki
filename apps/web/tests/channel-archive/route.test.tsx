@@ -222,6 +222,22 @@ describe("an archived channel the person belongs to (R13)", () => {
   });
 });
 
+describe("an id the route has seen (plan 7e)", () => {
+  test("opened after Browse has read the channel, an id in `seen` ends on the page", async () => {
+    await setup(["x"], [detail("x", "old")]);
+    h.details["x"] = detail("x", "old", { archived: true });
+    h.answer(listBody([]));
+    await h.store.refresh();
+    // Browse reads the channel before it navigates (ConversationStarters).
+    await h.store.readChannel("x");
+    await mount("/c/x");
+    act(() => sets.seen.add("x"));
+    await flush();
+    expect(archivedPage()).not.toBeNull();
+    expect(here()).toBe("/c/x");
+  });
+});
+
 describe("what is decided as before", () => {
   test.each([
     [
