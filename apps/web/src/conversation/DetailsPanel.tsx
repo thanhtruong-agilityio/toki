@@ -2,7 +2,9 @@ import { useTranslation } from "@toki/i18n/react";
 import { SidePanel } from "@toki/ui-web";
 import "./conversation.css";
 import { AboutSection } from "./AboutSection";
+import { NotificationsSection } from "./NotificationsSection";
 import { PeopleSection, type PeopleControls } from "./PeopleSection";
+import { SettingsSection } from "./SettingsSection";
 import { useConversation, useDetailRead } from "./useConversation";
 import { useDetailsPanel } from "./useDetailsPanel";
 
@@ -53,6 +55,14 @@ export function DetailsPanel({
           conversationId={conversationId}
           onNoAccess={onNoAccess}
           Controls={Controls}
+        />
+        <NotificationsSection
+          conversationId={conversationId}
+          onNoAccess={onNoAccess}
+        />
+        <SettingsSection
+          conversationId={conversationId}
+          onNoAccess={onNoAccess}
         />
       </div>
     </SidePanel>
