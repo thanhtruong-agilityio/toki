@@ -16,7 +16,7 @@ It does not build the server side (TOKI-058), the file and image cards inside a 
 - `packages/ui-web`: the card, the drop and paste target.
 - `packages/i18n`: the texts and the file size format.
 - `apps/web`: the attach button, the wiring into the composer and the conversation page.
-- Neighbouring work: the file storage (TOKI-058), the composer (TOKI-043), the sync engine (TOKI-040), the connection (TOKI-039), the disk warning and its refusal text (TOKI-103), the thread box (TOKI-045), the message component and the cards in sent messages (TOKI-042, TOKI-062).
+- Neighbouring work: the file storage (TOKI-058), the composer (TOKI-043), the sync engine (TOKI-040), the offline gate (TOKI-093), the disk warning and its refusal text (TOKI-103), the thread box (TOKI-045), the message component and the cards in sent messages (TOKI-042, TOKI-062).
 
 ## Constraints
 - A message carries up to 10 files, each up to 100 MB; every file type is accepted. Source: D-042, D-014, D-095, FR-10, AC-026, AC-027, TS-041, TS-042.
