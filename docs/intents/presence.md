@@ -13,7 +13,7 @@ The client keeps a store of who is in which state and a hook that gives a screen
 
 ## Affected users and systems
 - Members and Admins with Toki open: they see each other's dots, and their own dot on the account card.
-- The server app (`apps/server`): a new `presence` module, one route, two small additions to the `realtime` module (connection opened and closed notices, the connection id given to a frame handler), the registration and one timer in `app.ts`.
+- The server app (`apps/server`): a new `presence` module, one route, three small additions to the `realtime` module, asked of TOKI-038 (a connection opened notice, a connection closed notice, the connection id given to a frame handler), the registration and one timer in `app.ts`.
 - The shared package (`packages/shared`): the states, the limits, the activity frame, the live frame and the snapshot schema.
 - The client core (`packages/client-core`): the presence store, the activity sender and one API method.
 - The web app (`apps/web`): the browser activity source, the hooks, the wiring lines in `realtime.ts`, and the dots on the screens named in the spec.
