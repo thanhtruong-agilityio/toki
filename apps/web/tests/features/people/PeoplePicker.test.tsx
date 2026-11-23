@@ -18,7 +18,9 @@ const people = Array.from({ length: 120 }, (_, i) => ({
 function Harness(
   props: Partial<PeoplePickerProps> & { onChangeSpy?: (ids: string[]) => void },
 ) {
-  const [selected, setSelected] = useState<string[]>([...(props.selected ?? [])]);
+  const [selected, setSelected] = useState<string[]>([
+    ...(props.selected ?? []),
+  ]);
   const { onChangeSpy, selected: _initial, ...rest } = props;
   void _initial;
   return (

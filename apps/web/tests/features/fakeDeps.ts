@@ -18,7 +18,7 @@ export const fake = {
   joinChannel: vi.fn(),
   readChannel: vi.fn(),
   refresh: vi.fn(async () => {}),
-  hasConversation: vi.fn((_id: string) => false),
+  hasConversation: vi.fn<(id: string) => boolean>(() => false),
   list: vi.fn(),
 };
 
