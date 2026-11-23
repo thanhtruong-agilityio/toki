@@ -4,6 +4,7 @@ import { account } from "./account";
 import { admin } from "./admin";
 import { browse } from "./browse";
 import { common } from "./common";
+import { conversation } from "./conversation";
 import { conversationList } from "./conversationList";
 import { createChannel } from "./createChannel";
 import { emergency } from "./emergency";
@@ -19,6 +20,7 @@ export const vi: Catalog = {
   admin,
   browse,
   common,
+  conversation,
   conversationList,
   createChannel,
   emergency,

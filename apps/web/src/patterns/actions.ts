@@ -46,6 +46,13 @@ export const actionPatterns = table({
     source: "D-051, D-156, AC-055",
     owner: "TOKI-035",
   },
+  // The last member of a public channel confirms like a private leave and has no Undo (TOKI-035
+  // concern 2, R24).
+  leavePublicChannelLastMember: {
+    pattern: "confirm",
+    source: "D-051, D-069, AC-056; concern 2 of the TOKI-035 spec",
+    owner: "TOKI-035",
+  },
   archiveChannel: {
     pattern: "confirm",
     source: "D-061, F26",

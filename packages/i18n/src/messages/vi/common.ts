@@ -5,6 +5,8 @@ export const common = {
   role: { member: "Thành viên", admin: "Admin" },
   undo: "Hoàn tác",
   cancel: "Hủy",
+  back: "Quay lại",
+  closePanel: "Đóng bảng",
   close: "Đóng",
   discard: {
     title: "Bỏ nội dung bạn đã nhập?",

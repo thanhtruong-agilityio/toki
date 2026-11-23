@@ -441,6 +441,10 @@ describe("the signal of another tab (R12)", () => {
     const fetchSpy = vi.fn();
     vi.stubGlobal("fetch", fetchSpy);
     const router = await mountApp("en", "/");
+    // The header of the conversation that `/` opens reads the channel once when it is drawn
+    // (TOKI-035 R7); the test is about the requests that the signal causes, so it starts after that.
+    await act(async () => {});
+    fetchSpy.mockClear();
     act(() => emit({ type: "other" }));
     act(() => emit({}));
     expect(getSessionState().status).toBe("signedIn");

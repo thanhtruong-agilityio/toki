@@ -1,0 +1,54 @@
+{
+  "approved_auto": false,
+  "base": "main",
+  "branch": "feat/toki-035-conversation-header-details",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-23T02:28:22Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-23T02:28:22Z",
+      "stage": "explore"
+    },
+    {
+      "at": "2026-11-23T02:35:21Z",
+      "stage": "plan"
+    },
+    {
+      "at": "2026-11-23T02:37:37Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-23T02:37:38Z",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-23T03:05:19Z",
+      "stage": "check"
+    },
+    {
+      "at": "2026-11-23T03:16:09Z",
+      "stage": "ship"
+    }
+  ],
+  "key": "TOKI-035",
+  "main_sha": "88f92548ad8c04d81489354f97e6b3d10f5549c9",
+  "metrics": {},
+  "mode": "auto-to-check",
+  "plan_approved": true,
+  "plan_hash": "860ccf4d0359ab7e01a91d1996938959a7782676a367d8793b08f29a53d7bd98",
+  "spec_commit": "5f6ad136462bab1ecfbfca324da98e306e5de70b",
+  "spec_paths": [
+    "docs/specs/2026-11-17-conversation-header-details-design.md"
+  ],
+  "stage": "ship",
+  "tier": "M",
+  "verifier": {
+    "accepted_note": "Accepted by Thanh Truong 2026-11-23 after two FAIL rounds: scope and naming deviations only (AboutEditForm.tsx, ReadFailed.tsx, extra test files, installStore and api delegate in tests/support/conversation-store.ts, edits of common.test.ts, router.test.ts, account-menu.test.tsx); no requirement without code or test.",
+    "result": "FAIL",
+    "round": 2
+  }
+}
