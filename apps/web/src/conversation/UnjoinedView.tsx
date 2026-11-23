@@ -1,9 +1,8 @@
 import type { ChannelRead } from "@toki/client-core";
-import { NotFoundView } from "../routes/NotFoundView";
+import { UnjoinedChannel } from "../features/channels/UnjoinedChannel";
 
-// The page of an id that is not in the list and was never in it (R21 (b)). In this ticket it draws
-// the not-found view and nothing else; TOKI-034 replaces the body with `UnjoinedChannel` and keeps this
-// file and these four props.
+// The page of an id that is not in the list and was never in it (TOKI-033 R21 (b)). Its body is
+// TOKI-034's `UnjoinedChannel` (R16); the file and its four props are TOKI-033's.
 export type UnjoinedViewProps = {
   channelId: string;
   onJoined: (channelId: string) => void;
@@ -12,6 +11,5 @@ export type UnjoinedViewProps = {
 };
 
 export function UnjoinedView(props: UnjoinedViewProps) {
-  void props;
-  return <NotFoundView />;
+  return <UnjoinedChannel {...props} />;
 }
