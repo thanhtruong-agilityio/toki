@@ -15,19 +15,28 @@
     {
       "at": "2026-11-23T02:29:12Z",
       "stage": "plan"
+    },
+    {
+      "at": "2026-11-23T02:35:06Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-23T02:35:06Z",
+      "stage": "build"
     }
   ],
   "key": "TOKI-034",
   "main_sha": "88f92548ad8c04d81489354f97e6b3d10f5549c9",
   "metrics": {},
-  "mode": null,
-  "plan_approved": false,
-  "plan_hash": null,
+  "mode": "auto-to-pr",
+  "plan_approved": true,
+  "plan_hash": "74c386e6ad2df114d994422ca57e5756686d7f2c16a021811cf1bcdad9277914",
   "spec_commit": "410b0c3e6ceb0c5fa03da522bdb16207f7ecae81",
   "spec_paths": [
     "docs/specs/2026-11-17-browse-channels-people-picker-design.md"
   ],
-  "stage": "plan",
+  "stage": "build",
   "tier": "M",
   "verifier": {
     "result": null,
