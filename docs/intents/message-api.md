@@ -9,7 +9,7 @@ Two things that earlier work left open land here: the grey system lines that a c
 ## Proposed outcome
 The server answers a request to send a message, to load the latest messages of a conversation, to load older or newer ones, and to load the messages around one message.
 A send carries an id made by the client, so a double press, a retry after a lost answer and two tabs store one message. A message holds up to 10,000 characters. Every member of a conversation reads its full history, an archived channel included, and nobody else reads any of it. Writing into an archived channel, or into a direct message whose other person is deactivated, is refused.
-A change of a channel writes its grey system line in the same transaction. A new direct message appears in the other person's list when its first message is sent, and not before.
+A change of a channel writes its grey system line in the same transaction, and the people who joined #general before this work get their line too. A new direct message appears in the other person's list when its first message is sent, and not before.
 
 ## Affected users and systems
 - Members and Admins, who send and read messages in channels, direct messages and groups.
