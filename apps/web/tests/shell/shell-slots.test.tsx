@@ -105,6 +105,28 @@ describe("the side panel slot (R26)", () => {
     expect(panel()).toHaveTextContent("from B");
   });
 
+  test("the later page leaving gives the panel back to the earlier one, and the earlier leaving closes it", () => {
+    const both = (a: boolean, b: boolean) => (
+      <ShellSlotsProvider>
+        <FakeRoute>
+          {a ? <Page label="A" content="from A" /> : null}
+          {b ? <Page label="B" content="from B" /> : null}
+        </FakeRoute>
+      </ShellSlotsProvider>
+    );
+    const { rerender } = render(both(true, false));
+    rerender(both(true, true));
+    expect(screen.getByTestId("label")).toHaveTextContent("B");
+    expect(panel()).toHaveTextContent("from B");
+    rerender(both(true, false));
+    expect(screen.getByTestId("owner")).toHaveTextContent("set");
+    expect(screen.getByTestId("label")).toHaveTextContent("A");
+    expect(panel()).toHaveTextContent("from A");
+    rerender(both(false, false));
+    expect(screen.getByTestId("owner")).toHaveTextContent("none");
+    expect(panel()).toBeEmptyDOMElement();
+  });
+
   test("a new label renames the panel", () => {
     const { rerender } = mount(<Page label="One" />);
     rerender(

@@ -35,17 +35,21 @@ type Slots = {
 function createStore(): Store {
   const listeners = new Set<() => void>();
   const contents = new Map<object, ReactNode>();
-  let active: object | null = null;
+  // Owners in the order they took the panel: the last one shown, and the one before it next.
+  const order: object[] = [];
   let shown: ReactNode = null;
   const publish = () => {
-    const next = active === null ? null : (contents.get(active) ?? null);
+    const active = order[order.length - 1];
+    const next = active === undefined ? null : (contents.get(active) ?? null);
     if (next === shown) return;
     shown = next;
     for (const listener of [...listeners]) listener();
   };
   return {
     activate(owner) {
-      active = owner;
+      const at = order.indexOf(owner);
+      if (at >= 0) order.splice(at, 1);
+      order.push(owner);
       publish();
     },
     write(owner, content) {
@@ -54,7 +58,8 @@ function createStore(): Store {
     },
     release(owner) {
       contents.delete(owner);
-      if (active === owner) active = null;
+      const at = order.indexOf(owner);
+      if (at >= 0) order.splice(at, 1);
       publish();
     },
     subscribe(listener) {
@@ -72,16 +77,36 @@ export function ShellSlotsProvider({ children }: { children?: ReactNode }) {
   const [state, setState] = useState<PanelState | null>(null);
   const store = useRef<Store>(null);
   store.current ??= createStore();
-  const claim = useCallback((owner: object, label: string) => {
+  // Every mounted claim, the last one on top; when it leaves, the one before it shows again.
+  const claims = useRef<PanelState[]>([]);
+  const show = useCallback(() => {
+    const top = claims.current[claims.current.length - 1] ?? null;
     setState((prev) =>
-      prev !== null && prev.owner === owner && prev.label === label
+      prev === top ||
+      (prev !== null &&
+        top !== null &&
+        prev.owner === top.owner &&
+        prev.label === top.label)
         ? prev
-        : { owner, label },
+        : top,
     );
   }, []);
-  const unclaim = useCallback((owner: object) => {
-    setState((prev) => (prev !== null && prev.owner === owner ? null : prev));
-  }, []);
+  const claim = useCallback(
+    (owner: object, label: string) => {
+      const at = claims.current.findIndex((c) => c.owner === owner);
+      const [old] = at >= 0 ? claims.current.splice(at, 1) : [];
+      claims.current.push(old?.label === label ? old : { owner, label });
+      show();
+    },
+    [show],
+  );
+  const unclaim = useCallback(
+    (owner: object) => {
+      claims.current = claims.current.filter((c) => c.owner !== owner);
+      show();
+    },
+    [show],
+  );
   const slots = useMemo<Slots>(
     () => ({ claim, unclaim, store: store.current! }),
     [claim, unclaim],
