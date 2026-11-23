@@ -33,7 +33,8 @@ export function DetailsPanel({
     entry === undefined || entry.kind === "channel",
     onNoAccess,
   );
-  // A conversation the store holds no entry for is drawn only when it is an archived channel (R30);
+  // A conversation the store holds no entry for is drawn only when it is an archived channel (R30), with
+  // About, Members and Leave and no level, mute, star or Edit (they belong to a member row it has none of);
   // after a leave neither exists and the panel draws nothing (R25).
   if (entry === undefined && detail?.archived !== true) return null;
   return (
@@ -57,14 +58,18 @@ export function DetailsPanel({
           onNoAccess={onNoAccess}
           Controls={Controls}
         />
-        <NotificationsSection
-          conversationId={conversationId}
-          onNoAccess={onNoAccess}
-        />
-        <SettingsSection
-          conversationId={conversationId}
-          onNoAccess={onNoAccess}
-        />
+        {entry !== undefined && (
+          <>
+            <NotificationsSection
+              conversationId={conversationId}
+              onNoAccess={onNoAccess}
+            />
+            <SettingsSection
+              conversationId={conversationId}
+              onNoAccess={onNoAccess}
+            />
+          </>
+        )}
         <LeaveSection conversationId={conversationId} onNoAccess={onNoAccess} />
       </div>
     </SidePanel>
