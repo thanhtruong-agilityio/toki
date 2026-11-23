@@ -1,10 +1,17 @@
 import { useTranslation } from "@toki/i18n/react";
-import { formatDate, type DateContext } from "@toki/shared";
-import { Icon } from "@toki/ui-web";
-import { clock } from "../clock";
 import {
-  useConversation,
+  canEditChannelDetails,
+  formatDate,
+  type DateContext,
+} from "@toki/shared";
+import { Button, Icon } from "@toki/ui-web";
+import { useState } from "react";
+import { clock } from "../clock";
+import { AboutEditForm } from "./AboutEditForm";
+import {
   isFullDetail,
+  panelKind,
+  useConversation,
   type DetailRead,
 } from "./useConversation";
 import { useConversationSelector } from "../conversation-list/use-conversations";
@@ -28,9 +35,11 @@ function useCreatedDate(createdAt: string | undefined): string | null {
 export function AboutSection({
   conversationId,
   read,
+  onNoAccess,
 }: {
   conversationId: string;
   read: DetailRead;
+  onNoAccess: () => void;
 }) {
   const { t } = useTranslation();
   const { entry, name, detail } = useConversation(conversationId);
@@ -40,6 +49,8 @@ export function AboutSection({
     full === undefined ? undefined : s.getPerson(full.createdBy),
   );
   const date = useCreatedDate(full?.createdAt);
+  const user = useConversationSelector((s) => s.getUser());
+  const [editing, setEditing] = useState(false);
 
   const isChannel = entry === undefined || entry.kind === "channel";
   const isPrivate =
@@ -47,6 +58,18 @@ export function AboutSection({
   const shownName = entry === undefined ? (detail?.name ?? "") : name;
   const topic =
     entry?.kind === "channel" ? entry.topic : (detail?.topic ?? null);
+
+  // Edit (R15): `archived` comes from the held detail; while it is missing the function answers
+  // `fact_missing` and no button is drawn. No role is compared here.
+  const canEdit =
+    user !== null &&
+    entry?.kind === "channel" &&
+    canEditChannelDetails(user, {
+      kind: panelKind(entry),
+      isGeneral: entry.isGeneral,
+      archived: full?.archived as boolean,
+      isMember: true,
+    }).allowed;
 
   const created =
     creator !== undefined && date !== null
@@ -66,22 +89,41 @@ export function AboutSection({
       </div>
       {isChannel ? (
         <>
-          <div className="sm dp-topic">
-            {topic !== null && topic !== "" ? (
-              topic
-            ) : (
-              <span className="muted">{t("conversation.panel.noTopic")}</span>
-            )}
-          </div>
-          {full !== undefined && (
+          {editing ? (
+            <AboutEditForm
+              conversationId={conversationId}
+              topic={topic}
+              description={full?.description ?? null}
+              onClose={() => setEditing(false)}
+              onNoAccess={onNoAccess}
+            />
+          ) : (
             <>
-              <p className="sm muted">
-                {full.description !== null && full.description !== ""
-                  ? full.description
-                  : t("conversation.panel.noDescription")}
-              </p>
-              {created !== null && <div className="xs muted">{created}</div>}
+              <div className="sm dp-topic">
+                {topic !== null && topic !== "" ? (
+                  topic
+                ) : (
+                  <span className="muted">
+                    {t("conversation.panel.noTopic")}
+                  </span>
+                )}
+              </div>
+              {full !== undefined && (
+                <p className="sm muted">
+                  {full.description !== null && full.description !== ""
+                    ? full.description
+                    : t("conversation.panel.noDescription")}
+                </p>
+              )}
             </>
+          )}
+          {full !== undefined && created !== null && (
+            <div className="xs muted">{created}</div>
+          )}
+          {canEdit && !editing && (
+            <Button size="sm" onClick={() => setEditing(true)}>
+              {t("conversation.panel.edit")}
+            </Button>
           )}
           {full === undefined && read.status === "failed" && (
             <ReadFailed error={read.error} onRetry={read.retry} />

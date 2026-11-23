@@ -44,7 +44,11 @@ export function DetailsPanel({
       onClose={closeDetails}
     >
       <div id="conversation-details">
-        <AboutSection conversationId={conversationId} read={read} />
+        <AboutSection
+          conversationId={conversationId}
+          read={read}
+          onNoAccess={onNoAccess}
+        />
         <PeopleSection
           conversationId={conversationId}
           onNoAccess={onNoAccess}
