@@ -5919,7 +5919,7 @@
   }
  ],
  "tagline": "Everything agreed for Toki in one place: the prototype itself, the requirements read from it, user flows per role, every question and gap with its answer, the technical design, and the phase 1 plan.",
- "ticketsSynced": "2026-11-20",
+ "ticketsSynced": "2026-11-23",
  "repo": "github.com/thanhtruong-agilityio/toki",
  "intents": [
   {
@@ -11396,7 +11396,7 @@
         "pr": "PR #92",
         "fix": ""
        },
-       "status": "accepted",
+       "status": "in-qa",
        "issue": 126
       },
       {
@@ -11422,7 +11422,7 @@
         "pr": "PR #75",
         "fix": ""
        },
-       "status": "accepted",
+       "status": "done",
        "issue": 76
       },
       {
@@ -11435,7 +11435,7 @@
         "pr": "PR #90",
         "fix": ""
        },
-       "status": "accepted",
+       "status": "in-review",
        "issue": 91
       }
      ]
@@ -11514,7 +11514,7 @@
         "pr": "PR #82",
         "fix": ""
        },
-       "status": "in-dev",
+       "status": "in-review",
        "issue": 120
       },
       {
@@ -11527,7 +11527,7 @@
         "pr": "PR #84",
         "fix": ""
        },
-       "status": "blocked",
+       "status": "in-review",
        "issue": 122
       },
       {
@@ -11540,7 +11540,7 @@
         "pr": "PR #83",
         "fix": ""
        },
-       "status": "blocked",
+       "status": "in-qa",
        "issue": 121
       },
       {
@@ -11553,7 +11553,7 @@
         "pr": "PR #85",
         "fix": ""
        },
-       "status": "blocked",
+       "status": "accepted",
        "issue": 123
       },
       {
@@ -11566,7 +11566,7 @@
         "pr": "PR #89",
         "fix": ""
        },
-       "status": "blocked",
+       "status": "in-dev",
        "issue": 125
       },
       {
@@ -11579,7 +11579,7 @@
         "pr": "PR #86",
         "fix": ""
        },
-       "status": "blocked",
+       "status": "accepted",
        "issue": 87
       },
       {
@@ -11592,7 +11592,7 @@
         "pr": "PR #88",
         "fix": ""
        },
-       "status": "blocked",
+       "status": "accepted",
        "issue": 124
       }
      ]
@@ -11624,7 +11624,9 @@
         "state": "merged",
         "pr": "PR #198",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 205
       },
       {
        "id": "TOKI-037",
@@ -11635,7 +11637,9 @@
         "state": "merged",
         "pr": "PR #197",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 206
       },
       {
        "id": "TOKI-038",
@@ -11646,7 +11650,9 @@
         "state": "merged",
         "pr": "PR #200",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 204
       },
       {
        "id": "TOKI-039",
