@@ -80,6 +80,8 @@ export type FakeApiHarness = StoreHarness & {
       leave: ReturnType<typeof vi.fn>;
       join: ReturnType<typeof vi.fn>;
       members: ReturnType<typeof vi.fn>;
+      archive: ReturnType<typeof vi.fn>;
+      restore: ReturnType<typeof vi.fn>;
     };
     conversations: { saveSettings: ReturnType<typeof vi.fn> };
   };
@@ -150,6 +152,23 @@ export function useFakeApi(
         channel: structuredClone(need(id)),
         changed: true,
       })),
+      // TOKI-101: archive and restore over the same in-memory server (a repeat answers changed false).
+      archive: vi.fn(async (id: string) => {
+        const held = need(id);
+        const after = { ...held, archived: true } as ChannelRead;
+        details[id] = after;
+        return { channel: structuredClone(after), changed: !held.archived };
+      }),
+      restore: vi.fn(async (id: string) => {
+        const held = need(id);
+        const after = {
+          ...held,
+          archived: false,
+          isMember: true,
+        } as ChannelRead;
+        details[id] = after;
+        return { channel: structuredClone(after), changed: held.archived };
+      }),
       members: vi.fn(
         async (id: string, query: { limit?: number; cursor?: string } = {}) => {
           const all = memberRows[id] ?? [];

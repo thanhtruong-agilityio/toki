@@ -2,6 +2,7 @@
 import type { Catalog } from "../../catalog";
 import { account } from "./account";
 import { admin } from "./admin";
+import { archive } from "./archive";
 import { browse } from "./browse";
 import { common } from "./common";
 import { conversation } from "./conversation";
@@ -19,6 +20,7 @@ import { signIn } from "./signIn";
 export const vi: Catalog = {
   account,
   admin,
+  archive,
   browse,
   common,
   conversation,

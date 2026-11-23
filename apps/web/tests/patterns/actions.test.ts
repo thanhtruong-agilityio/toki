@@ -24,6 +24,12 @@ const tableA: Array<[string, "undo" | "confirm" | "none", string, string]> = [
   ],
   ["archiveChannel", "confirm", "D-061, F26", "TOKI-101"],
   [
+    "restoreChannel",
+    "confirm",
+    "Concern 2 of the TOKI-101 spec (Thanh Truong, 2026-11-20); reading of D-069",
+    "TOKI-101",
+  ],
+  [
     "removeFromChannel",
     "confirm",
     "Plan line of TOKI-100 (names the person); reading of D-069. D-085 says who may remove, not the pattern",
@@ -55,11 +61,11 @@ const tableA: Array<[string, "undo" | "confirm" | "none", string, string]> = [
 ];
 
 describe("actionPatterns (R10)", () => {
-  it("holds exactly the 19 rows of Table A (the 18 of TOKI-093 and the last-member row of TOKI-035)", () => {
+  it("holds exactly the 20 rows of Table A (the 18 of TOKI-093, the last-member row of TOKI-035 and the restore row of TOKI-101)", () => {
     expect(Object.keys(actionPatterns).sort()).toEqual(
       tableA.map(([id]) => id).sort(),
     );
-    expect(Object.keys(actionPatterns)).toHaveLength(19);
+    expect(Object.keys(actionPatterns)).toHaveLength(20);
   });
 
   it.each(tableA)("%s: %s, %s, %s", (id, pattern, source, owner) => {

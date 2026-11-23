@@ -1,0 +1,66 @@
+{
+  "approved_auto": false,
+  "base": "main",
+  "branch": "feat/toki-101-archive-restore-channel",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-23T07:48:01Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-23T07:48:01Z",
+      "stage": "explore"
+    },
+    {
+      "at": "2026-11-23T07:52:45Z",
+      "stage": "design"
+    },
+    {
+      "at": "2026-11-23T07:52:45Z",
+      "stage": "plan"
+    },
+    {
+      "at": "2026-11-23T08:01:37Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-23T08:01:37Z",
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-23T08:01:37Z",
+      "stage": "mode"
+    },
+    {
+      "at": "2026-11-23T08:01:45Z",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-23T08:18:39Z",
+      "stage": "check"
+    },
+    {
+      "at": "2026-11-23T08:25:12Z",
+      "stage": "drift"
+    }
+  ],
+  "key": "TOKI-101",
+  "main_sha": "88f92548ad8c04d81489354f97e6b3d10f5549c9",
+  "metrics": {},
+  "mode": "auto-to-check",
+  "plan_approved": true,
+  "plan_hash": "4b8c84cbc65c448bb517daff4e09d9c3237279741ea695e19d6f6cab22517276",
+  "spec_commit": "25cd44351dd794cd8c84972358d7a5045f0d9d24",
+  "spec_paths": [
+    "docs/specs/2026-11-17-archive-restore-channel-design.md"
+  ],
+  "stage": "drift",
+  "tier": "L",
+  "verifier": {
+    "note": "Two FAIL rounds; the Dev (Thanh Truong) fixed the DM scope and accepted the rest on 2026-11-23",
+    "result": "PASS",
+    "round": 3
+  }
+}

@@ -2,6 +2,11 @@ import { createRoute, useParams, useRouter } from "@tanstack/react-router";
 import { getPlatform } from "@toki/platform";
 import { useEffect, useReducer, useState } from "react";
 import { conversations } from "../client";
+import {
+  ArchivedChannelPage,
+  ArchivedHistory,
+  isArchivedMember,
+} from "../channel-archive";
 import { useConversationSelector } from "../conversation-list/use-conversations";
 import {
   viewFallback,
@@ -23,6 +28,10 @@ function ConversationRouteBody({ conversationId }: { conversationId: string }) {
     s.hasConversation(conversationId),
   );
   const userId = useConversationSelector((s) => s.getUser()?.id ?? null);
+  // An archived channel the person belongs to has no entry but the store holds its detail (R13).
+  const archivedMember = useConversationSelector((s) =>
+    isArchivedMember(s.getChannelDetail(conversationId)),
+  );
   const { seen, memberChecked } = useSessionSets();
   const [notFound, setNotFound] = useState(false);
   // `memberChecked` is a set, not state: a render after the refresh reads it.
@@ -38,9 +47,10 @@ function ConversationRouteBody({ conversationId }: { conversationId: string }) {
     }
   }, [ready, held, userId, conversationId]);
 
-  // (c) the id was in the list and no longer is: the view moves to the fallback, with no error.
+  // (c) the id was in the list and no longer is: the view moves to the fallback, with no error,
+  // unless the store holds the detail of an archived channel the person belongs to (R13).
   useEffect(() => {
-    if (!ready || held || !wasSeen || userId === null) return;
+    if (!ready || held || !wasSeen || userId === null || archivedMember) return;
     const to = viewFallback(
       getPlatform().storage.device,
       userId,
@@ -52,22 +62,27 @@ function ConversationRouteBody({ conversationId }: { conversationId: string }) {
       params: { conversationId: to },
       replace: true,
     });
-  }, [ready, held, wasSeen, userId, conversationId, router]);
+  }, [ready, held, wasSeen, archivedMember, userId, conversationId, router]);
 
+  const onBack = () => {
+    // `fromList` means the entry before is `/`, so Back ends on the list (R20, R21).
+    if (router.state.location.state.fromList === true) {
+      router.history.back();
+    } else {
+      void router.navigate({ to: "/", replace: true });
+    }
+  };
   if (!ready) return null;
   if (held) {
+    return <ConversationPage conversationId={conversationId} onBack={onBack} />;
+  }
+  // R13: before (b) and (c), so an archived channel that the person belongs to is neither the
+  // not-found view nor the fallback.
+  if (archivedMember) {
     return (
-      <ConversationPage
-        conversationId={conversationId}
-        onBack={() => {
-          // `fromList` means the entry before is `/`, so Back ends on the list (R20, R21).
-          if (router.state.location.state.fromList === true) {
-            router.history.back();
-          } else {
-            void router.navigate({ to: "/", replace: true });
-          }
-        }}
-      />
+      <ArchivedChannelPage channelId={conversationId} onBack={onBack}>
+        <ArchivedHistory channelId={conversationId} />
+      </ArchivedChannelPage>
     );
   }
   if (wasSeen) return null;
