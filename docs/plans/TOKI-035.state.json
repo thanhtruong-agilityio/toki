@@ -1,0 +1,32 @@
+{
+  "approved_auto": false,
+  "base": "main",
+  "branch": "feat/toki-035",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-23T02:28:22Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-23T02:28:22Z",
+      "stage": "explore"
+    }
+  ],
+  "key": "TOKI-035",
+  "main_sha": "88f92548ad8c04d81489354f97e6b3d10f5549c9",
+  "metrics": {},
+  "mode": null,
+  "plan_approved": false,
+  "plan_hash": null,
+  "spec_commit": "5f6ad136462bab1ecfbfca324da98e306e5de70b",
+  "spec_paths": [
+    "docs/specs/2026-11-17-conversation-header-details-design.md"
+  ],
+  "stage": "explore",
+  "tier": "M",
+  "verifier": {
+    "result": null,
+    "round": 0
+  }
+}
