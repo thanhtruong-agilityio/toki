@@ -119,7 +119,9 @@ export function PeoplePicker({
       {showLimit ? <div role="alert">{limitMessage}</div> : null}
       <div
         {...more}
-        className={matches.length === 0 ? "mlist people is-empty" : "mlist people"}
+        className={
+          matches.length === 0 ? "mlist people is-empty" : "mlist people"
+        }
       >
         {matches.length === 0 ? (
           <EmptyState icon="users" title={emptyText} description="" />
@@ -133,7 +135,11 @@ export function PeoplePicker({
                   aria-pressed={selected.includes(person.id)}
                   onClick={() => press(person)}
                 >
-                  <Avatar name={person.displayName} hue={person.hue} size={30} />
+                  <Avatar
+                    name={person.displayName}
+                    hue={person.hue}
+                    size={30}
+                  />
                   <span className="grow">{person.displayName}</span>
                 </button>
               </li>

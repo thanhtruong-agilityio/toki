@@ -21,11 +21,7 @@ function parse(text: string): Rule[] {
         selector: m[1]!.trim().replace(/\s+/g, " "),
         decl: m[2]!
           .split(";")
-          .map((d) =>
-            d
-              .trim()
-              .replace(/\s+/g, ""),
-          )
+          .map((d) => d.trim().replace(/\s+/g, ""))
           .filter(Boolean),
       });
     }
