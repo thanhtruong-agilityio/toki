@@ -28,6 +28,8 @@ declare module "@tanstack/react-router" {
     fromList?: boolean;
     // R23: the replace from `/` to the conversation to open, which keeps the remembered filter (R34).
     opening?: boolean;
+    // TOKI-035 R8: this entry was pushed by the press on the members button, so Close goes back.
+    detailsPushed?: boolean;
   }
 }
 

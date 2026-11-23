@@ -24,7 +24,7 @@ describe("the route tree (R30)", () => {
     expect(appLayoutRoute.children).toContain(indexRoute);
   });
 
-  test("the conversation route is /c/$conversationId, a child of appLayoutRoute, with no search parameter (R21)", () => {
+  test("the conversation route is /c/$conversationId, a child of appLayoutRoute, with the one search parameter panel=details (R21, TOKI-035 R8)", () => {
     expect(conversationRoute.options.getParentRoute()).toBe(appLayoutRoute);
     expect(appLayoutRoute.children).toContain(conversationRoute);
     const options = conversationRoute.options as unknown as { path?: string };
@@ -32,7 +32,8 @@ describe("the route tree (R30)", () => {
     const validate = conversationRoute.options.validateSearch as (
       search: Record<string, unknown>,
     ) => unknown;
-    expect(validate({ panel: "details", x: 1 })).toEqual({});
+    expect(validate({ panel: "details", x: 1 })).toEqual({ panel: "details" });
+    expect(validate({ panel: "other", x: 1 })).toEqual({});
   });
 
   test("the Admin route is a child of appLayoutRoute with the path /admin and no search (TOKI-025 R1)", () => {

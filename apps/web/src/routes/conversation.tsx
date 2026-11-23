@@ -8,6 +8,7 @@ import {
   writeLastViewed,
 } from "../conversation-list/last-viewed";
 import { ConversationPage } from "../conversation/ConversationPage";
+import { validatePanelSearch } from "../conversation/useDetailsPanel";
 import { UnjoinedView } from "../conversation/UnjoinedView";
 import { useSessionSets } from "../shell/session-sets";
 import { appLayoutRoute } from "./app-layout";
@@ -98,11 +99,10 @@ export function ConversationRouteView() {
   );
 }
 
-// `/c/$conversationId` (R21). `validateSearch` returns no search parameter, which TOKI-035 extends
-// with `panel`.
+// `/c/$conversationId` (R21). The one search parameter is `panel=details` (TOKI-035 R8).
 export const conversationRoute = createRoute({
   getParentRoute: () => appLayoutRoute,
   path: "/c/$conversationId",
-  validateSearch: () => ({}),
+  validateSearch: validatePanelSearch,
   component: ConversationRouteView,
 });
