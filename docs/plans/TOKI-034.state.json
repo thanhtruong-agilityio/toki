@@ -28,6 +28,10 @@
     {
       "at": "2026-11-23T02:56:55Z",
       "stage": "check"
+    },
+    {
+      "at": "2026-11-23T03:02:32Z",
+      "stage": "ci"
     }
   ],
   "key": "TOKI-034",
@@ -38,11 +42,12 @@
   "mode": "auto-to-pr",
   "plan_approved": true,
   "plan_hash": "74c386e6ad2df114d994422ca57e5756686d7f2c16a021811cf1bcdad9277914",
+  "pr": "https://github.com/thanhtruong-agilityio/toki/pull/223",
   "spec_commit": "410b0c3e6ceb0c5fa03da522bdb16207f7ecae81",
   "spec_paths": [
     "docs/specs/2026-11-17-browse-channels-people-picker-design.md"
   ],
-  "stage": "check",
+  "stage": "ci",
   "tier": "M",
   "verifier": {
     "result": "PASS",
