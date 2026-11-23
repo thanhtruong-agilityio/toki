@@ -204,7 +204,8 @@ test.describe("the keyboard alone (R41)", () => {
       page.getByRole("button", { name: TEXT.en.stay }),
     ).toBeFocused();
     await page.keyboard.press("Enter");
-    await expect(page).toHaveURL(/\/$/);
+    // The app opens at `/`, which on a wide window shows #general (TOKI-033 R23).
+    await expect(page).toHaveURL(/\/(c\/[^/]+)?$/);
     expect(posts).toEqual([]);
   });
 

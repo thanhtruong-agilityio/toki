@@ -13,6 +13,7 @@ import { sessionMemory } from "../auth/session-memory";
 import { getAuthServices } from "../auth/services";
 import { decideGuard } from "../guard";
 import { useSession } from "../useSession";
+import { NotFoundView } from "./NotFoundView";
 
 declare module "@tanstack/react-router" {
   // The flag of R40: a route that carries `public` is let through by the guard for every session state
@@ -20,9 +21,13 @@ declare module "@tanstack/react-router" {
   interface StaticDataRouteOption {
     public?: boolean;
   }
-  // The address the sign-in page is filled in from, kept out of the address bar (R32).
+  // `email` is the address the sign-in page is filled in from, kept out of the address bar (R32).
   interface HistoryState {
     email?: string;
+    // R20: the press that opened this conversation was made at `/`, so the entry before is the list.
+    fromList?: boolean;
+    // R23: the replace from `/` to the conversation to open, which keeps the remembered filter (R34).
+    opening?: boolean;
   }
 }
 
@@ -117,5 +122,5 @@ function RootComponent() {
 
 export const rootRoute = createRootRoute({
   component: RootComponent,
-  notFoundComponent: () => <p>Page not found</p>,
+  notFoundComponent: NotFoundView,
 });

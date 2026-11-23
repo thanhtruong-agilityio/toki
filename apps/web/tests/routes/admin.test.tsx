@@ -18,6 +18,7 @@ import { routeTree } from "../../src/router";
 import {
   createFakeCalls,
   createFakeEmergency,
+  createFakeInvitation,
   user,
 } from "../support/auth-harness";
 
@@ -32,6 +33,8 @@ beforeEach(() => {
   setAuthServices({
     calls: createFakeCalls(),
     emergency: createFakeEmergency(),
+    invitation: createFakeInvitation(),
+    resetConversations: () => {},
     clock,
     timers,
   });
@@ -87,7 +90,9 @@ describe("the Admin route (R1, R3, R4)", () => {
 
   test("a Member's page sends no request to the server", async () => {
     await mount("member");
-    expect(fetchMock).not.toHaveBeenCalled();
+    // The shell around the page loads the conversation list once (TOKI-033 R32); the page asks for nothing.
+    const urls = fetchMock.mock.calls.map((c) => String(c[0]));
+    expect(urls.filter((u) => u !== "/api/v1/bootstrap")).toEqual([]);
   });
 
   test("the no-access title is read in Vietnamese too", async () => {

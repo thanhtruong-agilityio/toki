@@ -20,6 +20,7 @@ import {
   type Look,
   type Script,
 } from "./support/sign-in";
+import { GENERAL } from "./support/fixtures";
 
 // TOKI-023 R29 to R34 in the browser. The calls of `/api/v1/auth/*` are stubbed (support/sign-in.ts):
 // the real-server cases wait for TOKI-022 (plan, step 8).
@@ -293,7 +294,8 @@ test("the session-ended modal traps Tab, ignores Esc and focuses 'Sign in again'
   await again.focus();
   await page.keyboard.press("Enter");
   // 'Sign in again': the sign-in page, with the person's address filled in and not in the address bar.
-  await expect(page).toHaveURL(/\/login\?next=%2F$/);
+  // The app had opened on #general (R23), so that is the address to come back to.
+  await expect(page).toHaveURL(new RegExp(`/login\\?next=%2Fc%2F${GENERAL}$`));
   await expect(field(page, "email")).toHaveValue(ADDRESS);
   await expect(field(page, "email")).toBeFocused();
   expect(page.url()).not.toContain("example.com");
@@ -360,7 +362,8 @@ test("the address bar and browser storage hold no code, and no address or reques
   await field(page, "code").fill(CODE);
   await expect(page.getByTestId("shell")).toBeVisible();
   await check("signed in", false);
-  expect(new URL(page.url()).pathname).toBe("/");
+  // The app opens on #general (TOKI-033 R23).
+  expect(new URL(page.url()).pathname).toBe(`/c/${GENERAL}`);
   // The record is gone from storage on sign-in, and the reload with the code step restored is checked
   // by login.test.tsx.
 });

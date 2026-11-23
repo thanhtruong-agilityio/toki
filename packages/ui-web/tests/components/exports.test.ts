@@ -7,6 +7,7 @@ import * as appearance from "../../src/appearance";
 import * as shell from "../../src/layout";
 import * as join from "../../src/join";
 import * as signIn from "../../src/sign-in";
+import * as conversationList from "../../src/conversation-list";
 import type {
   DialogCloseReason,
   MenuCloseReason,
@@ -169,14 +170,16 @@ describe("exports (R1, R2)", () => {
       Object.keys(components).filter((name) => name.endsWith("Icon")),
     ).toEqual([]);
     // The shell and appearance exports come from their own modules (TOKI-015 R1);
-    // the sign-in pieces from src/sign-in (TOKI-023) and the Join pages from src/join (TOKI-097).
+    // the sign-in pieces from src/sign-in (TOKI-023), the Join pages from src/join (TOKI-097) and
+    // the conversation list from src/conversation-list (TOKI-033).
     const extra = Object.keys(entry).filter(
       (name) =>
         !(name in components) &&
         !(name in appearance) &&
         !(name in shell) &&
         !(name in signIn) &&
-        !(name in join),
+        !(name in join) &&
+        !(name in conversationList),
     );
     expect(
       extra.filter((name) => !name.endsWith("Icon") && name !== "iconNames"),

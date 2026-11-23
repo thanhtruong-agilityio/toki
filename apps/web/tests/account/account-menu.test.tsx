@@ -265,7 +265,9 @@ describe("the menu and its entries (R4, R5, R23)", () => {
     }
     await mountWith(<Both />);
     await userEvent.click(card());
-    expect(screen.getAllByRole("group")).toHaveLength(2);
+    // The menu only: the conversation list around it has groups of its own.
+    const menu = within(screen.getByRole("menu"));
+    expect(menu.getAllByRole("group")).toHaveLength(2);
     expect(
       screen.getByRole("group", { name: "Pause notifications" }),
     ).toBeTruthy();
