@@ -28,6 +28,10 @@
     {
       "at": "2026-11-20T11:10:48Z",
       "stage": "check"
+    },
+    {
+      "at": "2026-11-23T02:16:31Z",
+      "stage": "ci"
     }
   ],
   "key": "TOKI-033",
@@ -38,11 +42,12 @@
   "mode": "auto-to-check",
   "plan_approved": true,
   "plan_hash": "55a90230790bfb84a8cbb738b932b1de7a0fe5175b354ea7415303942fb88977",
+  "pr": 212,
   "spec_commit": "77429de2256d63fe51049ae71f6beb366e6b9061",
   "spec_paths": [
     "docs/specs/2026-11-17-conversation-list-design.md"
   ],
-  "stage": "check",
+  "stage": "ci",
   "tier": "L",
   "verifier": {
     "result": "PASS",
