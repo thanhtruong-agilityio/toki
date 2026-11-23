@@ -1,7 +1,7 @@
 // The lines of the prototype (docs/blueprint/prototype/index.html of the Toki
 // Blueprint) that each section is compared with: Table D of the spec. A key is
 // a section's name; a component the prototype does not draw has the value
-// "none" (PersonChip, which TOKI-034 adds with its own entry). The preview
+// "none" (PersonChip, added by TOKI-034). The preview
 // page reads this object and keeps no list of components of its own (R17).
 export const references: Record<string, string> = {
   Button: "82-93, 309, 714",
@@ -19,6 +19,7 @@ export const references: Record<string, string> = {
   Menu: "410-416, 538, 2103-2112, 2129",
   Modal: "404-409, 560-561, 2134, 2142, 2152, 2196",
   Sheet: "2155 (no CSS rule in the prototype: TOKI-014 Table B, decided)",
+  PersonChip: "none",
   ConfirmDialog:
     "none: the prototype draws an inline row (lines 1369 and 1452), no dialog",
   tokens:

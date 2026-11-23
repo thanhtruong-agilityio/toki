@@ -1,0 +1,74 @@
+.prow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  width: 100%;
+  text-align: left;
+}
+
+.prow:hover {
+  background: var(--hover);
+}
+
+.prow[aria-pressed="true"] {
+  background: var(--accent-soft);
+}
+
+.prow .gl {
+  width: 18px;
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  flex: none;
+}
+
+.prow .sub {
+  display: block;
+}
+
+.mlist {
+  margin-top: 8px;
+  max-height: 360px;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.mlist.people {
+  max-height: min(320px, 40vh);
+}
+
+.mlist.is-empty {
+  display: flex;
+  flex-direction: column;
+  height: 240px;
+}
+
+.mlist ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.field.pk {
+  height: auto;
+  min-height: 36px;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 4px 10px;
+}
+
+.field.pk input {
+  min-width: 96px;
+}
+
+@media (max-width: 719px) {
+  .prow {
+    min-height: 40px;
+  }
+
+  .field.pk {
+    min-height: 40px;
+  }
+}
