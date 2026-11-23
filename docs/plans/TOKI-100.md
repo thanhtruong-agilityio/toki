@@ -60,3 +60,8 @@ So that the plan matches the diff:
 - `RemoveMemberDialog` keeps the last target while it closes, because `ConfirmDialog` refuses a blank name; `AddPeopleButton` takes an optional `buttonRef` for the focus rule of R14.
 - Tests live in `apps/web/tests/conversation/membership/` with a `fakeDeps.tsx` and a `sources.test.ts` (R1, R2, R3, R17, R19 scans).
 - **R18 (browser checks at five widths) is not done.** It needs the app with a database and 120 members, and the `.env` that holds the test database is off limits to the agent; the Dev runs it, or accepts it as a follow-up. The pull request says so.
+
+## Amendment after the first verifier round (2026-11-23)
+
+- The diff also holds `docs/plans/TOKI-100.state.json` (the state file, committed as in other tickets) and `packages/i18n/tests/membership.test.ts` (step 1's test).
+- Tests added for gaps the verifier found: `DetailsPanel.membership.test.tsx` (the real panel with the real store and a fake api: Admin, Member, DM, group, add and remove with the count, and the other sections with a dialog open; R15, R16), the picker's props (R7), the outside press, Esc and Close of the guard (R10), and the two other focus cases and the count (R14).

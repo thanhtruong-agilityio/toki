@@ -1,3 +1,4 @@
+import { createElement } from "react";
 import { vi } from "vitest";
 
 // A fake `membership/deps.ts` (R2): people, the signed-in person and the channel name are plain data
@@ -20,6 +21,8 @@ export const fake = {
   removeMember: vi.fn(),
   refresh: vi.fn(),
   readChannel: vi.fn(),
+  // The props the dialog gave the picker at its last render.
+  pickerProps: null as null | Record<string, unknown>,
 };
 
 export function makePeople(n: number): FakePerson[] {
@@ -52,6 +55,7 @@ export function resetFake() {
   fake.refresh.mockResolvedValue(undefined);
   fake.readChannel.mockReset();
   fake.readChannel.mockResolvedValue(undefined);
+  fake.pickerProps = null;
 }
 
 export async function fakeDepsModule() {
@@ -73,7 +77,10 @@ export async function fakeDepsModule() {
     },
     ApiError,
     classifyApiError,
-    PeoplePicker,
+    PeoplePicker: (props: Record<string, unknown>) => {
+      fake.pickerProps = props;
+      return createElement(PeoplePicker as never, props);
+    },
     personHue,
     useConversationSelector: () => undefined,
     usePeople: () => fake.people,

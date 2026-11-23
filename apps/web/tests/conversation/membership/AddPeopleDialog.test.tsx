@@ -119,6 +119,26 @@ describe("AddPeopleDialog (R7)", () => {
     expect(count()).toBe(120);
   });
 
+  test("gives the picker the candidates in order with a hue, the limit of 200 and its texts", () => {
+    fake.people = [
+      { id: "me", displayName: "Me Myself", status: "active" },
+      { id: "b2", displayName: "Bao", status: "active" },
+      { id: "a1", displayName: "Ann", status: "active" },
+    ];
+    setup();
+    const props = fake.pickerProps as {
+      people: { id: string; hue: number }[];
+      max: number;
+      limitMessage: string;
+      searchLabel: string;
+    };
+    expect(props.people.map((p) => p.id)).toEqual(["b2", "a1"]);
+    expect(props.people.every((p) => Number.isInteger(p.hue))).toBe(true);
+    expect(props.max).toBe(200);
+    expect(props.limitMessage).toBe("You can add up to 200 people at once.");
+    expect(props.searchLabel).toBe("Search people");
+  });
+
   test("everyone already a member shows the nobody text", () => {
     fake.people = makePeople(2);
     setup({ memberIds: ["p1", "p2", "me"] });
@@ -308,6 +328,32 @@ describe("AddPeopleDialog, form guard (R10)", () => {
       ).getByRole("button", { name: "Discard" }),
     );
     await waitFor(() => expect(onClose).toHaveBeenCalledTimes(1));
+  });
+
+  test("with nobody chosen the Close button also closes at once", async () => {
+    const onClose = vi.fn();
+    const { user } = setup({ onClose });
+    await user.click(within(dialog()).getByRole("button", { name: "Close" }));
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  test("with two chosen an outside press does nothing and Esc asks", async () => {
+    const onClose = vi.fn();
+    const { user } = setup({ onClose });
+    await pick(user, "Person 001");
+    await pick(user, "Person 002");
+    const scrim = document.querySelector(".scrim") as HTMLElement;
+    fireEvent.pointerDown(scrim);
+    fireEvent.pointerUp(scrim);
+    expect(onClose).not.toHaveBeenCalled();
+    expect(
+      screen.queryByRole("dialog", { name: "Discard what you typed?" }),
+    ).toBeNull();
+    await user.keyboard("{Escape}");
+    expect(
+      await screen.findByRole("dialog", { name: "Discard what you typed?" }),
+    ).toBeTruthy();
+    expect(onClose).not.toHaveBeenCalled();
   });
 
   test("a typed search alone does not make the form guarded", async () => {

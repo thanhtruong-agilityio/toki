@@ -198,6 +198,41 @@ describe("after a change (R14)", () => {
     await waitFor(() => expect(document.activeElement).toBe(addButton()));
   });
 
+  test("after an add focus is on Add people when it was lost, and a later focus is kept", async () => {
+    const { user } = setup();
+    h.serverRows = [...h.serverRows, { id: "p3", displayName: "Newbie" }];
+    fake.people = [
+      ...fake.people,
+      { id: "p3", displayName: "Newbie", status: "active" },
+    ];
+    await user.click(addButton() as HTMLElement);
+    const dlg = await screen.findByRole("dialog", {
+      name: /Add people to #design/,
+    });
+    await user.click(within(dlg).getByRole("button", { name: "Newbie" }));
+    await user.click(within(dlg).getByRole("button", { name: "Add" }));
+    await waitFor(() => expect(screen.getByText("Newbie")).toBeTruthy());
+    await waitFor(() => expect(document.activeElement).toBe(addButton()));
+  });
+
+  test("focus the person moved elsewhere while the list was read is kept", async () => {
+    let release!: () => void;
+    h.gate = new Promise<void>((r) => (release = r));
+    const { user } = setup();
+    h.serverRows = h.serverRows.filter((r) => r.id !== "p1");
+    await removeFirst(user, "Lan");
+    await waitFor(() => expect(h.order).toContain("reload:start"));
+    const other = screen.getByRole("button", {
+      name: "Remove Minh from this channel",
+    });
+    other.focus();
+    await act(async () => release());
+    await waitFor(() => expect(screen.queryByText("Lan")).toBeNull());
+    expect(document.activeElement).toBe(
+      screen.getByRole("button", { name: "Remove Minh from this channel" }),
+    );
+  });
+
   test("Add people is never disabled during the reload", async () => {
     let release!: () => void;
     h.gate = new Promise<void>((r) => (release = r));

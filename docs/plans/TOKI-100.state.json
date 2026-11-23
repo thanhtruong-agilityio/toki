@@ -28,6 +28,10 @@
     {
       "at": "2026-11-23T07:52:45Z",
       "stage": "build"
+    },
+    {
+      "at": "2026-11-23T08:00:28Z",
+      "stage": "check"
     }
   ],
   "key": "TOKI-100",
@@ -40,10 +44,10 @@
   "spec_paths": [
     "docs/specs/2026-11-17-add-remove-people-design.md"
   ],
-  "stage": "build",
+  "stage": "check",
   "tier": "M",
   "verifier": {
-    "result": null,
-    "round": 0
+    "result": "FAIL",
+    "round": 1
   }
 }
