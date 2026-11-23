@@ -13,11 +13,12 @@ const code = (f: string) =>
 
 // The folders of the app that the conversation screens may import (R27): the one client, the clock,
 // the shell's slot, the conversation list's binding of the store, the patterns, the avatar colour
-// and the not-found view.
+// the not-found view and the unjoined channel's body (TOKI-034).
 const ALLOWED_RELATIVE = [
   "../client",
   "../clock",
   "../conversation-list/use-conversations",
+  "../features/channels/UnjoinedChannel",
   "../patterns",
   "../people/person-hue",
   "../routes/NotFoundView",
