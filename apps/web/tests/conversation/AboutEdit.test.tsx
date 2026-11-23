@@ -171,6 +171,23 @@ describe("the form (R15)", () => {
     expect(h.api.channels.update).not.toHaveBeenCalled();
   });
 
+  test.each([
+    ["isComposing", { isComposing: true }],
+    ["keyCode 229", { keyCode: 229 }],
+  ])(
+    "an Escape during an IME composition (%s) keeps the form",
+    async (_n, init) => {
+      await setup();
+      await open("c1");
+      await userEvent.click(editButton()!);
+      topicField().focus();
+      fireEvent.keyDown(topicField(), { key: "Escape", ...init });
+      expect(topicField()).toBeInTheDocument();
+      fireEvent.keyDown(topicField(), { key: "Escape" });
+      expect(screen.queryByLabelText("Topic")).toBeNull();
+    },
+  );
+
   test("Escape cancels the form only: the panel stays open", async () => {
     await setup();
     const router = await open("c1");

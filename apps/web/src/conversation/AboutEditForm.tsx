@@ -84,6 +84,8 @@ export function AboutEditForm({
   // Escape cancels the form and nothing else: the panel's own Escape sees a handled event.
   const onKeyDown = (event: KeyboardEvent) => {
     if (event.key !== "Escape") return;
+    // An Escape that ends an IME composition is the keyboard's, not a cancel (as in SidePanel).
+    if (event.nativeEvent.isComposing || event.keyCode === 229) return;
     event.preventDefault();
     event.stopPropagation();
     onClose();
