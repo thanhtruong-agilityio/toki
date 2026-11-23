@@ -10,6 +10,7 @@ import { createChannel } from "./createChannel";
 import { emergency } from "./emergency";
 import { join } from "./join";
 import { mail } from "./mail";
+import { membership } from "./membership";
 import { nav } from "./nav";
 import { picker } from "./picker";
 import { sessionEnded } from "./sessionEnded";
@@ -26,6 +27,7 @@ export const vi: Catalog = {
   emergency,
   join,
   mail,
+  membership,
   nav,
   picker,
   sessionEnded,

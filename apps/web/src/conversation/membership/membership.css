@@ -1,0 +1,8 @@
+.mbr-add {
+  margin: 0 0 8px;
+}
+.btn.sm.mbr-remove {
+  margin-left: auto;
+  flex: none;
+  color: var(--danger);
+}

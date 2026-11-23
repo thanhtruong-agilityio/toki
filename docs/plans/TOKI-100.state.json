@@ -1,0 +1,67 @@
+{
+  "approved_auto": false,
+  "base": "github/main",
+  "branch": "feat/toki-100-add-remove-people",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-20T10:31:03Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-20T10:31:04Z",
+      "stage": "explore"
+    },
+    {
+      "at": "2026-11-23T07:50:55Z",
+      "stage": "plan"
+    },
+    {
+      "at": "2026-11-23T07:52:01Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-23T07:52:01Z",
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-23T07:52:45Z",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-23T08:00:28Z",
+      "stage": "check"
+    },
+    {
+      "at": "2026-11-23T08:05:50Z",
+      "stage": "check"
+    },
+    {
+      "at": "2026-11-23T08:18:23Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-23T08:19:30Z",
+      "stage": "ship"
+    }
+  ],
+  "key": "TOKI-100",
+  "main_sha": "48c78fd019ce5a9592637652f8fc732ae611d540",
+  "metrics": {},
+  "mode": "auto-to-check",
+  "plan_approved": true,
+  "plan_hash": "6da6c55091d61a744cfcd1b68cff2630a92d6353db13a0e97a15731b87f1e1d6",
+  "pr": 246,
+  "spec_commit": "ee54bec173fd73741b2193572a625560b9c0369b",
+  "spec_paths": [
+    "docs/specs/2026-11-17-add-remove-people-design.md"
+  ],
+  "stage": "ship",
+  "tier": "M",
+  "verifier": {
+    "result": "PASS",
+    "round": 2
+  }
+}
