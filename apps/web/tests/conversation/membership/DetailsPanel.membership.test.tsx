@@ -145,7 +145,9 @@ describe("the controls in the real panel (R5, R15, R16)", () => {
       expect((addButton() as HTMLButtonElement).disabled).toBe(false),
     );
     await user.click(addButton() as HTMLElement);
-    const dlg = await screen.findByRole("dialog", { name: "Add people to #project-launch" });
+    const dlg = await screen.findByRole("dialog", {
+      name: "Add people to #project-launch",
+    });
     // Members already in the channel are not offered.
     expect(within(dlg).queryByText("Member 001")).toBeNull();
     await user.click(within(dlg).getByRole("button", { name: "Newbie Nine" }));
@@ -168,7 +170,9 @@ describe("the controls in the real panel (R5, R15, R16)", () => {
       expect((addButton() as HTMLButtonElement).disabled).toBe(false),
     );
     await user.click(addButton() as HTMLElement);
-    await screen.findByRole("dialog", { name: "Add people to #project-launch" });
+    await screen.findByRole("dialog", {
+      name: "Add people to #project-launch",
+    });
     for (const name of ["Notifications", "Settings"]) {
       expect(
         screen.getAllByRole("heading", {
@@ -179,12 +183,11 @@ describe("the controls in the real panel (R5, R15, R16)", () => {
       ).toBeGreaterThan(0);
     }
     await user.click(
-      within(screen.getByRole("dialog", { name: "Add people to #project-launch" })).getByRole(
-        "button",
-        {
-          name: "Cancel",
-        },
-      ),
+      within(
+        screen.getByRole("dialog", { name: "Add people to #project-launch" }),
+      ).getByRole("button", {
+        name: "Cancel",
+      }),
     );
     expect(removeButtons()).toHaveLength(3);
   });
