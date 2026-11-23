@@ -28,6 +28,10 @@
     {
       "at": "2026-11-23T03:05:19Z",
       "stage": "check"
+    },
+    {
+      "at": "2026-11-23T03:16:09Z",
+      "stage": "ship"
     }
   ],
   "key": "TOKI-035",
@@ -40,10 +44,11 @@
   "spec_paths": [
     "docs/specs/2026-11-17-conversation-header-details-design.md"
   ],
-  "stage": "check",
+  "stage": "ship",
   "tier": "M",
   "verifier": {
+    "accepted_note": "Accepted by Thanh Truong 2026-11-23 after two FAIL rounds: scope and naming deviations only (AboutEditForm.tsx, ReadFailed.tsx, extra test files, installStore and api delegate in tests/support/conversation-store.ts, edits of common.test.ts, router.test.ts, account-menu.test.tsx); no requirement without code or test.",
     "result": "FAIL",
-    "round": 1
+    "round": 2
   }
 }
