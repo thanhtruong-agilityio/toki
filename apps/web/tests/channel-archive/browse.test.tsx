@@ -71,15 +71,29 @@ async function setup(role: "member" | "admin", rows = [summaryRow()]) {
 function Controls() {
   const actions = useListActions();
   const ref = useRef<HTMLButtonElement>(null);
-  return actions.browseChannels ? (
-    <button
-      ref={ref}
-      type="button"
-      onClick={() => actions.browseChannels?.({ returnFocusRef: ref })}
-    >
-      browse control
-    </button>
-  ) : null;
+  const directRef = useRef<HTMLButtonElement>(null);
+  return (
+    <>
+      {actions.browseChannels ? (
+        <button
+          ref={ref}
+          type="button"
+          onClick={() => actions.browseChannels?.({ returnFocusRef: ref })}
+        >
+          browse control
+        </button>
+      ) : null}
+      {actions.startDirect ? (
+        <button
+          ref={directRef}
+          type="button"
+          onClick={() => actions.startDirect?.({ returnFocusRef: directRef })}
+        >
+          direct control
+        </button>
+      ) : null}
+    </>
+  );
 }
 
 function Host() {
@@ -242,6 +256,22 @@ describe("opening an archived channel from Browse (plan 7e)", () => {
     const user = await openBrowse();
     await user.click(await screen.findByRole("button", { name: "Open" }));
     await waitFor(() => expect(navigate).toHaveBeenCalled());
+  });
+
+  test("a direct message goes straight to its address with no channel read", async () => {
+    await setup("member");
+    const user = userEvent.setup();
+    render(<Host />);
+    await user.click(screen.getByText("direct control"));
+    await user.click(await screen.findByRole("button", { name: /Person 001/ }));
+    await user.click(screen.getByRole("button", { name: "Start" }));
+    await waitFor(() =>
+      expect(navigate).toHaveBeenCalledWith({
+        to: "/c/$conversationId",
+        params: { conversationId: "c1" },
+      }),
+    );
+    expect(fake.readChannel).not.toHaveBeenCalled();
   });
 
   test("an id the store holds moves at once and reads nothing", async () => {

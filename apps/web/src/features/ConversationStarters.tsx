@@ -33,27 +33,31 @@ export function ConversationStarters() {
   useRegisterListActions({ browseChannels, startDirect });
 
   const close = useCallback(() => setOpen({ dialog: "none" }), []);
-  // An id that the store does not hold is read first (TOKI-101 plan 7e): an archived channel that
-  // the person belongs to has no entry, and the route draws its page only when the store holds its
-  // detail. Without the read, an id that the route has `seen` this session would move to #general. A
-  // failed read does not stop the move: the route and the page read again.
-  const openConversation = useCallback(
+  const goTo = useCallback(
+    (id: string) =>
+      void router.navigate({
+        to: "/c/$conversationId",
+        params: { conversationId: id },
+      }),
+    [router],
+  );
+  // Browse only (TOKI-101 plan 7e): a channel that the store does not hold is read first. An
+  // archived channel that the person belongs to has no entry, and the route draws its page only when
+  // the store holds its detail; without the read, an id that the route has `seen` this session would
+  // move to #general. A failed read does not stop the move: the route and the page read again. A
+  // direct message goes straight to its address (NewMessageDialog below).
+  const openChannel = useCallback(
     (id: string) => {
-      const go = () =>
-        void router.navigate({
-          to: "/c/$conversationId",
-          params: { conversationId: id },
-        });
       if (conversations.hasConversation(id)) {
-        go();
+        goTo(id);
         return;
       }
       void Promise.resolve()
         .then(() => conversations.readChannel(id))
         .catch(() => {})
-        .then(go);
+        .then(() => goTo(id));
     },
-    [router],
+    [goTo],
   );
   const returnFocusRef =
     open.dialog === "none" ? undefined : open.returnFocusRef;
@@ -63,7 +67,7 @@ export function ConversationStarters() {
       <BrowseChannelsDialog
         open={open.dialog === "browse"}
         onClose={close}
-        onOpenConversation={openConversation}
+        onOpenConversation={openChannel}
         returnFocusRef={returnFocusRef}
         rowExtra={(channel, reset) => (
           <RestoreButton channel={channel} onChanged={reset} />
@@ -72,7 +76,7 @@ export function ConversationStarters() {
       <NewMessageDialog
         open={open.dialog === "direct"}
         onClose={close}
-        onOpenConversation={openConversation}
+        onOpenConversation={goTo}
         returnFocusRef={returnFocusRef}
       />
     </>
