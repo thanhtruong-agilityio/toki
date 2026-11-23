@@ -145,7 +145,7 @@ describe("the controls in the real panel (R5, R15, R16)", () => {
       expect((addButton() as HTMLButtonElement).disabled).toBe(false),
     );
     await user.click(addButton() as HTMLElement);
-    const dlg = await screen.findByRole("dialog", { name: /Add people to #/ });
+    const dlg = await screen.findByRole("dialog", { name: "Add people to #project-launch" });
     // Members already in the channel are not offered.
     expect(within(dlg).queryByText("Member 001")).toBeNull();
     await user.click(within(dlg).getByRole("button", { name: "Newbie Nine" }));
@@ -153,7 +153,7 @@ describe("the controls in the real panel (R5, R15, R16)", () => {
     await waitFor(() => expect(rowsOf()).toHaveLength(4));
     await waitFor(() => expect(heading("Members · 4")).toBeTruthy());
     expect(
-      screen.queryByRole("dialog", { name: /Add people to #/ }),
+      screen.queryByRole("dialog", { name: "Add people to #project-launch" }),
     ).toBeNull();
     expect(
       (h.api.channels as Record<string, ReturnType<typeof vi.fn>>).addMembers,
@@ -168,7 +168,7 @@ describe("the controls in the real panel (R5, R15, R16)", () => {
       expect((addButton() as HTMLButtonElement).disabled).toBe(false),
     );
     await user.click(addButton() as HTMLElement);
-    await screen.findByRole("dialog", { name: /Add people to #/ });
+    await screen.findByRole("dialog", { name: "Add people to #project-launch" });
     for (const name of ["Notifications", "Settings"]) {
       expect(
         screen.getAllByRole("heading", {
@@ -179,7 +179,7 @@ describe("the controls in the real panel (R5, R15, R16)", () => {
       ).toBeGreaterThan(0);
     }
     await user.click(
-      within(screen.getByRole("dialog", { name: /Add people to #/ })).getByRole(
+      within(screen.getByRole("dialog", { name: "Add people to #project-launch" })).getByRole(
         "button",
         {
           name: "Cancel",
