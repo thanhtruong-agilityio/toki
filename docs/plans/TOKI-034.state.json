@@ -24,6 +24,10 @@
     {
       "at": "2026-11-23T02:35:06Z",
       "stage": "build"
+    },
+    {
+      "at": "2026-11-23T02:56:55Z",
+      "stage": "check"
     }
   ],
   "key": "TOKI-034",
@@ -38,10 +42,10 @@
   "spec_paths": [
     "docs/specs/2026-11-17-browse-channels-people-picker-design.md"
   ],
-  "stage": "build",
+  "stage": "check",
   "tier": "M",
   "verifier": {
-    "result": null,
-    "round": 0
+    "result": "FAIL",
+    "round": 1
   }
 }

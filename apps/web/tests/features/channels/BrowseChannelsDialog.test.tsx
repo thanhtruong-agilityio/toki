@@ -308,18 +308,38 @@ describe("BrowseChannelsDialog (TOKI-034 R4 to R15)", () => {
     },
   );
 
-  test("with no rowExtra the buttons are the close button and the row buttons; no create action", async () => {
-    fake.list.mockResolvedValue({
-      channels: [channel(1), channel(2, { isMember: true })],
-      nextCursor: null,
-    });
+  test.each(["admin", "member"] as const)(
+    "with no rowExtra, a session of a %s sees only the close button and the row buttons; no create action",
+    async (role) => {
+      fake.people[0]!.role = role;
+      fake.list.mockResolvedValue({
+        channels: [channel(1), channel(2, { isMember: true })],
+        nextCursor: null,
+      });
+      render(<Host />);
+      await screen.findByText("channel-001");
+      const names = within(dialog())
+        .getAllByRole("button")
+        .map((b) => b.getAttribute("aria-label") ?? b.textContent);
+      expect(names).toEqual(["Close", "Join", "Open"]);
+      expect(within(dialog()).queryByText(/create|new channel/i)).toBeNull();
+      expect(within(dialog()).queryAllByRole("link")).toHaveLength(0);
+    },
+  );
+
+  test("while a later page is asked the container is busy, then it is not (R8)", async () => {
+    let release: (v: unknown) => void = () => {};
+    fake.list
+      .mockResolvedValueOnce({ channels: range(1, 2), nextCursor: "k2" })
+      .mockReturnValueOnce(new Promise((r) => (release = r)));
     render(<Host />);
-    await screen.findByText("channel-001");
-    const names = within(dialog())
-      .getAllByRole("button")
-      .map((b) => b.getAttribute("aria-label") ?? b.textContent);
-    expect(names).toEqual(["Close", "Join", "Open"]);
-    expect(within(dialog()).queryByText(/create|new channel/i)).toBeNull();
+    await screen.findByText("channel-002");
+    expect(list()).not.toHaveAttribute("aria-busy");
+    scrollToEnd(list());
+    await waitFor(() => expect(list()).toHaveAttribute("aria-busy", "true"));
+    await act(async () => release({ channels: range(3, 3), nextCursor: null }));
+    await screen.findByText("channel-003");
+    expect(list()).not.toHaveAttribute("aria-busy");
   });
 
   test("rowExtra is called for each row with the channel and reset, and its result is drawn after the row's button", async () => {

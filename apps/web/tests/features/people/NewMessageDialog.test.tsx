@@ -271,4 +271,33 @@ describe("NewMessageDialog (TOKI-034 R21 to R25)", () => {
     ).toBeNull();
     expect(screen.getByRole("searchbox")).toHaveValue("");
   });
+
+  test("Tab goes from the input through the rows and the footer; Shift+Tab reaches the chip's remove button; Space and Enter press a row (R25)", async () => {
+    const user = userEvent.setup();
+    render(<Host />);
+    await user.click(row(1)); // a chip now exists
+    const rows = () => Array.from(dialog().querySelectorAll(".prow"));
+    const input = screen.getByRole("searchbox");
+    input.focus();
+    await user.tab({ shift: true });
+    expect(
+      screen.getByRole("button", { name: "Remove Person 001" }),
+    ).toHaveFocus();
+    await user.tab();
+    expect(input).toHaveFocus();
+    for (let n = 1; n <= 5; n++) {
+      await user.tab();
+      expect(rows()[n - 1]).toHaveFocus();
+    }
+    await user.tab();
+    expect(screen.getByRole("button", { name: "Cancel" })).toHaveFocus();
+    await user.tab();
+    expect(start()).toHaveFocus();
+    // Space and Enter press a row.
+    (rows()[1] as HTMLElement).focus();
+    await user.keyboard(" ");
+    expect(rows()[1]).toHaveAttribute("aria-pressed", "true");
+    await user.keyboard("{Enter}");
+    expect(rows()[1]).toHaveAttribute("aria-pressed", "false");
+  });
 });
