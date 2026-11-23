@@ -1,0 +1,48 @@
+/* The archive section, the archived channel page and its notice (TOKI-101 Table A). The prototype
+   has no archive screen, so every value is decided in the spec. Every colour is a token. */
+
+.dp-archive {
+  margin-top: 16px;
+}
+
+.dp-archive .archive {
+  color: var(--danger);
+}
+
+.arch-page {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.arch-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.arch-notice {
+  margin: 0 20px 16px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--muted);
+  text-align: center;
+}
+
+@media (min-width: 720px) {
+  [data-eff="focus"] .arch-notice {
+    margin: 0 16px 12px;
+  }
+}
+
+@media (max-width: 719px) {
+  .arch-notice {
+    margin: 0 max(12px, env(safe-area-inset-right, 0px))
+      calc(12px + env(safe-area-inset-bottom, 0px))
+      max(12px, env(safe-area-inset-left, 0px));
+  }
+}

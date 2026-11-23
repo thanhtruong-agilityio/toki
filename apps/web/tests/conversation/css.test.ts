@@ -119,8 +119,9 @@ function cssFiles(dir: string): string[] {
 
 describe("one definition of each selector (R29)", () => {
   test("no other css file defines .mrow, .mh, .dp-*, .later-ic, .setrow or .opt", () => {
+    // `.dp-archive` is Table A of TOKI-101 (channel-archive/archive.css), not this ticket's.
     const own =
-      /(^|[^\w-])\.(mh|mrow|mrow-main|dp-[a-z-]+|later-ic|setrow|opt)\b/;
+      /(^|[^\w-])\.(mh|mrow|mrow-main|dp-(?!archive\b)[a-z-]+|later-ic|setrow|opt)\b/;
     const others = [
       ...cssFiles(resolve(WEB, "src")),
       ...cssFiles(resolve(WEB, "../../packages/ui-web/src")),
