@@ -12,7 +12,7 @@ It does not open the socket, retry it or ask for missed events (reconnect, TOKI-
 ## Affected users and systems
 - Every person with Toki open: they see their conversations and messages follow the server without a reload, and their own messages show at once.
 - `packages/client-core`: the new engine, new methods of the API client (send, history), additions to the conversation store.
-- `apps/web`: the wiring file (`client.ts`) and a storage adapter for the waiting messages.
+- `apps/web`: the wiring (`client.ts`, and the connection file `realtime.ts` of TOKI-039) and a storage adapter for the waiting messages.
 - Neighbouring work: reconnect (TOKI-039, which owns the socket and hands events to this engine), the virtualised list (TOKI-041), the message component (TOKI-042), the composer (TOKI-043), the typing indicator (TOKI-044), threads, reactions, edit and delete and pins (TOKI-045 to TOKI-048), the read pointer (TOKI-053), which all read or extend the engine.
 
 ## Constraints
