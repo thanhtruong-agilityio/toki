@@ -58,6 +58,14 @@ export const actionPatterns = table({
     source: "D-061, F26",
     owner: "TOKI-101",
   },
+  // Restore returns the channel to every member's list, so it asks as reactivateMember does and
+  // has no Undo: an Undo would run archiveChannel with no question (TOKI-101 concern 2).
+  restoreChannel: {
+    pattern: "confirm",
+    source:
+      "Concern 2 of the TOKI-101 spec (Thanh Truong, 2026-11-20); reading of D-069",
+    owner: "TOKI-101",
+  },
   removeFromChannel: {
     pattern: "confirm",
     source:
