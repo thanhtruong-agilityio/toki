@@ -14,12 +14,12 @@ The shapes of every frame are written once in `packages/shared`, so the server a
 
 ## Affected users and systems
 - Members and Admins with Toki open: they see changes of conversations they belong to without reloading, and are signed out of an open screen when the session ends.
-- The server app (`apps/server`): the gateway inside the `realtime` module, the event writes of `recordChange` in the `conversations` module, one export added to the `auth` module, one read added to the `conversations` module, and the registration in `app.ts`.
+- The server app (`apps/server`): the gateway inside the `realtime` module, the event handler behind `recordChange`, one export and one read added to the `auth` module (the session check, and a check of open sessions), reads added to the `conversations` module, and the registration in `app.ts`, `main.ts` and the database client (the listening connection).
 - The shared package (`packages/shared`): the frames, the event kinds of the conversation changes, the limits and the close codes.
 - The web dev server proxy (`apps/web/vite.config.ts`): a `/ws` entry.
 - The sign-in work (TOKI-022, TOKI-026), whose session check guards the connection and whose `onSessionsEnded` ends it.
 - The members work (TOKI-024), whose `onMemberChanged` is carried as a live notice.
-- The messages and events tables (TOKI-036), whose log the gateway reads; the message API (TOKI-037), which writes message events through the same log.
+- The messages and events tables (TOKI-036), whose log the gateway reads and whose `recordEvent` writes it; the message API (TOKI-037), which calls `recordChange` for a sent message and for the first message of a DM.
 - Later tickets: reconnect (TOKI-039), the sync engine (TOKI-040), the typing indicator (TOKI-044), presence (TOKI-055) and the production proxy (TOKI-084).
 
 ## Constraints
@@ -33,11 +33,12 @@ The shapes of every frame are written once in `packages/shared`, so the server a
 - Reconnect attempts wait 1, 2, 5, 10 and then 30 seconds. Source: D-129 (the client side, TOKI-039).
 - Phase 1 has no offline mode; the client shows the prototype's offline banner. Source: D-079, D-060.
 - Server modules call each other only through public interfaces, never each other's tables. Source: technical design, boundary rules.
-- Milestone M3 "Real-time chat". Size: L. Needs: TOKI-036. Needed by: TOKI-039, TOKI-040, TOKI-044, TOKI-055. Source: Toki Blueprint, ticket TOKI-038.
+- Milestone M3 "Real-time chat". Size: L. Needs: TOKI-036 and TOKI-037 (the handler list and the message entry the gateway turns into events; the plan lists TOKI-036 only and changes). Needed by: TOKI-039, TOKI-040, TOKI-044, TOKI-055. Source: Toki Blueprint, ticket TOKI-038.
 
 ## Open questions
 - Where does a client learn why a connection was refused or closed, since a browser does not show the status of a refused upgrade?
 - Who writes the events of a channel change, and when are they pushed: inside the change, or after it?
+- Who hears a role change, and does a person who has not joined a public channel hear its creation or archive? Does a newly created group announce itself to its connected members?
 - How does the gateway know which conversations a person listens to, and how does that stay right when a person is added, removed or a DM is first revealed?
 - What happens to an open connection when its session ends, when a person is deactivated, or when a role changes?
 - What does the gateway do about a dead connection and about a client that reads too slowly?
