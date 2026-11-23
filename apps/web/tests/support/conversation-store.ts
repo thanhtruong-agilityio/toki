@@ -123,12 +123,22 @@ export function createStoreHarness(
 }
 
 const holder: { current: ConversationStore | null } = { current: null };
+// The fake api of a test that needs more than `bootstrap` (tests/support/conversation-api.ts). While
+// it is null, the mocked client keeps the real `api`, as it did before.
+const apiHolder: { current: object | null } = { current: null };
 
 // Makes the store of this test and installs it behind the mocked `src/client`.
 export function useFakeStore(body?: BootstrapResponse): StoreHarness {
   const harness = createStoreHarness(body);
   holder.current = harness.store;
+  apiHolder.current = null;
   return harness;
+}
+
+// Puts a store and the api it was made over behind the mocked `src/client` (conversation-api.ts).
+export function installStore(store: ConversationStore, api: object): void {
+  holder.current = store;
+  apiHolder.current = api;
 }
 
 // The body of the `vi.mock` factory: the real client module with `conversations` replaced by a
@@ -145,5 +155,14 @@ export async function clientModule() {
       return typeof value === "function" ? value.bind(store) : value;
     },
   });
-  return { ...actual, conversations: delegate };
+  const apiDelegate = new Proxy({} as object, {
+    get(_target, key) {
+      const api = (apiHolder.current ?? actual.api) as Record<
+        PropertyKey,
+        unknown
+      >;
+      return api[key];
+    },
+  });
+  return { ...actual, conversations: delegate, api: apiDelegate };
 }
