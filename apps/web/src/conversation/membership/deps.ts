@@ -18,3 +18,17 @@ export function useCurrentRole(): string | null {
 export function useChannelName(id: string): string {
   return useConversationSelector((store) => store.getConversationName(id));
 }
+
+// The three facts of `membershipOffers` (R4), each asked in its own call so that a selector returns
+// the same object while nothing it reads changes.
+export function useConversationEntry(id: string) {
+  return useConversationSelector((store) => store.getConversation(id));
+}
+
+export function useChannelDetail(id: string) {
+  return useConversationSelector((store) => store.getChannelDetail(id));
+}
+
+export function useCurrentUser() {
+  return useConversationSelector((store) => store.getUser());
+}

@@ -3,6 +3,7 @@ import { SidePanel } from "@toki/ui-web";
 import "./conversation.css";
 import { AboutSection } from "./AboutSection";
 import { LeaveSection } from "./LeaveSection";
+import { MembershipControls, NoAccessProvider } from "./membership";
 import { NotificationsSection } from "./NotificationsSection";
 import { PeopleSection, type PeopleControls } from "./PeopleSection";
 import { SettingsSection } from "./SettingsSection";
@@ -53,11 +54,13 @@ export function DetailsPanel({
           read={read}
           onNoAccess={onNoAccess}
         />
-        <PeopleSection
-          conversationId={conversationId}
-          onNoAccess={onNoAccess}
-          Controls={Controls}
-        />
+        <NoAccessProvider onNoAccess={onNoAccess}>
+          <PeopleSection
+            conversationId={conversationId}
+            onNoAccess={onNoAccess}
+            Controls={Controls ?? MembershipControls}
+          />
+        </NoAccessProvider>
         {entry !== undefined && (
           <>
             <NotificationsSection

@@ -14,6 +14,8 @@ export const fake = {
   userId: "me" as string | undefined,
   role: "admin" as string | null,
   channelName: "design",
+  entry: undefined as unknown,
+  detail: undefined as unknown,
   addMembers: vi.fn(),
   removeMember: vi.fn(),
   refresh: vi.fn(),
@@ -36,6 +38,12 @@ export function resetFake() {
   fake.userId = "me";
   fake.role = "admin";
   fake.channelName = "design";
+  fake.entry = {
+    kind: "channel",
+    isPrivate: false,
+    isGeneral: false,
+  };
+  fake.detail = { archived: false };
   fake.addMembers.mockReset();
   fake.addMembers.mockResolvedValue({ added: [], alreadyMembers: [] });
   fake.removeMember.mockReset();
@@ -72,5 +80,11 @@ export async function fakeDepsModule() {
     useCurrentUserId: () => fake.userId,
     useCurrentRole: () => fake.role,
     useChannelName: () => fake.channelName,
+    useConversationEntry: () => fake.entry,
+    useChannelDetail: () => fake.detail,
+    useCurrentUser: () =>
+      fake.userId === undefined
+        ? undefined
+        : { id: fake.userId, role: fake.role },
   };
 }
