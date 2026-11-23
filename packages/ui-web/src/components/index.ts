@@ -14,3 +14,4 @@ export * from "./Menu";
 export * from "./Modal";
 export * from "./Sheet";
 export * from "./ConfirmDialog";
+export * from "./PersonChip";

@@ -63,9 +63,9 @@ describe("browse and picker catalogues (TOKI-034 R3)", () => {
     for (const catalog of [en, viMessages]) {
       const c = catalog as Record<string, unknown>;
       const plural = (keys: string[]) =>
-        keys.map((k) => k.replace(/\.(one|other)$/, "")).filter(
-          (k, i, all) => all.indexOf(k) === i,
-        );
+        keys
+          .map((k) => k.replace(/\.(one|other)$/, ""))
+          .filter((k, i, all) => all.indexOf(k) === i);
       expect(plural(flatten(c.browse, "browse")).sort()).toEqual(browse);
       expect(flatten(c.picker, "picker").sort()).toEqual(picker);
     }
