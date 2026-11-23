@@ -17,6 +17,15 @@ type Dialog = {
   description: string;
 };
 
+// A refresh that fails must not change the outcome of the leave: the row simply stays as it was.
+async function refreshQuietly(): Promise<void> {
+  try {
+    await conversations.refresh();
+  } catch {
+    // ignored
+  }
+}
+
 // Leave (R20 to R26). A public channel is left at once and offers Undo for 5 seconds; a private
 // channel, and the last member of any channel, confirm first and have no Undo (D-051, D-061, D-069,
 // D-156). The count of members is read again at the press, and the leave starts when that read has
@@ -81,7 +90,7 @@ export function LeaveSection({
           await conversations.leaveChannel(conversationId);
         } catch (error) {
           if (error instanceof ApiError && error.status === 409) {
-            await conversations.refresh();
+            await refreshQuietly();
           }
           throw error;
         }
@@ -138,7 +147,7 @@ export function LeaveSection({
       const status = error instanceof ApiError ? error.status : null;
       if (status === 404 && action === "leavePrivateChannel") {
         // No longer a member of a private channel: the leave is done.
-        await conversations.refresh();
+        await refreshQuietly();
         setDialog(null);
       } else if (
         action === "leavePrivateChannel" &&
@@ -146,7 +155,7 @@ export function LeaveSection({
       ) {
         onNoAccess();
       } else {
-        if (status === 409) await conversations.refresh();
+        if (status === 409) await refreshQuietly();
         failed();
       }
     } finally {

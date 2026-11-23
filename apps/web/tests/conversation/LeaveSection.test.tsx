@@ -372,6 +372,32 @@ describe("a private channel (R23)", () => {
     expect(dialog()).not.toBeNull();
   });
 
+  test("a 404 closes the dialog even when the refresh fails", async () => {
+    await open("c2");
+    await press();
+    h.api.channels.leave.mockRejectedValueOnce(http(404));
+    const refresh = vi
+      .spyOn(h.store, "refresh")
+      .mockRejectedValueOnce(new Error("offline"));
+    await confirm();
+    expect(refresh).toHaveBeenCalledTimes(1);
+    expect(dialog()).toBeNull();
+    expect(screen.queryByText(FAILED)).toBeNull();
+  });
+
+  test("a 409 shows the one failure toast even when the refresh fails", async () => {
+    await open("c2");
+    await press();
+    h.api.channels.leave.mockRejectedValueOnce(http(409));
+    const refresh = vi
+      .spyOn(h.store, "refresh")
+      .mockRejectedValueOnce(new Error("offline"));
+    await confirm();
+    expect(refresh).toHaveBeenCalledTimes(1);
+    expect(screen.getAllByText(FAILED)).toHaveLength(1);
+    expect(dialog()).not.toBeNull();
+  });
+
   test("a 403 applies the no-access rule", async () => {
     await open("c2");
     await press();
