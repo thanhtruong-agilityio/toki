@@ -23,10 +23,10 @@ The request shows nothing the person could not read through another request, and
 - 20 results per kind, more on request. Source: D-112.
 - Messages are searched only in conversations the person belongs to, from 2 characters. Source: flow F29, D-116.
 - A private channel, and a message of one, is never returned to a person who is not in it; an Admin has no extra reach into private channels or direct messages. Source: D-051, D-047, AC-083.
-- A channel that is not joined shows no message, only its name and topic. Source: D-116.
+- A channel that is not joined shows no message, only its name and topic. Source: D-116 (no message), F29 (name and topic).
 - A deactivated person is not listed; their old messages stay and their direct messages stay readable. Source: F41, D-091.
 - A message that was deleted is not returned. Source: D-013, D-049; TOKI-069 R2.
-- No access is answered like not found, and a search result never confirms what the person may not see. Source: D-131, BR-10.
+- No access is answered like not found, and a search result never confirms what the person may not see. Source: BR-10, TS-129.
 - Search over 1 million messages answers in under 200 ms (p95) with 200 people online. Source: D-113, NFR-13; the part that depends on the index is TOKI-069 R11.
 - Server modules reach each other's data through public interfaces only. Source: technical design, boundary rules.
 - Routes under `/api/v1`, one error format, permission checked on the server. Source: D-125, BR-09.
