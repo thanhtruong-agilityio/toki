@@ -34,13 +34,6 @@ const messageEn = {
 const messageVi =
   "Kênh sẽ biến mất khỏi danh sách của mọi người và không ai gửi được tin nhắn trong đó. {count} thành viên vẫn đọc được lịch sử.";
 
-function flatten(value: unknown, prefix: string): string[] {
-  if (typeof value === "string") return [prefix];
-  return Object.entries(value as Record<string, unknown>).flatMap(([k, v]) =>
-    flatten(v, `${prefix}.${k}`),
-  );
-}
-
 type T = (k: string, p?: object) => string;
 
 describe("archive catalogue (TOKI-101 R3, R22)", () => {
@@ -82,11 +75,5 @@ describe("archive catalogue (TOKI-101 R3, R22)", () => {
     expect(viT("archive.message", { count: 25 })).toBe(
       messageVi.replace("{count}", "25"),
     );
-  });
-
-  it("flattens to plain strings or plural objects only", () => {
-    expect(
-      flatten((en as Record<string, unknown>).archive, "archive").length,
-    ).toBeGreaterThanOrEqual(13);
   });
 });

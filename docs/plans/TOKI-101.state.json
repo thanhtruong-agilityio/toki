@@ -40,6 +40,10 @@
     {
       "at": "2026-11-23T08:18:39Z",
       "stage": "check"
+    },
+    {
+      "at": "2026-11-23T08:25:12Z",
+      "stage": "drift"
     }
   ],
   "key": "TOKI-101",
@@ -52,7 +56,7 @@
   "spec_paths": [
     "docs/specs/2026-11-17-archive-restore-channel-design.md"
   ],
-  "stage": "check",
+  "stage": "drift",
   "tier": "L",
   "verifier": {
     "result": "FAIL",
