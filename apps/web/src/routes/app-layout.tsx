@@ -93,9 +93,12 @@ function useStoreLife(): void {
     });
 
     // R21 (c): every id the store held while ready.
+    // A store notification that leaves the conversations object as it was adds nothing to walk.
+    let filled: object | null = null;
     const fill = () => {
       const state = conversations.getState();
-      if (state.status !== "ready") return;
+      if (state.status !== "ready" || state.conversations === filled) return;
+      filled = state.conversations;
       for (const id of Object.keys(state.conversations)) sets.seen.add(id);
     };
     fill();
