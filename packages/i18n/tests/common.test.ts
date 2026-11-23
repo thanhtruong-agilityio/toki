@@ -46,6 +46,9 @@ const tableB: Array<[string, string, string]> = [
     "Could not undo. Try again.",
     "Không hoàn tác được. Hãy thử lại.",
   ],
+  // The two labels of the side panel (TOKI-035 R28).
+  ["common.back", "Back", "Quay lại"],
+  ["common.closePanel", "Close panel", "Đóng bảng"],
 ];
 
 function flatten(value: unknown, prefix: string): string[] {
@@ -56,7 +59,7 @@ function flatten(value: unknown, prefix: string): string[] {
 }
 
 describe("common catalogue (TOKI-093 R24)", () => {
-  it("holds exactly the keys of Table B and the five of TOKI-099 in both languages", () => {
+  it("holds exactly the keys of Table B the five of TOKI-099 and the two of TOKI-035 in both languages", () => {
     const keys = tableB.map(([key]) => key).sort();
     expect(
       flatten((en as Record<string, unknown>).common, "common").sort(),

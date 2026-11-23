@@ -5,6 +5,8 @@ export const common = {
   role: { member: "Member", admin: "Admin" },
   undo: "Undo",
   cancel: "Cancel",
+  back: "Back",
+  closePanel: "Close panel",
   close: "Close",
   discard: {
     title: "Discard what you typed?",

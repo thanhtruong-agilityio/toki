@@ -2,6 +2,7 @@
 import { account } from "./account";
 import { admin } from "./admin";
 import { common } from "./common";
+import { conversation } from "./conversation";
 import { conversationList } from "./conversationList";
 import { createChannel } from "./createChannel";
 import { emergency } from "./emergency";
@@ -16,6 +17,7 @@ export const en = {
   account,
   admin,
   common,
+  conversation,
   conversationList,
   createChannel,
   emergency,
