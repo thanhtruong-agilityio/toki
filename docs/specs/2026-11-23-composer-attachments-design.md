@@ -184,7 +184,7 @@ All in the namespace `files`, except the one from TOKI-103 and the offline text,
 | :---- | :---- | :---- |
 | `api.files` | `{ start(body, signal?), complete(id, signal?), drop(id, signal?), listUnsent(signal?) }` | `@toki/client-core` (R2) |
 | `Platform["files"].upload` | `(handle: unknown, ticket: { url, fields }, options?: { onProgress?, signal? }) => Promise<UploadResult>` | `@toki/platform` (R3) |
-| `formatFileSize(language, bytes)` | `(Language, number) => string` | `@toki/i18n` (R4); the one size format: TOKI-062 and TOKI-063 import it and build none |
+| `formatFileSize(language, bytes)` | `(Language, number) => string` | `@toki/i18n` (R4); the one size format: TOKI-062 and TOKI-063 import it and build none. The values the cards and the details window of TOKI-062 read are in the R4 table: 217,088 gives "212 KB", 4,404,019 gives "4.2 MB", 1,887,437 gives "1.8 MB" and 1,048,576 gives "1 MB". The rule is KB with no decimal and MB and GB with at most one decimal (so 13,107,200 is "12.5 MB"), not "one decimal under 10 and none above" |
 | `createAttachmentSet(options)` | `=> { getState, subscribe, add, remove, retry, readyIds, readyFiles, ownIds, markSent, dispose }` | `@toki/client-core` (R5) |
 | `AttachmentCard` | `{ id, name, size, contentType, status, progress, reason, retryable, file }` | R5 |
 | `AttachmentCards`, `FileDropZone` | props of R13 and R14 | `@toki/ui-web` |
