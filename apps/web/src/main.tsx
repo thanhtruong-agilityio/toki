@@ -3,6 +3,10 @@ import "@toki/tokens/tokens.css";
 import "@toki/ui-web/base.css";
 import "./app.css";
 import "@toki/ui-web/utilities.css";
+// The first import that is not a style sheet: it takes the token of a Join link from the address before
+// anything else loads (TOKI-097 R26). The router reads the address when its module loads, so nothing
+// may come between the style sheets and this line.
+import "./join/capture-on-load";
 import { applyAppearance } from "@toki/ui-web";
 import { setPlatform } from "@toki/platform";
 import { createWebPlatform } from "@toki/platform/web";

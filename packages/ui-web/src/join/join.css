@@ -1,0 +1,14 @@
+/* The pages of the Join link (TOKI-097 R35, R36, R40, R42): drawn with the card of the sign-in page and
+   the tokens only. */
+.gcard .gjoin-heading {
+  overflow-wrap: anywhere;
+}
+.gcard .gjoin-heading:focus {
+  outline: none;
+}
+.gjoin-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}

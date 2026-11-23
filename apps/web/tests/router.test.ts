@@ -1,5 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { router, routeTree } from "../src/router";
+import { adminRoute } from "../src/routes/admin";
 import { appLayoutRoute } from "../src/routes/app-layout";
 import { conversationRoute } from "../src/routes/conversation";
 import { indexRoute } from "../src/routes/index";
@@ -32,6 +33,15 @@ describe("the route tree (R30)", () => {
       search: Record<string, unknown>,
     ) => unknown;
     expect(validate({ panel: "details", x: 1 })).toEqual({});
+  });
+
+  test("the Admin route is a child of appLayoutRoute with the path /admin and no search (TOKI-025 R1)", () => {
+    expect(adminRoute.options.getParentRoute()).toBe(appLayoutRoute);
+    const options: { path?: string; validateSearch?: unknown } =
+      adminRoute.options;
+    expect(options.path).toBe("/admin");
+    expect(appLayoutRoute.children).toContain(adminRoute);
+    expect(options.validateSearch).toBeUndefined();
   });
 
   test("the router is built from the tree", () => {

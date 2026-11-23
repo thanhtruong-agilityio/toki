@@ -32,6 +32,8 @@ export function fakeDevice(initial: Record<string, string> = {}) {
   };
   setPlatform({
     storage: { device: area, tab: area },
+    // The account menu of the shell listens to the other tabs (TOKI-099 R12).
+    tabs: { subscribe: () => () => {}, post: () => {} },
   } as unknown as Parameters<typeof setPlatform>[0]);
   return { area, data };
 }

@@ -17,6 +17,10 @@ export type PickedFile = {
 
 export type SoundName = "notification";
 
+// What one tab tells the others of the same browser. It carries no name, no
+// address and no id.
+export type TabMessage = { type: "signedOut" };
+
 export type Platform = {
   notifications: {
     permission(): NotificationPermissionState;
@@ -30,4 +34,10 @@ export type Platform = {
     }): Promise<PickedFile[]>;
   };
   sound: { play(name: SoundName): Promise<boolean> };
+  tabs: {
+    // Sends to every other tab and window of the browser, never to this one.
+    post(message: TabMessage): void;
+    // Calls the listener for each message another tab sends; returns the stop.
+    subscribe(listener: (message: TabMessage) => void): () => void;
+  };
 };

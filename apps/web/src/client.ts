@@ -1,6 +1,7 @@
 import {
   createApiClient,
   createConversationStore,
+  createSessionsApi,
   reportUnauthenticated,
 } from "@toki/client-core";
 import { createTimers } from "./timers";
@@ -15,3 +16,5 @@ export const api = createApiClient({ timers });
 // Every 401 with one of the three session codes reaches the session state.
 api.setOnUnauthenticated(reportUnauthenticated);
 export const conversations = createConversationStore({ api });
+// The calls of the session routes (TOKI-099 R13), over the same client.
+export const sessions = createSessionsApi(api);

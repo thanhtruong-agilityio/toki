@@ -1,6 +1,8 @@
 import { act } from "@testing-library/react";
 import { vi } from "vitest";
 import type {
+  InvitationCalls,
+  InvitationLookup,
   EmergencyCalls,
   CodeRequestOutcome,
   CodeSubmitOutcome,
@@ -97,4 +99,43 @@ export function createFakeTimers(clock: {
       act(() => {});
     },
   };
+}
+
+export const PENDING: Extract<InvitationLookup, { state: "pending" }> = {
+  state: "pending",
+  email: "sam@example.com",
+  workspaceName: "Acme",
+  codeExpiresInSeconds: 600,
+  resendAfterSeconds: 60,
+};
+export const joinUser: SignInUser = {
+  id: "u2",
+  email: "sam@example.com",
+  displayName: "sam",
+  role: "member",
+  language: "en",
+};
+
+// The fake calls of the Join page: each is a `vi.fn`; the lookup says `pending` unless a test says another.
+export function createFakeInvitation(over: Partial<InvitationCalls> = {}) {
+  const lookupInvitation = vi.fn<InvitationCalls["lookupInvitation"]>(
+    over.lookupInvitation ?? (async () => ({ kind: "ok", lookup: PENDING })),
+  );
+  const resendInvitationCode = vi.fn<InvitationCalls["resendInvitationCode"]>(
+    over.resendInvitationCode ??
+      (async () => ({
+        kind: "ok",
+        expiresInSeconds: 600,
+        resendAfterSeconds: 60,
+      })),
+  );
+  const acceptInvitation = vi.fn<InvitationCalls["acceptInvitation"]>(
+    over.acceptInvitation ??
+      (async () => ({
+        kind: "ok",
+        user: joinUser,
+        generalConversationId: "g1",
+      })),
+  );
+  return { lookupInvitation, resendInvitationCode, acceptInvitation };
 }

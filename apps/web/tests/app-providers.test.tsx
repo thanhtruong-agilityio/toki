@@ -25,6 +25,7 @@ import {
 import {
   createFakeCalls,
   createFakeEmergency,
+  createFakeInvitation,
   user,
 } from "./support/auth-harness";
 
@@ -42,6 +43,8 @@ beforeEach(async () => {
   setAuthServices({
     calls,
     emergency: createFakeEmergency(),
+    invitation: createFakeInvitation(),
+    resetConversations: () => {},
     clock,
     timers,
   });

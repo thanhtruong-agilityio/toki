@@ -198,7 +198,7 @@ describe("a route with the flag public (R40, R44)", () => {
   test("unknown: background only; a 401 of any code is no session and shows the page, no modal", async () => {
     const read = deferred<SessionReadOutcome>();
     const t = await loadApp({
-      path: "/join",
+      path: "/public-probe",
       extraRoutes: true,
       calls: { readSession: () => read.promise },
     });
@@ -209,24 +209,24 @@ describe("a route with the flag public (R40, R44)", () => {
     expect(t.session.getSessionState()).toEqual({ status: "signedOut" });
     expect(await screen.findByTestId("join-page")).toBeInTheDocument();
     expect(modal()).toBeNull();
-    expect(t.router.state.location.pathname).toBe("/join");
+    expect(t.router.state.location.pathname).toBe("/public-probe");
     expect(t.router.state.location.search).toEqual({});
   });
 
   test("a signed-in person is let through with no next", async () => {
-    const t = await loadApp({ path: "/join", extraRoutes: true });
+    const t = await loadApp({ path: "/public-probe", extraRoutes: true });
     t.session.markSignedIn(user);
     await t.mount();
     expect(await screen.findByTestId("join-page")).toBeInTheDocument();
-    expect(t.router.state.location.pathname).toBe("/join");
+    expect(t.router.state.location.pathname).toBe("/public-probe");
   });
 
   test("a signed-out person is let through with no next", async () => {
-    const t = await loadApp({ path: "/join", extraRoutes: true });
+    const t = await loadApp({ path: "/public-probe", extraRoutes: true });
     t.session.markSignedOut();
     await t.mount();
     expect(await screen.findByTestId("join-page")).toBeInTheDocument();
-    expect(t.router.state.location.pathname).toBe("/join");
+    expect(t.router.state.location.pathname).toBe("/public-probe");
     expect(t.router.state.location.search).toEqual({});
   });
 });

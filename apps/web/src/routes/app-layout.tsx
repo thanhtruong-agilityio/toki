@@ -7,13 +7,25 @@ import {
 import { getSessionState, subscribeSession } from "@toki/client-core";
 import { useTranslation } from "@toki/i18n/react";
 import { getPlatform } from "@toki/platform";
-import { AppShell, useNarrow, type NavSection } from "@toki/ui-web";
+import {
+  AppShell,
+  useMenuTrigger,
+  useNarrow,
+  type NavSection,
+  type UserCardAccount,
+} from "@toki/ui-web";
 import { useEffect, useMemo } from "react";
+import { AccountHost } from "../account/AccountHost";
+import { accountDetail } from "../account/account-detail";
+import { AccountEntriesProvider } from "../account/account-entries";
+import { useSigningOut } from "../account/sign-out";
 import { conversations } from "../client";
 import { ConversationListPane } from "../conversation-list/ConversationListPane";
 import { viewFallback } from "../conversation-list/last-viewed";
 import { ListActionsProvider } from "../conversation-list/list-actions";
 import { useConversationSelector } from "../conversation-list/use-conversations";
+import { personHue } from "../people/person-hue";
+import { useSession } from "../useSession";
 import {
   currentSectionId,
   visibleSections,
@@ -121,6 +133,10 @@ function ShellBody({
   const narrow = useNarrow();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   useStoreLife();
+  const session = useSession();
+  const user = session.status === "signedIn" ? session.user : null;
+  const signingOut = useSigningOut();
+  const trigger = useMenuTrigger<HTMLButtonElement>();
 
   const status = useConversationSelector((s) => s.getState().status);
   const workspace = useConversationSelector((s) => s.getWorkspace());
@@ -143,7 +159,10 @@ function ShellBody({
   const panelProps =
     panel === null ? {} : { panel: <PanelOutlet />, panelLabel: panel.label };
 
-  const visible = visibleSections(role, list);
+  const visible = visibleSections(
+    role ?? (user?.role as Role | undefined),
+    list,
+  );
   const navSections: NavSection[] = visible.map((row) => ({
     id: row.id,
     icon: row.icon,
@@ -154,45 +173,63 @@ function ShellBody({
     calmHidden: row.calmHidden,
   }));
 
+  // The card of the signed-in person (TOKI-099 R1); with none, the shell draws no card.
+  const account: UserCardAccount | undefined = user
+    ? {
+        label: t("account.menu.label"),
+        name: user.displayName,
+        hue: personHue(user.id),
+        detail: signingOut ? t("account.signingOut") : accountDetail(user, t),
+        triggerProps: {
+          ...trigger.triggerProps,
+          "aria-busy": signingOut ? true : undefined,
+        },
+      }
+    : undefined;
+
   return (
-    <AppShell
-      sections={navSections}
-      currentSection={currentSectionId(visible, pathname) ?? ""}
-      list={<ConversationListPane />}
-      chatOpen={pathname.startsWith("/c/")}
-      workspace={shellWorkspace}
-      {...panelProps}
-      onNavigate={(section) => {
-        // R23: Home on a window of 720 px or more opens the conversation to show, with one push, and
-        // does nothing when it is already shown; a narrow window shows the list at `/`.
-        if (section.id === "home" && !narrow) {
-          const userId = conversations.getUser()?.id;
-          const to =
-            userId === undefined
-              ? conversations.getGeneralId()
-              : viewFallback(
-                  getPlatform().storage.device,
-                  userId,
-                  conversations,
-                );
-          if (to !== null) {
-            if (pathname === `/c/${encodeURIComponent(to)}`) return;
-            void router.navigate({
-              to: "/c/$conversationId",
-              params: { conversationId: to },
-            });
-            return;
+    <AccountEntriesProvider>
+      <AppShell
+        account={account}
+        sections={navSections}
+        currentSection={currentSectionId(visible, pathname) ?? ""}
+        list={<ConversationListPane />}
+        chatOpen={pathname.startsWith("/c/")}
+        workspace={shellWorkspace}
+        {...panelProps}
+        onNavigate={(section) => {
+          // R23: Home on a window of 720 px or more opens the conversation to show, with one push, and
+          // does nothing when it is already shown; a narrow window shows the list at `/`.
+          if (section.id === "home" && !narrow) {
+            const userId = conversations.getUser()?.id;
+            const to =
+              userId === undefined
+                ? conversations.getGeneralId()
+                : viewFallback(
+                    getPlatform().storage.device,
+                    userId,
+                    conversations,
+                  );
+            if (to !== null) {
+              if (pathname === `/c/${encodeURIComponent(to)}`) return;
+              void router.navigate({
+                to: "/c/$conversationId",
+                params: { conversationId: to },
+              });
+              return;
+            }
           }
-        }
-        void router.navigate({ to: section.href });
-      }}
-      labels={{
-        mainNavigation: t("nav.mainLabel"),
-        conversations: t("nav.conversations"),
-      }}
-    >
-      <Outlet />
-    </AppShell>
+          void router.navigate({ to: section.href });
+        }}
+        labels={{
+          mainNavigation: t("nav.mainLabel"),
+          conversations: t("nav.conversations"),
+        }}
+      >
+        <Outlet />
+        {user ? <AccountHost menuProps={trigger.menuProps} /> : null}
+      </AppShell>
+    </AccountEntriesProvider>
   );
 }
 
