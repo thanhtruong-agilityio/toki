@@ -24,6 +24,10 @@
     {
       "at": "2026-11-23T02:37:38Z",
       "stage": "build"
+    },
+    {
+      "at": "2026-11-23T03:05:19Z",
+      "stage": "check"
     }
   ],
   "key": "TOKI-035",
@@ -36,10 +40,10 @@
   "spec_paths": [
     "docs/specs/2026-11-17-conversation-header-details-design.md"
   ],
-  "stage": "build",
+  "stage": "check",
   "tier": "M",
   "verifier": {
-    "result": null,
-    "round": 0
+    "result": "FAIL",
+    "round": 1
   }
 }

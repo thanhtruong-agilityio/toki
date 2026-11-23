@@ -18,7 +18,9 @@ import {
 // and `conversations.saveSettings` over a small in-memory server, each one a `vi.fn` so a test can
 // answer another way for one call. The store is the REAL `createConversationStore` over it, and the
 // mocked `src/client` hands both to the app (see `installStore`). The harness of
-// conversation-store.ts is not changed: a test that needs this file calls `useFakeApi`.
+// conversation-store.ts only gained `installStore` and an `api` delegate that falls back to the real
+// `api` when nothing is installed, so the other tests behave as before; a test that needs this file
+// calls `useFakeApi`.
 
 export type MemberRow = { userId: string; joinedAt: string };
 
