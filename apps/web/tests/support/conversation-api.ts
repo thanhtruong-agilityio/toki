@@ -194,3 +194,15 @@ export function useFakeApi(
     },
   };
 }
+
+// `count` people named "Member 001", "Member 002", ... with the ids "p1", "p2", ... for the body of
+// the store, and the member rows of the server for them.
+export const crowd = (count: number) => ({
+  people: Array.from({ length: count }, (_, i) => ({
+    id: `p${i + 1}`,
+    displayName: `Member ${String(i + 1).padStart(3, "0")}`,
+    role: "member" as const,
+    status: "active" as const,
+  })),
+  rows: members(count),
+});

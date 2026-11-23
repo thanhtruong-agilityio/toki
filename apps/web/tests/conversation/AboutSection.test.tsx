@@ -209,7 +209,7 @@ describe("About for a DM and a group (R12)", () => {
 
 describe("loading and failure of the read (R14)", () => {
   test("while the detail is not held About shows the entry's name and topic and no description, creator or date", async () => {
-    let release!: () => void;
+    let release: () => void = () => {};
     h.api.channels.get.mockImplementation(
       () =>
         new Promise((resolve) => {

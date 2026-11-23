@@ -2,6 +2,7 @@ import { useTranslation } from "@toki/i18n/react";
 import { SidePanel } from "@toki/ui-web";
 import "./conversation.css";
 import { AboutSection } from "./AboutSection";
+import { PeopleSection, type PeopleControls } from "./PeopleSection";
 import { useConversation, useDetailRead } from "./useConversation";
 import { useDetailsPanel } from "./useDetailsPanel";
 
@@ -9,6 +10,8 @@ export type DetailsPanelProps = {
   conversationId: string;
   // The person is not or no longer a member (R14): the page draws the not-found view.
   onNoAccess: () => void;
+  // The seam of TOKI-100 under Members, passed on to the section (R13).
+  Controls?: PeopleControls;
 };
 
 // The side panel of an open conversation (R11): the frame and the sections of Table A, in the
@@ -16,6 +19,7 @@ export type DetailsPanelProps = {
 export function DetailsPanel({
   conversationId,
   onNoAccess,
+  Controls,
 }: DetailsPanelProps) {
   const { t } = useTranslation();
   const { entry, detail } = useConversation(conversationId);
@@ -41,6 +45,11 @@ export function DetailsPanel({
     >
       <div id="conversation-details">
         <AboutSection conversationId={conversationId} read={read} />
+        <PeopleSection
+          conversationId={conversationId}
+          onNoAccess={onNoAccess}
+          Controls={Controls}
+        />
       </div>
     </SidePanel>
   );
