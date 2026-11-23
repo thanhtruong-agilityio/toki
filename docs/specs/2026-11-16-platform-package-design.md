@@ -154,7 +154,7 @@ In `eslint.config.js` (TOKI-002):
 - The `files` list of the rule 1 block gains the source files of `packages/platform`, with `src/web/**` and test files left out (R24).
 - `tools/lint-rules/platform-boundary.test.mjs` is added with the cases of R21 to R24 and R28, and listed in the `test` and `test:lint-rules` scripts of the root `package.json`. It reads `eslint.config.js` as it is, so a ban removed from the configuration fails the test.
 - Rule 3 gains the ban on `@toki/platform/web`, its subpaths and relative paths that resolve into `packages/platform/src/web`, written the same way as the ban of rule 1 (R28). `ui-web` still passes when it imports `@toki/platform`.
-- When TOKI-059 adds `files.upload`, it adds `"XMLHttpRequest"` to `platformGlobals` of rule 3, so lint stops `ui-web` from sending a request itself, and one case to `tools/lint-rules/platform-boundary.test.mjs`: a use of `XMLHttpRequest` in a `ui-web` source is reported; one in `packages/platform/src/web/` is not, because rule 3 does not cover that package.
+- No lint rule changes for `files.upload` (TOKI-059): `client-core` already refuses `XMLHttpRequest` through the allow list of rule 1, and the code that uses it lives only in `platform`, where it is allowed. The list of globals of rule 3 stays as TOKI-002 decided it (concern 4 there).
 
 ### Errors
 - `getPlatform()` before `setPlatform` -> throws an error that names `setPlatform` (R2). This is a wiring mistake, not a case a person meets.
