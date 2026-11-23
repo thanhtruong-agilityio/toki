@@ -21,7 +21,7 @@ The line is the same in a channel and in a direct message, as in the prototype. 
 - The signal travels over the WebSocket; REST is used for every read and write. Source: Toki Blueprint technical design (API and realtime).
 - The signal is heard by the members of the conversation only; a private channel, a DM and a channel the person has not joined never reach a connection that is not a member. Source: D-116, BR-09; WebSocket gateway spec (R15, R25, R27).
 - One server process, about 200 people online. Source: D-009, D-113.
-- The line reads "<name> is typing…" under the message list and clears after 5 seconds without typing. Source: Blueprint flow F11 (Send a message); the prototype (`msgsHtml`, class `typing`).
+- The line reads "<name> is typing…" under the message list and clears after 5 seconds without typing. Source: Blueprint flow F11 (Send a message), which gives the 5 seconds; the prototype (`msgsHtml`, class `typing`) gives the wording and the look.
 - The signal is not kept: no table, no event number. Source: technical design ("WebSocket only for the server to push events, plus the typing signal"); presence is held in memory.
 - Every text goes through i18n; English is the default language. Source: i18n package spec (R1), D-018.
 - Timing is tested with the injected clock, not with real timers. Source: test harness spec (R19).
