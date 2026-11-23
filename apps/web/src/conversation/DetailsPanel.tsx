@@ -2,6 +2,7 @@ import { useTranslation } from "@toki/i18n/react";
 import { SidePanel } from "@toki/ui-web";
 import "./conversation.css";
 import { AboutSection } from "./AboutSection";
+import { LeaveSection } from "./LeaveSection";
 import { NotificationsSection } from "./NotificationsSection";
 import { PeopleSection, type PeopleControls } from "./PeopleSection";
 import { SettingsSection } from "./SettingsSection";
@@ -64,6 +65,7 @@ export function DetailsPanel({
           conversationId={conversationId}
           onNoAccess={onNoAccess}
         />
+        <LeaveSection conversationId={conversationId} onNoAccess={onNoAccess} />
       </div>
     </SidePanel>
   );
