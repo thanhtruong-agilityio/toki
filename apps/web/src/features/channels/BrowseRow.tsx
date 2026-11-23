@@ -43,8 +43,12 @@ export function BrowseRow({
         {channel.isPrivate ? <LockIcon /> : <HashIcon />}
       </span>
       <span className="grow">
-        <b>{channel.name}</b>
-        <span className="xs muted sub">{sub}</span>
+        {/* A long name or topic is cut with an ellipsis: the global `.ell`, and `display:block` as the
+            prototype's own inline style does for `.sub` (line 2158), since Table A has no rule for the name. */}
+        <b className="ell" style={{ display: "block" }}>
+          {channel.name}
+        </b>
+        <span className="xs muted sub ell">{sub}</span>
       </span>
       {channel.archived ? <Tag>{t("browse.row.archived")}</Tag> : null}
       {action === "open" ? (

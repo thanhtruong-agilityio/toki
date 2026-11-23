@@ -29,7 +29,7 @@
   "key": "TOKI-034",
   "main_sha": "88f92548ad8c04d81489354f97e6b3d10f5549c9",
   "metrics": {
-    "step": 7
+    "step": 11
   },
   "mode": "auto-to-pr",
   "plan_approved": true,
