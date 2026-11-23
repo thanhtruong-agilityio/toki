@@ -15,7 +15,7 @@ The client keeps these numbers up to date as messages arrive, marks a conversati
 
 ## Affected users and systems
 - Every person who reads conversations, on every device they are signed in on.
-- The server app (`apps/server`): the `conversations` module gains the pointer column and its reads; the `messages` module gains the count and the two requests; the bootstrap call gains the counts; the `mentions` module gains one read and one index.
+- The server app (`apps/server`): the `conversations` module gains the pointer columns and their reads; the `messages` module gains the count and the request that moves the pointer; the bootstrap call gains the counts; the `bootstrap` folder gains the shared builder of the counts and the route that returns them again; the `mentions` module (TOKI-050) is asked for one read and one index.
 - The shared package (`packages/shared`): the shapes of the unread record, the two requests and the live notice.
 - The client packages: the conversation store and a new tracker in `packages/client-core`; the web app (`apps/web`) for the window-in-use adapter and the wiring in the conversation page.
 - The tickets that read the result: the New divider, badges and filters (TOKI-054) and the conversation list (TOKI-033).
@@ -26,9 +26,9 @@ The client keeps these numbers up to date as messages arrive, marks a conversati
 - A grey system line raises no count and no notification. Source: D-100, D-165.
 - A thread reply that is not also sent to the channel does not raise the channel's count; a reply also sent to the channel counts as a normal message. Source: F14, D-160.
 - Leaving a channel clears its count. Source: D-133.
-- A muted conversation keeps its count and hides it; the level `nothing` keeps the count. Source: D-103.
+- A muted conversation keeps its count and the screen hides the badge; the level `none` keeps both the count and the badge. Source: D-103.
 - A mention in a thread reply raises the @ mark and not the count. Source: F13.
-- Unread state is one pointer per person and conversation; counts are the same on every device of the person. Source: technical design, data model notes; F15.
+- Unread state is one pointer per person and conversation; counts are the same on every device of the person. Source: technical design, data model notes ("Unread is one pointer per person per conversation").
 - Mark as unread is a later phase. Source: D-120.
 - Milestone M4, size L. Needs TOKI-040 and TOKI-041. Source: Toki Blueprint, ticket TOKI-053.
 
@@ -38,4 +38,5 @@ The client keeps these numbers up to date as messages arrive, marks a conversati
 - A message that commits after a message with a later time: is it counted by a pointer that has moved past it?
 - Does a window that is visible and focused but left alone for a long time still count as in use?
 - Where does the first unread message come from for the New divider, and who owns it?
+- Does the @ dot clear when the mention message is on screen (F13 step 5) or at the bottom of the list with the count (D-052)?
 - How does a second device learn that the first one has read?
