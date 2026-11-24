@@ -86,7 +86,34 @@ None of these boxes runs yet; `apps/web` and `apps/server` are empty projects.
    pnpm format:check
    ```
 
-6. Start the services Toki needs for development: Postgres, MinIO and Mailpit. This needs Docker and a `.env` in the repository root. The first run builds the MinIO image from source, which takes a few minutes and about 3 GB of free Docker disk.
+6. Get the `.env`. The shared development values live in the Doppler project `toki`, config `dev`. Once per machine, ask the lead for an invitation to the project, install the Doppler CLI and log in:
+
+   ```bash
+   brew install dopplerhq/cli/doppler
+   doppler login
+   ```
+
+   Then, in every worktree, write the `.env` from Doppler. It is safe to run again: it never leaves a half-written file, never prints a value, and asks before it replaces a `.env` that differs.
+
+   ```bash
+   pnpm env:pull
+   ```
+
+   Changing a value is done on the Doppler site; tell the other builder, then each of you runs `pnpm env:pull` again. Until your invitation arrives, copy `.env.example` to `.env` and fill the empty values with throwaway ones:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+7. Start Toki with one command. It checks Node 22, pnpm and Docker, pulls the `.env` when it is missing, starts Postgres, MinIO and Mailpit, applies the migrations, starts the server and the web app, and prints the addresses. The first run builds the MinIO image from source, which takes a few minutes and about 3 GB of free Docker disk.
+
+   ```bash
+   pnpm start:local
+   ```
+
+   Open http://localhost:5173 and sign in with the email in `FIRST_ADMIN_EMAIL`; the 6-digit code arrives in Mailpit at http://localhost:8025. `Ctrl+C` stops the server and the web app and leaves the services running. If a port is already in use, the command names the port and the process and stops; it never stops another process.
+
+8. Work with the services on their own, when you do not need the apps. This needs Docker and a `.env` in the repository root.
 
    ```bash
    pnpm dev:up
@@ -94,7 +121,11 @@ None of these boxes runs yet; `apps/web` and `apps/server` are empty projects.
 
    `pnpm dev:down` stops them and keeps their data. `pnpm dev:reset` wipes the development database, the stored files and the caught mail; `pnpm dev:reset:db`, `pnpm dev:reset:files` and `pnpm dev:reset:mail` wipe one of them. A reset runs only when `NODE_ENV` is `development`.
 
-Running the apps arrives with TOKI-004 (server) and TOKI-006 (web). Commands: TBD.
+9. Run the test of the two new commands. It uses fake tools and touches neither Docker nor your `.env`. It ends with `all N checks passed`.
+
+   ```bash
+   bash scripts/local-run.test.sh
+   ```
 
 ## 6. Project Structure
 
@@ -119,7 +150,7 @@ Running the apps arrives with TOKI-004 (server) and TOKI-006 (web). Commands: TB
 ├─ e2e/                          Playwright end-to-end tests (planned, TOKI-008)
 ├─ docker-compose.dev.yml        Postgres, MinIO and Mailpit for development (TOKI-003)
 ├─ Dockerfile.minio              builds MinIO for development (TOKI-003)
-└─ scripts/                      dev:up, dev:down, the reset scripts and their smoke test (TOKI-003)
+└─ scripts/                      dev:up, dev:down, the reset scripts, env:pull, start:local and their tests (TOKI-003, TOKI-106)
 ```
 
 ## 7. Testing
