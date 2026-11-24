@@ -78,6 +78,7 @@ cat > "$T/fakes/docker" <<'FAKE'
 #!/bin/sh
 echo "docker $*" >> "$FAKE_DIR/calls.log"
 [ "$1" = info ] && [ "${FAKE_DOCKER:-up}" = down ] && exit 1
+[ "$1" = compose ] && exit "${FAKE_COMPOSE_EXIT:-0}"
 exit 0
 FAKE
 
@@ -91,7 +92,13 @@ cat > "$T/fakes/pnpm" <<'FAKE'
 #!/bin/sh
 case "$1" in
   --version) echo "${FAKE_PNPM_VERSION:-12.21.0}"; exit 0 ;;
-  dev:up) echo "pnpm dev:up" >> "$FAKE_DIR/calls.log"; exit "${FAKE_DEVUP_EXIT:-0}" ;;
+  dev:up)
+    echo "pnpm dev:up" >> "$FAKE_DIR/calls.log"
+    [ -f "$FAKE_RUNFILE" ] && echo "run file present at dev:up" >> "$FAKE_DIR/calls.log"
+    [ -n "${FAKE_STEAL_RUNFILE:-}" ] && echo "$FAKE_STEAL_RUNFILE" > "$FAKE_RUNFILE"
+    docker compose up -d || exit $?
+    exit "${FAKE_DEVUP_EXIT:-0}"
+    ;;
   dev:down) echo "pnpm dev:down" >> "$FAKE_DIR/calls.log"; exit 0 ;;
   --filter) echo "pnpm migrate" >> "$FAKE_DIR/calls.log"; exit "${FAKE_MIGRATE_EXIT:-0}" ;;
   dev)
@@ -121,6 +128,11 @@ for a in "$@"; do
     -iTCP:*) port="${a#-iTCP:}" ;;
   esac
 done
+# A second run of the same worktree that claims its run file just now.
+if [ -f "$FAKE_DIR/race.pid" ]; then
+  cat "$FAKE_DIR/race.pid" > "$FAKE_RUNFILE"
+  rm -f "$FAKE_DIR/race.pid"
+fi
 [ -f "$FAKE_DIR/ports/$port" ] && cat "$FAKE_DIR/ports/$port"
 exit 0
 FAKE
@@ -137,7 +149,7 @@ inventory_required() {
 new_case() {
   case_no=$((case_no + 1))
   C="$T/c$case_no"
-  mkdir -p "$C/scripts" "$C/bin" "$C/home" "$C/state" "$C/ports" "$C/docs"
+  mkdir -p "$C/scripts" "$C/bin" "$C/home" "$C/state" "$C/ports" "$C/docs" "$C/tmp"
   cp "$SRC"/scripts/*.sh "$C/scripts/"
   cp "$SRC/.env.example" "$C/.env.example"
   printf '{\n  "packageManager": "pnpm@12.21.0"\n}\n' > "$C/package.json"
@@ -169,7 +181,7 @@ run() {
   shift 2
   # shellcheck disable=SC2086
   ( cd "$C" && env -u NODE_ENV $extra PATH="$C/bin:${CASE_BASE:-$BASEPATH}" HOME="$C/home" XDG_STATE_HOME="$C/state" \
-      FAKE_DIR="$C" bash "scripts/$script" "$@" ) < "${STDIN:-/dev/null}" > "$C/out" 2>&1
+      TMPDIR="$C/tmp" FAKE_RUNFILE="$(case_run_file)" FAKE_DIR="$C" bash "scripts/$script" "$@" ) < "${STDIN:-/dev/null}" > "$C/out" 2>&1
   rc=$?
 }
 
@@ -177,7 +189,7 @@ start_bg() {
   local extra="$1" script="$2"
   # shellcheck disable=SC2086
   ( cd "$C" && exec env -u NODE_ENV $extra PATH="$C/bin:${CASE_BASE:-$BASEPATH}" HOME="$C/home" XDG_STATE_HOME="$C/state" \
-      FAKE_DIR="$C" bash "scripts/$script" ) < /dev/null > "$C/out" 2>&1 &
+      TMPDIR="$C/tmp" FAKE_RUNFILE="$(case_run_file)" FAKE_DIR="$C" bash "scripts/$script" ) < /dev/null > "$C/out" 2>&1 &
   bgpid=$!
 }
 
@@ -197,7 +209,13 @@ stop_bg() {
   rc=$?
 }
 
-expect_no_temp() { if ls "$C"/.env.pull.* >/dev/null 2>&1; then flunk "$1: a temporary .env.pull file is left"; else pass; fi; }
+expect_no_temp() {
+  if ls "$C"/.env.pull.* >/dev/null 2>&1 || [ -n "$(ls -A "$C/tmp" 2>/dev/null)" ]; then
+    flunk "$1: a temporary file is left"
+  else
+    pass
+  fi
+}
 # An own run: a process whose command line names start-local, with a child
 # that can hold a port. Sets own_pid (the process) and own_child (its child).
 own_proc() {
@@ -249,6 +267,7 @@ run "" env-pull.sh
 expect_rc_nonzero "R17 pulled production"
 expect_same_file "R17 pulled production leaves .env" "$C/.env" "$C/.env.before"
 expect_out "R17 pulled production" "not 'development'"
+expect_no_temp "R17 pulled production"
 
 # R3: a broken link and a link to a file are replaced by a regular file.
 new_case
@@ -317,6 +336,7 @@ expect_out "R6 names the missing one" "AUTH_CODE_SECRET"
 expect_out "R6 names the empty one" "DATABASE_URL"
 expect_no_out "R6 prints no value" "$MARK"
 expect_same_file "R6 leaves .env" "$C/.env" "$C/.env.before"
+expect_no_temp "R6"
 # R6: the list in the script is the Required column of the inventory.
 list="$(sed -n 's/^REQUIRED_NAMES="\(.*\)"$/\1/p' "$SRC/scripts/env-pull.sh" | tr ' ' '\n' | sed '/^$/d' | sort)"
 expect_equal "R6 the list equals the inventory" "$(inventory_required | sort)" "$list"
@@ -378,6 +398,12 @@ run "NODE_ENV=${MARK}_name" env-pull.sh
 expect_rc_nonzero "R16 odd NODE_ENV"
 expect_no_out "R16 odd NODE_ENV is not printed" "$MARK"
 
+# R16: even when the shell starts with tracing on, no value is traced.
+new_case
+run "SHELLOPTS=xtrace" env-pull.sh
+expect_rc "R16 env:pull under xtrace" 0
+expect_no_out "R16 env:pull under xtrace" "$MARK"
+
 # A multi-line value is refused, in .env and in what Doppler returns.
 new_case
 printf 'KEY="abc\nmore"\n' > "$C/.env"; cp "$C/.env" "$C/.env.before"
@@ -401,7 +427,6 @@ start_bg "FAKE_DOPPLER_MODE=slow" env-pull.sh
 wait_text "$C/calls.log" "secrets download" 10
 kill -TERM "$bgpid"
 wait "$bgpid" 2>/dev/null
-sleep 4
 expect_no_temp "interrupted env:pull"
 expect_same_file "interrupted env:pull leaves .env" "$C/.env" "$C/.env.before"
 
@@ -444,6 +469,21 @@ expect_rc_nonzero "R8 no lsof and no curl"
 expect_out "R8 no lsof" "lsof"
 expect_out "R8 no curl" "curl"
 expect_no_call "R8 no lsof starts nothing" "pnpm dev:up"
+for missing_tool in cksum ps; do
+  new_case
+  write_env
+  mkdir -p "$T/min-$missing_tool"
+  for tool in bash sh env awk sed grep cut tr cat ps cksum mktemp ls rm mv cp chmod mkdir dirname sleep kill stat cmp sort head pgrep basename uname tail wc ln touch date; do
+    [ "$tool" = "$missing_tool" ] && continue
+    real="$(PATH="$BASEPATH" command -v "$tool")" && ln -sf "$real" "$T/min-$missing_tool/$tool"
+  done
+  CASE_BASE="$T/min-$missing_tool"
+  run "" start-local.sh
+  CASE_BASE=""
+  expect_rc_nonzero "R8 no $missing_tool"
+  expect_out "R8 no $missing_tool" "The command $missing_tool is not installed"
+  expect_no_call "R8 no $missing_tool starts nothing" "pnpm dev:up"
+done
 new_case
 run "FAKE_DOPPLER_LOGIN=no" start-local.sh
 expect_rc_nonzero "R8 doppler not logged in and no .env"
@@ -462,6 +502,13 @@ run "" start-local.sh
 expect_rc_nonzero "R8 no doppler and no .env"
 expect_out "R8 doppler" "doppler"
 expect_no_call "R8 starts nothing without doppler" "pnpm dev:up"
+
+# R16: the same for start:local.
+new_case
+write_env
+run "SHELLOPTS=xtrace FAKE_DEVUP_EXIT=1" start-local.sh
+expect_no_out "R16 start:local under xtrace" "$MARK"
+expect_call "R16 start:local under xtrace still runs" "pnpm dev:up"
 
 # R9: an existing .env is used as it is, with no call to Doppler.
 new_case
@@ -487,6 +534,15 @@ run "FAKE_DEVUP_EXIT=1" start-local.sh
 expect_rc_nonzero "R11 dev:up fails"
 expect_out "R11 names the step" "dev:up"
 expect_no_call "R11 no migrate after a failed dev:up" "pnpm migrate"
+expect_no_line "R11 no dev after a failed dev:up" "pnpm dev"
+new_case
+write_env
+run "FAKE_COMPOSE_EXIT=1" start-local.sh
+expect_rc_nonzero "R11 a failing docker compose"
+expect_out "R11 a failing docker compose names the step" "dev:up"
+expect_no_call "R11 a failing docker compose: no migrate" "pnpm migrate"
+expect_no_line "R11 a failing docker compose: no dev" "pnpm dev"
+expect_no_call "R11 a failing docker compose: no reset" "reset"
 new_case
 write_env
 run "FAKE_MIGRATE_EXIT=1" start-local.sh
@@ -542,7 +598,8 @@ rc=$?
 expect_equal "R15 SIGINT exit code" "130" "$rc"
 stop_check "R15 SIGINT"
 
-# R15: a second signal during the cleanup does not cut it short.
+# R15: a second signal while the first one is being cleaned up (the cleanup
+# sleeps a second before it forces anything) does not cut it short.
 new_case
 write_env
 start_bg "" start-local.sh
@@ -550,9 +607,34 @@ wait_text "$C/out" "http://localhost:5173" 30
 wait_text "$C/dev.pids" "" 10
 run_file="$(case_run_file)"
 kill -TERM "$bgpid" 2>/dev/null
+sleep 0.3
 kill -TERM "$bgpid" 2>/dev/null
 wait "$bgpid" 2>/dev/null
 stop_check "R15 two signals"
+
+# R12: the run file is there before dev:up, and a run removes it when it ends.
+new_case
+write_env
+run "FAKE_DEVUP_EXIT=1" start-local.sh
+expect_call "R12 the run file exists before dev:up" "run file present at dev:up"
+if [ -f "$(case_run_file)" ]; then flunk "R12 a failed run left its run file"; else pass; fi
+# R12: a run removes the run file only when it holds its own pid.
+new_case
+write_env
+run "FAKE_DEVUP_EXIT=1 FAKE_STEAL_RUNFILE=4242" start-local.sh
+expect_rc_nonzero "R12 a foreign pid in the run file"
+expect_equal "R12 a foreign pid in the run file is left alone" "4242" "$(cat "$(case_run_file)" 2>/dev/null)"
+# R12: another run claimed the file between the checks and the claim.
+new_case
+write_env
+own_proc
+mkdir -p "$(dirname "$(case_run_file)")"
+echo "$own_pid" > "$C/race.pid"
+run "" start-local.sh
+expect_rc_nonzero "R12 claimed at the same moment"
+expect_out "R12 claimed at the same moment" "same moment"
+expect_no_call "R12 claimed at the same moment starts nothing" "pnpm dev:up"
+expect_equal "R12 claimed at the same moment keeps the other run's file" "$own_pid" "$(cat "$(case_run_file)")"
 
 # R12: a port held by another process stops the command, which is not killed.
 new_case
@@ -578,6 +660,7 @@ echo "$own_pid" > "$(case_run_file)"
 run "" start-local.sh
 expect_rc_nonzero "R12 own run file and a foreign listener"
 expect_out "R12 own run file and a foreign listener names the pid" "$foreign"
+expect_out "R12 own run file and a foreign listener names the port" "5173"
 expect_no_call "R12 own run file and a foreign listener starts nothing" "pnpm dev:up"
 if alive "$foreign"; then pass; else flunk "R12 the foreign process was killed"; fi
 # R12: another worktree's run file does not make a listener ours.
