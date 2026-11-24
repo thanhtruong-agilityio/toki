@@ -16,11 +16,11 @@ One hook, `useOpenMessage()`, returns one function that takes the conversation, 
 - No server code, no table and no route: every request the jump makes is one the list already makes.
 
 ## Constraints
-- A message opened from Activity, Later, a search result or a toast shows its conversation, scrolls to the message and flashes it for 2 seconds. Source: flows F09, F13, F19, F27, F29; prototype `highlight` and `.msg.hl`.
+- A message opened from Activity, Later, a search result or a toast shows its conversation, scrolls to the message and flashes it for 2 seconds. Source: flows F10 (opened from a link to one message), F13, F19, F27, F29; prototype `highlight` and `.msg.hl`. F13 says the flashed message "has a yellow background"; the colour follows the prototype (`--accent-soft`).
 - A reply opens the thread panel of its root, and the address of a thread is its own (Back closes the panel first). Source: D-089, F27.
-- A person who cannot read a conversation sees no content of it: a private channel gives "no access", a public channel that was not joined gives its name and a Join button. Source: D-116, F09 cases.
+- A person who cannot read a conversation sees no content of it: a private channel gives "no access", a public channel that was not joined gives its name and a Join button. Source: D-116, F10 cases.
 - Loaded content stays readable when the connection drops; what needs the server is not faked. Source: D-079.
-- A deleted message with no replies is gone for everyone; one with replies is a "Message deleted" line. Source: F16, D-049.
+- A deleted message with no replies is gone for everyone; one with replies is a "Message deleted" line. Source: F16, D-013, D-096. A message deleted by an admin shows "Message deleted by an admin" (D-049).
 - Every text goes through i18n with English as the default; a wording the prototype does not contain is a proposal. Source: NFR-05, D-139.
 - Nothing works by hover alone. Source: D-067.
 - Milestone M4, size S. Needs TOKI-041. Source: Toki Blueprint, ticket TOKI-068.
