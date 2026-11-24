@@ -3,7 +3,9 @@
 
 For every ticket of the plan it writes:
   status  the logical status key of docs/ticket-config.yml (done, in-review, in-dev, accepted, blocked, ...),
-          or removes the key when the ticket has no issue yet
+          or removes the key when the ticket has no issue yet. The labels on the tracker lag behind the code,
+          so a ticket is "done" when its issue is closed or a pull request from its ticket branch
+          (`<type>/toki-NNN-slug`, not `spec/` or `docs/`) is merged, whatever its label says
   issue   the number of the GitHub issue
   spec.state  "merged" when the spec pull request named in spec.pr is merged
 
@@ -38,15 +40,25 @@ def main():
     names = status_names()
     by_name = {v: k for k, v in names.items()}
     issues = gh("issue", "list", "--state", "all", "--limit", "500", "--json", "number,title,state,labels")
-    prs = {p["number"]: p["state"] for p in gh("pr", "list", "--state", "all", "--limit", "500", "--json", "number,state")}
+    prs = gh("pr", "list", "--state", "all", "--limit", "500", "--json", "number,state,headRefName")
+    merged = set()          # tickets whose code is in main
+    for p in prs:
+        m = re.match(r"(?:feat|fix|chore|test|refactor|ci|perf|build)/([a-z]+)-(\d+)-", p["headRefName"])
+        if m and p["state"] == "MERGED":
+            merged.add(f"{m.group(1).upper()}-{m.group(2)}")
+    prs = {p["number"]: p["state"] for p in prs}
 
-    tickets = {}
+    tickets, stale = {}, []
     for i in issues:
         m = re.search(r"\(([A-Z]+-\d+)\)\s*$", i["title"])
         if not m:
             continue
         keys = [by_name[l["name"]] for l in i["labels"] if l["name"] in by_name]
-        status = max(keys, key=ORDER.index) if keys else ("done" if i["state"] == "CLOSED" else "intent")
+        status = max(keys, key=ORDER.index) if keys else "intent"
+        if i["state"] == "CLOSED" or m.group(1) in merged:
+            if status != "done":
+                stale.append(f"{m.group(1)} #{i['number']} ({names[status]}, {'closed' if i['state'] == 'CLOSED' else 'open'})")
+            status = "done"
         tickets[m.group(1)] = dict(status=status, issue=i["number"])
 
     today = datetime.date.today().isoformat()
@@ -73,6 +85,8 @@ def main():
         data["meta"]["ticketsSynced"] = today
         path.write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
         print(f"blueprint.{lang}.json ·", " · ".join(f"{k} {v}" for k, v in sorted(count.items(), key=lambda x: -x[1])))
+    if stale:
+        print("code merged but the tracker says otherwise:", "; ".join(sorted(stale)), file=sys.stderr)
     extra = sorted(set(tickets) - seen)
     if extra:
         print("on the tracker but not in the plan:", " ".join(extra), file=sys.stderr)

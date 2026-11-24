@@ -4416,7 +4416,7 @@
         "pr": "PR #92",
         "fix": ""
        },
-       "status": "in-qa",
+       "status": "done",
        "issue": 126
       },
       {
@@ -4477,7 +4477,7 @@
         "pr": "PR #90",
         "fix": ""
        },
-       "status": "in-review",
+       "status": "done",
        "issue": 91
       }
      ]
@@ -4537,7 +4537,7 @@
         "pr": "PR #80",
         "fix": ""
        },
-       "status": "in-review",
+       "status": "done",
        "issue": 118
       },
       {
@@ -4555,7 +4555,7 @@
         "pr": "PR #79",
         "fix": ""
        },
-       "status": "in-review",
+       "status": "done",
        "issue": 117
       },
       {
@@ -4575,7 +4575,7 @@
         "pr": "PR #82",
         "fix": ""
        },
-       "status": "in-review",
+       "status": "done",
        "issue": 120
       },
       {
@@ -4599,7 +4599,7 @@
         "pr": "PR #84",
         "fix": ""
        },
-       "status": "in-review",
+       "status": "done",
        "issue": 122
       },
       {
@@ -4624,7 +4624,7 @@
         "pr": "PR #83",
         "fix": ""
        },
-       "status": "in-qa",
+       "status": "done",
        "issue": 121
       },
       {
@@ -4642,7 +4642,7 @@
         "pr": "PR #85",
         "fix": ""
        },
-       "status": "accepted",
+       "status": "done",
        "issue": 123
       },
       {
@@ -4663,7 +4663,7 @@
         "pr": "PR #89",
         "fix": ""
        },
-       "status": "in-dev",
+       "status": "done",
        "issue": 125
       },
       {
@@ -4683,7 +4683,7 @@
         "pr": "PR #86",
         "fix": ""
        },
-       "status": "in-review",
+       "status": "done",
        "issue": 87
       },
       {
@@ -4704,7 +4704,7 @@
         "pr": "PR #88",
         "fix": ""
        },
-       "status": "accepted",
+       "status": "done",
        "issue": 124
       }
      ]
