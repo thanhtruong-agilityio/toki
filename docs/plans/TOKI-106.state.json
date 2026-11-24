@@ -24,6 +24,10 @@
     {
       "at": "2026-11-24T13:50:05Z",
       "stage": "check"
+    },
+    {
+      "at": "2026-11-24T14:20:42Z",
+      "stage": "drift"
     }
   ],
   "key": "TOKI-106",
@@ -36,10 +40,10 @@
   "spec_paths": [
     "docs/specs/2026-11-23-local-run-one-command-design.md"
   ],
-  "stage": "check",
+  "stage": "drift",
   "tier": "M",
   "verifier": {
-    "result": "FAIL",
-    "round": 2
+    "result": "PASS",
+    "round": 3
   }
 }
