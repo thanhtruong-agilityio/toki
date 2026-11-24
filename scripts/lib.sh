@@ -219,3 +219,86 @@ in_postgres() {
 in_mailpit() {
   compose exec -T mailpit sh -c "$1"
 }
+
+# node_env_refusal ENV_FILE [LABEL]
+# The rule of `env:pull` and `start:local` for the environment name: refuse
+# when NODE_ENV is set to anything other than `development` in the shell or in
+# ENV_FILE (an empty value counts as set). Unset in both is allowed, so a
+# first pull works on a worktree that has no .env yet. The reset guard is
+# stricter on purpose: it also refuses when NODE_ENV is set nowhere.
+# LABEL names the file in the message; it is `.env` by default.
+node_env_refusal() {
+  local env_file="$1" label="${2:-.env}" file_value
+  if [ -n "${NODE_ENV+x}" ] && [ "$NODE_ENV" != "development" ]; then
+    fail "Refused: NODE_ENV is '$NODE_ENV' in the shell. This command runs only for development. Nothing was changed."
+    return 1
+  fi
+  if file_value="$(env_file_get "$env_file" NODE_ENV)" && [ "$file_value" != "development" ]; then
+    fail "Refused: NODE_ENV is '$file_value' in $label. This command runs only for development. Nothing was changed."
+    return 1
+  fi
+}
+
+# port_listeners PORT
+# Process ids that listen on a TCP port, one per line.
+port_listeners() {
+  lsof -nP -iTCP:"$1" -sTCP:LISTEN -t 2>/dev/null
+}
+
+# run_file
+# Where this worktree's `start:local` records its own process id: outside the
+# repository, one file per worktree, named by a checksum of the worktree path.
+run_file() {
+  local sum
+  sum="$(printf '%s' "$REPO_ROOT" | cksum | cut -d' ' -f1)"
+  printf '%s/toki/local-run/%s.pid' "${XDG_STATE_HOME:-$HOME/.local/state}" "$sum"
+}
+
+# own_run_pid
+# Prints the process id in this worktree's run file when that process is
+# alive. A file whose process is gone is stale and counts as no run.
+own_run_pid() {
+  local file pid
+  file="$(run_file)"
+  [ -f "$file" ] || return 1
+  pid="$(cat "$file" 2>/dev/null)"
+  case "$pid" in '' | *[!0-9]*) return 1 ;; esac
+  kill -0 "$pid" 2>/dev/null || return 1
+  printf '%s' "$pid"
+}
+
+# is_own_listener PID
+# True when PID is this worktree's own run or one of its descendants.
+is_own_listener() {
+  local pid="$1" root current steps=0
+  root="$(own_run_pid)" || return 1
+  current="$pid"
+  while [ -n "$current" ] && [ "$current" -gt 1 ] 2>/dev/null && [ "$steps" -lt 64 ]; do
+    [ "$current" = "$root" ] && return 0
+    current="$(ps -o ppid= -p "$current" 2>/dev/null | tr -d ' ')"
+    steps=$((steps + 1))
+  done
+  return 1
+}
+
+# tree_pids PID
+# PID and every process below it, children first.
+tree_pids() {
+  local child
+  for child in $(ps -A -o pid=,ppid= | awk -v p="$1" '$2 == p { print $1 }'); do
+    tree_pids "$child"
+  done
+  printf '%s\n' "$1"
+}
+
+# kill_tree PID
+# Stops PID and everything below it: a polite stop first, a forced one for
+# what is still alive a second later.
+kill_tree() {
+  local pids pid
+  pids="$(tree_pids "$1")"
+  for pid in $pids; do kill "$pid" 2>/dev/null; done
+  sleep 1
+  for pid in $pids; do kill -0 "$pid" 2>/dev/null && kill -9 "$pid" 2>/dev/null; done
+  return 0
+}
