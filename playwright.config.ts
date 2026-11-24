@@ -10,13 +10,13 @@ export default defineConfig({
   testDir: "./e2e",
   // The flows that need a database have their own configs (playwright.real-server.config.ts and
   // playwright.sign-in.config.ts).
-  testIgnore: ["real-server/**", "sign-in-server/**"],
+  testIgnore: ["real-server/**", "sign-in-server/**", "assets/**"],
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: 0,
   reporter: process.env.CI ? "github" : "list",
   // One folder for each config: Playwright empties its output folder when a run starts.
-  outputDir: "test-results/e2e",
+  outputDir: "e2e/assets/e2e",
   use: {
     baseURL: `http://127.0.0.1:${WEB_PORT}`,
     trace: "on",
