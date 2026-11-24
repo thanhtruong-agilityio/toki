@@ -24,6 +24,10 @@ Each statement is followed by its source. Rules of this project come first; rule
   Source: `.github/workflows/spec-ticket.yml`.
 - Spec readiness is decided by `.github/scripts/spec-ready.sh` with no network call and no model; change the rule there and in its test file together.
   Source: `.github/scripts/spec-ready.sh`; `.github/workflows/spec-ticket.yml`.
+- Every CI job always starts and reports, so the checks stay required on `main`. A job skips its steps and passes when `.github/scripts/changed.sh` finds no file it depends on in the pull request (documents only: no end-to-end, test, type check, build, size or i18n run); `lint` always runs because `pnpm format:check` reads the documents; a push to `main` runs everything. Change the file lists in that script and in `changed.test.sh` together. Do not use `paths` or `paths-ignore` on the workflow: a check that never reports blocks the merge.
+  Source: `.github/workflows/ci.yml`; `.github/scripts/changed.sh`.
+- The `end-to-end` job uploads `test-results/` as the artifact `playwright-results` after every run, passed or failed. Each Playwright config has its own `outputDir` under `test-results/`, because a run empties its output folder.
+  Source: `.github/workflows/ci.yml`; `playwright.config.ts`.
 - Use the logical status keys of `docs/ticket-config.yml`; never hard-code a tracker name in a workflow or script.
   Source: `.claude/rules/ticket.md`.
 
@@ -39,6 +43,12 @@ bash .github/scripts/spec-ready.test.sh
 # It reads the issues first: needs jq, network access and an authenticated gh.
 # It prints "left alone" and no DRY-RUN line when the ticket needs no change.
 DRY_RUN=1 bash .github/scripts/spec-ticket.sh docs/specs/<file>.md
+
+# Test the rule that decides whether a CI check runs, from the files of a pull request
+bash .github/scripts/changed.test.sh
+
+# Ask for one check: prints run=true or run=false. BASE_SHA is the base commit; without it, run=true.
+BASE_SHA=$(git merge-base origin/main HEAD) bash .github/scripts/changed.sh e2e
 
 # Test the rule that reads a review request from a comment
 bash .github/scripts/review-request.test.sh
