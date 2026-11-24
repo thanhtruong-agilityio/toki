@@ -19,6 +19,12 @@ Each statement is followed by its source. All of them are rules of this project.
   Source: `scripts/guard.sh` and the `scripts/reset*.sh` files.
 - `bash scripts/smoke.test.sh` tests the reset scripts. Part 1 (the guard) needs no Docker; part 2 needs the services up and WIPES the development data. Run it whenever a script in `scripts/` changes.
   Source: `scripts/smoke.test.sh`.
+- `pnpm env:pull` writes the root `.env` from the Doppler project `toki`, config `dev`. It writes through a temporary file, asks before it replaces a `.env` that differs, and prints variable names only, never a value. Never paste a value from the `.env` into a tool.
+  Source: `scripts/env-pull.sh`.
+- `pnpm start:local` checks Node 22, pnpm and Docker, pulls the `.env` when it is missing, starts the services, applies the migrations, starts the server and the web app, and stays in the foreground until Ctrl+C. It never runs a reset and never stops the services. It stops and names the process when port 3000 or 5173 is held by a process that is not its own.
+  Source: `scripts/start-local.sh`.
+- `bash scripts/local-run.test.sh` tests `env:pull` and `start:local` with fake tools; it touches neither Docker, the network nor a real `.env`. Run it whenever one of those two scripts, or the helpers they use in `scripts/lib.sh`, changes.
+  Source: `scripts/local-run.test.sh`.
 
 ## Lint rules
 

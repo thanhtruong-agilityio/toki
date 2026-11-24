@@ -23,6 +23,8 @@
     "build": "pnpm -r --if-present run build",
     "size": "node tools/bundle-size/check.mjs",
     "dev": "pnpm -r --parallel --if-present run dev",
+    "env:pull": "bash scripts/env-pull.sh",
+    "start:local": "bash scripts/start-local.sh",
     "dev:up": "bash scripts/up.sh",
     "dev:down": "bash scripts/down.sh",
     "dev:reset": "bash scripts/reset.sh",

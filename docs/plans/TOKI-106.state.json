@@ -1,0 +1,49 @@
+{
+  "approved_auto": false,
+  "base": "github/main",
+  "branch": "feat/toki-106-local-run-one-command",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-24T09:01:45Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-24T09:02:51Z",
+      "stage": "plan"
+    },
+    {
+      "at": "2026-11-24T13:44:23Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-24T13:44:40Z",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-24T13:50:05Z",
+      "stage": "check"
+    },
+    {
+      "at": "2026-11-24T14:20:42Z",
+      "stage": "drift"
+    }
+  ],
+  "key": "TOKI-106",
+  "main_sha": "6cd7cb3a851a21b67c016a952a606622e9bbf7e7",
+  "metrics": {},
+  "mode": "manual",
+  "plan_approved": true,
+  "plan_hash": "c11902dbc89482777c0e0ef61b52216144fc701e1268687e8fdfea75db77d3c3",
+  "spec_commit": "1a79e3e3923d62402a07fb0a57bfc5fb00da21a8",
+  "spec_paths": [
+    "docs/specs/2026-11-23-local-run-one-command-design.md"
+  ],
+  "stage": "drift",
+  "tier": "M",
+  "verifier": {
+    "result": "PASS",
+    "round": 3
+  }
+}
