@@ -73,6 +73,8 @@ The root `pnpm` scripts, run from the repository root under Node 22 (`.nvmrc`) w
 | `pnpm test`, `pnpm test:e2e` | Run the tests (see Running tests) |
 | `pnpm build`, `pnpm size`, `pnpm i18n:check` | Build every package; check the bundle size; check the vi and en translations |
 | `pnpm dev` | Run the `dev` script of each package that has one |
+| `pnpm env:pull` | Write the root `.env` from the Doppler project `toki`, config `dev` (needs the Doppler CLI and a login) |
+| `pnpm start:local` | Start the services, apply the migrations, run the server and the web app, and print the address |
 | `pnpm dev:up`, `pnpm dev:down` | Start or stop Postgres, MinIO and Mailpit (needs Docker and a root `.env`) |
 | `pnpm dev:reset`, `pnpm dev:reset:db`, `pnpm dev:reset:files`, `pnpm dev:reset:mail` | Wipe development data, all stores or one |
 | `pnpm db:generate`, `pnpm db:migrate` | Create a migration from the table definitions; apply every pending migration |
