@@ -17,7 +17,7 @@ export default defineConfig({
   retries: 0,
   reporter: process.env.CI ? "github" : "list",
   // One folder for each config: Playwright empties its output folder when a run starts.
-  outputDir: "test-results/real-server",
+  outputDir: "e2e/assets/real-server",
   use: {
     baseURL: `http://127.0.0.1:${WEB_PORT}`,
     trace: "on",
