@@ -23,19 +23,36 @@
     {
       "at": "2026-11-24T14:57:06Z",
       "stage": "plan"
+    },
+    {
+      "at": "2026-11-24T15:08:47Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-24T15:08:47Z",
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-24T15:09:14Z",
+      "stage": "mode"
+    },
+    {
+      "at": "2026-11-24T15:09:14Z",
+      "stage": "build"
     }
   ],
   "key": "TOKI-109",
   "main_sha": "b5329b0ff140c14e63f7878496065e980d3e53d0",
   "metrics": {},
-  "mode": null,
-  "plan_approved": false,
-  "plan_hash": null,
+  "mode": "manual",
+  "plan_approved": true,
+  "plan_hash": "e6741b232629bf630742e7468e75535d96ac8c2633d19aad843aa30876de36c0",
   "spec_commit": "4acdc197e9a030b307340cc5d8bfa4f9c306a1d8",
   "spec_paths": [
     "docs/specs/2026-11-24-ui-parity-check-design.md"
   ],
-  "stage": "plan",
+  "stage": "build",
   "tier": "M",
   "verifier": {
     "result": null,
