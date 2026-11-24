@@ -39,4 +39,5 @@ On a narrow screen the palette opens from the search field at the top of Home an
 - How is a message result opened, and a reply in a thread?
 - Where does a chosen person's profile open from the palette, which can be opened on any screen?
 - What do "Pause notifications", "Start Focus time" and "Switch look" do from the palette (which duration, which look)?
-- What does the palette do when the connection is down?
+- What does the palette do when the connection is down, and are the conversations and people the client already holds still found?
+- What does Ctrl+K do while another dialog or menu is open?
