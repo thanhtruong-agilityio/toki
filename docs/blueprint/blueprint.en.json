@@ -4508,7 +4508,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #83",
-        "fix": ""
+        "fix": "Later changes and review fixes wait in PR #268."
        },
        "status": "done",
        "issue": 121
@@ -5254,7 +5254,8 @@
        "needs": [
         "045",
         "046",
-        "050"
+        "050",
+        "068"
        ]
       },
       {
@@ -5276,6 +5277,7 @@
        "size": "M",
        "needs": [
         "064",
+        "068",
         "093",
         "094"
        ]
@@ -5283,11 +5285,17 @@
       {
        "id": "068",
        "title": "Jump to message",
-       "scope": "From Activity, Later and search to the exact message, with a flash",
-       "size": "S",
+       "scope": "From Activity, Later and search to the exact message, with a flash Owns the hook `useOpenMessage()` that every screen uses to open a message, the pending jump request and the 2 s flash.",
+       "size": "M",
        "needs": [
-        "041"
-       ]
+        "041",
+        "045"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #266",
+        "fix": ""
+       }
       }
      ]
     },
@@ -5309,6 +5317,7 @@
        "scope": "VAPID keys, a service worker used for push only (D-030), device registration with a test notification, a click that opens Toki at that message; the notification shows sender, conversation and the start of the message (D-044); a card offering notifications on first visit, the browser asked only after Turn on (F36); on iPhone push works only once Toki is added to the Home Screen (D-108); signing out removes that device's registration (D-158). Adds the VAPID keys to the configuration list and `.env.example` of TOKI-096. Owns iPhone detection and adds the VAPID keys to the configuration list. Registers through `onSessionsEnded` of TOKI-022 and removes the push registration of an ended session.",
        "size": "L",
        "needs": [
+        "068",
         "073"
        ]
       },
@@ -5318,6 +5327,7 @@
        "scope": "A toast for messages in other conversations, and a sound. Owns the Safari sound unlock.",
        "size": "S",
        "needs": [
+        "068",
         "073"
        ]
       },

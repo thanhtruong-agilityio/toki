@@ -11538,7 +11538,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #83",
-        "fix": ""
+        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #268."
        },
        "status": "done",
        "issue": 121
@@ -12113,9 +12113,13 @@
       {
        "id": "TOKI-068",
        "title": "Nhảy tới tin",
-       "scope": "Từ Activity, Later, tìm kiếm tới đúng tin và nháy sáng",
-       "size": "S",
-       "spec": null
+       "scope": "Từ Activity, Later, tìm kiếm tới đúng tin và nháy sáng Sở hữu hook `useOpenMessage()` mà mọi màn hình dùng để mở một tin nhắn, yêu cầu nhảy đang chờ và hiệu ứng nháy 2 giây.",
+       "size": "M",
+       "spec": {
+        "state": "pr",
+        "pr": "PR #266",
+        "fix": ""
+       }
       }
      ]
     },

@@ -11538,7 +11538,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #83",
-        "fix": ""
+        "fix": "Later changes and review fixes wait in PR #268."
        },
        "status": "done",
        "issue": 121
@@ -12113,9 +12113,13 @@
       {
        "id": "TOKI-068",
        "title": "Jump to message",
-       "scope": "From Activity, Later and search to the exact message, with a flash",
-       "size": "S",
-       "spec": null
+       "scope": "From Activity, Later and search to the exact message, with a flash Owns the hook `useOpenMessage()` that every screen uses to open a message, the pending jump request and the 2 s flash.",
+       "size": "M",
+       "spec": {
+        "state": "pr",
+        "pr": "PR #266",
+        "fix": ""
+       }
       }
      ]
     },

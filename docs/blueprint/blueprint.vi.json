@@ -4622,7 +4622,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #83",
-        "fix": ""
+        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #268."
        },
        "status": "done",
        "issue": 121
@@ -5368,7 +5368,8 @@
        "needs": [
         "045",
         "046",
-        "050"
+        "050",
+        "068"
        ]
       },
       {
@@ -5390,6 +5391,7 @@
        "size": "M",
        "needs": [
         "064",
+        "068",
         "093",
         "094"
        ]
@@ -5397,11 +5399,17 @@
       {
        "id": "068",
        "title": "Nhảy tới tin",
-       "scope": "Từ Activity, Later, tìm kiếm tới đúng tin và nháy sáng",
-       "size": "S",
+       "scope": "Từ Activity, Later, tìm kiếm tới đúng tin và nháy sáng Sở hữu hook `useOpenMessage()` mà mọi màn hình dùng để mở một tin nhắn, yêu cầu nhảy đang chờ và hiệu ứng nháy 2 giây.",
+       "size": "M",
        "needs": [
-        "041"
-       ]
+        "041",
+        "045"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #266",
+        "fix": ""
+       }
       }
      ]
     },
@@ -5423,6 +5431,7 @@
        "scope": "Khóa VAPID, service worker chỉ dùng cho push (D-030), đăng ký thiết bị kèm một thông báo thử, bấm thông báo mở Toki tại đúng tin đó; thông báo hiện tên người gửi, tên hội thoại và đoạn đầu của tin (D-044); thẻ hỏi bật thông báo ở lần đầu, chỉ hỏi quyền trình duyệt sau khi bấm Turn on (F36); trên iPhone push chỉ chạy khi Toki đã được thêm vào màn hình chính (D-108); đăng xuất thì gỡ đăng ký push của thiết bị đó (D-158). Thêm khoá VAPID vào bảng kê cấu hình và `.env.example` của TOKI-096. Sở hữu việc nhận biết iPhone và thêm khoá VAPID vào bảng kê cấu hình. Đăng ký qua `onSessionsEnded` của TOKI-022 và xoá đăng ký push của phiên đã kết thúc.",
        "size": "L",
        "needs": [
+        "068",
         "073"
        ]
       },
@@ -5432,6 +5441,7 @@
        "scope": "Toast khi có tin ở hội thoại khác, âm báo. Sở hữu việc mở khoá âm thanh ở Safari.",
        "size": "S",
        "needs": [
+        "068",
         "073"
        ]
       },
