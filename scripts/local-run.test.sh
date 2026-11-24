@@ -52,6 +52,7 @@ mkdir -p "$T/fakes"
 
 cat > "$T/fakes/doppler" <<'FAKE'
 #!/bin/sh
+echo "doppler $*" >> "$FAKE_DIR/calls.log"
 case "$1" in
   me)
     [ "${FAKE_DOPPLER_LOGIN:-yes}" = yes ] && exit 0
@@ -59,9 +60,9 @@ case "$1" in
     exit 1
     ;;
   secrets)
-    echo "doppler $*" >> "$FAKE_DIR/calls.log"
     case "${FAKE_DOPPLER_MODE:-ok}" in
       ok) cat "$FAKE_DIR/doppler.out" ;;
+      slow) sleep 3; cat "$FAKE_DIR/doppler.out" ;;
       empty) exit 0 ;;
       network) echo "dial tcp: lookup api.doppler.com: no such host" >&2; exit 1 ;;
       access) echo "Doppler Error: forbidden: you do not have access to this project" >&2; exit 1 ;;
@@ -102,6 +103,7 @@ case "$1" in
     echo "$$ $child $(pgrep -P "$child")" > "$FAKE_DIR/dev.pids"
     wait
     ;;
+  *) echo "pnpm $*" >> "$FAKE_DIR/calls.log" ;;
 esac
 exit 0
 FAKE
@@ -166,7 +168,7 @@ run() {
   local extra="$1" script="$2"
   shift 2
   # shellcheck disable=SC2086
-  ( cd "$C" && env -u NODE_ENV $extra PATH="$C/bin:$BASEPATH" HOME="$C/home" XDG_STATE_HOME="$C/state" \
+  ( cd "$C" && env -u NODE_ENV $extra PATH="$C/bin:${CASE_BASE:-$BASEPATH}" HOME="$C/home" XDG_STATE_HOME="$C/state" \
       FAKE_DIR="$C" bash "scripts/$script" "$@" ) < "${STDIN:-/dev/null}" > "$C/out" 2>&1
   rc=$?
 }
@@ -174,7 +176,7 @@ run() {
 start_bg() {
   local extra="$1" script="$2"
   # shellcheck disable=SC2086
-  ( cd "$C" && exec env -u NODE_ENV $extra PATH="$C/bin:$BASEPATH" HOME="$C/home" XDG_STATE_HOME="$C/state" \
+  ( cd "$C" && exec env -u NODE_ENV $extra PATH="$C/bin:${CASE_BASE:-$BASEPATH}" HOME="$C/home" XDG_STATE_HOME="$C/state" \
       FAKE_DIR="$C" bash "scripts/$script" ) < /dev/null > "$C/out" 2>&1 &
   bgpid=$!
 }
@@ -195,6 +197,21 @@ stop_bg() {
   rc=$?
 }
 
+expect_no_temp() { if ls "$C"/.env.pull.* >/dev/null 2>&1; then flunk "$1: a temporary .env.pull file is left"; else pass; fi; }
+# An own run: a process whose command line names start-local, with a child
+# that can hold a port. Sets own_pid (the process) and own_child (its child).
+own_proc() {
+  bash -c 'sleep 300 & wait' start-local-test &
+  own_pid=$!
+  echo "$own_pid" >> "$strays"
+  sleep 0.5
+  own_child="$(pgrep -P "$own_pid" | head -n 1)"
+  [ -n "$own_child" ] && echo "$own_child" >> "$strays"
+}
+# The run file of the case's worktree, or of another path.
+case_run_file() {
+  ( cd "$C" && env HOME="$C/home" XDG_STATE_HOME="$C/state" bash -c '. scripts/lib.sh; run_file' )
+}
 file_mode() { stat -f '%Lp' "$1" 2>/dev/null || stat -c '%a' "$1"; }
 alive() { kill -0 "$1" 2>/dev/null; }
 stray() { sleep 300 & echo $! >> "$strays"; stray_pid=$!; }
@@ -219,6 +236,7 @@ for mode in network access config other empty; do
   run "FAKE_DOPPLER_MODE=$mode" env-pull.sh
   expect_rc_nonzero "R2 mode $mode"
   expect_same_file "R2 mode $mode leaves .env" "$C/.env" "$C/.env.before"
+  expect_no_temp "R2 mode $mode"
   expect_no_out "R16 mode $mode" "$MARK"
 done
 
@@ -230,7 +248,7 @@ sed 's/^NODE_ENV=.*/NODE_ENV=production/' "$C/doppler.out" > "$C/doppler.tmp" &&
 run "" env-pull.sh
 expect_rc_nonzero "R17 pulled production"
 expect_same_file "R17 pulled production leaves .env" "$C/.env" "$C/.env.before"
-expect_out "R17 pulled production" "production"
+expect_out "R17 pulled production" "not 'development'"
 
 # R3: a broken link and a link to a file are replaced by a regular file.
 new_case
@@ -245,7 +263,10 @@ STDIN="$C/answer"
 echo y > "$C/answer"
 run "TOKI_ASSUME_TTY=1" env-pull.sh
 STDIN=""
+expect_rc "R3 link to a file" 0
 if [ -L "$C/.env" ]; then flunk "R3 link to a file: still a link"; else pass; fi
+expect_same_file "R3 link to a file: new content" "$C/.env" "$C/doppler.out"
+expect_equal "R3 link to a file: target untouched" "OLD=value" "$(cat "$C/target.env")"
 
 # R5: an existing .env that differs.
 new_case
@@ -265,6 +286,7 @@ STDIN="$C/answer"; echo n > "$C/answer"
 run "TOKI_ASSUME_TTY=1" env-pull.sh
 expect_rc "R5 no" 0
 expect_same_file "R5 no keeps" "$C/.env" "$C/.env.before"
+expect_no_temp "R5 no"
 STDIN="$C/answer"; echo "maybe" > "$C/answer"
 run "TOKI_ASSUME_TTY=1" env-pull.sh
 expect_rc "R5 any other answer" 0
@@ -340,6 +362,48 @@ expect_same_file "R17 production in .env leaves it" "$C/.env" "$C/.env.before"
 new_case
 run "" env-pull.sh
 expect_rc "R17 unset with no .env still pulls" 0
+expect_same_file "R17 unset with no .env writes it" "$C/.env" "$C/doppler.out"
+new_case
+run "NODE_ENV=" env-pull.sh
+expect_rc_nonzero "R17 empty in the shell"
+[ -e "$C/.env" ] && flunk "R17 empty in the shell wrote .env" || pass
+new_case
+printf 'NODE_ENV=\n' > "$C/.env"; cp "$C/.env" "$C/.env.before"
+run "" env-pull.sh
+expect_rc_nonzero "R17 empty in .env"
+expect_same_file "R17 empty in .env leaves it" "$C/.env" "$C/.env.before"
+# R16: the value of NODE_ENV is not printed either.
+new_case
+run "NODE_ENV=${MARK}_name" env-pull.sh
+expect_rc_nonzero "R16 odd NODE_ENV"
+expect_no_out "R16 odd NODE_ENV is not printed" "$MARK"
+
+# A multi-line value is refused, in .env and in what Doppler returns.
+new_case
+printf 'KEY="abc\nmore"\n' > "$C/.env"; cp "$C/.env" "$C/.env.before"
+run "" env-pull.sh
+expect_rc_nonzero "multi-line .env"
+expect_out "multi-line .env" "multi-line"
+expect_same_file "multi-line .env is kept" "$C/.env" "$C/.env.before"
+new_case
+printf 'KEY="abc\nmore"\n' >> "$C/doppler.out"
+echo "OLD=keep" > "$C/.env"; cp "$C/.env" "$C/.env.before"
+run "" env-pull.sh
+expect_rc_nonzero "multi-line pulled value"
+expect_out "multi-line pulled value" "several lines"
+expect_same_file "multi-line pulled value leaves .env" "$C/.env" "$C/.env.before"
+expect_no_temp "multi-line pulled value"
+
+# An interrupt removes the temporary files and leaves .env alone.
+new_case
+echo "OLD=keep" > "$C/.env"; cp "$C/.env" "$C/.env.before"
+start_bg "FAKE_DOPPLER_MODE=slow" env-pull.sh
+wait_text "$C/calls.log" "secrets download" 10
+kill -TERM "$bgpid"
+wait "$bgpid" 2>/dev/null
+sleep 4
+expect_no_temp "interrupted env:pull"
+expect_same_file "interrupted env:pull leaves .env" "$C/.env" "$C/.env.before"
 
 # --------------------------------------------------------- start:local ---
 
@@ -349,9 +413,42 @@ write_env
 run "FAKE_NODE_VERSION=v20.1.0 FAKE_DOCKER=down FAKE_PNPM_VERSION=10.0.0" start-local.sh
 expect_rc_nonzero "R8 several problems"
 expect_out "R8 Node" "has Node 20"
-expect_out "R8 Docker" "Docker"
-expect_out "R8 pnpm" "pnpm"
+expect_out "R8 Docker" "Docker is not running"
+expect_out "R8 pnpm" "has pnpm 10.0.0"
 expect_no_call "R8 starts nothing" "pnpm dev:up"
+new_case
+write_env
+run "FAKE_PNPM_VERSION=10.0.0" start-local.sh
+expect_rc_nonzero "R8 wrong pnpm alone"
+expect_out "R8 wrong pnpm alone" "has pnpm 10.0.0"
+expect_no_out "R8 wrong pnpm alone does not blame Node" "has Node"
+expect_no_call "R8 wrong pnpm alone starts nothing" "pnpm dev:up"
+new_case
+write_env
+rm "$C/bin/docker"
+run "" start-local.sh
+expect_rc_nonzero "R8 no Docker"
+expect_out "R8 no Docker" "Docker is not installed"
+new_case
+write_env
+# A PATH that holds the real tools the script needs, but not lsof or curl.
+mkdir -p "$T/minpath"
+for tool in bash sh env awk sed grep cut tr cat ps cksum mktemp ls rm mv cp chmod mkdir dirname sleep kill stat cmp sort head pgrep basename uname tail wc ln touch date; do
+  real="$(PATH="$BASEPATH" command -v "$tool")" && ln -sf "$real" "$T/minpath/$tool"
+done
+rm -f "$C/bin/lsof" "$C/bin/curl"
+CASE_BASE="$T/minpath"
+run "" start-local.sh
+CASE_BASE=""
+expect_rc_nonzero "R8 no lsof and no curl"
+expect_out "R8 no lsof" "lsof"
+expect_out "R8 no curl" "curl"
+expect_no_call "R8 no lsof starts nothing" "pnpm dev:up"
+new_case
+run "FAKE_DOPPLER_LOGIN=no" start-local.sh
+expect_rc_nonzero "R8 doppler not logged in and no .env"
+expect_out "R8 doppler not logged in" "doppler login"
+expect_no_call "R8 doppler not logged in starts nothing" "pnpm dev:up"
 new_case
 write_env
 run "FAKE_NODE_VERSION=v24.1.0" start-local.sh
@@ -398,10 +495,24 @@ expect_out "R11 names the migrate step" "migrat"
 expect_no_line "R11 no dev after a failed migrate" "pnpm dev"
 
 # R14, R15, R11 order, R16: a whole run, stopped by a signal.
+# stop_check CASE-NAME: after the run is stopped, nothing of the dev tree is
+# left, the run file is gone and the services were not touched.
+stop_check() {
+  local pids p left=0
+  pids="$(cat "$C/dev.pids" 2>/dev/null)"
+  if [ -n "$pids" ]; then pass; else flunk "$1: the fake dev tree never recorded its processes"; fi
+  for p in $pids; do alive "$p" && left=$((left + 1)); done
+  expect_equal "$1: no process of the dev tree is left" "0" "$left"
+  if [ -f "$run_file" ]; then flunk "$1: the run file is still there"; else pass; fi
+  expect_no_call "$1: does not stop the services" "pnpm dev:down"
+  expect_no_call "$1: never resets" "reset"
+  expect_out "$1: says how to stop the services" "pnpm dev:down"
+}
 new_case
 write_env
 start_bg "" start-local.sh
 if wait_text "$C/out" "http://localhost:5173" 30; then pass; else flunk "R14 the address was not printed"; fi
+wait_text "$C/dev.pids" "" 10
 expect_out "R14 the address" "http://localhost:5173"
 expect_out "R14 the mail catcher" "http://localhost:8025"
 expect_out "R14 the first admin variable" "FIRST_ADMIN_EMAIL"
@@ -409,17 +520,39 @@ expect_no_out "R14 prints no value" "$MARK"
 expect_call "R11 dev:up" "pnpm dev:up"
 order="$(grep -n 'pnpm dev:up\|pnpm migrate\|^pnpm dev$' "$C/calls.log" | cut -d: -f2- | tr '\n' ',')"
 expect_equal "R11 order" "pnpm dev:up,pnpm migrate,pnpm dev," "$order"
-run_file="$(cd "$C" && env HOME="$C/home" XDG_STATE_HOME="$C/state" bash -c '. scripts/lib.sh; run_file')"
+run_file="$(case_run_file)"
 if [ -f "$run_file" ]; then pass; else flunk "R12 the run file was not written"; fi
+expect_equal "R12 the run file holds the pid of the run" "$bgpid" "$(cat "$run_file")"
 stop_bg
-pids="$(cat "$C/dev.pids" 2>/dev/null)"
-left=0
-for p in $pids; do alive "$p" && left=$((left + 1)); done
-expect_equal "R15 no process of the dev tree is left" "0" "$left"
-if [ -f "$run_file" ]; then flunk "R15 the run file is still there"; else pass; fi
-expect_no_call "R15 does not stop the services" "pnpm dev:down"
-expect_no_call "R15 never resets" "reset"
-expect_out "R15 says how to stop the services" "pnpm dev:down"
+stop_check "R15 SIGTERM"
+
+# R15: the real Ctrl+C is SIGINT. A job started under job control has the
+# default SIGINT, so the script's own handler is what stops the run.
+new_case
+write_env
+set -m
+start_bg "" start-local.sh
+set +m
+wait_text "$C/out" "http://localhost:5173" 30
+wait_text "$C/dev.pids" "" 10
+run_file="$(case_run_file)"
+kill -INT "$bgpid" 2>/dev/null
+wait "$bgpid" 2>/dev/null
+rc=$?
+expect_equal "R15 SIGINT exit code" "130" "$rc"
+stop_check "R15 SIGINT"
+
+# R15: a second signal during the cleanup does not cut it short.
+new_case
+write_env
+start_bg "" start-local.sh
+wait_text "$C/out" "http://localhost:5173" 30
+wait_text "$C/dev.pids" "" 10
+run_file="$(case_run_file)"
+kill -TERM "$bgpid" 2>/dev/null
+kill -TERM "$bgpid" 2>/dev/null
+wait "$bgpid" 2>/dev/null
+stop_check "R15 two signals"
 
 # R12: a port held by another process stops the command, which is not killed.
 new_case
@@ -430,42 +563,87 @@ run "" start-local.sh
 expect_rc_nonzero "R12 busy web port"
 expect_out "R12 names the port" "5173"
 expect_out "R12 names the pid" "$foreign"
+expect_out "R12 names the process" "sleep"
 if alive "$foreign"; then pass; else flunk "R12 the foreign process was killed"; fi
 expect_no_call "R12 starts nothing" "pnpm dev:up"
+# R12: a live run file of this worktree does not make a foreign listener ours.
+new_case
+write_env
+own_proc
+stray; foreign="$stray_pid"
+echo "$own_child" > "$C/ports/3000"
+echo "$foreign" > "$C/ports/5173"
+mkdir -p "$(dirname "$(case_run_file)")"
+echo "$own_pid" > "$(case_run_file)"
+run "" start-local.sh
+expect_rc_nonzero "R12 own run file and a foreign listener"
+expect_out "R12 own run file and a foreign listener names the pid" "$foreign"
+expect_no_call "R12 own run file and a foreign listener starts nothing" "pnpm dev:up"
+if alive "$foreign"; then pass; else flunk "R12 the foreign process was killed"; fi
 # R12: another worktree's run file does not make a listener ours.
 new_case
 write_env
-stray; other="$stray_pid"
-echo "$other" > "$C/ports/5173"
-echo "$other" > "$C/ports/3000"
+own_proc
+echo "$own_child" > "$C/ports/5173"
+echo "$own_child" > "$C/ports/3000"
+other_sum="$(printf '%s' "$C-another-worktree" | cksum | cut -d' ' -f1)"
 mkdir -p "$C/state/toki/local-run"
-echo "$other" > "$C/state/toki/local-run/0000000000.pid"
+echo "$own_pid" > "$C/state/toki/local-run/$other_sum.pid"
 run "" start-local.sh
 expect_rc_nonzero "R12 another worktree's run"
 expect_no_call "R12 another worktree's run starts nothing" "pnpm dev:up"
-# R12: a stale run file is ignored.
+# R12: a stale run file is ignored, and a foreign listener is still foreign.
 new_case
 write_env
-run_file="$(cd "$C" && env HOME="$C/home" XDG_STATE_HOME="$C/state" bash -c '. scripts/lib.sh; run_file')"
-mkdir -p "$(dirname "$run_file")"
-echo "999999" > "$run_file"
+mkdir -p "$(dirname "$(case_run_file)")"
+echo "999999" > "$(case_run_file)"
 run "FAKE_DEVUP_EXIT=1" start-local.sh
 expect_call "R12 a stale run file does not stop the command" "pnpm dev:up"
-
-# R13: this worktree's own run is already going.
 new_case
 write_env
-stray; own="$stray_pid"
-echo "$own" > "$C/ports/5173"
-echo "$own" > "$C/ports/3000"
-run_file="$(cd "$C" && env HOME="$C/home" XDG_STATE_HOME="$C/state" bash -c '. scripts/lib.sh; run_file')"
-mkdir -p "$(dirname "$run_file")"
-echo "$own" > "$run_file"
+stray; foreign="$stray_pid"
+echo "$foreign" > "$C/ports/3000"
+mkdir -p "$(dirname "$(case_run_file)")"
+echo "999999" > "$(case_run_file)"
+run "" start-local.sh
+expect_rc_nonzero "R12 a stale run file and a foreign listener"
+expect_out "R12 a stale run file and a foreign listener" "3000"
+expect_no_call "R12 a stale run file and a foreign listener starts nothing" "pnpm dev:up"
+# R12: a run file whose pid now belongs to another program is stale.
+new_case
+write_env
+stray; reused="$stray_pid"
+mkdir -p "$(dirname "$(case_run_file)")"
+echo "$reused" > "$(case_run_file)"
+run "FAKE_DEVUP_EXIT=1" start-local.sh
+expect_call "R12 a reused pid is not an own run" "pnpm dev:up"
+
+# R13: this worktree's own run is already going. The listeners are a child of
+# the run, so the walk up the process tree is what proves they are ours.
+new_case
+write_env
+own_proc
+echo "$own_child" > "$C/ports/5173"
+echo "$own_child" > "$C/ports/3000"
+mkdir -p "$(dirname "$(case_run_file)")"
+echo "$own_pid" > "$(case_run_file)"
 run "" start-local.sh
 expect_rc "R13 already running" 0
 expect_out "R13 prints the address" "http://localhost:5173"
 expect_no_call "R13 starts no second run" "pnpm dev:up"
 expect_no_line "R13 starts no second dev" "pnpm dev"
+# R13: the run is still starting (the file is there, the ports are free): a
+# second run waits instead of starting, and leaves the first run's file alone.
+new_case
+write_env
+own_proc
+mkdir -p "$(dirname "$(case_run_file)")"
+echo "$own_pid" > "$(case_run_file)"
+run "" start-local.sh
+expect_rc_nonzero "R13 still starting"
+expect_out "R13 still starting" "already starting"
+expect_no_call "R13 still starting starts nothing" "pnpm dev:up"
+expect_equal "R13 still starting keeps the first run's file" "$own_pid" "$(cat "$(case_run_file)")"
 
 # R17: the environment name for start:local.
 new_case
