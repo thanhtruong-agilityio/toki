@@ -37,7 +37,7 @@
    ]
   ]
  },
- "built": "23 Nov 2026",
+ "built": "24 Nov 2026",
  "overview": {
   "summary": "Toki is an internal team chat for one company: channels, direct messages, threads and files, and later tasks, calendar, video meetings, a guest portal, automations, mail and AI summaries. Each company runs its own copy on its own server.",
   "product": [
@@ -5919,7 +5919,7 @@
   }
  ],
  "tagline": "Everything agreed for Toki in one place: the prototype itself, the requirements read from it, user flows per role, every question and gap with its answer, the technical design, and the phase 1 plan.",
- "ticketsSynced": "2026-11-23",
+ "ticketsSynced": "2026-11-24",
  "repo": "github.com/thanhtruong-agilityio/toki",
  "intents": [
   {
@@ -11579,7 +11579,7 @@
         "pr": "PR #86",
         "fix": ""
        },
-       "status": "accepted",
+       "status": "in-review",
        "issue": 87
       },
       {
@@ -11949,7 +11949,9 @@
        "title": "Files tab and Files section",
        "scope": "Filter by kind, search, list and grid views; adds the prototype's sample files and images to the seed data",
        "size": "M",
-       "spec": null
+       "spec": null,
+       "status": "blocked",
+       "issue": 259
       },
       {
        "id": "TOKI-103",
@@ -11971,7 +11973,9 @@
        "title": "Vietnamese search index",
        "scope": "A search column with diacritics removed, and a GIN index",
        "size": "M",
-       "spec": null
+       "spec": null,
+       "status": "blocked",
+       "issue": 236
       },
       {
        "id": "TOKI-070",
@@ -11985,14 +11989,18 @@
        "title": "Command palette",
        "scope": "Ctrl+K, arrow keys; results grouped as conversations, people, commands, then messages, 20 per group with more on request (D-112); ranking: exact match, word-start, contains, then fuzzy; quick actions as listed in F29, with 'Create channel' offered to Admins only (D-084, D-151); on narrow screens opened from the search field on Home and from the More sheet (D-053)",
        "size": "M",
-       "spec": null
+       "spec": null,
+       "status": "blocked",
+       "issue": 260
       },
       {
        "id": "TOKI-072",
        "title": "Search inside a conversation",
        "scope": "A search field in the header that filters messages",
        "size": "S",
-       "spec": null
+       "spec": null,
+       "status": "blocked",
+       "issue": 258
       }
      ]
     }

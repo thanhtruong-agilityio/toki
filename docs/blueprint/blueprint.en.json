@@ -49,7 +49,7 @@
    "Nguyễn"
   ],
   "labels": {},
-  "ticketsSynced": "2026-11-23"
+  "ticketsSynced": "2026-11-24"
  },
  "overview": {
   "summary": "Toki is an internal team chat for one company: channels, direct messages, threads and files, and later tasks, calendar, video meetings, a guest portal, automations, mail and AI summaries. Each company runs its own copy on its own server.",
@@ -4569,7 +4569,7 @@
         "pr": "PR #86",
         "fix": ""
        },
-       "status": "accepted",
+       "status": "in-review",
        "issue": 87
       },
       {
@@ -5041,7 +5041,9 @@
         "062",
         "081",
         "094"
-       ]
+       ],
+       "status": "blocked",
+       "issue": 259
       },
       {
        "id": "103",
@@ -5062,7 +5064,9 @@
        "size": "M",
        "needs": [
         "036"
-       ]
+       ],
+       "status": "blocked",
+       "issue": 236
       },
       {
        "id": "070",
@@ -5081,7 +5085,9 @@
        "needs": [
         "014",
         "070"
-       ]
+       ],
+       "status": "blocked",
+       "issue": 260
       },
       {
        "id": "072",
@@ -5090,7 +5096,9 @@
        "size": "S",
        "needs": [
         "070"
-       ]
+       ],
+       "status": "blocked",
+       "issue": 258
       }
      ]
     }

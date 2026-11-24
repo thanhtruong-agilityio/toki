@@ -37,7 +37,7 @@
    ]
   ]
  },
- "built": "23/11/2026",
+ "built": "24/11/2026",
  "overview": {
   "summary": "Toki là ứng dụng chat nội bộ cho một công ty: kênh, tin nhắn riêng, thread và file; về sau thêm công việc, lịch, họp video, cổng cho khách, tự động hóa, mail và tóm tắt bằng AI. Mỗi công ty tự chạy một bản trên server của mình.",
   "product": [
@@ -5919,7 +5919,7 @@
   }
  ],
  "tagline": "Mọi thứ đã thống nhất cho Toki ở một nơi: prototype, yêu cầu rút ra từ nó, luồng theo vai trò, mọi câu hỏi và gap kèm câu trả lời, thiết kế kỹ thuật, và kế hoạch phase 1.",
- "ticketsSynced": "2026-11-23",
+ "ticketsSynced": "2026-11-24",
  "repo": "github.com/thanhtruong-agilityio/toki",
  "intents": [
   {
@@ -11579,7 +11579,7 @@
         "pr": "PR #86",
         "fix": ""
        },
-       "status": "accepted",
+       "status": "in-review",
        "issue": 87
       },
       {
@@ -11949,7 +11949,9 @@
        "title": "Tab Files và section Files",
        "scope": "Lọc theo loại, tìm, xem dạng danh sách và lưới; thêm file và ảnh mẫu của prototype vào dữ liệu seed",
        "size": "M",
-       "spec": null
+       "spec": null,
+       "status": "blocked",
+       "issue": 259
       },
       {
        "id": "TOKI-103",
@@ -11971,7 +11973,9 @@
        "title": "Chỉ mục tìm kiếm tiếng Việt",
        "scope": "Cột tìm kiếm đã bỏ dấu, chỉ mục GIN",
        "size": "M",
-       "spec": null
+       "spec": null,
+       "status": "blocked",
+       "issue": 236
       },
       {
        "id": "TOKI-070",
@@ -11985,14 +11989,18 @@
        "title": "Command palette",
        "scope": "Ctrl+K, phím mũi tên; kết quả theo nhóm: hội thoại, người, lệnh, rồi tin nhắn, 20 mỗi nhóm, xem thêm khi yêu cầu (D-112); xếp hạng: khớp chính xác, khớp đầu từ, chứa từ khóa, rồi khớp gần đúng; lệnh nhanh theo danh sách ở F29, 'Create channel' chỉ hiện với Admin (D-084, D-151); trên khung hẹp mở từ ô tìm ở Home và từ sheet More (D-053)",
        "size": "M",
-       "spec": null
+       "spec": null,
+       "status": "blocked",
+       "issue": 260
       },
       {
        "id": "TOKI-072",
        "title": "Tìm trong hội thoại",
        "scope": "Ô tìm ở header, lọc tin theo từ khóa",
        "size": "S",
-       "spec": null
+       "spec": null,
+       "status": "blocked",
+       "issue": 258
       }
      ]
     }
