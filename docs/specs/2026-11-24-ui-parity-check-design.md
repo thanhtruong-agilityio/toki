@@ -1,0 +1,121 @@
+# UI parity check design
+
+Date: 2026-11-24 · Status: draft for review
+Intent: docs/intents/ui-parity-check.md (Thanh Truong)
+Ticket: TOKI-109
+
+## Goal
+The builder (Thanh and Claude) and the reviewer of a pull request need a machine to say where a built screen differs from the prototype, in Calm and in Focus, at three widths. Today "matches the prototype" is checked by eye (TOKI-016 R21), the design values are compared with values written by hand in a spec (TOKI-016 R11, R15), and the screenshots are compared with the page's own earlier screenshots (TOKI-016 R24). After this change one check reads the prototype itself and writes a report that says what differs and where; the reviewer reads it, and a difference that is wrong becomes a ticket to fix that part. Each later ticket that builds a screen adds its screens to the check instead of comparing by eye.
+
+## Scope
+- In:
+  - The reference: a fixed copy of the prototype in the repository, with its hash recorded (R1, R17).
+  - The token check: the design values of the app compared with the same values of the prototype, for every look, accent and density (R2 to R4).
+  - The screen check: a way for a ticket to declare a screen, reference images made from the prototype by one command, and a comparison of the app with them (R5 to R10, R13).
+  - The report of the differences and its place in CI (R11, R15).
+  - One sample screen, as proof (R14); a short guide for later tickets (R16).
+- Out (not now):
+  - Fonts: TOKI-010 owns the seven font files and their rules. This work uses them and adds none.
+  - Screens that need seeded data, the Playwright config that runs them and its CI step. They need `seedPrototypeWorkspace` of TOKI-081 (end of M3) and belong to a ticket after TOKI-081 (concern 6). This work only lets a declaration say that it needs seeded data (R12).
+  - The tests and the record of TOKI-016 (the machine check R2 to R20, the by-eye record R21, the screenshot test R24) and the specs of TOKI-008, TOKI-010 and TOKI-016. They are not edited and they stay as they are (concern 5). The line of the TOKI-016 spec that keeps the prototype out of the repository concerns that ticket's own work; this check is the exception, decided in concern 1.
+  - Any screen or state that the prototype does not draw (TOKI-016 Table E lists this kind of difference); hover, active and focus-visible states; Safari and Firefox (TOKI-008 concern 5).
+  - Making each later ticket use the check: that is in the spec of each of those tickets.
+  - A change to the prototype.
+
+## Requirements
+- R1. The prototype is a fixed copy of the Blueprint's `docs/blueprint/prototype/index.html`, committed at `e2e/prototype/index.html`, and is opened by one function, `openPrototype`, in `e2e/support/prototype.ts`. The location is a constant in that file only. The prototype is drawn with the seven font faces of TOKI-010 and requests no other host. Check: a test records the requests of one load and none goes to another host (the prototype's `link` to Google Fonts, its line 4, is not used), and `document.fonts` lists the seven faces as loaded.
+- R2. Look, accent and density are set on the prototype in the way it sets them itself (`applyLook`, line 1137: `data-look`, `data-eff`, `data-accent`, `data-density` on the root element; the preference key `toki-proto-v2`, line 1120). Check: in Calm with teal the prototype's `--accent` is `#0F766E` and in Focus with teal it is `#5EEAD4`; in Calm with indigo it is `#4F46E5` and in Focus with indigo `#A5B4FC` (the prototype's lines 6 to 56, also TOKI-016 R11 and R15).
+- R3. The token check compares, for each of the 24 combinations (2 looks × 4 accents × 3 densities: the look's own, `comfortable`, `compact`), each custom property of the app with the same property of the prototype, and records one row for each difference: the property, the combination, the prototype's value and the app's value. The app side is the preview page of TOKI-016 (`/preview.html`) with its own controls. Values are compared as the browser computes them (a colour as RGB, a length in pixels), not as written, so that `#0f766e` and `#0F766E` are the same. A difference is a result in the report (R11), not a failed test. Check: a changed token value in `packages/tokens` gives a row for that property in every combination where it applies; the unchanged repository gives none.
+- R4. The list of properties comes from `@toki/tokens` (the 32 properties of TOKI-009 R10). The check holds no second list. A property that the prototype lacks is a difference ("the prototype has no value"). The six Meet variables that TOKI-009 R18 leaves out are not compared. A difference that the reviewer has accepted is one entry in `e2e/parity/known-differences.ts` with the property or the screen, the combination, the reason and the ticket that will fix it (or the word `accepted`). The report lists known differences apart from new ones, and lists an entry that no longer matches a real difference as "no longer a difference: remove the entry". Check: an entry for a real difference moves its row from "new" to "known"; an entry for a difference that does not exist appears under "no longer a difference".
+- R5. A screen is declared in a file `e2e/parity/screens/<name>.ts` that exports one or more objects with: `id`; the prototype's section (`home`, `activity`, `later`, `files`, `mail`, `calendar`, `meet`, `tasks`, `people`, `admin` or `prefs`, the keys of its `HASH`, line 1200); the steps that bring the prototype to the state (clicks and key presses on named selectors); the route and the steps that bring the app to the same state; the selectors to mask; the looks (default both) and the widths of R6 (default all three); and whether it needs seeded data (R12). A file added under `e2e/parity/screens/` is picked up with no other edit (as TOKI-008 R12). Check: a file with one declaration adds, in the next `pnpm test:e2e`, one comparison for each look and width that it names.
+- R6. Every capture, of the prototype and of the app, uses the same settings: Chromium; three widths, one in each band of D-068 as TOKI-016 R21 does: `wide` 1280 × 800 (1100 and over), `mid` 900 × 800 (720 to 1099) and `narrow` 390 × 844 (under 720); device scale factor 1; the time zone `Asia/Ho_Chi_Minh` and the locale `en-US`; the colour scheme `light`, so that the prototype's choice of look (`effLook`, line 1136) follows the declared look only; reduced motion. The width is the browser window's, so that both sides use the same layout (the prototype's container rule at 720 px, line 107, and TOKI-012 R8). Check: the reference image and the app's image of a screen have the same width and height, or the comparison records a difference "sizes differ" with both sizes.
+- R7. Both sides are made stable before a capture. The browser's time is fixed at Tuesday 10 November 2026, 10:42 in `Asia/Ho_Chi_Minh` (the prototype's `now()`, line 916, starts there, and TOKI-081 R9 gives its "today" the same value), so that the prototype's timers and times do not move. Animations are off. The capture waits for `document.fonts.ready`, scrolls every pane to its top and hides the caret. Only the element that holds the app is captured: `#app` for the prototype (line 817), which leaves out its demo bar (`.protobar`, line 71), and the app's root container for the app. The elements that show a running count (`[data-timer]`) and the selectors of the declaration are masked on both sides. Check: the reference command run twice in a row on the same screen writes identical files (no pixel differs).
+- R8. The reference images are made from the prototype, never from the app, by `pnpm ui:reference <screen-id>` (or `--all`). The command runs in the official Playwright container image of the same version as `@playwright/test` in the lockfile, so that the Chromium and the fonts are those of CI (R10); it stops with a message when Docker is not available or the versions differ, and writes nothing. The images are written to `e2e/parity/reference/<screen-id>-<look>-<width>-chromium-linux.png` and committed. The command overwrites an existing image only with `--update`, and prints each file that it wrote. The pull request that adds or replaces an image says which images and why. Check: without `--update` the command leaves an existing image unchanged and exits non-zero; with it the image is written and listed; with another image version it writes nothing.
+- R9. The screen check captures the app as in R6 and R7 and compares it with the reference image by a function of `e2e/support/parity.ts`, so that a difference is a recorded result and not a failed test. The image matches when the ratio of different pixels is at most the limit, which is set in one place (`e2e/parity/limits.ts`) and starts at 0.02 (concern 2). Check: the sample screen of R14 matches; one changed token value, or one changed word on the screen, gives a difference in the report.
+- R10. A reference image belongs to one platform: the system that CI runs on (Linux, with the Chromium that `pnpm test:e2e` installs). On another system the screen check does not compare and prints a line that names the system; CI never skips, and a missing reference is a failed run, because the check cannot give a result. Check: with a reference removed, the test fails when `CI` is set and is skipped, with the line, when it is not.
+- R11. The check writes a report to `test-results/parity/report.md` and `report.json`. The first lines say how many checks were made and how many match, differ (new), differ (known), are no longer a difference, and were not run (R12). Each difference is one row that says where it is: for a token, the property, the combination, the two values; for a screen, the screen id, the look, the width, the ratio and the limit, the box around the differing pixels, and the paths of three images (the reference, the app and the difference), which are also attached to the Playwright report. A row has a name that is the same on every run (the screen id with look and width, or the property with its combination), so that the reviewer can open one ticket for one part. Check: a deliberate difference gives a row with all of this and the three images; the same run twice gives the same row names.
+- R12. A declaration that needs seeded data (`seed: true`) is accepted by the registry and is not run by this work; the report counts it under "not run: needs seeded data". The Playwright config that has the seeded database, its CI step and the seeding with the clock set to the instant of R7 belong to a later ticket after TOKI-081 (concern 6). Check: a declaration with `seed: true` adds no comparison and adds one to the "not run" count.
+- R13. When the prototype cannot be brought to the declared state (a selector of a step is not found), the test fails and names the screen, the step and the selector, because the check cannot give a result. It never writes a reference from a page that is not in the declared state. Check: a step with a wrong selector fails with those three names and writes no file.
+- R14. One screen is declared as proof: a screen of the app already built when this ticket is planned, that needs no seeded data (concern 9). Its references (Calm and Focus at the three widths, six images) are committed. Check: as in R9, the change of one token value gives a difference in the report for this screen, and putting it back removes it.
+- R15. The checks run in the end-to-end job of CI that TOKI-008 R14 adds, by `pnpm test:e2e`. This work adds no job and no browser install, and adds one step to that job that appends `report.md` to the job summary, whether or not the run found differences. Differences do not make the job red; the cases that do are those named in R10, R13 and R17, where no result can be given. A failed run keeps its images and results, as TOKI-107 does, and a run with differences keeps the images of R11 in the same way. Check: a pull request with a deliberate difference has a green end-to-end job whose summary shows the row and whose kept results hold the three images.
+- R16. `e2e/parity/README.md` says, in one page, how a ticket adds a screen: the declaration (R5), the reference command (R8), what to write in the pull request, how to read the report (R11) and how to record a difference as known (R4). Check: the file exists, and the sample screen was added by following it.
+- R17. The hash (SHA-256) of `e2e/prototype/index.html` is committed in `e2e/parity/prototype.sha256`. Every run compares it with the hash of the file it opens and, when they differ, fails with the message "the prototype changed: make the references again and record the new hash", because the references would no longer come from this file (assumption of this spec). The hash of the file of this spec's date (2629 lines, 259,825 bytes) is `8afc5b13cbc2f0a487eb3041421e2a81667ae0d783e6f87e65332e8377b7bb35`. Check: a changed byte in the copy fails the run with that message.
+- R18. `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm format:check` and `pnpm test:e2e` exit 0 on the finished branch. The pure functions of the helpers (R3, R4, R5, R11, R17) have Vitest tests.
+
+## Design
+### What "matches" means here
+The check reports, in the states and the three widths declared, where the app draws other design values than the prototype (R3) and where its image is farther from the prototype's image than the limit (R9). It does not prove: pixel equality; hover, active and focus-visible states; Safari and Firefox; states the prototype does not draw; anything outside the declared screens; text rendering on a system other than the one the images were made on (R10). It is a report for the reviewer and not a gate: the reviewer reads it, and a part that is wrong becomes a ticket to fix that part (concern 4). The by-eye record of TOKI-016 R21 and its test R24 stay as they are (concern 5).
+
+### Facts of the prototype that the design relies on
+| Fact | Where (the prototype's lines) | Used by |
+|---|---|---|
+| One HTML file, plain JavaScript, 2629 lines | whole file | R1, R17 |
+| The app is the element `#app`; the demo bar is outside it | 71, 817 | R7 |
+| Eleven sections, routed by the hash | 1199, 1200 | R5 |
+| Look, accent and density are attributes of the root element, chosen by `applyLook` | 1136 to 1139 | R2 |
+| The preference key is `toki-proto-v2` (look and device) | 1120 | R2, R6 |
+| The clock starts at 10 November 2026, 10:42 and then follows the real time; the live-meeting counter starts from `Date.now()` | 914 to 916, 1116 | R7 |
+| The narrow layout is a container rule at 720 px on `.device` | 107 | R6 |
+| Fonts come from Google Fonts | 4 | R1 |
+| Pulse, highlight and blink animations | 227, 238, 273 | R7 |
+
+### Layout
+```
+e2e/
+├─ prototype/
+│  └─ index.html                R1: the fixed copy
+├─ parity/
+│  ├─ README.md                 R16
+│  ├─ prototype.sha256          R17
+│  ├─ known-differences.ts      R4
+│  ├─ limits.ts                 R9: the one limit of the image difference
+│  ├─ tokens.spec.ts            R3, R4
+│  ├─ screens.spec.ts           R5, R9 to R13: one test for each declaration, look and width
+│  ├─ screens/<name>.ts         R5: one file for each ticket that builds a screen
+│  └─ reference/                R8: <screen-id>-<look>-<width>-chromium-linux.png
+└─ support/
+   ├─ prototype.ts              R1, R2, R6, R7, R13: open the prototype, set the state, capture
+   └─ parity.ts                 R5, R9, R11, R12: the declaration type, the registry, the comparison, the report
+tools/ui-reference/             R8: the command behind `pnpm ui:reference`
+.github/workflows/ci.yml        R15: one step in the e2e job (edited, not created)
+```
+
+## Testing
+- Each requirement is written first and seen to fail before the code makes it pass (TOKI-008's rule). The pure parts (the normal form of a value, the list of differences, the registry, the report rows, the hash check) have Vitest tests that use made-up values. The rest are Playwright tests in Chromium.
+- The negative checks of R3, R4, R9, R11, R13, R14, R15 and R17 are part of the tests of the work or are run once by hand and recorded in the pull request: change one token value, change one word on the sample screen, break one selector, change one byte of the prototype copy.
+- The determinism check of R7 is a test: the command is run twice and the files are compared.
+- Data used is fake only: the prototype's own sample people and texts.
+
+## Data safety
+- The reference images and the prototype hold only the prototype's invented data (Hugepig Studio and its people). No secret, no real address and no customer data goes into the repository by this work.
+- The test requests no host other than the app's own address (R1), so a run does not send anything out.
+
+## How each constraint in the intent is met
+| Constraint | Met by |
+| :---- | :---- |
+| Needs TOKI-008, TOKI-010, TOKI-016 (merged) and, for screens with data, TOKI-081 (spec open) | R1 (fonts of TOKI-010), R3 (preview page of TOKI-016), R15 (CI of TOKI-008); screens with data are not run here (R12, concern 6) |
+| Does not change the specs of TOKI-008, TOKI-016 or TOKI-010; adds a check beside theirs | Scope, Out; Design "What matches means here"; concern 5 |
+| The prototype is "Toki Prototype (Copy)"; not known whether it equals the Blueprint's prototype | Open questions, item 2 (byte for byte the same); R1, R17 |
+| The prototype stays outside the repository (TOKI-016 spec); CI cannot open a claude.ai link | R1 commits a fixed copy; concern 1 |
+| Chromium only; desktop and phone widths | R6 (three widths), R9; concern 8 |
+| Runs in the end-to-end job of CI; a failed run keeps its images | R15, R11 |
+
+## Open questions from the intent
+- Where does the prototype live for the check to read it, given that it stays outside the repository and CI cannot open the link? Answered: a fixed copy in the repository at `e2e/prototype/index.html`, with its hash (R1, R17). Decided by Thanh Truong (lead, as product owner) on 2026-11-24. See concern 1.
+- Is "Toki Prototype (Copy)" the same as the Blueprint's `docs/blueprint/prototype/index.html`? Answered: yes. The two files have no differing line (a line-by-line comparison reports 0 differences), the same 2629 lines and the same 259,825 bytes. The Blueprint file is on the branch `docs/toki-095-blueprint-sources`. R17 records the hash.
+- How much difference between the prototype and the app counts as a match for images? Answered: a ratio of different pixels of at most 0.02 to start, tuned on the sample screen (R9). Decided by Thanh Truong (lead, as product owner) on 2026-11-24. See concern 2.
+- Are all combinations of look, accent and density compared, or only a chosen few? Answered as an assumption of this spec: the token check compares all 24 combinations (R3), because it only reads values; the image check compares what each screen declares, by default both looks at all three widths, and accent and density only when a screen asks for them (R5). Cost is the reason; nothing in the sources says otherwise.
+- How is the reference kept up to date when the prototype changes, and who decides that a change is wanted? Answered: the check reports where the app differs, the builder reviews the report, and a part that is wrong becomes a ticket (R11, concern 4); a change of the prototype copy is a change in a pull request that the same person reviews, and the hash makes it visible (R17). Decided by Thanh Truong (lead, as product owner) on 2026-11-24.
+- Does this check replace the by-eye comparison of TOKI-016 R21 and its own-images test R24 for later tickets, or does it sit beside them? Answered: it sits beside them and changes nothing in TOKI-016. Decided by Thanh Truong (lead, as product owner) on 2026-11-24. See concern 5.
+- Which milestone and which ticket number does it get, and which existing ticket must wait for it? Answered: M1, right after TOKI-016. Decided by Thanh Truong (lead, as product owner) on 2026-11-24. The ticket number is given when the ticket is created. This spec makes no existing ticket wait for it; the spec of each screen ticket says whether it uses the check. See concern 7.
+
+## Areas of concern
+1. Where the prototype lives. TOKI-016 records that the prototype stays outside the repository, and CI cannot open the claude.ai link. The file is on the branch `docs/toki-095-blueprint-sources` (PR 12) and is not in the tree of `github/main` (checked on 2026-11-24). Decided by Thanh Truong (lead, as product owner) on 2026-11-24: a fixed copy (about 260 KB) is committed in the repository, with its hash (R1, R17). This reverses, for this check only, the line of the TOKI-016 spec that keeps the prototype out of the repository; that spec is not edited. Owner: Thanh Truong.
+2. The limit of difference for images. TOKI-016 R24 allows `maxDiffPixelRatio` 0.01 at most against its own images; an implementation compared with a prototype differs more (text rendering, spacing). Decided by Thanh Truong (lead, as product owner) on 2026-11-24: start at 0.02, set in one place, tuned on the sample screen (R9). Owner: Thanh Truong.
+3. How a builder on macOS makes the Linux images (R10). Decided by Thanh Truong (lead, as product owner) on 2026-11-24: `pnpm ui:reference` runs in the official Playwright container image of the version in the lockfile (R8). The builder needs Docker for it; on another system the screen check skips with a line (R10). Owner: Thanh Truong.
+4. What happens when the app differs from the prototype. Decided by Thanh Truong (lead, as product owner) on 2026-11-24: the check states the result and says where it does not match; the reviewer reads it; a part that is wrong becomes a ticket to fix that part. A difference does not make the job red; it is reported (R11, R15). Cases where no result can be given (a missing reference, a state the prototype cannot reach, a changed prototype copy) do fail the run (R10, R13, R17); that last point is an assumption of this spec. Owner: Thanh Truong.
+5. The place of this check next to TOKI-016 R21 (by eye) and R24 (own images). Decided by Thanh Truong (lead, as product owner) on 2026-11-24: it sits beside them and nothing in TOKI-016 changes. Owner: Thanh Truong.
+6. Screens with seeded data and the clock. TOKI-081 R9 gives `seedPrototypeWorkspace` the clock as a parameter and places the sample at the prototype's wall time when the clock is set to 10 November 2026, 10:42 at UTC+07:00 (its spec, open as PR 220); that is the instant of R7, so no change request on TOKI-081 is needed. The `e2e` job of CI already has a Postgres service and runs the sign-in config (`.github/workflows/ci.yml`, lines 108 to 126 and 150 to 152; the comment in `playwright.real-server.config.ts` that CI has no Postgres is out of date). A seeded parity config would follow the pattern of `playwright.sign-in.config.ts`. Answered with this evidence. Decided by Thanh Truong (lead, as product owner) on 2026-11-24: because TOKI-081 is built at the end of M3 and this ticket is in M1, the seeded config, its CI step and the seeded screens are split into a later ticket after TOKI-081; this ticket only lets a declaration say `seed: true` (R12). Owner: Thanh Truong.
+7. The milestone and the place of this ticket. Decided by Thanh Truong (lead, as product owner) on 2026-11-24: M1, right after TOKI-016. The first users are the screen tickets after it and TOKI-090 ("12 end-to-end flows", M6). Owner: Thanh Truong.
+8. The widths. The bands of D-068 are under 720, 720 to 1099 and 1100 and over (TOKI-016 R21 uses one width in each). Two widths would leave the middle band uncovered. Decided by Thanh Truong (lead, as product owner) on 2026-11-24: three widths, 1280 × 800, 900 × 800 and 390 × 844 (R6). Owner: Thanh Truong.
+9. The sample screen (R14) is chosen from what is built when the ticket is planned, among the screens that need no seeded data. Accepted in this spec: it is a choice for the plan, not a product decision. Owner: Thanh Truong.
