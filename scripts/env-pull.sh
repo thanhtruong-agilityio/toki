@@ -7,6 +7,8 @@
 # command line; a difference is reported by variable name only.
 
 set -u
+# No shell tracing: a trace would print the values this script handles.
+set +x
 
 # shellcheck source=scripts/lib.sh
 . "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
@@ -25,7 +27,10 @@ cleanup() {
   [ -n "$tmp" ] && rm -f "$tmp"
   [ -n "$errors" ] && rm -f "$errors"
 }
+# The temporary files go away on every exit path, an interrupt included.
 trap cleanup EXIT
+trap 'trap "" INT TERM; exit 130' INT
+trap 'trap "" INT TERM; exit 143' TERM
 
 # 1. The environment name, in the shell and in an existing .env.
 if ! env_file_is_simple "$ENV_FILE"; then
@@ -60,7 +65,7 @@ if ! doppler secrets download -p "$DOPPLER_PROJECT" -c "$DOPPLER_CONFIG" --no-fi
       fail "Could not reach Doppler. Check your network connection, then try again. .env was not changed."
       ;;
     *"could not find"* | *"not found"* | *"does not exist"*)
-      fail "The Doppler project $DOPPLER_PROJECT has no config named $DOPPLER_CONFIG. Check the project on the Doppler site. .env was not changed."
+      fail "Doppler could not find the project $DOPPLER_PROJECT or its config $DOPPLER_CONFIG. Check them on the Doppler site. .env was not changed."
       ;;
     *forbidden* | *"do not have access"* | *"not authorized"* | *unauthorized* | *permission*)
       fail "You do not have access to the Doppler project $DOPPLER_PROJECT. Ask for an invitation, then run \`doppler login\` again. .env was not changed."
@@ -75,6 +80,10 @@ fi
 # 4. Check the temporary file before it can replace anything.
 if [ ! -s "$tmp" ]; then
   fail "Doppler returned no values for $DOPPLER_PROJECT/$DOPPLER_CONFIG. .env was not changed."
+  exit 1
+fi
+if ! env_file_is_simple "$tmp"; then
+  fail "A value in the Doppler config $DOPPLER_PROJECT/$DOPPLER_CONFIG runs over several lines. Put every value on one line in Doppler. .env was not changed."
   exit 1
 fi
 missing=""
@@ -112,6 +121,8 @@ if [ -e "$ENV_FILE" ]; then
     exit 0
   fi
   say "Your .env differs from Doppler in:$differing"
+  # TOKI_ASSUME_TTY=1 is for scripts/local-run.test.sh only: it lets standard
+  # input stand in for a terminal. Do not set it anywhere else.
   if [ ! -t 0 ] && [ "${TOKI_ASSUME_TTY:-}" != "1" ]; then
     fail "There is no terminal to ask in, so .env was kept. Run this command in a terminal to replace it."
     exit 1

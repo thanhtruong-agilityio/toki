@@ -9,6 +9,8 @@
 # up (`pnpm dev:down` stops them).
 
 set -u
+# No shell tracing: a trace would print the values this script handles.
+set +x
 
 # shellcheck source=scripts/lib.sh
 . "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
@@ -55,7 +57,7 @@ wanted_pnpm="$(sed -n 's/.*"packageManager"[[:space:]]*:[[:space:]]*"pnpm@\([^"]
 if ! have_pnpm="$(pnpm --version 2>/dev/null)"; then
   add_problem "pnpm is not available. Run \`corepack enable\` (or put \`corepack\` in front of each pnpm command)."
 elif [ -n "$wanted_pnpm" ] && [ "$have_pnpm" != "$wanted_pnpm" ]; then
-  add_problem "pnpm $wanted_pnpm is needed and this shell has pnpm $have_pnpm. Run \`corepack enable\`, under Node 22."
+  add_problem "pnpm $wanted_pnpm is needed and this shell has pnpm $have_pnpm. Run \`corepack enable\` under Node 22, or run this as \`corepack pnpm start:local\`."
 fi
 
 if ! command -v docker >/dev/null 2>&1; then
@@ -63,6 +65,10 @@ if ! command -v docker >/dev/null 2>&1; then
 elif ! docker info >/dev/null 2>&1; then
   add_problem "Docker is not running. Start Docker."
 fi
+
+for tool in lsof curl cksum ps; do
+  command -v "$tool" >/dev/null 2>&1 || add_problem "The command $tool is not installed, and this script needs it."
+done
 
 if [ ! -e "$ENV_FILE" ]; then
   if ! command -v doppler >/dev/null 2>&1; then
@@ -79,20 +85,28 @@ if [ -n "$problems" ]; then
   exit 1
 fi
 
-# 2. This worktree's own run may already be going.
-if own_pid="$(own_run_pid)"; then
+# 2. This worktree's own run may already be going, or still starting.
+if own_pid="$(own_run_pid)" && [ "$own_pid" != "$$" ]; then
   all_own=1
+  foreign=0
   for port in "$(server_port)" "$WEB_PORT"; do
     listeners="$(port_listeners "$port")"
     [ -n "$listeners" ] || all_own=0
     for pid in $listeners; do
-      is_own_listener "$pid" || all_own=0
+      if ! is_own_listener "$pid"; then
+        all_own=0
+        foreign=1
+      fi
     done
   done
   if [ "$all_own" -eq 1 ]; then
     say "Toki is already running from this worktree (process $own_pid)."
     print_addresses
     exit 0
+  fi
+  if [ "$foreign" -eq 0 ]; then
+    fail "Toki is already starting from this worktree (process $own_pid). Wait for it to finish, or stop it with Ctrl+C in its terminal. Nothing was started."
+    exit 1
   fi
 fi
 
@@ -117,7 +131,43 @@ for port in "$(server_port)" "$WEB_PORT"; do
   done
 done
 
-# 5. The services, the migrations, then the server and the web app.
+# 5. Claim the run, then the services, the migrations, the server and the web
+# app. The run file is written before anything starts, so a second run of this
+# worktree sees it; a run removes the file only when it holds its own id.
+dev_pid=""
+claimed=0
+cleanup() {
+  # A second Ctrl+C must not cut the cleanup short.
+  trap '' INT TERM
+  trap - EXIT
+  if [ -n "$dev_pid" ]; then
+    kill_tree "$dev_pid"
+    wait "$dev_pid" 2>/dev/null
+    say "Stopped the server and the web app. The services are still running; stop them with pnpm dev:down."
+  fi
+  if [ "$claimed" -eq 1 ] && [ "$(cat "$(run_file)" 2>/dev/null)" = "$$" ]; then
+    rm -f "$(run_file)"
+  fi
+}
+trap cleanup EXIT
+# The first thing a signal does is to ignore the next ones, so a second Ctrl+C
+# cannot cut the cleanup short.
+trap 'trap "" INT TERM; exit 130' INT
+trap 'trap "" INT TERM; exit 143' TERM
+
+claim_run_file() {
+  local file
+  file="$(run_file)"
+  mkdir -p "$(dirname "$file")"
+  if [ -f "$file" ] && ! own_run_pid >/dev/null; then rm -f "$file"; fi
+  ( set -o noclobber; printf '%s' "$$" > "$file" ) 2>/dev/null
+}
+if ! claim_run_file; then
+  fail "Another pnpm start:local of this worktree started at the same moment. Wait for it, then try again. Nothing was started."
+  exit 1
+fi
+claimed=1
+
 if ! pnpm dev:up; then
   fail "pnpm start:local stopped at: pnpm dev:up."
   exit 1
@@ -127,24 +177,8 @@ if ! pnpm --filter @toki/server db:migrate; then
   exit 1
 fi
 
-dev_pid=""
-cleanup() {
-  trap - EXIT INT TERM
-  if [ -n "$dev_pid" ]; then
-    kill_tree "$dev_pid"
-    wait "$dev_pid" 2>/dev/null
-  fi
-  rm -f "$(run_file)"
-  say "Stopped the server and the web app. The services are still running; stop them with pnpm dev:down."
-}
-trap cleanup EXIT
-trap 'exit 130' INT
-trap 'exit 143' TERM
-
 pnpm dev &
 dev_pid=$!
-mkdir -p "$(dirname "$(run_file)")"
-printf '%s' "$$" > "$(run_file)"
 
 # 6. Wait until the web app answers, then say where to go.
 waited=0

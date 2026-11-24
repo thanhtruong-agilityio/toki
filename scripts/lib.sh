@@ -230,11 +230,11 @@ in_mailpit() {
 node_env_refusal() {
   local env_file="$1" label="${2:-.env}" file_value
   if [ -n "${NODE_ENV+x}" ] && [ "$NODE_ENV" != "development" ]; then
-    fail "Refused: NODE_ENV is '$NODE_ENV' in the shell. This command runs only for development. Nothing was changed."
+    fail "Refused: NODE_ENV is not 'development' in the shell. This command runs only for development. Nothing was changed."
     return 1
   fi
   if file_value="$(env_file_get "$env_file" NODE_ENV)" && [ "$file_value" != "development" ]; then
-    fail "Refused: NODE_ENV is '$file_value' in $label. This command runs only for development. Nothing was changed."
+    fail "Refused: NODE_ENV is not 'development' in $label. This command runs only for development. Nothing was changed."
     return 1
   fi
 }
@@ -256,14 +256,17 @@ run_file() {
 
 # own_run_pid
 # Prints the process id in this worktree's run file when that process is
-# alive. A file whose process is gone is stale and counts as no run.
+# alive and is a `start-local` run. A file whose process is gone, or whose
+# pid now belongs to some other program, is stale and counts as no run.
 own_run_pid() {
-  local file pid
+  local file pid command
   file="$(run_file)"
   [ -f "$file" ] || return 1
   pid="$(cat "$file" 2>/dev/null)"
   case "$pid" in '' | *[!0-9]*) return 1 ;; esac
   kill -0 "$pid" 2>/dev/null || return 1
+  command="$(ps -o command= -p "$pid" 2>/dev/null)"
+  case "$command" in *start-local*) ;; *) return 1 ;; esac
   printf '%s' "$pid"
 }
 
