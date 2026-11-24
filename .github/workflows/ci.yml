@@ -3,6 +3,11 @@ name: CI
 # Seven independent checks on every pull request and on every push to main.
 # Each job calls one root script; the logic lives in package.json, not here.
 # No secret is used. The database below is throwaway and exists for one run.
+#
+# Every job always starts and reports, so the checks stay required on main. A job that has nothing to
+# check skips its steps and passes: `changed.sh` reads the files of the pull request and decides
+# (documents only: no end-to-end, test, type check, build, size or i18n run). `lint` always runs, because
+# `pnpm format:check` also reads the documents. A push to main runs everything.
 
 on:
   pull_request:
@@ -38,13 +43,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+        with:
+          fetch-depth: 0
+      - id: changed
+        run: bash .github/scripts/changed.sh typecheck >> "$GITHUB_OUTPUT"
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+      - if: steps.changed.outputs.run == 'true'
+        uses: pnpm/action-setup@v4
+      - if: steps.changed.outputs.run == 'true'
+        uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
           cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm typecheck
+      - if: steps.changed.outputs.run == 'true'
+        run: pnpm install --frozen-lockfile
+      - if: steps.changed.outputs.run == 'true'
+        run: pnpm typecheck
 
   tests:
     name: tests
@@ -67,13 +82,23 @@ jobs:
       TEST_DATABASE_URL: postgres://toki:toki-ci-throwaway@localhost:5432/toki_test
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+        with:
+          fetch-depth: 0
+      - id: changed
+        run: bash .github/scripts/changed.sh tests >> "$GITHUB_OUTPUT"
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+      - if: steps.changed.outputs.run == 'true'
+        uses: pnpm/action-setup@v4
+      - if: steps.changed.outputs.run == 'true'
+        uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
           cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm test
+      - if: steps.changed.outputs.run == 'true'
+        run: pnpm install --frozen-lockfile
+      - if: steps.changed.outputs.run == 'true'
+        run: pnpm test
 
   e2e:
     name: end-to-end
@@ -104,17 +129,31 @@ jobs:
       E2E_MAILPIT_URL: http://127.0.0.1:8025
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+        with:
+          fetch-depth: 0
+      - id: changed
+        run: bash .github/scripts/changed.sh e2e >> "$GITHUB_OUTPUT"
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+      - if: steps.changed.outputs.run == 'true'
+        uses: pnpm/action-setup@v4
+      - if: steps.changed.outputs.run == 'true'
+        uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
           cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm exec playwright install --with-deps chromium
-      - run: pnpm test:e2e
-      - run: pnpm test:e2e:sign-in
-      - uses: actions/upload-artifact@v4
-        if: failure()
+      - if: steps.changed.outputs.run == 'true'
+        run: pnpm install --frozen-lockfile
+      - if: steps.changed.outputs.run == 'true'
+        run: pnpm exec playwright install --with-deps chromium
+      - if: steps.changed.outputs.run == 'true'
+        run: pnpm test:e2e
+      - if: steps.changed.outputs.run == 'true'
+        run: pnpm test:e2e:sign-in
+      # Screenshots, videos and traces of every test, passed or failed (the configs keep all of them).
+      # `!cancelled()` runs this after a failed step too.
+      - if: ${{ !cancelled() && steps.changed.outputs.run == 'true' }}
+        uses: actions/upload-artifact@v4
         with:
           name: playwright-results
           path: test-results/
@@ -126,36 +165,66 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+        with:
+          fetch-depth: 0
+      - id: changed
+        run: bash .github/scripts/changed.sh build >> "$GITHUB_OUTPUT"
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+      - if: steps.changed.outputs.run == 'true'
+        uses: pnpm/action-setup@v4
+      - if: steps.changed.outputs.run == 'true'
+        uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
           cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm build
+      - if: steps.changed.outputs.run == 'true'
+        run: pnpm install --frozen-lockfile
+      - if: steps.changed.outputs.run == 'true'
+        run: pnpm build
 
   size:
     name: bundle size
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+        with:
+          fetch-depth: 0
+      - id: changed
+        run: bash .github/scripts/changed.sh size >> "$GITHUB_OUTPUT"
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+      - if: steps.changed.outputs.run == 'true'
+        uses: pnpm/action-setup@v4
+      - if: steps.changed.outputs.run == 'true'
+        uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
           cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm size
+      - if: steps.changed.outputs.run == 'true'
+        run: pnpm install --frozen-lockfile
+      - if: steps.changed.outputs.run == 'true'
+        run: pnpm size
 
   i18n:
     name: i18n
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+        with:
+          fetch-depth: 0
+      - id: changed
+        run: bash .github/scripts/changed.sh i18n >> "$GITHUB_OUTPUT"
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+      - if: steps.changed.outputs.run == 'true'
+        uses: pnpm/action-setup@v4
+      - if: steps.changed.outputs.run == 'true'
+        uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
           cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm i18n:check
+      - if: steps.changed.outputs.run == 'true'
+        run: pnpm install --frozen-lockfile
+      - if: steps.changed.outputs.run == 'true'
+        run: pnpm i18n:check

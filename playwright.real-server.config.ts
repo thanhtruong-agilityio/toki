@@ -16,11 +16,13 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: 0,
   reporter: process.env.CI ? "github" : "list",
+  // One folder for each config: Playwright empties its output folder when a run starts.
+  outputDir: "test-results/real-server",
   use: {
     baseURL: `http://127.0.0.1:${WEB_PORT}`,
-    trace: "retain-on-failure",
-    screenshot: "only-on-failure",
-    video: "retain-on-failure",
+    trace: "on",
+    screenshot: "on",
+    video: "on",
   },
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
   webServer: enabled
