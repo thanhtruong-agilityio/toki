@@ -3931,7 +3931,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #2",
-        "fix": ""
+        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #252."
        },
        "status": "done",
        "issue": 45
@@ -4107,7 +4107,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #21",
-        "fix": ""
+        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #249."
        },
        "status": "done",
        "issue": 23
@@ -4553,7 +4553,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #79",
-        "fix": ""
+        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #248."
        },
        "status": "done",
        "issue": 117
@@ -4573,7 +4573,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #82",
-        "fix": ""
+        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #253."
        },
        "status": "done",
        "issue": 120
@@ -4597,7 +4597,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #84",
-        "fix": ""
+        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #251."
        },
        "status": "done",
        "issue": 122
@@ -4640,7 +4640,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #85",
-        "fix": ""
+        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #250."
        },
        "status": "done",
        "issue": 123
@@ -4731,7 +4731,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #198",
-        "fix": ""
+        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #227."
        },
        "status": "blocked",
        "issue": 205
@@ -4748,7 +4748,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #197",
-        "fix": ""
+        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #229."
        },
        "status": "blocked",
        "issue": 206
@@ -4765,7 +4765,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #200",
-        "fix": ""
+        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #228."
        },
        "status": "blocked",
        "issue": 204
@@ -5031,11 +5031,16 @@
       {
        "id": "064",
        "title": "Hàng đợi việc nền",
-       "scope": "pg-boss, tiến trình worker, thử lại khi lỗi",
+       "scope": "pg-boss, tiến trình worker, thử lại khi lỗi Sở hữu hợp đồng hàng đợi job (`defineJob`, `JobDeps`, worker); các ticket tính năng tự thêm trường `JobDeps` của mình.",
        "size": "M",
        "needs": [
         "005"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #231",
+        "fix": ""
+       }
       }
      ]
     },
@@ -5045,41 +5050,67 @@
       {
        "id": "053",
        "title": "Con trỏ đã đọc",
-       "scope": "Đếm unread theo từng hội thoại, đồng bộ giữa thiết bị. Đã đọc khi hội thoại đang mở, cửa sổ đang được dùng và đã ở cuối danh sách (D-052). Dòng hệ thống màu xám như 'Minh joined' không làm tăng số đếm (D-100); reply trong thread không làm tăng số đếm của channel (F14); rời channel thì xóa số đếm của channel đó (D-133); không ai thấy người khác đã đọc tin hay chưa (D-048) Điền dữ liệu chưa đọc của store phía client (`setUnread`) và thêm số chưa đọc vào câu trả lời bootstrap.",
+       "scope": "Đếm unread theo từng hội thoại, đồng bộ giữa thiết bị. Đã đọc khi hội thoại đang mở, cửa sổ đang được dùng và đã ở cuối danh sách (D-052). Dòng hệ thống màu xám như 'Minh joined' không làm tăng số đếm (D-100); reply trong thread không làm tăng số đếm của channel (F14); rời channel thì xóa số đếm của channel đó (D-133); không ai thấy người khác đã đọc tin hay chưa (D-048) Điền dữ liệu chưa đọc của store phía client (`setUnread`) và thêm số chưa đọc vào câu trả lời bootstrap. Sở hữu con trỏ đọc, `GET /unread` trong bootstrap, `PUT /read` và `readStateAvailable`.",
        "size": "L",
        "needs": [
         "040",
         "041"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #234",
+        "fix": ""
+       }
       },
       {
        "id": "054",
        "title": "Vạch New, badge, bộ lọc",
-       "scope": "Vạch New neo theo tin chưa đọc đầu tiên, không trôi, biến mất ở lần mở kế tiếp (D-052); badge ở danh sách và điều hướng, badge Home chỉ đếm các hội thoại không mute (F08); hội thoại đã mute không hiện số đếm, không in đậm (D-103) nhưng vẫn giữ chấm @ khi công tắc mention trong hội thoại đã mute của người đó đang bật (D-088); tiêu đề tab trình duyệt hiện '(3) Toki' cho mention và DM, và một dấu chấm cho các tin khác (D-122); lọc Unread và Mentions",
+       "scope": "Vạch New neo theo tin chưa đọc đầu tiên, không trôi, biến mất ở lần mở kế tiếp (D-052); badge ở danh sách và điều hướng, badge Home chỉ đếm các hội thoại không mute (F08); hội thoại đã mute không hiện số đếm, không in đậm (D-103) nhưng vẫn giữ chấm @ khi công tắc mention trong hội thoại đã mute của người đó đang bật (D-088); tiêu đề tab trình duyệt hiện '(3) Toki' cho mention và DM, và một dấu chấm cho các tin khác (D-122); lọc Unread và Mentions Vạch New, badge và tiêu đề tab; mã vạch được giữ sau khi mở hội thoại (`newFromId`).",
        "size": "M",
        "needs": [
+        "041",
         "053"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #238",
+        "fix": ""
+       }
       },
       {
        "id": "055",
        "title": "Presence",
-       "scope": "Đang hoạt động, Vắng mặt sau 5 phút không thao tác, Không làm phiền khi Focus; không có Offline riêng; gom nhóm cập nhật (G3, F34)",
+       "scope": "Đang hoạt động, Vắng mặt sau 5 phút không thao tác, Không làm phiền khi Focus; không có Offline riêng; gom nhóm cập nhật (G3, F34) Sở hữu chấm hiện diện và chỗ `MentionTrailing` ở dòng mention; tín hiệu hoạt động của nó tách khỏi con trỏ đọc.",
        "size": "M",
        "needs": [
-        "038"
-       ]
+        "038",
+        "039",
+        "040",
+        "044"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #232",
+        "fix": ""
+       }
       },
       {
        "id": "056",
        "title": "Status",
-       "scope": "Đặt status, mẫu có sẵn, tự xóa theo giờ; lưu rỗng nghĩa là xóa status",
+       "scope": "Đặt status, mẫu có sẵn, tự xóa theo giờ; lưu rỗng nghĩa là xóa status Chữ trạng thái và bộ đếm xoá qua một job; người dùng có `statusText`, `statusClearAt` và thay đổi `person_patch`.",
        "size": "M",
        "needs": [
+        "040",
+        "055",
         "064",
         "093",
         "094"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #239",
+        "fix": ""
+       }
       },
       {
        "id": "057",
@@ -5088,8 +5119,14 @@
        "size": "S",
        "needs": [
         "055",
+        "056",
         "094"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #243",
+        "fix": ""
+       }
       }
      ]
     },
@@ -5099,63 +5136,112 @@
       {
        "id": "058",
        "title": "Kho file",
-       "scope": "Bảng files và attachments trên MinIO (D-014); URL ký sẵn để tải lên và tải về; chỉ người xem được hội thoại mới mở được file của nó; nhận mọi loại file tới 100 MB, server kiểm tra lại, file luôn được tải về chứ không chạy trong trình duyệt (D-095); file đã tải lên mà không gửi thì bị xóa sau 24 giờ (D-130). Bucket cho môi trường dev đã có (TOKI-003); ticket này không tạo lại",
+       "scope": "Bảng files và attachments trên MinIO (D-014); URL ký sẵn để tải lên và tải về; chỉ người xem được hội thoại mới mở được file của nó; nhận mọi loại file tới 100 MB, server kiểm tra lại, file luôn được tải về chứ không chạy trong trình duyệt (D-095); file đã tải lên mà không gửi thì bị xóa sau 24 giờ (D-130). Bucket cho môi trường dev đã có (TOKI-003); ticket này không tạo lại Sở hữu lưu trữ file, vé tải lên, hạn mức và mục file; file đã xoá giữ hàng 45 phút.",
        "size": "L",
        "needs": [
-        "036"
+        "036",
+        "064",
+        "103"
        ],
-       "open": "Có chặn loại file nào không; quét virus"
+       "open": "Có chặn loại file nào không; quét virus",
+       "spec": {
+        "state": "pr",
+        "pr": "PR #233",
+        "fix": ""
+       }
       },
       {
        "id": "059",
        "title": "Đính kèm trong composer",
-       "scope": "Chọn, kéo thả, dán ảnh; mỗi file một thẻ có tiến trình, nút gỡ và Retry; tối đa 10 file mỗi tin (D-042); lỗi quá 100 MB (D-014); chỉ gửi được khi mọi file đã tải xong (F18); khi mất kết nối thì chặn tải lên và nói rõ lý do (D-060). Sở hữu `.fchip`.",
+       "scope": "Chọn, kéo thả, dán ảnh; mỗi file một thẻ có tiến trình, nút gỡ và Retry; tối đa 10 file mỗi tin (D-042); lỗi quá 100 MB (D-014); chỉ gửi được khi mọi file đã tải xong (F18); khi mất kết nối thì chặn tải lên và nói rõ lý do (D-060). Sở hữu `.fchip`. Sở hữu `formatFileSize` trong `@toki/i18n` và mã tải lên trong `platform.files.upload`.",
        "size": "M",
        "needs": [
         "043",
-        "058"
-       ]
+        "058",
+        "093",
+        "103"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #244",
+        "fix": ""
+       }
       },
       {
        "id": "060",
        "title": "Thumbnail ảnh",
-       "scope": "Worker tạo ảnh thu nhỏ, cập nhật tin khi xong",
+       "scope": "Worker tạo ảnh thu nhỏ, cập nhật tin khi xong Tạo một ảnh thu nhỏ 1040 px trong một job; module files chỉ có một cửa vào công khai và chỉ nạp thư viện ảnh trong job.",
        "size": "M",
        "needs": [
         "058",
+        "062",
         "064"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #245",
+        "fix": ""
+       }
       },
       {
        "id": "061",
        "title": "Link preview",
-       "scope": "Worker tải tiêu đề và mô tả, chặn địa chỉ nội bộ; người gửi gỡ được thẻ xem trước (F12)",
+       "scope": "Worker tải tiêu đề và mô tả, chặn địa chỉ nội bộ; người gửi gỡ được thẻ xem trước (F12) Lấy tiêu đề trang trong một job với bộ chặn địa chỉ ba lớp; thẻ của nó được vẽ qua điểm nối của TOKI-062.",
        "size": "M",
        "needs": [
+        "040",
+        "042",
+        "047",
         "049",
+        "062",
         "064"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #241",
+        "fix": ""
+       }
       },
       {
        "id": "062",
        "title": "Thẻ đính kèm và modal xem",
-       "scope": "Thẻ file, ảnh, link; modal chi tiết có Open in conversation, Copy link và Download; file luôn được tải về chứ không chạy trong trình duyệt (D-095); link tới file chỉ mở được với người xem được hội thoại chứa nó (F18). Sở hữu `.card` và `.fic`.",
+       "scope": "Thẻ file, ảnh, link; modal chi tiết có Open in conversation, Copy link và Download; file luôn được tải về chứ không chạy trong trình duyệt (D-095); link tới file chỉ mở được với người xem được hội thoại chứa nó (F18). Sở hữu `.card` và `.fic`. Sở hữu cửa sổ tệp đính kèm, `.card` và `.fic`, điểm nối thẻ liên kết và quy tắc gom nhóm cho tệp; mở tin nhắn qua hook của TOKI-068.",
        "size": "M",
        "needs": [
+        "042",
         "049",
+        "052",
         "058"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #240",
+        "fix": ""
+       }
       },
       {
        "id": "063",
        "title": "Tab Files và section Files",
-       "scope": "Lọc theo loại, tìm, xem dạng danh sách và lưới; thêm file và ảnh mẫu của prototype vào dữ liệu seed",
+       "scope": "Lọc theo loại, tìm, xem dạng danh sách và lưới; thêm file và ảnh mẫu của prototype vào dữ liệu seed Sở hữu `GET /api/v1/shared-items` cho tìm Files và tab Files & links (giữa Messages và Pinned).",
        "size": "M",
        "needs": [
+        "038",
+        "040",
+        "041",
+        "050",
+        "058",
+        "059",
+        "060",
+        "061",
         "062",
         "081",
         "094"
        ],
+       "spec": {
+        "state": "merged",
+        "pr": "PR #256",
+        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #263."
+       },
        "status": "blocked",
        "issue": 259
       },
@@ -5164,7 +5250,12 @@
        "title": "Cảnh báo đầy đĩa và từ chối tải lên",
        "scope": "Không có hạn mức. Khi đĩa đầy 80% thì Admin thấy cảnh báo ở trang Admin; tới 95% thì từ chối tải lên kèm lý do, nhắn tin vẫn chạy bình thường (D-106)",
        "size": "S",
-       "needs": []
+       "needs": [],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #230",
+        "fix": ""
+       }
       }
      ]
     },
@@ -5174,43 +5265,85 @@
       {
        "id": "069",
        "title": "Chỉ mục tìm kiếm tiếng Việt",
-       "scope": "Cột tìm kiếm đã bỏ dấu, chỉ mục GIN",
+       "scope": "Cột tìm kiếm đã bỏ dấu, chỉ mục GIN Cột tìm kiếm sinh tự động với chỉ mục GIN và phép gấp chung `searchWords`; không viết handler riêng.",
        "size": "M",
        "needs": [
-        "036"
+        "036",
+        "037"
        ],
+       "spec": {
+        "state": "merged",
+        "pr": "PR #235",
+        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #237."
+       },
        "status": "blocked",
        "issue": 236
       },
       {
        "id": "070",
        "title": "API tìm kiếm",
-       "scope": "Hội thoại, người, tin nhắn; tiếng Việt khớp cả khi gõ có dấu lẫn không dấu (D-015); 20 kết quả mỗi loại, xem thêm khi yêu cầu (D-112); chỉ trả tin trong hội thoại người đó là thành viên, private channel không bao giờ hiện với người ngoài (D-116, D-051); không liệt kê người đã bị vô hiệu hóa (F41)",
+       "scope": "Hội thoại, người, tin nhắn; tiếng Việt khớp cả khi gõ có dấu lẫn không dấu (D-015); 20 kết quả mỗi loại, xem thêm khi yêu cầu (D-112); chỉ trả tin trong hội thoại người đó là thành viên, private channel không bao giờ hiện với người ngoài (D-116, D-051); không liệt kê người đã bị vô hiệu hóa (F41) Tìm trong hội thoại, kênh, người và tin nhắn; tìm trong một hội thoại thuộc TOKI-072.",
        "size": "M",
        "needs": [
+        "029",
+        "036",
+        "037",
         "069"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #242",
+        "fix": ""
+       }
       },
       {
        "id": "071",
        "title": "Command palette",
-       "scope": "Ctrl+K, phím mũi tên; kết quả theo nhóm: hội thoại, người, lệnh, rồi tin nhắn, 20 mỗi nhóm, xem thêm khi yêu cầu (D-112); xếp hạng: khớp chính xác, khớp đầu từ, chứa từ khóa, rồi khớp gần đúng; lệnh nhanh theo danh sách ở F29, 'Create channel' chỉ hiện với Admin (D-084, D-151); trên khung hẹp mở từ ô tìm ở Home và từ sheet More (D-053)",
+       "scope": "Ctrl+K, phím mũi tên; kết quả theo nhóm: hội thoại, người, lệnh, rồi tin nhắn, 20 mỗi nhóm, xem thêm khi yêu cầu (D-112); xếp hạng: khớp chính xác, khớp đầu từ, chứa từ khóa, rồi khớp gần đúng; lệnh nhanh theo danh sách ở F29, 'Create channel' chỉ hiện với Admin (D-084, D-151); trên khung hẹp mở từ ô tìm ở Home và từ sheet More (D-053) Palette tìm mọi hội thoại; tin nhắn mở qua hook của TOKI-068; tìm Files thuộc TOKI-063.",
        "size": "M",
        "needs": [
+        "008",
         "014",
-        "070"
+        "015",
+        "017",
+        "032",
+        "033",
+        "034",
+        "041",
+        "043",
+        "050",
+        "056",
+        "057",
+        "069",
+        "070",
+        "093",
+        "098"
        ],
+       "spec": {
+        "state": "merged",
+        "pr": "PR #255",
+        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #262."
+       },
        "status": "blocked",
        "issue": 260
       },
       {
        "id": "072",
        "title": "Tìm trong hội thoại",
-       "scope": "Ô tìm ở header, lọc tin theo từ khóa",
-       "size": "S",
+       "scope": "Ô tìm ở header, lọc tin theo từ khóa Route tìm trong một hội thoại riêng; kết quả là trả lời mở thread của nó theo quy tắc thay thế của TOKI-045.",
+       "size": "M",
        "needs": [
+        "041",
+        "043",
+        "045",
+        "054",
         "070"
        ],
+       "spec": {
+        "state": "merged",
+        "pr": "PR #257",
+        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #264."
+       },
        "status": "blocked",
        "issue": 258
       }
@@ -5308,6 +5441,8 @@
        "scope": "API, việc nền kết thúc đúng giờ, dải trạng thái, tổng kết những gì đã đến. Giữ lại mọi thông báo kể cả reminder; bật Focus lần nữa thì gia hạn; kết thúc thì trả lại status cũ (NR6). Banner của nó dùng `.strip`, do TOKI-082 ở M6 sở hữu: hoặc chuyển chủ sang ticket ở M5, hoặc ticket này tự dựng class (cần quyết).",
        "size": "M",
        "needs": [
+        "055",
+        "056",
         "064",
         "073"
        ]
@@ -5359,6 +5494,7 @@
        "size": "S",
        "needs": [
         "055",
+        "056",
         "094"
        ]
       },
@@ -5398,6 +5534,7 @@
        "size": "M",
        "needs": [
         "015",
+        "056",
         "071",
         "076"
        ]

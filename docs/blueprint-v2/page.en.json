@@ -11025,7 +11025,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #2",
-        "fix": ""
+        "fix": "Later changes and review fixes wait in PR #252."
        },
        "status": "done",
        "issue": 45
@@ -11161,7 +11161,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #21",
-        "fix": ""
+        "fix": "Later changes and review fixes wait in PR #249."
        },
        "status": "done",
        "issue": 23
@@ -11499,7 +11499,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #79",
-        "fix": ""
+        "fix": "Later changes and review fixes wait in PR #248."
        },
        "status": "done",
        "issue": 117
@@ -11512,7 +11512,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #82",
-        "fix": ""
+        "fix": "Later changes and review fixes wait in PR #253."
        },
        "status": "done",
        "issue": 120
@@ -11525,7 +11525,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #84",
-        "fix": ""
+        "fix": "Later changes and review fixes wait in PR #251."
        },
        "status": "done",
        "issue": 122
@@ -11551,7 +11551,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #85",
-        "fix": ""
+        "fix": "Later changes and review fixes wait in PR #250."
        },
        "status": "done",
        "issue": 123
@@ -11623,7 +11623,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #198",
-        "fix": ""
+        "fix": "Later changes and review fixes wait in PR #227."
        },
        "status": "blocked",
        "issue": 205
@@ -11636,7 +11636,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #197",
-        "fix": ""
+        "fix": "Later changes and review fixes wait in PR #229."
        },
        "status": "blocked",
        "issue": 206
@@ -11649,7 +11649,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #200",
-        "fix": ""
+        "fix": "Later changes and review fixes wait in PR #228."
        },
        "status": "blocked",
        "issue": 204
@@ -11851,9 +11851,13 @@
       {
        "id": "TOKI-064",
        "title": "Background job queue",
-       "scope": "pg-boss, the worker process, retries on failure",
+       "scope": "pg-boss, the worker process, retries on failure Owns the job queue contract (`defineJob`, `JobDeps`, the worker); feature tickets add their own `JobDeps` fields.",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #231",
+        "fix": ""
+       }
       }
      ]
     },
@@ -11868,37 +11872,57 @@
       {
        "id": "TOKI-053",
        "title": "Read pointer",
-       "scope": "Unread counts per conversation, synced across devices. Read when the conversation is open, the window is in use and the list is at the bottom (D-052). Grey system lines such as 'Minh joined' raise no count (D-100); thread replies do not raise the channel's count (F14); leaving a channel clears its count (D-133); nobody sees who has read a message (D-048) Fills the unread data of the client store (`setUnread`) and adds unread counts to the bootstrap answer.",
+       "scope": "Unread counts per conversation, synced across devices. Read when the conversation is open, the window is in use and the list is at the bottom (D-052). Grey system lines such as 'Minh joined' raise no count (D-100); thread replies do not raise the channel's count (F14); leaving a channel clears its count (D-133); nobody sees who has read a message (D-048) Fills the unread data of the client store (`setUnread`) and adds unread counts to the bootstrap answer. Owns the read pointer, `GET /unread` in bootstrap, `PUT /read` and `readStateAvailable`.",
        "size": "L",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #234",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-054",
        "title": "New divider, badges, filters",
-       "scope": "The New divider anchored to the first unread message, never drifting, gone on the next open (D-052); badges in the list and navigation, the Home badge counting unmuted conversations only (F08); a muted conversation shows no count and no bold (D-103) but keeps the @ dot while the person's switch for mentions in muted conversations is on (D-088); the browser tab title reads '(3) Toki' for mentions and DMs and shows a dot for anything else (D-122); Unread and Mentions filters",
+       "scope": "The New divider anchored to the first unread message, never drifting, gone on the next open (D-052); badges in the list and navigation, the Home badge counting unmuted conversations only (F08); a muted conversation shows no count and no bold (D-103) but keeps the @ dot while the person's switch for mentions in muted conversations is on (D-088); the browser tab title reads '(3) Toki' for mentions and DMs and shows a dot for anything else (D-122); Unread and Mentions filters Divider, badges and tab title; the divider id is kept after the conversation opens (`newFromId`).",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #238",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-055",
        "title": "Presence",
-       "scope": "Active, Away after 5 minutes without activity, Do not disturb during Focus; no separate Offline; batched updates (D-036, F34)",
+       "scope": "Active, Away after 5 minutes without activity, Do not disturb during Focus; no separate Offline; batched updates (D-036, F34) Owns the presence dot and the mention-row `MentionTrailing` slot; its activity signal is separate from the read pointer's.",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #232",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-056",
        "title": "Status",
-       "scope": "Set a status, presets, clear on a timer; saving empty clears it",
+       "scope": "Set a status, presets, clear on a timer; saving empty clears it Status text and its clear timer as a job; the person gets `statusText` and `statusClearAt` and a `person_patch` change.",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #239",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-057",
        "title": "Profile panel",
        "scope": "Initials avatar on a colour, no picture (D-118); name, job title, presence, status, local time from the time zone the person set, shown with a UTC offset (D-144); a Message button; a deactivated person is labelled 'Deactivated' and has no Message button (F41); your own profile has Set status and Edit profile (F31). Owns Back closing the profile panel (D-089).",
        "size": "S",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #243",
+        "fix": ""
+       }
       }
      ]
     },
@@ -11912,44 +11936,68 @@
       {
        "id": "TOKI-058",
        "title": "File storage",
-       "scope": "files and attachments tables on MinIO (D-014); signed URLs for upload and download; only people who can see the conversation can open its files; every file type accepted up to 100 MB, checked on the server, always downloaded and never run in the browser (D-095); a file uploaded but never sent is deleted after 24 hours (D-130). The development bucket already exists (TOKI-003); this ticket does not create it",
+       "scope": "files and attachments tables on MinIO (D-014); signed URLs for upload and download; only people who can see the conversation can open its files; every file type accepted up to 100 MB, checked on the server, always downloaded and never run in the browser (D-095); a file uploaded but never sent is deleted after 24 hours (D-130). The development bucket already exists (TOKI-003); this ticket does not create it Owns file storage, the upload ticket, the quota and the file entry; a removed file keeps its row 45 minutes.",
        "size": "L",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #233",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-059",
        "title": "Attachments in the composer",
-       "scope": "Pick, drag and drop, paste an image; one card per file with progress, remove and Retry; up to 10 files per message (D-042); the over-100-MB error (D-014); Send waits until every file has uploaded (F18); uploading is blocked while offline, with the reason (D-060). Owns `.fchip`.",
+       "scope": "Pick, drag and drop, paste an image; one card per file with progress, remove and Retry; up to 10 files per message (D-042); the over-100-MB error (D-014); Send waits until every file has uploaded (F18); uploading is blocked while offline, with the reason (D-060). Owns `.fchip`. Owns `formatFileSize` in `@toki/i18n` and the upload code in `platform.files.upload`.",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #244",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-060",
        "title": "Image thumbnails",
-       "scope": "A worker creates thumbnails and updates the message when done",
+       "scope": "A worker creates thumbnails and updates the message when done Makes one 1040 px thumbnail in a job; the files module keeps one public entry and loads the image library only inside the job.",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #245",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-061",
        "title": "Link previews",
-       "scope": "A worker fetches title and description and refuses internal addresses; the sender can remove the card (F12)",
+       "scope": "A worker fetches title and description and refuses internal addresses; the sender can remove the card (F12) Fetches page titles in a job with a three-layer address guard; its cards are drawn through the seam of TOKI-062.",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #241",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-062",
        "title": "Attachment cards and viewer modal",
-       "scope": "File, image and link cards; the detail modal with Open in conversation, Copy link and Download; a file is always downloaded, never run in the browser (D-095); a file link opens only for people who can see its conversation (F18). Owns `.card` and `.fic`.",
+       "scope": "File, image and link cards; the detail modal with Open in conversation, Copy link and Download; a file is always downloaded, never run in the browser (D-095); a file link opens only for people who can see its conversation (F18). Owns `.card` and `.fic`. Owns the attachment window, `.card` and `.fic`, the link-card seam and the grouping rule for files; a message opens through the hook of TOKI-068.",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #240",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-063",
        "title": "Files tab and Files section",
-       "scope": "Filter by kind, search, list and grid views; adds the prototype's sample files and images to the seed data",
+       "scope": "Filter by kind, search, list and grid views; adds the prototype's sample files and images to the seed data Owns `GET /api/v1/shared-items` for Files search and the Files & links tab (between Messages and Pinned).",
        "size": "M",
-       "spec": null,
+       "spec": {
+        "state": "merged",
+        "pr": "PR #256",
+        "fix": "Later changes and review fixes wait in PR #263."
+       },
        "status": "blocked",
        "issue": 259
       },
@@ -11958,7 +12006,11 @@
        "title": "Disk-space warning and upload refusal",
        "scope": "No quota. When the disk is 80% full Admins see a warning on the Admin page; at 95% uploads are refused with the reason while messaging keeps working (D-106)",
        "size": "S",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #230",
+        "fix": ""
+       }
       }
      ]
     },
@@ -11971,34 +12023,50 @@
       {
        "id": "TOKI-069",
        "title": "Vietnamese search index",
-       "scope": "A search column with diacritics removed, and a GIN index",
+       "scope": "A search column with diacritics removed, and a GIN index A generated search column with a GIN index and the shared fold `searchWords`; it writes no handler of its own.",
        "size": "M",
-       "spec": null,
+       "spec": {
+        "state": "merged",
+        "pr": "PR #235",
+        "fix": "Later changes and review fixes wait in PR #237."
+       },
        "status": "blocked",
        "issue": 236
       },
       {
        "id": "TOKI-070",
        "title": "Search API",
-       "scope": "Conversations, people, messages; Vietnamese matches with or without diacritics (D-015); 20 results per kind, more on request (D-112); messages only from conversations the person belongs to, and private channels never returned to outsiders (D-116, D-051); deactivated people are not listed (F41)",
+       "scope": "Conversations, people, messages; Vietnamese matches with or without diacritics (D-015); 20 results per kind, more on request (D-112); messages only from conversations the person belongs to, and private channels never returned to outsiders (D-116, D-051); deactivated people are not listed (F41) Search over conversations, channels, people and messages; single-conversation search belongs to TOKI-072.",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #242",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-071",
        "title": "Command palette",
-       "scope": "Ctrl+K, arrow keys; results grouped as conversations, people, commands, then messages, 20 per group with more on request (D-112); ranking: exact match, word-start, contains, then fuzzy; quick actions as listed in F29, with 'Create channel' offered to Admins only (D-084, D-151); on narrow screens opened from the search field on Home and from the More sheet (D-053)",
+       "scope": "Ctrl+K, arrow keys; results grouped as conversations, people, commands, then messages, 20 per group with more on request (D-112); ranking: exact match, word-start, contains, then fuzzy; quick actions as listed in F29, with 'Create channel' offered to Admins only (D-084, D-151); on narrow screens opened from the search field on Home and from the More sheet (D-053) The palette searches every conversation; messages open through the hook of TOKI-068; Files search is TOKI-063's.",
        "size": "M",
-       "spec": null,
+       "spec": {
+        "state": "merged",
+        "pr": "PR #255",
+        "fix": "Later changes and review fixes wait in PR #262."
+       },
        "status": "blocked",
        "issue": 260
       },
       {
        "id": "TOKI-072",
        "title": "Search inside a conversation",
-       "scope": "A search field in the header that filters messages",
-       "size": "S",
-       "spec": null,
+       "scope": "A search field in the header that filters messages Its own single-conversation search route; a reply result opens its thread with the replace rule of TOKI-045.",
+       "size": "M",
+       "spec": {
+        "state": "merged",
+        "pr": "PR #257",
+        "fix": "Later changes and review fixes wait in PR #264."
+       },
        "status": "blocked",
        "issue": 258
       }
