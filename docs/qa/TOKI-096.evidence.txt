@@ -27,3 +27,5 @@ T6 3 4 0 3
 T9 0 0 0
 T11 2 1 0 2
 T12 8
+
+T5 0 20   (second run, strengthened check: run by the QA, Thanh Truong, in their own terminal on 2026-11-25 from the main checkout with their .env: V=ff5bb3be bash docs/qa/TOKI-096.checks.sh T5; pasted by the QA, count only, no name and no value; 20 required rows were read, none unset or empty)
