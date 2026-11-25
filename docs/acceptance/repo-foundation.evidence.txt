@@ -87,3 +87,15 @@ TOKI-005: - T10 is Fail;- T12 is Blocked, which is not passed;
 TOKI-006: ok - passes QA;
 TOKI-007: - T3 is Blocked, which is not passed;- T6 is Blocked, which is not passed;- T11 is Fail;- T19 is Fail;
 TOKI-008: - T22 is Blocked, which is not passed;
+
+## The six script tests of the flow (run on 2026-11-25 after the record existed; none was changed)
+acceptance-ready.test.sh ok
+changed.test.sh ok
+qa-ready.test.sh ok
+review-request.test.sh ok
+spec-ready.test.sh ok
+trace.test.sh ok
+
+## Not done
+The plan asked for a run of the checks on a mutated copy; it was not made. A4 is its own pair: the violating files exit non-zero and the clean copy exits 0.
+The plan listed TOKI-007 T1, T8, T9 and T13 as re-runs; they were not re-run (their history window is tied to the delivery commit); A2, A2W and A3 are used for SC2 instead.
