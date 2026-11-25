@@ -1,0 +1,18 @@
+# Evidence for docs/qa/TOKI-001.md
+Version: f011a9c (merge commit of PR #54). Run on 2026-11-25 by Claude for the QA, Thanh Truong. Each line is the output of: V=f011a9c bash docs/qa/TOKI-001.checks.sh <ID>. Run twice, the lines are identical. The last line shows that the script left the repository and its worktree list as it found them.
+
+T1 1 0
+T2 8 0
+T3 0
+T4 8 24 0
+T5 4 8 0
+T6 0
+T7 8 8
+T8 22.x 22.x error 22
+T9 1 1 0
+  first error line: Error: ERR_PNPM_BAD_RUNTIME_VERSION
+T10 1 1 1 0
+T11 2 2
+T12 1 2 0 0
+T13 1 0 0
+CLEAN worktrees same status same
