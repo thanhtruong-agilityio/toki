@@ -1,0 +1,53 @@
+# Evidence for docs/qa/TOKI-002.md
+
+## First run (checks before the verifier findings of TOKI-113)
+T1, T2, T4, T6, T10, T13, T15 and T16 here came from the weaker checks and are not the evidence of the rows as they now read. T15 was first strengthened with a wrong expectation (it compared the globals with the language built-ins as well, which come from `ecmaVersion`, and gave `T15 7 7 0`); the check was corrected before the QA's second approval.
+Rows T1 to T4 and T6 to T16 are unchanged by the later correction and keep these lines. T5 here was the old combined row for R3 and R4 (`T5 0 0`: format check exit code, then lint exit code); it is replaced by T5 (R3) and T17 (R4) below, which the QA approved again before their second run.
+Version: 6e7f0fa (merge commit of PR #77). Run on 2026-11-25 by Claude for the QA, Thanh Truong. Each line is the output of: V=6e7f0fa bash docs/qa/TOKI-002.checks.sh <ID>. Run twice, the lines are identical. The last line shows that the script left the repository and its worktree list as it found them.
+
+T1 0 1
+T2 3 1
+T3 1
+T4 0 1 1
+T5 0 0
+T6 60 60 4
+T7 0 15
+T8 24 24
+T9 0 12
+T10 2 2 1
+T11 3 3
+T12 1 1 1
+T13 15 15
+T14 0
+T15 7 7 4
+T16 5 5 5
+CLEAN worktrees same status same
+
+## Second run (T5 for R3 and the new T17 for R4, re-approved by the QA in chat on 2026-11-25)
+Run by Claude for the QA on 2026-11-25: V=6e7f0fa bash docs/qa/TOKI-002.checks.sh T5 T17. Run twice, the lines are identical.
+
+T5 0
+T17 0
+CLEAN worktrees same status same
+
+## Second run (strengthened checks; rows with a changed Expected re-approved by the QA in chat on 2026-11-25)
+Run by Claude for the QA on 2026-11-25: V=6e7f0fa bash docs/qa/TOKI-002.checks.sh (all rows). Run twice, the lines are identical.
+
+T1 0 3 1
+T2 7 1
+T3 1
+T4 0 1 1 0
+T5 0
+T6 60 60 4 4
+T7 0 15
+T8 24 24
+T9 0 12
+T10 3 3 2
+T11 3 3
+T12 1 1 1
+T13 19 19
+T14 0
+T15 7 7 4
+T16 5 5 5
+T17 0
+CLEAN worktrees same status same
