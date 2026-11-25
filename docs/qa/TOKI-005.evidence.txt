@@ -1,4 +1,7 @@
 # Evidence for docs/qa/TOKI-005.md
+
+## First run (checks before the verifier findings of TOKI-116)
+T1 and T13 here came from weaker checks and are not the evidence of the rows as they now read; T10's evidence is the second run below (the first run printed only the total). The other rows keep their lines.
 Version: b304159 (merge commit of PR #128). Run on 2026-11-25 by Claude for the QA, Thanh Truong. Each line is the output of: V=b304159 bash docs/qa/TOKI-005.checks.sh <ID>. Run twice, the lines are identical. T12 is run by the QA by hand. The last line shows that the script left the repository, its worktree list, the processes it started and the temporary PostgreSQL as it found them, and that its temporary folder was removed.
 
 T1 1 1
@@ -18,3 +21,9 @@ T14 1 1 1 1 0
 T15 1 1 1 1 1 1
 T16 1 1 1 200
 CLEAN worktrees same status same processes 0 postgres-left 0 temporary-folder removed
+
+## Compared with main on 2026-11-25 (read-only commands; nothing here is a result of a row)
+git ls-tree -r --name-only github/main -- apps/server/migrations | grep -c '\.sql$'  ->  5
+git ls-tree -r --name-only github/main -- apps/server/src/modules | grep -c 'schema.ts$'  ->  5
+subject of the commit that added the second migration (0001_*.sql): feat(server): add the users, login_codes, sessions and devices tables (TOKI-019)
+git show github/main:apps/server/src/db/README.md | grep -c 'forward-only'  ->  2

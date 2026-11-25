@@ -84,6 +84,8 @@ import { loadConfig } from "./src/config.js";
 import { createDb } from "./src/db/client.js";
 import { migrationsFolder, runMigrations } from "./src/db/migrate.js";
 import { workspaces } from "./src/modules/workspace/schema.js";
+import { createThrowawayDb } from "./src/test/throwaway-db.js";
+import net from "node:net";
 const base = process.env.QA_PG as string;            // postgres://qa@127.0.0.1:PORT
 const dead = process.env.QA_DEAD as string;          // a loopback port where nothing listens
 const tmp = process.env.QA_TMP as string;
@@ -93,13 +95,31 @@ async function admin(q: string) { const a = raw("postgres"); try { await a.unsaf
 async function fresh(name: string) { await admin(`create database ${name}`); return `${base}/${name}`; }
 const msgs = (e: any) => { const o: string[] = []; for (let x = e; x instanceof Error; x = (x as any).cause) o.push(x.message + " " + ((x as any).code ?? "")); return o.join(" | "); };
 
-// T1: a client from the value of the configuration module, select 1
+// T1: a client from the value of the configuration module, select 1; it connects when first used
 try {
   const url = await fresh("h1");
   const { database } = loadConfig({ DATABASE_URL: url }, ["database"]);
   const { db, close } = createDb(database.url);
-  const rows: any = await db.execute("select 1 as one"); out.t1 = rows[0]?.one; await close();
+  const rows: any = await db.execute("select 1 as one"); await close();
+  // a counting listener: building the client opens no connection, the first query does
+  let conns = 0;
+  const srv = net.createServer((sock) => { conns++; sock.destroy(); });
+  await new Promise<void>((res) => srv.listen(0, "127.0.0.1", () => res()));
+  const port = (srv.address() as any).port;
+  const built = createDb(`postgres://u:p@127.0.0.1:${port}/x`);
+  await new Promise((r) => setTimeout(r, 400));
+  const afterBuild = conns;
+  await Promise.race([built.db.execute("select 1").catch(() => {}), new Promise((r) => setTimeout(r, 1500))]);
+  const afterQuery = conns;
+  await built.close().catch(() => {}); srv.close();
+  out.t1 = [rows[0]?.one, afterBuild, afterQuery >= 1 ? 1 : 0];
 } catch (e) { out.t1 = ["error"]; }
+// T13: the loopback guard refuses before it opens a connection
+try {
+  const t0 = Date.now(); let msg = "";
+  try { await createThrowawayDb("postgres://qa@192.0.2.1:5432/postgres"); } catch (e: any) { msg = String(e.message); }
+  out.t13 = [/not a loopback address/.test(msg) ? 1 : 0, Date.now() - t0 < 500 ? 1 : 0];
+} catch (e) { out.t13 = ["error"]; }
 // T4: two migrations, the second depends on the first, apply in order
 try {
   const url = await fresh("h4"); const folder = join(tmp, "two"); mkdirSync(folder, { recursive: true });
@@ -186,11 +206,10 @@ hrow() { # $1 row id, $2 jq path
 t1() {
   need_pg T1 || return
   harness || { echo "T1 the harness did not run (Blocked)"; return; }
-  local one files
-  one=$(hval '.t1')
-  # the test files that read the development value from the environment
-  files=$(git grep -l 'process\.env\.DATABASE_URL' "$V" -- apps/server 2>/dev/null | grep -c '\.test\.ts$')
-  echo "T1 $one $files"
+  local files names
+  files=$(git grep -l 'process\.env\.DATABASE_URL' "$V" -- apps/server 2>/dev/null | grep '\.test\.ts$' | sed "s#^$V:apps/server/src/db/##")
+  names=$(printf '%s' "$files" | tr '\n' ' ' | sed 's/ $//')
+  echo "T1 $(hval '.t1[0]') $(printf '%s\n' "$files" | grep -c .) $names $(hval '.t1[1]') $(hval '.t1[2]')"
 }
 t2() {
   need T2 || return
@@ -244,6 +263,9 @@ t10() {
   for f in $files; do hits=$((hits + $(doc "$f" | grep -cE 'postgres(ql)?://[^[:space:]/:@]+:[^[:space:]@]+@'))); done
   while IFS= read -r line; do [ -n "$line" ] || continue; rows=$((rows + 1)); [ -n "${line#*=}" ] && withval=$((withval + 1)); done <<< "$(doc .env.example | grep -E '^(DATABASE_URL|TEST_DATABASE_URL)=')"
   echo "T10 $hits $rows $withval"
+  for f in $files; do
+    doc "$f" | grep -oE 'postgres(ql)?://[^[:space:]/:@]+:[^[:space:]@]+@[^[:space:]/"'"'"'`]+' | sed -E 's#^[^@]*@##' | sed "s#^#  match in $f at host:port/db #"
+  done
 }
 t11() {
   local r steps=0 roll=0 p
@@ -268,7 +290,8 @@ t13() {
   grep -q 'not a loopback address' "$BASE/t13c" && m3=1
   ( cd "$WT" && env -i PATH="$NODEPATH" HOME="$HOME" TMPDIR="$BASE" DATABASE_URL="$(dburl "$dev")" corepack pnpm --filter @toki/server test ) >"$BASE/t13d" 2>&1; rc4=$?
   grep -q 'TEST_DATABASE_URL is not set' "$BASE/t13d" && m4=1
-  echo "T13 $rc1 $rc2 $marker $left $([ "$rc3" != 0 ] && echo 1 || echo 0) $m3 $([ "$rc4" != 0 ] && [ "$m4" = 1 ] && echo 1 || echo 0)"
+  harness || { echo "T13 the harness did not run (Blocked)"; return; }
+  echo "T13 $rc1 $rc2 $marker $left $([ "$rc3" != 0 ] && echo 1 || echo 0) $m3 $([ "$rc4" != 0 ] && [ "$m4" = 1 ] && echo 1 || echo 0) $(hval '.t13 | join(" ")' | awk '{print ($1 == 1 && $2 == 1) ? 1 : 0}')"
 }
 t14() {
   need T14 || return
