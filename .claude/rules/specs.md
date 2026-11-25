@@ -21,5 +21,7 @@ Each statement is followed by its source. All of them are rules of this project.
   Source: `.github/workflows/spec-ticket.yml` and `.github/scripts/spec-ticket.sh`.
 - The exact rule is the script, not this file. Check a spec with `/spec-check` or `bash .github/scripts/spec-ready.sh <spec>` before the pull request.
   Source: `.github/scripts/spec-ready.sh` and its test `.github/scripts/spec-ready.test.sh`.
+- The Success Criteria of an outcome are written in its acceptance record, `docs/acceptance/<slug>.md`, not in an intent or a spec, and are confirmed by the BA before any ticket of the outcome is tested. The one-ticket intent files get no Success Criteria section and are not edited for this. A requirement of a spec is what its ticket's QA record names in its `Requirement` column, so number requirements `R1`, `R2`, ... and keep each to one behavior.
+  Source: `docs/specs/2026-11-24-ba-qa-acceptance-design.md`, R2, R7 and concern 7.
 - Use the logical statuses of `docs/ticket-config.yml` (`intent`, `blocked`, `spec-review`, `accepted`, `in-dev`, `in-review`, `in-qa`, `done`); do not write a tracker status name.
   Source: `.claude/rules/ticket.md`.
