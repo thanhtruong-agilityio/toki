@@ -62,6 +62,10 @@
     {
       "at": "2026-11-25T07:21:08Z",
       "stage": "check"
+    },
+    {
+      "at": "2026-11-25T07:28:59Z",
+      "stage": "drift"
     }
   ],
   "key": "TOKI-109",
@@ -74,10 +78,10 @@
   "spec_paths": [
     "docs/specs/2026-11-24-ui-parity-check-design.md"
   ],
-  "stage": "check",
+  "stage": "drift",
   "tier": "M",
   "verifier": {
-    "result": "FAIL",
-    "round": 1
+    "result": "PASS",
+    "round": 2
   }
 }
