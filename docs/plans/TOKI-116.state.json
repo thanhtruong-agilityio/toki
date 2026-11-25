@@ -1,0 +1,49 @@
+{
+  "approved_auto": false,
+  "base": "github/main",
+  "branch": "docs/toki-116-db-qa",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-25T03:00:22Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-25T03:00:23Z",
+      "stage": "explore"
+    },
+    {
+      "at": "2026-11-25T03:01:33Z",
+      "stage": "plan"
+    },
+    {
+      "at": "2026-11-25T03:03:11Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-25T03:03:11Z",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-25T03:06:52Z",
+      "stage": "check"
+    }
+  ],
+  "key": "TOKI-116",
+  "main_sha": "78297555e90c35ee721abd95f4eb6399a23f4aa7",
+  "metrics": {},
+  "mode": "auto-to-check",
+  "plan_approved": true,
+  "plan_hash": "8e22c379cc9c096487bdd335271c06adb86d924083f728bffdbdfaa759d8c3cc",
+  "spec_commit": "2e3c0c5393f352652e4961fa4d111af09b917b5a",
+  "spec_paths": [
+    "docs/specs/2026-11-25-database-migrations-qa-design.md"
+  ],
+  "stage": "check",
+  "tier": "M",
+  "verifier": {
+    "result": "PASS",
+    "round": 2
+  }
+}
