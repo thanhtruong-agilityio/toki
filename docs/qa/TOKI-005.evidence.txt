@@ -27,3 +27,27 @@ git ls-tree -r --name-only github/main -- apps/server/migrations | grep -c '\.sq
 git ls-tree -r --name-only github/main -- apps/server/src/modules | grep -c 'schema.ts$'  ->  5
 subject of the commit that added the second migration (0001_*.sql): feat(server): add the users, login_codes, sessions and devices tables (TOKI-019)
 git show github/main:apps/server/src/db/README.md | grep -c 'forward-only'  ->  2
+
+## Second run (strengthened checks; T1 and T13 re-approved by the QA in chat on 2026-11-25)
+Run by Claude for the QA on 2026-11-25: V=b304159 bash docs/qa/TOKI-005.checks.sh (all rows). Run twice, the lines are identical. This is the evidence of the rows.
+
+T1 1 1 client.test.ts 0 1
+T2 1 1
+T3 1 1 1 3
+T4 0 1 1
+T5 0 1 1
+T6 0 1
+T7 1 1 0
+T8 uuid 1 7
+T9 1 1 1 1
+T10 3 2 0
+  match in apps/server/src/db/client.test.ts at host:port/db 127.0.0.1:${port}
+  match in apps/server/src/db/migrate-cli.test.ts at host:port/db 127.0.0.1:${port}
+  match in apps/server/src/test/throwaway-db.test.ts at host:port/db db.example.com:5432
+T11 1 4 6
+T12 manual: wipes the development database, so the QA runs it by hand (Blocked until then)
+T13 0 0 1 0 1 1 1 1
+T14 1 1 1 1 0
+T15 1 1 1 1 1 1
+T16 1 1 1 200
+CLEAN worktrees same status same processes 0 postgres-left 0 temporary-folder removed
