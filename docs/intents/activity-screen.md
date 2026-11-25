@@ -19,8 +19,8 @@ Without the screen a person cannot read the list, filter it by kind, open the me
 ## Affected users and systems
 - Every Member and Admin, on a desktop and on a phone. Source: Toki Blueprint, ticket TOKI-066, flow F27.
 - The web app (`apps/web`): a page, a route, a section row, a badge on the navigation, a client store, and the time-choice pieces.
-- `packages/client-core` (a store and the API methods), `packages/i18n` (new texts in English and Vietnamese) and `packages/ui-web` (one optional slot in the section frame).
-- Read as they are: the Activity server (TOKI-065), jump to message (TOKI-068), the destructive-action patterns (TOKI-093), the date and time rules (TOKI-094), the sync engine (TOKI-040) and the app shell (TOKI-015, TOKI-017).
+- `packages/client-core` (a store and the API methods), `packages/i18n` (new texts in English and Vietnamese) and `packages/ui-web` (two optional props of the section frame: a toolbar slot and the attributes of the scrolling body) and one small option of the existing list hook `useMoreOnScroll`.
+- Read as they are: the Activity server (TOKI-065), jump to message (TOKI-068), the destructive-action patterns (TOKI-093), the date and time rules (TOKI-094), the sync engine (TOKI-040), the app shell (TOKI-015) and the translation package (TOKI-017).
 
 ## Constraints
 - A filter chip exists for every kind of item, and the count of a chip equals the rows shown. Source: D-071, D-074.
