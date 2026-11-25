@@ -15,19 +15,32 @@
     {
       "at": "2026-11-24T23:57:39Z",
       "stage": "plan"
+    },
+    {
+      "at": "2026-11-25T00:03:43Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-25T00:03:43Z",
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-25T00:04:05Z",
+      "stage": "build"
     }
   ],
   "key": "TOKI-110",
   "main_sha": "6153cd0b015a7cc54198f0b9c8c8025fd39e5787",
   "metrics": {},
-  "mode": null,
-  "plan_approved": false,
-  "plan_hash": null,
+  "mode": "auto-to-check",
+  "plan_approved": true,
+  "plan_hash": "e7236644fef17f1cd8006a951d4cc5690daca0ecfb3e54c201cf6bf0cff2ba23",
   "spec_commit": "37f14f5fc4ea7d59632aea8278b73b1ca039d6f5",
   "spec_paths": [
     "docs/specs/2026-11-24-ba-qa-acceptance-design.md"
   ],
-  "stage": "plan",
+  "stage": "build",
   "tier": "M",
   "verifier": {
     "result": null,
