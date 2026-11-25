@@ -1,0 +1,36 @@
+{
+  "approved_auto": false,
+  "base": "github/main",
+  "branch": "docs/toki-111-environment-config-qa",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-25T00:54:14Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-25T00:54:14Z",
+      "stage": "explore"
+    },
+    {
+      "at": "2026-11-25T00:55:26Z",
+      "stage": "plan"
+    }
+  ],
+  "key": "TOKI-111",
+  "main_sha": "ff5bb3be492e79f865e81df2152ddb34dbe17e18",
+  "metrics": {},
+  "mode": "auto-to-check",
+  "plan_approved": false,
+  "plan_hash": null,
+  "spec_commit": "9f223ee3e8763d868755b13dcc4ba127642e5b44",
+  "spec_paths": [
+    "docs/specs/2026-11-25-environment-config-acceptance-design.md"
+  ],
+  "stage": "plan",
+  "tier": "M",
+  "verifier": {
+    "result": null,
+    "round": 0
+  }
+}
