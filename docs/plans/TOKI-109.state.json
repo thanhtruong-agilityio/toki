@@ -58,6 +58,10 @@
     {
       "at": "2026-11-25T06:38:14Z",
       "stage": "build"
+    },
+    {
+      "at": "2026-11-25T07:21:08Z",
+      "stage": "check"
     }
   ],
   "key": "TOKI-109",
@@ -70,7 +74,7 @@
   "spec_paths": [
     "docs/specs/2026-11-24-ui-parity-check-design.md"
   ],
-  "stage": "build",
+  "stage": "check",
   "tier": "M",
   "verifier": {
     "result": null,
