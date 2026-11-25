@@ -1,0 +1,24 @@
+# Evidence for docs/qa/TOKI-004.md
+Version: 5320ebc (merge commit of PR #106). Run on 2026-11-25 by Claude for the QA, Thanh Truong. Each line is the output of: V=5320ebc bash docs/qa/TOKI-004.checks.sh <ID>. Run twice, the lines are identical. The last line shows that the script left the repository and its worktree list as it found them.
+
+T1 1 1
+T2 1 config.ts
+T3 3 3 1
+T4 1 2 0
+T5 200 1
+T6 3 3
+T7 1 5 0 1
+T8 5 5
+T9 1 1 1 1
+T10 200 404 1
+T11 0 31
+T12 2 2
+T13 5 5
+T14 1 1 0
+T15 0 0
+T16 1 1 1
+T17 1 0
+T18 127.0.0.1 3000 *
+T19 1 0
+T20 200 1
+CLEAN worktrees same status same
