@@ -100,7 +100,7 @@ r() {
 }
 a1() {
   git diff --quiet "$CH" HEAD -- . ':(exclude)docs' || { echo "A1 the files outside docs/ differ from ${CH:0:7}: use a checkout of that commit (Blocked)"; return; }
-  ( pnpm dev >/dev/null 2>&1 ) & local pid=$!; PIDS="$PIDS $pid"
+  ( env PATH="$NODEPATH" corepack pnpm dev >/dev/null 2>&1 ) & local pid=$!; PIDS="$PIDS $pid"
   sleep 40
   local all="$pid" ch n=0 ports=0 left=0 p
   for p in $(pgrep -P "$pid"); do all="$all $p"; for ch in $(pgrep -P "$p"); do all="$all $ch"; done; done
