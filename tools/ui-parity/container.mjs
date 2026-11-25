@@ -1,6 +1,7 @@
 import { spawnSync } from "node:child_process";
 import { readFileSync, mkdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
+import { homedir } from "node:os";
 import { dirname, resolve } from "node:path";
 
 // Runs the UI parity check inside the official Playwright container image, so that the reference
@@ -20,7 +21,17 @@ export const imageTag = (version) =>
 
 // `repo` is mounted read-only; the container works on a copy. `out` receives the report and
 // `ref` the reference images. The platform is always linux/arm64 (the platform of the builder and of the CI parity job).
-export function dockerArgs({ repo, out, ref, uid, gid, tag, mode, env }) {
+export function dockerArgs({
+  repo,
+  out,
+  ref,
+  cache,
+  uid,
+  gid,
+  tag,
+  mode,
+  env,
+}) {
   const e = {
     TOKI_PARITY_CONTAINER: "1",
     PARITY_MODE: mode,
@@ -43,7 +54,7 @@ export function dockerArgs({ repo, out, ref, uid, gid, tag, mode, env }) {
     "-v",
     `${ref}:/ref`,
     "-v",
-    "toki-parity-pnpm-store:/pnpm-store",
+    `${cache}:/pnpm-store`,
     ...Object.entries(e).flatMap(([k, v]) => ["-e", `${k}=${v}`]),
     tag,
     "bash",
@@ -71,6 +82,10 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   );
   const out = `${repo}/e2e/assets/parity`;
   const ref = `${repo}/e2e/parity/reference`;
+  // The pnpm store and the pnpm program, kept between runs. It is a folder of the user, because the
+  // container runs as the user and a Docker volume would belong to root.
+  const cache = `${homedir()}/.cache/toki-parity`;
+  mkdirSync(cache, { recursive: true });
   mkdirSync(out, { recursive: true });
   mkdirSync(ref, { recursive: true });
   const result = spawnSync(
@@ -79,6 +94,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
       repo,
       out,
       ref,
+      cache,
       uid: process.getuid(),
       gid: process.getgid(),
       tag: imageTag(version),

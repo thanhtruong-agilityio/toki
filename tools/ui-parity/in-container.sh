@@ -5,9 +5,11 @@ set -euo pipefail
 [ "${TOKI_PARITY_CONTAINER:-}" = "1" ] || { echo "parity: run through pnpm test:e2e:parity"; exit 1; }
 
 # Work on a copy, so that the Linux install does not touch the host's node_modules.
-mkdir -p /work "$HOME"
-tar -C /repo --exclude=node_modules --exclude=.git --exclude=e2e/assets -cf - . | tar -C /work -xf -
-cd /work
+# The container runs as the user, so the copy lives in /tmp (a folder at the root is not writable).
+WORK=/tmp/work
+mkdir -p "$WORK" "$HOME"
+tar -C /repo --exclude=node_modules --exclude=.git --exclude=e2e/assets -cf - . | tar -C "$WORK" -xf -
+cd "$WORK"
 
 # The image has Node 26 and no corepack; the repository asks for Node 22 (devEngines, onFail error).
 # Decided by Thanh Truong on 2026-11-24: run the image's Node and relax the check in this copy only.

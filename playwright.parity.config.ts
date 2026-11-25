@@ -16,7 +16,8 @@ export default defineConfig({
   workers: 1,
   forbidOnly: !!process.env.CI,
   retries: 0,
-  reporter: [["list"], ["./e2e/support/parity-reporter.ts"]],
+  // The reporter that writes report.md and report.json is added by the task that builds it.
+  reporter: [["list"]],
   // The folder that the container mounts at /out; CI uploads it.
   outputDir: `${process.env.PARITY_OUT ?? "e2e/assets/parity"}/results`,
   use: {

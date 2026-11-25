@@ -24,6 +24,7 @@ test("docker args mount the repo read-only, pass the user and force arm64", () =
     repo: "/r",
     out: "/o",
     ref: "/f",
+    cache: "/c",
     uid: 501,
     gid: 20,
     tag: "img",
@@ -36,4 +37,8 @@ test("docker args mount the repo read-only, pass the user and force arm64", () =
     a.includes("/r:/repo:ro") && a.includes("/o:/out") && a.includes("/f:/ref"),
   );
   assert.ok(a.includes("TOKI_PARITY_CONTAINER=1"));
+  // The pnpm store is a folder of the user (a named volume would belong to root, and the container
+  // runs as the user).
+  assert.ok(a.includes("/c:/pnpm-store"));
+  assert.ok(!a.some((x) => x.startsWith("toki-parity-pnpm-store")));
 });
