@@ -1,9 +1,11 @@
 # Evidence for docs/qa/TOKI-007.md
-Version: 48d285e (merge commit of PR #107). Run on 2026-11-25 by Claude for the QA, Thanh Truong. Each line is the output of: V=48d285e QA_CACHE=<folder> bash docs/qa/TOKI-007.checks.sh <ID>. The history rows read the runs of ci.yml created from the first commit of PR #107 up to 2026-11-25T03:54:59Z (a fixed snapshot: 563 runs) with read-only gh api requests; the answers of GitHub were cached so that the second run gave the same lines; run twice, the lines are identical. T3 and T6 are Blocked: the history holds no evidence for them. The last line shows that the script left the repository, its worktree list and the processes as it found them and that its temporary folder was removed.
+Version: 48d285e (merge commit of PR #107). Run on 2026-11-25 by Claude for the QA, Thanh Truong. Each line is the output of: V=48d285e QA_CACHE=<folder> bash docs/qa/TOKI-007.checks.sh <ID>. The history rows read the runs of ci.yml created from the first commit of PR #107 up to 2026-11-25T03:54:59Z (a fixed snapshot) with read-only gh api requests; the answers of GitHub were cached so that the second run asks GitHub for nothing; the HISTORY line gives the numbers of runs and jobs. T3 and T6 are Blocked: the history holds no evidence for them. The last line of each run shows that the script left the repository, its worktree list and the processes as it found them and that its temporary folder was removed.
 
+## Run 1 (this is the evidence of the rows)
 T1 1 1 1 1
 T2 2 1 1
 T3 1 0 (none of the failed lint runs read in the history names a boundary rule) (Blocked)
+  failed lint runs at pnpm lint in the snapshot: 1; read: 1; rule ids in their error lines:  @typescript-eslint/no-unused-vars no-var 
 T4 1 1
 T5 1 1
 T6 1 1 0 (no run in the history failed at pnpm build) (Blocked)
@@ -12,17 +14,63 @@ T8 5 1 1
 T9 49 49 0
 T10 6 0
 T11 0 2 1 0
-T12 0 0 1 1
+  secrets references at the Version in ci.yml: 0
+  secrets references at the Version in pr-review.yml: 2
+  secrets references at the Version in spec-ticket.yml: 0
+T12 0 0 5 5 1 1
 T13 311
 T14 3 0
 T15 17 1 0 1
 T16 5 5 5 0 0 1
 T17 1
 T18 1 1 5 1 1
-T19 0
+T19 0 0
+HISTORY runs 563 jobs 3768 from 2026-11-17 until 2026-11-25T03:54:59Z
 CLEAN worktrees same status same processes 0 temporary-folder removed
 
-## Compared with main on 2026-11-25 (read-only commands; nothing here is a result of a row)
+## Run 2 (identical to run 1)
+T1 1 1 1 1
+T2 2 1 1
+T3 1 0 (none of the failed lint runs read in the history names a boundary rule) (Blocked)
+  failed lint runs at pnpm lint in the snapshot: 1; read: 1; rule ids in their error lines:  @typescript-eslint/no-unused-vars no-var 
+T4 1 1
+T5 1 1
+T6 1 1 0 (no run in the history failed at pnpm build) (Blocked)
+T7 200000 1 0 1 1 1 1 1
+T8 5 1 1
+T9 49 49 0
+T10 6 0
+T11 0 2 1 0
+  secrets references at the Version in ci.yml: 0
+  secrets references at the Version in pr-review.yml: 2
+  secrets references at the Version in spec-ticket.yml: 0
+T12 0 0 5 5 1 1
+T13 311
+T14 3 0
+T15 17 1 0 1
+T16 5 5 5 0 0 1
+T17 1
+T18 1 1 5 1 1
+T19 0 0
+HISTORY runs 563 jobs 3768 from 2026-11-17 until 2026-11-25T03:54:59Z
+CLEAN worktrees same status same processes 0 temporary-folder removed
+
+## Discarded runs (not evidence)
+Two passes made before the script retried, kept a fixed snapshot and cached the answers. They differed from each other because the unauthenticated GitHub API rate limit had been used up by the debugging runs and GitHub refused some requests, which the script then skipped. Lines that differed between the two passes (first pass / second pass):
+  T2 2 1 1 / T2 2 0 0
+  T9 49 49 0 / T9 49 36 0
+  T12 0 0 1 1 / T12 0 0 0 0
+  T13 311 / T13 194
+  T15 17 1 0 1 / T15 17 1 0 0
+  T16 5 5 5 0 0 1 / T16 5 5 5 0 0 0
+  T17 1 / T17 0
+  T18 1 1 5 1 1 / T18 1 1 5 1 0
+A later attempt, with the limit used up, reported every history row as unreadable (Blocked). None of these is a result.
+
+## Compared with main (read-only commands; nothing here is a result of a row)
+commit dates of the two merge commits (is TOKI-006 later than TOKI-007?):
+  2026-11-17T17:45:40+07:00 48d285ed Merge pull request #107 from thanhtruong-agilityio/ci/toki-007-ci-github-actions
+  2026-11-18T14:24:05+07:00 cd855ee7 Merge pull request #111 from thanhtruong-agilityio/feat/toki-006-web-app-skeleton
 git log github/main --format='%h %s' -- .github/workflows/ci.yml:
   3fc6f7a ci(e2e): write the e2e results to e2e/assets (TOKI-108)
   3f87dfd ci: keep every e2e result and run each check only when its code changes (TOKI-107)
