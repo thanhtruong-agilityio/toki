@@ -25,3 +25,28 @@ T18 127.0.0.1 3000 *
 T19 1 0
 T20 200 1
 CLEAN worktrees same status same
+
+## Second run (strengthened checks; rows with a changed Expected re-approved by the QA in chat on 2026-11-25)
+Run by Claude for the QA on 2026-11-25: V=5320ebc bash docs/qa/TOKI-004.checks.sh (all rows). Run twice, the lines are identical.
+
+T1 1 1
+T2 1 config.ts
+T3 3 3 3 1
+T4 1 2 0
+T5 200 1
+T6 3 3
+T7 1 5 0 1 0
+T8 10 10
+T9 1 1 1 1 1
+T10 200 404 1 1 1
+T11 0 31
+T12 2 2
+T13 5 5
+T14 1 1 0 0
+T15 0 0 1 1 1
+T16 1 1 1
+T17 1 0
+T18 127.0.0.1 3000 * 1
+T19 1 0
+T20 200 1
+CLEAN worktrees same status same processes 0
