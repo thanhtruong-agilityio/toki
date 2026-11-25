@@ -1,0 +1,17 @@
+# Evidence for docs/qa/TOKI-006.md
+Version: cd855ee (merge commit of PR #111). Run on 2026-11-25 by Claude for the QA, Thanh Truong. Each line is the output of: V=cd855ee bash docs/qa/TOKI-006.checks.sh <ID>. Run twice, the lines are identical. The last line shows that the script left the repository, its worktree list, the processes it started and the ports 5173 and 3000 as it found them.
+
+T1 1 1 1 1
+T2 200 Toki 0 0
+T3 2 0 0 1 router.tsx
+T4 2 0
+T5 1 query-client.ts 1
+T6 1 1
+T7 2 1 0 0
+T8 1 200
+T9 0 1
+T10 1 100826 1
+T11 0
+T12 0 0
+T13 1 1 1
+CLEAN worktrees same status same processes 0 ports free free

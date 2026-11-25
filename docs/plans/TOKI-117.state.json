@@ -15,19 +15,28 @@
     {
       "at": "2026-11-25T02:36:53Z",
       "stage": "plan"
+    },
+    {
+      "at": "2026-11-25T02:38:35Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-25T02:38:35Z",
+      "stage": "build"
     }
   ],
   "key": "TOKI-117",
   "main_sha": "c0fd3aad660cc353b9f713048791152b7213436b",
   "metrics": {},
   "mode": "auto-to-check",
-  "plan_approved": false,
-  "plan_hash": null,
+  "plan_approved": true,
+  "plan_hash": "d4243f89963094e86794e61cb13a6189edc0148f97a729c0646f1067004a51bb",
   "spec_commit": "2e3c0c5393f352652e4961fa4d111af09b917b5a",
   "spec_paths": [
     "docs/specs/2026-11-25-web-skeleton-qa-design.md"
   ],
-  "stage": "plan",
+  "stage": "build",
   "tier": "M",
   "verifier": {
     "result": null,
