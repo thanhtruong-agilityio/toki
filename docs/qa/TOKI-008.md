@@ -45,6 +45,5 @@ Each row runs `V=4a17e4b bash docs/qa/TOKI-008.checks.sh <ID>` (called `checks` 
 - T7 (`T7 1 1 1 1`): with PostgreSQL stopped, the evidence line below the row shows five database test files failed, none passed, none skipped, and 23 database-free files passed.
 - T19: the one file with `Date.now(` in `packages/shared/src` outside tests is `clock.ts` (evidence line below the row), as R19 allows.
 - T13 and T14 read the history of real runs, not the file at the Version; the workflow changed after the delivery. The `HISTORY` line gives the numbers of runs and jobs read.
-- The environment differs from the one the ticket targets: PostgreSQL 14.24 instead of 17, so a PostgreSQL 17 behavior is not shown by these rows.
 - The Version is the ticket as delivered. Compared with `main` (not judged; the commands and output are at the end of the evidence file): later tickets changed `playwright.config.ts`, `e2e/sample.spec.ts`, moved the server and shared tests into `tests` folders (TOKI-022) and added real-server end-to-end flows with a seeded database (TOKI-023, TOKI-026), so T22 could be shown at a later version.
 - For the acceptance of I01 (`pnpm dev` runs, CI is green, lint blocks a package-boundary violation), rows T13 and T14 feed the part "CI is green"; no row here feeds "`pnpm dev` runs" or the lint rule. Nothing here judges the acceptance.
