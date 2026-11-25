@@ -8,8 +8,8 @@ import { openPrototype, type Look, type Width } from "./prototype";
 // The screen check of the UI parity check (TOKI-109 R5 to R13): declared screens, the capture of
 // both sides, the comparison and the row that goes into the report.
 
-export const LOOKS: Look[] = ["calm", "focus"];
-export const WIDTH_NAMES: Width[] = ["wide", "mid", "narrow"];
+const LOOKS: Look[] = ["calm", "focus"];
+const WIDTH_NAMES: Width[] = ["wide", "mid", "narrow"];
 
 export type Step =
   | { click: string }
@@ -57,6 +57,28 @@ export function expandScreens(decls: ScreenDecl[]): ScreenEntry[] {
       })),
     ),
   );
+}
+
+// R5: each export of a declaration file is a declaration or an array of declarations.
+export function flattenDeclarations(
+  modules: Record<string, unknown>[],
+): ScreenDecl[] {
+  return modules.flatMap((module) =>
+    Object.values(module).flatMap(
+      (value) => value as ScreenDecl | ScreenDecl[],
+    ),
+  );
+}
+
+// R12: a declaration that needs the seeded database counts once as "not run", not once for each
+// look and width.
+export function seededOnce(entries: ScreenEntry[]): ScreenEntry[] {
+  const seen = new Set<string>();
+  return entries.filter((entry) => {
+    if (entry.run || seen.has(entry.decl.id)) return false;
+    seen.add(entry.decl.id);
+    return true;
+  });
 }
 
 export interface Comparison {

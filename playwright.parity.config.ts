@@ -11,6 +11,7 @@ const WEB_PORT = 5193;
 
 export default defineConfig({
   testDir: "./e2e/parity",
+  globalSetup: "./e2e/support/parity-setup.ts",
   testMatch: "**/*.spec.ts",
   fullyParallel: false,
   workers: 1,

@@ -68,6 +68,15 @@ export function prepareHtml(
     : withoutLinks.replace(/<!doctype html>/i, (m) => `${m}${style}`);
 }
 
+// R17: reads the copy and stops with the message when its hash is not the recorded one. Every run
+// calls it (the global setup of the parity config), and so does `openPrototype`.
+export function verifyPrototype(): Buffer {
+  const file = readFileSync(PROTOTYPE_FILE);
+  const message = checkHash(file, readFileSync(HASH_FILE, "utf8"));
+  if (message) throw new Error(message);
+  return file;
+}
+
 export interface PrototypeState {
   look: Look;
   accent?: Accent;
@@ -85,9 +94,7 @@ export async function openPrototype(
   page: Page,
   state: PrototypeState,
 ): Promise<void> {
-  const file = readFileSync(PROTOTYPE_FILE);
-  const message = checkHash(file, readFileSync(HASH_FILE, "utf8"));
-  if (message) throw new Error(message);
+  const file = verifyPrototype();
   const {
     look,
     accent = "teal",

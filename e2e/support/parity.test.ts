@@ -3,7 +3,9 @@ import { describe, expect, it } from "vitest";
 import {
   compareImages,
   expandScreens,
+  flattenDeclarations,
   screenRow,
+  seededOnce,
   type ScreenDecl,
 } from "./parity";
 
@@ -162,5 +164,37 @@ describe("screenRow (R9, R11)", () => {
     expect(row.detail).toMatchObject({
       sizes: "sizes differ: 10x10 and 12x10",
     });
+  });
+});
+
+describe("flattenDeclarations (R5)", () => {
+  it("takes a declaration, or an array of declarations, from each export", () => {
+    const a = decl({ id: "a" });
+    const b = decl({ id: "b" });
+    const c = decl({ id: "c" });
+    expect(
+      flattenDeclarations([
+        { a, list: [b, c] },
+        { other: decl({ id: "d" }) },
+      ]).map((d) => d.id),
+    ).toEqual(["a", "b", "c", "d"]);
+  });
+});
+
+describe("seededOnce (R12)", () => {
+  it("gives one entry for each seeded declaration, not one for each look and width", () => {
+    const entries = expandScreens([
+      decl({ id: "seeded", seed: true }),
+      decl({ id: "plain" }),
+      decl({ id: "seeded-two", seed: true, looks: ["calm"], widths: ["wide"] }),
+    ]);
+    expect(seededOnce(entries).map((e) => e.decl.id)).toEqual([
+      "seeded",
+      "seeded-two",
+    ]);
+  });
+
+  it("gives nothing when no declaration needs the seeded database", () => {
+    expect(seededOnce(expandScreens([decl()]))).toEqual([]);
   });
 });

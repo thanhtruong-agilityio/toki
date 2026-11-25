@@ -25,7 +25,7 @@
 
 ## Deviations from the merged spec (recorded here and in the pull request)
 1. Report path is `e2e/assets/parity`, not `test-results/parity/` (R11): every config writes under `e2e/assets/` and CI uploads that folder (`playwright.config.ts:19`, `ci.yml:159`).
-2. Colour scheme: the app takes its look from `prefers-color-scheme` at load (`applyAppearance({look:"device"})`), so the app side uses `emulateMedia` dark for Focus and light for Calm; the prototype side sets its look explicitly. R6 says `light` for both.
+2. Colour scheme: the app takes its look from `prefers-color-scheme` at load (`applyAppearance({look:"device"})`), so the app side uses `emulateMedia` dark for Focus and light for Calm. The prototype side does the same (`emulateMedia` per look) and also sets its look explicitly through its own state (`applyLook`). R6 says `light` for both.
 3. R14 fallback applies: no built screen matches the prototype (the app's `/admin` shows Members and Channels, the prototype's `admin` shows Analytics and Automations). The proof of this ticket is the token check on the preview page (R3), two control tests that need no app screen (prototype against itself matches; prototype against an altered copy gives a report row) and the Vitest tests. `/admin` is declared as a smoke screen and recorded as a known difference, to run the app side of the pipeline end to end.
 4. Layout additions to the spec's tree: `e2e/support/tokens.ts`, `e2e/support/parity-reporter.ts`, `e2e/vitest.config.ts` (a Vitest project, because the root `vitest.config.ts` lists only `apps/*` and `packages/*`), `tools/ui-parity/in-container.sh`, `playwright.parity.config.ts`.
 5. Fonts are read from `apps/web/assets/fonts/` (the real path), not `apps/web/src/fonts/` as the TOKI-010 spec says.
@@ -37,6 +37,12 @@
    - Task 3: the prototype is opened from `https://prototype.test/index.html`, answered by `page.route`, with the Google Fonts links removed and the seven faces of TOKI-010 inlined as data URIs (so no request, not even a blocked one, leaves the machine), not from `file://`. The time is fixed with `setFixedTime` (the date is fixed and the timers run), not `pauseAt`. The prototype's demo bar (`.protobar`) and its fake window bar (`.chrome`, `--chromeh`) are hidden, so that `#app` is exactly the size of the width; without that `#app` was 719 px high at 800 and every comparison would say "sizes differ".
    - Task 4: the token probe switches `transition` off, because the prototype animates `color` and with the date fixed the animation never runs (a read gave the value of the property before). `diffTokens` treats an empty value as "no value". The reporter is added to the parity config in this task, not in Task 2 (the file did not exist yet). `attachRow` lives in `parity-reporter.ts`, not in `parity.ts`.
    - Task 5: the control tests do not attach rows to the real report (a deliberate difference would sit in every report); they check the row that `screenRow` builds. `screenRow`, `captureReference` and `FIXED_TIME` are additions; the loader of declarations is `e2e/parity/load-screens.ts`, shared by `screens.spec.ts` and `reference.spec.ts`.
+   - Task 1: the check in the container that the image and the lockfile name the same Playwright is "the image holds the Chromium revision that this Playwright needs" (`tools/ui-parity/check-image.mjs`, with `check-image.test.mjs`), not a comparison of the installed Playwright version with the lockfile, which is always equal after a frozen install. It refuses to go on and names both revisions and the version.
+   - R17 is also checked by a global setup of the parity config (`e2e/support/parity-setup.ts`, `verifyPrototype`), so that a run of any files compares the hash, not only a run that opens the prototype.
+   - R10: `reference.spec.ts` does nothing in an ordinary run (it is the reference command, not the check), and in reference mode a seeded entry is skipped. The screen check itself never skips.
+   - R12: a seeded declaration is one "not run" row named by its id (`seededOnce`), not one row for each look and width. R5: an export of a declaration file may be a declaration or an array of declarations (`flattenDeclarations`).
+   - R11: the three images of a screen are attached to its Playwright result (`info.attach`) as well as written to `e2e/assets/parity/images/`.
+   - `docs/plans/TOKI-109.state.json` is committed with the plan, as the other tickets do.
    - Task 8: the default Playwright config also ignores `support/**`, because it loaded the Vitest tests of the helpers (`*.test.ts`) and failed; `changed.sh` gets a `parity` check with its own tests.
 
 ## How This Plan Was Created
@@ -55,7 +61,7 @@
 | R5 | Declaration files picked up with no other edit | T5 steps 7-8 | `e2e/support/parity.test.ts` "expandScreens"; `screens.spec.ts` |
 | R6 | Same capture settings on both sides; "sizes differ" is a result | T3 step 8, T5 steps 1-2 | `parity.test.ts` "sizes differ"; `controls.spec.ts` |
 | R7 | Stable capture: clock, animations, `#app`, masks, determinism | T5 steps 3-6 | `controls.spec.ts` "prototype twice is identical" |
-| R8 | `pnpm ui:reference`: from the prototype, `--update`, image version check | T1 steps 1-4, T6 steps 1-5 | `container.test.mjs`; `reference.spec.ts` "keeps an existing image without --update" |
+| R8 | `pnpm ui:reference`: from the prototype, `--update`, image version check | T1 steps 1-4, T6 steps 1-5 | `container.test.mjs`; `reference.test.mjs`; `check-image.test.mjs` (the image holds the Chromium this Playwright needs); `reference.spec.ts` "keeps an existing image without --update" |
 | R9 | Per-pixel rule and ratio in one place; difference is a result | T5 steps 1-2 | `parity.test.ts` "compareImages" (identical, one pixel, AA ignored, sizes differ) |
 | R10 | Container only; never skips; missing reference fails | T1 step 5, T2 steps 1-3 | `guard.test.ts`; negative: run natively fails with the message |
 | R11 | Report rows with stable names, box, three images | T4 step 8, T5 steps 5-6 | `parity-reporter.test.ts`; `controls.spec.ts` "altered copy gives a row" |
@@ -64,7 +70,7 @@
 | R14 | Fallback: proof by token check, controls, Vitest; `/admin` smoke | T7 steps 1-5 | `screens.spec.ts` for `admin`; known differences listed in the report |
 | R15 | A `parity` job on the arm runner (deviation 8); green with differences | T8 steps 1-3 | A pull request with a deliberate difference: job green, summary shows the row (recorded in the PR) |
 | R16 | One-page guide | T8 step 4 | The sample (`admin`) was added by following it |
-| R17 | Hash check fails with the message | T3 steps 2-3, 7 | `prototype.test.ts` "hash mismatch" |
+| R17 | Hash check fails with the message, on every run | T3 steps 2-3, 7 | `prototype.test.ts` "hash mismatch" and `verifyPrototype`; the global setup `parity-setup.ts` (a changed byte fails a run of `screens.spec.ts` alone) |
 | R18 | All checks exit 0; Vitest tests for pure functions | T8 step 6 | `pnpm lint`, `typecheck`, `test`, `format:check`, `test:e2e`, `test:e2e:parity` |
 
 ## Design

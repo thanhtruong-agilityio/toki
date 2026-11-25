@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { checkHash, prepareHtml, sha256 } from "./prototype";
+import { checkHash, prepareHtml, sha256, verifyPrototype } from "./prototype";
 
 describe("checkHash (R17)", () => {
   const file = Buffer.from("abc");
@@ -45,5 +45,11 @@ describe("prepareHtml (R1)", () => {
 
   it("keeps the rest of the page", () => {
     expect(out).toContain("<p>x</p>");
+  });
+});
+
+describe("verifyPrototype (R17)", () => {
+  it("accepts the copy in the repository: its hash is the recorded one", () => {
+    expect(() => verifyPrototype()).not.toThrow();
   });
 });

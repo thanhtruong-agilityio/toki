@@ -7,6 +7,7 @@ import {
   expandScreens,
   runSteps,
   screenRow,
+  seededOnce,
 } from "../support/parity";
 import { attachRow } from "../support/parity-reporter";
 import { FIXED_TIME, WIDTHS } from "../support/prototype";
@@ -24,19 +25,22 @@ const OUT = process.env.PARITY_OUT ?? "e2e/assets/parity";
 
 const decls = await loadScreens();
 
-for (const { decl, look, width, name, run } of expandScreens(decls)) {
-  test(`screen ${name}`, async ({ page }, info) => {
-    // R12: a screen that needs the seeded database is listed and not run here.
-    if (!run) {
-      await attachRow(info, {
-        kind: "screen",
-        name,
-        status: "not-run",
-        detail: { reason: "needs seeded data" },
-      });
-      return;
-    }
+const entries = expandScreens(decls);
 
+// R12: a declaration that needs the seeded database is listed once and not run here.
+for (const { decl } of seededOnce(entries)) {
+  test(`screen ${decl.id} (needs seeded data)`, async () => {
+    await attachRow(test.info(), {
+      kind: "screen",
+      name: decl.id,
+      status: "not-run",
+      detail: { reason: "needs seeded data" },
+    });
+  });
+}
+
+for (const { decl, look, width, name } of entries.filter((e) => e.run)) {
+  test(`screen ${name}`, async ({ page }, info) => {
     // R10: a missing reference image is a failed run, because there is no result to give.
     const referenceFile = `${REFERENCE_DIR}/${decl.id}-${look}-${width}-chromium-linux.png`;
     if (!existsSync(referenceFile)) {
@@ -69,6 +73,13 @@ for (const { decl, look, width, name, run } of expandScreens(decls)) {
     if (result.diff) {
       images.push(`${base}-diff.png`);
       writeFileSync(`${OUT}/${images[2]}`, result.diff);
+    }
+    // R11: the three images are attached to the result, and their paths are in the row.
+    for (const image of images) {
+      await info.attach(image.replace("images/", ""), {
+        path: `${OUT}/${image}`,
+        contentType: "image/png",
+      });
     }
     await attachRow(info, screenRow(name, result, LIMITS.ratio, images));
   });

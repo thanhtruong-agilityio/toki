@@ -18,10 +18,9 @@ npm install --silent --prefix /pnpm-store/tool pnpm@12.21.0
 export PATH="/pnpm-store/tool/node_modules/.bin:$PATH"
 pnpm install --frozen-lockfile --store-dir /pnpm-store/store
 
-# The image and the lockfile must name the same Playwright version (R8).
-want=$(node -e "console.log(/'@playwright\/test':\s+specifier: \S+\s+version: ([0-9.]+)/.exec(require('fs').readFileSync('pnpm-lock.yaml','utf8'))[1])")
-have=$(pnpm exec playwright --version | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
-[ "$want" = "$have" ] || { echo "parity: image has Playwright $have, lockfile has $want"; exit 1; }
+# The image must hold the Chromium that this Playwright needs (R8): it refuses to go on when the image
+# is of another Playwright version than the lockfile.
+node tools/ui-parity/check-image.mjs
 
 if [ "${PARITY_MODE}" = "reference" ]; then export PARITY_REFERENCE=1 PARITY_REFERENCE_DIR=/ref; fi
 PARITY_OUT=/out pnpm exec playwright test -c playwright.parity.config.ts ${PARITY_ARGS:-}
