@@ -1,0 +1,42 @@
+# Evidence for docs/qa/TOKI-007.md
+Version: 48d285e (merge commit of PR #107). Run on 2026-11-25 by Claude for the QA, Thanh Truong. Each line is the output of: V=48d285e QA_CACHE=<folder> bash docs/qa/TOKI-007.checks.sh <ID>. The history rows read the runs of ci.yml created from the first commit of PR #107 up to 2026-11-25T03:54:59Z (a fixed snapshot: 563 runs) with read-only gh api requests; the answers of GitHub were cached so that the second run gave the same lines; run twice, the lines are identical. T3 and T6 are Blocked: the history holds no evidence for them. The last line shows that the script left the repository, its worktree list and the processes as it found them and that its temporary folder was removed.
+
+T1 1 1 1 1
+T2 2 1 1
+T3 1 0 (none of the failed lint runs read in the history names a boundary rule) (Blocked)
+T4 1 1
+T5 1 1
+T6 1 1 0 (no run in the history failed at pnpm build) (Blocked)
+T7 200000 1 0 1 1 1 1 1
+T8 5 1 1
+T9 49 49 0
+T10 6 0
+T11 0 2 1 0
+T12 0 0 1 1
+T13 311
+T14 3 0
+T15 17 1 0 1
+T16 5 5 5 0 0 1
+T17 1
+T18 1 1 5 1 1
+T19 0
+CLEAN worktrees same status same processes 0 temporary-folder removed
+
+## Compared with main on 2026-11-25 (read-only commands; nothing here is a result of a row)
+git log github/main --format='%h %s' -- .github/workflows/ci.yml:
+  3fc6f7a ci(e2e): write the e2e results to e2e/assets (TOKI-108)
+  3f87dfd ci: keep every e2e result and run each check only when its code changes (TOKI-107)
+  ea5760c ci(e2e): keep screenshots, video and results of a failed run (TOKI-107)
+  40214c4 ci(e2e): give the end-to-end job postgres and mailpit and run the sign-in cases (TOKI-023)
+  d32d3a0 ci(i18n): add the i18n job that checks for missing translations (TOKI-017)
+  31e38fc test(e2e): add playwright with the sample and proxy tests and a ci job (TOKI-008)
+  18cb4a3 ci: run lint, type check, tests, build and bundle size on every pull request (TOKI-007)
+job names in ci.yml on main:
+  lint
+  type check
+  tests
+  end-to-end
+  build
+  bundle size
+  i18n
+workflow files on main: 3

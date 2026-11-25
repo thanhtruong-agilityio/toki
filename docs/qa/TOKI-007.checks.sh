@@ -9,11 +9,17 @@
 # failed and which jobs ran. The workflow changed after the delivery, so history shows how CI behaved
 # later, not the file at V. A row whose evidence is not in the history prints Blocked.
 # Every temporary file lives under one folder made in the current shell (BASE, exported as TMPDIR), which
-# the cleanup removes. It prints one line for each row: counts, ids and words; no token and no log text.
+# the cleanup removes. The one exception is the optional cache of the GitHub answers (QA_CACHE=<folder>):
+# run lists, job lists and job logs are stored there so that a rerun asks GitHub for nothing and gives the
+# same lines, and the unauthenticated rate limit is not used up; it holds public API answers only. It prints one line for each row: counts, ids and words; no token and no log text.
 # Node 22 comes from PATH or from ~/.nvm/versions/node/v22*; pnpm runs through corepack.
 set -uo pipefail
 V="${V:-HEAD}"
 REPO="thanhtruong-agilityio/toki"
+# The history is a snapshot: only runs created up to this instant count, so a rerun gives the same lines
+# (new runs of this repository, for example of the pull request that adds this record, are left out).
+HIST_UNTIL="${HIST_UNTIL:-2026-11-25T03:54:59Z}"
+CACHE="${QA_CACHE:-}"; [ -n "$CACHE" ] && mkdir -p "$CACHE/j" "$CACHE/logs"
 WF=".github/workflows/ci.yml"
 doc() { git show "$V:$1" 2>/dev/null; }
 
@@ -65,11 +71,37 @@ history() {
   # from the first commit of the pull request that delivered V (its own runs count), else from V
   epoch=$(git log --format=%ct "$V^1..$V^2" 2>/dev/null | sort -n | head -1)
   [ -n "$epoch" ] || epoch=$(git show -s --format=%ct "$V")
-  gh api --paginate "repos/$REPO/actions/workflows/ci.yml/runs?per_page=100" \
-    --jq ".workflow_runs[] | select((.created_at | fromdateiso8601) >= $epoch) | [.id, .event, .head_branch, (.conclusion // \"\"), .created_at] | @tsv" > "$BASE/runs.tsv" 2>"$BASE/gh.err"
+  if [ -n "$CACHE" ] && [ -s "$CACHE/runs.tsv" ]; then cp "$CACHE/runs.tsv" "$BASE/runs.tsv"; else
+    gh api --paginate "repos/$REPO/actions/workflows/ci.yml/runs?per_page=100" \
+      --jq ".workflow_runs[] | select((.created_at | fromdateiso8601) >= $epoch and .created_at <= \"$HIST_UNTIL\") | [.id, .event, .head_branch, (.conclusion // \"\"), .created_at] | @tsv" > "$BASE/runs.raw" 2>"$BASE/gh.err"
+    grep -E '^[0-9]+	' "$BASE/runs.raw" > "$BASE/runs.tsv"
+    if [ -s "$BASE/runs.raw" ] && [ ! -s "$BASE/runs.tsv" ]; then head -c 200 "$BASE/runs.raw" > "$BASE/gh.err"; fi
+    [ -n "$CACHE" ] && [ -s "$BASE/runs.tsv" ] && cp "$BASE/runs.tsv" "$CACHE/runs.tsv"
+  fi
   if [ ! -s "$BASE/runs.tsv" ]; then HIST_OK=0; return 1; fi
-  mkdir -p "$BASE/j"; export REPO BASE
-  cut -f1 "$BASE/runs.tsv" | xargs -P 8 -I{} bash -c 'gh api "repos/$REPO/actions/runs/{}/jobs?per_page=100" --jq ".jobs[] | [.name, (.conclusion // \"\"), ([.steps[] | select(.conclusion == \"failure\") | .name][0] // \"\"), .id] | @tsv" > "$BASE/j/{}.tsv" 2>/dev/null' 
+  mkdir -p "$BASE/j"; export REPO BASE CACHE
+  if [ -n "$CACHE" ]; then cp "$CACHE"/j/*.tsv "$BASE/j/" 2>/dev/null; fi
+  cut -f1 "$BASE/runs.tsv" | while read -r r; do [ -s "$BASE/j/$r.tsv" ] || echo "$r"; done | xargs -P 4 -I{} bash -c 'gh api "repos/$REPO/actions/runs/{}/jobs?per_page=100" --jq ".jobs[] | [.name, (.conclusion // \"\"), ([.steps[] | select(.conclusion == \"failure\") | .name][0] // \"\"), .id] | @tsv" > "$BASE/j/{}.tsv" 2>/dev/null' 
+  # keep only well-formed job lines (an error body from GitHub is dropped); the run is then retried below
+  local f
+  for f in "$BASE"/j/*.tsv; do
+    [ -f "$f" ] || continue
+    awk -F'\t' 'NF == 4 && $4 ~ /^[0-9]+$/' "$f" > "$f.ok"; mv "$f.ok" "$f"
+  done
+  # a run whose jobs could not be read is retried; if any is still missing the history is incomplete
+  local missing=0 try
+  while IFS=$'\t' read -r id event br conc created; do
+    for try in 1 2 3; do
+      [ -s "$BASE/j/$id.tsv" ] && break
+      sleep 1
+      gh api "repos/$REPO/actions/runs/$id/jobs?per_page=100" --jq '.jobs[] | [.name, (.conclusion // ""), ([.steps[] | select(.conclusion == "failure") | .name][0] // ""), .id] | @tsv' 2>/dev/null | grep -E '.+	.*	.*	[0-9]+$' > "$BASE/j/$id.tsv"
+    done
+    [ -s "$BASE/j/$id.tsv" ] || missing=$((missing + 1))
+  done < "$BASE/runs.tsv"
+  if [ -n "$CACHE" ]; then
+    for id in $(cut -f1 "$BASE/runs.tsv"); do [ -s "$BASE/j/$id.tsv" ] && [ ! -s "$CACHE/j/$id.tsv" ] && cp "$BASE/j/$id.tsv" "$CACHE/j/$id.tsv"; done
+  fi
+  if [ "$missing" -gt 0 ]; then echo "$missing of $(grep -c . "$BASE/runs.tsv") runs could not be read" > "$BASE/gh.err"; HIST_OK=0; return 1; fi
   : > "$HIST"
   while IFS=$'\t' read -r id event br conc created; do
     [ -f "$BASE/j/$id.tsv" ] || continue
@@ -80,7 +112,19 @@ history() {
 need_hist() { history && return 0; echo "$1 the history could not be read: $(head -c 120 "$BASE/gh.err" | tr '\n' ' ') (Blocked)"; return 1; }
 # count of runs in which job $1 failed at the step named $2
 failed_at() { awk -F'\t' -v j="$1" -v s="$2" '$6 == j && $7 == "failure" && $8 == s {print $1}' "$HIST" | sort -u | wc -l | tr -d ' '; }
-joblog() { gh api --allow-escape-sequences "repos/$REPO/actions/jobs/$1/logs" 2>/dev/null | sed -E 's/\x1b\[[0-9;]*[A-Za-z]//g'; }
+joblog() { # prints the log of a job, retried up to three times; empty if it cannot be read
+  local t out
+  [ -n "$CACHE" ] && [ -s "$CACHE/logs/$1.log" ] && { cat "$CACHE/logs/$1.log"; return 0; }
+  for t in 1 2 3; do
+    out=$(gh api --allow-escape-sequences "repos/$REPO/actions/jobs/$1/logs" 2>/dev/null | sed -E 's/\x1b\[[0-9;]*[A-Za-z]//g')
+    if [ -n "$out" ] && [[ "${out:0:300}" != *"rate limit"* ]]; then
+      [ -n "$CACHE" ] && printf '%s\n' "$out" > "$CACHE/logs/$1.log"
+      printf '%s\n' "$out"; return 0
+    fi
+    sleep 1
+  done
+  return 1
+}
 
 t1() {
   local ex=0 pr=0 push=0 hp=0 hq=0
