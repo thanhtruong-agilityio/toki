@@ -17,8 +17,9 @@ V="${V:-HEAD}"
 PW_VERSION=1.65.1
 doc() { git show "$V:$1" 2>/dev/null; }
 
-# Every temporary file of the script lives under one folder, made here in the current shell, so
-# the cleanup removes all of it whatever subshell created it.
+# Every temporary file of the script, and of the processes it starts (they get TMPDIR=$BASE), lives
+# under one folder made here in the current shell, so the cleanup removes all of it whatever subshell
+# created it.
 BASE=$(mktemp -d); export TMPDIR="$BASE"
 before_wt=$(git worktree list | wc -l | tr -d ' ')
 before_status=$(git status --porcelain | shasum | cut -d' ' -f1)
@@ -68,7 +69,7 @@ VPID=""
 start_vite() { # $1 outfile, rest: VAR=value ... Starts the dev command with only those variables.
   local out="$1"; shift
   : > "$out"
-  ( cd "$WT" && exec env -i PATH="$NODEPATH" HOME="$HOME" NO_COLOR=1 FORCE_COLOR=0 "$@" corepack pnpm --filter ./apps/web dev ) >"$out" 2>&1 &
+  ( cd "$WT" && exec env -i PATH="$NODEPATH" HOME="$HOME" TMPDIR="$BASE" NO_COLOR=1 FORCE_COLOR=0 "$@" corepack pnpm --filter ./apps/web dev ) >"$out" 2>&1 &
   VPID=$!; PIDS="$PIDS $VPID"
   local i
   for i in $(seq 1 150); do
@@ -99,7 +100,7 @@ JS
 }
 stop_stub() { kill_tree "$SPID"; wait "$SPID" 2>/dev/null; }
 BUILD_RC=""
-build_once() { [ -n "$BUILD_RC" ] || { ( cd "$WT" && env -i PATH="$NODEPATH" HOME="$HOME" SERVER_PORT=48271 corepack pnpm --filter ./apps/web build ) >/dev/null 2>&1; BUILD_RC=$?; }; }
+build_once() { [ -n "$BUILD_RC" ] || { ( cd "$WT" && env -i PATH="$NODEPATH" HOME="$HOME" TMPDIR="$BASE" SERVER_PORT=48271 corepack pnpm --filter ./apps/web build ) >/dev/null 2>&1; BUILD_RC=$?; }; }
 PWDIR=""
 playwright_ready() { # installs @playwright/test into a temporary folder, once
   [ -n "$PWDIR" ] && [ -d "$PWDIR/node_modules/@playwright/test" ] && return 0
@@ -167,7 +168,7 @@ t1() {
   stop_vite
   nodebin -e 'require("net").createServer().listen(5173,"127.0.0.1")' >/dev/null 2>&1 &
   dummy=$!; PIDS="$PIDS $dummy"; sleep 1
-  ( cd "$WT" && exec env -i PATH="$NODEPATH" HOME="$HOME" NO_COLOR=1 FORCE_COLOR=0 timeout 25 corepack pnpm --filter ./apps/web dev ) >"$d/o2" 2>&1 & local vp=$!
+  ( cd "$WT" && exec env -i PATH="$NODEPATH" HOME="$HOME" TMPDIR="$BASE" NO_COLOR=1 FORCE_COLOR=0 timeout 25 corepack pnpm --filter ./apps/web dev ) >"$d/o2" 2>&1 & local vp=$!
   local i; for i in $(seq 1 100); do kill -0 "$vp" 2>/dev/null || break; [ "$(portbusy 5174)" = busy ] && break; sleep 0.2; done
   [ "$(portbusy 5174)" = free ] && fallback=0
   wait "$vp" 2>/dev/null; rc=$?
