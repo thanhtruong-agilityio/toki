@@ -1,11 +1,6 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import type { TestInfo } from "@playwright/test";
-import type {
-  FullResult,
-  Reporter,
-  TestCase,
-  TestResult,
-} from "@playwright/test/reporter";
+import type { Reporter, TestCase, TestResult } from "@playwright/test/reporter";
 import { knownDifferences } from "../parity/known-differences";
 
 // The result rows of the UI parity check and the report that lists them (TOKI-109 R4, R11). A
@@ -124,7 +119,7 @@ export default class ParityReporter implements Reporter {
     }
   }
 
-  onEnd(_result: FullResult): void {
+  onEnd(): void {
     const dir = process.env.PARITY_OUT ?? "e2e/assets/parity";
     mkdirSync(dir, { recursive: true });
     const { md, json } = renderReport(applyKnown(this.rows, knownDifferences));
