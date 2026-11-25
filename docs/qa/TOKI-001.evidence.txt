@@ -19,3 +19,13 @@ T11 2 2
 T12 1 2 0 0
 T13 1 0 0
 CLEAN worktrees same status same
+
+## Second run (strengthened checks, rows re-approved by the QA in chat on 2026-11-25)
+Run by Claude for the QA on 2026-11-25: V=f011a9c bash docs/qa/TOKI-001.checks.sh T6 T8 T9 T13. Run twice, the lines are identical.
+
+T6 0 8
+T8 node 22.x 22.x error 22
+T9 1 1 0 v24
+  first error line: Error: ERR_PNPM_BAD_RUNTIME_VERSION
+T13 1 0 0 0
+CLEAN worktrees same status same
