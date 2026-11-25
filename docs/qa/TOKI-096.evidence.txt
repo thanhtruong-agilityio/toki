@@ -14,3 +14,5 @@ T11 2 1 0
 T12 7
 T13 0 1
 T14 reserved reserved
+
+T5 0   (run by the QA, Thanh Truong, in their own terminal on 2026-11-25 from the main checkout with their .env: V=ff5bb3be bash docs/qa/TOKI-096.checks.sh T5; pasted by the QA, names only, no value)
