@@ -111,13 +111,21 @@ t4() {
 }
 t5() {
   need T5 || return
-  local fc le
+  local fc
   put packages/shared/src/zz-fmt.ts 'export  const   a   =  1'
   pn format >/dev/null 2>&1
   pn format:check >/dev/null 2>&1; fc=$?
+  reset_wt
+  echo "T5 $fc"
+}
+t17() {
+  need T17 || return
+  local le
+  put packages/shared/src/zz-fmt.ts 'export  const   a   =  1'
+  pn format >/dev/null 2>&1
   pn exec eslint packages/shared/src/zz-fmt.ts >/dev/null 2>&1; le=$?
   reset_wt
-  echo "T5 $fc $le"
+  echo "T17 $le"
 }
 t6() {
   need T6 || return
@@ -279,7 +287,7 @@ CASES
   echo "T16 $still $msg $failed"
 }
 
-rows="${*:-T1 T2 T3 T4 T5 T6 T7 T8 T9 T10 T11 T12 T13 T14 T15 T16}"
+rows="${*:-T1 T2 T3 T4 T5 T6 T7 T8 T9 T10 T11 T12 T13 T14 T15 T16 T17}"
 for r in $rows; do
   fn=$(printf '%s' "$r" | tr 'T' 't')
   if declare -F "$fn" >/dev/null; then "$fn"; else echo "$r is not a row" >&2; fi

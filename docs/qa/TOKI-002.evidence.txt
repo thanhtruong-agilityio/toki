@@ -1,4 +1,7 @@
 # Evidence for docs/qa/TOKI-002.md
+
+## First run
+Rows T1 to T4 and T6 to T16 are unchanged by the later correction and keep these lines. T5 here was the old combined row for R3 and R4 (`T5 0 0`: format check exit code, then lint exit code); it is replaced by T5 (R3) and T17 (R4) below, which the QA approved again before their second run.
 Version: 6e7f0fa (merge commit of PR #77). Run on 2026-11-25 by Claude for the QA, Thanh Truong. Each line is the output of: V=6e7f0fa bash docs/qa/TOKI-002.checks.sh <ID>. Run twice, the lines are identical. The last line shows that the script left the repository and its worktree list as it found them.
 
 T1 0 1
