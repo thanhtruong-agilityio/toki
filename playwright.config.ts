@@ -16,6 +16,8 @@ export default defineConfig({
     "assets/**",
     "parity/**",
     "prototype/**",
+    // Helpers and the Vitest tests of the helpers (TOKI-109); not Playwright tests.
+    "support/**",
   ],
   fullyParallel: true,
   forbidOnly: !!process.env.CI,

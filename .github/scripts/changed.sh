@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Decide whether a CI check has to run, from the files a pull request changes.
 #
-#   bash .github/scripts/changed.sh <check>      check: e2e | tests | typecheck | build | size | i18n
+#   bash .github/scripts/changed.sh <check>      check: e2e | tests | typecheck | build | size | i18n | parity
 #
 # Prints one line, `run=true` or `run=false`, that the workflow appends to $GITHUB_OUTPUT.
 # The files are `git diff --name-only $BASE_SHA HEAD`. With no BASE_SHA (a push to main, a manual run)
@@ -19,13 +19,14 @@ check="${1:-}"
 common='package.json pnpm-lock.yaml pnpm-workspace.yaml tsconfig.base.json tsconfig.json .nvmrc .github/workflows/ci.yml .github/scripts/changed.sh'
 case "$check" in
 e2e) own='apps/* packages/* e2e/* playwright*.ts' ;;
+parity) own='apps/* packages/* e2e/* playwright*.ts tools/ui-parity/*' ;;
 tests) own='apps/* packages/* tools/* vitest.config.ts' ;;
 typecheck) own='apps/* packages/* e2e/* tools/* playwright*.ts vitest.config.ts' ;;
 build) own='apps/* packages/*' ;;
 size) own='apps/web/* packages/* tools/bundle-size/*' ;;
 i18n) own='packages/i18n/*' ;;
 *)
-  echo "usage: changed.sh e2e|tests|typecheck|build|size|i18n" >&2
+  echo "usage: changed.sh e2e|tests|typecheck|build|size|i18n|parity" >&2
   exit 2
   ;;
 esac

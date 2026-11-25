@@ -71,6 +71,8 @@ The root `pnpm` scripts, run from the repository root under Node 22 (`.nvmrc`) w
 | `pnpm lint` | ESLint, including the boundary rules; a warning fails |
 | `pnpm format`, `pnpm format:check` | Prettier: rewrite, or check only |
 | `pnpm test`, `pnpm test:e2e` | Run the tests (see Running tests) |
+| `pnpm test:e2e:parity` | The UI parity check: the app against the prototype, in the Playwright container (needs Docker; `linux/arm64`); writes `e2e/assets/parity/report.md`. A difference is reported, not a failure |
+| `pnpm ui:reference <screen-id>... \| --all [--update]` | Make the reference images of a screen from the prototype, in the same container; an image that exists is kept unless `--update` is given |
 | `pnpm build`, `pnpm size`, `pnpm i18n:check` | Build every package; check the bundle size; check the vi and en translations |
 | `pnpm dev` | Run the `dev` script of each package that has one |
 | `pnpm env:pull` | Write the root `.env` from the Doppler project `toki`, config `dev` (needs the Doppler CLI and a login) |
@@ -102,6 +104,7 @@ The commands of one area, and what to know before running them, are in the rule 
 
 - `pnpm test` runs the unit tests and the server integration tests (Vitest), then the tests of the build scripts and the lint rules.
 - `pnpm test:e2e` runs the end-to-end tests in `e2e/` (Playwright).
+- `pnpm test:e2e:parity` runs the UI parity check (`e2e/parity/`, Playwright in a container) and writes a report of where the app differs from the prototype; `e2e/parity/README.md` says how a ticket adds a screen to it.
 - Every test file lives in a folder named `tests` at the root of its workspace, never beside the source it tests: `packages/<name>/tests/`, `apps/web/tests/`, `apps/server/tests/`, with a subfolder per area (`apps/server/tests/auth/`) and the helpers beside the tests that use them. The exceptions are `e2e/`, and the tests of a build script or a lint rule, which sit beside their tool in `scripts/`, `tools/` and `apps/web/scripts/`.
 
 ## Boundary rules
