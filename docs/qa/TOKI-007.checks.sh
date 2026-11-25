@@ -146,13 +146,17 @@ t2() {
   echo "T2 $((a + b)) $fl $ff"
 }
 t3() {
-  local runs=0 id j hit=0 n=0
+  local runs=0 j hit=0 n=0 total rules=""
   job_block lint | grep -qE '^      - run: pnpm lint$' && runs=1
   need_hist T3 || return
+  total=$(awk -F'\t' '$6 == "lint" && $7 == "failure" && $8 == "Run pnpm lint" {print $9}' "$HIST" | wc -l | tr -d ' ')
   for j in $(awk -F'\t' '$6 == "lint" && $7 == "failure" && $8 == "Run pnpm lint" {print $9}' "$HIST" | head -6); do
-    n=$((n + 1)); joblog "$j" > "$BASE/job.log"; grep -qiE 'boundary' "$BASE/job.log" && { hit=1; break; }
+    n=$((n + 1)); joblog "$j" > "$BASE/job.log"
+    rules="$rules $(grep -E '##\[error\]' "$BASE/job.log" | awk '{print $NF}' | grep -E '^[@a-z][A-Za-z0-9/_@-]*$' | sort -u | tr '\n' ' ')"
+    grep -qiE 'boundary' "$BASE/job.log" && { hit=1; break; }
   done
   if [ "$hit" = 1 ]; then echo "T3 $runs 1"; else echo "T3 $runs 0 (none of the failed lint runs read in the history names a boundary rule) (Blocked)"; fi
+  echo "  failed lint runs at pnpm lint in the snapshot: $total; read: $n; rule ids in their error lines: $(printf '%s' "$rules" | tr -s ' ' '\n' | sort -u | tr '\n' ' ')"
 }
 t4() { local s; s=$(job_block typecheck | grep -cE '^      - run: pnpm typecheck$'); need_hist T4 || return; local f; f=$(failed_at "type check" "Run pnpm typecheck"); echo "T4 $s $([ "$f" -ge 1 ] && echo 1 || echo 0)"; }
 t5() { local s; s=$(job_block tests | grep -cE '^      - run: pnpm test$'); need_hist T5 || return; local f; f=$(failed_at tests "Run pnpm test"); echo "T5 $s $([ "$f" -ge 1 ] && echo 1 || echo 0)"; }
@@ -244,11 +248,14 @@ t11() {
   cr=$(printf '%s\n' "$YML" | grep -c 'contents: read')
   env=$(git ls-tree -r --name-only "$V" | grep -E '(^|/)\.env(\.|$)' | grep -vE '\.env\.example$' | grep -c .)
   echo "T11 $ci $dir $cr $env"
+  for f in $(git ls-tree --name-only "$V" .github/workflows/ | sed 's#.*/##'); do echo "  secrets references at the Version in $f: $(doc ".github/workflows/$f" | grep -vE '^[[:space:]]*#' | grep -cE 'secrets\.|secrets\[|secrets:')"; done
 }
 t12() {
   local lit_n lit_p nodeok=0 pnpmok=0 pm j v
   lit_n=$(printf '%s\n' "$YML" | grep -cE '^[[:space:]]+node-version:')
   lit_p=$(printf '%s\n' "$YML" | grep -cE '^[[:space:]]+version:')
+  local nf pa
+  nf=$(jobs_with 'node-version-file: \.nvmrc'); pa=$(jobs_with 'uses: pnpm/action-setup')
   pm=$(doc package.json | jq -r '.packageManager' | sed 's/^pnpm@//')
   need_hist T12 || return
   j=$(awk -F'\t' '$4 == "success" && $6 == "lint" {print $9}' "$HIST" | head -1)
@@ -258,7 +265,7 @@ t12() {
     v=$(grep -oE '\+ pnpm [0-9]+\.[0-9]+\.[0-9]+' "$BASE/job.log" | head -1 | sed 's/+ pnpm //')
     [ -n "$v" ] && [ "$v" = "$pm" ] && pnpmok=1
   fi
-  echo "T12 $lit_n $lit_p $nodeok $pnpmok"
+  echo "T12 $lit_n $lit_p $nf $pa $nodeok $pnpmok"
 }
 t13() {
   need_hist T13 || return
@@ -313,9 +320,10 @@ t18() {
   echo "T18 $grp $cip $cache $hc $hh"
 }
 t19() {
-  local n
+  local n jif=0 j
   n=$(printf '%s\n' "$YML" | grep -cE 'changed\.sh|paths-filter')
-  echo "T19 $([ "$n" -ge 1 ] && echo 1 || echo 0)"
+  for j in $(job_ids); do job_block "$j" | grep -qE '^    if:' && jif=$((jif + 1)); done
+  echo "T19 $([ "$n" -ge 1 ] && echo 1 || echo 0) $jif"
 }
 
 rows="${*:-T1 T2 T3 T4 T5 T6 T7 T8 T9 T10 T11 T12 T13 T14 T15 T16 T17 T18 T19}"
@@ -323,6 +331,7 @@ for r in $rows; do
   fn=$(printf '%s' "$r" | tr 'T' 't')
   if declare -F "$fn" >/dev/null; then "$fn"; else echo "$r is not a row" >&2; fi
 done
+[ "$HIST_OK" = 1 ] && echo "HISTORY runs $(grep -c . "$BASE/runs.tsv") jobs $(grep -c . "$HIST") from $(git log --format=%cs "$V^1..$V^2" 2>/dev/null | tail -1) until $HIST_UNTIL"
 alive=0; for p in $PIDS; do kill -0 "$p" 2>/dev/null && alive=$((alive + 1)); done
 cleanup; WT=""
 echo "CLEAN worktrees $([ "$(git worktree list | wc -l | tr -d ' ')" = "$before_wt" ] && echo same || echo changed) status $([ "$(git status --porcelain | shasum | cut -d' ' -f1)" = "$before_status" ] && echo same || echo changed) processes $alive temporary-folder $([ -e "$BASE" ] && echo left || echo removed)"
