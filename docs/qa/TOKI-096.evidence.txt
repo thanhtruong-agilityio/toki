@@ -19,3 +19,11 @@ T13 0 1
 T14 reserved reserved
 
 T5 0   (run by the QA, Thanh Truong, in their own terminal on 2026-11-25 from the main checkout with their .env: V=ff5bb3be bash docs/qa/TOKI-096.checks.sh T5; pasted by the QA, names only, no value)
+
+## Second run (strengthened checks, rows re-approved by the QA in chat on 2026-11-25)
+Run by Claude for the QA on 2026-11-25: V=ff5bb3be bash docs/qa/TOKI-096.checks.sh T6 T9 T11 T12. Run twice, the lines are identical.
+
+T6 3 4 0 3
+T9 0 0 0
+T11 2 1 0 2
+T12 8
