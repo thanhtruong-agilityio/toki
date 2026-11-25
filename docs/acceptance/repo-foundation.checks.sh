@@ -89,7 +89,7 @@ r() {
   V="$CH" bash "docs/qa/$key.checks.sh" "$@" 2>&1 | grep -v '^CLEAN' | sed "s/^/R $key /"
 }
 a1() {
-  [ "$(git rev-parse HEAD)" = "$CH" ] || { echo "A1 HEAD is not ${CH:0:7}: check out that commit first (Blocked)"; return; }
+  git diff --quiet "$CH" HEAD -- . ':(exclude)docs' || { echo "A1 the files outside docs/ differ from ${CH:0:7}: use a checkout of that commit (Blocked)"; return; }
   ( pnpm dev >/dev/null 2>&1 ) & local pid=$!; PIDS="$PIDS $pid"
   sleep 40
   local all="$pid" ch n=0 ports=0 left=0 p
