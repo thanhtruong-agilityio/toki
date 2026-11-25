@@ -1,0 +1,49 @@
+{
+  "approved_auto": false,
+  "base": "github/main",
+  "branch": "docs/toki-112-monorepo-qa",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-25T01:24:46Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-25T01:24:46Z",
+      "stage": "explore"
+    },
+    {
+      "at": "2026-11-25T01:25:21Z",
+      "stage": "plan"
+    },
+    {
+      "at": "2026-11-25T01:26:20Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-25T01:26:20Z",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-25T01:30:26Z",
+      "stage": "check"
+    }
+  ],
+  "key": "TOKI-112",
+  "main_sha": "cd91058f382c3eba4e5c3beed07a8e417e4612c1",
+  "metrics": {},
+  "mode": "auto-to-check",
+  "plan_approved": true,
+  "plan_hash": "f6617ae8b14b17ff2ec96db752ce1281fb009d6a1695b8405f0f5e306d4b8b41",
+  "spec_commit": "118507853f413ec5d489a48baefda74912e76c2b",
+  "spec_paths": [
+    "docs/specs/2026-11-25-monorepo-typescript-setup-qa-design.md"
+  ],
+  "stage": "check",
+  "tier": "M",
+  "verifier": {
+    "result": "PASS",
+    "round": 2
+  }
+}

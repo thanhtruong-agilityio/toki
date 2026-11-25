@@ -1,0 +1,124 @@
+# Evidence for docs/qa/TOKI-008.md
+Version: 4a17e4b (merge commit of PR #137). Run on 2026-11-25 by Claude for the QA, Thanh Truong. Each line is the output of: V=4a17e4b QA_CACHE=<folder> bash docs/qa/TOKI-008.checks.sh <ID...>, run in five groups (the group header shows the ids). The history rows read the runs of ci.yml created from 2026-11-18 up to 2026-11-25T04:30:22Z (a fixed snapshot) with read-only gh api requests; nothing was written to GitHub. The CLEAN line of each group shows that the repository, its worktree list and status were as before, no process was left, no PostgreSQL cluster was left and the temporary folder was removed. T22 is Blocked: no seeded flow exists at the Version.
+
+## Run 1 (this is the evidence of the rows)
+## group T1 T2 T4 T16 T15 T3
+T1 0 4 4
+T2 1 1
+T4 1
+  development stand-in rows before: workspaces=1 after: workspaces=1
+T16 1 1 0
+T15 1 1 1 1
+T3 0 0 1
+CLEAN worktrees same status same processes 0 postgres-left 0 temporary-folder removed
+## group T5 T6 T7 T8 T9
+T5 5 5 0 1 1
+  runtime refusal: exit non-zero, names the suffix check: 1
+T6 0 0 1 1
+T7 1 1 1 1
+  with Postgres stopped: database test files failed 5, passed 0, skipped 0; database-free files passed 23
+T8 1 1 1 1
+T9 1 1
+CLEAN worktrees same status same processes 0 postgres-left 0 temporary-folder removed
+## group T17 T18 T19 T20 T21 T22
+T17 1 1 0 1
+T18 1 0
+T19 0 1 0
+  files with Date.now( in packages/shared/src outside tests: packages/shared/src/clock/clock.ts
+T20 0 1 1 1
+T21 1 1 1
+T22 0 0 1 (no seeded flow exists at the Version, so the create, seed and drop behavior is not exercised) (Blocked)
+CLEAN worktrees same status same processes 0 postgres-left 0 temporary-folder removed
+## group T10 T11 T12 T23
+T10 0 1 2
+  playwright projects: chromium
+T11 0 1 1
+T12 1 1 1
+T23 1 1 1
+CLEAN worktrees same status same processes 0 postgres-left 0 temporary-folder removed
+## group T13 T14
+T13 1 1 1
+T14 1 1
+HISTORY runs 500 jobs 3457 from 2026-11-18 until 2026-11-25T04:30:22Z
+CLEAN worktrees same status same processes 0 postgres-left 0 temporary-folder removed
+
+## Run 2 (identical to run 1 apart from the HISTORY line)
+## group T1 T2 T4 T16 T15 T3
+T1 0 4 4
+T2 1 1
+T4 1
+  development stand-in rows before: workspaces=1 after: workspaces=1
+T16 1 1 0
+T15 1 1 1 1
+T3 0 0 1
+CLEAN worktrees same status same processes 0 postgres-left 0 temporary-folder removed
+## group T5 T6 T7 T8 T9
+T5 5 5 0 1 1
+  runtime refusal: exit non-zero, names the suffix check: 1
+T6 0 0 1 1
+T7 1 1 1 1
+  with Postgres stopped: database test files failed 5, passed 0, skipped 0; database-free files passed 23
+T8 1 1 1 1
+T9 1 1
+CLEAN worktrees same status same processes 0 postgres-left 0 temporary-folder removed
+## group T17 T18 T19 T20 T21 T22
+T17 1 1 0 1
+T18 1 0
+T19 0 1 0
+  files with Date.now( in packages/shared/src outside tests: packages/shared/src/clock/clock.ts
+T20 0 1 1 1
+T21 1 1 1
+T22 0 0 1 (no seeded flow exists at the Version, so the create, seed and drop behavior is not exercised) (Blocked)
+CLEAN worktrees same status same processes 0 postgres-left 0 temporary-folder removed
+## group T10 T11 T12 T23
+T10 0 1 2
+  playwright projects: chromium
+T11 0 1 1
+T12 1 1 1
+T23 1 1 1
+CLEAN worktrees same status same processes 0 postgres-left 0 temporary-folder removed
+## group T13 T14
+T13 1 1 1
+T14 1 1
+HISTORY runs 500 jobs 3457 from 2026-11-18 until 2026-11-25T04:30:22Z
+CLEAN worktrees same status same processes 0 postgres-left 0 temporary-folder removed
+
+## Compared with main (read-only, not judged)
+   e2e/account-menu.spec.ts                |  270 +++++++
+   e2e/admin.spec.ts                       |  326 +++++++++
+   e2e/app-shell.spec.ts                   |  993 ++++++++++++++++++++++++++
+   e2e/app-wiring.spec.ts                  |   27 +
+   e2e/archive.spec.ts                     |  127 ++++
+   e2e/component-preview.spec.ts           | 1166 +++++++++++++++++++++++++++++++
+   e2e/conversation-list.spec.ts           |  398 +++++++++++
+   e2e/join.spec.ts                        |  237 +++++++
+   e2e/proxy.spec.ts                       |    9 +-
+   e2e/real-server/emergency.spec.ts       |  117 ++++
+   e2e/real-server/join.spec.ts            |  298 ++++++++
+   e2e/sample.spec.ts                      |   16 +-
+   e2e/sign-in-server/sign-in.spec.ts      |  379 ++++++++++
+   e2e/sign-in.spec.ts                     |  492 +++++++++++++
+   e2e/support/bootstrap.ts                |   64 ++
+   e2e/support/fixtures.ts                 |  157 +++++
+   e2e/support/layout.ts                   |   72 ++
+   e2e/support/real-server.ts              |  121 ++++
+   e2e/support/session.ts                  |   26 +
+   e2e/support/sign-in.ts                  |  204 ++++++
+   e2e/support/smtp-sink.ts                |  107 +++
+   packages/shared/src/clock/clock.test.ts |   33 -
+   playwright.config.ts                    |   21 +-
+   23 files changed, 5619 insertions(+), 41 deletions(-)
+  3fc6f7a6 ci(e2e): write the e2e results to e2e/assets (TOKI-108)
+  3f87dfd7 ci: keep every e2e result and run each check only when its code changes (TOKI-107)
+  ea5760c5 ci(e2e): keep screenshots, video and results of a failed run (TOKI-107)
+  ea4c611d test(e2e): sign-in screens against the real server, a seeded database and mailpit (TOKI-023)
+  f7758800 test(e2e): cover the emergency link against the real server (TOKI-026)
+  91b7b96e merge: bring main into feat/toki-020-first-admin-from-env (TOKI-020)
+  1db53b06 refactor(test): move all server and shared tests into the tests folders of their workspace (TOKI-022)
+  efef7db1 merge: bring main into feat/toki-020-first-admin-from-env
+  dd92f8e0 merge: bring main into feat/toki-022-sign-in-api (TOKI-022)
+  63b912bc feat(server): check the session on every route, sign out, and keep invitation codes (TOKI-022)
+  6e640192 fix(server): give the end-to-end server its first set-up values and cover R12, R13, R17 and R18 (TOKI-020)
+  71b258fd merge: bring main into feat/toki-015-app-shell, keep the server tests where main put them (TOKI-015)
+  ad27c2db test(e2e): give the started server the mail values (TOKI-021)
+  6b888cc4 refactor(test): move the unit tests into a tests folder in each workspace (TOKI-015)

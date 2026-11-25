@@ -1,0 +1,101 @@
+# Evidence for docs/qa/TOKI-003.md
+Version: e6e2c96 (merge commit of PR #78). Run on 2026-11-25 by Claude for the QA, Thanh Truong. Each line is the output of: V=e6e2c96 bash docs/qa/TOKI-003.checks.sh <ID...> (static rows, run in Claude's shell) or V=e6e2c96 QA_STACK=1 bash docs/qa/TOKI-003.checks.sh <ID...> (stack rows, run in the QA's Terminal panel). The stack rows started the real Compose project toki-dev and removed its volumes: its development data on this machine is lost (concern 3). The STACK lines show only the counts of containers and volumes of the project before and after the volumes were removed. The CLEAN line shows the repository, its worktree list and status as before, no process left, no toki-dev container running and the temporary folder removed. T17 is Blocked and T18 is a Fail (see the result notes).
+
+## Static rows, run 1 (this is the evidence of the rows)
+T1 3 1 1
+T14 0 1
+T15 10 10 0 0 1
+T16 6 0
+T17 14 0 (there is no .env.example and no inventory file in the commit: TOKI-096 was delivered later) (Blocked)
+T20 1
+T26 1 1 0
+T29 6 6
+CLEAN worktrees same status same processes 0 temporary-folder removed
+
+## Static rows, run 2 (identical)
+T1 3 1 1
+T14 0 1
+T15 10 10 0 0 1
+T16 6 0
+T17 14 0 (there is no .env.example and no inventory file in the commit: TOKI-096 was delivered later) (Blocked)
+T20 1
+T26 1 1 0
+T29 6 6
+CLEAN worktrees same status same processes 0 temporary-folder removed
+
+## Stack rows, run 1 (this is the evidence of the rows)
+STACK before: toki-dev containers 0 volumes 3 (names and counts only; the data is not read)
+STACK volumes removed: toki-dev volumes now 0
+T2 0 3 3
+T2N 1 1
+T3 0 1 1 1
+T4 0 0 1 1 1
+T5 0 0 1 1 1
+T6 0 1 0 1 1
+T6M 1 1 0 1
+T7 0 0 1 1
+T8 0 0 0 0 3 0
+T9 1 1 0 0
+T10 24 24 24 1 6
+T11 0 1
+T12 0 1
+T13 1
+T18 0 0 1 1 0
+T19 0 1 1
+T21 4 4 1 0
+T22 1 1 1 1
+T23 1 0 0 1
+T24 12 12 4 1 1 1 1
+T25 5 5
+T27 0 1 0 1
+T28 0 0
+T30 0 1 1
+CLEAN worktrees same status same processes 0 toki-dev-running 0 temporary-folder removed
+
+## Stack rows, run 2 (identical to run 1 apart from the STACK lines)
+STACK before: toki-dev containers 0 volumes 3 (names and counts only; the data is not read)
+STACK volumes removed: toki-dev volumes now 0
+T2 0 3 3
+T2N 1 1
+T3 0 1 1 1
+T4 0 0 1 1 1
+T5 0 0 1 1 1
+T6 0 1 0 1 1
+T6M 1 1 0 1
+T7 0 0 1 1
+T8 0 0 0 0 3 0
+T9 1 1 0 0
+T10 24 24 24 1 6
+T11 0 1
+T12 0 1
+T13 1
+T18 0 0 1 1 0
+T19 0 1 1
+T21 4 4 1 0
+T22 1 1 1 1
+T23 1 0 0 1
+T24 12 12 4 1 1 1 1
+T25 5 5
+T27 0 1 0 1
+T28 0 0
+T30 0 1 1
+CLEAN worktrees same status same processes 0 toki-dev-running 0 temporary-folder removed
+
+## Compared with main (read-only, not judged)
+  docker-compose.dev.yml on main: yes
+  infra/docker-compose.dev.yml on main: no
+  scripts/up.sh on main: yes
+  infra/dev/up.sh on main: no
+  .env.example on main: yes
+  later commits that changed the compose file or the scripts:
+    ab0a167c test(scripts): close the gaps the verifier found in the run-file, signal and tracing cases (TOKI-106)
+    80f3cd90 test(scripts): cover the process tree, ownership, SIGINT and temporary files (TOKI-106)
+    87776bad fix(scripts): claim the run file early, survive a second Ctrl+C, and check more tools (TOKI-106)
+    3805a204 test(scripts): test env:pull and start:local with fake tools (TOKI-106)
+    a8943908 feat(scripts): add pnpm start:local to run Toki with one command (TOKI-106)
+    81480f9d feat(scripts): add pnpm env:pull to write the .env from Doppler (TOKI-106)
+    ec6e8213 feat(shared): add a clock with a system and a test implementation (TOKI-008)
+    7796b33f feat(server): add postgres connection, migrations and workspaces table (TOKI-005)
+  .env.example was added by:
+    1596707e Tue Nov 17 15:13:01 2026 +0700 docs(config): add the environment inventory and .env.example (TOKI-096)
+  the Version: e6e2c96d Tue Nov 17 14:56:56 2026 +0700

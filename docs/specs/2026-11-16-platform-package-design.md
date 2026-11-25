@@ -20,7 +20,8 @@ After this change the package holds the interface and its web implementation, th
 - Out (not now):
   - Push registration, the service worker, showing a system notification, the 'Turn on notifications' card and removing a registration on sign-out: TOKI-074. It adds its methods to the `notifications` part; the two methods of this work stay as they are.
   - The sound file, when a sound plays and the 'Play a sound' switch: TOKI-075 (the file and the call) and TOKI-073 (who gets a sound). This work ships no audio file.
-  - The composer's attachments: the limits of 10 files and 100 MB, drag and drop, paste, upload and progress: TOKI-059. Drag and drop and paste read their files from DOM events in the component; only opening the file dialog goes through `platform`.
+  - The composer's attachments: the limits of 10 files and 100 MB, drag and drop, paste, upload and progress: TOKI-059. Drag and drop and paste read their files from DOM events in the component; opening the file dialog goes through `platform`, and so does sending the picked file to storage, which TOKI-059 adds as `files.upload` (Design, `handle`).
+  - Writing text to the device clipboard (Copy text, Copy link): TOKI-052 adds it as a member `clipboard` with the method `writeText` (a write, no read), with its web implementation and tests, in its own change. `createWebPlatform()` then still starts nothing (R5): the method calls the browser only when it is called.
   - What each feature keeps on the device and under which key: the ticket that keeps it (the code step: TOKI-023; a waiting message and dropping it when someone else signs in: TOKI-040).
   - A store for more than text values (IndexedDB), and telling other tabs that something happened: not built. TOKI-040 adds the first to this package if a waiting message needs more than a text value; TOKI-099 adds the second as a fifth member of `Platform`, `tabs`, with its web implementation and its tests, in its own change. `createWebPlatform()` then still starts nothing (R5): that member opens its channel when it is first used.
   - Reading whether the device is light or dark for 'Match my device': TOKI-078. It is not one of the four features and lint does not ban it in `ui-web`.
@@ -31,7 +32,7 @@ After this change the package holds the interface and its web implementation, th
 
 ## Requirements
 Interface and selection
-- R1. `@toki/platform` exports the types `Platform`, `StorageArea`, `NotificationPermissionState`, `PickedFile` and `SoundName`, and the functions `setPlatform` and `getPlatform`. At the end of this ticket `Platform` has exactly four members, `notifications`, `storage`, `files` and `sound`, with exactly the methods listed in Design. Later tickets add methods (TOKI-074, TOKI-075) or a member (TOKI-099 adds `tabs`, the signal between the tabs of one browser) and update the test that checks this.
+- R1. `@toki/platform` exports the types `Platform`, `StorageArea`, `NotificationPermissionState`, `PickedFile` and `SoundName`, and the functions `setPlatform` and `getPlatform`. At the end of this ticket `Platform` has exactly four members, `notifications`, `storage`, `files` and `sound`, with exactly the methods listed in Design. Later tickets add methods (TOKI-074, TOKI-075, and TOKI-059, which adds `files.upload`) or a member (TOKI-099 adds `tabs`, the signal between the tabs of one browser; TOKI-052 adds `clipboard`) and update the test that checks this and any fake `Platform` that tests build.
 - R2. `getPlatform()` called before any `setPlatform` throws an error whose message contains `setPlatform`. After `setPlatform(p)`, `getPlatform()` returns that same object `p`. A later `setPlatform(q)` replaces it.
 - R3. `@toki/platform/web` exports `createWebPlatform(options?)`, and its result is assignable to `Platform` with no cast. `packages/platform/package.json` has exactly two `exports` entries: `.` (`./src/index.ts`) and `./web` (`./src/web/index.ts`).
 - R4. Importing `@toki/platform` where no DOM exists (a test in the `node` environment) does not throw, and the files it loads use no browser global: they pass boundary rule 1 (R24).
@@ -122,7 +123,7 @@ Each choice below is decided in this spec; the Blueprint names the four features
 - **`clear()` removes Toki's keys only**, by the `toki:` prefix, so other pages on the same origin keep their values.
 - **`unsupported` is a permission state**, not an error, so a screen can explain it (iPhone before 'Add to Home Screen', D-108). It is one value for every browser without `Notification`, so it does not tell iPhone from another browser (journey F36 has a different text for each). Decided in this spec: this work adds no field. TOKI-074 chooses between detecting iPhone in `ui-web` (rule 3 does not ban `navigator.userAgent`) and adding a method to `notifications`; both are additions.
 - **No method shows a notification.** A system notification appears only when the app is closed or the tab is hidden (journey F36), and that is done by the service worker of TOKI-074.
-- **`handle` is `unknown` in the interface.** The interface files may name no DOM type (rule 1). The web implementation returns the browser's `File` there. Where the code that uploads lives is TOKI-059's decision: `client-core` may not use `XMLHttpRequest`, `File`, `Blob` or `FormData` (TOKI-002 allow list), so either that code lives in `ui-web` or `apps/web`, or TOKI-059 adds a method to `files` that sends a handle and reports progress. Either is an addition and changes nothing built here. The native build will put its own file reference in `handle`.
+- **`handle` is `unknown` in the interface.** The interface files may name no DOM type (rule 1). The web implementation returns the browser's `File` there. `client-core` may not use `XMLHttpRequest`, `File`, `Blob` or `FormData` (TOKI-002 allow list), and only the platform that made a handle can read it, so the code that sends a picked file lives in `platform`: TOKI-059 adds `files.upload(handle, ticket, options?)`, which sends the file to the address of an upload ticket, reports progress and returns a result value (its web implementation sends one `XMLHttpRequest`, because `fetch` has no upload progress). It is an addition and changes nothing built here. The native build will put its own file reference in `handle` and have its own `upload`.
 - **Sound by name.** A component asks for `"notification"`; the address of the file is given once, where the web implementation is created. This package holds no audio file, so it adds nothing to the initial JavaScript. Phase 1 has one sound name; a new name is added to `SoundName`.
 - **Promises that never reject.** `requestPermission`, `pick` and `play` report every outcome as a value, so no caller needs a `catch` for an expected case.
 
@@ -133,7 +134,8 @@ Each choice below is decided in this spec; the Blueprint names the four features
 | A waiting message survives a reload and is dropped when someone else signs in (TOKI-040, D-132) | `storage.device`: `set`, `get`, `remove` |
 | The conversation last viewed on this device, the list filter and collapsed groups (journeys; BR-08, TS-030 of the requirements; TOKI-033) | `storage.device`, one text value (JSON written by the caller) under a key the ticket names, for example `conversationList.filter` |
 | Saved preferences (TOKI-078) | Look, accent, density and language are saved to the account (D-175), so it needs no per-device value except, possibly, a copy of the look to avoid a flash on load, which `storage.device` serves. It uses `notifications.permission()` (blocked state, F36) and `storage.device`, nothing more. 'Match my device' reads the system setting outside `platform` (Scope, Out). |
-| Attachments picked in the composer (TOKI-059) | `files.pick({ multiple: true })`; the limits are applied by the composer; upload and progress are TOKI-059's (Design, `handle`) |
+| Attachments picked in the composer (TOKI-059) | `files.pick({ multiple: true })`; the limits are applied by the composer; the upload and its progress go through `files.upload`, which TOKI-059 adds (Design, `handle`) |
+| Copy text on a message (TOKI-052) and Copy link in the attachment window (TOKI-062) | `clipboard.writeText(text)`, a new member that TOKI-052 adds next to the others; nothing built here changes. It has no method that reads the clipboard. |
 | 'Turn on' asks the browser; Preferences shows that notifications are blocked (TOKI-074, journey F36) | `notifications.requestPermission()`, `notifications.permission()` |
 | Sign-out reaching the other tabs of the browser (TOKI-099) | A new member `tabs`, added by TOKI-099 next to the four; nothing built here changes. |
 | Push registration and the service worker (TOKI-074) | Methods that TOKI-074 adds to `notifications` |
@@ -152,6 +154,7 @@ In `eslint.config.js` (TOKI-002):
 - The `files` list of the rule 1 block gains the source files of `packages/platform`, with `src/web/**` and test files left out (R24).
 - `tools/lint-rules/platform-boundary.test.mjs` is added with the cases of R21 to R24 and R28, and listed in the `test` and `test:lint-rules` scripts of the root `package.json`. It reads `eslint.config.js` as it is, so a ban removed from the configuration fails the test.
 - Rule 3 gains the ban on `@toki/platform/web`, its subpaths and relative paths that resolve into `packages/platform/src/web`, written the same way as the ban of rule 1 (R28). `ui-web` still passes when it imports `@toki/platform`.
+- No lint rule changes for `files.upload` (TOKI-059): `client-core` already refuses `XMLHttpRequest` through the allow list of rule 1, and the code that uses it lives only in `platform`, where it is allowed. The list of globals of rule 3 stays as TOKI-002 decided it (concern 4 there).
 
 ### Errors
 - `getPlatform()` before `setPlatform` -> throws an error that names `setPlatform` (R2). This is a wiring mistake, not a case a person meets.
@@ -203,7 +206,7 @@ tools/lint-rules/    platform-boundary.test.mjs
 ## Data safety
 - The package sends nothing over the network and writes nothing to a log.
 - Values kept through `storage` stay in the person's browser. What may be kept there is decided by the ticket that keeps it (the sign-in screens, for example, never keep the code).
-- A picked file leaves the device only when the code that called `pick` uploads it.
+- A picked file leaves the device only when the code that called `pick` uploads it (through `files.upload`, once TOKI-059 adds it).
 
 ## How each constraint in the intent is met
 | Constraint | Met by |

@@ -30,6 +30,19 @@ Source: `.github/workflows/spec-ticket.yml` and `.github/scripts/spec-ticket.sh`
 - A pull request that adds a root script adds it to "Common commands" of `CLAUDE.md`. A pull request that adds another command adds it to the rule file of its area, or to "Commands" of `CLAUDE.md` when no area fits.
   Source: claude-project-setup spec, R4 and R9.
 
+## After the merge
+
+- A merged ticket is `in-qa`, not `done`. It is `done` only when its QA record passes `bash .github/scripts/qa-ready.sh <KEY>`: every spec requirement has a row or a reason, every row is approved, run and Pass, none is Blocked. A ticket that fails goes back to `in-dev` with the label `reopened`; the fix is a new pull request on the same ticket and the record is run again, earlier results kept with their dates. Tickets closed as `done` before this rule stay `done`; `bash .github/scripts/trace.sh` shows "no QA record" for them until their record is added.
+  Source: `docs/specs/2026-11-24-ba-qa-acceptance-design.md`, R10.
+- The QA record is `docs/qa/<KEY>.md` (header `Ticket:`, `Spec:`, `Version:`, `Environment:`; a test matrix with the columns `ID`, `Requirement`, `Layer`, `Steps`, `Expected`, `Evidence`, `Priority`, `Approved`, `Result`, `Run`). A ticket whose change no user sees uses the `command` layer. The file in the repository decides; the ticket holds a copy as the comments `Test matrix` and `QA result`. Evidence holds no secret and no customer data.
+  Source: the same spec, R1 to R5 and R11.
+- An outcome (a Blueprint intent such as I16) is accepted in `docs/acceptance/<slug>.md` by the BA, against its Success Criteria confirmed before its tickets are tested. `bash .github/scripts/acceptance-ready.sh <slug> --ready` says whether every ticket of the outcome passes QA. A milestone has `docs/acceptance/milestone-<m>.md`, written after its outcomes. A criterion that is not accepted reopens the ticket listed against it.
+  Source: the same spec, R6 to R9 and R18.
+- One person may hold the roles of Dev, QA and BA; the records name the role next to each name. Nothing blocks or reopens a ticket by itself: the scripts report gaps.
+  Source: the same spec, concerns 1 and 8.
+- `bash .github/scripts/trace.sh` writes `docs/traceability.md` from the records. Each of the three scripts has a test next to it (`qa-ready.test.sh`, `acceptance-ready.test.sh`, `trace.test.sh`).
+  Source: the same spec, R12 to R14.
+
 ## Review on request
 
 - The `PR review` workflow reviews a pull request with Claude. It starts when a comment on an open pull request mentions `@reviewer`, and by itself when the owner, a member or a collaborator opens a pull request or marks it ready for review. A push to an open pull request does not start a review.

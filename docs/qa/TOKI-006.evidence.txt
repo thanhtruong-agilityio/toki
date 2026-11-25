@@ -1,0 +1,74 @@
+# Evidence for docs/qa/TOKI-006.md
+
+## First run (checks before the verifier findings of TOKI-117)
+T1, T2 and T12 here came from weaker checks (fewer numbers) and are not the evidence of the rows as they now read; the other rows keep their lines unless a stronger check is in the second run below.
+Version: cd855ee (merge commit of PR #111). Run on 2026-11-25 by Claude for the QA, Thanh Truong. Each line is the output of: V=cd855ee bash docs/qa/TOKI-006.checks.sh <ID>. Run twice, the lines are identical. The last line shows that the script left the repository, its worktree list, the processes it started and the ports 5173 and 3000 as it found them.
+
+T1 1 1 1 1
+T2 200 Toki 0 0
+T3 2 0 0 1 router.tsx
+T4 2 0
+T5 1 query-client.ts 1
+T6 1 1
+T7 2 1 0 0
+T8 1 200
+T9 0 1
+T10 1 100826 1
+T11 0
+T12 0 0
+T13 1 1 1
+CLEAN worktrees same status same processes 0 ports free free
+
+## Second run (strengthened checks; rows with a changed Expected re-approved by the QA in chat on 2026-11-25)
+Run by Claude for the QA on 2026-11-25: V=cd855ee bash docs/qa/TOKI-006.checks.sh (all rows). Run twice, the lines are identical.
+
+T1 1 1 1 1 1
+T2 200 Toki 0 0 0
+T3 2 0 0 1 router.tsx
+T4 2 0
+T5 1 query-client.ts 1
+T6 1 1
+T7 2 1 0 0
+T8 1 200
+T9 0 1
+T10 1 100826 1
+T11 0
+T12 0 0 12
+T13 1 1 1
+CLEAN worktrees same status same processes 0 ports free free
+
+## Third run (the cleanup now removes every temporary file; no Expected changed)
+Run by Claude for the QA on 2026-11-25: V=cd855ee bash docs/qa/TOKI-006.checks.sh (all rows). Run twice, the lines are identical. The last line now also shows that the temporary folder of the script was removed.
+
+T1 1 1 1 1 1
+T2 200 Toki 0 0 0
+T3 2 0 0 1 router.tsx
+T4 2 0
+T5 1 query-client.ts 1
+T6 1 1
+T7 2 1 0 0
+T8 1 200
+T9 0 1
+T10 1 100826 1
+T11 0
+T12 0 0 12
+T13 1 1 1
+CLEAN worktrees same status same processes 0 ports free free temporary-folder removed
+
+## Final run (the processes the script starts also get the temporary folder; no Expected changed)
+Run by Claude for the QA on 2026-11-25: V=cd855ee bash docs/qa/TOKI-006.checks.sh (all rows). Run twice, the lines are identical. This is the evidence of the rows.
+
+T1 1 1 1 1 1
+T2 200 Toki 0 0 0
+T3 2 0 0 1 router.tsx
+T4 2 0
+T5 1 query-client.ts 1
+T6 1 1
+T7 2 1 0 0
+T8 1 200
+T9 0 1
+T10 1 100826 1
+T11 0
+T12 0 0 12
+T13 1 1 1
+CLEAN worktrees same status same processes 0 ports free free temporary-folder removed
