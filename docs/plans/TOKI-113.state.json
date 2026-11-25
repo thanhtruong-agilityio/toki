@@ -1,0 +1,36 @@
+{
+  "approved_auto": false,
+  "base": "github/main",
+  "branch": "docs/toki-113-lint-qa",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-25T01:59:32Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-25T01:59:32Z",
+      "stage": "explore"
+    },
+    {
+      "at": "2026-11-25T02:00:19Z",
+      "stage": "plan"
+    }
+  ],
+  "key": "TOKI-113",
+  "main_sha": "2aeaa87ff951d535f5c7e12d2eb3fb850237649b",
+  "metrics": {},
+  "mode": "auto-to-check",
+  "plan_approved": false,
+  "plan_hash": null,
+  "spec_commit": "2e3c0c5393f352652e4961fa4d111af09b917b5a",
+  "spec_paths": [
+    "docs/specs/2026-11-25-lint-format-boundary-rules-qa-design.md"
+  ],
+  "stage": "plan",
+  "tier": "M",
+  "verifier": {
+    "result": null,
+    "round": 0
+  }
+}
