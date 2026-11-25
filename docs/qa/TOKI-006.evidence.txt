@@ -36,3 +36,21 @@ T11 0
 T12 0 0 12
 T13 1 1 1
 CLEAN worktrees same status same processes 0 ports free free
+
+## Third run (the cleanup now removes every temporary file; no Expected changed)
+Run by Claude for the QA on 2026-11-25: V=cd855ee bash docs/qa/TOKI-006.checks.sh (all rows). Run twice, the lines are identical. The last line now also shows that the temporary folder of the script was removed.
+
+T1 1 1 1 1 1
+T2 200 Toki 0 0 0
+T3 2 0 0 1 router.tsx
+T4 2 0
+T5 1 query-client.ts 1
+T6 1 1
+T7 2 1 0 0
+T8 1 200
+T9 0 1
+T10 1 100826 1
+T11 0
+T12 0 0 12
+T13 1 1 1
+CLEAN worktrees same status same processes 0 ports free free temporary-folder removed

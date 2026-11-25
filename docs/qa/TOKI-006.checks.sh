@@ -17,6 +17,9 @@ V="${V:-HEAD}"
 PW_VERSION=1.65.1
 doc() { git show "$V:$1" 2>/dev/null; }
 
+# Every temporary file of the script lives under one folder, made here in the current shell, so
+# the cleanup removes all of it whatever subshell created it.
+BASE=$(mktemp -d); export TMPDIR="$BASE"
 before_wt=$(git worktree list | wc -l | tr -d ' ')
 before_status=$(git status --porcelain | shasum | cut -d' ' -f1)
 WT=""; TMPS=""; PIDS=""
@@ -26,6 +29,7 @@ cleanup() {
   for p in $PIDS; do kill_tree "$p"; done
   [ -n "$WT" ] && git worktree remove --force "$WT" >/dev/null 2>&1
   for d in $TMPS; do rm -rf "$d"; done
+  rm -rf "$BASE"
   git worktree prune >/dev/null 2>&1
 }
 trap cleanup EXIT
@@ -291,4 +295,4 @@ done
 alive=0; for p in $PIDS; do kill -0 "$p" 2>/dev/null && alive=$((alive + 1)); done
 cleanup; WT=""; TMPS=""
 for p in $PIDS; do kill -0 "$p" 2>/dev/null && alive=$((alive + 1)); done; PIDS=""
-echo "CLEAN worktrees $([ "$(git worktree list | wc -l | tr -d ' ')" = "$before_wt" ] && echo same || echo changed) status $([ "$(git status --porcelain | shasum | cut -d' ' -f1)" = "$before_status" ] && echo same || echo changed) processes $alive ports $(portbusy 5173) $(portbusy 3000)"
+echo "CLEAN worktrees $([ "$(git worktree list | wc -l | tr -d ' ')" = "$before_wt" ] && echo same || echo changed) status $([ "$(git status --porcelain | shasum | cut -d' ' -f1)" = "$before_status" ] && echo same || echo changed) processes $alive ports $(portbusy 5173) $(portbusy 3000) temporary-folder $([ -e "$BASE" ] && echo left || echo removed)"
