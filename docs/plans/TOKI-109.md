@@ -43,6 +43,7 @@
    - R12: a seeded declaration is one "not run" row named by its id (`seededOnce`), not one row for each look and width. R5: an export of a declaration file may be a declaration or an array of declarations (`flattenDeclarations`).
    - R11: the three images of a screen are attached to its Playwright result (`info.attach`) as well as written to `e2e/assets/parity/images/`.
    - `docs/plans/TOKI-109.state.json` is committed with the plan, as the other tickets do.
+   - The code blocks of the tasks are the first version of the code. Where they differ from the files, the files and this list win; the main differences are the ones named here.
    - Code review of the build (10 findings, all fixed): a declaration has an optional `ready` selector and the app is captured once it is visible (without one, once the network is idle); `runSteps` waits for an element up to a timeout before it says "not found"; the container installs the pnpm of the repository's `packageManager` field (`tools/ui-parity/pnpm-version.mjs`), not a version written in the script; a known-difference entry is called stale only when its kind of check ran, and a run with no row or in reference mode does not write the report; a declaration file may export helpers (a function, a string or a number is ignored), an object that is not a declaration, an unsafe id or a repeated id fails with the file name; a property with no value on either side is a difference; the arguments of the user are passed to Playwright one for each argument (not in one environment variable); the `.env` files are not copied into the container; the job summary step runs only when a report was written; the report is sorted by code units, not by locale.
    - Task 8: the default Playwright config also ignores `support/**`, because it loaded the Vitest tests of the helpers (`*.test.ts`) and failed; `changed.sh` gets a `parity` check with its own tests.
 
@@ -158,7 +159,8 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const version = playwrightVersion(readFileSync(`${repo}/pnpm-lock.yaml`, "utf8"));
   const out = `${repo}/e2e/assets/parity`, ref = `${repo}/e2e/parity/reference`;
   mkdirSync(out, { recursive: true }); mkdirSync(ref, { recursive: true });
-  const env = { PARITY_ARGS: rest.join(" ") };
+  // The arguments of the user go to the container one for each argument (`args` of `dockerArgs`), not in an environment variable (deviation 9).
+  const env = {};
   const r = spawnSync("docker", dockerArgs({ repo, out, ref, uid: process.getuid(), gid: process.getgid(), tag: imageTag(version), mode, env }), { stdio: "inherit" });
   process.exit(r.status ?? 1);
 }
@@ -180,7 +182,7 @@ want=$(node -e "console.log(/'@playwright\/test':\s+specifier: \S+\s+version: ([
 have=$(pnpm exec playwright --version | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
 [ "$want" = "$have" ] || { echo "parity: image has Playwright $have, lockfile has $want"; exit 1; }
 if [ "${PARITY_MODE}" = "reference" ]; then export PARITY_REFERENCE=1 PARITY_REFERENCE_DIR=/ref; fi
-PARITY_OUT=/out pnpm exec playwright test -c playwright.parity.config.ts ${PARITY_ARGS:-}
+PARITY_OUT=/out pnpm exec playwright test -c playwright.parity.config.ts "$@"
 ```
 Add scripts to `package.json`: `"test:e2e:parity": "node tools/ui-parity/container.mjs test"`; and append `tools/ui-parity/container.test.mjs` to the `test` script's `node --test` list.
 - [ ] **Step 6: Run the tests.** `node --test tools/ui-parity/container.test.mjs` Expected: PASS. Commit: `git add tools/ui-parity package.json && git commit -m "test(e2e): run the parity check in the playwright container (TOKI-109)"`.
@@ -430,7 +432,7 @@ test("a wrong selector fails with the screen, the step and the selector (R13)", 
 });
 ```
 Run in the container. Expected: FAIL (helpers missing).
-- [ ] **Step 4: Implement `captureElement`:** `page.locator(selector).screenshot({ animations: "disabled", caret: "hide", scale: "css", mask: mask.map((m) => page.locator(m)) })`; before it `await page.evaluate(() => document.fonts.ready)` and scroll every `.scroll` pane to 0. `runSteps`: for each step find the selector with `page.locator(sel).first()`, `count() === 0` throws the message; `click`, `press` (`page.keyboard.press`), `fill`. Run. Expected: PASS.
+- [ ] **Step 4: Implement `captureElement`:** `page.locator(selector).screenshot({ animations: "disabled", caret: "hide", scale: "css", mask: mask.map((m) => page.locator(m)) })`; before it `await page.evaluate(() => document.fonts.ready)` and scroll every `.scroll` pane to 0. `runSteps`: for each step wait for the selector (`page.locator(sel).first().waitFor({ state: "attached", timeout })`, default 5000 ms) and throw the message only on a timeout; `click`, `press` (`page.keyboard.press`), `fill`. `waitUntilReady(page, id, ready?)` waits for the optional `ready` selector of the declaration (visible), or for the network to be idle, before the app is captured (deviation 9). Run. Expected: PASS.
 - [ ] **Step 5: Add `attachRow(info, row)`** (`info.attach("parity-row", { body: JSON.stringify(row), contentType: "application/json" })`) to `parity.ts`, used by the specs; attach the three images (reference, app, diff) to the Playwright result and to `row.images` (paths under `outputDir`).
 - [ ] **Step 6: Write `screens.spec.ts`:** `const decls = (await Promise.all(readdirSync("e2e/parity/screens").filter((f) => f.endsWith(".ts")).map((f) => import(`./screens/${f}`)))).flatMap((m) => Object.values(m).flat())` (ESM, top-level await; the repository is `"type": "module"`); for each `expandScreens` entry: if `!run` attach a `not-run` row and return; else open the prototype in the declared state, run `prototypeSteps`, capture `#app`, open the app (`decl.setup(page)` stubs first, `emulateMedia`, clock, `goto(appRoute)`, set accent/density through `page.evaluate` on `<html>` as `apps/web/src/preview/controls.ts:46-52` does), run `appSteps`, capture `.app`; read the reference image (a missing one throws "no reference for <name>: run pnpm ui:reference"; in CI that fails the run, R10), `compareImages`, attach the row (`match` when `ratio <= LIMITS.ratio`, else `differs`, `sizes differ` as a `differs` row) and the three images. Applied through `applyKnown` in the reporter, not here.
 - [ ] **Step 7: Negative check.** Delete one reference image (after T7), run: Expected: the run fails naming the missing file. Restore.
@@ -445,7 +447,7 @@ Run in the container. Expected: FAIL (helpers missing).
 - [ ] `pnpm ui:reference <id>` and `--all` write images from the prototype; an existing image is kept without `--update` and the command exits non-zero; each written file is listed (R8).
 
 - [ ] **Step 1: Failing test** `reference.test.mjs`: `parseReferenceArgs(["--all", "--update"])` returns `{ all: true, ids: [], update: true }`; `["admin"]` returns `{ all: false, ids: ["admin"], update: false }`; `[]` throws "give a screen id or --all". Run: FAIL.
-- [ ] **Step 2: Implement `parseReferenceArgs`** in `container.mjs`, export it; the CLI for mode `reference` turns the arguments into env `PARITY_ARGS="--grep @reference"`, `PARITY_REFERENCE_IDS=<ids|all>`, `PARITY_UPDATE=1` when `--update`. Add the script `"ui:reference": "node tools/ui-parity/container.mjs reference"` and the new test file to the `test` script. Run. Expected: PASS.
+- [ ] **Step 2: Implement `parseReferenceArgs`** in `container.mjs`, export it; the CLI for mode `reference` turns the arguments into the argument `reference.spec.ts` and the env `PARITY_REFERENCE_IDS=<ids|all>`, `PARITY_UPDATE=1` when `--update`. Add the script `"ui:reference": "node tools/ui-parity/container.mjs reference"` and the new test file to the `test` script. Run. Expected: PASS.
 - [ ] **Step 3: Write `reference.spec.ts`** (`test.skip(process.env.PARITY_REFERENCE !== "1")`; tag `@reference`): for each `expandScreens` entry whose id is in `PARITY_REFERENCE_IDS` (or all) and `run`: open the prototype, run `prototypeSteps`, `captureElement(page, "#app", ...)`; target `${PARITY_REFERENCE_DIR}/<id>-<look>-<width>-chromium-linux.png`; if the file exists and `PARITY_UPDATE !== "1"`: `console.log("kept " + file)` and `expect.soft(false, "exists; use --update").toBe(true)`; else write it and `console.log("wrote " + file)`.
 - [ ] **Step 4: Run in the container** for the sample after T7: `pnpm ui:reference admin` twice. Expected: first run lists six `wrote`; second run exits non-zero with `kept`; `pnpm ui:reference admin --update` lists six `wrote`. Run the first command twice with `--update` and compare file hashes: identical (R7).
 - [ ] **Step 5: Commit:** `test(e2e): add the command that makes the reference images (TOKI-109)`.
