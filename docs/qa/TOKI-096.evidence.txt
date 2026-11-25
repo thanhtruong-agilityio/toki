@@ -1,0 +1,16 @@
+# Evidence for docs/qa/TOKI-096.md
+Version: ff5bb3be. Run on 2026-11-25 by Claude for the QA, Thanh Truong. Each line is the output of: V=ff5bb3be bash docs/qa/TOKI-096.checks.sh <ID>. Run twice, the lines are identical. T5 is run by the QA in their own terminal and pasted at the end.
+
+T1 0 7
+T2 12
+T3 0 0 0
+T4 0 10
+T6 3 4 0
+T7 1 3 3
+T8 3 0
+T9 0 0
+T10 5 5
+T11 2 1 0
+T12 7
+T13 0 1
+T14 reserved reserved

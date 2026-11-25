@@ -15,19 +15,28 @@
     {
       "at": "2026-11-25T00:55:26Z",
       "stage": "plan"
+    },
+    {
+      "at": "2026-11-25T01:03:58Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-25T01:03:58Z",
+      "stage": "build"
     }
   ],
   "key": "TOKI-111",
   "main_sha": "ff5bb3be492e79f865e81df2152ddb34dbe17e18",
   "metrics": {},
   "mode": "auto-to-check",
-  "plan_approved": false,
-  "plan_hash": null,
+  "plan_approved": true,
+  "plan_hash": "224995a415f3515733d0840c43ba7f009353770c8a2fe2680b759a8bfca9ac1f",
   "spec_commit": "9f223ee3e8763d868755b13dcc4ba127642e5b44",
   "spec_paths": [
     "docs/specs/2026-11-25-environment-config-acceptance-design.md"
   ],
-  "stage": "plan",
+  "stage": "build",
   "tier": "M",
   "verifier": {
     "result": null,

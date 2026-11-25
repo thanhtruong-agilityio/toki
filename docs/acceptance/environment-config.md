@@ -11,7 +11,7 @@ Source: the `done` line of the Blueprint intent I17 (a draft, written before the
 - SC4. Each required value has a named owner for production.
 
 ## Confirmed
-Not confirmed yet. The BA confirms SC1 to SC4 by writing `BA <name>, <YYYY-MM-DD>` here before any row of TOKI-096 is run.
+BA Thanh Truong, 2026-11-25. SC1 to SC4 are confirmed as written, before any row of TOKI-096 was run.
 
 ## Results
 | SC | Tickets | Evidence | Verdict | Reason |
