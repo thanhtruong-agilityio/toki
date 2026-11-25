@@ -1,0 +1,36 @@
+{
+  "approved_auto": false,
+  "base": "github/main",
+  "branch": "docs/toki-115-server-qa",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-25T02:17:20Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-25T02:17:20Z",
+      "stage": "explore"
+    },
+    {
+      "at": "2026-11-25T02:18:23Z",
+      "stage": "plan"
+    }
+  ],
+  "key": "TOKI-115",
+  "main_sha": "5d91d513b31f5c53201898cfb6796c85142c9154",
+  "metrics": {},
+  "mode": "auto-to-check",
+  "plan_approved": false,
+  "plan_hash": null,
+  "spec_commit": "2e3c0c5393f352652e4961fa4d111af09b917b5a",
+  "spec_paths": [
+    "docs/specs/2026-11-25-server-skeleton-qa-design.md"
+  ],
+  "stage": "plan",
+  "tier": "M",
+  "verifier": {
+    "result": null,
+    "round": 0
+  }
+}
