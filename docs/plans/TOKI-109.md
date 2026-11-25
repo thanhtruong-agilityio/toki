@@ -16,6 +16,8 @@
 - Capture settings: Chromium, scale factor 1, time zone `Asia/Ho_Chi_Minh`, locale `en-US`, reduced motion, browser time fixed at Tuesday 10 November 2026 10:42 `+07:00`, animations off, `document.fonts.ready` awaited (R6, R7). Prototype capture element `#app`; app capture element `.app`. Masks: `[data-timer]` and the declaration's selectors.
 - Reference file name: `e2e/parity/reference/<screen-id>-<look>-<width>-chromium-linux.png` (R8). Report: `e2e/assets/parity/report.md` and `report.json` (deviation 1).
 - Image: `mcr.microsoft.com/playwright:v<version of @playwright/test in pnpm-lock.yaml>-noble`; the run refuses to start when Docker is missing or the version differs (R8, R10).
+- Platform: always `--platform linux/amd64`, on every machine and in CI, so that the reference images and the CI capture come from the same build (decided by Thanh Truong on 2026-11-24).
+- Node in the container: the image's own Node (26.13.1 when probed), with `devEngines.runtime.onFail` changed from `error` to `warn` in the container's copy of `package.json` only; the repository's `package.json` is not changed (decided by Thanh Truong on 2026-11-24). pnpm 12.21.0 is installed with npm because the image has no corepack.
 - Prototype copy: `e2e/prototype/index.html`, SHA-256 `8afc5b13cbc2f0a487eb3041421e2a81667ae0d783e6f87e65332e8377b7bb35` (2629 lines, 259,825 bytes), recorded in `e2e/parity/prototype.sha256` (R17).
 - Parity web port: 5193 (5173, 5174, 5183 are taken). The parity config starts only Vite; every `/api` call is stubbed.
 - Differences do not fail a run. A run fails only where no result can be given: reference missing, state not reachable, prototype hash changed, run outside the container, image version differs (R8, R10, R13, R17).
@@ -27,6 +29,8 @@
 3. R14 fallback applies: no built screen matches the prototype (the app's `/admin` shows Members and Channels, the prototype's `admin` shows Analytics and Automations). The proof of this ticket is the token check on the preview page (R3), two control tests that need no app screen (prototype against itself matches; prototype against an altered copy gives a report row) and the Vitest tests. `/admin` is declared as a smoke screen and recorded as a known difference, to run the app side of the pipeline end to end.
 4. Layout additions to the spec's tree: `e2e/support/tokens.ts`, `e2e/support/parity-reporter.ts`, `e2e/vitest.config.ts` (a Vitest project, because the root `vitest.config.ts` lists only `apps/*` and `packages/*`), `tools/ui-parity/in-container.sh`, `playwright.parity.config.ts`.
 5. Fonts are read from `apps/web/assets/fonts/` (the real path), not `apps/web/src/fonts/` as the TOKI-010 spec says.
+6. Node 26, not 22, inside the container (the spec and `.nvmrc` say 22): the image ships Node 26.13.1 and no corepack, and the lead chose to run it rather than download Node 22 or build an image. The container's copy of `package.json` relaxes `devEngines` so that `pnpm install` runs; tests and Vite therefore run on Node 26 in this check while the other CI steps run on Node 22.
+7. `--platform linux/amd64` always (the spec says "the same image and Chromium"; this fixes the architecture too). On Apple Silicon this runs under emulation, slower; if Chromium does not start there, stop and ask.
 
 ## How This Plan Was Created
 1. Spec provided: `docs/specs/2026-11-24-ui-parity-check-design.md`; analysis and design approved by Thanh Truong on 2026-11-24.
@@ -59,7 +63,7 @@
 ## Design
 (Approved by Thanh Truong on 2026-11-24. Facts found in exploration are in the tasks.)
 
-**Run.** `pnpm test:e2e:parity` and `pnpm ui:reference` call `tools/ui-parity/container.mjs`. It checks that Docker answers, reads the version of `@playwright/test` from `pnpm-lock.yaml`, builds the image tag, and runs the container with `--user <uid>:<gid>`, `--ipc=host`, the repository mounted read-only at `/repo`, `e2e/assets/parity` mounted at `/out`, `e2e/parity/reference` mounted at `/ref`, and a named volume `toki-parity-pnpm-store`. `tools/ui-parity/in-container.sh` copies `/repo` to `/work` (without `node_modules`, `.git`, `e2e/assets`), runs `corepack pnpm install --frozen-lockfile` and then `playwright test -c playwright.parity.config.ts`. Copying keeps the Linux install away from the host's `node_modules`. Vite runs in the same container, so `127.0.0.1` works.
+**Run.** `pnpm test:e2e:parity` and `pnpm ui:reference` call `tools/ui-parity/container.mjs`. It checks that Docker answers, reads the version of `@playwright/test` from `pnpm-lock.yaml`, builds the image tag, and runs the container with `--user <uid>:<gid>`, `--ipc=host`, the repository mounted read-only at `/repo`, `e2e/assets/parity` mounted at `/out`, `e2e/parity/reference` mounted at `/ref`, and a named volume `toki-parity-pnpm-store`. `tools/ui-parity/in-container.sh` copies `/repo` to `/work` (without `node_modules`, `.git`, `e2e/assets`), relaxes `devEngines` in that copy, installs pnpm 12.21.0 with npm (the image has no corepack), runs `pnpm install --frozen-lockfile` and then `playwright test -c playwright.parity.config.ts`. The container is always `linux/amd64`. Copying keeps the Linux install away from the host's `node_modules`. Vite runs in the same container, so `127.0.0.1` works.
 
 **Tests.** The parity config (`testDir ./e2e/parity`, `testMatch **/*.spec.ts`, one worker, port 5193, `outputDir /out`, reporter `list` plus `e2e/support/parity-reporter.ts`) holds: `prototype.spec.ts` (R1, R2), `tokens.spec.ts` (R3, R4), `controls.spec.ts` (R7, R9, R11, R13), `screens.spec.ts` (R5, R12 and the declared screens), `reference.spec.ts` (R8, active only when `PARITY_REFERENCE=1`). The default config ignores `parity/**` and `prototype/**`.
 
@@ -90,7 +94,7 @@
 **Acceptance Criteria:**
 - [ ] The image tag is derived from the lockfile; a mismatch or a missing Docker prints a message and runs nothing (R8, R10).
 
-- [ ] **Step 1: Probe the image once.** Run `docker run --rm mcr.microsoft.com/playwright:v1.65.1-noble sh -c 'node -v && corepack --version'`. Expected: Node 22.x. If Node is not 22, stop and ask: the spec needs `.nvmrc` 22.
+- [x] **Step 1: Probe the image once.** Done on 2026-11-24: Node v26.13.1, no corepack, npm 11.20.0, `aarch64` on the Apple Silicon host. The repository wants Node 22 (`engines`, `devEngines` with `onFail: error`, `.nvmrc`). Thanh Truong decided to run the image's Node 26 and to force `linux/amd64` everywhere (deviations 6 and 7).
 - [ ] **Step 2: Write the failing tests** in `container.test.mjs`:
 ```js
 import test from "node:test";
@@ -104,6 +108,7 @@ test("tag", () => assert.equal(imageTag("1.65.1"), "mcr.microsoft.com/playwright
 test("docker args mount the repo read-only and pass the user", () => {
   const a = dockerArgs({ repo: "/r", out: "/o", ref: "/f", uid: 501, gid: 20, tag: "img", mode: "test", env: {} });
   assert.ok(a.includes("--user") && a.includes("501:20"));
+  assert.ok(a.join(" ").includes("--platform linux/amd64"));
   assert.ok(a.includes("/r:/repo:ro") && a.includes("/o:/out") && a.includes("/f:/ref"));
   assert.ok(a.includes("TOKI_PARITY_CONTAINER=1"));
 });
@@ -123,8 +128,8 @@ export function playwrightVersion(lockText) {
 }
 export const imageTag = (v) => `mcr.microsoft.com/playwright:v${v}-noble`;
 export function dockerArgs({ repo, out, ref, uid, gid, tag, mode, env }) {
-  const e = { TOKI_PARITY_CONTAINER: "1", PARITY_MODE: mode, HOME: "/tmp/home", COREPACK_HOME: "/tmp/corepack", ...env };
-  return ["run", "--rm", "--init", "--ipc=host", "--user", `${uid}:${gid}`,
+  const e = { TOKI_PARITY_CONTAINER: "1", PARITY_MODE: mode, HOME: "/tmp/home", ...env };
+  return ["run", "--rm", "--init", "--ipc=host", "--platform", "linux/amd64", "--user", `${uid}:${gid}`,
     "-v", `${repo}:/repo:ro`, "-v", `${out}:/out`, "-v", `${ref}:/ref`,
     "-v", "toki-parity-pnpm-store:/pnpm-store",
     ...Object.entries(e).flatMap(([k, v]) => ["-e", `${k}=${v}`]),
@@ -151,12 +156,17 @@ set -euo pipefail
 [ "${TOKI_PARITY_CONTAINER:-}" = "1" ] || { echo "parity: run through pnpm test:e2e:parity"; exit 1; }
 mkdir -p /work "$HOME" && tar -C /repo --exclude=node_modules --exclude=.git --exclude=e2e/assets -cf - . | tar -C /work -xf -
 cd /work
-corepack pnpm install --frozen-lockfile --store-dir /pnpm-store
+# The image has Node 26 and no corepack; the repository asks for Node 22 (devEngines, onFail error).
+# Decided by Thanh Truong on 2026-11-24: run the image's Node and relax the check in this copy only.
+node -e "const fs=require('fs'),p=JSON.parse(fs.readFileSync('package.json','utf8'));p.devEngines.runtime.onFail='warn';fs.writeFileSync('package.json',JSON.stringify(p,null,2))"
+npm install --silent --prefix /pnpm-store/tool pnpm@12.21.0
+export PATH="/pnpm-store/tool/node_modules/.bin:$PATH"
+pnpm install --frozen-lockfile --store-dir /pnpm-store/store
 want=$(node -e "console.log(/'@playwright\/test':\s+specifier: \S+\s+version: ([0-9.]+)/.exec(require('fs').readFileSync('pnpm-lock.yaml','utf8'))[1])")
-have=$(corepack pnpm exec playwright --version | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
+have=$(pnpm exec playwright --version | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
 [ "$want" = "$have" ] || { echo "parity: image has Playwright $have, lockfile has $want"; exit 1; }
 if [ "${PARITY_MODE}" = "reference" ]; then export PARITY_REFERENCE=1 PARITY_REFERENCE_DIR=/ref; fi
-PARITY_OUT=/out corepack pnpm exec playwright test -c playwright.parity.config.ts ${PARITY_ARGS:-}
+PARITY_OUT=/out pnpm exec playwright test -c playwright.parity.config.ts ${PARITY_ARGS:-}
 ```
 Add scripts to `package.json`: `"test:e2e:parity": "node tools/ui-parity/container.mjs test"`; and append `tools/ui-parity/container.test.mjs` to the `test` script's `node --test` list.
 - [ ] **Step 6: Run the tests.** `node --test tools/ui-parity/container.test.mjs` Expected: PASS. Commit: `git add tools/ui-parity package.json && git commit -m "test(e2e): run the parity check in the playwright container (TOKI-109)"`.
@@ -472,3 +482,5 @@ The upload step already uploads `e2e/assets/` and runs with `!cancelled()`.
 3. **Normaliser.** A false token difference is more likely a probe bug than an app bug (Task 4 step 7).
 4. **Time in CI.** The first run pulls the image (about 1.5 GB) and installs dependencies; the volume `toki-parity-pnpm-store` speeds up local runs only. Measure in the pull request; if the job grows by more than a few minutes, report it.
 5. **Dependency versions.** `pixelmatch` and `pngjs` are pinned with exact versions (Task 2 step 4).
+6. **Node 26 in the container** (deviation 6). A dependency or Vite behaving differently on Node 26 shows at Task 3 step 6, the first run. If `pnpm install --frozen-lockfile` fails because the lockfile records `devEngines`, or a package refuses Node 26, stop and ask; do not change the repository's `package.json`.
+7. **amd64 emulation on Apple Silicon** (deviation 7). Chromium under emulation can be slow or crash. Task 3 step 6 shows it; if it fails there, stop and ask.
