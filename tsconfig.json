@@ -4,6 +4,7 @@
   "include": [
     "e2e",
     "playwright.config.ts",
+    "playwright.parity.config.ts",
     "playwright.sign-in.config.ts",
     "vitest.config.ts"
   ]

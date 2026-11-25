@@ -13,13 +13,27 @@ test("throws when the lockfile has no entry", () => {
 });
 
 test("tag", () => {
-  assert.equal(imageTag("1.65.1"), "mcr.microsoft.com/playwright:v1.65.1-noble");
+  assert.equal(
+    imageTag("1.65.1"),
+    "mcr.microsoft.com/playwright:v1.65.1-noble",
+  );
 });
 
 test("docker args mount the repo read-only, pass the user and force arm64", () => {
-  const a = dockerArgs({ repo: "/r", out: "/o", ref: "/f", uid: 501, gid: 20, tag: "img", mode: "test", env: {} });
+  const a = dockerArgs({
+    repo: "/r",
+    out: "/o",
+    ref: "/f",
+    uid: 501,
+    gid: 20,
+    tag: "img",
+    mode: "test",
+    env: {},
+  });
   assert.ok(a.includes("--user") && a.includes("501:20"));
   assert.ok(a.join(" ").includes("--platform linux/arm64"));
-  assert.ok(a.includes("/r:/repo:ro") && a.includes("/o:/out") && a.includes("/f:/ref"));
+  assert.ok(
+    a.includes("/r:/repo:ro") && a.includes("/o:/out") && a.includes("/f:/ref"),
+  );
   assert.ok(a.includes("TOKI_PARITY_CONTAINER=1"));
 });

@@ -13,3 +13,6 @@ docs/
 .claude/
 CLAUDE.md
 packages/tokens/src/tokens.css
+
+# The fixed copy of the prototype, kept byte for byte (its hash is recorded, TOKI-109 R17)
+e2e/prototype/index.html

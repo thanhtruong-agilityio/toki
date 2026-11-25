@@ -10,7 +10,13 @@ export default defineConfig({
   testDir: "./e2e",
   // The flows that need a database have their own configs (playwright.real-server.config.ts and
   // playwright.sign-in.config.ts).
-  testIgnore: ["real-server/**", "sign-in-server/**", "assets/**"],
+  testIgnore: [
+    "real-server/**",
+    "sign-in-server/**",
+    "assets/**",
+    "parity/**",
+    "prototype/**",
+  ],
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: 0,
