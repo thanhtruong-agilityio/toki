@@ -1138,7 +1138,7 @@ t73() {
   pnenv DATABASE_URL="$dev" -- --filter @toki/server run db:migrate >/dev/null 2>&1 || { echo "T73 the migration of the temporary database failed (Blocked)"; return; }
   pnenv NODE_ENV=development DATABASE_URL="$dev" TEST_DATABASE_URL="$tst" -- test > "$BASE/t73.log" 2>&1; local rc=$?
   reset_wt
-  echo "T73 $rc"
+  if [ "$rc" = 0 ]; then echo "T73 0"; else echo "T73 $rc (failed test files: $(sed -E 's/\x1b\[[0-9;]*m//g' "$BASE/t73.log" | grep -E '^ *(FAIL|❯) ' | grep -oE '[A-Za-z0-9_./-]+\.test\.[a-z]+' | sort -u | tr '\n' ' '))"; fi
 }
 # the manual row
 t74() { echo "T74 (Blocked) manual row: the QA pastes the result of the by-hand checks in Chrome, Safari and Firefox into the record"; }
