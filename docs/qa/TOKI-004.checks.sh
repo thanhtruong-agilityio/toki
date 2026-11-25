@@ -14,7 +14,7 @@ V="${V:-HEAD}"
 doc() { git show "$V:$1" 2>/dev/null; }
 
 before_wt=$(git worktree list | wc -l | tr -d ' ')
-before_status=$(git status --porcelain | wc -l | tr -d ' ')
+before_status=$(git status --porcelain | shasum | cut -d' ' -f1)
 WT=""; TMPS=""; PIDS=""
 cleanup() {
   local p d
@@ -46,7 +46,7 @@ ensure() {
 need() { ensure && return 0; echo "$1 needs Node 22 and an installed worktree of $V (Blocked)"; return 1; }
 tmpdir() { local d; d=$(mktemp -d); TMPS="$TMPS $d"; echo "$d"; }
 freeport() { PATH="$NODEPATH" node -e 'const s=require("net").createServer().listen(0,"127.0.0.1",()=>{console.log(s.address().port);s.close()})'; }
-portbusy() { PATH="$NODEPATH" node -e 'const s=require("net").connect($1,"127.0.0.1");s.on("connect",()=>{console.log("busy");process.exit(0)});s.on("error",()=>{console.log("free");process.exit(0)})' 2>/dev/null; }
+portbusy() { PATH="$NODEPATH" node -e 'const s=require("net").connect(Number(process.argv[1]),"127.0.0.1");s.on("connect",()=>{console.log("busy");process.exit(0)});s.on("error",()=>{console.log("free");process.exit(0)})' "$1" 2>/dev/null; }
 
 # start_server <outfile> <errfile> VAR=value ...: starts the real entry point directly with Node,
 # in the background, with only the given variables. Sets SPID. Returns 1 if it did not listen.
@@ -81,23 +81,25 @@ t1() {
 }
 t2() {
   local files
-  files=$(git grep -l 'process\.env' "$V" -- apps/server/src ':!apps/server/src/test' 2>/dev/null | sed "s#^$V:apps/server/src/##" | sort | tr '\n' ' ' | sed 's/ $//')
+  files=$(git grep -l 'process\.env' "$V" -- apps/server/src 2>/dev/null | sed "s#^$V:apps/server/src/##" | sort | tr '\n' ' ' | sed 's/ $//')
   echo "T2 $(printf '%s' "$files" | wc -w | tr -d ' ') $files"
 }
 t3() {
   need T3 || return
-  local d n=0 names=0 both=0 rc
+  local d n=0 exact=0 oneline=0 both=0 rc names lines want
   d=$(tmpdir)
-  runcase() { # extra vars...; prints exit code, leaves stderr in $d/e
-    ( cd "$WT/apps/server" && env -i PATH="$NODEPATH" HOME="$HOME" "$@" node --import tsx src/main.ts ) >"$d/o" 2>"$d/e"; echo $?
+  runcase() { ( cd "$WT/apps/server" && env -i PATH="$NODEPATH" HOME="$HOME" "$@" node --import tsx src/main.ts ) >"$d/o" 2>"$d/e"; echo $?; }
+  judge() { # $1 exit code, $2 sorted expected names (space separated, trailing space)
+    [ "$1" = 1 ] && n=$((n + 1))
+    names=$(sed -n 's/^\([A-Z_]*\) is missing or invalid$/\1/p' "$d/e" | sort | tr '\n' ' ')
+    lines=$(grep -c . "$d/e")
+    [ "$names" = "$2" ] && exact=$((exact + 1))
+    [ "$lines" = "$(printf '%s' "$2" | wc -w | tr -d ' ')" ] && oneline=$((oneline + 1))
   }
-  rc=$(runcase); [ "$rc" = 1 ] && n=$((n + 1))
-  grep -q '^NODE_ENV' "$d/e" && grep -q '^DATABASE_URL' "$d/e" && { names=$((names + 1)); both=1; }
-  rc=$(runcase NODE_ENV="   " DATABASE_URL="$DEAD_DB"); [ "$rc" = 1 ] && n=$((n + 1))
-  grep -q '^NODE_ENV' "$d/e" && names=$((names + 1))
-  rc=$(runcase NODE_ENV=development DATABASE_URL=); [ "$rc" = 1 ] && n=$((n + 1))
-  grep -q '^DATABASE_URL' "$d/e" && names=$((names + 1))
-  echo "T3 $n $names $both"
+  rc=$(runcase); judge "$rc" "DATABASE_URL NODE_ENV "; [ "$names" = "DATABASE_URL NODE_ENV " ] && both=1
+  rc=$(runcase NODE_ENV="   " DATABASE_URL="$DEAD_DB"); judge "$rc" "NODE_ENV "
+  rc=$(runcase NODE_ENV=development DATABASE_URL=); judge "$rc" "DATABASE_URL "
+  echo "T3 $n $exact $oneline $both"
 }
 t4() {
   need T4 || return
@@ -129,29 +131,32 @@ t6() {
 }
 t7() {
   need T7 || return
-  local d port out id lines fields=0 hz_info hz_debug; d=$(tmpdir); port=$(freeport); out="$d/o"
+  local d port out id lines fields=0 hz_info hz_debug leaks sel; d=$(tmpdir); port=$(freeport); out="$d/o"
   start_server "$out" "$d/e" NODE_ENV=development SERVER_PORT="$port" DATABASE_URL="$DEAD_DB" LOG_LEVEL=info || { echo "T7 server did not start (Blocked)"; return; }
-  get "$port" "$d/b" '/api/v1/zz?x=1' >/dev/null; get "$port" "$d/b" /healthz >/dev/null; stop_server
-  id=$(jq -rR 'fromjson? | select(.msg == "request completed" and .path == "/api/v1/zz") | .reqId' "$out" | head -1)
+  curl -s -o /dev/null -X POST -H 'Authorization: Bearer SECRETAUTH' -H 'Cookie: sid=SECRETCOOKIE' -H 'Content-Type: text/plain' --data 'SECRETBODY' "http://127.0.0.1:$port/api/v1/zz?x=SECRETQUERY" 2>/dev/null
+  get "$port" "$d/b" /healthz >/dev/null; stop_server
+  sel='fromjson? | select(.msg == "request completed" and .path == "/api/v1/zz")'
+  id=$(jq -rR "$sel | .reqId" "$out" | head -1)
   lines=$([ -n "$id" ] && jq -cR --arg i "$id" 'fromjson? | select(.reqId == $i)' "$out" | grep -c . || echo 0)
-  jq -eR 'fromjson? | select(.msg == "request completed" and .path == "/api/v1/zz") | (.method == "GET")' "$out" >/dev/null 2>&1 && fields=$((fields + 1))
-  jq -eR 'fromjson? | select(.msg == "request completed" and .path == "/api/v1/zz") | (.path == "/api/v1/zz")' "$out" >/dev/null 2>&1 && fields=$((fields + 1))
-  jq -eR 'fromjson? | select(.msg == "request completed" and .path == "/api/v1/zz") | (.status == 404)' "$out" >/dev/null 2>&1 && fields=$((fields + 1))
-  jq -eR 'fromjson? | select(.msg == "request completed" and .path == "/api/v1/zz") | (.durationMs | type == "number")' "$out" >/dev/null 2>&1 && fields=$((fields + 1))
-  jq -eR 'fromjson? | select(.msg == "request completed" and .path == "/api/v1/zz") | (.reqId | type == "string")' "$out" >/dev/null 2>&1 && fields=$((fields + 1))
+  jq -eR "$sel | (.method == \"POST\")" "$out" >/dev/null 2>&1 && fields=$((fields + 1))
+  jq -eR "$sel | (.path == \"/api/v1/zz\")" "$out" >/dev/null 2>&1 && fields=$((fields + 1))
+  jq -eR "$sel | (.status == 404)" "$out" >/dev/null 2>&1 && fields=$((fields + 1))
+  jq -eR "$sel | (.durationMs | type == \"number\")" "$out" >/dev/null 2>&1 && fields=$((fields + 1))
+  jq -eR "$sel | (.reqId | type == \"string\")" "$out" >/dev/null 2>&1 && fields=$((fields + 1))
   hz_info=$(jq -cR 'fromjson? | select(.msg == "request completed" and .path == "/healthz")' "$out" | grep -c .)
-  # the same /healthz request at level debug
+  leaks=$(grep -ciE 'SECRETAUTH|SECRETCOOKIE|SECRETQUERY|SECRETBODY|set-cookie' "$out")
   d=$(tmpdir); port=$(freeport); out="$d/o"
   start_server "$out" "$d/e" NODE_ENV=development SERVER_PORT="$port" DATABASE_URL="$DEAD_DB" LOG_LEVEL=debug || { echo "T7 server did not start at debug (Blocked)"; return; }
   get "$port" "$d/b" /healthz >/dev/null; stop_server
   hz_debug=$(jq -cR 'fromjson? | select(.msg == "request completed" and .path == "/healthz")' "$out" | grep -c .)
-  echo "T7 $lines $fields $hz_info $hz_debug"
+  echo "T7 $lines $fields $hz_info $hz_debug $leaks"
 }
 
 # The in-process harness: buildApp with test routes, requests through app.inject.
 HARNESS='
-import { ErrorResponseSchema } from "@toki/shared";
+import { ErrorCodes, ErrorResponseSchema } from "@toki/shared";
 import { Writable } from "node:stream";
+import net from "node:net";
 import { z } from "zod";
 import { buildApp } from "./src/app.js";
 import { AppError } from "./src/errors.js";
@@ -165,35 +170,68 @@ async function make() {
     scopePrefix = (scope as any).prefix; order.push("register");
     scope.get("/ok", async () => ({ ok: true }));
     scope.get("/boom", async () => { throw new Error("boom-internal-detail"); });
+    scope.get("/boom2", async () => { throw new Error("other-internal-detail"); });
     scope.get("/app-error", async () => { throw new AppError(409, "conflict_test", "A test conflict.", { field: "x" }); });
     scope.get("/validate", async (request) => z.object({ n: z.coerce.number() }).parse(request.query));
     scope.get("/status/:code", async (request) => { throw Object.assign(new Error("raised by a plugin"), { statusCode: Number((request.params as any).code) }); });
+    scope.post("/echo", async (request) => ({ body: request.body }));
   } });
   await app.ready(); order.push("ready");
   return { app, log };
 }
 const out: Record<string, unknown> = {};
 const { app, log } = await make();
-const cases: [string, string, number][] = [["/api/v1/nope", "404", 404], ["/api/v1/validate?n=secret-value-1", "validation", 400], ["/api/v1/app-error", "known", 409], ["/api/v1/status/429", "framework", 429], ["/api/v1/boom", "unexpected", 500]];
+type Case = { req: any; status: number; code: string };
+const cases: Case[] = [
+  { req: { url: "/api/v1/nope" }, status: 404, code: ErrorCodes.notFound },
+  { req: { url: "/api/v1/validate?n=secret-value-1" }, status: 400, code: ErrorCodes.validationFailed },
+  { req: { url: "/api/v1/app-error" }, status: 409, code: "conflict_test" },
+  { req: { method: "POST", url: "/api/v1/echo", headers: { "content-type": "application/json" }, payload: "{bad" }, status: 400, code: ErrorCodes.badRequest },
+  { req: { method: "POST", url: "/api/v1/echo", headers: { "content-type": "application/json" }, payload: "{\"a\":\"" + "x".repeat(2 * 1024 * 1024) + "\"}" }, status: 413, code: ErrorCodes.payloadTooLarge },
+  { req: { method: "POST", url: "/api/v1/echo", headers: { "content-type": "text/xml" }, payload: "<a/>" }, status: 415, code: ErrorCodes.unsupportedMediaType },
+  { req: { url: "/api/v1/%" }, status: 400, code: ErrorCodes.badRequest },
+  { req: { url: "/api/v1/status/429" }, status: 429, code: ErrorCodes.tooManyRequests },
+  { req: { url: "/api/v1/boom" }, status: 500, code: ErrorCodes.internalError },
+];
 let okc = 0;
-for (const [url, , status] of cases) {
-  const r = await app.inject({ url });
-  if (r.statusCode === status && ErrorResponseSchema.safeParse(JSON.parse(r.body)).success) okc++;
+for (const c of cases) {
+  try {
+    const r = await app.inject(c.req);
+    const parsed = ErrorResponseSchema.safeParse(JSON.parse(r.body));
+    if (r.statusCode === c.status && parsed.success && parsed.data.error.code === c.code) okc++;
+  } catch { /* a case that cannot be sent counts as not passed */ }
 }
-out.t8 = [okc, cases.length];
+// Node clientError: a request that cannot be parsed, answered in the one format.
+const app2 = buildApp({ config }); await app2.listen({ port: 0, host: "127.0.0.1" });
+const port2 = (app2.server.address() as any).port;
+const raw: string = await new Promise((res) => { const s = net.connect(port2, "127.0.0.1", () => s.write("NOT HTTP\r\n\r\n")); let b = ""; s.on("data", (d) => (b += d)); s.on("close", () => res(b)); setTimeout(() => { s.destroy(); res(b); }, 2000); });
+try {
+  const body = JSON.parse(raw.split("\r\n\r\n")[1] ?? "");
+  const parsed = ErrorResponseSchema.safeParse(body);
+  if (/^HTTP\/1\.1 400/.test(raw) && parsed.success && parsed.data.error.code === ErrorCodes.badRequest) okc++;
+} catch { /* not passed */ }
+await app2.close();
+out.t8 = [okc, cases.length + 1];
 const boom = await app.inject({ url: "/api/v1/boom" });
-const b = JSON.parse(boom.body);
+const boom2 = await app.inject({ url: "/api/v1/boom2" });
+const b = JSON.parse(boom.body); const b2 = JSON.parse(boom2.body);
+const logLines = log.text().split("\n").filter(Boolean).map((l) => { try { return JSON.parse(l); } catch { return {}; } });
+const entry = logLines.find((l: any) => l.msg === "unexpected error" && l.reqId === b.error.details.requestId);
 out.t9 = [
-  boom.statusCode === 500 && b.error.code === "internal_error" && typeof b.error.message === "string" && b.error.message.length > 0 ? 1 : 0,
+  boom.statusCode === 500 && b.error.code === "internal_error" ? 1 : 0,
+  typeof b.error.message === "string" && b.error.message.length > 0 && b.error.message === b2.error.message && !b.error.message.includes("internal-detail") ? 1 : 0,
   !boom.body.includes("boom-internal-detail") && !/\n\s+at /.test(boom.body) && !boom.body.includes("stack") ? 1 : 0,
   JSON.stringify(Object.keys(b.error.details ?? {})) === JSON.stringify(["requestId"]) ? 1 : 0,
-  log.text().includes("boom-internal-detail") && /at /.test(log.text()) ? 1 : 0,
+  entry && entry.err?.message === "boom-internal-detail" && /\n\s+at /.test(String(entry.err.stack)) ? 1 : 0,
 ];
 const ok = await app.inject({ url: "/api/v1/ok" });
 const noPrefix = await app.inject({ url: "/ok" });
 let refused = 0;
 try { buildApp({ config }).get("/outside", async () => ({})); } catch (e) { if (/\/api\/v1/.test(String(e))) refused = 1; }
-out.t10 = [ok.statusCode, noPrefix.statusCode, refused];
+const routes = app.printRoutes({ commonPrefix: false }).split("\n").filter((l) => /\//.test(l));
+const inside = routes.length >= 2 && routes.every((l) => /\/api\/v1|\/healthz/.test(l)) ? 1 : 0;
+const hz = (await app.inject({ url: "/healthz" })).statusCode === 200 ? 1 : 0;
+out.t10 = [ok.statusCode, noPrefix.statusCode, refused, inside, hz];
 let same = 0;
 for (const url of ["/api/v1/nope", "/api/v1/boom"]) {
   const vi = JSON.parse((await app.inject({ url, headers: { "accept-language": "vi" } })).body).error;
@@ -201,6 +239,9 @@ for (const url of ["/api/v1/nope", "/api/v1/boom"]) {
   if (vi.code === en.code && vi.message === en.message) same++;
 }
 out.t12 = [same, 2];
+const hookApp = buildApp({ config }); let ran = 0; hookApp.addHook("onClose", async () => { ran = 1; });
+await hookApp.listen({ port: 0, host: "127.0.0.1" }); await hookApp.close();
+out.t15 = [ran];
 const plain = buildApp({ config }); await plain.ready();
 out.t16 = [plain ? 1 : 0, log.text().length > 0 ? 1 : 0, scopePrefix === "/api/v1" && order.join(",") === "register,ready" ? 1 : 0];
 console.log(JSON.stringify(out));
@@ -232,22 +273,27 @@ t13() {
   echo "T13 $total $found"
 }
 t14() {
-  local a=0 b=0 c
+  local a=0 b=0 c d
   doc apps/server/package.json | jq -r '.scripts.dev' | grep -q -- '--env-file=../../.env' && a=1
   [ "$(doc package.json | jq -r '.scripts.dev')" = "pnpm -r --parallel --if-present run dev" ] && b=1
-  c=$(git grep -ciE 'dotenv|loadEnvFile|readFileSync\(.*\.env' "$V" -- apps/server/src ':!apps/server/src/test' 2>/dev/null | awk -F: '{s += $NF} END {print s + 0}')
-  echo "T14 $a $b $c"
+  c=$(git grep -ciE 'dotenv|loadEnvFile|readFileSync\([^)]*\.env' "$V" -- apps/server/src 2>/dev/null | awk -F: '{s += $NF} END {print s + 0}')
+  d=$({ doc apps/server/package.json | jq -r '.scripts.test, .scripts.start // empty'; doc apps/server/vitest.config.ts; doc vitest.config.ts; } 2>/dev/null | grep -ciE 'env-file|dotenv|\.env')
+  echo "T14 $a $b $c $d"
 }
 t15() {
   need T15 || return
-  local d port rc1 rc2; d=$(tmpdir)
+  local d port rc1 rc2 refused src=0 hook; d=$(tmpdir)
   port=$(freeport)
   start_server "$d/o" "$d/e" NODE_ENV=development SERVER_PORT="$port" DATABASE_URL="$DEAD_DB" || { echo "T15 server did not start (Blocked)"; return; }
   kill -TERM "$SPID"; wait "$SPID" 2>/dev/null; rc1=$?
+  [ "$(portbusy "$port")" = free ] && refused=1 || refused=0
   port=$(freeport)
   start_server "$d/o" "$d/e" NODE_ENV=development SERVER_PORT="$port" DATABASE_URL="$DEAD_DB" || { echo "T15 server did not start (Blocked)"; return; }
   kill -INT "$SPID"; wait "$SPID" 2>/dev/null; rc2=$?
-  echo "T15 $rc1 $rc2"
+  harness || { echo "T15 the harness did not run (Blocked)"; return; }
+  hook=$(hval .t15)
+  doc apps/server/src/main.ts | grep -q 'SIGTERM' && doc apps/server/src/main.ts | grep -q 'SIGINT' && doc apps/server/src/main.ts | grep -q 'app\.close()' && src=1
+  echo "T15 $rc1 $rc2 $refused $hook $src"
 }
 t17() {
   local exists=0 mods
@@ -257,14 +303,17 @@ t17() {
 }
 t18() {
   need T18 || return
-  local d port a b; d=$(tmpdir)
+  local d port a b lvl=0 hz; d=$(tmpdir)
   if [ "$(portbusy 3000)" = busy ]; then echo "T18 port 3000 is busy (Blocked)"; return; fi
   start_server "$d/o" "$d/e" NODE_ENV=development DATABASE_URL="$DEAD_DB" || { echo "T18 server did not start (Blocked)"; return; }
-  a=$(lsof -nP -a -p "$SPID" -iTCP -sTCP:LISTEN 2>/dev/null | awk 'NR > 1 {print $9}' | head -1); stop_server
+  a=$(lsof -nP -a -p "$SPID" -iTCP -sTCP:LISTEN 2>/dev/null | awk 'NR > 1 {print $9}' | head -1)
+  get 3000 "$d/b" /healthz >/dev/null; stop_server
+  hz=$(jq -cR 'fromjson? | select(.msg == "request completed" and .path == "/healthz")' "$d/o" | grep -c .)
+  jq -eR 'fromjson? | select(.msg | test("Server listening")) | (.level == 30)' "$d/o" >/dev/null 2>&1 && [ "$hz" = 0 ] && lvl=1
   port=$(freeport)
   start_server "$d/o" "$d/e" NODE_ENV=development SERVER_PORT="$port" SERVER_HOST=0.0.0.0 DATABASE_URL="$DEAD_DB" || { echo "T18 server did not start with 0.0.0.0 (Blocked)"; return; }
   b=$(lsof -nP -a -p "$SPID" -iTCP -sTCP:LISTEN 2>/dev/null | awk 'NR > 1 {print $9}' | head -1); stop_server
-  echo "T18 ${a%%:*} ${a##*:} ${b%%:*}"
+  echo "T18 ${a%%:*} ${a##*:} ${b%%:*} $lvl"
 }
 t19() {
   local only=0 other
@@ -286,5 +335,7 @@ for r in $rows; do
   fn=$(printf '%s' "$r" | tr 'T' 't')
   if declare -F "$fn" >/dev/null; then "$fn"; else echo "$r is not a row" >&2; fi
 done
-cleanup; WT=""; TMPS=""; PIDS=""
-echo "CLEAN worktrees $([ "$(git worktree list | wc -l | tr -d ' ')" = "$before_wt" ] && echo same || echo changed) status $([ "$(git status --porcelain | wc -l | tr -d ' ')" = "$before_status" ] && echo same || echo changed)"
+alive=0; for p in $PIDS; do kill -0 "$p" 2>/dev/null && alive=$((alive + 1)); done
+cleanup; WT=""; TMPS=""
+for p in $PIDS; do kill -0 "$p" 2>/dev/null && alive=$((alive + 1)); done; PIDS=""
+echo "CLEAN worktrees $([ "$(git worktree list | wc -l | tr -d ' ')" = "$before_wt" ] && echo same || echo changed) status $([ "$(git status --porcelain | shasum | cut -d' ' -f1)" = "$before_status" ] && echo same || echo changed) processes $alive"
