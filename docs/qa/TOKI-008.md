@@ -40,7 +40,7 @@ Each row runs `V=4a17e4b bash docs/qa/TOKI-008.checks.sh <ID>` (called `checks` 
 
 ## Result notes
 - 22 rows are Pass and 1 is Blocked (T22) at `4a17e4b`; each output line was compared with Expected, and run 2 gave the same lines as run 1 (both are in the evidence file, the `HISTORY` line included). The `CLEAN` line of every group shows that the repository, its worktree list and status were as they were, no process and no PostgreSQL cluster was left and the temporary folder was removed. No row Failed.
-- Before the official runs the script was debugged on a made-up copy of the Version with mutations: a loopback guard widened (T5), the emptying step removed (T6) and a `Date.now(` added (T19) each made the matching row fail. The rows were then approved and run once for the evidence.
+- Row T6 carries its own mutation (it removes the emptying step in the temporary worktree and the run must fail, paired with the unchanged run; the evidence line shows `T6 0 0 1 1`). Debug runs of the script on a made-up copy were not kept and are not evidence.
 - T22 Blocked: the checks that can be made pass (`T22 0 0 1`: no end-to-end file uses seed data, none calls `dev:reset:db` or `dev:seed`, the development stand-in is unchanged), but R22 describes creating, seeding and dropping an end-to-end database, and no seeded flow exists at the Version, so that behavior is not shown.
 - T7 (`T7 1 1 1 1`): with PostgreSQL stopped, the evidence line below the row shows five database test files failed, none passed, none skipped, and 23 database-free files passed.
 - T19: the one file with `Date.now(` in `packages/shared/src` outside tests is `clock.ts` (evidence line below the row), as R19 allows.
