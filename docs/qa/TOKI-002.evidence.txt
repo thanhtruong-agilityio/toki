@@ -29,3 +29,25 @@ Run by Claude for the QA on 2026-11-25: V=6e7f0fa bash docs/qa/TOKI-002.checks.s
 T5 0
 T17 0
 CLEAN worktrees same status same
+
+## Second run (strengthened checks; rows with a changed Expected re-approved by the QA in chat on 2026-11-25)
+Run by Claude for the QA on 2026-11-25: V=6e7f0fa bash docs/qa/TOKI-002.checks.sh (all rows). Run twice, the lines are identical.
+
+T1 0 3 1
+T2 7 1
+T3 1
+T4 0 1 1 0
+T5 0
+T6 60 60 4 4
+T7 0 15
+T8 24 24
+T9 0 12
+T10 3 3 2
+T11 3 3
+T12 1 1 1
+T13 19 19
+T14 0
+T15 7 7 4
+T16 5 5 5
+T17 0
+CLEAN worktrees same status same
