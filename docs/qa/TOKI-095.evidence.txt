@@ -1,0 +1,21 @@
+# Evidence for docs/qa/TOKI-095.md
+Version: 6153cd0. Run on 2026-11-25 by Claude for the QA, Thanh Truong. Each line is the output of: V=6153cd0 bash docs/qa/TOKI-095.checks.sh <ID>
+
+T1 5
+T2 0
+T3 8   (first run; the check looked for the strings apps/server and apps/web, but the tree prints server/ under apps/, so two hits were a flaw of the check, not of the document)
+T4 11
+T5 4
+T6 10
+T7 1 2
+T8 2
+T9 0 0
+T10 3
+T11 cl-ba-qa@cl,cl-core@cl,cl-dev@cl,cl-lead@cl thanhtruong-agilityio/claude-config
+T12 14 6
+T13 present
+T14 0
+T15 1 1 4
+
+T3 rerun after the check was corrected to look for server/ and web/: T3 10
+T3 detail: the only string of the layout check that is not in the section is infra/ (the document puts the development compose file at the root, see docs/plans/TOKI-095.md).

@@ -17,7 +17,7 @@ settings() { doc .claude/settings.json; }
 
 t1()  { echo "T1 $(sec 'What the project is' | found 'internal team chat' 'single-tenant' 'self-hosted' 'phase 1 is core chat on the web' 'prototype is the only design source')"; }
 t2()  { echo "T2 $(doc CLAUDE.md | grep -c '^## Read first')"; }
-t3()  { echo "T3 $(sec 'Repository layout' | found 'apps/server' 'apps/web' 'shared/' 'client-core/' 'tokens/' 'i18n/' 'platform/' 'ui-web/' 'e2e/' 'docs/' 'infra/')"; }
+t3()  { echo "T3 $(sec 'Repository layout' | found 'server/' 'web/' 'shared/' 'client-core/' 'tokens/' 'i18n/' 'platform/' 'ui-web/' 'e2e/' 'docs/' 'infra/')"; }
 t4()  { echo "T4 $(sec 'Common commands' | found '`pnpm install`' '`pnpm typecheck`' '`pnpm lint`' '`pnpm format`' '`pnpm format:check`' '`pnpm dev`' '`pnpm dev:up`' '`pnpm dev:down`' '`pnpm dev:reset`' '`pnpm test`' '`pnpm test:e2e`')"; }
 t5()  { echo "T5 $(sec 'Boundary rules' | found 'Server modules call each other only through public interfaces, never each other' '`client-core` touches no DOM or browser API, so React Native can reuse it' 'Components reach platform features only through `platform`' 'file picking cannot be caught by lint')"; }
 t6()  { echo "T6 $(sec 'Where documents live' | found '`docs/intents/`' '`docs/specs/`' '`docs/plans/`' '`docs/definition-of-done.md`' '`docs/ticket-config.yml`' '`.github/pull_request_template.md`' '`docs/adr/`' '`docs/handoff/`' '`docs/tickets/`' '`docs/<topic>.md`')"; }
