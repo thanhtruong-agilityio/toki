@@ -86,18 +86,19 @@ check_outcome() {
   conf=$(section "$rec" "Confirmed" | grep -E 'BA.*[A-Za-z].*[0-9]{4}-[0-9]{2}-[0-9]{2}' | head -1)
   cdate=$(printf '%s' "$conf" | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}' | head -1)
   if has_section "$rec" "Confirmed" && [ -z "$conf" ]; then gap "Confirmed has no line with BA, a name and a date (YYYY-MM-DD)"; fi
-  if [ -n "$cdate" ]; then
-    local k id run rd
-    for k in $tickets; do
-      [ -f "docs/qa/$k.md" ] || continue
-      while IFS="$US" read -r id run; do
-        [ -n "$id" ] || continue
-        rd=$(printf '%s' "$run" | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}' | head -1)
-        [ -n "$rd" ] || continue
-        [[ "$cdate" > "$rd" ]] && gap "Confirmed ($cdate) is later than the run of $k:$id ($rd)"
-      done <<< "$(table "docs/qa/$k.md" "Test matrix" "ID Run" | grep -v '^!')"
-    done
-  fi
+  local k id run rd
+  for k in $tickets; do
+    [ -f "docs/qa/$k.md" ] || continue
+    while IFS="$US" read -r id run; do
+      [ -n "$id" ] || continue
+      rd=$(printf '%s' "$run" | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}' | head -1)
+      if [ -z "$rd" ]; then
+        [ -n "$run" ] && gap "$k:$id has a Run with no date (YYYY-MM-DD), so Confirmed cannot be compared with it"
+        continue
+      fi
+      [ -n "$cdate" ] && [[ "$cdate" > "$rd" ]] && gap "Confirmed ($cdate) is later than the run of $k:$id ($rd)"
+    done <<< "$(table "docs/qa/$k.md" "Test matrix" "ID Run" | grep -v '^!')"
+  done
 
   local sc tk ev vd rs rowsc="" notacc="" c cites
   while IFS="$US" read -r sc tk ev vd rs; do

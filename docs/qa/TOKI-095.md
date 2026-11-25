@@ -4,7 +4,7 @@ Spec: docs/specs/2026-11-12-claude-project-setup-design.md
 Version: 6153cd0
 Environment: local checkout of main at the Version, files read with `git show`; the manual rows need a fresh clone
 
-Role: Dev is Thanh Truong with Claude (the ticket was built before this record). QA is Thanh Truong. Claude drafted the rows; the QA approves them, then they are run.
+Role: Dev is Thanh Truong with Claude (the ticket was built before this record). QA is Thanh Truong. Claude drafted the rows; the QA approved all of them in chat on 2026-11-25 ("Duyệt cả hai, chạy") before any row was run, and the BA confirmed the criteria of the acceptance record at the same time. Claude ran the command rows for the QA.
 
 The command rows run `V=6153cd0 bash docs/qa/TOKI-095.checks.sh <ID>` (called `checks` below) and compare its one line with Expected. Their output goes in `docs/qa/TOKI-095.evidence.txt`.
 

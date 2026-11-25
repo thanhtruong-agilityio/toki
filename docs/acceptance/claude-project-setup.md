@@ -25,6 +25,6 @@ BA Thanh Truong, 2026-11-25. SC1 to SC5 are confirmed as written, before any row
 
 ## Verdict
 Not accepted
-By: BA, Thanh Truong (drafted by Claude from the QA record of 2026-11-25; the BA confirms or changes it)
+By: BA, pending Thanh Truong (drafted by Claude from the QA record of 2026-11-25; the BA has confirmed the criteria, not this verdict)
 
 The failing rows are T2, T3, T9 and T13 and the blocked rows are T16, T17 and T18 in `docs/qa/TOKI-095.md`. By R9 the ticket TOKI-095 is reopened for the criteria it owns (`In Progress`, label `reopened`). That tracker change is not made by this pull request (concern 8); the BA decides whether to make it, or whether the spec of TOKI-095 is amended instead (T3, T9 and T13 are spec drift as much as defects).

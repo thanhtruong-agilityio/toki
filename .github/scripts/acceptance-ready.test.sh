@@ -98,6 +98,13 @@ check "confirmed without a name and date" 1 "Confirmed" out "$(rec "$hdr" "$sc" 
 yes" "$res" "$verd")"
 check "confirmed after a run" 1 "later than" out "$(rec "$hdr" "$sc" "## Confirmed
 BA Bea, 2026-11-26" "$res" "$verd")"
+check "results table without a column" 1 "no column Reason" out "$(rec "$hdr" "$sc" "$conf" "## Results
+| SC | Tickets | Evidence | Verdict |
+|---|---|---|---|
+| SC1 | TOKI-900 | TOKI-900:T1 | Accepted |
+| SC2 | TOKI-900 | TOKI-900:T2 | Accepted |" "$verd")"
+check "no results section" 1 "## Results" out "$(printf '# A\n%s\n\n%s\n\n%s\n\n%s\n' "$hdr" "$sc" "$conf" "$verd")"
+check "no verdict section" 1 "## Verdict" out "$(printf '# A\n%s\n\n%s\n\n%s\n\n%s\n' "$hdr" "$sc" "$conf" "$res")"
 check "criterion without a result row" 1 "SC2 has no row" out "$(rec "$hdr" "$sc" "$conf" "## Results
 $res_cols
 | SC1 | TOKI-900 | TOKI-900:T1 | Accepted | listed |" "$verd")"
@@ -133,6 +140,15 @@ Done
 By: BA, Bea")"
 check "verdict without a role" 1 "By:" out "$(rec "$hdr" "$sc" "$conf" "$res" "## Verdict
 Accepted")"
+
+write_qa TOKI-902 "$(qa_row T1 R1 Pass)" "| T2 | R2 | command | run it | prints 3 lines | out.txt | P1 | QA Ann, 2026-11-25 | Pass | QA Ann, yesterday |"
+check "run with no date" 1 "TOKI-902:T2 has a Run with no date" out "$(rec "Outcome: I99
+Milestone: M9
+Tickets: TOKI-902" "$sc" "$conf" "## Results
+$res_cols
+| SC1 | TOKI-902 | TOKI-902:T1 | Not accepted | no |
+| SC2 | TOKI-902 | TOKI-902:T2 | Not accepted | no |" "## Verdict
+Pending")"
 
 # --ready
 printf '%s\n' "$(rec "$hdr" "$sc" "$conf" "$res" "## Verdict
