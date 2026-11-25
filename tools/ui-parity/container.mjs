@@ -15,11 +15,11 @@ export function playwrightVersion(lockText) {
 export const imageTag = (version) => `mcr.microsoft.com/playwright:v${version}-noble`;
 
 // `repo` is mounted read-only; the container works on a copy. `out` receives the report and
-// `ref` the reference images. The platform is always linux/amd64 (the platform of CI).
+// `ref` the reference images. The platform is always linux/arm64 (the platform of the builder and of the CI parity job).
 export function dockerArgs({ repo, out, ref, uid, gid, tag, mode, env }) {
   const e = { TOKI_PARITY_CONTAINER: "1", PARITY_MODE: mode, HOME: "/tmp/home", ...env };
   return [
-    "run", "--rm", "--init", "--ipc=host", "--platform", "linux/amd64", "--user", `${uid}:${gid}`,
+    "run", "--rm", "--init", "--ipc=host", "--platform", "linux/arm64", "--user", `${uid}:${gid}`,
     "-v", `${repo}:/repo:ro`, "-v", `${out}:/out`, "-v", `${ref}:/ref`,
     "-v", "toki-parity-pnpm-store:/pnpm-store",
     ...Object.entries(e).flatMap(([k, v]) => ["-e", `${k}=${v}`]),
