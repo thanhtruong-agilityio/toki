@@ -1,0 +1,31 @@
+# Evidence for docs/qa/TOKI-096.md
+
+## First run (checks before the verifier findings of TOKI-111)
+Rows T1 to T4, T7, T8, T10, T13 and T14 are unchanged by the later correction and keep these lines. T5, T6, T9, T11 and T12 were strengthened afterwards; their lines here came from the old checks and are not the evidence of the rows as they now read.
+Version: ff5bb3be. Run on 2026-11-25 by Claude for the QA, Thanh Truong. Each line is the output of: V=ff5bb3be bash docs/qa/TOKI-096.checks.sh <ID>. Run twice, the lines are identical. T5 is run by the QA in their own terminal and pasted at the end.
+
+T1 0 7
+T2 12
+T3 0 0 0
+T4 0 10
+T6 3 4 0
+T7 1 3 3
+T8 3 0
+T9 0 0
+T10 5 5
+T11 2 1 0
+T12 7
+T13 0 1
+T14 reserved reserved
+
+T5 0   (run by the QA, Thanh Truong, in their own terminal on 2026-11-25 from the main checkout with their .env: V=ff5bb3be bash docs/qa/TOKI-096.checks.sh T5; pasted by the QA, names only, no value)
+
+## Second run (strengthened checks, rows re-approved by the QA in chat on 2026-11-25)
+Run by Claude for the QA on 2026-11-25: V=ff5bb3be bash docs/qa/TOKI-096.checks.sh T6 T9 T11 T12. Run twice, the lines are identical.
+
+T6 3 4 0 3
+T9 0 0 0
+T11 2 1 0 2
+T12 8
+
+T5 0 20   (second run, strengthened check: run by the QA, Thanh Truong, in their own terminal on 2026-11-25 from the main checkout with their .env: V=ff5bb3be bash docs/qa/TOKI-096.checks.sh T5; pasted by the QA, count only, no name and no value; 20 required rows were read, none unset or empty)
