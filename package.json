@@ -16,10 +16,11 @@
   "scripts": {
     "typecheck": "pnpm -r run typecheck && tsc --noEmit",
     "i18n:check": "pnpm --filter @toki/i18n check",
-    "test": "vitest run && node --test tools/bundle-size/check.test.mjs apps/web/scripts/check-no-dev-pages.test.mjs && pnpm run test:lint-rules",
+    "test": "vitest run && node --test tools/bundle-size/check.test.mjs tools/ui-parity/container.test.mjs apps/web/scripts/check-no-dev-pages.test.mjs && pnpm run test:lint-rules",
     "test:e2e": "playwright test",
     "test:e2e:real": "playwright test -c playwright.real-server.config.ts --pass-with-no-tests",
     "test:e2e:sign-in": "playwright test -c playwright.sign-in.config.ts",
+    "test:e2e:parity": "node tools/ui-parity/container.mjs test",
     "build": "pnpm -r --if-present run build",
     "size": "node tools/bundle-size/check.mjs",
     "dev": "pnpm -r --parallel --if-present run dev",
