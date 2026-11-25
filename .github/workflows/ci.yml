@@ -1,12 +1,12 @@
 name: CI
 
-# Seven independent checks on every pull request and on every push to main.
+# Eight independent checks on every pull request and on every push to main.
 # Each job calls one root script; the logic lives in package.json, not here.
 # No secret is used. The database below is throwaway and exists for one run.
 #
 # Every job always starts and reports, so the checks stay required on main. A job that has nothing to
 # check skips its steps and passes: `changed.sh` reads the files of the pull request and decides
-# (documents only: no end-to-end, test, type check, build, size or i18n run). `lint` always runs, because
+# (documents only: no end-to-end, ui parity, test, type check, build, size or i18n run). `lint` always runs, because
 # `pnpm format:check` also reads the documents. A push to main runs everything.
 
 on:
@@ -157,6 +157,41 @@ jobs:
         with:
           name: playwright-results
           path: e2e/assets/
+          if-no-files-found: ignore
+          retention-days: 7
+
+  parity:
+    name: ui parity
+    # The UI parity check (TOKI-109) compares the app with the prototype, in the Playwright container
+    # for linux/arm64, the platform of the reference images. So it has a job of its own, on an arm
+    # runner (free for a public repository), and not a step of the end-to-end job. A difference does
+    # not fail the job: it goes into the job summary, with its images in the artifact. The job fails
+    # only where no result can be given (a missing reference, a changed prototype copy).
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: changed
+        run: bash .github/scripts/changed.sh parity >> "$GITHUB_OUTPUT"
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+      # Only Node runs on the runner (tools/ui-parity/container.mjs); the container installs the rest.
+      - if: steps.changed.outputs.run == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - if: steps.changed.outputs.run == 'true'
+        run: node tools/ui-parity/container.mjs test
+      # Only when a report was written: a run that stops early (the prototype hash changed, Docker
+      # failed) has none, and `cat` would hide the real error behind a second red step.
+      - if: ${{ !cancelled() && steps.changed.outputs.run == 'true' && hashFiles('e2e/assets/parity/report.md') != '' }}
+        run: cat e2e/assets/parity/report.md >> "$GITHUB_STEP_SUMMARY"
+      - if: ${{ !cancelled() && steps.changed.outputs.run == 'true' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: parity-results
+          path: e2e/assets/parity/
           if-no-files-found: ignore
           retention-days: 7
 

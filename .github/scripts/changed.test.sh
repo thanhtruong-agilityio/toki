@@ -18,6 +18,19 @@ check() {
   echo "ok   $name"
 }
 
+# The UI parity check (TOKI-109) reads the app, the tokens, the e2e folder, its own tools and the
+# Playwright configs; it does not start for the server, the unit tests' folders or documents.
+check "parity: web source" parity "apps/web/src/main.tsx" "run=true"
+check "parity: tokens package" parity "packages/tokens/src/tokens.css" "run=true"
+check "parity: parity file" parity "e2e/parity/tokens.spec.ts" "run=true"
+check "parity: prototype copy" parity "e2e/prototype/index.html" "run=true"
+check "parity: its own tool" parity "tools/ui-parity/container.mjs" "run=true"
+check "parity: its config" parity "playwright.parity.config.ts" "run=true"
+check "parity: lock file" parity "pnpm-lock.yaml" "run=true"
+check "parity: other tool" parity "tools/bundle-size/check.mjs" "run=false"
+check "parity: documents" parity $'docs/specs/a.md\nCLAUDE.md' "run=false"
+check "e2e: the parity tool does not start the e2e job" e2e "tools/ui-parity/container.mjs" "run=false"
+
 # Documents only: nothing that runs code starts.
 for c in e2e tests typecheck build size i18n; do
   check "docs only, $c" "$c" $'docs/specs/a.md\nREADME.md\nCLAUDE.md\n.claude/rules/ticket.md\ndocs/plans/TOKI-1.md' "run=false"

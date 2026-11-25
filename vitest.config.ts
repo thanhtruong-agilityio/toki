@@ -5,6 +5,11 @@ import { defineConfig } from "vitest/config";
 // that need Postgres are a second project of that folder (R20).
 export default defineConfig({
   test: {
-    projects: ["apps/*", "packages/*", "apps/server/vitest.db.config.ts"],
+    projects: [
+      "apps/*",
+      "packages/*",
+      "apps/server/vitest.db.config.ts",
+      "e2e",
+    ],
   },
 });

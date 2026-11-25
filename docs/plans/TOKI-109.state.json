@@ -1,0 +1,96 @@
+{
+  "approved_auto": false,
+  "base": "github/main",
+  "branch": "test/toki-109-ui-parity-check",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-24T14:46:25Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-24T14:46:25Z",
+      "stage": "tier"
+    },
+    {
+      "at": "2026-11-24T14:46:43Z",
+      "stage": "explore"
+    },
+    {
+      "at": "2026-11-24T14:48:32Z",
+      "stage": "design"
+    },
+    {
+      "at": "2026-11-24T14:57:06Z",
+      "stage": "plan"
+    },
+    {
+      "at": "2026-11-24T15:08:47Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-24T15:08:47Z",
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-24T15:09:14Z",
+      "stage": "mode"
+    },
+    {
+      "at": "2026-11-24T15:09:14Z",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-25T06:25:50Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-25T06:25:50Z",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-25T06:38:14Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-25T06:38:14Z",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-25T07:21:08Z",
+      "stage": "check"
+    },
+    {
+      "at": "2026-11-25T07:28:59Z",
+      "stage": "drift"
+    },
+    {
+      "at": "2026-11-25T07:41:28Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-25T07:41:28Z",
+      "stage": "ship"
+    }
+  ],
+  "key": "TOKI-109",
+  "main_sha": "b5329b0ff140c14e63f7878496065e980d3e53d0",
+  "metrics": {},
+  "mode": "manual",
+  "plan_approved": true,
+  "plan_hash": "05b89f5f66193fb5cd2ae0b64afc78cfe7f852aec5aca5cb54cd62f9c31a2253",
+  "spec_commit": "4acdc197e9a030b307340cc5d8bfa4f9c306a1d8",
+  "spec_paths": [
+    "docs/specs/2026-11-24-ui-parity-check-design.md"
+  ],
+  "stage": "ship",
+  "tier": "M",
+  "verifier": {
+    "result": "PASS",
+    "round": 3
+  }
+}
