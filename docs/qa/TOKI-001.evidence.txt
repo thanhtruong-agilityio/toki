@@ -1,4 +1,7 @@
 # Evidence for docs/qa/TOKI-001.md
+
+## First run (checks before the verifier findings of TOKI-112)
+Rows T1 to T5, T7 and T10 to T12 are unchanged by the later correction and keep these lines. T6, T8, T9 and T13 were strengthened afterwards; their lines here came from the old checks and are not the evidence of the rows as they now read.
 Version: f011a9c (merge commit of PR #54). Run on 2026-11-25 by Claude for the QA, Thanh Truong. Each line is the output of: V=f011a9c bash docs/qa/TOKI-001.checks.sh <ID>. Run twice, the lines are identical. The last line shows that the script left the repository and its worktree list as it found them.
 
 T1 1 0

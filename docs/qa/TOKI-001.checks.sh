@@ -104,7 +104,13 @@ t5() {
   done
   echo "T5 $n $ext $forb"
 }
-t6() { need T6 || return; pn "$WT" typecheck >/dev/null 2>&1; echo "T6 $?"; }
+t6() {
+  need T6 || return
+  local out rc done
+  out=$(pn "$WT" typecheck 2>&1); rc=$?
+  done=$(printf '%s\n' "$out" | grep -c ' typecheck: Done$')  # one line for each project that was type-checked
+  echo "T6 $rc $done"
+}
 t7() {
   need T7 || return
   local nonzero=0 printed=0 p out rc
@@ -119,19 +125,20 @@ t7() {
 }
 t8() {
   local pj; pj=$(doc package.json)
-  echo "T8 $(printf '%s' "$pj" | jq -r '.engines.node') $(printf '%s' "$pj" | jq -r '.devEngines.runtime.version') $(printf '%s' "$pj" | jq -r '.devEngines.runtime.onFail') $(doc .nvmrc | tr -d '[:space:]')"
+  echo "T8 $(printf '%s' "$pj" | jq -r '.devEngines.runtime.name') $(printf '%s' "$pj" | jq -r '.engines.node') $(printf '%s' "$pj" | jq -r '.devEngines.runtime.version') $(printf '%s' "$pj" | jq -r '.devEngines.runtime.onFail') $(doc .nvmrc | tr -d '[:space:]')"
 }
 t9() {
   [ -n "$NOT22" ] || { echo "T9 needs a Node that is not 22 (Blocked)"; return; }
   [ "$NEED22" = 1 ] && { echo "T9 needs Node 22 for the corepack pin (Blocked)"; return; }
   WT2=$(newwt); [ -n "$WT2" ] || { echo "T9 no worktree (Blocked)"; return; }
-  local out rc nz=0 mention=0 nm=0
+  local out rc nz=0 mention=0 nm=0 nodev
+  nodev=$(PATH="$NOT22:$PATH" node --version 2>/dev/null | cut -d. -f1)
   out=$( cd "$WT2" && PATH="$NOT22:$PATH" corepack pnpm install --frozen-lockfile 2>&1 ); rc=$?
   [ "$rc" -ne 0 ] && nz=1
-  printf '%s\n' "$out" | grep -qiE 'runtime|node.*(version|required|22)|unsupported' && mention=1
+  printf '%s\n' "$out" | grep -q 'ERR_PNPM_BAD_RUNTIME_VERSION' && mention=1  # pnpm's own error code for a Node that does not match devEngines
   [ -d "$WT2/node_modules" ] && nm=1
-  echo "T9 $nz $mention $nm"
-  printf '%s\n' "$out" | grep -m1 -iE 'runtime|node.*(version|required|22)|unsupported' | sed 's/^/  first error line: /' | cut -c1-200
+  echo "T9 $nz $mention $nm $nodev"
+  printf '%s\n' "$out" | grep -m1 'ERR_PNPM' | sed 's/^/  first error line: /' | cut -c1-200
 }
 t10() {
   need T10 || return
@@ -170,8 +177,10 @@ t13() {
   local exact=0 devs=0 p rc
   [ "$(doc package.json | jq -r '.scripts.dev')" = "pnpm -r --parallel --if-present run dev" ] && exact=1
   for p in $PROJECTS; do [ "$(doc "$p/package.json" | jq -r '.scripts.dev // empty')" != "" ] && devs=$((devs + 1)); done
-  pn "$WT" dev >/dev/null 2>&1; rc=$?
-  echo "T13 $exact $devs $rc"
+  local out started
+  out=$(pn "$WT" dev 2>&1); rc=$?
+  started=$(printf '%s\n' "$out" | grep -cE ' dev(\$|:)')  # a line of a project's dev script: nothing was started
+  echo "T13 $exact $devs $rc $started"
 }
 
 rows="${*:-T1 T2 T3 T4 T5 T6 T7 T8 T9 T10 T11 T12 T13}"

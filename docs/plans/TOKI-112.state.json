@@ -24,6 +24,10 @@
     {
       "at": "2026-11-25T01:26:20Z",
       "stage": "build"
+    },
+    {
+      "at": "2026-11-25T01:30:26Z",
+      "stage": "check"
     }
   ],
   "key": "TOKI-112",
@@ -36,10 +40,10 @@
   "spec_paths": [
     "docs/specs/2026-11-25-monorepo-typescript-setup-qa-design.md"
   ],
-  "stage": "build",
+  "stage": "check",
   "tier": "M",
   "verifier": {
-    "result": null,
-    "round": 0
+    "result": "FAIL",
+    "round": 1
   }
 }
