@@ -2,6 +2,7 @@
 # Checks behind docs/acceptance/repo-foundation.md. No model. Usage (from the repository root):
 #   C=<commit of main> bash docs/acceptance/repo-foundation.checks.sh <A2|A3|A4|A1|R KEY ID...>
 #   A2  the latest completed run of ci.yml on main at C: read-only `gh api` requests (GET).
+#   A2W the workflow file at C: triggers (pull_request, push) and the number and ids of its jobs.
 #   A3  the real pull request runs of ci.yml in which every check passed: read-only `gh api`.
 #   A4  the repository's own lint in a temporary worktree of C on made-up files that break the
 #       boundary rules, and on a clean copy of the same files. Needs Node 22 and the registry.
@@ -55,6 +56,15 @@ a2() {
   ok=$(grep -c '^success$' "$BASE/a2.txt"); skipped=$(grep -c '^skipped$' "$BASE/a2.txt"); failed=$(grep -c '^failure$\|^cancelled$\|^timed_out$' "$BASE/a2.txt")
   echo "A2 ${CH:0:7} $concl jobs $jobs success $ok skipped $skipped failed $failed"
 }
+a2w() {
+  local f="$BASE/ci.yml" names pr push jobs
+  git show "$CH:.github/workflows/ci.yml" > "$f" 2>/dev/null || { echo "A2W no ci.yml in ${CH:0:7} (Blocked)"; return; }
+  grep -v '^[[:space:]]*#' "$f" > "$f.nc"
+  pr=$(grep -c '^  pull_request' "$f.nc"); push=$(awk '/^on:/{on=1;next} on&&/^[a-z]/{on=0} on' "$f.nc" | grep -c '^  push')
+  jobs=$(awk '/^jobs:/{on=1;next} on&&/^  [A-Za-z0-9_-]+:[[:space:]]*$/{n++} END{print n+0}' "$f.nc")
+  names=$(awk '/^jobs:/{on=1;next} on&&/^  [A-Za-z0-9_-]+:[[:space:]]*$/{gsub(/[ :]/,"");printf "%s ",$0}' "$f.nc")
+  echo "A2W pull_request $pr push $push jobs $jobs ($names)"
+}
 a3() {
   local tsv
   tsv=$(gh api --paginate "repos/$REPO/actions/workflows/ci.yml/runs?event=pull_request&status=completed&per_page=100" --jq '.workflow_runs[] | .conclusion' 2>/dev/null)
@@ -104,6 +114,6 @@ a1() {
 
 mode="${1:-}"; [ $# -gt 0 ] && shift
 case "$mode" in
-  A2) a2;; A3) a3;; A4) a4;; A1) a1;; R) r "$@";;
-  *) echo "usage: C=<commit> bash docs/acceptance/repo-foundation.checks.sh <A2|A3|A4|A1|R KEY ID...>" >&2; exit 2;;
+  A2) a2;; A2W) a2w;; A3) a3;; A4) a4;; A1) a1;; R) r "$@";;
+  *) echo "usage: C=<commit> bash docs/acceptance/repo-foundation.checks.sh <A2|A2W|A3|A4|A1|R KEY ID...>" >&2; exit 2;;
 esac
