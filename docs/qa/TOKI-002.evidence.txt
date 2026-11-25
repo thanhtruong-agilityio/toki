@@ -21,3 +21,10 @@ T14 0
 T15 7 7 4
 T16 5 5 5
 CLEAN worktrees same status same
+
+## Second run (T5 for R3 and the new T17 for R4, re-approved by the QA in chat on 2026-11-25)
+Run by Claude for the QA on 2026-11-25: V=6e7f0fa bash docs/qa/TOKI-002.checks.sh T5 T17. Run twice, the lines are identical.
+
+T5 0
+T17 0
+CLEAN worktrees same status same
