@@ -49,7 +49,7 @@
    "Nguyễn"
   ],
   "labels": {},
-  "ticketsSynced": "2026-11-24"
+  "ticketsSynced": "2026-11-25"
  },
  "overview": {
   "summary": "Toki is an internal team chat for one company: channels, direct messages, threads and files, and later tasks, calendar, video meetings, a guest portal, automations, mail and AI summaries. Each company runs its own copy on its own server.",
@@ -4666,10 +4666,12 @@
         "038"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #210",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 276
       },
       {
        "id": "040",
@@ -4682,7 +4684,7 @@
         "039"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #211",
         "fix": ""
        }
@@ -4698,10 +4700,12 @@
        ],
        "open": "Which virtualisation library",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #218",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 279
       },
       {
        "id": "042",
@@ -4715,10 +4719,12 @@
         "094"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #221",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 280
       },
       {
        "id": "043",
@@ -4729,7 +4735,7 @@
         "040"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #217",
         "fix": ""
        }
@@ -4743,10 +4749,12 @@
         "038"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #209",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 275
       }
      ]
     },
@@ -4765,7 +4773,7 @@
         "043"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #214",
         "fix": ""
        }
@@ -4782,10 +4790,12 @@
         "093"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #215",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 278
       },
       {
        "id": "047",
@@ -4802,10 +4812,12 @@
         "093"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #213",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 277
       },
       {
        "id": "048",
@@ -4819,7 +4831,7 @@
         "093"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #216",
         "fix": ""
        }
@@ -4834,10 +4846,12 @@
         "043"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #225",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 281
       },
       {
        "id": "050",
@@ -4850,7 +4864,7 @@
         "093"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #222",
         "fix": ""
        }
@@ -4865,7 +4879,7 @@
         "043"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #219",
         "fix": ""
        }
@@ -4879,10 +4893,12 @@
         "042"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #226",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 282
       },
       {
        "id": "081",
@@ -4896,7 +4912,7 @@
         "050"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #220",
         "fix": ""
        }
@@ -4923,7 +4939,7 @@
         "005"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #231",
         "fix": ""
        }
@@ -4943,7 +4959,7 @@
         "041"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #234",
         "fix": ""
        }
@@ -4958,10 +4974,12 @@
         "053"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #238",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 284
       },
       {
        "id": "055",
@@ -4975,7 +4993,7 @@
         "044"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #232",
         "fix": ""
        }
@@ -4993,7 +5011,7 @@
         "094"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #239",
         "fix": ""
        }
@@ -5009,10 +5027,12 @@
         "094"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #243",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 286
       }
      ]
     },
@@ -5031,10 +5051,12 @@
        ],
        "open": "Whether any file types are blocked; virus scanning",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #233",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 283
       },
       {
        "id": "059",
@@ -5048,7 +5070,7 @@
         "103"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #244",
         "fix": ""
        }
@@ -5064,7 +5086,7 @@
         "064"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #245",
         "fix": ""
        }
@@ -5083,7 +5105,7 @@
         "064"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #241",
         "fix": ""
        }
@@ -5100,10 +5122,12 @@
         "058"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #240",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 285
       },
       {
        "id": "063",
@@ -5138,7 +5162,7 @@
        "size": "S",
        "needs": [],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #230",
         "fix": ""
        }
@@ -5177,7 +5201,7 @@
         "069"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #242",
         "fix": ""
        }
@@ -5292,7 +5316,7 @@
         "045"
        ],
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #266",
         "fix": ""
        }

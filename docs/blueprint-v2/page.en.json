@@ -37,7 +37,7 @@
    ]
   ]
  },
- "built": "24 Nov 2026",
+ "built": "25 Nov 2026",
  "overview": {
   "summary": "Toki is an internal team chat for one company: channels, direct messages, threads and files, and later tasks, calendar, video meetings, a guest portal, automations, mail and AI summaries. Each company runs its own copy on its own server.",
   "product": [
@@ -5919,7 +5919,7 @@
   }
  ],
  "tagline": "Everything agreed for Toki in one place: the prototype itself, the requirements read from it, user flows per role, every question and gap with its answer, the technical design, and the phase 1 plan.",
- "ticketsSynced": "2026-11-24",
+ "ticketsSynced": "2026-11-25",
  "repo": "github.com/thanhtruong-agilityio/toki",
  "intents": [
   {
@@ -11660,10 +11660,12 @@
        "scope": "Growing retry delay, fetching what was missed, a full reload after a long absence Also builds `GET /api/v1/events` and the one wiring file `apps/web/src/realtime.ts`.",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #210",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 276
       },
       {
        "id": "TOKI-040",
@@ -11671,7 +11673,7 @@
        "scope": "Apply events to the cache; optimistic send. A message sent offline waits and sends itself when the connection returns; once online there is one automatic try, then the message is marked 'Not sent' for a manual Retry or Delete (D-097, D-079). A waiting message is kept in the browser across a reload and dropped when someone else signs in there (D-132). A request with no answer after 10 seconds counts as failed (D-126) Runs several handlers per event kind in registration order, and exposes `patchMessage`, `applyMessage` and `setLastMessageAt` for later tickets.",
        "size": "L",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #211",
         "fix": ""
        }
@@ -11682,10 +11684,12 @@
        "scope": "Reverse scroll, stick to bottom, hold position when loading older messages, a New messages button; opens at the New divider when there are unread messages (D-052) Also draws the readable history of an archived channel, passed by TOKI-101 as `ArchivedHistory`. Owns the rows, grouping, day dividers and the `conversationTabs` list; a hidden message is skipped through `isHidden`.",
        "size": "L",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #218",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 279
       },
       {
        "id": "TOKI-042",
@@ -11693,10 +11697,12 @@
        "scope": "Avatar, name, 24-hour time (D-123), grouping within 5 minutes, day dividers. Send states beside the time: faded until confirmed, 'Waiting to send', and a red 'Not sent' with Retry and Delete, where Delete asks nothing (D-087). Grey system lines for join, leave, add, pin and channel creation, including a newcomer joining #general; a system line raises no unread count and no notification (D-100). Adds the `common` keys for Today, Tomorrow and Yesterday and the glue that passes them to the date formatter. Owns the `messageExtensions` object that 046 to 052 fill; its hook-using members are components.",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #221",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 280
       },
       {
        "id": "TOKI-043",
@@ -11704,7 +11710,7 @@
        "scope": "Enter sends, Shift+Enter makes a new line, no send while composing a Vietnamese word, auto-grow, local draft. Registers the composer with the toast anchor of TOKI-013.",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #217",
         "fix": ""
        }
@@ -11715,10 +11721,12 @@
        "scope": "A typing signal over WebSocket that clears itself",
        "size": "S",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #209",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 275
       }
      ]
     },
@@ -11741,7 +11749,7 @@
        "scope": "API, thread panel, Also send to channel. One level deep. The root author, everyone who replied and everyone mentioned follow the thread automatically; there is no 'Unfollow thread' (D-119). When the root is deleted the thread stays under a 'Message deleted' line, and a reply being written is still sent (D-013, D-096). Each thread has its own address; Back closes the panel first (D-089). From 720 to 1099px the panel overlays the chat (D-068). Owns `.tlink`. Owns `recomputeThreadSummary`, `ThreadSummary` with `summaryVersion` and `isFresher`.",
        "size": "L",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #214",
         "fix": ""
        }
@@ -11752,10 +11760,12 @@
        "scope": "8 fixed emoji, add and remove, the list of who reacted",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #215",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 278
       },
       {
        "id": "TOKI-047",
@@ -11763,10 +11773,12 @@
        "scope": "Edit in place, the edited label, soft delete that keeps the thread, confirmation before deleting; a deleted message's files leave storage; an admin deleting someone's message shows a distinct line and tells the author (D-043, D-049, F16, F42)",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #213",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 277
       },
       {
        "id": "TOKI-048",
@@ -11774,7 +11786,7 @@
        "scope": "Pin, unpin, the pinned list",
        "size": "S",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #216",
         "fix": ""
        }
@@ -11785,10 +11797,12 @@
        "scope": "Bold, italic, code, links; safe rendering with no raw HTML. Owns `.lnk`.",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #225",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 281
       },
       {
        "id": "TOKI-050",
@@ -11796,7 +11810,7 @@
        "scope": "People and @channel, a suggestion popup that matches with or without diacritics, a tinted background on messages that mention you; only conversation members are suggested (D-058); a name typed for someone outside the conversation notifies nobody and offers the sender 'Add them' (D-135); any member can use @channel, with confirmation in channels of 20 or more (D-041) Owns and exports `mapText` and the mention writer `saveMentions`.",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #222",
         "fix": ""
        }
@@ -11807,7 +11821,7 @@
        "scope": "Drafts per conversation and thread, synced across devices, the Draft label",
        "size": "S",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #219",
         "fix": ""
        }
@@ -11818,10 +11832,12 @@
        "scope": "Hover on desktop, tap on narrow screens, the More menu, copy",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #226",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 282
       },
       {
        "id": "TOKI-081",
@@ -11829,7 +11845,7 @@
        "scope": "A `dev:seed` script that loads the prototype's sample workspace: Hugepig Studio, 8 people with the roles Member and Admin only (D-152), the sample channels, DMs, messages, threads, reactions and pins. Used for development after a reset and by the end-to-end tests; it never runs in production, which starts with #general only (D-031, D-147). Sample files and images join the seed in TOKI-063, once file storage exists",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #220",
         "fix": ""
        }
@@ -11854,7 +11870,7 @@
        "scope": "pg-boss, the worker process, retries on failure Owns the job queue contract (`defineJob`, `JobDeps`, the worker); feature tickets add their own `JobDeps` fields.",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #231",
         "fix": ""
        }
@@ -11875,7 +11891,7 @@
        "scope": "Unread counts per conversation, synced across devices. Read when the conversation is open, the window is in use and the list is at the bottom (D-052). Grey system lines such as 'Minh joined' raise no count (D-100); thread replies do not raise the channel's count (F14); leaving a channel clears its count (D-133); nobody sees who has read a message (D-048) Fills the unread data of the client store (`setUnread`) and adds unread counts to the bootstrap answer. Owns the read pointer, `GET /unread` in bootstrap, `PUT /read` and `readStateAvailable`.",
        "size": "L",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #234",
         "fix": ""
        }
@@ -11886,10 +11902,12 @@
        "scope": "The New divider anchored to the first unread message, never drifting, gone on the next open (D-052); badges in the list and navigation, the Home badge counting unmuted conversations only (F08); a muted conversation shows no count and no bold (D-103) but keeps the @ dot while the person's switch for mentions in muted conversations is on (D-088); the browser tab title reads '(3) Toki' for mentions and DMs and shows a dot for anything else (D-122); Unread and Mentions filters Divider, badges and tab title; the divider id is kept after the conversation opens (`newFromId`).",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #238",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 284
       },
       {
        "id": "TOKI-055",
@@ -11897,7 +11915,7 @@
        "scope": "Active, Away after 5 minutes without activity, Do not disturb during Focus; no separate Offline; batched updates (D-036, F34) Owns the presence dot and the mention-row `MentionTrailing` slot; its activity signal is separate from the read pointer's.",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #232",
         "fix": ""
        }
@@ -11908,7 +11926,7 @@
        "scope": "Set a status, presets, clear on a timer; saving empty clears it Status text and its clear timer as a job; the person gets `statusText` and `statusClearAt` and a `person_patch` change.",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #239",
         "fix": ""
        }
@@ -11919,10 +11937,12 @@
        "scope": "Initials avatar on a colour, no picture (D-118); name, job title, presence, status, local time from the time zone the person set, shown with a UTC offset (D-144); a Message button; a deactivated person is labelled 'Deactivated' and has no Message button (F41); your own profile has Set status and Edit profile (F31). Owns Back closing the profile panel (D-089).",
        "size": "S",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #243",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 286
       }
      ]
     },
@@ -11939,10 +11959,12 @@
        "scope": "files and attachments tables on MinIO (D-014); signed URLs for upload and download; only people who can see the conversation can open its files; every file type accepted up to 100 MB, checked on the server, always downloaded and never run in the browser (D-095); a file uploaded but never sent is deleted after 24 hours (D-130). The development bucket already exists (TOKI-003); this ticket does not create it Owns file storage, the upload ticket, the quota and the file entry; a removed file keeps its row 45 minutes.",
        "size": "L",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #233",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 283
       },
       {
        "id": "TOKI-059",
@@ -11950,7 +11972,7 @@
        "scope": "Pick, drag and drop, paste an image; one card per file with progress, remove and Retry; up to 10 files per message (D-042); the over-100-MB error (D-014); Send waits until every file has uploaded (F18); uploading is blocked while offline, with the reason (D-060). Owns `.fchip`. Owns `formatFileSize` in `@toki/i18n` and the upload code in `platform.files.upload`.",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #244",
         "fix": ""
        }
@@ -11961,7 +11983,7 @@
        "scope": "A worker creates thumbnails and updates the message when done Makes one 1040 px thumbnail in a job; the files module keeps one public entry and loads the image library only inside the job.",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #245",
         "fix": ""
        }
@@ -11972,7 +11994,7 @@
        "scope": "A worker fetches title and description and refuses internal addresses; the sender can remove the card (F12) Fetches page titles in a job with a three-layer address guard; its cards are drawn through the seam of TOKI-062.",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #241",
         "fix": ""
        }
@@ -11983,10 +12005,12 @@
        "scope": "File, image and link cards; the detail modal with Open in conversation, Copy link and Download; a file is always downloaded, never run in the browser (D-095); a file link opens only for people who can see its conversation (F18). Owns `.card` and `.fic`. Owns the attachment window, `.card` and `.fic`, the link-card seam and the grouping rule for files; a message opens through the hook of TOKI-068.",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #240",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 285
       },
       {
        "id": "TOKI-063",
@@ -12007,7 +12031,7 @@
        "scope": "No quota. When the disk is 80% full Admins see a warning on the Admin page; at 95% uploads are refused with the reason while messaging keeps working (D-106)",
        "size": "S",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #230",
         "fix": ""
        }
@@ -12039,7 +12063,7 @@
        "scope": "Conversations, people, messages; Vietnamese matches with or without diacritics (D-015); 20 results per kind, more on request (D-112); messages only from conversations the person belongs to, and private channels never returned to outsiders (D-116, D-051); deactivated people are not listed (F41) Search over conversations, channels, people and messages; single-conversation search belongs to TOKI-072.",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #242",
         "fix": ""
        }
@@ -12116,7 +12140,7 @@
        "scope": "From Activity, Later and search to the exact message, with a flash Owns the hook `useOpenMessage()` that every screen uses to open a message, the pending jump request and the 2 s flash.",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #266",
         "fix": ""
        }

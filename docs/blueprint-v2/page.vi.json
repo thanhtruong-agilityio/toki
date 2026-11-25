@@ -37,7 +37,7 @@
    ]
   ]
  },
- "built": "24/11/2026",
+ "built": "25/11/2026",
  "overview": {
   "summary": "Toki là ứng dụng chat nội bộ cho một công ty: kênh, tin nhắn riêng, thread và file; về sau thêm công việc, lịch, họp video, cổng cho khách, tự động hóa, mail và tóm tắt bằng AI. Mỗi công ty tự chạy một bản trên server của mình.",
   "product": [
@@ -5919,7 +5919,7 @@
   }
  ],
  "tagline": "Mọi thứ đã thống nhất cho Toki ở một nơi: prototype, yêu cầu rút ra từ nó, luồng theo vai trò, mọi câu hỏi và gap kèm câu trả lời, thiết kế kỹ thuật, và kế hoạch phase 1.",
- "ticketsSynced": "2026-11-24",
+ "ticketsSynced": "2026-11-25",
  "repo": "github.com/thanhtruong-agilityio/toki",
  "intents": [
   {
@@ -11660,10 +11660,12 @@
        "scope": "Thử lại tăng dần, lấy phần thiếu, tải lại khi vắng quá lâu Còn dựng `GET /api/v1/events` và file nối dây duy nhất `apps/web/src/realtime.ts`.",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #210",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 276
       },
       {
        "id": "TOKI-040",
@@ -11671,7 +11673,7 @@
        "scope": "Áp sự kiện vào cache; gửi lạc quan. Tin gửi lúc offline sẽ chờ và tự gửi khi có kết nối lại; khi đã online thì tự thử một lần, sau đó tin được đánh dấu 'Not sent' để người dùng Retry hoặc Delete (D-097, D-079). Tin đang chờ được giữ trong trình duyệt qua lần tải lại trang, và bị bỏ khi người khác đăng nhập trên trình duyệt đó (D-132). Yêu cầu không có phản hồi sau 10 giây tính là lỗi (D-126) Chạy nhiều bộ xử lý cho mỗi kiểu sự kiện theo thứ tự đăng ký, và xuất `patchMessage`, `applyMessage` và `setLastMessageAt` cho các ticket sau.",
        "size": "L",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #211",
         "fix": ""
        }
@@ -11682,10 +11684,12 @@
        "scope": "Cuộn ngược, bám đáy, giữ vị trí khi tải tin cũ, nút Tin mới; mở tại vạch New khi có tin chưa đọc (D-052) Còn vẽ lịch sử đọc được của kênh đã lưu trữ, do TOKI-101 truyền vào dưới dạng `ArchivedHistory`. Sở hữu các dòng, việc nhóm, vạch chia ngày và danh sách `conversationTabs`; tin bị ẩn được bỏ qua qua `isHidden`.",
        "size": "L",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #218",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 279
       },
       {
        "id": "TOKI-042",
@@ -11693,10 +11697,12 @@
        "scope": "Avatar, tên, giờ theo dạng 24h (D-123), gộp nhóm trong 5 phút, vạch ngày. Trạng thái gửi nằm cạnh giờ: mờ cho tới khi server xác nhận, 'Waiting to send', và 'Not sent' màu đỏ kèm Retry và Delete, trong đó Delete không hỏi lại (D-087). Dòng hệ thống màu xám cho join, leave, thêm người, pin và tạo channel, kể cả khi người mới vào #general; dòng hệ thống không làm tăng số chưa đọc và không tạo thông báo (D-100). Thêm khoá `common` cho Hôm nay, Ngày mai, Hôm qua và đoạn nối chuyển chúng cho bộ định dạng ngày. Sở hữu đối tượng `messageExtensions` mà 046 đến 052 điền; các thành viên cần hook là component.",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #221",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 280
       },
       {
        "id": "TOKI-043",
@@ -11704,7 +11710,7 @@
        "scope": "Enter gửi, Shift+Enter xuống dòng, không gửi khi đang gõ dở tiếng Việt, tự giãn, nháp cục bộ. Đăng ký ô soạn tin với điểm neo toast của TOKI-013.",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #217",
         "fix": ""
        }
@@ -11715,10 +11721,12 @@
        "scope": "Tín hiệu đang gõ qua WebSocket, tự tắt",
        "size": "S",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #209",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 275
       }
      ]
     },
@@ -11741,7 +11749,7 @@
        "scope": "API, panel thread, Also send to channel. Chỉ một cấp. Tác giả tin gốc, mọi người đã trả lời và mọi người được nhắc tự động theo dõi thread; không có 'Unfollow thread' (D-119). Khi tin gốc bị xóa, thread vẫn nằm dưới dòng 'Message deleted', và câu trả lời đang viết dở vẫn gửi được (D-013, D-096). Mỗi thread có địa chỉ riêng; Back đóng panel trước (D-089). Từ 720 tới 1099px panel phủ lên chat (D-068). Sở hữu `.tlink`. Sở hữu `recomputeThreadSummary`, `ThreadSummary` có `summaryVersion` và `isFresher`.",
        "size": "L",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #214",
         "fix": ""
        }
@@ -11752,10 +11760,12 @@
        "scope": "8 emoji cố định, thêm bỏ, danh sách người đã thả",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #215",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 278
       },
       {
        "id": "TOKI-047",
@@ -11763,10 +11773,12 @@
        "scope": "Sửa tại chỗ, nhãn đã sửa, xóa mềm giữ thread, xác nhận trước khi xóa; file của tin bị xóa cũng bị gỡ khỏi kho; Admin xóa tin người khác thì hiện dòng riêng và tác giả được báo (D-043, D-049, F16, F42)",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #213",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 277
       },
       {
        "id": "TOKI-048",
@@ -11774,7 +11786,7 @@
        "scope": "Pin, bỏ pin, danh sách đã pin",
        "size": "S",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #216",
         "fix": ""
        }
@@ -11785,10 +11797,12 @@
        "scope": "Bold, italic, code, link; hiển thị an toàn, không chèn HTML thô. Sở hữu `.lnk`.",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #225",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 281
       },
       {
        "id": "TOKI-050",
@@ -11796,7 +11810,7 @@
        "scope": "Nhắc người và @channel, popup gợi ý khớp cả có dấu lẫn không dấu, tô nền tin nhắc mình; chỉ gợi ý thành viên của hội thoại (D-058); gõ tên người ngoài hội thoại thì không ai được báo và người gửi được gợi ý 'Add them' (D-135); mọi thành viên dùng được @channel, channel từ 20 người thì hỏi xác nhận (D-041) Sở hữu và xuất `mapText` và bộ ghi mention `saveMentions`.",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #222",
         "fix": ""
        }
@@ -11807,7 +11821,7 @@
        "scope": "Nháp theo hội thoại và thread, đồng bộ giữa thiết bị, nhãn Draft",
        "size": "S",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #219",
         "fix": ""
        }
@@ -11818,10 +11832,12 @@
        "scope": "Hover trên máy tính, chạm trên khung hẹp, menu More, copy",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #226",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 282
       },
       {
        "id": "TOKI-081",
@@ -11829,7 +11845,7 @@
        "scope": "Script `dev:seed` nạp workspace mẫu của prototype: Hugepig Studio, 8 người chỉ với role Member và Admin (D-152), các channel, DM, tin nhắn, thread, reaction và tin ghim mẫu. Dùng cho dev sau khi reset và cho các test end-to-end; không bao giờ chạy ở production, nơi chỉ có sẵn #general (D-031, D-147). File và ảnh mẫu được thêm vào seed ở TOKI-063, khi đã có kho file",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #220",
         "fix": ""
        }
@@ -11854,7 +11870,7 @@
        "scope": "pg-boss, tiến trình worker, thử lại khi lỗi Sở hữu hợp đồng hàng đợi job (`defineJob`, `JobDeps`, worker); các ticket tính năng tự thêm trường `JobDeps` của mình.",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #231",
         "fix": ""
        }
@@ -11875,7 +11891,7 @@
        "scope": "Đếm unread theo từng hội thoại, đồng bộ giữa thiết bị. Đã đọc khi hội thoại đang mở, cửa sổ đang được dùng và đã ở cuối danh sách (D-052). Dòng hệ thống màu xám như 'Minh joined' không làm tăng số đếm (D-100); reply trong thread không làm tăng số đếm của channel (F14); rời channel thì xóa số đếm của channel đó (D-133); không ai thấy người khác đã đọc tin hay chưa (D-048) Điền dữ liệu chưa đọc của store phía client (`setUnread`) và thêm số chưa đọc vào câu trả lời bootstrap. Sở hữu con trỏ đọc, `GET /unread` trong bootstrap, `PUT /read` và `readStateAvailable`.",
        "size": "L",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #234",
         "fix": ""
        }
@@ -11886,10 +11902,12 @@
        "scope": "Vạch New neo theo tin chưa đọc đầu tiên, không trôi, biến mất ở lần mở kế tiếp (D-052); badge ở danh sách và điều hướng, badge Home chỉ đếm các hội thoại không mute (F08); hội thoại đã mute không hiện số đếm, không in đậm (D-103) nhưng vẫn giữ chấm @ khi công tắc mention trong hội thoại đã mute của người đó đang bật (D-088); tiêu đề tab trình duyệt hiện '(3) Toki' cho mention và DM, và một dấu chấm cho các tin khác (D-122); lọc Unread và Mentions Vạch New, badge và tiêu đề tab; mã vạch được giữ sau khi mở hội thoại (`newFromId`).",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #238",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 284
       },
       {
        "id": "TOKI-055",
@@ -11897,7 +11915,7 @@
        "scope": "Đang hoạt động, Vắng mặt sau 5 phút không thao tác, Không làm phiền khi Focus; không có Offline riêng; gom nhóm cập nhật (D-036, F34) Sở hữu chấm hiện diện và chỗ `MentionTrailing` ở dòng mention; tín hiệu hoạt động của nó tách khỏi con trỏ đọc.",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #232",
         "fix": ""
        }
@@ -11908,7 +11926,7 @@
        "scope": "Đặt status, mẫu có sẵn, tự xóa theo giờ; lưu rỗng nghĩa là xóa status Chữ trạng thái và bộ đếm xoá qua một job; người dùng có `statusText`, `statusClearAt` và thay đổi `person_patch`.",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #239",
         "fix": ""
        }
@@ -11919,10 +11937,12 @@
        "scope": "Avatar là chữ cái đầu trên nền màu, không có ảnh (D-118); tên, chức danh, presence, status, giờ địa phương tính theo múi giờ người đó đã đặt, kèm múi giờ dạng UTC (D-144); nút Message; người đã bị vô hiệu hóa mang nhãn 'Deactivated' và không có nút Message (F41); hồ sơ của chính mình có Set status và Edit profile (F31). Sở hữu việc nút Back đóng panel hồ sơ (D-089).",
        "size": "S",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #243",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 286
       }
      ]
     },
@@ -11939,10 +11959,12 @@
        "scope": "Bảng files và attachments trên MinIO (D-014); URL ký sẵn để tải lên và tải về; chỉ người xem được hội thoại mới mở được file của nó; nhận mọi loại file tới 100 MB, server kiểm tra lại, file luôn được tải về chứ không chạy trong trình duyệt (D-095); file đã tải lên mà không gửi thì bị xóa sau 24 giờ (D-130). Bucket cho môi trường dev đã có (TOKI-003); ticket này không tạo lại Sở hữu lưu trữ file, vé tải lên, hạn mức và mục file; file đã xoá giữ hàng 45 phút.",
        "size": "L",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #233",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 283
       },
       {
        "id": "TOKI-059",
@@ -11950,7 +11972,7 @@
        "scope": "Chọn, kéo thả, dán ảnh; mỗi file một thẻ có tiến trình, nút gỡ và Retry; tối đa 10 file mỗi tin (D-042); lỗi quá 100 MB (D-014); chỉ gửi được khi mọi file đã tải xong (F18); khi mất kết nối thì chặn tải lên và nói rõ lý do (D-060). Sở hữu `.fchip`. Sở hữu `formatFileSize` trong `@toki/i18n` và mã tải lên trong `platform.files.upload`.",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #244",
         "fix": ""
        }
@@ -11961,7 +11983,7 @@
        "scope": "Worker tạo ảnh thu nhỏ, cập nhật tin khi xong Tạo một ảnh thu nhỏ 1040 px trong một job; module files chỉ có một cửa vào công khai và chỉ nạp thư viện ảnh trong job.",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #245",
         "fix": ""
        }
@@ -11972,7 +11994,7 @@
        "scope": "Worker tải tiêu đề và mô tả, chặn địa chỉ nội bộ; người gửi gỡ được thẻ xem trước (F12) Lấy tiêu đề trang trong một job với bộ chặn địa chỉ ba lớp; thẻ của nó được vẽ qua điểm nối của TOKI-062.",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #241",
         "fix": ""
        }
@@ -11983,10 +12005,12 @@
        "scope": "Thẻ file, ảnh, link; modal chi tiết có Open in conversation, Copy link và Download; file luôn được tải về chứ không chạy trong trình duyệt (D-095); link tới file chỉ mở được với người xem được hội thoại chứa nó (F18). Sở hữu `.card` và `.fic`. Sở hữu cửa sổ tệp đính kèm, `.card` và `.fic`, điểm nối thẻ liên kết và quy tắc gom nhóm cho tệp; mở tin nhắn qua hook của TOKI-068.",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #240",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 285
       },
       {
        "id": "TOKI-063",
@@ -12007,7 +12031,7 @@
        "scope": "Không có hạn mức. Khi đĩa đầy 80% thì Admin thấy cảnh báo ở trang Admin; tới 95% thì từ chối tải lên kèm lý do, nhắn tin vẫn chạy bình thường (D-106)",
        "size": "S",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #230",
         "fix": ""
        }
@@ -12039,7 +12063,7 @@
        "scope": "Hội thoại, người, tin nhắn; tiếng Việt khớp cả khi gõ có dấu lẫn không dấu (D-015); 20 kết quả mỗi loại, xem thêm khi yêu cầu (D-112); chỉ trả tin trong hội thoại người đó là thành viên, private channel không bao giờ hiện với người ngoài (D-116, D-051); không liệt kê người đã bị vô hiệu hóa (F41) Tìm trong hội thoại, kênh, người và tin nhắn; tìm trong một hội thoại thuộc TOKI-072.",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #242",
         "fix": ""
        }
@@ -12116,7 +12140,7 @@
        "scope": "Từ Activity, Later, tìm kiếm tới đúng tin và nháy sáng Sở hữu hook `useOpenMessage()` mà mọi màn hình dùng để mở một tin nhắn, yêu cầu nhảy đang chờ và hiệu ứng nháy 2 giây.",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #266",
         "fix": ""
        }
