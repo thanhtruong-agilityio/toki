@@ -1,0 +1,20 @@
+# Evidence for docs/qa/TOKI-002.md
+Version: 6e7f0fa (merge commit of PR #77). Run on 2026-11-25 by Claude for the QA, Thanh Truong. Each line is the output of: V=6e7f0fa bash docs/qa/TOKI-002.checks.sh <ID>. Run twice, the lines are identical. The last line shows that the script left the repository and its worktree list as it found them.
+
+T1 0 1
+T2 3 1
+T3 1
+T4 0 1 1
+T5 0 0
+T6 60 60 4
+T7 0 15
+T8 24 24
+T9 0 12
+T10 2 2 1
+T11 3 3
+T12 1 1 1
+T13 15 15
+T14 0
+T15 7 7 4
+T16 5 5 5
+CLEAN worktrees same status same
