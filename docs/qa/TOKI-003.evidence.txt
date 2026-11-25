@@ -98,3 +98,4 @@ CLEAN worktrees same status same processes 0 toki-dev-running 0 temporary-folder
     7796b33f feat(server): add postgres connection, migrations and workspaces table (TOKI-005)
   .env.example was added by:
     1596707e Tue Nov 17 15:13:01 2026 +0700 docs(config): add the environment inventory and .env.example (TOKI-096)
+  the Version: e6e2c96d Tue Nov 17 14:56:56 2026 +0700
