@@ -62,6 +62,22 @@ export function dockerArgs({
   ];
 }
 
+// `pnpm ui:reference <screen-id>... | --all [--update]` (R8). An image that exists is kept unless
+// --update is given.
+export function parseReferenceArgs(args) {
+  let all = false;
+  let update = false;
+  const ids = [];
+  for (const arg of args) {
+    if (arg === "--all") all = true;
+    else if (arg === "--update") update = true;
+    else if (arg.startsWith("--")) throw new Error(`unknown option ${arg}`);
+    else ids.push(arg);
+  }
+  if (!all && ids.length === 0) throw new Error("give a screen id or --all");
+  return { all, ids: all ? [] : ids, update };
+}
+
 // The command line, only when this file is run directly.
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const repo = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
@@ -88,6 +104,21 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   mkdirSync(cache, { recursive: true });
   mkdirSync(out, { recursive: true });
   mkdirSync(ref, { recursive: true });
+  // The reference mode runs only reference.spec.ts, for the ids asked for.
+  let env = { PARITY_ARGS: rest.join(" ") };
+  if (mode === "reference") {
+    try {
+      const a = parseReferenceArgs(rest);
+      env = {
+        PARITY_ARGS: "reference.spec.ts",
+        PARITY_REFERENCE_IDS: a.all ? "all" : a.ids.join(","),
+        PARITY_UPDATE: a.update ? "1" : "0",
+      };
+    } catch (error) {
+      console.error(`parity: ${error.message}`);
+      process.exit(1);
+    }
+  }
   const result = spawnSync(
     "docker",
     dockerArgs({
@@ -99,7 +130,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
       gid: process.getgid(),
       tag: imageTag(version),
       mode,
-      env: { PARITY_ARGS: rest.join(" ") },
+      env,
     }),
     { stdio: "inherit" },
   );

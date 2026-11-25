@@ -1,10 +1,4 @@
-import {
-  existsSync,
-  mkdirSync,
-  readFileSync,
-  readdirSync,
-  writeFileSync,
-} from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { test } from "@playwright/test";
 import {
@@ -13,11 +7,11 @@ import {
   expandScreens,
   runSteps,
   screenRow,
-  type ScreenDecl,
 } from "../support/parity";
 import { attachRow } from "../support/parity-reporter";
 import { FIXED_TIME, WIDTHS } from "../support/prototype";
 import { LIMITS } from "./limits";
+import { loadScreens } from "./load-screens";
 
 // The screen check (R5, R9 to R13): each declared screen, look and width is the app compared with
 // the reference image that was made from the prototype. A difference is a row of the report, not a
@@ -25,22 +19,10 @@ import { LIMITS } from "./limits";
 // cannot be done.
 const here = (relative: string) =>
   fileURLToPath(new URL(relative, import.meta.url));
-const SCREENS_DIR = here("./screens/");
 const REFERENCE_DIR = process.env.PARITY_REFERENCE_DIR ?? here("./reference");
 const OUT = process.env.PARITY_OUT ?? "e2e/assets/parity";
 
-// R5: a file added under `screens/` is picked up with no other edit.
-const files = existsSync(SCREENS_DIR)
-  ? readdirSync(SCREENS_DIR)
-      .filter((file) => file.endsWith(".ts"))
-      .sort()
-  : [];
-const modules = await Promise.all(
-  files.map((file) => import(`./screens/${file}`)),
-);
-const decls = modules.flatMap(
-  (module) => Object.values(module) as ScreenDecl[],
-);
+const decls = await loadScreens();
 
 for (const { decl, look, width, name, run } of expandScreens(decls)) {
   test(`screen ${name}`, async ({ page }, info) => {
