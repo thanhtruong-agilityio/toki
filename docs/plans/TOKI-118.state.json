@@ -1,0 +1,49 @@
+{
+  "approved_auto": false,
+  "base": "github/main",
+  "branch": "docs/toki-118-ci-qa",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-25T03:16:31Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-25T03:16:31Z",
+      "stage": "explore"
+    },
+    {
+      "at": "2026-11-25T03:20:47Z",
+      "stage": "plan"
+    },
+    {
+      "at": "2026-11-25T03:25:58Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-25T03:25:58Z",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-25T04:16:44Z",
+      "stage": "check"
+    }
+  ],
+  "key": "TOKI-118",
+  "main_sha": "844583660d50edd1fb89b9eee83fcb136a1f52ab",
+  "metrics": {},
+  "mode": "auto-to-check",
+  "plan_approved": true,
+  "plan_hash": "d5904decc2a4d4138d1ad06d4b73751ae622e17ccdabb6c278c7ad386ec26e0c",
+  "spec_commit": "2e3c0c5393f352652e4961fa4d111af09b917b5a",
+  "spec_paths": [
+    "docs/specs/2026-11-25-ci-pipeline-qa-design.md"
+  ],
+  "stage": "check",
+  "tier": "M",
+  "verifier": {
+    "result": "PASS",
+    "round": 2
+  }
+}
