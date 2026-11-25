@@ -49,6 +49,8 @@ outside the container.
      prototypeSteps: [{ click: '[data-action="tab"][data-id="files"]' }], // to the state, on the prototype
      appRoute: "/files",
      appSteps: [{ click: "text=Files" }], // to the same state, in the app
+     ready: ".members-table", // a selector of the app that is visible once the screen has its content;
+     // without it the check waits for the network to be idle
      mask: [".avatar"], // selectors painted over on both sides (counts and times are masked already)
      looks: ["calm"], // default: both
      widths: ["wide"], // default: wide, mid, narrow

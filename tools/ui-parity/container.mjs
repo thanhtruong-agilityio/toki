@@ -31,6 +31,7 @@ export function dockerArgs({
   tag,
   mode,
   env,
+  args = [],
 }) {
   const e = {
     TOKI_PARITY_CONTAINER: "1",
@@ -59,6 +60,8 @@ export function dockerArgs({
     tag,
     "bash",
     "/repo/tools/ui-parity/in-container.sh",
+    // The arguments of the user, one for each argument, so that a space or a `*` in one is kept.
+    ...args,
   ];
 }
 
@@ -105,12 +108,13 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   mkdirSync(out, { recursive: true });
   mkdirSync(ref, { recursive: true });
   // The reference mode runs only reference.spec.ts, for the ids asked for.
-  let env = { PARITY_ARGS: rest.join(" ") };
+  let env = {};
+  let args = rest;
   if (mode === "reference") {
     try {
       const a = parseReferenceArgs(rest);
+      args = ["reference.spec.ts"];
       env = {
-        PARITY_ARGS: "reference.spec.ts",
         PARITY_REFERENCE_IDS: a.all ? "all" : a.ids.join(","),
         PARITY_UPDATE: a.update ? "1" : "0",
       };
@@ -131,6 +135,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
       tag: imageTag(version),
       mode,
       env,
+      args,
     }),
     { stdio: "inherit" },
   );

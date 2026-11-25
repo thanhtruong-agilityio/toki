@@ -8,6 +8,7 @@ import {
   runSteps,
   screenRow,
   seededOnce,
+  waitUntilReady,
 } from "../support/parity";
 import { attachRow } from "../support/parity-reporter";
 import { FIXED_TIME, WIDTHS } from "../support/prototype";
@@ -61,7 +62,9 @@ for (const { decl, look, width, name } of entries.filter((e) => e.run)) {
     await page.clock.install({ time: FIXED_TIME });
     await page.clock.setFixedTime(FIXED_TIME);
     await page.goto(decl.appRoute);
+    await waitUntilReady(page, decl.id, decl.ready);
     await runSteps(page, decl.id, decl.appSteps ?? []);
+    await waitUntilReady(page, decl.id, decl.ready);
     const app = await captureElement(page, ".app", decl.mask ?? []);
 
     const result = compareImages(reference, app);

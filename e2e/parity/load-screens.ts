@@ -15,5 +15,10 @@ export async function loadScreens(): Promise<ScreenDecl[]> {
   const modules = await Promise.all(
     files.map((file) => import(`./screens/${file}`)),
   );
-  return flattenDeclarations(modules);
+  return flattenDeclarations(
+    files.map((file, index) => ({
+      file,
+      exports: modules[index] as Record<string, unknown>,
+    })),
+  );
 }

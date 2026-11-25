@@ -52,7 +52,6 @@ export function diffTokens(
     const p = prototype[property] ?? "";
     const a = app[property] ?? "";
     if (p === a && p !== "") continue;
-    if (p === "" && a === "") continue;
     rows.push({
       property,
       prototype: p === "" ? "the prototype has no value" : p,

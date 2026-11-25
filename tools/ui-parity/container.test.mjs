@@ -42,3 +42,39 @@ test("docker args mount the repo read-only, pass the user and force arm64", () =
   assert.ok(a.includes("/c:/pnpm-store"));
   assert.ok(!a.some((x) => x.startsWith("toki-parity-pnpm-store")));
 });
+
+test("the arguments of the user follow the script, one for each argument", () => {
+  const a = dockerArgs({
+    repo: "/r",
+    out: "/o",
+    ref: "/f",
+    cache: "/c",
+    uid: 501,
+    gid: 20,
+    tag: "img",
+    mode: "test",
+    env: {},
+    args: ["--grep", "screen admin", "tokens.spec.ts"],
+  });
+  const script = a.indexOf("/repo/tools/ui-parity/in-container.sh");
+  assert.deepEqual(a.slice(script + 1), [
+    "--grep",
+    "screen admin",
+    "tokens.spec.ts",
+  ]);
+});
+
+test("without arguments nothing follows the script", () => {
+  const a = dockerArgs({
+    repo: "/r",
+    out: "/o",
+    ref: "/f",
+    cache: "/c",
+    uid: 501,
+    gid: 20,
+    tag: "img",
+    mode: "test",
+    env: {},
+  });
+  assert.equal(a.at(-1), "/repo/tools/ui-parity/in-container.sh");
+});

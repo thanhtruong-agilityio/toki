@@ -35,8 +35,11 @@ for (const look of looks) {
         await expect(appPage.getByTestId("preview-root")).toBeVisible();
         const app = await readTokens(appPage, names);
 
-        expect(Object.keys(prototype)).toHaveLength(names.length);
-        expect(Object.keys(app)).toHaveLength(names.length);
+        // Both pages were read: a page that did not load would give only empty values.
+        expect(Object.values(prototype).some((value) => value !== "")).toBe(
+          true,
+        );
+        expect(Object.values(app).some((value) => value !== "")).toBe(true);
 
         const differences = diffTokens(prototype, app);
         if (differences.length === 0) {

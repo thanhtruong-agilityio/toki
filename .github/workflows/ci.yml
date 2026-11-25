@@ -183,7 +183,9 @@ jobs:
           node-version-file: .nvmrc
       - if: steps.changed.outputs.run == 'true'
         run: node tools/ui-parity/container.mjs test
-      - if: ${{ !cancelled() && steps.changed.outputs.run == 'true' }}
+      # Only when a report was written: a run that stops early (the prototype hash changed, Docker
+      # failed) has none, and `cat` would hide the real error behind a second red step.
+      - if: ${{ !cancelled() && steps.changed.outputs.run == 'true' && hashFiles('e2e/assets/parity/report.md') != '' }}
         run: cat e2e/assets/parity/report.md >> "$GITHUB_STEP_SUMMARY"
       - if: ${{ !cancelled() && steps.changed.outputs.run == 'true' }}
         uses: actions/upload-artifact@v4

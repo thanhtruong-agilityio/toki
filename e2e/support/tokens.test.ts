@@ -70,6 +70,16 @@ describe("diffTokens (R3)", () => {
     ]);
   });
 
+  it("reports a property that has no value on either side", () => {
+    expect(diffTokens({ "--bg": "" }, { "--bg": "" })).toEqual([
+      {
+        property: "--bg",
+        prototype: "the prototype has no value",
+        app: "the app has no value",
+      },
+    ]);
+  });
+
   it("reports a property that the app lacks", () => {
     expect(diffTokens({ "--bg": "a" }, {})).toEqual([
       { property: "--bg", prototype: "a", app: "the app has no value" },

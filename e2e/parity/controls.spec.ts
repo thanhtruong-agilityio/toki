@@ -5,6 +5,7 @@ import {
   expandScreens,
   runSteps,
   screenRow,
+  waitUntilReady,
 } from "../support/parity";
 import { openPrototype } from "../support/prototype";
 import { LIMITS } from "./limits";
@@ -57,12 +58,59 @@ test("a changed surface colour gives a difference row", async ({ page }) => {
   expect(row.images).toHaveLength(3);
 });
 
-// R13: a step that cannot be done fails and names the screen, the step and the selector.
+// R13: a step that cannot be done fails and names the screen, the step and the selector, once the
+// element has not appeared in time.
 test("a wrong selector fails with the screen, the step and the selector", async ({
   page,
 }) => {
   await openPrototype(page, { look: "calm", width: "wide", hash: "admin" });
   await expect(
-    runSteps(page, "demo", [{ press: "Tab" }, { click: "#nope" }]),
+    runSteps(page, "demo", [{ press: "Tab" }, { click: "#nope" }], 500),
   ).rejects.toThrow(/screen demo: step 2 selector #nope not found/);
+});
+
+// An element that renders a moment after the page loads is waited for, not reported as missing.
+test("a step waits for an element that renders late", async ({ page }) => {
+  await openPrototype(page, { look: "calm", width: "wide", hash: "admin" });
+  await page.evaluate(() => {
+    setTimeout(() => {
+      const button = document.createElement("button");
+      button.id = "late";
+      button.textContent = "late";
+      button.style.cssText = "position:fixed;top:0;left:0;z-index:9999";
+      button.onclick = () => {
+        button.dataset.clicked = "1";
+      };
+      document.body.append(button);
+    }, 400);
+  });
+  await runSteps(page, "demo", [{ click: "#late" }]);
+  await expect(page.locator("#late")).toHaveAttribute("data-clicked", "1");
+});
+
+// The app is captured when its content is there (R7): the ready selector is waited for, the screen
+// is named when it never comes, and without a selector the network is waited for.
+test("waitUntilReady waits for the ready selector", async ({ page }) => {
+  await openPrototype(page, { look: "calm", width: "wide", hash: "admin" });
+  await page.evaluate(() => {
+    setTimeout(() => {
+      const content = document.createElement("div");
+      content.id = "content";
+      content.textContent = "content";
+      content.style.cssText = "position:fixed;top:0;left:0";
+      document.body.append(content);
+    }, 400);
+  });
+  await waitUntilReady(page, "demo", "#content");
+  await expect(page.locator("#content")).toBeVisible();
+  await expect(waitUntilReady(page, "demo")).resolves.toBeUndefined();
+});
+
+test("waitUntilReady names the screen when the selector never comes", async ({
+  page,
+}) => {
+  await openPrototype(page, { look: "calm", width: "wide", hash: "admin" });
+  await expect(waitUntilReady(page, "demo", "#never", 500)).rejects.toThrow(
+    /screen demo: the ready selector #never did not become visible/,
+  );
 });

@@ -37,6 +37,9 @@ export async function attachRow(info: TestInfo, row: Row): Promise<void> {
 export function applyKnown(rows: Row[], known: KnownDifference[]): Row[] {
   const byId = new Map(known.map((k) => [k.id, k]));
   const used = new Set<string>();
+  // An entry can be called stale only when its kind of check ran: a run of one spec says nothing of
+  // the entries of the other.
+  const ran = new Set(rows.map((row) => row.kind));
   const out = rows.map((row): Row => {
     const entry = row.status === "differs" ? byId.get(row.name) : undefined;
     if (!entry) return row;
@@ -49,8 +52,10 @@ export function applyKnown(rows: Row[], known: KnownDifference[]): Row[] {
   });
   for (const entry of known) {
     if (used.has(entry.id)) continue;
+    const kind = entry.id.startsWith("--") ? "token" : "screen";
+    if (!ran.has(kind)) continue;
     out.push({
-      kind: entry.id.startsWith("--") ? "token" : "screen",
+      kind,
       name: entry.id,
       status: "stale-known",
       detail: { reason: entry.reason, ticket: entry.ticket },
@@ -81,10 +86,23 @@ function table(rows: Row[]): string {
   return `| Name | Kind | Detail |\n| --- | --- | --- |\n${lines.join("\n")}\n`;
 }
 
+const byCodeUnits = (a: string, b: string): number =>
+  a < b ? -1 : a > b ? 1 : 0;
+
+// A run that has no row (a filtered run, a list) or that makes reference images does not write a
+// report, so that it does not replace the last real one.
+export function shouldWriteReport(
+  rows: Row[],
+  env: Record<string, string | undefined>,
+): boolean {
+  return rows.length > 0 && env.PARITY_REFERENCE !== "1";
+}
+
 // R11: the same rows give the same text, in any order.
 export function renderReport(rows: Row[]): { md: string; json: string } {
+  // By code units, not by locale, so that the text is the same on every machine.
   const sorted = [...rows].sort(
-    (a, b) => a.kind.localeCompare(b.kind) || a.name.localeCompare(b.name),
+    (a, b) => byCodeUnits(a.kind, b.kind) || byCodeUnits(a.name, b.name),
   );
   const of = (status: RowStatus) => sorted.filter((r) => r.status === status);
   const summary = `checked ${sorted.length} · match ${of("match").length} · differs ${of("differs").length} · known ${of("known").length} · no longer a difference ${of("stale-known").length} · not run ${of("not-run").length}`;
@@ -120,6 +138,7 @@ export default class ParityReporter implements Reporter {
   }
 
   onEnd(): void {
+    if (!shouldWriteReport(this.rows, process.env)) return;
     const dir = process.env.PARITY_OUT ?? "e2e/assets/parity";
     mkdirSync(dir, { recursive: true });
     const { md, json } = renderReport(applyKnown(this.rows, knownDifferences));

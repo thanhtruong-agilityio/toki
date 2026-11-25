@@ -30,6 +30,9 @@ export interface ScreenDecl {
   mask?: string[];
   looks?: Look[];
   widths?: Width[];
+  // A selector of the app that is visible once the screen has its content. The check waits for it
+  // before it captures; without it the check waits for the network to be idle.
+  ready?: string;
   // A screen that needs the seeded database is listed and not run here (R12).
   seed?: boolean;
   // Stubs and the like, before the app opens.
@@ -59,15 +62,54 @@ export function expandScreens(decls: ScreenDecl[]): ScreenEntry[] {
   );
 }
 
-// R5: each export of a declaration file is a declaration or an array of declarations.
-export function flattenDeclarations(
-  modules: Record<string, unknown>[],
-): ScreenDecl[] {
-  return modules.flatMap((module) =>
-    Object.values(module).flatMap(
-      (value) => value as ScreenDecl | ScreenDecl[],
-    ),
+const ID_PATTERN = /^[a-z0-9][a-z0-9-]*$/;
+
+function isDeclaration(value: unknown): value is ScreenDecl {
+  const decl = value as Partial<ScreenDecl> | null;
+  return (
+    typeof decl === "object" &&
+    decl !== null &&
+    typeof decl.id === "string" &&
+    typeof decl.section === "string" &&
+    typeof decl.appRoute === "string"
   );
+}
+
+// R5: each object or array that a declaration file exports is a declaration or a list of them.
+// A function, a string or a number exported next to them (a stub, a constant) is not one and is
+// left alone. An id is part of file names, so it is lowercase letters, digits and dashes, and no
+// two declarations share one.
+export function flattenDeclarations(
+  modules: { file: string; exports: Record<string, unknown> }[],
+): ScreenDecl[] {
+  const out: ScreenDecl[] = [];
+  const owner = new Map<string, string>();
+  for (const { file, exports } of modules) {
+    for (const [key, value] of Object.entries(exports)) {
+      if (typeof value !== "object" || value === null) continue;
+      for (const item of Array.isArray(value) ? value : [value]) {
+        if (!isDeclaration(item)) {
+          throw new Error(
+            `${file}: export ${key} is not a screen declaration (it needs id, section and appRoute)`,
+          );
+        }
+        if (!ID_PATTERN.test(item.id)) {
+          throw new Error(
+            `${file}: screen id "${item.id}" must be lowercase letters, digits and dashes (it is part of file names)`,
+          );
+        }
+        const first = owner.get(item.id);
+        if (first) {
+          throw new Error(
+            `screen id "${item.id}" is declared twice (${first} and ${file})`,
+          );
+        }
+        owner.set(item.id, file);
+        out.push(item);
+      }
+    }
+  }
+  return out;
 }
 
 // R12: a declaration that needs the seeded database counts once as "not run", not once for each
@@ -171,10 +213,12 @@ export function screenRow(
 }
 
 // R13: a step that cannot be done names the screen, the step and the selector, and the run stops.
+// An element that renders a moment after the page loads is waited for, up to `timeout`.
 export async function runSteps(
   page: Page,
   id: string,
   steps: Step[],
+  timeout = 5000,
 ): Promise<void> {
   for (const [index, step] of steps.entries()) {
     const n = index + 1;
@@ -184,11 +228,46 @@ export async function runSteps(
     }
     const selector = "click" in step ? step.click : step.fill[0];
     const target = page.locator(selector).first();
-    if ((await page.locator(selector).count()) === 0) {
-      throw new Error(`screen ${id}: step ${n} selector ${selector} not found`);
+    try {
+      await target.waitFor({ state: "attached", timeout });
+    } catch (error) {
+      if (error instanceof Error && error.name === "TimeoutError") {
+        throw new Error(
+          `screen ${id}: step ${n} selector ${selector} not found`,
+          { cause: error },
+        );
+      }
+      throw error;
     }
     if ("click" in step) await target.click();
     else await target.fill(step.fill[1]);
+  }
+}
+
+// The app is captured when its content is there: the `ready` selector of the declaration is
+// visible, or, without one, the network is idle.
+export async function waitUntilReady(
+  page: Page,
+  id: string,
+  ready?: string,
+  timeout = 10_000,
+): Promise<void> {
+  try {
+    if (ready) {
+      await page.locator(ready).first().waitFor({ state: "visible", timeout });
+    } else {
+      await page.waitForLoadState("networkidle", { timeout });
+    }
+  } catch (error) {
+    if (error instanceof Error && error.name === "TimeoutError") {
+      throw new Error(
+        ready
+          ? `screen ${id}: the ready selector ${ready} did not become visible`
+          : `screen ${id}: the network did not become idle`,
+        { cause: error },
+      );
+    }
+    throw error;
   }
 }
 

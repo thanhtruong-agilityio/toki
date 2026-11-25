@@ -8,13 +8,16 @@ set -euo pipefail
 # The container runs as the user, so the copy lives in /tmp (a folder at the root is not writable).
 WORK=/tmp/work
 mkdir -p "$WORK" "$HOME"
-tar -C /repo --exclude=node_modules --exclude=.git --exclude=e2e/assets -cf - . | tar -C "$WORK" -xf -
+# Not the .env files either: CI has none, so the check must not read the builder's values.
+tar -C /repo --exclude=node_modules --exclude=.git --exclude=e2e/assets --exclude=.env --exclude='.env.*' -cf - . | tar -C "$WORK" -xf -
 cd "$WORK"
 
 # The image has Node 26 and no corepack; the repository asks for Node 22 (devEngines, onFail error).
 # Decided by Thanh Truong on 2026-11-24: run the image's Node and relax the check in this copy only.
 node -e "const fs=require('fs'),p=JSON.parse(fs.readFileSync('package.json','utf8'));p.devEngines.runtime.onFail='warn';fs.writeFileSync('package.json',JSON.stringify(p,null,2))"
-npm install --silent --prefix /pnpm-store/tool pnpm@12.21.0
+# The pnpm of the repository (its packageManager field), not a version written here.
+PNPM_VERSION=$(node tools/ui-parity/pnpm-version.mjs)
+npm install --silent --prefix /pnpm-store/tool "pnpm@${PNPM_VERSION}"
 export PATH="/pnpm-store/tool/node_modules/.bin:$PATH"
 pnpm install --frozen-lockfile --store-dir /pnpm-store/store
 
@@ -23,4 +26,5 @@ pnpm install --frozen-lockfile --store-dir /pnpm-store/store
 node tools/ui-parity/check-image.mjs
 
 if [ "${PARITY_MODE}" = "reference" ]; then export PARITY_REFERENCE=1 PARITY_REFERENCE_DIR=/ref; fi
-PARITY_OUT=/out pnpm exec playwright test -c playwright.parity.config.ts ${PARITY_ARGS:-}
+# The arguments of the user are passed on as they are, one for each argument.
+PARITY_OUT=/out pnpm exec playwright test -c playwright.parity.config.ts "$@"

@@ -168,16 +168,59 @@ describe("screenRow (R9, R11)", () => {
 });
 
 describe("flattenDeclarations (R5)", () => {
+  const exportsOf = (file: string, exports: Record<string, unknown>) => ({
+    file,
+    exports,
+  });
+
   it("takes a declaration, or an array of declarations, from each export", () => {
     const a = decl({ id: "a" });
     const b = decl({ id: "b" });
     const c = decl({ id: "c" });
     expect(
       flattenDeclarations([
-        { a, list: [b, c] },
-        { other: decl({ id: "d" }) },
+        exportsOf("one.ts", { a, list: [b, c] }),
+        exportsOf("two.ts", { other: decl({ id: "d" }) }),
       ]).map((d) => d.id),
     ).toEqual(["a", "b", "c", "d"]);
+  });
+
+  it("ignores a helper, a constant or a function exported next to a declaration", () => {
+    expect(
+      flattenDeclarations([
+        exportsOf("one.ts", {
+          ME: "00000000",
+          stub: () => undefined,
+          LIMIT: 3,
+          nothing: null,
+          a: decl({ id: "a" }),
+        }),
+      ]).map((d) => d.id),
+    ).toEqual(["a"]);
+  });
+
+  it("names the file and the export of an object that is not a declaration", () => {
+    expect(() =>
+      flattenDeclarations([exportsOf("bad.ts", { oops: { id: "x" } })]),
+    ).toThrow(/bad\.ts.*oops.*id, section and appRoute/);
+  });
+
+  it("refuses an id that is not safe in a file name", () => {
+    expect(() =>
+      flattenDeclarations([exportsOf("one.ts", { a: decl({ id: "a/b" }) })]),
+    ).toThrow(/one\.ts.*a\/b/);
+    expect(() =>
+      flattenDeclarations([exportsOf("one.ts", { a: decl({ id: "A b" }) })]),
+    ).toThrow(/A b/);
+  });
+
+  it("refuses an id that two declarations use, and names both files", () => {
+    expect(() =>
+      flattenDeclarations([
+        exportsOf("one.ts", { a: decl({ id: "same" }) }),
+        exportsOf("two.ts", { b: decl({ id: "same" }) }),
+      ]),
+    ).toThrow(/same.*one\.ts.*two\.ts/);
   });
 });
 
