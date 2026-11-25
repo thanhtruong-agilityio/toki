@@ -49,6 +49,15 @@
     {
       "at": "2026-11-25T06:25:50Z",
       "stage": "build"
+    },
+    {
+      "at": "2026-11-25T06:38:14Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-25T06:38:14Z",
+      "stage": "build"
     }
   ],
   "key": "TOKI-109",
@@ -56,7 +65,7 @@
   "metrics": {},
   "mode": "manual",
   "plan_approved": true,
-  "plan_hash": "51e4f2c188970427eb4b89692d152b163c2c5bd2fbe04d5825e2cb96403111b7",
+  "plan_hash": "2256a837f9f838960fbbcd8da9a766f529e289a10144447a73c0c9d1d415c7e9",
   "spec_commit": "4acdc197e9a030b307340cc5d8bfa4f9c306a1d8",
   "spec_paths": [
     "docs/specs/2026-11-24-ui-parity-check-design.md"
