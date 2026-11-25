@@ -1,0 +1,36 @@
+{
+  "approved_auto": false,
+  "base": "github/main",
+  "branch": "docs/toki-117-web-qa",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-25T02:36:05Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-25T02:36:06Z",
+      "stage": "explore"
+    },
+    {
+      "at": "2026-11-25T02:36:53Z",
+      "stage": "plan"
+    }
+  ],
+  "key": "TOKI-117",
+  "main_sha": "c0fd3aad660cc353b9f713048791152b7213436b",
+  "metrics": {},
+  "mode": "auto-to-check",
+  "plan_approved": false,
+  "plan_hash": null,
+  "spec_commit": "2e3c0c5393f352652e4961fa4d111af09b917b5a",
+  "spec_paths": [
+    "docs/specs/2026-11-25-web-skeleton-qa-design.md"
+  ],
+  "stage": "plan",
+  "tier": "M",
+  "verifier": {
+    "result": null,
+    "round": 0
+  }
+}
