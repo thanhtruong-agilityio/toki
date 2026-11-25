@@ -101,15 +101,17 @@ r() {
 a1() {
   git diff --quiet "$CH" HEAD -- . ':(exclude)docs' || { echo "A1 the files outside docs/ differ from ${CH:0:7}: use a checkout of that commit (Blocked)"; return; }
   ( env PATH="$NODEPATH" corepack pnpm dev >/dev/null 2>&1 ) & local pid=$!; PIDS="$PIDS $pid"
-  sleep 40
-  local all="$pid" ch n=0 ports=0 left=0 p
-  for p in $(pgrep -P "$pid"); do all="$all $p"; for ch in $(pgrep -P "$p"); do all="$all $ch"; done; done
-  local list; list=$(echo $all | tr ' ' ',')
+  sleep 60
+  local all n=0 ports=0 left=0 p list names
+  desc() { local c; echo "$1"; for c in $(pgrep -P "$1" 2>/dev/null); do desc "$c"; done; }
+  all=$(desc "$pid" | tr '\n' ' ')
+  list=$(echo $all | tr ' ' ',')
   n=$(echo $all | wc -w | tr -d ' ')
-  ports=$(lsof -nP -iTCP -sTCP:LISTEN -a -p "$list" 2>/dev/null | awk 'NR>1{print $9}' | sort -u | wc -l | tr -d ' ')
+  ports=$(lsof -nP -iTCP -sTCP:LISTEN -a -p "$list" 2>/dev/null | awk 'NR>1{print $9}' | sed 's/.*://' | sort -u | wc -l | tr -d ' ')
+  names=$(ps -o comm= -p "$list" 2>/dev/null | sed 's#.*/##' | sort | uniq -c | awk '{printf "%s:%s ",$2,$1}')
   kill_tree "$pid"; sleep 8
   for p in $all; do kill -0 "$p" >/dev/null 2>&1 && left=$((left+1)); done
-  echo "A1 processes $n ports $ports left $left"
+  echo "A1 processes $n ports $ports left $left ($names)"
 }
 
 mode="${1:-}"; [ $# -gt 0 ] && shift
