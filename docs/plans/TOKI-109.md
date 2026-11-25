@@ -477,7 +477,7 @@ The upload step already uploads `e2e/assets/` and runs with `!cancelled()`.
 ---
 
 ## Risks and the riskiest step
-1. **Riskiest: Task 1 and Task 3 together** (the image, Node 22, `corepack pnpm install` in a copy, fonts and `file://` loading). Step 1 of Task 1 probes the Node version first; Task 3 step 6 is the first real run in the container. If the install or the font loading fails here, stop and report before building more.
+1. **Riskiest: Task 1 and Task 3 together** (the image on `linux/amd64`, Node 26, `pnpm install` in a copy, fonts and `file://` loading). Step 1 of Task 1 probes the Node version first; Task 3 step 6 is the first real run in the container. If the install or the font loading fails here, stop and report before building more.
 2. **Pixel stability.** The first run of the determinism test (Task 5 step 3) is the proof; masks and `animations: "disabled"` are the fixes to try, in that order.
 3. **Normaliser.** A false token difference is more likely a probe bug than an app bug (Task 4 step 7).
 4. **Time in CI.** The first run pulls the image (about 1.5 GB) and installs dependencies; the volume `toki-parity-pnpm-store` speeds up local runs only. Measure in the pull request; if the job grows by more than a few minutes, report it.
