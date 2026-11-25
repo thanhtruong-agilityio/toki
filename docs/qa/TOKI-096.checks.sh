@@ -102,21 +102,23 @@ t4() {
 }
 
 t5() { # run by the QA only: reads .env in the current directory, prints no value
-  local missing=0 names="" n line
+  local missing=0 checked=0 names="" n line
   [ -f .env ] || { echo "T5 no .env in this directory"; return; }
   while IFS= read -r n; do
     [ -n "$n" ] || continue
     [ "$(field "$n" 4)" = "yes" ] || continue
     printf '%s' "$(field "$n" 3)" | grep -q 'production compose' && continue
+    checked=$((checked + 1))
     line=$(grep -E "^$n=." .env | head -1)
     if [ -z "$line" ]; then missing=$((missing + 1)); names="$names $n"; fi
   done <<< "$(f 1)"
-  echo "T5 $missing"
+  if [ "$checked" -eq 0 ]; then echo "T5 no required inventory rows read at $V"; return; fi
+  echo "T5 $missing $checked"
   [ -z "$names" ] || echo "  unset or empty:$names"
 }
 
 t6() {
-  local ext hdr c rows=0 cols=0 backup
+  local ext hdr c rows=0 cols=0 backup owners=0 r
   ext=$(section "External values")
   printf '%s\n' "$ext" | grep -qE '^\| Domain' && rows=$((rows + 1))
   printf '%s\n' "$ext" | grep -qE '^\| Mail account' && rows=$((rows + 1))
@@ -126,7 +128,10 @@ t6() {
     printf '%s\n' "$hdr" | grep -q "| $c " && cols=$((cols + 1))
   done
   backup=$(printf '%s\n' "$ext" | grep -c '^|.*[Bb]ackup')
-  echo "T6 $rows $cols $backup"
+  for r in '^\| Domain' '^\| Mail account' '^\| VPS'; do
+    printf '%s\n' "$ext" | grep -E "$r" | head -1 | awk -F'|' 'NF == 6 { o = $3; gsub(/^[ \t]+|[ \t]+$/, "", o); if (o != "") ok = 1 } END { exit ok ? 0 : 1 }' && owners=$((owners + 1))
+  done
+  echo "T6 $rows $cols $backup $owners"
 }
 
 t7() {
@@ -150,14 +155,17 @@ t8() {
 }
 
 t9() {
-  local n bad=0 hits
+  local n bad=0 hits invval=0 invnames="" dv
   while IFS= read -r n; do
     [ -n "$n" ] || continue
     [ "$(field "$n" 8)" = "yes" ] || continue
     [ -z "$(example_value "$n")" ] || bad=$((bad + 1))
+    dv=$(field "$n" 6)  # "empty", or a description such as "a throwaway string ..." is not a value
+    case "$dv" in empty|"a throwaway"*) ;; *) invval=$((invval + 1)); invnames="$invnames $n" ;; esac
   done <<< "$(f 1)"
   hits=$({ doc "$ENVDOC"; doc .env.example; } | grep -cE '://[^/[:space:]]+:[^@[:space:]]+@|[A-Za-z0-9]{32,}|(sk|pk|ghp|xox[bp]|AKIA)[-_A-Za-z0-9]{10,}|BEGIN [A-Z ]*PRIVATE KEY')
-  echo "T9 $bad $hits"
+  echo "T9 $bad $hits $invval"
+  [ -z "$invnames" ] || echo "  secret rows with a value in the inventory:$invnames"
 }
 
 t10() {
@@ -174,11 +182,13 @@ t10() {
 }
 
 t11() {
-  local sec=0 purpose=0 parts=0 n
+  local sec=0 purpose=0 parts=0 readby=0 n
   for n in DATABASE_URL TEST_DATABASE_URL; do [ "$(field "$n" 8)" = "yes" ] && sec=$((sec + 1)); done
   field TEST_DATABASE_URL 2 | grep -qi 'test database' && purpose=1
   for n in DATABASE_HOST DATABASE_PORT DATABASE_USER DATABASE_PASSWORD DATABASE_NAME DB_HOST DB_PORT DB_USER DB_PASSWORD DB_NAME; do has "$n" && parts=$((parts + 1)); done
-  echo "T11 $sec $purpose $parts"
+  field DATABASE_URL 3 | grep -q 'server' && readby=$((readby + 1))
+  field TEST_DATABASE_URL 3 | grep -q 'tests' && readby=$((readby + 1))
+  echo "T11 $sec $purpose $parts $readby"
 }
 
 t12() {
@@ -190,6 +200,7 @@ t12() {
   [ "$(field POSTGRES_PORT 5)" = "5432" ] && ok=$((ok + 1))
   [ "$(field MINIO_PORT 5)" = "9000" ] && ok=$((ok + 1))
   doc "$ENVDOC" | grep -q 'web 5173' && ok=$((ok + 1))
+  field SERVER_HOST 2 | grep -q '0\.0\.0\.0' && ok=$((ok + 1))
   echo "T12 $ok"
 }
 
