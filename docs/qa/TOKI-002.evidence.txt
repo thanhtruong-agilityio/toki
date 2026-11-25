@@ -1,6 +1,7 @@
 # Evidence for docs/qa/TOKI-002.md
 
-## First run
+## First run (checks before the verifier findings of TOKI-113)
+T1, T2, T4, T6, T10, T13, T15 and T16 here came from the weaker checks and are not the evidence of the rows as they now read. T15 was first strengthened with a wrong expectation (it compared the globals with the language built-ins as well, which come from `ecmaVersion`, and gave `T15 7 7 0`); the check was corrected before the QA's second approval.
 Rows T1 to T4 and T6 to T16 are unchanged by the later correction and keep these lines. T5 here was the old combined row for R3 and R4 (`T5 0 0`: format check exit code, then lint exit code); it is replaced by T5 (R3) and T17 (R4) below, which the QA approved again before their second run.
 Version: 6e7f0fa (merge commit of PR #77). Run on 2026-11-25 by Claude for the QA, Thanh Truong. Each line is the output of: V=6e7f0fa bash docs/qa/TOKI-002.checks.sh <ID>. Run twice, the lines are identical. The last line shows that the script left the repository and its worktree list as it found them.
 

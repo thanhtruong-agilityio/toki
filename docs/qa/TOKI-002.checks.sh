@@ -50,8 +50,15 @@ lintj() { pn exec eslint -f json "$@" 2>/dev/null; } # JSON on standard output
 fired() { # $1 JSON, $2 relative file: has an error from a boundary rule
   printf '%s' "$1" | jq -e --arg f "$2" '[.[] | select(.filePath | endswith($f)) | .messages[] | select(.severity == 2 and ((.ruleId // "") | test("'"$BOUNDARY"'")))] | length > 0' >/dev/null 2>&1
 }
+passed() { # $1 JSON, $2 relative file: the file was linted and has no error from a boundary rule
+  printf '%s' "$1" | jq -e --arg f "$2" '[.[] | select(.filePath | endswith($f))] | length == 1' >/dev/null 2>&1 && ! fired "$1" "$2"
+}
 clean() { # $1 JSON, $2 relative file: no message at all
   printf '%s' "$1" | jq -e --arg f "$2" '[.[] | select(.filePath | endswith($f)) | .messages[]] | length == 0' >/dev/null 2>&1
+}
+
+rules_ok() { # $1 print-config JSON: every boundary rule is at error, at least one, inline config off
+  printf '%s' "$1" | jq -e --arg b "$BOUNDARY" '([.rules | to_entries[] | select(.key | test($b)) | .value[0] | (. == 2 or . == "error")] ) as $s | ($s | length > 0) and ($s | all) and (.linterOptions.noInlineConfig == true)' >/dev/null 2>&1
 }
 
 # ---- case lists -------------------------------------------------------------
@@ -78,36 +85,51 @@ fire_cases() { # $1 package dir, $2 cases function; writes files, prints "fired 
 
 t1() {
   need T1 || return
-  local rc ign=0
+  local rc ign root=0 j
   pn lint >/dev/null 2>&1; rc=$?
-  put dist/zz-ignored.ts 'export const v = window; export  const   w=1'
   put packages/client-core/dist/zz-ignored.ts 'export const v = window;'
-  pn lint >/dev/null 2>&1 && ign=1
+  put packages/client-core/build/zz-ignored.ts 'export const v = window;'
+  put packages/client-core/coverage/zz-ignored.ts 'export const v = window;'
+  j=$(lintj packages/client-core/dist/zz-ignored.ts packages/client-core/build/zz-ignored.ts packages/client-core/coverage/zz-ignored.ts)
+  ign=$(printf '%s' "$j" | jq '[.[].messages[] | select(.message | test("ignored because of a matching ignore pattern"))] | length')
   reset_wt
-  echo "T1 $rc $ign"
+  put zz-root.js 'export const x = undefinedFunction();'
+  pn lint >/dev/null 2>&1 || root=1
+  reset_wt
+  echo "T1 $rc ${ign:-0} $root"
 }
 t2() {
   need T2 || return
-  local ok=0 p rule w=0 pc
-  for p in "packages/client-core/src/index.ts:toki/client-core-globals" "packages/ui-web/src/index.ts:toki/platform-apis" "apps/server/src/app.ts:toki/module-entry"; do
-    rule="${p#*:}"; pc=$(pn exec eslint --print-config "${p%%:*}" 2>/dev/null)
-    printf '%s' "$pc" | jq -e --arg r "$rule" '.rules[$r][0] | (. == 2 or . == "error")' >/dev/null 2>&1 && ok=$((ok + 1))
+  local ok=0 w=0 pc spec
+  for spec in packages/client-core/src/index.ts packages/shared/src/index.ts packages/i18n/src/index.ts packages/tokens/src/index.ts packages/ui-web/src/index.ts apps/server/src/modules/example/index.ts apps/server/src/app.ts; do
+    pc=$(pn exec eslint --print-config "$spec" 2>/dev/null)
+    rules_ok "$pc" && ok=$((ok + 1))
   done
   put packages/client-core/src/zz-warn.ts $'// eslint-disable-next-line\nexport const a = 1;'
   pn lint >/dev/null 2>&1 || w=1
   reset_wt
   echo "T2 $ok $w"
 }
-t3() { echo "T3 $(doc eslint.config.js | grep -ci 'file picking' | awk '{print ($1 > 0) ? 1 : 0}')"; }
+t3() { # a comment line of the config says that file picking in ui-web is not checked by lint and relies on review
+  local c; c=$(doc eslint.config.js | grep -E '^[[:space:]]*//' | tr '\n' ' ')
+  if printf '%s' "$c" | grep -qi 'file picking' && printf '%s' "$c" | grep -qi 'ui-web' && printf '%s' "$c" | grep -qi 'not checked by lint' && printf '%s' "$c" | grep -qi 'review'; then echo "T3 1"; else echo "T3 0"; fi
+}
 t4() {
   need T4 || return
-  local rc bad=0 named=0 out
+  local rc bad=0 named=0 out excl
   pn format:check >/dev/null 2>&1; rc=$?
   put apps/web/src/zz-bad.ts 'export  const   a   =  1'
   out=$(pn format:check 2>&1); [ $? -ne 0 ] && bad=1
   printf '%s\n' "$out" | grep -q 'zz-bad.ts' && named=1
   reset_wt
-  echo "T4 $rc $bad $named"
+  put docs/zz-bad.md '*   bad'
+  put .github/zz-bad.yml 'a:    1'
+  put .claude/zz-bad.md '*   bad'
+  printf '\n\n*   bad\n' >> "$WT/CLAUDE.md"
+  printf '\nbad:    1\n' >> "$WT/pnpm-lock.yaml"
+  pn format:check >/dev/null 2>&1; excl=$?
+  reset_wt
+  echo "T4 $rc $bad $named $excl"
 }
 t5() {
   need T5 || return
@@ -129,14 +151,18 @@ t17() {
 }
 t6() {
   need T6 || return
-  local fired=0 tried=0 allowed=0 p r f
+  local fired=0 tried=0 allowed=0 testok=0 p r f ft
   for p in $PORTABLE; do
     r=$(fire_cases "packages/$p" globals_cases); fired=$((fired + ${r% *})); tried=$((tried + ${r#* }))
-    f="packages/$p/src/zz-allowed.ts"; put "$f" 'export const ok = [console, fetch, setTimeout, URL, new Map()];'
-    clean "$(lintj "$f")" "$f" && allowed=$((allowed + 1))
+    f="packages/$p/src/zz-allowed.ts"; ft="packages/$p/src/zz-exempt.test.ts"
+    put "$f" 'export const ok = [Object, Array, Promise, Map, Set, JSON, Math, Date, Symbol, Error, console, setTimeout, clearTimeout, setInterval, clearInterval, queueMicrotask, fetch, Headers, Request, Response, WebSocket, URL, URLSearchParams, AbortController, AbortSignal];'
+    put "$ft" 'export const v = window;'
+    local j; j=$(lintj "$f" "$ft")
+    clean "$j" "$f" && allowed=$((allowed + 1))
+    passed "$j" "$ft" && testok=$((testok + 1))
     reset_wt
   done
-  echo "T6 $fired $tried $allowed"
+  echo "T6 $fired $tried $allowed $testok"
 }
 t7() {
   need T7 || return
@@ -180,13 +206,14 @@ t10() {
   put apps/server/src/modules/a/zz-c1.ts 'import "../b/inner";'
   put apps/server/src/modules/a/zz-c2.ts 'import "../b/db/index";'
   put apps/server/src/modules/a/zz-c3.ts 'import "./deep/y";'
-  local j f=0 pass=0
-  j=$(lintj apps/server/src/modules/a/zz-c1.ts apps/server/src/modules/a/zz-c2.ts apps/server/src/modules/a/zz-c3.ts)
-  fired "$j" apps/server/src/modules/a/zz-c1.ts && f=$((f + 1))
-  fired "$j" apps/server/src/modules/a/zz-c2.ts && f=$((f + 1))
-  fired "$j" apps/server/src/modules/a/zz-c3.ts || pass=1
+  put apps/server/src/modules/a/deep/zz-c7.ts 'import "../../b/inner";'
+  put apps/server/src/modules/a/deep/zz-c8.ts 'import "../../a/deep/y";'
+  local j f=0 pass=0 m=apps/server/src/modules/a
+  j=$(lintj $m/zz-c1.ts $m/zz-c2.ts $m/zz-c3.ts $m/deep/zz-c7.ts $m/deep/zz-c8.ts)
+  for x in zz-c1.ts zz-c2.ts deep/zz-c7.ts; do fired "$j" "$m/$x" && f=$((f + 1)); done
+  for x in zz-c3.ts deep/zz-c8.ts; do passed "$j" "$m/$x" && pass=$((pass + 1)); done
   reset_wt
-  echo "T10 $f 2 $pass"
+  echo "T10 $f 3 $pass"
 }
 t11() {
   need T11 || return
@@ -194,9 +221,11 @@ t11() {
   put apps/server/src/modules/a/zz-c4.ts 'import "../b";'
   put apps/server/src/modules/a/zz-c5.ts 'import "../b/index";'
   put apps/server/src/modules/a/zz-c6.ts 'import "../b/index.js";'
-  local j ok=0 f
-  j=$(lintj apps/server/src/modules/a/zz-c4.ts apps/server/src/modules/a/zz-c5.ts apps/server/src/modules/a/zz-c6.ts)
-  for f in zz-c4 zz-c5 zz-c6; do fired "$j" "apps/server/src/modules/a/$f.ts" || ok=$((ok + 1)); done
+  put apps/server/src/modules/a/zz-ctl.ts 'import "../b/inner";'
+  local j ok=0 f m=apps/server/src/modules/a
+  j=$(lintj $m/zz-c4.ts $m/zz-c5.ts $m/zz-c6.ts $m/zz-ctl.ts)
+  fired "$j" "$m/zz-ctl.ts" || { echo "T11 control did not fire (the run is not valid)"; reset_wt; return; }
+  for f in zz-c4 zz-c5 zz-c6; do passed "$j" "$m/$f.ts" && ok=$((ok + 1)); done
   reset_wt
   echo "T11 $ok 3"
 }
@@ -208,7 +237,7 @@ t12() {
   local j f=0 pass=0
   j=$(lintj apps/server/src/zz-shared.ts apps/server/src/zz-shared-ok.ts)
   fired "$j" apps/server/src/zz-shared.ts && f=1
-  fired "$j" apps/server/src/zz-shared-ok.ts || pass=1
+  passed "$j" apps/server/src/zz-shared-ok.ts && pass=1
   reset_wt
   echo "T12 $f 1 $pass"
 }
@@ -221,6 +250,10 @@ ui_cases() {
   echo 'glob-ls|export const v = globalThis.localStorage;'
   echo 'self-ls|export const v = self.localStorage;'
   echo 'win-sw|export const v = window.navigator.serviceWorker;'
+  echo 'glob-sw|export const v = globalThis.navigator.serviceWorker;'
+  echo 'self-sw|export const v = self.navigator.serviceWorker;'
+  echo 'win-cookie|export const v = window.document.cookie;'
+  echo 'glob-cookie|export const v = globalThis.document.cookie;'
   echo 'destruct|const { localStorage } = window; export const v = localStorage;'
   echo 'audio|export const V = () => <audio />;'
 }
@@ -241,41 +274,44 @@ t14() {
   put packages/ui-web/src/zz-ok.tsx 'import { notify } from "@toki/platform"; export const v = notify;'
   local j e
   j=$(lintj packages/ui-web/src/zz-ok.tsx)
-  e=$(printf '%s' "$j" | jq '[.[].messages[] | select(.severity == 2)] | length')
+  if printf '%s' "$j" | jq -e '[.[] | select(.filePath | endswith("zz-ok.tsx"))] | length == 1' >/dev/null 2>&1; then
+    e=$(printf '%s' "$j" | jq '[.[].messages[] | select(.severity == 2)] | length')
+  else e="not linted"; fi
   reset_wt
   echo "T14 $e"
 }
 t15() {
   need T15 || return
-  local okp=0 tried=0 okg=0 spec pc rule path
-  for spec in "packages/client-core/src/index.ts:toki/client-core-globals" "packages/shared/src/index.ts:toki/client-core-globals" \
-              "packages/i18n/src/index.ts:toki/client-core-globals" "packages/tokens/src/index.ts:toki/client-core-globals" \
-              "packages/ui-web/src/index.ts:toki/platform-apis" "apps/server/src/modules/example/index.ts:toki/module-entry" \
-              "apps/server/src/app.ts:toki/module-entry"; do
-    path="${spec%%:*}"; rule="${spec#*:}"; tried=$((tried + 1))
+  local okp=0 tried=0 okg=0 spec pc path expected
+  # The language built-ins come from ecmaVersion 2022; the explicit globals are the 15 names of the allow list.
+  expected='["console","setTimeout","clearTimeout","setInterval","clearInterval","queueMicrotask","fetch","Headers","Request","Response","WebSocket","URL","URLSearchParams","AbortController","AbortSignal"]'
+  expected=$(printf '%s' "$expected" | jq -c 'sort')
+  for spec in packages/client-core/src/index.ts packages/shared/src/index.ts packages/i18n/src/index.ts packages/tokens/src/index.ts \
+              packages/ui-web/src/index.ts apps/server/src/modules/example/index.ts apps/server/src/app.ts; do
+    path="$spec"; tried=$((tried + 1))
     pc=$(pn exec eslint --print-config "$path" 2>/dev/null)
-    printf '%s' "$pc" | jq -e --arg r "$rule" '(.rules[$r][0] | (. == 2 or . == "error")) and (.linterOptions.noInlineConfig == true)' >/dev/null 2>&1 && okp=$((okp + 1))
+    rules_ok "$pc" && okp=$((okp + 1))
     case "$path" in
       packages/ui-web/*|apps/*) ;;
-      *) printf '%s' "$pc" | jq -e '(.languageOptions.globals | keys) as $k
-          | (["console","setTimeout","clearTimeout","setInterval","clearInterval","queueMicrotask","fetch","Headers","Request","Response","WebSocket","URL","URLSearchParams","AbortController","AbortSignal","Object","Promise"] | all(. as $g | $k | index($g)))
-          and (["window","document","localStorage","navigator","location","matchMedia","self"] | all(. as $g | ($k | index($g)) == null))
-          and ((.languageOptions.globals.globalThis // "off") | tostring | test("off|false"))' >/dev/null 2>&1 && okg=$((okg + 1)) ;;
+      *) [ -n "$expected" ] && printf '%s' "$pc" | jq -e --argjson e "$expected" '(.languageOptions.ecmaVersion == 2022) and (([.languageOptions.globals | to_entries[] | select(.value != "off" and .value != false) | .key] | sort) == $e)' >/dev/null 2>&1 && okg=$((okg + 1)) ;;
     esac
   done
   echo "T15 $okp $tried $okg"
 }
 t16() {
   need T16 || return
-  local still=0 msg=0 failed=0 i f j body
+  local still=0 msg=0 failed=0 i f g j jg body
   i=0
   while IFS= read -r body; do
-    i=$((i + 1)); f="packages/client-core/src/zz-inline$i.ts"
+    i=$((i + 1)); f="packages/client-core/src/zz-inline$i.ts"; g="packages/client-core/src/zz-comment$i.ts"
     put "$f" "$(printf '%b' "$body")"
-    j=$(lintj "$f")
+    put "$g" "$(printf '%b' "${body//window/1}")"
+    j=$(lintj "$f"); jg=$(lintj "$g")
     fired "$j" "$f" && still=$((still + 1))
-    printf '%s' "$j" | jq -e '[.[].messages[] | select(.ruleId == null and (.line // 0) > 0 and (.message | test("inline|comment|directive"; "i")))] | length > 0' >/dev/null 2>&1 && msg=$((msg + 1))
-    pn exec eslint --max-warnings 0 "$f" >/dev/null 2>&1 || failed=$((failed + 1))
+    printf '%s' "$jg" | jq -e '[.[].messages[] | select(.ruleId == null and (.line // 0) > 0)] | length > 0' >/dev/null 2>&1 && msg=$((msg + 1))
+    rm -f "$WT/$f"
+    pn lint >/dev/null 2>&1 || failed=$((failed + 1))
+    rm -f "$WT/$g"
   done <<'CASES'
 // eslint-disable-next-line\nexport const v = window;
 export const v = window; // eslint-disable-line
