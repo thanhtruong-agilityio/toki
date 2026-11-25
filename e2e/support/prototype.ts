@@ -30,7 +30,7 @@ const FONTS_DIR = here("../../apps/web/assets/fonts/");
 export const PROTOTYPE_ORIGIN = "https://prototype.test";
 
 // Tuesday 10 November 2026, 10:42 in Ho Chi Minh City: where the prototype's own clock starts.
-const FIXED_TIME = new Date("2026-11-10T10:42:00+07:00");
+export const FIXED_TIME = new Date("2026-11-10T10:42:00+07:00");
 
 export const sha256 = (data: Buffer): string =>
   createHash("sha256").update(data).digest("hex");
@@ -55,7 +55,10 @@ export function prepareHtml(
     (_match, name: string) =>
       `url("data:font/woff2;base64,${readFont(name).toString("base64")}")`,
   );
-  const style = `<style>${inlined}</style>`;
+  // The prototype draws a demo bar (`.protobar`) above the app and a fake window bar (`.chrome`, with
+  // `--chromeh` 32 px or 40 px) inside it. Neither is part of the app. Hide both, so that #app, which
+  // is what is captured, fills the window (R6, R7).
+  const style = `<style>${inlined}\n.protobar,.chrome{display:none!important}.device{--chromeh:0px!important}</style>`;
   const withoutLinks = html.replace(
     /<link[^>]*fonts\.(?:googleapis|gstatic)\.com[^>]*>/g,
     "",

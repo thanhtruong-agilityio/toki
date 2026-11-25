@@ -1,5 +1,10 @@
 import { expect, test } from "@playwright/test";
-import { PROTOTYPE_ORIGIN, openPrototype } from "../support/prototype";
+import {
+  PROTOTYPE_ORIGIN,
+  WIDTHS,
+  openPrototype,
+  type Width,
+} from "../support/prototype";
 
 // R1: the copy is opened from a made-up address that `page.route` answers, and needs no other host.
 test("no request leaves the machine and the seven faces load", async ({
@@ -40,5 +45,16 @@ for (const [look, accent, value] of accents) {
         .trim(),
     );
     expect(accentValue.toUpperCase()).toBe(value);
+  });
+}
+
+// R6, R7: the demo bar of the prototype sits above #app and takes some of the window, so the window
+// is made taller by that much; #app, which is what is captured, is then the size of the width.
+for (const width of ["wide", "mid", "narrow"] as Width[]) {
+  test(`#app is the size of the ${width} width`, async ({ page }) => {
+    await openPrototype(page, { look: "calm", width, hash: "home" });
+    const box = await page.locator("#app").boundingBox();
+    expect(box?.width).toBe(WIDTHS[width].width);
+    expect(box?.height).toBe(WIDTHS[width].height);
   });
 }

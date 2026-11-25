@@ -38,6 +38,11 @@ describe("prepareHtml (R1)", () => {
     expect(out).not.toContain("./a.woff2");
   });
 
+  it("hides the demo bar and the window bar, which are not part of the app", () => {
+    expect(out).toContain(".protobar,.chrome{display:none!important}");
+    expect(out).toContain("--chromeh:0px!important");
+  });
+
   it("keeps the rest of the page", () => {
     expect(out).toContain("<p>x</p>");
   });
