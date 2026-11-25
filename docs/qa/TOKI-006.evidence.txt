@@ -1,4 +1,7 @@
 # Evidence for docs/qa/TOKI-006.md
+
+## First run (checks before the verifier findings of TOKI-117)
+T1, T2 and T12 here came from weaker checks (fewer numbers) and are not the evidence of the rows as they now read; the other rows keep their lines unless a stronger check is in the second run below.
 Version: cd855ee (merge commit of PR #111). Run on 2026-11-25 by Claude for the QA, Thanh Truong. Each line is the output of: V=cd855ee bash docs/qa/TOKI-006.checks.sh <ID>. Run twice, the lines are identical. The last line shows that the script left the repository, its worktree list, the processes it started and the ports 5173 and 3000 as it found them.
 
 T1 1 1 1 1
