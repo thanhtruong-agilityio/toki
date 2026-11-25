@@ -119,7 +119,7 @@ export const accentColors: Record<Look, Record<Accent, AccentValues>> = {
       accentText: "#0B5D56",
     },
     indigo: {
-      accent: "#4F46E5",
+      accent: "#4F46E6",
       onAccent: "#FFFFFF",
       accentSoft: "#E3E5FB",
       accentText: "#3730A3",

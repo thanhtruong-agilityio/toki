@@ -112,7 +112,7 @@
 }
 
 :root[data-eff="calm"][data-accent="indigo"] {
-  --accent: #4F46E5;
+  --accent: #4F46E6;
   --on-accent: #FFFFFF;
   --accent-soft: #E3E5FB;
   --accent-text: #3730A3;
