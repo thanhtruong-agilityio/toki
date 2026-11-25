@@ -4069,7 +4069,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #41",
-        "fix": ""
+        "fix": "Later changes and review fixes wait in PR #311."
        },
        "status": "done",
        "issue": 42
@@ -4382,7 +4382,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #66",
-        "fix": ""
+        "fix": "Later changes and review fixes wait in PR #309."
        },
        "status": "done",
        "issue": 114
@@ -4459,7 +4459,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #82",
-        "fix": "Later changes and review fixes wait in PR #253."
+        "fix": "Later changes and review fixes wait in PR #312."
        },
        "status": "done",
        "issue": 120
@@ -4651,7 +4651,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #200",
-        "fix": "Later changes and review fixes wait in PR #228."
+        "fix": "Later changes and review fixes wait in PR #306."
        },
        "status": "blocked",
        "issue": 204
@@ -4686,7 +4686,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #211",
-        "fix": ""
+        "fix": "Later changes and review fixes wait in PR #313."
        }
       },
       {
@@ -4702,7 +4702,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #218",
-        "fix": ""
+        "fix": "Later changes and review fixes wait in PR #303."
        },
        "status": "blocked",
        "issue": 279
@@ -4775,7 +4775,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #214",
-        "fix": ""
+        "fix": "Later changes and review fixes wait in PR #302."
        }
       },
       {
@@ -4814,7 +4814,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #213",
-        "fix": ""
+        "fix": "Later changes and review fixes wait in PR #308."
        },
        "status": "blocked",
        "issue": 277
@@ -4895,7 +4895,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #226",
-        "fix": ""
+        "fix": "Later changes and review fixes wait in PR #304."
        },
        "status": "blocked",
        "issue": 282
@@ -4941,7 +4941,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #231",
-        "fix": ""
+        "fix": "Later changes and review fixes wait in PR #305."
        }
       }
      ]
@@ -4961,7 +4961,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #234",
-        "fix": ""
+        "fix": "Later changes and review fixes wait in PR #299."
        }
       },
       {
@@ -4976,7 +4976,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #238",
-        "fix": ""
+        "fix": "Later changes and review fixes wait in PR #300."
        },
        "status": "blocked",
        "issue": 284
@@ -4995,7 +4995,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #232",
-        "fix": ""
+        "fix": "Later changes and review fixes wait in PR #307."
        }
       },
       {
@@ -5013,7 +5013,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #239",
-        "fix": ""
+        "fix": "Later changes and review fixes wait in PR #301."
        }
       },
       {
@@ -5273,38 +5273,77 @@
       {
        "id": "065",
        "title": "Activity (server)",
-       "scope": "Create items from mentions, replies in threads the person follows, and reactions; API and events. The root author, repliers and people mentioned follow a thread automatically; there is no Unfollow (D-119). Never notify the actor; newest first; items complete themselves when the work is done (D-071); an item is removed when its source message is deleted or the mention edited out (F13); leaving a channel clears that person's open items for it (D-133). An Other kind: added to a channel, role changed, message deleted by an admin (D-049, F27). Implements all 15 situations of the 'When you are mentioned' table, including a mention in a muted conversation (D-088)",
+       "scope": "Create items from mentions, replies in threads the person follows, and reactions; API and events. The root author, repliers and people mentioned follow a thread automatically; there is no Unfollow (D-119). Never notify the actor; newest first; items complete themselves when the work is done (D-071); an item is removed when its source message is deleted or the mention edited out (F13); leaving a channel clears that person's open items for it (D-133). An Other kind: added to a channel, role changed, message deleted by an admin (D-049, F27). Implements all 15 situations of the 'When you are mentioned' table, including a mention in a muted conversation (D-088) Owns the activity items, the follow-thread rule, the API and the `activity` change; the screen belongs to TOKI-066 and delivery to TOKI-073.",
        "size": "L",
        "needs": [
+        "024",
+        "036",
+        "037",
+        "038",
         "045",
         "046",
+        "047",
         "050",
-        "068"
-       ]
+        "064"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #291",
+        "fix": ""
+       }
       },
       {
        "id": "066",
        "title": "Activity screen",
-       "scope": "A filter chip for every kind, each count equal to the rows shown (D-071, D-074); Done with a 5-second Undo (D-069), Snooze, Mark all read; Done and Snooze always visible on touch devices (D-067, D-053). Snooze times: In 1 hour, Today 15:00, Tomorrow 09:00; a choice already past is hidden and 'In 3 hours' takes its place (D-114)",
-       "size": "M",
+       "scope": "A filter chip for every kind, each count equal to the rows shown (D-071, D-074); Done with a 5-second Undo (D-069), Snooze, Mark all read; Done and Snooze always visible on touch devices (D-067, D-053). Snooze times: In 1 hour, Today 15:00, Tomorrow 09:00; a choice already past is hidden and 'In 3 hours' takes its place (D-114) Owns the Activity screen, its client store, the snooze menu and the press of an item (through `useOpenMessage`).",
+       "size": "L",
        "needs": [
+        "012",
+        "013",
+        "014",
+        "015",
         "017",
+        "032",
+        "033",
+        "034",
+        "040",
+        "052",
         "065",
+        "068",
         "093",
-        "094"
-       ]
+        "094",
+        "099"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #292",
+        "fix": ""
+       }
       },
       {
        "id": "067",
        "title": "Later",
-       "scope": "Save a message, In progress and Completed, set a reminder that fires on time and must be in the future (D-073); a reminder due during Pause or Focus is held (D-072); a replacement row when the source message was deleted, with the count still matching (D-074); removing from Later offers Undo (D-061). Reminder times match snooze times, with 'In 3 hours' replacing a choice already past (D-114)",
+       "scope": "Save a message, In progress and Completed, set a reminder that fires on time and must be in the future (D-073); a reminder due during Pause or Focus is held (D-072); a replacement row when the source message was deleted, with the count still matching (D-074); removing from Later offers Undo (D-061). Reminder times match snooze times, with 'In 3 hours' replacing a choice already past (D-114) Owns saved items, the reminder job and the held-reminder rule; the real hold and delivery are TOKI-073's and TOKI-076's.",
        "size": "M",
        "needs": [
+        "037",
+        "038",
+        "040",
+        "047",
+        "052",
+        "058",
         "064",
+        "066",
         "068",
+        "070",
         "093",
         "094"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #289",
+        "fix": ""
+       }
       },
       {
        "id": "068",
@@ -5318,7 +5357,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #266",
-        "fix": ""
+        "fix": "Later changes and review fixes wait in PR #310."
        }
       }
      ]
@@ -5329,59 +5368,118 @@
       {
        "id": "073",
        "title": "Notification decision engine",
-       "scope": "Who gets a toast, push or sound, from: the conversation's level, by default 'Mentions only' for channels and 'All messages' for DMs (D-046); Mute, where a mention still notifies while the person's own switch is on, on by default (D-088, D-103); Pause and Focus (D-072); and whether that conversation is on screen (F36). Your own action never notifies you (D-071); people outside the conversation are not notified (D-058)",
+       "scope": "Who gets a toast, push or sound, from: the conversation's level, by default 'Mentions only' for channels and 'All messages' for DMs (D-046); Mute, where a mention still notifies while the person's own switch is on, on by default (D-088, D-103); Pause and Focus (D-072); and whether that conversation is on screen (F36). Your own action never notifies you (D-071); people outside the conversation are not notified (D-058) Decides who gets a toast, a push or a sound, on the server; TOKI-074 sends the push, TOKI-075 shows the toast and plays the sound, TOKI-076 holds notices during Pause and Focus.",
        "size": "L",
        "needs": [
-        "065"
-       ]
+        "040",
+        "041",
+        "045",
+        "047",
+        "065",
+        "067",
+        "102"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #293",
+        "fix": ""
+       }
       },
       {
        "id": "074",
        "title": "Web Push",
-       "scope": "VAPID keys, a service worker used for push only (D-030), device registration with a test notification, a click that opens Toki at that message; the notification shows sender, conversation and the start of the message (D-044); a card offering notifications on first visit, the browser asked only after Turn on (F36); on iPhone push works only once Toki is added to the Home Screen (D-108); signing out removes that device's registration (D-158). Adds the VAPID keys to the configuration list and `.env.example` of TOKI-096. Owns iPhone detection and adds the VAPID keys to the configuration list. Registers through `onSessionsEnded` of TOKI-022 and removes the push registration of an ended session.",
+       "scope": "VAPID keys, a service worker used for push only (D-030), device registration with a test notification, a click that opens Toki at that message; the notification shows sender, conversation and the start of the message (D-044); a card offering notifications on first visit, the browser asked only after Turn on (F36); on iPhone push works only once Toki is added to the Home Screen (D-108); signing out removes that device's registration (D-158). Adds the VAPID keys to the configuration list and `.env.example` of TOKI-096. Owns iPhone detection and adds the VAPID keys to the configuration list. Registers through `onSessionsEnded` of TOKI-022 and removes the push registration of an ended session. Owns the push service worker `push-sw.js`, device registration, the payload and the Add to Home Screen text.",
        "size": "L",
        "needs": [
+        "022",
+        "064",
         "068",
-        "073"
-       ]
+        "073",
+        "096",
+        "099",
+        "102"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #297",
+        "fix": ""
+       }
       },
       {
        "id": "075",
        "title": "Sound and in-app notifications",
-       "scope": "A toast for messages in other conversations, and a sound. Owns the Safari sound unlock.",
+       "scope": "A toast for messages in other conversations, and a sound. Owns the Safari sound unlock. Owns the toast and sound sink and the Safari sound unlock; the sound file is made for Toki (a proposal).",
        "size": "S",
        "needs": [
+        "066",
         "068",
         "073"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #296",
+        "fix": ""
+       }
       },
       {
        "id": "076",
        "title": "Pause and Focus time",
-       "scope": "API, a job that ends it on time, the status strip, a summary of what arrived. Holds every notification including reminders; starting Focus again extends it; ending restores the earlier status (NR6). Its banner uses `.strip`, owned by TOKI-082 in M6: either the owner moves to an M5 ticket or this ticket builds the class (to decide).",
+       "scope": "API, a job that ends it on time, the status strip, a summary of what arrived. Holds every notification including reminders; starting Focus again extends it; ending restores the earlier status (NR6). Its banner uses `.strip`, owned by TOKI-082 in M6: either the owner moves to an M5 ticket or this ticket builds the class (to decide). Owns `HoldPort`, the summary toast and the `.strip` class (a proposal until the owner of `.strip` is decided).",
        "size": "M",
        "needs": [
+        "013",
+        "015",
+        "035",
+        "041",
         "055",
         "056",
         "064",
-        "073"
-       ]
+        "066",
+        "067",
+        "071",
+        "073",
+        "094",
+        "099"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #298",
+        "fix": ""
+       }
       },
       {
        "id": "077",
        "title": "PWA",
-       "scope": "Manifest, icons, install to the home screen",
+       "scope": "Manifest, icons, install to the home screen Manifest, icons and install; the service worker belongs to TOKI-074.",
        "size": "S",
        "needs": [
+        "006",
+        "008",
+        "009",
+        "010",
+        "011",
         "074"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #295",
+        "fix": ""
+       }
       },
       {
        "id": "102",
        "title": "Notification preferences (server)",
-       "scope": "Per-account switches read by the decision engine: Desktop notifications, Play a sound, and 'Notify me for @mentions even in muted channels', on by default (D-088); one set for the person on every device, only the browser's push permission is per device (D-142); API and events",
+       "scope": "Per-account switches read by the decision engine: Desktop notifications, Play a sound, and 'Notify me for @mentions even in muted channels', on by default (D-088); one set for the person on every device, only the browser's push permission is per device (D-142); API and events Three per-account switches; the defaults of Desktop and Sound wait for the owner (D-176).",
        "size": "S",
-       "needs": []
+       "needs": [
+        "054",
+        "056"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #288",
+        "fix": ""
+       }
       }
      ]
     }

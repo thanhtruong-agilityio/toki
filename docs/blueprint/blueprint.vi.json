@@ -4183,7 +4183,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #41",
-        "fix": ""
+        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #311."
        },
        "status": "done",
        "issue": 42
@@ -4496,7 +4496,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #66",
-        "fix": ""
+        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #309."
        },
        "status": "done",
        "issue": 114
@@ -4573,7 +4573,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #82",
-        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #253."
+        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #312."
        },
        "status": "done",
        "issue": 120
@@ -4765,7 +4765,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #200",
-        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #228."
+        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #306."
        },
        "status": "blocked",
        "issue": 204
@@ -4800,7 +4800,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #211",
-        "fix": ""
+        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #313."
        }
       },
       {
@@ -4816,7 +4816,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #218",
-        "fix": ""
+        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #303."
        },
        "status": "blocked",
        "issue": 279
@@ -4889,7 +4889,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #214",
-        "fix": ""
+        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #302."
        }
       },
       {
@@ -4928,7 +4928,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #213",
-        "fix": ""
+        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #308."
        },
        "status": "blocked",
        "issue": 277
@@ -5009,7 +5009,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #226",
-        "fix": ""
+        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #304."
        },
        "status": "blocked",
        "issue": 282
@@ -5055,7 +5055,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #231",
-        "fix": ""
+        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #305."
        }
       }
      ]
@@ -5075,7 +5075,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #234",
-        "fix": ""
+        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #299."
        }
       },
       {
@@ -5090,7 +5090,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #238",
-        "fix": ""
+        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #300."
        },
        "status": "blocked",
        "issue": 284
@@ -5109,7 +5109,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #232",
-        "fix": ""
+        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #307."
        }
       },
       {
@@ -5127,7 +5127,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #239",
-        "fix": ""
+        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #301."
        }
       },
       {
@@ -5387,38 +5387,77 @@
       {
        "id": "065",
        "title": "Activity (server)",
-       "scope": "Tạo mục từ mention, reply trong thread người đó đang theo dõi, reaction; API và sự kiện. Người viết tin gốc, người đã reply và người được nhắc tự động theo dõi thread; không có Unfollow (D-119). Không báo cho chính người làm; xếp mới nhất trước; mục tự xong khi việc đã làm (D-071); mục bị gỡ khi tin gốc bị xóa hoặc mention bị sửa bỏ (F13); rời channel thì xóa các mục đang mở của người đó trong channel ấy (D-133). Loại Khác: được thêm vào channel, đổi vai trò, tin bị Admin xóa (D-049, F27). Cài đặt đủ 15 tình huống của bảng Khi bạn được nhắc, gồm cả mention trong hội thoại đã mute (D-088)",
+       "scope": "Tạo mục từ mention, reply trong thread người đó đang theo dõi, reaction; API và sự kiện. Người viết tin gốc, người đã reply và người được nhắc tự động theo dõi thread; không có Unfollow (D-119). Không báo cho chính người làm; xếp mới nhất trước; mục tự xong khi việc đã làm (D-071); mục bị gỡ khi tin gốc bị xóa hoặc mention bị sửa bỏ (F13); rời channel thì xóa các mục đang mở của người đó trong channel ấy (D-133). Loại Khác: được thêm vào channel, đổi vai trò, tin bị Admin xóa (D-049, F27). Cài đặt đủ 15 tình huống của bảng Khi bạn được nhắc, gồm cả mention trong hội thoại đã mute (D-088) Sở hữu mục hoạt động, quy tắc theo dõi thread, API và thay đổi `activity`; màn hình thuộc TOKI-066 và việc gửi thông báo thuộc TOKI-073.",
        "size": "L",
        "needs": [
+        "024",
+        "036",
+        "037",
+        "038",
         "045",
         "046",
+        "047",
         "050",
-        "068"
-       ]
+        "064"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #291",
+        "fix": ""
+       }
       },
       {
        "id": "066",
        "title": "Màn hình Activity",
-       "scope": "Chip lọc cho mọi loại mục, số trên chip bằng số dòng đang hiện (D-071, D-074); đánh dấu xong có Hoàn tác trong 5 giây (D-069), snooze, Mark all read; Done và Snooze luôn hiện trên thiết bị chạm (D-067, D-053). Mốc hoãn: 1 giờ nữa, 15:00 hôm nay, 9:00 sáng mai; mốc đã qua thì ẩn đi và 'In 3 hours' thế chỗ (D-114)",
-       "size": "M",
+       "scope": "Chip lọc cho mọi loại mục, số trên chip bằng số dòng đang hiện (D-071, D-074); đánh dấu xong có Hoàn tác trong 5 giây (D-069), snooze, Mark all read; Done và Snooze luôn hiện trên thiết bị chạm (D-067, D-053). Mốc hoãn: 1 giờ nữa, 15:00 hôm nay, 9:00 sáng mai; mốc đã qua thì ẩn đi và 'In 3 hours' thế chỗ (D-114) Sở hữu màn Activity, store phía client, menu Snooze và thao tác bấm một mục (qua `useOpenMessage`).",
+       "size": "L",
        "needs": [
+        "012",
+        "013",
+        "014",
+        "015",
         "017",
+        "032",
+        "033",
+        "034",
+        "040",
+        "052",
         "065",
+        "068",
         "093",
-        "094"
-       ]
+        "094",
+        "099"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #292",
+        "fix": ""
+       }
       },
       {
        "id": "067",
        "title": "Later",
-       "scope": "Lưu tin, In progress và Completed, đặt reminder bắn đúng giờ và phải ở tương lai (D-073); reminder tới hạn trong lúc Pause hoặc Focus thì được giữ lại (D-072); tin gốc bị xóa thì hiện dòng thay thế và số đếm vẫn khớp (D-074); gỡ khỏi Later có Hoàn tác (D-061). Mốc nhắc giống mốc hoãn, mốc đã qua thì 'In 3 hours' thế chỗ (D-114)",
+       "scope": "Lưu tin, In progress và Completed, đặt reminder bắn đúng giờ và phải ở tương lai (D-073); reminder tới hạn trong lúc Pause hoặc Focus thì được giữ lại (D-072); tin gốc bị xóa thì hiện dòng thay thế và số đếm vẫn khớp (D-074); gỡ khỏi Later có Hoàn tác (D-061). Mốc nhắc giống mốc hoãn, mốc đã qua thì 'In 3 hours' thế chỗ (D-114) Sở hữu mục đã lưu, job nhắc và quy tắc giữ nhắc; việc giữ và gửi thật thuộc TOKI-073 và TOKI-076.",
        "size": "M",
        "needs": [
+        "037",
+        "038",
+        "040",
+        "047",
+        "052",
+        "058",
         "064",
+        "066",
         "068",
+        "070",
         "093",
         "094"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #289",
+        "fix": ""
+       }
       },
       {
        "id": "068",
@@ -5432,7 +5471,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #266",
-        "fix": ""
+        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #310."
        }
       }
      ]
@@ -5443,59 +5482,118 @@
       {
        "id": "073",
        "title": "Bộ quyết định thông báo",
-       "scope": "Ai nhận toast, push hay âm báo, dựa trên: mức thông báo của hội thoại, mặc định 'Mentions only' cho channel và 'All messages' cho DM (D-046); mute, trong đó mention vẫn báo khi công tắc riêng của người đó đang bật, mặc định bật (D-088, D-103); Pause và Focus (D-072); và hội thoại đó có đang hiện trên màn hình hay không (F36). Việc mình tự làm không bao giờ báo cho mình (D-071); người ngoài hội thoại không được báo (D-058)",
+       "scope": "Ai nhận toast, push hay âm báo, dựa trên: mức thông báo của hội thoại, mặc định 'Mentions only' cho channel và 'All messages' cho DM (D-046); mute, trong đó mention vẫn báo khi công tắc riêng của người đó đang bật, mặc định bật (D-088, D-103); Pause và Focus (D-072); và hội thoại đó có đang hiện trên màn hình hay không (F36). Việc mình tự làm không bao giờ báo cho mình (D-071); người ngoài hội thoại không được báo (D-058) Quyết định ai nhận toast, push hay âm thanh, trên server; TOKI-074 gửi push, TOKI-075 hiện toast và phát âm thanh, TOKI-076 giữ thông báo khi Pause và Focus.",
        "size": "L",
        "needs": [
-        "065"
-       ]
+        "040",
+        "041",
+        "045",
+        "047",
+        "065",
+        "067",
+        "102"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #293",
+        "fix": ""
+       }
       },
       {
        "id": "074",
        "title": "Web Push",
-       "scope": "Khóa VAPID, service worker chỉ dùng cho push (D-030), đăng ký thiết bị kèm một thông báo thử, bấm thông báo mở Toki tại đúng tin đó; thông báo hiện tên người gửi, tên hội thoại và đoạn đầu của tin (D-044); thẻ hỏi bật thông báo ở lần đầu, chỉ hỏi quyền trình duyệt sau khi bấm Turn on (F36); trên iPhone push chỉ chạy khi Toki đã được thêm vào màn hình chính (D-108); đăng xuất thì gỡ đăng ký push của thiết bị đó (D-158). Thêm khoá VAPID vào bảng kê cấu hình và `.env.example` của TOKI-096. Sở hữu việc nhận biết iPhone và thêm khoá VAPID vào bảng kê cấu hình. Đăng ký qua `onSessionsEnded` của TOKI-022 và xoá đăng ký push của phiên đã kết thúc.",
+       "scope": "Khóa VAPID, service worker chỉ dùng cho push (D-030), đăng ký thiết bị kèm một thông báo thử, bấm thông báo mở Toki tại đúng tin đó; thông báo hiện tên người gửi, tên hội thoại và đoạn đầu của tin (D-044); thẻ hỏi bật thông báo ở lần đầu, chỉ hỏi quyền trình duyệt sau khi bấm Turn on (F36); trên iPhone push chỉ chạy khi Toki đã được thêm vào màn hình chính (D-108); đăng xuất thì gỡ đăng ký push của thiết bị đó (D-158). Thêm khoá VAPID vào bảng kê cấu hình và `.env.example` của TOKI-096. Sở hữu việc nhận biết iPhone và thêm khoá VAPID vào bảng kê cấu hình. Đăng ký qua `onSessionsEnded` của TOKI-022 và xoá đăng ký push của phiên đã kết thúc. Sở hữu service worker `push-sw.js`, đăng ký thiết bị, nội dung push và chữ hướng dẫn Add to Home Screen.",
        "size": "L",
        "needs": [
+        "022",
+        "064",
         "068",
-        "073"
-       ]
+        "073",
+        "096",
+        "099",
+        "102"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #297",
+        "fix": ""
+       }
       },
       {
        "id": "075",
        "title": "Âm thanh và thông báo trong app",
-       "scope": "Toast khi có tin ở hội thoại khác, âm báo. Sở hữu việc mở khoá âm thanh ở Safari.",
+       "scope": "Toast khi có tin ở hội thoại khác, âm báo. Sở hữu việc mở khoá âm thanh ở Safari. Sở hữu đầu nhận toast và âm thanh cùng bước mở khoá âm thanh trên Safari; tệp âm thanh làm riêng cho Toki (đề xuất).",
        "size": "S",
        "needs": [
+        "066",
         "068",
         "073"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #296",
+        "fix": ""
+       }
       },
       {
        "id": "076",
        "title": "Pause và Focus time",
-       "scope": "API, việc nền kết thúc đúng giờ, dải trạng thái, tổng kết những gì đã đến. Giữ lại mọi thông báo kể cả reminder; bật Focus lần nữa thì gia hạn; kết thúc thì trả lại status cũ (NR6). Banner của nó dùng `.strip`, do TOKI-082 ở M6 sở hữu: hoặc chuyển chủ sang ticket ở M5, hoặc ticket này tự dựng class (cần quyết).",
+       "scope": "API, việc nền kết thúc đúng giờ, dải trạng thái, tổng kết những gì đã đến. Giữ lại mọi thông báo kể cả reminder; bật Focus lần nữa thì gia hạn; kết thúc thì trả lại status cũ (NR6). Banner của nó dùng `.strip`, do TOKI-082 ở M6 sở hữu: hoặc chuyển chủ sang ticket ở M5, hoặc ticket này tự dựng class (cần quyết). Sở hữu `HoldPort`, toast tóm tắt và lớp `.strip` (đề xuất cho đến khi chốt ai sở hữu `.strip`).",
        "size": "M",
        "needs": [
+        "013",
+        "015",
+        "035",
+        "041",
         "055",
         "056",
         "064",
-        "073"
-       ]
+        "066",
+        "067",
+        "071",
+        "073",
+        "094",
+        "099"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #298",
+        "fix": ""
+       }
       },
       {
        "id": "077",
        "title": "PWA",
-       "scope": "Manifest, icon, cài lên màn hình chính",
+       "scope": "Manifest, icon, cài lên màn hình chính Manifest, biểu tượng và cài đặt; service worker thuộc TOKI-074.",
        "size": "S",
        "needs": [
+        "006",
+        "008",
+        "009",
+        "010",
+        "011",
         "074"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #295",
+        "fix": ""
+       }
       },
       {
        "id": "102",
        "title": "Tùy chọn thông báo (server)",
-       "scope": "Các công tắc theo tài khoản mà bộ quyết định thông báo đọc: Desktop notifications, Play a sound, và 'Notify me for @mentions even in muted channels', mặc định bật (D-088); một bộ cho mỗi người trên mọi thiết bị, chỉ quyền push của trình duyệt là theo thiết bị (D-142); API và sự kiện",
+       "scope": "Các công tắc theo tài khoản mà bộ quyết định thông báo đọc: Desktop notifications, Play a sound, và 'Notify me for @mentions even in muted channels', mặc định bật (D-088); một bộ cho mỗi người trên mọi thiết bị, chỉ quyền push của trình duyệt là theo thiết bị (D-142); API và sự kiện Ba công tắc theo tài khoản; mặc định của Desktop và Sound chờ chủ sản phẩm (D-176).",
        "size": "S",
-       "needs": []
+       "needs": [
+        "054",
+        "056"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #288",
+        "fix": ""
+       }
       }
      ]
     }
