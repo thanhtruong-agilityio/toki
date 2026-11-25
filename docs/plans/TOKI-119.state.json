@@ -1,0 +1,36 @@
+{
+  "approved_auto": false,
+  "base": "github/main",
+  "branch": "docs/toki-119-test-harness-qa",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-25T04:27:27Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-25T04:27:27Z",
+      "stage": "explore"
+    },
+    {
+      "at": "2026-11-25T04:28:54Z",
+      "stage": "plan"
+    }
+  ],
+  "key": "TOKI-119",
+  "main_sha": "9ded3e3ec81ae28a572ad8724c50ef5cacdbc702",
+  "metrics": {},
+  "mode": "auto-to-check",
+  "plan_approved": false,
+  "plan_hash": null,
+  "spec_commit": "2e3c0c5393f352652e4961fa4d111af09b917b5a",
+  "spec_paths": [
+    "docs/specs/2026-11-25-test-harness-qa-design.md"
+  ],
+  "stage": "plan",
+  "tier": "M",
+  "verifier": {
+    "result": null,
+    "round": 0
+  }
+}
