@@ -34,3 +34,4 @@ After this change a person who uses only a keyboard can do everything a mouse ca
 - What does the flash of a jump, the skeleton and a toast do for a person who reduces motion?
 - Does focus move to the message after a jump?
 - Does each screen get its own tab title?
+- Is a skip link wanted, for a person who uses only the keyboard?
