@@ -16,7 +16,7 @@ The builder and the reviewer read the picture of a difference of the UI parity c
 
 ## Requirements
 - R1. For two images of the same size the picture of the difference has the size of the images and holds the pixels of the image of the app, unchanged, except the pixels of the frames (R2, R3). Check: a unit test in `e2e/support/parity.test.ts`: a pixel inside a frame and a pixel far from any frame are as in the image of the app.
-- R2. The different pixels (those that `pixelmatch` finds by the rule of `limits.ts`) are put in groups: pixels that are 6 pixels or less apart, in the square sense, are in one group, and so are the pixels that a chain of such pairs joins. Each group has one frame, a rectangle that surrounds the pixels of the group and the 6 pixels around them. Check: unit tests: two different pixels 6 apart have one frame; two pixels farther apart have two.
+- R2. The different pixels (those that `pixelmatch` finds by the rule of `limits.ts`) are put in groups: pixels that are 6 pixels or less apart, in the square sense, are in one group, and so are the pixels that a chain of such pairs joins. Each group has one frame, a rectangle that surrounds the pixels of the group and the 6 pixels around them. Check: unit tests: two different pixels 6 apart (x and y each differing by 6 or less) have one frame; two different pixels 7 apart have two frames; a chain of different pixels, each 6 from the next, has one frame.
 - R3. A frame is drawn on the picture of the app only, 2 pixels thick, inside its rectangle, in violet `#7c3aed`. Check: a unit test finds the colour at the edge of a frame and finds the pixel next to the frame, outside it, as in the image of the app.
 - R4. The ratio and the box that the report shows for a screen are the same as before for the same two images. Check: the existing tests of `compareImages` (the ratio, the box) pass unchanged.
 - R5. A pair of images of different sizes still gives no picture of the difference (the row says that the sizes differ). Check: the existing test of `compareImages` for sizes that differ passes unchanged.
@@ -25,9 +25,11 @@ The builder and the reviewer read the picture of a difference of the UI parity c
 
 ## Design
 `compareImages(a, b)` in `e2e/support/parity.ts` calls `pixelmatch` and today writes its output as the picture. After this change it still calls `pixelmatch`, but only to find the different pixels (it paints each one in its diff colour, red, and the function reads those pixels to count them and to find the box, as it does today). The picture is made by a new function `frameDifferences(image, different)`:
-1. grow the mask of different pixels by 6 pixels, in the square sense;
-2. find the groups of the grown mask (4-connected) and the rectangle of each;
+1. group the different pixels: two different pixels whose x and y both differ by 6 or less are in one group, and a chain of such pairs joins into one group. To find the pairs without comparing every two pixels, put the pixels in a grid of cells of 7 by 7 pixels; two pixels that are 6 or less apart lie in the same cell or in neighbouring cells (the 8 around), so only those are compared, and a union-find joins the pixels that are 6 or less apart;
+2. the rectangle of a group is the bounding box of its pixels, grown by 6 pixels on each side, and clipped to the image. A frame near the edge of the image is drawn on the edge row or column inside the image, so it is never lost. Frames of different groups may overlap or nest; they are drawn one after the other in the order of the groups (the group of the first different pixel, in reading order, first), so a later frame is drawn over an earlier one;
 3. copy the image of the app and draw a 2-pixel frame, in violet, inside each rectangle.
+
+The grouping does not grow every pixel and join touching cells: that would join two pixels up to 13 apart, and R2 asks for 6.
 
 The reader of the report sees, for a screen: the picture of the prototype, the picture of the app, and the picture of the difference (the app with frames).
 
@@ -39,7 +41,7 @@ e2e/parity/README.md           R6
 ```
 
 ## Testing
-- The tests of `frameDifferences` are written first and seen to fail: the pixels far from a frame stay as they were, a frame is violet at its edge, two close pixels make one frame and two far pixels make two.
+- The tests of `frameDifferences` are written first and seen to fail: the pixels far from a frame stay as they were, a frame is violet at its edge, two pixels 6 apart make one frame, two pixels 7 apart make two, and a chain of pixels each 6 from the next makes one.
 - The existing tests of `compareImages` stay as they are (R4, R5).
 - The check is run in the container on a screen that differs and the picture is looked at by eye, in Calm and in Focus; the pictures are in the pull request.
 
