@@ -318,7 +318,7 @@ Table K. Fixture cases of the lint rule: 36 cases, 21 reported (V) and 15 not re
 | A15 | `import { Button } from "other-lib"` then `<Button><XIcon /></Button>` (not the Button of `ui-web`) | not reported |
 
 ### Look in Calm and Focus, and density
-Nothing in the CSS of the eight components depends on the look: the rules are the same in Calm and Focus (R6 d), and the two looks differ through the variables they get from `tokens.css` (TOKI-009). The values below are resolved from TOKI-009's Tables A, B, D with the teal accent; they are what the preview page shows when it is compared with the prototype.
+Nothing in the CSS of the eight components depends on the look: the rules are the same in the three looks (R6 d; was Calm and Focus), and the looks and schemes differ through the variables they get from `tokens.css` (TOKI-009). The values below are resolved from TOKI-009's Tables A, B, D with the teal accent; they are what the preview page shows when it is compared with the prototype.
 
 | Piece | Calm | Focus |
 | :---- | :---- | :---- |
@@ -462,7 +462,7 @@ apps/web/              package.json (two dependencies), src/main.tsx (two import
 | Constraint | Met by |
 | :---- | :---- |
 | Blueprint work area: Design system | Planning fact; no design impact. |
-| Belongs to Blueprint intent I02 design-system: every base component matches the prototype in Calm and Focus, in all three layouts | The CSS is the prototype's (Tables C to J, R5), the two looks differ only through the tokens (R6 d, "Look in Calm and Focus"), and the narrow rules are in R8. The three layouts themselves are TOKI-015. |
+| Belongs to Blueprint intent I02 design-system: every base component matches the prototype in Calm and Focus, in all three layouts | The CSS is the prototype's (Tables C to J, R5), the looks and schemes differ only through the tokens (was the two looks; R6 d, "Look in Calm and Focus"), and the narrow rules are in R8. The three layouts themselves are TOKI-015. |
 | Milestone: M1, Foundation and design system | Planning fact; no design impact. |
 | Size: M, about one working session with Claude | Eight small components, a CSS file each, one lint rule with fixtures, and tests; no screen, no overlay, no preview page. Concern 12 says the size is larger than one session. |
 | Needs: TOKI-009 and TOKI-018 | The CSS uses the 32 property names of TOKI-009 (R6 b). TOKI-018 is the entry for platform features; no component of this group needs one (R28); the `jsdom` version of its package is reused (R27). The specs of TOKI-010, TOKI-011 and TOKI-002 add three needs (concern 5). |

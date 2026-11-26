@@ -81,7 +81,7 @@
 - [ ] Commit: `docs(spec): preferences choose a look and a scheme (TOKI-142)`.
 
 ### Task 4: Layout tables and selector bans
-**Files:** `2026-11-17-conversation-list-design.md`, `2026-11-17-archive-restore-channel-design.md`, `2026-11-17-conversation-header-details-design.md`, `2026-11-23-composer-design.md`, `2026-11-25-pause-focus-time-design.md`, `2026-11-16-overlays-design.md`, `2026-11-16-destructive-patterns-design.md`, `2026-11-25-destructive-patterns-qa-design.md`, `2026-11-17-add-remove-people-design.md`, `2026-11-17-admin-page-design.md`, `2026-11-17-browse-channels-people-picker-design.md`, `2026-11-26-people-screen-design.md` (all under `docs/specs/`)
+**Files:** `2026-11-17-conversation-list-design.md`, `2026-11-17-archive-restore-channel-design.md`, `2026-11-17-conversation-header-details-design.md`, `2026-11-23-composer-design.md`, `2026-11-25-pause-focus-time-design.md`, `2026-11-16-overlays-design.md`, `2026-11-16-destructive-patterns-design.md`, `2026-11-25-destructive-patterns-qa-design.md`, `2026-11-17-add-remove-people-design.md`, `2026-11-17-admin-page-design.md`, `2026-11-17-browse-channels-people-picker-design.md`, `2026-11-26-people-screen-design.md`, and, added after the code review for the wording "both looks": `2026-11-23-message-action-bar-design.md`, `2026-11-26-narrow-entry-points-design.md` (all under `docs/specs/`)
 - [ ] Rule 1 for the CSS tables (conversation-list 56, 123, 129, 156 to 159, 277; archive 136; conversation-header 214; composer 106; pause-focus-time 59) with the note under each table.
 - [ ] Rule 2 for the selector-ban lines (overlays 92, destructive 35 and its QA 41, add-remove 57, admin 91, browse 64, people 51).
 - [ ] Check: as Task 1.
@@ -91,11 +91,11 @@
 **Files:** none edited except fixes the check finds.
 - [ ] `grep -rn "data-eff" docs/specs` finds only the model spec and "was" phrases; `grep -rn "Match my device" docs/specs` finds it only as the scheme option, in concern text or in a "was" phrase.
 - [ ] `spec-lint.sh` on every edited spec reports no gap; `spec-ready.sh` output equals the baseline saved before Task 1 (`<git common dir>/dev-state/TOKI-142.ready-before.txt`: 21 specs exit 0, 7 exit 1: text-formatting, composer, preferences, people, command-palette, pause-focus-time, pwa).
-- [ ] `git diff --stat github/main` lists only the 28 specs of Tasks 1 to 4 and the plan and state files.
+- [ ] `git diff --stat github/main` lists only the 30 specs of Tasks 1 to 4 and the plan and state files.
 - [ ] Verifier agent with this plan, the diff and the AC table; `/code-review`.
 
 ## What can break (grilling round 1)
 - Riskiest step: Task 3 (the preferences spec is the longest and has open concerns; a reword can read as a new decision) and Task 2 (the count of states and the block selectors must agree with the model). Mitigation: baseline of `spec-ready.sh` before each task; the model's numbers are copied, not recomputed.
 - A selector rename is not a pure rename for B rules (layout rule with colour). Mitigation: Design rule 1 says the `var()` stays and the tokens give the scheme's value.
 - A spec that is not in the scan but names the old attribute under another spelling (`data-look="calm"` in a bash example, `[data-eff]` in code blocks). Mitigation: the final grep in Task 5 covers `data-eff` anywhere; the scan covered the four spellings; `eff=` is also grepped.
-- Parallel tasks and one file: the file lists are disjoint (checked: 28 specs, each in one task).
+- Parallel tasks and one file: the file lists are disjoint (checked: 30 specs, each in one task).
