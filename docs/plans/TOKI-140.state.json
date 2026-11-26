@@ -20,6 +20,11 @@
     {
       "at": "2026-11-26T09:28:04Z",
       "stage": "check"
+    },
+    {
+      "at": "2026-11-26T09:30:07Z",
+      "auto": true,
+      "stage": "approve"
     }
   ],
   "key": "TOKI-140",
@@ -27,7 +32,7 @@
   "metrics": {},
   "mode": "manual",
   "plan_approved": true,
-  "plan_hash": "7a28f2acdf540e4a675efbad47ab122022ea8f84b3f95daeeb0baa292cc77049",
+  "plan_hash": "e0a685d14c96c7c28051ea358088e5982acaf7c0b0c54970ffa801062bdaa74e",
   "spec_commit": "b05db9629e1d8dd7f80cf068c8b42de7e57dbdd5",
   "spec_paths": [
     "docs/specs/2026-11-26-browse-picker-hints-design.md"
@@ -35,7 +40,7 @@
   "stage": "check",
   "tier": "S",
   "verifier": {
-    "result": null,
-    "round": 0
+    "result": "FAIL",
+    "round": 1
   }
 }
