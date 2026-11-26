@@ -38,6 +38,11 @@ body:has(.gsign) {
   font-weight: 700;
   font-size: 16px;
 }
+.gws .gwt {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
 .gws .gwn {
   font-weight: 700;
   font-size: 14px;
