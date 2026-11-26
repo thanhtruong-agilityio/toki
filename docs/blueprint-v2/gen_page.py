@@ -136,6 +136,12 @@ def build(lang):
         r.update(kind="rev", a=d["decision"], sev="", status="Deferred" if d.get("source") == "deferred" else "Confirmed",
                  old=f"{old} · {q}", topic=d.get("topic", ""), source=d.get("source", ""), note=d.get("note", ""))
 
+    last = max(int(r["id"].split("-")[1]) for r in dec)
+    for i, s in enumerate(B.get("specQuestions", []), last + 1):   # open concerns of the specs, appended so no id moves
+        dec.append(dict(id=f"D-{i:03d}", old=f"TOKI-{s['ticket']} c{s['n']}", kind="q", q=s["question"], a=s["proposal"],
+                        owner="PO", sev="M", status="Open", topic=s["topic"], options="", source="spec",
+                        note=f"TOKI-{s['ticket']} spec, concern {s['n']}."))
+
     detail = {f[0]: dict(id=f[0], text=en(f[1]), evidence=en(f[2]), type=en(GA.TYP[f[4]]), sev=f[5], status=en(f[7])) for f in GA.F}
     for g in B["gaps"]:
         _, t_, _ = GA.OLD[g["id"]].split()

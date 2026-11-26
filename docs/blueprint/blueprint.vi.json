@@ -13062,5 +13062,1423 @@
   ],
   "date": "2026-11-13",
   "note": "Người dùng chấp nhận trong một lần duyệt 20 giả định còn lại."
- }
+ },
+ "specQuestions": [
+  {
+   "ticket": "053",
+   "n": 1,
+   "milestone": "M4",
+   "topic": "Tin nhắn commit muộn và con trỏ đã đọc",
+   "question": "Một tin nhắn commit sau tin nhắn có created_at muộn hơn thì có được tính là chưa đọc không? Hiện nay con trỏ đã nhảy tới tin sau sẽ xếp tin trước ở phía trước nó nên không bao giờ được đếm (TOKI-036 concern 12, cùng TOKI-036 và TOKI-037).",
+   "proposal": "Đề xuất, chưa quyết: Lấy câu trả lời của TOKI-036 concern 12; nếu khoảng hở còn, dùng con trỏ ghi số event của tin nhắn (cần thêm cột trên messages và đổi R2 thành R4)."
+  },
+  {
+   "ticket": "053",
+   "n": 2,
+   "milestone": "M4",
+   "topic": "Lịch sử trước khi vào kênh",
+   "question": "Lịch sử có từ trước khi một người vào kênh có được tính là chưa đọc không? Đếm hết tin cũ sẽ cho thành viên mới một con số hàng nghìn.",
+   "proposal": "Đề xuất, chưa quyết: Điểm bắt đầu của một người là lúc họ vào kênh (conversation_members.created_at), chỉ tin sau đó được đếm, và vào lại thì bắt đầu lại từ thời điểm đó."
+  },
+  {
+   "ticket": "053",
+   "n": 3,
+   "milestone": "M4",
+   "topic": "Tin bị xóa hoặc bỏ mention trong số đếm",
+   "question": "Tin nhắn bị xóa có rời khỏi số chưa đọc không, và sửa tin để bỏ mention của người đó có làm mất dấu @ không? Log đã nói về trường hợp mention (F13) nhưng chưa nói về tin thường.",
+   "proposal": "Đề xuất, chưa quyết: Tin bị xóa không được đếm và tin không còn mention người đó thì không có dấu @, cho mọi tin nhắn (R4, R5, R16)."
+  },
+  {
+   "ticket": "053",
+   "n": 4,
+   "milestone": "M4",
+   "topic": "Cửa sổ rảnh có tính là đang đọc",
+   "question": "Cửa sổ đang hiển thị và có focus nhưng lâu không dùng có còn được coi là đang đọc cuộc trò chuyện không? D-052 nói cửa sổ đang được dùng nhưng không nói cách biết điều đó.",
+   "proposal": "Đề xuất, chưa quyết: Chỉ dùng visibility và focus, không có thời gian rảnh; cách chặt hơn là thêm thời điểm input cuối vào WindowUse và chỉ đổi R21."
+  },
+  {
+   "ticket": "053",
+   "n": 8,
+   "milestone": "M4",
+   "topic": "Dấu @ ở cuối danh sách",
+   "question": "Dấu @ nên mất khi tin có mention hiện trên màn hình (F13 bước 5) hay chỉ khi người dùng xuống tới cuối danh sách (như số đếm theo D-052)? Ngoài ra, mở mục Activity hoặc thread panel có nên xóa dấu do mention trong reply của thread không?",
+   "proposal": "Đề xuất, chưa quyết: Áp dụng D-052 cho cả dấu @, dấu mất cùng lúc với số đếm khi xuống cuối (R15); cách đọc còn lại cần list báo tin đang hiển thị và đổi R15, R19."
+  },
+  {
+   "ticket": "054",
+   "n": 2,
+   "milestone": "M4",
+   "topic": "Số hiển thị trên tiêu đề tab",
+   "question": "Tiêu đề tab hiển thị con số nào, ví dụ (3) Toki: số tin nhắn, số cuộc trò chuyện hay số mention, và cuộc trò chuyện đã tắt tiếng có được tính không? D-122 không nói rõ.",
+   "proposal": "Đề xuất, chưa quyết: Số tin chưa đọc của DM và group không tắt tiếng, cộng 1 cho mỗi channel có dấu @ (R1 (c)); DM tắt tiếng không cộng; channel tắt tiếng chỉ cộng 1 khi công tắc mention trong cuộc trò chuyện tắt tiếng đang bật."
+  },
+  {
+   "ticket": "054",
+   "n": 3,
+   "milestone": "M4",
+   "topic": "Dấu chấm trên tiêu đề tab",
+   "question": "Dấu chấm trên tiêu đề tab là ký tự nào, và \"anything else\" nào sẽ làm nó hiện? D-122 không nói cả hai.",
+   "proposal": "Đề xuất, chưa quyết: Ký tự • trước tên, hiện khi số là 0 và có cuộc trò chuyện không tắt tiếng còn tin chưa đọc; mục Activity và Later không được xét ở đây."
+  },
+  {
+   "ticket": "054",
+   "n": 4,
+   "milestone": "M4",
+   "topic": "Giới hạn số trên badge",
+   "question": "Badge hiển thị con số lớn nhất là bao nhiêu? Prototype hiện số nguyên và chưa có quyết định nào đặt giới hạn.",
+   "proposal": "Đề xuất, chưa quyết: Không giới hạn, như prototype; nếu muốn giới hạn như 99+ thì chỉ đổi một chỗ ở phần nối (R4) và nhãn của dòng ở TOKI-033."
+  },
+  {
+   "ticket": "054",
+   "n": 5,
+   "milestone": "M4",
+   "topic": "Bộ lọc Mentions và cuộc trò chuyện tắt tiếng",
+   "question": "Bộ lọc Mentions có giữ lại cuộc trò chuyện đã tắt tiếng mà dấu @ bị công tắc ẩn không? D-074 nói số trên chip bằng số dòng hiển thị.",
+   "proposal": "Đề xuất, chưa quyết: Bộ lọc giữ các dòng có vẽ dấu @ (R3 (b)); cách còn lại là giữ mọi dòng có mention bất kể công tắc."
+  },
+  {
+   "ticket": "054",
+   "n": 6,
+   "milestone": "M4",
+   "topic": "Divider chưa đọc hay tin nhắn đích",
+   "question": "Khi mở cuộc trò chuyện vừa có tin chưa đọc vừa có tin đích thì bên nào ưu tiên? D-052 nói cuộn tới divider; các journey của Activity, Pins, Search nói mở tại tin đó.",
+   "proposal": "Đề xuất, chưa quyết: Tin đích thắng và không vẽ divider trong lần mount đó (R10 (a)); số đếm giữ đến khi người dùng xuống cuối. Cách còn lại vẽ cả hai và cần list nhận cả hai."
+  },
+  {
+   "ticket": "055",
+   "n": 1,
+   "milestone": "M4",
+   "topic": "Không làm phiền khi không có thiết bị kết nối",
+   "question": "Người đang ở Focus time mà không có thiết bị nào kết nối (hoặc đã đăng xuất mọi nơi) nên hiện là Do not disturb hay Away? F34 và bảng trạng thái không nói bên nào thắng.",
+   "proposal": "Đề xuất, chưa quyết: Do not disturb thắng, vì Focus time thuộc về tài khoản và chấm đỏ là tín hiệu người đó đã đặt (R5 và R6 xây theo thứ tự tạm này)."
+  },
+  {
+   "ticket": "055",
+   "n": 2,
+   "milestone": "M4",
+   "topic": "Chấm presence của người bị vô hiệu hóa",
+   "question": "Avatar của người bị vô hiệu hóa trong DM cũ nên không có chấm hay hiện chấm Away, và vô hiệu hóa người đang ở Focus time có kết thúc Focus time không? Log không nói.",
+   "proposal": "Đề xuất, chưa quyết: Màn hình không vẽ chấm cho người có status deactivated (R18 chưa làm), và việc vô hiệu hóa xóa Focus time."
+  },
+  {
+   "ticket": "055",
+   "n": 3,
+   "milestone": "M4",
+   "topic": "Presence của khách và dành cho khách",
+   "question": "Presence của guest có hiển thị cho member không, và guest được thấy presence của những ai? Hiện mọi tài khoản đăng nhập đều nghe toàn bộ danh sách (R8).",
+   "proposal": "Đề xuất, chưa quyết: Guest chỉ nghe presence của thành viên trong channel của mình, còn member nghe presence của guest như mọi người; cần lọc snapshot và batch theo audience và cần ticket cho guest."
+  },
+  {
+   "ticket": "055",
+   "n": 6,
+   "milestone": "M4",
+   "topic": "Ai thấy presence của ai",
+   "question": "Presence hiển thị cho mọi người trong workspace hay chỉ cho những người có chung cuộc trò chuyện? Chưa có quyết định nào nói chấm hiện cả với người không chung gì.",
+   "proposal": "Đề xuất, chưa quyết: Mọi người đăng nhập nghe mọi người, với một audience { workspace: true }, vì People và profile hiện chấm cho người không chung gì (R7 và R8 xây theo cách tạm này)."
+  },
+  {
+   "ticket": "056",
+   "n": 2,
+   "milestone": "M4",
+   "topic": "Status của người bị vô hiệu hóa",
+   "question": "Status của người bị vô hiệu hóa nên ẩn hay xóa? F41 chỉ cho nhãn, không nói gì về status cũ hay status của người được kích hoạt lại (TOKI-057 concern 3 hỏi tương tự cho profile).",
+   "proposal": "Đề xuất, chưa quyết: Màn hình không hiện status cho tài khoản deactivated; giữ dòng dữ liệu và nó trở lại khi kích hoạt lại nếu còn hiệu lực, useStatusText (R13) trả undefined. Cách khác là xóa dòng khi vô hiệu hóa, phải đổi code của TOKI-024."
+  },
+  {
+   "ticket": "057",
+   "n": 1,
+   "milestone": "M4",
+   "topic": "Dòng múi giờ: offset hay thành phố",
+   "question": "Dòng Time zone chỉ hiện UTC offset hay cả offset và thành phố, và nếu có thành phố thì lấy từ đâu? D-144, kế hoạch và F31, và prototype không thống nhất, còn Preferences không có trường thành phố.",
+   "proposal": "Đề xuất, chưa quyết: Dòng chỉ hiện UTC offset (R7), vì kế hoạch và flow yêu cầu vậy và không cần trường mới."
+  },
+  {
+   "ticket": "057",
+   "n": 2,
+   "milestone": "M4",
+   "topic": "Profile của người chưa có múi giờ",
+   "question": "Tài khoản mới có nên có múi giờ mặc định (ví dụ của trình duyệt ở lần đăng nhập đầu) không, và profile hiện gì cho đến khi có? Hiện chưa có flow nào đặt nó.",
+   "proposal": "Đề xuất, chưa quyết: Khi chưa có múi giờ thì không vẽ dòng Local time và Time zone (R6, R7) và không đoán từ thiết bị của người xem."
+  },
+  {
+   "ticket": "057",
+   "n": 3,
+   "milestone": "M4",
+   "topic": "Profile của người bị vô hiệu hóa",
+   "question": "Profile của người bị vô hiệu hóa nên còn hiện gì: presence, status, giờ địa phương? F31 và F41 chỉ cho nhãn và việc thiếu nút Message.",
+   "proposal": "Đề xuất, chưa quyết: Không có dòng presence và khối status; job title, local time và time zone vẫn hiện, giống đề xuất của TOKI-055 và TOKI-056 (R4, R5, R10)."
+  },
+  {
+   "ticket": "057",
+   "n": 9,
+   "milestone": "M4",
+   "topic": "Nút Edit profile trước TOKI-078",
+   "question": "Nút Edit profile có được tồn tại trước khi TOKI-078 thêm các trường không? Đến lúc đó nó dẫn tới /prefs chỉ có phần thiết bị đã đăng nhập.",
+   "proposal": "Đề xuất, chưa quyết: Vẽ nút như R9 và chấp nhận ngõ cụt tới khi TOKI-078 xong. Phương án khác: thêm TOKI-078 vào needs của TOKI-057, hoặc chỉ vẽ nút khi trang có các trường."
+  },
+  {
+   "ticket": "059",
+   "n": 2,
+   "milestone": "M4",
+   "topic": "File đã tải lên khi composer bị đóng",
+   "question": "Khi người dùng đổi cuộc trò chuyện hoặc composer unmount, các file đã upload xong có bị bỏ ngay không? D-168 nói card không được khôi phục và D-130 xóa file chưa gửi sau 24 giờ.",
+   "proposal": "Đề xuất, chưa quyết: Bỏ luôn các file đã upload (R9, R17), còn việc dọn sau 24 giờ làm dự phòng cho tab đã đóng. Chi phí: upload 100 MB bị mất khi rời đi. Cách khác để việc dọn xử lý và dùng cách khôi phục ở concern 8 để giải phóng giới hạn."
+  },
+  {
+   "ticket": "059",
+   "n": 3,
+   "milestone": "M4",
+   "topic": "Card khi chuyển sang tab Pinned",
+   "question": "Chuyển sang tab Pinned có tính là rời đi, nên card mất và file bị bỏ không? D-168 không nói rời tab có phải là quay lại không.",
+   "proposal": "Đề xuất, chưa quyết: Chuyển tab là rời đi: card mất và file bị bỏ, như concern 2. Cách khác giữ tập file ở trên tab để upload tiếp tục; cần store sống lâu hơn composer và chỉ đổi R9 và R17."
+  },
+  {
+   "ticket": "059",
+   "n": 6,
+   "milestone": "M4",
+   "topic": "Card nào tính vào giới hạn 10",
+   "question": "Card đỏ (lỗi) có tính vào giới hạn 10 file không? D-042 nói 10 file và F18 không nói gì về card đỏ.",
+   "proposal": "Đề xuất, chưa quyết: Mọi card đều được tính, kể cả card đỏ, để số trên màn hình khớp với số người dùng thấy; muốn có chỗ thì xóa card đỏ (R6)."
+  },
+  {
+   "ticket": "059",
+   "n": 7,
+   "milestone": "M4",
+   "topic": "Dán nội dung vào composer",
+   "question": "Nội dung dán nào trở thành đính kèm? F18 chỉ nói \"paste an image\".",
+   "proposal": "Đề xuất, chưa quyết: Chỉ nhận ảnh, và chỉ khi clipboard không có text và việc dán đến từ chính ô nhập của composer; file copy trong file manager thì đính kèm bằng nút hoặc kéo thả (R15)."
+  },
+  {
+   "ticket": "059",
+   "n": 8,
+   "milestone": "M4",
+   "topic": "Khôi phục khi có quá nhiều file chưa gửi",
+   "question": "Cần làm gì khi việc bắt đầu upload bị từ chối vì giới hạn 20 file chưa gửi? TOKI-058 concern 6 để quy tắc này cho ticket này.",
+   "proposal": "Đề xuất, chưa quyết: Khi bị từ chối, set liệt kê file chưa gửi của người đó, bỏ những file không được giữ rồi thử lại một lần (R11). Rủi ro: có thể bỏ nhầm file ready đang được tab hoặc thiết bị khác giữ. Phương án khác: cho người dùng chọn từ danh sách, hoặc không bao giờ bỏ và chờ 24 giờ."
+  },
+  {
+   "ticket": "059",
+   "n": 12,
+   "milestone": "M4",
+   "topic": "Tin nhắn có file khi đang chờ gửi",
+   "question": "Tin nhắn có file và không có text đang chờ offline hoặc sau khi reload sẽ ra sao, khi file có thể đã mất sau 24 giờ (D-130) và Retry sẽ lỗi 400 attachment_unavailable? Việc vẽ nó thuộc TOKI-042 và TOKI-040.",
+   "proposal": "Đề xuất, chưa quyết: Mục đang chờ mang các file entry từ readyFiles() (Plan changes); ticket này chỉ chuyển các id."
+  },
+  {
+   "ticket": "060",
+   "n": 1,
+   "milestone": "M4",
+   "topic": "Thế nào được coi là ảnh",
+   "question": "Những định dạng nào là ảnh và được tạo thumbnail? D-014 và trang Files (Documents = mọi file không phải ảnh) không nói. Ngoài ra, ảnh có type rỗng hoặc application/octet-stream có nên vẫn là card file không?",
+   "proposal": "Đề xuất, chưa quyết: JPEG, PNG, GIF (frame đầu), WebP và AVIF là ảnh; SVG, HEIC, TIFF, BMP và loại khác là file, có card tải xuống và nằm trong Documents. Ảnh có type rỗng hoặc octet-stream vẫn là card file; cách khác là đọc vài byte đầu khi complete, tốn thêm một lần đọc storage cho mỗi upload."
+  },
+  {
+   "ticket": "060",
+   "n": 2,
+   "milestone": "M4",
+   "topic": "Tỷ lệ của placeholder trước khi có thumbnail",
+   "question": "Placeholder lấy tỷ lệ đúng bằng cách nào khi tin được gửi trước khi worker đọc xong kích thước ảnh? F18 nói layout không được nhảy.",
+   "proposal": "Đề xuất, chưa quyết: Phương án A (R2): dùng khung 4:3 của prototype tới khi có event, chấp nhận tin đó đổi chiều cao một lần. Phương án B: composer gửi kích thước ảnh cùng lúc bắt đầu upload để layout không nhảy; tốn hai cột, một trường request, một bước kiểm tra và đổi TOKI-058, TOKI-059."
+  },
+  {
+   "ticket": "060",
+   "n": 6,
+   "milestone": "M4",
+   "topic": "Cách gửi thumbnail và cache của trình duyệt",
+   "question": "Trình duyệt được giữ thumbnail trong bao lâu? Log nói người đã rời private channel không thấy gì (D-116) và Admin không có thêm quyền (D-047), nhưng không nói được đánh đổi tốc độ bao nhiêu.",
+   "proposal": "Đề xuất, chưa quyết: Cache-Control: private, max-age=3600, giúp bớt request nhưng trình duyệt có thể giữ ảnh tới một giờ sau khi người đó mất quyền; đổi một header và một test. Hiện code dùng private, no-cache với ETag và 304 sau khi kiểm tra quyền."
+  },
+  {
+   "ticket": "061",
+   "n": 1,
+   "milestone": "M4",
+   "topic": "Số card xem trước cho mỗi tin nhắn",
+   "question": "Mỗi tin nhắn có bao nhiêu card xem trước? Log không cho con số (AC-100); code đọc một hằng số LINK_PREVIEWS_PER_MESSAGE.",
+   "proposal": "Đề xuất, chưa quyết: 1, địa chỉ đầu tiên của text, vì mỗi card thêm là một request nữa tới site khác và một khối nữa dưới tin ngắn."
+  },
+  {
+   "ticket": "061",
+   "n": 2,
+   "milestone": "M4",
+   "topic": "Card liên kết khi tin nhắn được sửa",
+   "question": "Card liên kết sẽ ra sao khi tin nhắn được sửa? Log chỉ nói sửa thì đổi text.",
+   "proposal": "Đề xuất, chưa quyết: Card có địa chỉ không còn trong text thì mất, card người gửi đã xóa vẫn bị xóa, và địa chỉ trở thành ứng viên đầu tiên thì có card (R17). Cách khác là card không bao giờ đổi sau lần lấy đầu."
+  },
+  {
+   "ticket": "061",
+   "n": 3,
+   "milestone": "M4",
+   "topic": "Xem trước liên kết trong DM và private channel",
+   "question": "Có nên lấy bản xem trước liên kết trong tin nhắn trực tiếp và private channel không, khi server đọc trang và site biết có người đăng địa chỉ của nó? D-014 và AC-100 không loại trừ loại cuộc trò chuyện nào.",
+   "proposal": "Đề xuất, chưa quyết: Cùng một quy tắc cho mọi loại cuộc trò chuyện; quy tắc chặt hơn (không xem trước trong DM hoặc private channel) chỉ là một điều kiện trong R1."
+  },
+  {
+   "ticket": "061",
+   "n": 6,
+   "milestone": "M4",
+   "topic": "Ai được xóa card liên kết",
+   "question": "Ai được xóa card liên kết: chỉ tác giả, hay cả Admin là thành viên của cuộc trò chuyện? F12 nói \"the sender\" và D-047 không cho Admin thêm quyền.",
+   "proposal": "Đề xuất, chưa quyết: Chỉ tác giả, theo canEditMessage (R19); card độc hại sẽ còn tới khi xóa cả tin, việc Admin là thành viên làm được. Cách khác là tác giả cộng Admin là thành viên, như canDeleteMessage, đổi R19 bước 5 và R23. Card biến mất khi server trả lời."
+  },
+  {
+   "ticket": "061",
+   "n": 8,
+   "milestone": "M4",
+   "topic": "Nội dung nút xóa bản xem trước",
+   "question": "Nút xóa card có nội dung tiếng Anh và tiếng Việt là gì? Prototype không có nút này nên D-139 coi nội dung là đề xuất.",
+   "proposal": "Đề xuất, chưa quyết: Tiếng Anh \"Remove preview\" và \"Could not remove the preview\"; tiếng Việt \"Xóa bản xem trước\" và \"Không thể xóa bản xem trước\"."
+  },
+  {
+   "ticket": "061",
+   "n": 9,
+   "milestone": "M4",
+   "topic": "Giới hạn mạng và công tắc tắt xem trước",
+   "question": "Có cần giới hạn mạng ngoài code và công tắc để tắt xem trước không? Thiết kế nói \"refuse internal addresses\" và không đòi công tắc.",
+   "proposal": "Đề xuất, chưa quyết: Ba lớp R4 đến R8 là phòng thủ chính; quy tắc firewall chặn traffic của worker tới 169.254.169.254 và mạng nội bộ (trừ host database) là lớp thứ hai, thuộc TOKI-084. Không thêm biến môi trường và không có công tắc tắt; operator gỡ job khỏi job-types.ts trong một bản phát hành."
+  },
+  {
+   "ticket": "061",
+   "n": 11,
+   "milestone": "M4",
+   "topic": "Tên site trên card liên kết",
+   "question": "Card nên hiện gì làm tên site? Trang độc hại có thể tự đặt tên bất kỳ, và og:site_name của trang có thể khác host.",
+   "proposal": "Đề xuất, chưa quyết: Tên site là host của href, không bao giờ là giá trị do trang cung cấp (R9). Cách khác là og:site_name, nếu không có thì host, như card của prototype gợi ý."
+  },
+  {
+   "ticket": "062",
+   "n": 3,
+   "milestone": "M4",
+   "topic": "Địa chỉ của Copy link và người chưa đăng nhập",
+   "question": "Copy link nên sao chép địa chỉ nào, và người chưa đăng nhập mở nó sẽ thấy gì? Route trả 401 với nội dung lỗi của API và không chuyển qua đăng nhập.",
+   "proposal": "Đề xuất, chưa quyết: Giữ R13 như đã viết: sao chép origin của trang cộng /api/v1/files/<id>/download. Lựa chọn khác là trang app như /files/<id> đưa người chưa đăng nhập tới đăng nhập rồi mở file; cần quy tắc quay lại sau đăng nhập và một route mới."
+  },
+  {
+   "ticket": "062",
+   "n": 6,
+   "milestone": "M4",
+   "topic": "Cửa sổ xem cho mục liên kết",
+   "question": "Cửa sổ nên hiện gì cho một mục liên kết mở từ trang Files? Prototype và F18/FR-39 không nói hoặc không nhất quán (địa chỉ Copy link tự bịa, dòng Size là Link).",
+   "proposal": "Đề xuất, chưa quyết: Cửa sổ hỗ trợ mục liên kết, không có dòng Size, không có Download, và Copy link sao chép chính địa chỉ của liên kết (R11, R13, R14). Việc liên kết có mở trong cửa sổ hay không là quy tắc danh sách của TOKI-063."
+  },
+  {
+   "ticket": "062",
+   "n": 7,
+   "milestone": "M4",
+   "topic": "Giao diện prototype chưa có (card và modal)",
+   "question": "Các giao diện và chữ mà prototype không có có chấp nhận được như đã viết không: vị trí nút Download, giới hạn tỷ lệ ảnh, max-height của ảnh, card liên kết không đổi việc gom nhóm, và màu lnk2?",
+   "proposal": "Đề xuất, chưa quyết: R3, R4, R11, R14, R16 và R17 như đã viết; đổi một chữ là đổi một mục catalog và đổi giao diện là đổi một file CSS và test của nó."
+  },
+  {
+   "ticket": "062",
+   "n": 11,
+   "milestone": "M4",
+   "topic": "Số trang trên card file",
+   "question": "Card file có nên hiện số trang như prototype (6 pages · 212 KB) không? Server không bao giờ đọc nội dung upload nên bản build không có số trang.",
+   "proposal": "Đề xuất, chưa quyết: Card chỉ hiện dung lượng (R7); số trang cần một worker đọc file, thuộc ticket sau."
+  },
+  {
+   "ticket": "063",
+   "n": 3,
+   "milestone": "M4",
+   "topic": "Mục liên kết trong Files là gì",
+   "question": "Thế nào là một mục liên kết trong phần Files? FR-39 và TS-168 nói \"every link\", nhưng bản build chỉ lưu dữ liệu liên kết trong message_link_previews, chỉ có dòng cho các địa chỉ job đã thử.",
+   "proposal": "Đề xuất, chưa quyết: R3 chỉ liệt kê các dòng ready và chưa bị xóa, nên mục liên kết là liên kết có card và tên là title của card; TS-168 chỉ đúng khi preview của https://example.com là ready. Phương án khác: bảng chứa mọi địa chỉ của mọi tin, hoặc danh sách card cộng một mục cho mỗi địa chỉ không có card."
+  },
+  {
+   "ticket": "063",
+   "n": 4,
+   "milestone": "M4",
+   "topic": "Kích thước trang và nội dung Documents",
+   "question": "Mỗi trang bao nhiêu dòng, và thế nào là Document? D-171 còn mở, và D-109 chỉ đặt 50 cho danh sách thành viên và picker.",
+   "proposal": "Đề xuất, chưa quyết: 50 dòng, cuộn để lấy thêm (R1, R6), và file là document khi không phải ảnh, trong đó ảnh là file được vẽ như ảnh, nên PNG tạo thumbnail thất bại là Document (R3)."
+  },
+  {
+   "ticket": "063",
+   "n": 11,
+   "milestone": "M4",
+   "topic": "Giao diện và chữ prototype chưa có (Files)",
+   "question": "Các giao diện và chữ mà prototype không có có chấp nhận được như đã viết không: dòng meta, lưới không thumbnail, trạng thái rỗng, chữ loading và retry, tìm kiếm 250 ms, và toàn bộ tiếng Việt? D-139 coi chúng là đề xuất.",
+   "proposal": "Đề xuất, chưa quyết: R10, R11, R14 và R16 như đã viết; đổi một chữ là đổi một mục catalog và đổi giao diện là đổi một file CSS và test của nó."
+  },
+  {
+   "ticket": "064",
+   "n": 9,
+   "milestone": "M4",
+   "topic": "Chuyển việc dọn event sang TOKI-064",
+   "question": "TOKI-064 có nên nhận việc dọn event từ TOKI-036 (R21) dưới dạng queued job không? Nếu từ chối thì bỏ R21 và giữ starter của TOKI-036.",
+   "proposal": "Đề xuất, chưa quyết: TOKI-064 nhận việc dọn event (R21): một job mỗi giờ cho cả hệ thống thay vì timer trong mỗi bản server, lỗi được log và thử lại; do đó TOKI-036 là need của TOKI-064. Chủ sản phẩm xác nhận hoặc từ chối khi review PR."
+  },
+  {
+   "ticket": "065",
+   "n": 1,
+   "milestone": "M5",
+   "topic": "Một hay hai mục Activity cho một reply",
+   "question": "Người vừa được mention trong reply vừa là follower của thread nhận một mục hay hai? D-071 và FR-14 nói mention cho đúng một mục và FR-34 cho mỗi follower một mục thread.",
+   "proposal": "Đề xuất, chưa quyết: Một mục cho mỗi người và mỗi tin, loại mention, nên số đếm tăng 1; nếu mention bị sửa bỏ mà người đó vẫn follow thì thành mục thread (R5), và chiều ngược lại thành mục mention (R4). Cách đọc còn lại là hai mục, mỗi loại một, cần unique index gồm cả loại."
+  },
+  {
+   "ticket": "065",
+   "n": 2,
+   "milestone": "M5",
+   "topic": "Ranh giới của quy tắc follow thread",
+   "question": "Người được mention trong tin gốc có follow thread không, và @channel trong reply có biến mọi thành viên thành follower không? FR-34 nói mọi người \"mentioned in the thread\" đều follow.",
+   "proposal": "Đề xuất, chưa quyết: Người được nêu tên trong tin gốc cũng follow (thêm một dòng follower khi gửi tin gốc), và @channel không tạo follower vì nó là một cờ, không phải danh sách người (TOKI-050)."
+  },
+  {
+   "ticket": "065",
+   "n": 3,
+   "milestone": "M5",
+   "topic": "Thời điểm item Activity tự chuyển thành đã đọc",
+   "question": "Khi nào một item Activity tự thành đã đọc, và \"done on its own\" là xóa dòng hay chỉ đánh dấu đã đọc? Trigger là message hiện trên màn hình (F13), message được mở (AC-038) hay read pointer đi qua nó?",
+   "proposal": "Đề xuất, chưa quyết: chỉ đánh dấu đã đọc và không bao giờ xóa dòng (Done vẫn là hành động của người dùng, FR-41), với trigger mà TOKI-053 concern 8 chốt cho dấu chấm `@`."
+  },
+  {
+   "ticket": "065",
+   "n": 4,
+   "milestone": "M5",
+   "topic": "Trạng thái item sau khi có reaction mới",
+   "question": "Nếu có reaction mới sau khi người dùng đã đọc hoặc đánh dấu done, item có thành chưa đọc lại và lên đầu danh sách không? D-163 chỉ nói tên được cập nhật.",
+   "proposal": "Đề xuất, chưa quyết: có, item thành unread, không done, đứng đầu danh sách vì reaction mới là thông tin mới; item đang snooze vẫn giữ snooze. Cách hiểu khác là giữ nguyên trạng thái và chỉ đổi tên."
+  },
+  {
+   "ticket": "065",
+   "n": 5,
+   "milestone": "M5",
+   "topic": "Item Activity cho người được thêm lúc tạo channel",
+   "question": "Những người được người tạo đưa vào channel mới có nhận item \"added you\" như khi được thêm sau đó (F22) không? F20 không nhắc đến item nào.",
+   "proposal": "Đề xuất, chưa quyết: có, cùng loại item với người tạo là actor, thêm một case `channel_created` trong R9 dùng cùng hàm."
+  },
+  {
+   "ticket": "065",
+   "n": 6,
+   "milestone": "M5",
+   "topic": "Thời gian hiển thị nhãn \"Back from snooze\"",
+   "question": "Nhãn \"Back from snooze\" tồn tại bao lâu? Prototype xóa nhãn khi bấm vào dòng nhưng không xóa khi \"Mark all read\".",
+   "proposal": "Đề xuất, chưa quyết: nhãn hiện khi item còn unread (`backFromSnooze`, R15), nên mọi cách đọc item, kể cả \"Mark all read\", đều làm nhãn mất."
+  },
+  {
+   "ticket": "065",
+   "n": 9,
+   "milestone": "M5",
+   "topic": "Item đổi role được ghi sau commit",
+   "question": "Có chấp nhận việc item đổi role được ghi sau commit, nên có thể mất nếu process dừng giữa chừng không? Hay các route đổi role phải ghi item trong transaction của chúng?",
+   "proposal": "Đề xuất, chưa quyết: listener của `onMemberChanged` (TOKI-024 R40) ghi item trong transaction riêng sau commit (R10); item có thể mất nếu process dừng, bản thân việc đổi role không bị ảnh hưởng. Nếu muốn không mất, các route đổi role gọi `recordChange` trong transaction của chúng."
+  },
+  {
+   "ticket": "065",
+   "n": 11,
+   "milestone": "M5",
+   "topic": "Các giới hạn kích thước của Activity",
+   "question": "Chủ sản phẩm có chấp nhận các giới hạn đề xuất: trang 50 (tối đa 100), preview 200 code point, nêu 3 người react gần nhất, purge theo batch 500, snooze tối đa 366 ngày, item done giữ 24 giờ không? Con số 24 giờ là cái người dùng thấy, vì D-069 nói Undo kéo dài 5 giây.",
+   "proposal": "Đề xuất, chưa quyết: các giá trị đó (R2, R20, R22) là hằng số kỹ thuật trong `@toki/shared`; server cho hoàn tác Done trong 24 giờ. Nếu server phải từ chối `reopen` sau 5 giây, job xóa item done sớm hơn và R19 thêm kiểm tra thời gian."
+  },
+  {
+   "ticket": "065",
+   "n": 13,
+   "milestone": "M5",
+   "topic": "Ai nhận item Activity",
+   "question": "Có nên chỉ tài khoản active là member mới nhận item không, dù người được kích hoạt lại sẽ không thấy item của thời gian vắng mặt (D-094 nói kích hoạt lại giữ lịch sử)?",
+   "proposal": "Đề xuất, chưa quyết: chỉ tài khoản active là member nhận item (R3), vì người bị vô hiệu hóa không đăng nhập được (F41) và cách này không cần thêm state. Cách khác là tạo item cho member bị vô hiệu hóa và giữ đến khi kích hoạt lại."
+  },
+  {
+   "ticket": "066",
+   "n": 1,
+   "milestone": "M5",
+   "topic": "Tên chip cho các loại item còn lại",
+   "question": "Chip gom \"added to a channel\", \"role changed\" và \"message deleted by an admin\" tên là gì? Prototype không có chip này và D-173 vẫn mở.",
+   "proposal": "Đề xuất, chưa quyết: \"Other\", tên mà F27 dùng, lưu trong `activity.chip.other` (R7, R23) để đổi chỉ cần sửa một text. Cách gom theo F27 và AC-110."
+  },
+  {
+   "ticket": "066",
+   "n": 2,
+   "milestone": "M5",
+   "topic": "Số đếm trên các chip của Activity",
+   "question": "Các chip All, Mentions, Threads, Reactions và Other có nên hiện số không, như D-074 và plan gợi ý? Prototype chỉ hiện số ở \"Snoozed · n\".",
+   "proposal": "Đề xuất, chưa quyết: không hiện số, như prototype vẽ; summary đã có mọi số đếm (TOKI-065 R17), nên thêm sau chỉ cần đổi một text và một prop."
+  },
+  {
+   "ticket": "066",
+   "n": 3,
+   "milestone": "M5",
+   "topic": "Điều gì làm item Activity tự thành đã đọc (màn hình)",
+   "question": "Điều gì làm item tự đọc: message hiện trên màn hình, message được mở hay read pointer đi qua, và dòng bị xóa hay chỉ mất dấu chấm? Câu hỏi này cũng mở ở TOKI-065 concern 3 và TOKI-053 concern 8.",
+   "proposal": "Đề xuất, chưa quyết: chỉ đánh dấu đã đọc, không xóa, với trigger mà TOKI-053 concern 8 chốt. Ticket này chỉ làm thao tác bấm (R12) và item đến khi message đã hiện trên màn hình (R5 (h))."
+  },
+  {
+   "ticket": "066",
+   "n": 4,
+   "milestone": "M5",
+   "topic": "Câu chữ mà prototype không có",
+   "question": "Văn bản cuối cùng bằng tiếng Anh và tiếng Việt cho các item prototype không vẽ (được thêm vào channel, đổi role, admin xóa message, reaction của nhiều người, toast Done, loading và lỗi, nhãn filters) là gì? Theo D-139 mỗi câu như vậy chỉ là đề xuất.",
+   "proposal": "Đề xuất, chưa quyết: các dòng đánh dấu \"proposal\" trong phần \"Texts\" của spec."
+  },
+  {
+   "ticket": "066",
+   "n": 5,
+   "milestone": "M5",
+   "topic": "Cách hiển thị thời gian của item ngày khác",
+   "question": "Item Activity của ngày khác nên hiện gì? Table A của TOKI-094 chỉ có giờ 24 giờ, còn prototype hiện \"Yesterday\" cho item cũ.",
+   "proposal": "Đề xuất, chưa quyết: `formatTime` cho hôm nay và `formatDateTime` (chữ chỉ ngày hoặc ngày tháng, rồi giờ) cho ngày khác (R11); cách khác là chỉ hiện giờ, làm mất thông tin ngày."
+  },
+  {
+   "ticket": "067",
+   "n": 1,
+   "milestone": "M5",
+   "topic": "Reminder trên item Later đã hoàn thành",
+   "question": "Reminder trên dòng Later đã completed xử lý thế nào, và Complete hoặc reopen có Undo 5 giây không (D-061, D-063)? Trong prototype, reminder không bao giờ kích hoạt khi đã completed và kích hoạt khi reopen.",
+   "proposal": "Đề xuất, chưa quyết (R1, R4, R20 (b)): complete sẽ xóa reminder đang chờ và dấu due; đặt reminder trên dòng đã completed đưa nó về In progress; dòng completed không hiện dòng reminder; Complete và reopen không có Undo. Phương án khác: giữ như prototype, và thêm Undo 5 giây cho Complete."
+  },
+  {
+   "ticket": "067",
+   "n": 2,
+   "milestone": "M5",
+   "topic": "Dòng Later của conversation không còn đọc được",
+   "question": "Dòng Later xử lý thế nào khi người dùng không còn đọc được conversation của nó? D-133 xóa item Activity khi rời channel nhưng không nói gì về Later; D-116 cấm hiện nội dung.",
+   "proposal": "Đề xuất, chưa quyết (R9, R24): dòng vẫn còn, không hiện tên, nội dung hay link, ghi \"Message no longer available\", có thể complete hoặc xóa, bấm không mở gì, và trở lại bình thường nếu có lại quyền truy cập. Phương án khác: xóa dòng khi mất quyền."
+  },
+  {
+   "ticket": "067",
+   "n": 4,
+   "milestone": "M5",
+   "topic": "Giới hạn cho message đã lưu và reminder của Later",
+   "question": "Later có nên giới hạn số message đã lưu, thời điểm reminder xa nhất hoặc kích thước trang không? Chưa có quyết định nào đưa ra các giới hạn này.",
+   "proposal": "Đề xuất, chưa quyết (R6, R10): không giới hạn; danh sách trả về đầy đủ vì số trên chip phải bằng số dòng. Nếu cần giới hạn thì thêm một hằng số trong `packages/shared` và một kiểm tra trong R3."
+  },
+  {
+   "ticket": "067",
+   "n": 5,
+   "milestone": "M5",
+   "topic": "Lưu vào Later từ channel đã archive",
+   "question": "Nút bookmark Later có hiện trong channel đã archive không? Channel archive vẫn đọc được (F26) và Later là cá nhân nên không ghi gì vào channel.",
+   "proposal": "Đề xuất, chưa quyết (R3, R19): có hiện, vì quyền cần thiết chỉ là quyền đọc. Phương án khác: ẩn như nút smile của TOKI-052 R11."
+  },
+  {
+   "ticket": "067",
+   "n": 8,
+   "milestone": "M5",
+   "topic": "Câu chữ của Later và toast reminder muộn",
+   "question": "Dùng câu chữ nào khi từ chối thời gian đã qua (`later.error.past`) và cho dòng unavailable, và reminder đến hạn lúc tab đóng có nên hiện toast muộn không?",
+   "proposal": "Đề xuất, chưa quyết (R22): hai câu chữ là đề xuất (D-139); không hiện toast cho event được áp dụng khi bắt kịp sau `ready` (`replayed`), dòng và badge là đủ. Phương án khác: tuổi tối đa của event so với đồng hồ trang, có thể bị sai nếu đồng hồ thiết bị lệch."
+  },
+  {
+   "ticket": "067",
+   "n": 10,
+   "milestone": "M5",
+   "topic": "Bấm vào dòng Later unavailable",
+   "question": "Bấm vào dòng Later `unavailable` thì làm gì? Phụ thuộc concern 2 của Later và TOKI-068 concern 10, cùng một câu hỏi.",
+   "proposal": "Đề xuất, chưa quyết (R18, R24): không mở gì và xóa dấu due. Phương án khác: bấm gọi `open` và route hiện view not-found hoặc Join."
+  },
+  {
+   "ticket": "068",
+   "n": 4,
+   "milestone": "M5",
+   "topic": "Hiệu ứng flash khi bật reduced motion",
+   "question": "Hiệu ứng flash của jump to message có nên hiện gì khi bật reduced motion không? Rule toàn cục của prototype cắt animation còn 0.01 ms nên không thấy tint.",
+   "proposal": "Đề xuất, chưa quyết (R11): giữ hành vi prototype (dòng được căn giữa, không có tint). Phương án khác: nền `--accent-soft` tĩnh trong 2 giây, không animation, một rule trong `flash.css`."
+  },
+  {
+   "ticket": "068",
+   "n": 5,
+   "milestone": "M5",
+   "topic": "Reply có flash khi jump không",
+   "question": "Khi jump tới một reply, reply nên flash trong thread panel, hay cả root trong danh sách chính như prototype (F10, F13)? Các spec đã merge chỉ mở thread panel.",
+   "proposal": "Đề xuất, chưa quyết (R6): hook chỉ mở thread và `ThreadPanel` flash dòng reply qua `startFlash(replyId)`; danh sách giữ nguyên. Cần sửa `ThreadPanel.tsx` và gửi change request cho TOKI-045. Nếu muốn flash cả root, `open` gọi thêm `request` cho root."
+  },
+  {
+   "ticket": "068",
+   "n": 6,
+   "milestone": "M5",
+   "topic": "Địa chỉ cho một message",
+   "question": "Có nên có link sao chép được tới một message không? F10 và TS-011 nhắc đến, nhưng D-089 không liệt kê địa chỉ message và chưa spec nào định nghĩa.",
+   "proposal": "Đề xuất, chưa quyết: search key `message={id}` trên `/c/$conversationId`, route đọc và gọi `request` rồi thay entry bằng địa chỉ không có key; thêm vào validator của TOKI-035 R8. Ticket này chưa build gì, và TOKI-074 R23 đã có route riêng cho push click."
+  },
+  {
+   "ticket": "068",
+   "n": 7,
+   "milestone": "M5",
+   "topic": "Phản hồi khi không hiển thị được message đích",
+   "question": "Người dùng nên thấy gì khi message đích không hiển thị được (reply không gửi ra channel, hoặc id không còn tồn tại)? Hiện server trả 404 và trang mới nhất hiện ra, không flash, không giải thích.",
+   "proposal": "Đề xuất, chưa quyết: không hiện text, như hiện tại. Phương án khác: toast kiểu \"This message is no longer available\", câu chữ do chủ sản phẩm chấp nhận hoặc sửa (D-139)."
+  },
+  {
+   "ticket": "068",
+   "n": 9,
+   "milestone": "M5",
+   "topic": "Jump tới reply trong channel đã archive",
+   "question": "Jump tới một reply trong channel archive, vốn không có thread panel (TOKI-101, TOKI-041 R3), hoạt động thế nào?",
+   "proposal": "Đề xuất, chưa quyết: với reply trong channel archive mà người dùng là thành viên, `open` request root (`parentId`) để history mở ở root và flash nó; hook cần biết channel đã archive. Khi chưa quyết, người dùng thấy cuối history."
+  },
+  {
+   "ticket": "068",
+   "n": 10,
+   "milestone": "M5",
+   "topic": "Jump từ dòng Later của conversation không còn đọc được",
+   "question": "Jump to message xử lý thế nào với dòng Later của conversation người dùng không còn đọc được? D-133 không nói gì về Later; TOKI-067 concern 2 hỏi cùng câu với đề xuất khác.",
+   "proposal": "Đề xuất, chưa quyết: không xử lý đặc biệt; người dùng thấy view của route (not-found hoặc Join). TOKI-067 đề xuất dòng không mở gì; một câu trả lời giải quyết cả hai."
+  },
+  {
+   "ticket": "068",
+   "n": 14,
+   "milestone": "M5",
+   "topic": "Jump to message trên màn hình hẹp",
+   "question": "Dưới 720 px, panel thay thế view, nên jump tới message khi đang mở thread hoặc details panel sẽ flash danh sách phía sau mà người dùng không thấy (D-067). `open` có nên đóng panel trước không?",
+   "proposal": "Đề xuất, chưa quyết (R4): `open` đóng thread hoặc details panel ở độ rộng đó trước khi yêu cầu danh sách di chuyển, dùng hook breakpoint của TOKI-015 và `closeThread` của TOKI-045 R16. Khi chưa quyết R4 không đóng panel."
+  },
+  {
+   "ticket": "069",
+   "n": 5,
+   "milestone": "M4",
+   "topic": "Thứ tự kết quả tìm message (index)",
+   "question": "Kết quả tìm message được sắp xếp theo thứ tự nào? Chưa có gì sắp xếp message, trong khi D-112 (20 kết quả mỗi loại) cần một thứ tự.",
+   "proposal": "Đề xuất, chưa quyết: mới nhất trước theo (`created_at`, `id`), để trang theo cursor ổn định. Lựa chọn khác: khớp nhất trước (`ts_rank`) hoặc conversation của người dùng trước. Nếu trả lời khác chỉ `order by` và cursor của R9 đổi."
+  },
+  {
+   "ticket": "070",
+   "n": 1,
+   "milestone": "M4",
+   "topic": "Các field được so khớp khi tìm tên",
+   "question": "Tìm conversation, channel và người nên so khớp những field nào: chỉ tên, hay cả topic và job title như palette của prototype? D-015 không nói.",
+   "proposal": "Đề xuất, chưa quyết (R6): chỉ tên (tên channel còn được so với dấu gạch nối đọc như khoảng trắng), như danh sách và picker (TOKI-032 R19); topic là text tự do và job title chưa là cột (TOKI-078). Nếu theo prototype, topic và job title được so như text thứ hai với rank thấp hơn."
+  },
+  {
+   "ticket": "070",
+   "n": 2,
+   "milestone": "M4",
+   "topic": "Thứ tự kết quả conversation, channel và người",
+   "question": "Conversation, channel và người được xếp hạng theo thứ tự nào, điều quyết định 20 kết quả đầu? D-187 và D-177 vẫn mở và plan thêm \"then fuzzy\".",
+   "proposal": "Đề xuất, chưa quyết (R6): rank 0 (bằng), 1 (bắt đầu bằng), 2 (chứa), rồi tên đã fold, rồi id; không fuzzy. Đây là đề xuất của D-187 được làm thành thứ tự đầy đủ cho cursor ổn định. Nếu khác, chỉ `nameRank`, `compareSearchNames` và cursor của R8 đổi."
+  },
+  {
+   "ticket": "070",
+   "n": 3,
+   "milestone": "M4",
+   "topic": "Channel đã archive trong kết quả tìm kiếm",
+   "question": "Ctrl+K có nên liệt kê channel đã archive mà người dùng là thành viên không, khi history vẫn tìm được (F26, F21) và Browse đã liệt kê kèm nhãn?",
+   "proposal": "Đề xuất, chưa quyết (R4 a): channel nằm trong `conversations` với `archived` true để người dùng mở history bằng tên. Nếu muốn loại ra, `listSearchableConversations` thêm `archived_at is null`."
+  },
+  {
+   "ticket": "070",
+   "n": 4,
+   "milestone": "M4",
+   "topic": "Cách text gõ vào khớp với message (route)",
+   "question": "Text gõ vào khớp với message theo cách nào, và có nên loại reply như prototype (`!m.parent`) không? Đây là concern 4 của TOKI-069; route này dùng nguyên hàm của TOKI-069.",
+   "proposal": "Chưa có đề xuất."
+  },
+  {
+   "ticket": "070",
+   "n": 5,
+   "milestone": "M4",
+   "topic": "Thứ tự kết quả tìm message (route)",
+   "question": "Kết quả message được trả về theo thứ tự nào? Đây là concern 5 của TOKI-069 và phải được nêu giống nhau ở đây.",
+   "proposal": "Đề xuất, chưa quyết (R7): mới nhất trước theo (`created_at`, `id`), thứ tự của `searchMessageIds`; lựa chọn khác là khớp nhất trước hoặc conversation của người dùng trước. Cursor của R8 chỉ chạy với thứ tự mới nhất trước."
+  },
+  {
+   "ticket": "070",
+   "n": 6,
+   "milestone": "M4",
+   "topic": "Độ trễ của prefix ngắn phổ biến khi tìm kiếm",
+   "question": "Làm sao đạt D-113 (dưới 200 ms ở p95 trên một triệu message) với prefix ngắn rất phổ biến, khi TOKI-069 R11 đo 335 ms cho `n` và prefix hai chữ cái cũng có thể vượt 200 ms?",
+   "proposal": "Đề xuất, chưa quyết: build như R7 và R10, để TOKI-089 đo, và nếu vượt ngân sách thì chọn một phương án của TOKI-069 R11 (giới hạn số match cho prefix ngắn, tối thiểu 3 chữ cái, hoặc `btree_gin`). Tối thiểu 3 đổi F29 và là vấn đề sản phẩm."
+  },
+  {
+   "ticket": "070",
+   "n": 10,
+   "milestone": "M4",
+   "topic": "Group chưa có message trong tìm kiếm",
+   "question": "Tìm kiếm có nên ẩn group mới chưa có message, như đã ẩn direct message chưa bắt đầu không? Phần direct message đã được chốt ở TOKI-031 concern 1; phần group còn mở ở TOKI-037 concern 2.",
+   "proposal": "Đề xuất, chưa quyết (R4 a, R9 a): tìm kiếm không lọc group, như danh sách đề xuất; cả hai dùng cùng một hàm nên tìm kiếm sẽ theo khi TOKI-037 concern 2 có câu trả lời."
+  },
+  {
+   "ticket": "071",
+   "n": 1,
+   "milestone": "M4",
+   "topic": "Xếp hạng tên và text được so khớp trong palette",
+   "question": "Tên được xếp hạng thế nào sau khi khớp chính xác, và so khớp text nào (chỉ tên, hay cả topic hoặc job title)? D-187 vẫn mở và TOKI-070 concern 1, 2 chưa quyết.",
+   "proposal": "Đề xuất, chưa quyết (R7, R8, R12): theo đề xuất của TOKI-070 cho bốn nhóm từ server và dùng cùng hàm cho nhóm Actions; không fuzzy, không rank word-start; action chỉ so theo label; highlight đánh dấu tên như một chuỗi."
+  },
+  {
+   "ticket": "071",
+   "n": 2,
+   "milestone": "M4",
+   "topic": "Các nhóm và thứ tự trong command palette",
+   "question": "Palette hiện những nhóm nào và theo thứ tự nào? D-112 nói bốn nhóm (conversations, people, commands, messages) còn F29 và prototype có năm nhóm gồm \"Channels you can join\".",
+   "proposal": "Đề xuất, chưa quyết (R5): năm nhóm của F29 theo thứ tự F29, với tiêu đề của prototype. Nếu muốn bốn nhóm của D-112 thì channel được vẽ trong Conversations sau conversation của người dùng, và R5, R6 (c) đổi."
+  },
+  {
+   "ticket": "071",
+   "n": 3,
+   "milestone": "M4",
+   "topic": "Định nghĩa recent conversations",
+   "question": "\"Recent conversations\" trong palette trước khi gõ là gì và bao nhiêu cái? F29 không đưa quy tắc và client không có thời gian hoạt động cuối của channel.",
+   "proposal": "Đề xuất, chưa quyết (R4, R14): các conversation mở gần nhất trên thiết bị này, tối đa 5, mới nhất trước, lưu id trong device storage theo từng người; không có nhóm \"Recent\" khi chưa có. Số 5 không có nguồn. Muốn theo mức hoạt động thì server phải gửi thời gian cho channel."
+  },
+  {
+   "ticket": "071",
+   "n": 4,
+   "milestone": "M4",
+   "topic": "Lối vào palette trên màn hình hẹp",
+   "question": "Palette mở thế nào trên màn hình hẹp? F29 nói từ ô search ở đầu Home, D-053 chỉ nêu More sheet, và TOKI-033 đã vẽ ô lọc danh sách ở đầu nên hai ô search sẽ gây nhầm.",
+   "proposal": "Đề xuất, chưa quyết (R15 b): một nút Search riêng (`SearchBox` của shell) phía trên ô lọc tên của danh sách, mở palette. Phương án khác: ô lọc tên mở palette khi bấm, hoặc chỉ dùng More sheet."
+  },
+  {
+   "ticket": "071",
+   "n": 5,
+   "milestone": "M4",
+   "topic": "So khớp, thứ tự và độ trễ của message (palette)",
+   "question": "Text gõ vào khớp message thế nào, theo thứ tự nào, và nhanh đến đâu với prefix ngắn phổ biến? Đây là TOKI-070 concern 4, 5, 6 (TOKI-069 concern 4, 5, 11) và không quyết lại ở đây.",
+   "proposal": "Chưa có đề xuất."
+  },
+  {
+   "ticket": "071",
+   "n": 6,
+   "milestone": "M4",
+   "topic": "Mở kết quả message và reply",
+   "question": "Chọn một kết quả message thì mở thế nào, nhất là với reply? F29 nói mở conversation tại message đó; jump là TOKI-068 và reply không là dòng của danh sách trừ khi cũng gửi ra channel.",
+   "proposal": "Đề xuất, chưa quyết (R9 d): một hàm nhận conversation, message và parent id, phần còn lại giao cho TOKI-068; message trong danh sách mở conversation tại đó, reply mở thread panel của parent (`/c/{id}/t/{parentId}`) với reply trong tầm nhìn. Khi TOKI-068 chưa có thì đi tới `/c/{id}`."
+  },
+  {
+   "ticket": "071",
+   "n": 7,
+   "milestone": "M4",
+   "topic": "Nơi profile mở ra từ palette",
+   "question": "Profile của một người mở ở đâu khi chọn trong palette, vốn mở được trên mọi màn hình? Profile panel chỉ có địa chỉ trong conversation (TOKI-057 R13) và D-089 nói mỗi panel có địa chỉ.",
+   "proposal": "Đề xuất, chưa quyết (R9 b): `/people/{personId}`, màn hình People với profile đó trong panel, qua `useOpenProfileAt`; TOKI-079 giữ route. Đến lúc đó chọn một người chưa làm gì. Phương án khác: direct message kèm profile card, với cái giá là tạo direct message chỉ vì xem."
+  },
+  {
+   "ticket": "071",
+   "n": 8,
+   "milestone": "M4",
+   "topic": "Các lệnh Pause, Focus time và Switch look",
+   "question": "Các lệnh Pause notifications, Start Focus time và Switch look trong palette làm gì? F29 không nêu thời lượng hay look đích, và prototype dùng giá trị demo cố định.",
+   "proposal": "Đề xuất, chưa quyết (R8, Contract): các ticket sở hữu đăng ký lệnh bằng `useRegisterCommand` và tự quyết câu chữ và tác dụng (TOKI-076 cho pause và Focus time, TOKI-078 cho đổi look). Ticket này không đăng ký lệnh nào nên danh sách F29 thiếu ba lệnh cho đến lúc đó."
+  },
+  {
+   "ticket": "072",
+   "n": 1,
+   "milestone": "M4",
+   "topic": "Dạng kết quả khi tìm trong conversation",
+   "question": "Tìm trong conversation nên lọc danh sách tại chỗ, hiện danh sách kết quả, hay highlight và nhảy từng kết quả? F19 nói bấm kết quả thì đóng search mode và flash message; lọc tại chỗ cần đủ dòng message.",
+   "proposal": "Đề xuất, chưa quyết (R9 đến R12): một danh sách kết quả, mỗi kết quả một dòng, vẽ thay cho danh sách, và bấm sẽ hiện message trong danh sách. Nếu theo prototype thì các dòng thành message component và R10 đến R12 đổi."
+  },
+  {
+   "ticket": "072",
+   "n": 2,
+   "milestone": "M4",
+   "topic": "Số ký tự tối thiểu để tìm trong conversation",
+   "question": "Tìm trong conversation bắt đầu từ mấy ký tự? F29 cho Ctrl+K là 2, F19 không nêu, và prototype lọc từ ký tự đầu.",
+   "proposal": "Đề xuất, chưa quyết (R2, R10): 2 code point, vì prefix một chữ cái là trường hợp 335 ms của TOKI-069 R11; dưới 2 một dòng nhắc nhập thêm và danh sách giữ nguyên. Nếu chọn 1 thì `SEARCH_MESSAGE_MIN_LENGTH` không dùng và chi phí của concern 8 tăng."
+  },
+  {
+   "ticket": "072",
+   "n": 3,
+   "milestone": "M4",
+   "topic": "Số kết quả, thứ tự và phân trang khi tìm trong conversation",
+   "question": "Tìm trong conversation hiện bao nhiêu kết quả, theo thứ tự nào, và xem thêm thế nào? D-112 cho 20 mỗi loại kèm xem thêm khi yêu cầu; prototype liệt kê mọi kết quả cũ nhất trước.",
+   "proposal": "Đề xuất, chưa quyết (R4, R5, R11): 20 kết quả, mới nhất trước như TOKI-070 R7 đề xuất, và nút \"Show more\"; cursor chỉ chạy với thứ tự mới nhất trước. Phương án khác: scroll tự tải thêm."
+  },
+  {
+   "ticket": "072",
+   "n": 4,
+   "milestone": "M4",
+   "topic": "Reply của thread trong kết quả tìm trong conversation",
+   "question": "Reply của thread có nên xuất hiện trong kết quả tìm trong conversation không? Prototype chỉ giữ message không có parent trong khi `searchMessageIds` trả cả reply (TOKI-070 concern 4 hỏi cùng câu).",
+   "proposal": "Đề xuất, chưa quyết (R3, R12): reply là kết quả, đánh dấu \"Reply\", bấm mở thread với reply trong tầm nhìn, để từ được nói trong thread vẫn tìm thấy. Nếu loại ra thì điều kiện là `parent_id is null or also_in_channel` ở cả hai lần đọc."
+  },
+  {
+   "ticket": "072",
+   "n": 6,
+   "milestone": "M4",
+   "topic": "Nút tìm kiếm trên trang kênh đã lưu trữ",
+   "question": "Trang kênh đã lưu trữ có cần nút tìm trong cuộc trò chuyện không? Log nói lịch sử vẫn tìm được (F26) nhưng không nói tìm bằng cách nào.",
+   "proposal": "Đề xuất, chưa quyết: không có nút trên trang lưu trữ trong ticket này; thay đổi sau sẽ cho `ArchivedHistory` dùng cùng hai component."
+  },
+  {
+   "ticket": "072",
+   "n": 8,
+   "milestone": "M4",
+   "topic": "Quy tắc khớp văn bản và chi phí index",
+   "question": "Tìm trong một cuộc trò chuyện nên khớp chuỗi con (như prototype, `ieng` tìm ra `tiếng`) hay khớp tiền tố từ (TOKI-069 R7)? Việc này gắn với concern 4 và 11 của TOKI-069.",
+   "proposal": "Đề xuất, chưa quyết: route này theo quyết định của TOKI-069 và tự không đổi gì; mức tối thiểu ở concern 2 cũng áp dụng ở đây."
+  },
+  {
+   "ticket": "073",
+   "n": 1,
+   "milestone": "M5",
+   "topic": "Thông báo cho trả lời trong thread",
+   "question": "Với trả lời trong thread: item thread của thread đang theo dõi có kèm toast, push hay âm thanh không? Trả lời không gửi lên kênh có thông báo ở mức 'All messages' không? Panel thread đang mở có tính là đã xem không?",
+   "proposal": "Đề xuất, chưa quyết: (a) không, item thread chỉ là item trong Activity; (b) không, trả lời đó chỉ thông báo khi nhắc đến người dùng; (c) có, panel đang mở được tính là màn hình."
+  },
+  {
+   "ticket": "073",
+   "n": 2,
+   "milestone": "M5",
+   "topic": "Thông báo khi được thêm, đổi vai trò, admin xóa tin",
+   "question": "Việc được thêm vào kênh, đổi vai trò hoặc tin bị admin xóa có cần toast, push hay âm thanh không? F22, F40, F42 chỉ nêu item trong Activity.",
+   "proposal": "Đề xuất, chưa quyết: không cái nào thông báo; badge và danh sách là thông báo của chúng."
+  },
+  {
+   "ticket": "073",
+   "n": 3,
+   "milestone": "M5",
+   "topic": "Âm thanh và push cho nhắc nhở, snooze",
+   "question": "Nhắc nhở có cần âm thanh không, và item snooze quay lại có cần push hoặc âm thanh không? F28 cho nhắc nhở toast và push; F27 cho item quay lại chỉ toast.",
+   "proposal": "Đề xuất, chưa quyết: làm đúng như các journey nói, không thêm (R2, R11, R12)."
+  },
+  {
+   "ticket": "073",
+   "n": 4,
+   "milestone": "M5",
+   "topic": "@channel trong kênh đã tắt tiếng",
+   "question": "`@channel` có nên thông báo trong kênh đã mute không? D-088 cho mention cá nhân vượt qua mute, dòng 12 nói theo mức của kênh, F13 nói mọi thành viên nhận như nhau.",
+   "proposal": "Đề xuất, chưa quyết: `@channel` tính là mention khi xét mức (thông báo ở 'Mentions only') nhưng không phải mention cá nhân mà D-088 cho vượt mute, nên kênh đã mute vẫn im. R2 làm việc này sau một điều kiện."
+  },
+  {
+   "ticket": "073",
+   "n": 5,
+   "milestone": "M5",
+   "topic": "Giới hạn chờ của toast và thông báo phát lại",
+   "question": "Toast được chờ tối đa bao lâu cho đến khi cửa sổ được dùng, và thông báo phát lại sau khi mất kết nối có hiện toast không? Bảng không nêu giới hạn.",
+   "proposal": "Đề xuất, chưa quyết: thông báo phát lại không hiện toast và không phát âm; toast đang chờ bị bỏ sau `NOTICE_WAIT_MAX_MS` (60,000 ms), tính theo đồng hồ của chính thiết bị từ lúc nhận. Âm thanh của thông báo đang chờ chỉ xét một lần lúc nhận, nên có thể phát tới chừng đó trước toast."
+  },
+  {
+   "ticket": "073",
+   "n": 6,
+   "milestone": "M5",
+   "topic": "Cửa sổ đang mở nhưng không dùng",
+   "question": "Cửa sổ đang focus và hiển thị nhưng không có thao tác gần đây có còn tính là 'đang dùng' (nên không gửi push) không? Hiện chưa có idle time.",
+   "proposal": "Đề xuất, chưa quyết: giữ cách hiểu giống read pointer (hiển thị và focus); cách chặt hơn thêm thời điểm input cuối vào `WindowUse` và frame (R16)."
+  },
+  {
+   "ticket": "073",
+   "n": 8,
+   "milestone": "M5",
+   "topic": "Quy tắc push khi có nhiều cửa sổ",
+   "question": "Khi một người có nhiều thiết bị, một cửa sổ đang dùng có nên chặn push cho mọi thiết bị không? Trường hợp lẫn (laptop đang dùng, điện thoại đóng Toki) chưa có trong dòng hay quyết định nào.",
+   "proposal": "Đề xuất, chưa quyết: trạng thái cửa sổ lưu theo người, nên một cửa sổ đang dùng chặn push cho mọi thiết bị của người đó. Phương án khác là push cho các thiết bị không có cửa sổ đang dùng, cần biết thiết bị của từng cửa sổ và là thiết kế lớn hơn."
+  },
+  {
+   "ticket": "073",
+   "n": 9,
+   "milestone": "M5",
+   "topic": "Ba công tắc điều khiển những gì",
+   "question": "Mỗi công tắc trong ba công tắc thông báo điều khiển cái gì? Nhãn của prototype và F13 chưa khớp, D-142 và D-176 không nói.",
+   "proposal": "Đề xuất, chưa quyết: 'Desktop notifications' điều khiển push, 'Play a sound' điều khiển âm thanh, toast không thuộc công tắc nào; 'Notify me for @mentions even in muted channels' là ngoại lệ mute của R2."
+  },
+  {
+   "ticket": "074",
+   "n": 1,
+   "milestone": "M5",
+   "topic": "Nút Later trên thẻ push làm gì",
+   "question": "Sau khi bấm Later trên thẻ push, thẻ nên không quay lại, quay lại ở lần truy cập sau, hay sau vài ngày? F36 không nói.",
+   "proposal": "Đề xuất, chưa quyết: Later đóng thẻ trên thiết bị này và thẻ không tự quay lại; Preferences vẫn là nơi bật (R26). R24 làm việc này."
+  },
+  {
+   "ticket": "074",
+   "n": 2,
+   "milestone": "M5",
+   "topic": "Thẻ push và công tắc Desktop notifications",
+   "question": "Thẻ push có nên hiện khi công tắc Desktop notifications đang tắt, và Turn on có bật luôn công tắc không? Công tắc áp dụng cho cả người dùng (D-142), còn thẻ chỉ đăng ký một thiết bị.",
+   "proposal": "Đề xuất, chưa quyết: không hiện thẻ khi công tắc tắt, và Turn on đăng ký thiết bị nhưng giữ nguyên công tắc. R24 theo đề xuất này."
+  },
+  {
+   "ticket": "074",
+   "n": 3,
+   "milestone": "M5",
+   "topic": "Push của nhắc nhở",
+   "question": "Push nhắc nhở nên viết gì, và có nên gửi khi tin nguồn đã bị xóa hoặc item Later đã hoàn thành hay bị gỡ trước khi job chạy không?",
+   "proposal": "Đề xuất, chưa quyết: tiêu đề `push.reminder.title` kèm tên cuộc trò chuyện, nội dung `<sender>: <start>` (D-044); chỉ gửi khi item Later còn tồn tại, đang in progress và tin nhắn còn; ngược lại không gửi push. R14 và R15 theo đề xuất này."
+  },
+  {
+   "ticket": "074",
+   "n": 14,
+   "milestone": "M5",
+   "topic": "iPad có theo quy tắc Web Push của iPhone không",
+   "question": "iPad có nên theo quy tắc của iPhone cho Web Push không? D-108 chỉ nêu iPhone, nhưng iPadOS có cùng giới hạn và tự nhận là Mac.",
+   "proposal": "Đề xuất, chưa quyết: iPad theo quy tắc iPhone, nhận diện bằng số touch point (R21), nên iPad ngoài Home Screen hiện phần giải thích và không có nút."
+  },
+  {
+   "ticket": "075",
+   "n": 1,
+   "milestone": "M5",
+   "topic": "Giá trị mặc định của 'Play a sound'",
+   "question": "'Play a sound' (và 'Desktop notifications') nên mặc định thế nào cho tài khoản mới? D-176 còn mở và chỉ đề xuất âm thanh tắt như prototype.",
+   "proposal": "Chưa có đề xuất."
+  },
+  {
+   "ticket": "075",
+   "n": 2,
+   "milestone": "M5",
+   "topic": "Nội dung câu chữ của toast",
+   "question": "Toast nên dùng câu chữ chính xác nào (reply, mention, tin nhắn trực tiếp, nhóm, snooze), khi prototype dùng first name còn dữ liệu thật chỉ có display name?",
+   "proposal": "Đề xuất, chưa quyết: các bản tiếng Anh và tiếng Việt trong mục 'Texts' (R9). Dùng first name cần thêm trường mới cho person, ngoài phạm vi ticket này."
+  },
+  {
+   "ticket": "075",
+   "n": 5,
+   "milestone": "M5",
+   "topic": "Xử lý thông báo cũ",
+   "question": "Âm thanh phát trước toast tới 60 giây có chấp nhận được không, và thông báo cũ xử lý thế nào? Việc này phụ thuộc concern 5 của TOKI-073.",
+   "proposal": "Đề xuất, chưa quyết: theo đúng quy tắc hiện tại của TOKI-073: thông báo phát lại không phát âm và không hiện toast; toast đang chờ bị bỏ sau `NOTICE_WAIT_MAX_MS`."
+  },
+  {
+   "ticket": "075",
+   "n": 9,
+   "milestone": "M5",
+   "topic": "Báo cho người dùng khi trình duyệt chặn âm thanh",
+   "question": "Có nên báo cho người dùng (trong Preferences hoặc nơi khác) khi trình duyệt từ chối phát âm thanh không?",
+   "proposal": "Đề xuất, chưa quyết: không báo gì trong phase 1; bước unlock xử lý trường hợp thường gặp ở lần bấm đầu. Âm thử hoặc gợi ý sẽ thuộc TOKI-078."
+  },
+  {
+   "ticket": "076",
+   "n": 1,
+   "milestone": "M5",
+   "topic": "Ai sở hữu class `.strip`",
+   "question": "Ticket nào xây class `.strip`? Plan và TOKI-012 giao cho TOKI-082 ở M6, nhưng ticket này ở M5 cần sớm hơn và chưa ticket nào sở hữu strip của kênh lưu trữ.",
+   "proposal": "Đề xuất, chưa quyết: ticket này xây `Strip` và hai tone của nó ngay (R18); TOKI-082, TOKI-104 và strip kênh lưu trữ dùng lại và thêm tone riêng."
+  },
+  {
+   "ticket": "076",
+   "n": 3,
+   "milestone": "M5",
+   "topic": "Tóm tắt Pause: trường hợp rỗng và ý nghĩa số đếm",
+   "question": "Tóm tắt khi Pause hoặc Focus kết thúc nên hiện gì khi không có gì đến hoặc không thiết bị nào đang mở, và số đếm nghĩa là 'đã đến' hay danh sách Activity? Hai con số có thể khác nhau.",
+   "proposal": "Đề xuất, chưa quyết: theo prototype: toast trên mọi thiết bị đang mở, kèm số đếm và nút Activity khi lớn hơn 0, câu 'back on' đơn giản khi bằng 0; chữ dùng 'arrived' chứ không phải 'mentions'; không lưu tóm tắt cho thiết bị mở sau."
+  },
+  {
+   "ticket": "076",
+   "n": 4,
+   "milestone": "M5",
+   "topic": "Trạng thái khi Focus kết thúc",
+   "question": "Khi Focus kết thúc, trạng thái cũ có luôn được khôi phục không, kể cả khi người dùng đã đổi status trong lúc Focus? D-072 và F32 nói luôn khôi phục; log không đề cập trường hợp đã đổi.",
+   "proposal": "Đề xuất, chưa quyết: nếu người dùng đặt hoặc xóa status trong Focus thì giữ nguyên như họ đã làm; còn lại thì khôi phục status cũ hoặc xóa. Đề xuất này khác câu chữ gốc ở một trường hợp (R7 bước 3)."
+  },
+  {
+   "ticket": "076",
+   "n": 15,
+   "milestone": "M5",
+   "topic": "Giới hạn tổng thời gian Focus",
+   "question": "Có nên giới hạn tổng thời gian Focus khi gia hạn nhiều lần không? Log không đặt giới hạn nào.",
+   "proposal": "Đề xuất, chưa quyết: không giới hạn trong ticket này; nếu có thì chỉ là một con số trong R3 `focusExtendedEndsAt`, và yêu cầu vượt mức sẽ bị cắt ở mức đó."
+  },
+  {
+   "ticket": "077",
+   "n": 1,
+   "milestone": "M5",
+   "topic": "Hình biểu tượng ứng dụng",
+   "question": "PWA nên dùng hình biểu tượng nào? Log chưa quyết logo và prototype không có app icon.",
+   "proposal": "Đề xuất, chưa quyết: dùng dấu hiệu của thẻ đăng nhập, `bolt` trên ô màu accent (R6); product owner duyệt hoặc cung cấp artwork, sau đó thay hai SVG và chạy `icons:build`."
+  },
+  {
+   "ticket": "077",
+   "n": 2,
+   "milestone": "M5",
+   "topic": "Đăng nhập lại trên iPhone",
+   "question": "Việc ứng dụng đã cài trên iPhone yêu cầu đăng nhập lại bằng mã có chấp nhận được không? AC-046 và TS-071 mong app mở ra đã đăng nhập, nhưng storage trên iPhone có lẽ tách khỏi Safari.",
+   "proposal": "Đề xuất, chưa quyết: chấp nhận thêm một lần đăng nhập trên iPhone và nói rõ trong text Preferences của TOKI-074; 'signed in' ở TS-071 khi đó chỉ đúng với Chrome và Edge. Cần kiểm tra trên iPhone thật."
+  },
+  {
+   "ticket": "077",
+   "n": 10,
+   "milestone": "M5",
+   "topic": "Cài đặt trên Firefox",
+   "question": "AC-046 áp dụng thế nào cho Firefox, vốn được hỗ trợ (D-108) nhưng bản desktop không có cài web app?",
+   "proposal": "Đề xuất, chưa quyết: AC-046 và TS-071 áp dụng cho Chrome, Edge, Safari (iPhone và iPad) và Firefox trên Android; Firefox desktop mở Toki trong một tab."
+  },
+  {
+   "ticket": "078",
+   "n": 1,
+   "milestone": "M6",
+   "topic": "Look và density khởi đầu của tài khoản mới",
+   "question": "Look và density của tài khoản mới nên bắt đầu thế nào? Log không nêu, và tokens spec nói việc này chặn màn Preferences.",
+   "proposal": "Đề xuất, chưa quyết: `look` là `device` và `density` là null như prototype; các control đánh dấu Match my device và density của look đang áp dụng (R3, R5). Đây là mặc định phía server và không đổi rule nào ở đây."
+  },
+  {
+   "ticket": "078",
+   "n": 2,
+   "milestone": "M6",
+   "topic": "Độ dài tối đa của job title",
+   "question": "Job title dài tối đa bao nhiêu? Chưa quyết định nào đặt giới hạn, mà People card và profile panel phải chứa vừa.",
+   "proposal": "Đề xuất, chưa quyết: giống display name, 80 code point, lấy từ `JOB_TITLE_MAX` trong `@toki/shared` (R14)."
+  },
+  {
+   "ticket": "078",
+   "n": 3,
+   "milestone": "M6",
+   "topic": "Time zone khởi đầu và dạng hiển thị thành phố",
+   "question": "Thành phố trên profile nên có dạng nào, và tài khoản mới nên bắt đầu với time zone nào? D-144 nói profile hiện giờ địa phương và thành phố nhưng không nói cách làm.",
+   "proposal": "Đề xuất, chưa quyết: thành phố suy ra từ tên zone IANA (`Asia/Ho_Chi_Minh` thành 'Ho Chi Minh'), nên không có trường city; tài khoản mới không có zone đã lưu và trang nói rõ dưới ô chọn (R15). Phương án khác là trường city từ ticket server, hoặc lưu zone của thiết bị khi tạo tài khoản."
+  },
+  {
+   "ticket": "078",
+   "n": 4,
+   "milestone": "M6",
+   "topic": "Lệnh 'Switch look' làm gì",
+   "question": "Lệnh 'Switch look' nên làm gì? F29 không nêu look đích, và cách làm của prototype khiến người dùng mất Match my device mà không được báo.",
+   "proposal": "Đề xuất, chưa quyết: chuyển sang look còn lại giữa Calm và Focus từ look đang dùng (như prototype), lưu thành look cố định, không có toast; phương án khác là toast 'Look: Focus' (R20)."
+  },
+  {
+   "ticket": "078",
+   "n": 5,
+   "milestone": "M6",
+   "topic": "Những gì cần từ ticket server profile và preferences",
+   "question": "Ticket 'Profile and preferences (server)' nên cung cấp contract nào cho màn này? Ticket đó chưa có số, owner hay spec, và chưa gì cố định contract của nó.",
+   "proposal": "Đề xuất, chưa quyết: mục 'Proposal to the server ticket' liệt kê những gì màn hình sẽ dùng, mỗi dòng chỉ là đề xuất; phần (c) đổi `person_patch` của TOKI-056 R12, nên là yêu cầu thay đổi cho TOKI-056 và TOKI-040."
+  },
+  {
+   "ticket": "078",
+   "n": 10,
+   "milestone": "M6",
+   "topic": "Pause và Focus cùng lúc trên trang Preferences",
+   "question": "Trang Preferences nên hiển thị thế nào khi Pause và Focus cùng chạy? Prototype chỉ có một dòng cho Focus và không có chip, và TOKI-076 không quyết định trang này.",
+   "proposal": "Đề xuất, chưa quyết: mỗi khoảng đang chạy một dòng, Focus trước, và ba lựa chọn Pause hiện bất cứ khi nào không có Pause đang chạy, kể cả khi Focus đang chạy (R12), để trang không kém menu."
+  },
+  {
+   "ticket": "078",
+   "n": 15,
+   "milestone": "M6",
+   "topic": "Tên hiển thị trên thẻ tài khoản",
+   "question": "Thẻ tài khoản nên hiện display name đã lưu hay tên của session user? Đăng nhập đặt session user, còn tên đã lưu sẽ làm nó bị cũ.",
+   "proposal": "Đề xuất, chưa quyết: hiện display name đang giữ nếu có, nếu không thì dùng tên của session user (R18)."
+  },
+  {
+   "ticket": "078",
+   "n": 16,
+   "milestone": "M6",
+   "topic": "`aria-disabled` hay `disabled` khi đang lưu",
+   "question": "Control đang lưu dùng `aria-disabled` thay vì `disabled` có chấp nhận được không, khi D-111 nói nút bị disabled lúc request chạy?",
+   "proposal": "Đề xuất, chưa quyết: giữ `aria-disabled` để focus bàn phím không bị đẩy lên đầu trang; server bỏ qua lần lưu lặp lại. Phương án khác là `disabled` rồi trả focus về control vừa bấm."
+  },
+  {
+   "ticket": "078",
+   "n": 17,
+   "milestone": "M6",
+   "topic": "Density Compact trên cửa sổ hẹp",
+   "question": "Density Compact đã lưu có nên áp dụng trên điện thoại, nơi không có control Density để gỡ và touch target quan trọng (D-067, D-068)?",
+   "proposal": "Đề xuất, chưa quyết: density đã lưu áp dụng ở mọi độ rộng, và các hàng của danh sách hội thoại, People và menu giữ chiều cao tối thiểu 40 px ở 719 px trở xuống (rule của các danh sách đó). Phương án khác là cửa sổ hẹp bỏ qua Compact đã lưu."
+  },
+  {
+   "ticket": "079",
+   "n": 1,
+   "milestone": "M6",
+   "topic": "Tìm không dấu và thứ tự các thẻ",
+   "question": "Tìm kiếm trên People có nên khớp không phân biệt dấu, và các thẻ có nên sắp xếp theo thứ tự chữ cái bằng so sánh theo locale không? D-177 hỏi cả hai và còn mở; picker và danh sách hội thoại đã bỏ dấu.",
+   "proposal": "Đề xuất, chưa quyết: bỏ dấu bằng `foldSearchText` của TOKI-032 R19 và sắp xếp thẻ bằng so sánh display name theo locale; product owner được hỏi xác nhận cả hai hoặc giữ khớp chỉ theo hoa/thường và thứ tự của store."
+  },
+  {
+   "ticket": "079",
+   "n": 2,
+   "milestone": "M6",
+   "topic": "Thẻ của người chưa có time zone",
+   "question": "Thẻ People nên hiện gì cho người chưa có time zone, và tài khoản mới có nên được gán một zone (ví dụ của trình duyệt lúc đăng nhập đầu) không?",
+   "proposal": "Đề xuất, chưa quyết: thẻ không hiện giờ và không có icon đồng hồ (R6), không đoán từ thiết bị của người xem, và hàng giữ phần presence bên trái."
+  },
+  {
+   "ticket": "080",
+   "n": 1,
+   "milestone": "M6",
+   "topic": "Time zone của người chưa đặt",
+   "question": "Nên dùng time zone nào cho người chưa đặt zone? Date spec nói giờ hiển thị theo zone trong profile nhưng không nói khi chưa có.",
+   "proposal": "Đề xuất, chưa quyết: zone của thiết bị, và `UTC` khi thiết bị không cung cấp (R5). Cách khác: hỏi zone lúc đăng nhập đầu, hoặc lưu zone của thiết bị khi tạo tài khoản; cả hai cần màn hình hoặc rule server mà chưa ticket nào có."
+  },
+  {
+   "ticket": "080",
+   "n": 2,
+   "milestone": "M6",
+   "topic": "Cách viết thứ và tháng tiếng Việt",
+   "question": "Tên thứ và tháng tiếng Việt nên viết thế nào? D-189 nói theo ngôn ngữ giao diện, và prototype không có.",
+   "proposal": "Đề xuất, chưa quyết: R1 viết `CN`, `T2` đến `T7` và `thg 1` đến `thg 12`; không có nguồn trong repository hay log, và đổi một giá trị chỉ là sửa trong `names.ts`."
+  },
+  {
+   "ticket": "080",
+   "n": 3,
+   "milestone": "M6",
+   "topic": "Người duyệt bản dịch tiếng Việt",
+   "question": "Ai duyệt các bản nháp tiếng Việt, và việc duyệt được ghi lại thế nào? Các spec đã merge nói 'reviewed in TOKI-080' nhưng không nêu người.",
+   "proposal": "Đề xuất, chưa quyết: product owner đọc bảng; có cần thêm người đọc thứ hai là người nói tiếng Việt không, và ghi lại bằng một block trong pull request hay một file trong repository, do owner quyết."
+  },
+  {
+   "ticket": "080",
+   "n": 4,
+   "milestone": "M6",
+   "topic": "Ai xây lint rule chống tự format ngày",
+   "question": "Ticket nào xây lint rule chống tự format ngày? Date spec giao cho một ticket nhỏ riêng nhưng plan chưa có ticket đó.",
+   "proposal": "Đề xuất, chưa quyết: xây ngay trong ticket này (R8, R9); nếu owner muốn ticket nhỏ riêng thì R8, R9 và phần lint của R20 chuyển sang đó."
+  },
+  {
+   "ticket": "080",
+   "n": 10,
+   "milestone": "M6",
+   "topic": "Collator cho tên",
+   "question": "Collator của tên có nên giữ cố định locale tiếng Việt bất kể ngôn ngữ giao diện không? Hiện tên tiếng Anh cũng được sắp xếp theo collation tiếng Việt.",
+   "proposal": "Đề xuất, chưa quyết: giữ nguyên, vì tên là dữ liệu và tên Anh lẫn Việt dùng chung một danh sách; cách khác là collator theo `language`."
+  },
+  {
+   "ticket": "082",
+   "n": 1,
+   "milestone": "M6",
+   "topic": "Ai xây class `.strip`",
+   "question": "Ticket nào xây class `.strip`? Plan và TOKI-012 giao cho ticket này, TOKI-076 đề xuất tự xây `Strip`, và strip kênh lưu trữ chưa có owner.",
+   "proposal": "Đề xuất, chưa quyết: theo TOKI-076: nó xây `Strip` với tone `default` và `pause`, ticket này thêm tone `offline` (R1, R5), TOKI-104 và strip lưu trữ dùng lại. Nếu ticket này là owner thì xây luôn phần còn lại của folder `Strip`."
+  },
+  {
+   "ticket": "082",
+   "n": 2,
+   "milestone": "M6",
+   "topic": "Câu chữ trang not found / no access dùng chung",
+   "question": "Trang dùng chung cho 'not found' và 'no access' nên viết gì, và có cần nút không? Các journey viết hai trường hợp khác nhau, nhưng một trang không thể phân biệt 403 với 404.",
+   "proposal": "Đề xuất, chưa quyết: ba đoạn text của R14: tiêu đề 'Not found or no access', phần mô tả, và nút 'Go to Home'."
+  },
+  {
+   "ticket": "082",
+   "n": 3,
+   "milestone": "M6",
+   "topic": "Nội dung khi thao tác ghi bị chặn",
+   "question": "Thao tác ghi bị chặn khi offline nên hiện câu gì? F37 nói 'A connection is needed', TOKI-093 có key riêng, và chưa quyết mọi màn hình có dùng chung một text không.",
+   "proposal": "Đề xuất, chưa quyết: giữ hai key của TOKI-093 (`common.offline.blocked`, `common.offline.undoBlocked`) cho mọi màn hình và không thêm text ở đây."
+  },
+  {
+   "ticket": "082",
+   "n": 4,
+   "milestone": "M6",
+   "topic": "Nút trên strip offline",
+   "question": "Strip offline có cần nút không? Prototype có nút 'Go online' cho simulator, còn log chỉ nói banner biến mất khi có lại kết nối (D-102).",
+   "proposal": "Đề xuất, chưa quyết: không có nút (R5); phương án khác là nút gọi `retryNow()` của connection."
+  },
+  {
+   "ticket": "082",
+   "n": 5,
+   "milestone": "M6",
+   "topic": "Tab bị server dừng vì quá nhiều tab",
+   "question": "Tab bị server dừng với `too_many_connections` có nên hiện offline strip không? R3 không coi đây là offline, nên hiện tại không có strip và tin nhắn vẫn gửi như khi connection `idle` (TOKI-040 R10).",
+   "proposal": "Đề xuất, chưa quyết: dùng đề xuất của TOKI-039 (cùng một strip), R3 sẽ thêm một case."
+  },
+  {
+   "ticket": "082",
+   "n": 12,
+   "milestone": "M6",
+   "topic": "`timeout` ở lần tải đầu có tính là offline",
+   "question": "`timeout` ở lần tải đầu có được tính là offline không? Không phân biệt được mạng chết với server chậm, và R3 (b) hiện strip và đóng gate của R4 cho cả hai.",
+   "proposal": "Đề xuất, chưa quyết: tính `timeout` là offline cho (b), như R3; phương án khác là chỉ hiện strip cho lỗi `network` và hiện Retry cho timeout."
+  },
+  {
+   "ticket": "083",
+   "n": 1,
+   "milestone": "M6",
+   "topic": "Mức accessibility mục tiêu",
+   "question": "Mức accessibility mục tiêu là gì? Log không đặt mức nào (chỉ có NFR-03 và D-075 làm mức sàn), còn các e2e scan hiện dùng tag WCAG 2.2 AA.",
+   "proposal": "Đề xuất, chưa quyết: WCAG 2.2 level AA cho R2, R5 và R10, reflow tính ở 360 px thay vì 320 px, và bật rule `best-practice` cho S04 đến S20 nhưng không cho S01 đến S03. Mức khác sẽ đổi danh sách tag trong `e2e/support/axe.ts` và các số của R5."
+  },
+  {
+   "ticket": "083",
+   "n": 2,
+   "milestone": "M6",
+   "topic": "Lỗi contrast và màu của prototype",
+   "question": "Với mục tiêu AA, xử lý các cặp màu không đạt thế nào: nhãn Undo của toast trong Focus (1.25 đến 1.68) và viền của control vẽ bằng `line` khi viền là dấu hiệu duy nhất? Màu prototype hiện được giữ nguyên (TOKI-009 concern 5).",
+   "proposal": "Đề xuất, chưa quyết: đổi nhãn Undo sang `--accent-soft` trên toast trong ticket riêng; với viền, liệt kê các component liên quan và để owner chọn giữa đánh dấu bằng thứ khác ngoài viền hoặc làm đậm `line`. Trước đó các cặp này nằm trong `contrast-known.ts`."
+  },
+  {
+   "ticket": "083",
+   "n": 3,
+   "milestone": "M6",
+   "topic": "Flash khi jump với reduced motion",
+   "question": "Người bật reduced motion nên thấy gì khi jump tới một tin nhắn? Rule global cắt flash 2 giây còn 0.01 ms nên họ không thấy gì (chuyển từ TOKI-068 concern 4).",
+   "proposal": "Đề xuất, chưa quyết (R16): tô nền tĩnh `--accent-soft` trong 2 giây, không animation; phương án khác là giữ hành vi của prototype, chỉ có focus vào tin nhắn (R11) làm dấu hiệu."
+  },
+  {
+   "ticket": "083",
+   "n": 4,
+   "milestone": "M6",
+   "topic": "Thông báo unread count và tin nhắn mới",
+   "question": "Có nên đọc unread count và tin nhắn mới đến trong conversation đang mở cho screen reader không? Log chưa có rule, và hiện tin đến không được đọc ở đâu cả.",
+   "proposal": "Đề xuất, chưa quyết: đọc unread count khi mở conversation có New divider (`{name} · {count} unread`), chỉ đọc tên với conversation bị mute, và không đọc tin đến để tránh quá tải. Phương án khác là một dòng polite cho mỗi tin của người khác, tối đa một dòng mỗi 5 giây."
+  },
+  {
+   "ticket": "083",
+   "n": 5,
+   "milestone": "M6",
+   "topic": "Phím tắt và Undo bằng bàn phím",
+   "question": "Ticket này có nên thêm cách dùng Undo hoặc phím tắt bằng bàn phím không? Log chỉ có Ctrl+K, còn toast Undo tồn tại 5 giây và nằm cuối document.",
+   "proposal": "Đề xuất, chưa quyết: không làm gì trong ticket này; người lỡ Undo chỉ cần làm lại hành động. Các lựa chọn cho owner: phím tắt bấm Undo, cách chuyển focus tới vùng toast, phím mũi tên trong danh sách, phím focus composer; mỗi thứ là tính năng prototype không có (D-139)."
+  },
+  {
+   "ticket": "083",
+   "n": 6,
+   "milestone": "M6",
+   "topic": "Tiêu đề tab cho từng màn hình",
+   "question": "Tiêu đề tab có nên nêu tên màn hình (ví dụ `(3) Activity · Toki`) hay giữ một tiêu đề cố định? WCAG 2.4.2 (level A) yêu cầu title mô tả mục đích, còn D-122 chỉ quy định số `(3)`.",
+   "proposal": "Đề xuất, chưa quyết: giữ nguyên (announcer của R12 đọc tên màn hình). Nếu owner muốn tên màn hình thì đổi `baseTitle` thành hàm của route trong `tab-title.ts`. Nên trả lời cùng concern 1."
+  },
+  {
+   "ticket": "083",
+   "n": 7,
+   "milestone": "M6",
+   "topic": "Focus sau khi jump",
+   "question": "Focus nên đi đâu sau khi jump tới một tin nhắn? Chuyển từ TOKI-068.",
+   "proposal": "Đề xuất, chưa quyết (R11): chuyển focus vào box của tin nhắn với `preventScroll` khi chưa có phím hoặc thao tác nào kể từ lúc jump và không có modal đang mở. Phương án khác là để focus ở nơi layer đóng trả về, hoặc chỉ chuyển sau khi jump bằng bàn phím."
+  },
+  {
+   "ticket": "083",
+   "n": 8,
+   "milestone": "M6",
+   "topic": "Lựa chọn của announcer",
+   "question": "Announcer cho screen reader (R12) nên hoạt động thế nào: đọc gì và có chuyển focus khi đổi màn hình không?",
+   "proposal": "Đề xuất, chưa quyết: một polite region cho cả app, có trong document từ lần render đầu, đọc tên màn hình (và conversation cho Home) nhưng không đọc thread, tab hay query; không chuyển focus khi đổi màn hình trên màn hình rộng. Phương án khác là đọc mọi thay đổi, hoặc chỉ đọc section ở Home."
+  },
+  {
+   "ticket": "083",
+   "n": 9,
+   "milestone": "M6",
+   "topic": "Phạm vi accessibility không bao gồm",
+   "question": "Những phần accessibility nào nằm ngoài phạm vi: `forced-colors`, `prefers-contrast`, zoom 400%, text-spacing override, captions, WebKit và Firefox trong runner?",
+   "proposal": "Đề xuất, chưa quyết: không làm gì cho các mục này vì log không yêu cầu và mỗi mục thêm một giao diện hoặc trình duyệt cần bảo trì; chúng được nêu tên để không ai hiểu audit là có bao phủ. Mục nào trong phạm vi tùy theo mức ở concern 1."
+  },
+  {
+   "ticket": "083",
+   "n": 10,
+   "milestone": "M6",
+   "topic": "Skip link",
+   "question": "Ứng dụng có nên có skip link không? Prototype không có (D-139) và log chưa có rule; người chỉ dùng bàn phím phải Tab qua navigation và danh sách mới tới `main`.",
+   "proposal": "Đề xuất, chưa quyết: không thêm skip link trong ticket này, số lần Tab được ghi vào pull request để owner xem. Phương án khác là một link hiện khi focus, là tab stop đầu tiên, tức là thêm element và text mới."
+  },
+  {
+   "ticket": "085",
+   "n": 1,
+   "milestone": "M6",
+   "topic": "Cách kích hoạt deploy",
+   "question": "Deploy chạy tự động khi merge pull request hay chạy tay? D-190 vẫn Open trong log; nếu tự động thì không ai bấm chạy, nên rule 'hỏi trước mỗi lần deploy' cần đổi (required reviewer trên Environment hoặc sửa lại câu rule).",
+   "proposal": "Đề xuất, chưa quyết: chạy tay trong phase 1 (đúng text của log), bằng `gh workflow run deploy.yml`, `Release` chỉ publish image và không deploy."
+  },
+  {
+   "ticket": "085",
+   "n": 5,
+   "milestone": "M6",
+   "topic": "Secret và quyền truy cập server",
+   "question": "Owner có chấp nhận cách đề xuất để secret và quyền truy cập tới server, gồm việc mở cổng SSH cho runner của GitHub không? Log không nói gì về bảo mật deploy, và key không được kiểm tra thực chất là root trên máy.",
+   "proposal": "Đề xuất, chưa quyết: không lưu secret ứng dụng trong GitHub (`.env` nằm trên server); một key SSH ed25519 làm secret của Environment `production`, pin host key và giới hạn bằng `restrict,command=` chỉ chạy `toki-deploy.sh`; server tự pull image; các kiểm tra của R22 và bắt buộc rule deployment branch `main`; firewall mở cổng SSH ngoài 80 và 443, chỉ đăng nhập bằng key."
+  },
+  {
+   "ticket": "085",
+   "n": 13,
+   "milestone": "M6",
+   "topic": "Migration tương thích với release trước",
+   "question": "Owner có muốn một bước kiểm tra migration tương thích với release trước không, và ticket nào sở hữu? Rule của TOKI-005 concern 10 chỉ là một câu trong README; migration không tương thích sẽ fail health, bị restore, và release được restore cũng fail (exit 7).",
+   "proposal": "Đề xuất, chưa quyết, cho ticket sau: CI check fail khi migration mới có `DROP`, `RENAME`, `SET NOT NULL` hoặc đổi kiểu cột mà file không có marker rõ ràng, và một dòng trong `releases.log` ghi `migrate` có việc để làm hay không. Ticket này chỉ thêm text của exit 5 và exit 7."
+  },
+  {
+   "ticket": "087",
+   "n": 1,
+   "milestone": "M6",
+   "topic": "Hệ điều hành cho hướng dẫn cài đặt",
+   "question": "Hướng dẫn cài đặt nên nhắm tới hệ điều hành nào? Blueprint cố định cấu hình VPS nhưng không nói OS hay công cụ firewall, và log cũng không nêu (D-020).",
+   "proposal": "Đề xuất, chưa quyết: Ubuntu Server (bản long-term-support), `ufw` cho firewall và hướng dẫn cài đặt của Docker cho Docker Engine và Compose plugin, vì đây là image VPS phổ biến nhất. R2 và R4 giữ nguyên cho đến khi owner chọn."
+  },
+  {
+   "ticket": "088",
+   "n": 5,
+   "milestone": "M6",
+   "topic": "Group mới có ẩn trước tin nhắn đầu tiên",
+   "question": "Group mới có bị ẩn khỏi danh sách của người khác cho tới tin nhắn đầu tiên không? Đây là concern 2 của TOKI-037, và F25 chỉ nêu direct message.",
+   "proposal": "Đề xuất, chưa quyết: suite chốt đáp án cho group có tin nhắn và không chốt trường hợp group chưa có tin nhắn, nên không phụ thuộc vào câu trả lời. Nếu owner nói là ẩn thì thêm một case vào R9."
+  },
+  {
+   "ticket": "088",
+   "n": 6,
+   "milestone": "M6",
+   "topic": "Dòng Later khi mất quyền đọc conversation",
+   "question": "Later nên hiển thị gì khi người dùng không còn đọc được conversation của tin nhắn đã lưu? Đây là concern 2 của TOKI-067.",
+   "proposal": "Đề xuất, chưa quyết: suite chỉ kiểm tra câu trả lời không chứa canary và tên conversation (R14, R15); dạng của dòng thay thế chưa được kiểm tra cho đến khi owner quyết."
+  },
+  {
+   "ticket": "089",
+   "n": 1,
+   "milestone": "M6",
+   "topic": "Ý nghĩa của first load trên 4G",
+   "question": "'First load trên 4G dưới 2 giây' (D-113, NFR-13) nghĩa là gì? Log không nêu tốc độ mạng, trạng thái cache, trạng thái đăng nhập, thời điểm kết thúc hay tải của ai.",
+   "proposal": "Đề xuất, chưa quyết (R12): cache lạnh, profile 'Fast 4G' (khoảng 9 Mbps down, 1.5 Mbps up, 60 ms round trip), kết thúc khi dòng đầu của danh sách conversation hiện trên màn hình, không giới hạn CPU, 20 lần chạy cho mỗi `perf-002`, reader A (501 conversation) và reader B (1,001); chỉ đạt khi cả ba dưới mục tiêu. Profile chậm hơn sẽ cần đổi mục tiêu hoặc budget."
+  },
+  {
+   "ticket": "089",
+   "n": 2,
+   "milestone": "M6",
+   "topic": "Thống kê cho switching, scrolling, first load",
+   "question": "Dùng thống kê nào để đánh giá ba chỉ số chỉ có con số: switching dưới 100 ms, scrolling 60 frames mỗi giây, first load dưới 2 giây? D-113 chỉ nêu p95 cho delivery và search.",
+   "proposal": "Đề xuất, chưa quyết (R12, R14): switching và first load xét theo percentile 95 của 100 và 20 lần chạy; scrolling đạt khi percentile 95 của thời lượng frame tối đa 17 ms; vẫn báo thêm median, maximum và tỷ lệ long frame. Chặt hơn hoặc lỏng hơn sẽ đổi `targets.json`, R12 và R14."
+  },
+  {
+   "ticket": "089",
+   "n": 3,
+   "milestone": "M6",
+   "topic": "Những search tính vào p95 200 ms",
+   "question": "Những loại search nào được tính vào 'search trên 1 triệu tin nhắn p95 dưới 200 ms'? TOKI-069 đo 335 ms cho điểm bắt đầu một chữ `n` (route không chạy query dưới 2 code point nên không chạm tới), và các điểm bắt đầu hai chữ cũng có thể vượt.",
+   "proposal": "Đề xuất, chưa quyết: tính cả ba nhóm (thường, phổ biến, ngắn dạng hai chữ); nếu nhóm ngắn vượt thì chọn một phương án của TOKI-069 R11 (giới hạn số match đọc, tối thiểu 3 chữ làm đổi F29, hoặc `btree_gin`)."
+  },
+  {
+   "ticket": "089",
+   "n": 4,
+   "milestone": "M6",
+   "topic": "Máy đo và nơi chạy script",
+   "question": "Các chỉ số được đo trên máy nào và script chạy ở đâu? D-113 không nói; 200 client và browser tốn CPU, nếu chung 2 vCPU sẽ làm chậm server.",
+   "proposal": "Đề xuất, chưa quyết: stack chạy trên máy cỡ VPS đầu tiên (2 vCPU, 4 GB), script và browser chạy trên máy khác cùng mạng; chạy trên laptop chỉ là thử và ghi rõ trong `--machine`. Nhà cung cấp và region thuộc lựa chọn VPS của TOKI-087."
+  },
+  {
+   "ticket": "089",
+   "n": 5,
+   "milestone": "M6",
+   "topic": "Xử lý khi chỉ số vượt mục tiêu",
+   "question": "Khi một chỉ số đo được vượt mục tiêu thì làm gì và ai quyết? Milestone check trong plan nói 6 mục tiêu đạt với 200 người online; log không nói về ticket sửa, đổi mục tiêu hay đổi budget.",
+   "proposal": "Đề xuất, chưa quyết: mỗi chỉ số vượt mục tiêu thành một ticket của owner phần đó, và milestone chờ ticket đó hoặc một quyết định mới của product owner. Ticket này chỉ báo cáo và không bao giờ làm fail build (R16)."
+  },
+  {
+   "ticket": "089",
+   "n": 7,
+   "milestone": "M6",
+   "topic": "Tải trong lúc đo",
+   "question": "200 người online tạo ra tải gì trong lúc đo? Log chỉ nêu '200 người online'.",
+   "proposal": "Đề xuất, chưa quyết (R11, trong `scenario.json`): 200 người chỉ gửi frame `activity` và trả lời ping; gửi tin cách nhau 500 ms; 1,000 lượt gửi cho delivery, 20 first load cho mỗi người trong ba người, 100 lần switch, 1,000 search (400 thường, 300 phổ biến, 300 ngắn) cộng 100 từ mỗi reader trong hai reader; phân bố từ của R6. Nhịp gửi chỉ là giá trị khởi đầu và thời lượng mỗi lần gửi được ghi lại."
+  },
+  {
+   "ticket": "089",
+   "n": 9,
+   "milestone": "M6",
+   "topic": "Điểm đo của chỉ số delivery",
+   "question": "'Delivery' được đo ở đâu: ở socket hay trên màn hình? D-113 nói 'người khác nhìn thấy' còn NFR-13 nói 'đến được người khác'; màn hình cộng thêm việc của client nên làm đổi con số.",
+   "proposal": "Đề xuất, chưa quyết (R10): đánh giá percentile 95 của thời gian đến khi tin nhắn có trong danh sách của một người dùng browser, và báo thêm chỉ số ở socket. Cái giá: script và browser phải cùng một máy để dùng chung một đồng hồ, và không đo được rendering của điện thoại thật."
+  },
+  {
+   "ticket": "089",
+   "n": 10,
+   "milestone": "M6",
+   "topic": "Vị trí và cách chạy load code",
+   "question": "Load code nằm ở đâu và chạy thế nào? `node` thuần không import được `@toki/shared`, image production không có `tsx` hay `tools/`, và database test không được import `tools/` vào `apps/server`.",
+   "proposal": "Đề xuất, chưa quyết: các file `.mjs` chạy qua `tsx` (thêm vào `devDependencies` ở root), `load.mjs` không import gì từ workspace để database test chạy bằng `node`, và được chứng minh trên bảng thật bằng một database test (R18). Phương án khác là ba bản sao cục bộ nhỏ (interval, bộ sinh UUIDv7, test clock) kèm test so với package, có nguy cơ lệch."
+  },
+  {
+   "ticket": "089",
+   "n": 11,
+   "milestone": "M6",
+   "topic": "Reader có nhiều conversation",
+   "question": "Các reader 'nhiều conversation' nên có bao nhiêu conversation? D-117 nói 'tất cả trong phase 1; xem lại khi vượt 500', và TOKI-070 concern 6 yêu cầu người có hơn 1,000; đúng 500 thì chưa vượt 500.",
+   "proposal": "Đề xuất, chưa quyết (R7): reader A có 501 conversation và reader B có 1,001, đều được đo first load và search; các con số do builder chọn và chi phí là 951 channel nhỏ (19,020 tin nhắn)."
+  },
+  {
+   "ticket": "089",
+   "n": 12,
+   "milestone": "M6",
+   "topic": "Ý nghĩa của scroll 10,000 tin nhắn",
+   "question": "'Scroll 10,000 tin nhắn' đo cái gì? D-113 và NFR-13 chỉ có câu này, không có kịch bản: scroll danh sách đã tải đo rendering, scroll trong lúc tải lịch sử còn đo cả việc tải.",
+   "proposal": "Đề xuất, chưa quyết (R14): đánh giá scroll trên 10,000 tin nhắn đã tải sẵn và báo cáo (không đánh giá) scroll vừa cuộn vừa tải."
+  },
+  {
+   "ticket": "090",
+   "n": 2,
+   "milestone": "M6",
+   "topic": "Thay đổi role tới trang đang mở",
+   "question": "Ticket nào làm cho thay đổi role tới được trang đang mở, để kiểm thử F40 'mục Admin hiện hoặc biến mất ngay'? Admin page concern 5 để cho ticket sau, nhưng không ticket nào trong plan nêu tên. E04 chỉ kiểm tra role sau khi reload (R14).",
+   "proposal": "Đề xuất, chưa quyết: ticket đã gửi thay đổi về người dùng tới các màn hình đang mở (thay đổi member-status của TOKI-056) cũng mang theo role."
+  },
+  {
+   "ticket": "090",
+   "n": 5,
+   "milestone": "M6",
+   "topic": "File storage trong CI",
+   "question": "Dự án có chấp nhận chi phí của một CI job mới với MinIO build từ source (khoảng 3 GB đĩa trống ở lần chạy đầu, sau đó dùng layer cache) không? TOKI-059 và TOKI-062 nói job `e2e` không có MinIO.",
+   "proposal": "Đề xuất, chưa quyết: job `flows` có MinIO (R25), vì nếu không E11 sẽ phải stub chính thứ nó kiểm tra; nếu chi phí quá cao thì E11 chuyển sang job riêng chỉ chạy khi push lên `main`."
+  },
+  {
+   "ticket": "090",
+   "n": 6,
+   "milestone": "M6",
+   "topic": "Flow phụ thuộc More sheet",
+   "question": "Các lần chạy trên điện thoại của E02 đến E05 có nên phụ thuộc TOKI-092 (More sheet), vốn có spec trên PR 391 và chưa merge không?",
+   "proposal": "Đề xuất, chưa quyết: các flow dùng helper `openMoreSheet` và `chooseInMoreSheet` do 092 R15 định nghĩa, và 090 cần 092 (Plan changes); thiếu mục nào trong sheet (Preferences, Admin, Sign out) là thiếu sót của 092. Vấn đề này sẽ rõ khi 092 được merge."
+  },
+  {
+   "ticket": "091",
+   "n": 1,
+   "milestone": "M6",
+   "topic": "Ngân sách đoán code đăng nhập",
+   "question": "Ngân sách đoán code đăng nhập hiện tại có chấp nhận được không hay cần siết lại? Các giới hạn trong log (D-011, D-038, D-137) cho phép 25 lần đoán mỗi địa chỉ trong 15 phút, 2,400 mỗi ngày, khoảng 38% mỗi ngày cho 200 địa chỉ nếu bên gửi có khoảng 250 địa chỉ mạng.",
+   "proposal": "Đề xuất, chưa quyết, các phương án: (a) giữ nguyên; (b) giới hạn số lần đoán sai mỗi địa chỉ trên mọi code của nó (`ADDRESS_WRONG_TRIES_MAX` trong 15 phút, trả `code_locked`), tính cả code lời mời, với cái giá là bên gửi có thể chặn đăng nhập của một thành viên; (c) trần toàn server theo giờ chỉ ghi log mức `error`; (d) cả (b) và (c)."
+  },
+  {
+   "ticket": "091",
+   "n": 2,
+   "milestone": "M6",
+   "topic": "Thông báo khi bị giới hạn từ chối",
+   "question": "Người dùng nên thấy gì khi bị rate limit từ chối (429 `rate_limited`) ở đăng nhập, Join hoặc request khi đã đăng nhập? Các màn hình đó chỉ có text cho `code_request_limit` và `code_resend_too_soon`, và D-139 coi wording mới là đề xuất.",
+   "proposal": "Đề xuất, chưa quyết: trang đăng nhập và Join dùng lại wording của `emergency.rateLimited` (\"Too many attempts from this network. Try again in {minutes} minutes.\") với `details.retryAfterSeconds`; request đã đăng nhập bị R12 từ chối thì hiện trạng thái lỗi sẵn có của màn hình, không thêm text mới."
+  },
+  {
+   "ticket": "091",
+   "n": 11,
+   "milestone": "M6",
+   "topic": "Địa chỉ văn phòng dùng chung lúc đăng nhập đầu",
+   "question": "Giới hạn 20 mỗi 15 phút theo địa chỉ mạng có chấp nhận được khi 200 người sau cùng một địa chỉ văn phòng đăng nhập lần đầu (F10) không? Mỗi cửa sổ chỉ khoảng 20 người vào được, tức khoảng 2.5 giờ cho cả công ty, và các route Join cũng có dạng tương tự.",
+   "proposal": "Đề xuất, chưa quyết, các phương án: (a) giữ 20 và để hướng dẫn cài đặt (TOKI-087) nhờ operator đưa người vào theo nhóm 15 mỗi 15 phút; (b) tăng con số cho route đăng nhập và Join, ví dụ 200 mỗi 15 phút; (c) cho hạn mức lớn hơn chỉ với địa chỉ đang giữ session của nhiều thành viên, cần thêm cột dữ liệu cá nhân nên là một quyết định mới."
+  },
+  {
+   "ticket": "092",
+   "n": 5,
+   "milestone": "M6",
+   "topic": "Dòng danh tính trong More sheet trên điện thoại",
+   "question": "More sheet trên điện thoại có nên hiện ai đang đăng nhập không? Điện thoại không vẽ account card nên người dùng không đọc lại được status đã đặt; D-053 và F38 liệt kê các dòng và không nêu dòng danh tính.",
+   "proposal": "Đề xuất, chưa quyết: nhóm account bắt đầu bằng một dòng không bấm được gồm avatar, tên và `accountDetail` của TOKI-099 R2 (status, nếu không có thì role), không thêm text mới; thêm một dòng 56 px và một test, R3 thêm dòng `person`. Nếu không có thì sheet như R3."
+  },
+  {
+   "ticket": "092",
+   "n": 8,
+   "milestone": "M6",
+   "topic": "Thời gian chờ sign-out trên điện thoại",
+   "question": "Điện thoại có nên hiện gì trong lúc chờ sign-out tới 20 giây không? TOKI-099 R7 hiện nó trên account card và trong `role=\"status\"` ẩn, mà điện thoại không vẽ khi sheet đã đóng.",
+   "proposal": "Đề xuất, chưa quyết: TOKI-099 hiện một toast đơn giản với `t(\"account.signingOut\")` khi cờ được bật trên cửa sổ hẹp, một thay đổi với 099 mà spec này không làm. Phương án khác là chấp nhận không hiện gì cho một lời gọi thường chỉ mất chốc lát."
+  },
+  {
+   "ticket": "102",
+   "n": 1,
+   "milestone": "M5",
+   "topic": "Giá trị mặc định của Desktop notifications và âm thanh",
+   "question": "Giá trị mặc định của 'Desktop notifications' và 'Play a sound' là gì? D-088 chỉ quy định tùy chọn @mentions (bật), và D-176 vẫn Open. Cho đến khi có câu trả lời, ticket không thể đặt hai giá trị này.",
+   "proposal": "Đề xuất, chưa quyết: theo trạng thái ban đầu của prototype, Desktop notifications bật và Play a sound tắt. Mỗi giá trị là một hằng số (R1) và không test nào phụ thuộc vào nó."
+  },
+  {
+   "ticket": "103",
+   "n": 1,
+   "milestone": "M4",
+   "topic": "Đĩa nào được đo",
+   "question": "Cảnh báo dung lượng đĩa đo đĩa nào? D-106 nói 'the disk' và D-191 hỏi đĩa nào; trạng thái vẫn Open.",
+   "proposal": "Đề xuất, chưa quyết: filesystem chứa file storage (dữ liệu MinIO), đặt tên bởi `STORAGE_DISK_PATH` (R5); trong cài đặt một VPS tiêu chuẩn đây cũng là đĩa của database. Bản build theo đề xuất này cho đến khi D-191 có câu trả lời; đĩa khác chỉ đổi đường dẫn."
+  },
+  {
+   "ticket": "103",
+   "n": 2,
+   "milestone": "M4",
+   "topic": "Cảnh báo đĩa ngoài trang Admin",
+   "question": "Cảnh báo dung lượng đĩa có nên hiện ở nơi nào khác ngoài trang Admin không? Plan line và F39 nêu trang Admin, D-191 đề xuất 'chỉ trên trang Admin' nhưng vẫn Open. Hiện Member chỉ biết đĩa đầy khi upload bị từ chối (R9, R17).",
+   "proposal": "Đề xuất, chưa quyết: giữ như vậy; không banner, mail, push hay mục Activity."
+  },
+  {
+   "ticket": "104",
+   "n": 1,
+   "milestone": "M6",
+   "topic": "Cách tách 'Update available · Reload'",
+   "question": "Cụm 'Update available · Reload' (D-107) nên được tách thành text và nút thế nào? D-107 chỉ cho các từ, không cho cách tách; prototype không có strip này.",
+   "proposal": "Đề xuất, chưa quyết: text 'Update available' và nút 'Reload', bỏ dấu chấm vì hai phần tách riêng (R9, R14); giữ dấu chấm trong text là lựa chọn còn lại. Bản tiếng Việt là đề xuất do TOKI-080 duyệt (D-139)."
+  },
+  {
+   "ticket": "104",
+   "n": 2,
+   "milestone": "M6",
+   "topic": "Nút dismiss cho strip cập nhật",
+   "question": "Strip cập nhật có nên có nút dismiss không? D-107 cho strip với Reload và không nói gì về việc đóng, nên 'không dismiss' chỉ là cách đọc sự im lặng của nó.",
+   "proposal": "Đề xuất, chưa quyết: không làm nút dismiss và strip ở lại cho đến khi reload trang; nút dismiss sẽ là yêu cầu mới cần nơi lưu lựa chọn."
+  },
+  {
+   "ticket": "104",
+   "n": 6,
+   "milestone": "M6",
+   "topic": "Strip cập nhật ở màn hình danh sách trên điện thoại",
+   "question": "Strip cập nhật nên hiện ở đâu trên điện thoại khi chưa mở conversation nào? D-107 nói 'an open app' mà không nêu vị trí; strip chỉ vẽ ở vùng main nên người dùng điện thoại không thấy cho tới khi mở một conversation.",
+   "proposal": "Đề xuất, chưa quyết: vẽ thêm nó làm `notice` của danh sách conversation, như TOKI-082 R5 làm với offline strip."
+  }
+ ]
 }
