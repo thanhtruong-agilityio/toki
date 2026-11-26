@@ -24,19 +24,32 @@ const adminKnownDifferences: KnownDifference[] = (
   })),
 );
 
-// The sign-in page (TOKI-137). The app's card differs from the prototype's guest sign-in card in
-// ways that the sign-in spec decided (wording, extra buttons, the card near the top of a narrow
-// screen, the focused field) and in ways that the ticket named here fixes (shadow, workspace name,
-// heading, placeholder, link). The picture of the prototype is also of `#app`, so it holds the
-// rounded frame, the link 'Back to the normal view' and, in the code step, the purple note
-// 'Prototype: no email is sent', which the app has not. When that ticket is done the report lists
-// these rows as "no longer a difference" and the entries go.
-const SIGN_IN_REASON =
-  "The sign-in card of the app is fixed by TOKI-136, apart from what the sign-in spec decided " +
-  "(docs/specs/2026-11-16-sign-in-screens-design.md: R4, R8, R36, the layout at the three " +
-  "widths, the focused field). The prototype's picture is of #app, so it also holds the rounded " +
-  "frame, the link 'Back to the normal view' and, in the code step, the note 'Prototype: no " +
-  "email is sent', which the app has not.";
+// The sign-in page (TOKI-137, TOKI-136). What the sign-in spec did not decide has been made as the
+// prototype's guest sign-in card draws it (TOKI-136): the shadow, the workspace name and the line
+// under it, the heading, the placeholder of the code field and the place of the link. These rows
+// still differ, for what the sign-in spec decided (docs/specs/2026-11-16-sign-in-screens-design.md)
+// and for what only the picture of the prototype holds. The ticket is `accepted`: it is a decision,
+// not a defect to fix, so the rows stay `known`.
+const SPEC = "docs/specs/2026-11-16-sign-in-screens-design.md";
+const EMAIL_STEP_REASON =
+  `What the sign-in spec decided (${SPEC}): the email step shows exactly the logo, the workspace ` +
+  "name, one field and the button 'Send code' (R4), so it has no heading and no introduction and " +
+  "the button does not say 'Email me a code' (wording signed off on 2026-11-19); the email field " +
+  "is focused when the step opens.";
+const CODE_STEP_REASON =
+  `What the sign-in spec decided (${SPEC}): the address and the line 'The code works for 10 ` +
+  "minutes' stand above the field in place of the prototype's sentence (R8, concern 5); the " +
+  "button 'Sign in' is disabled until the code has 6 digits (R36); the button 'Resend code' " +
+  "(R8); the code field is focused when the step opens.";
+const NARROW_REASON =
+  " Under 720 px the card sits in the upper part of the screen, so that the keyboard does not " +
+  `cover the field (${SPEC}, "Layout at the three widths").`;
+// The picture of the prototype is of #app, so it holds more than the card.
+const PROTOTYPE_REASON =
+  " The prototype's picture is of #app, so it also holds the rounded frame and the link 'Back " +
+  "to the normal view'";
+const PROTOTYPE_NOTE =
+  " and, in the code step, the note 'Prototype: no email is sent'; the app has not.";
 
 const signInKnownDifferences: KnownDifference[] = (
   ["signin-email", "signin-code"] as const
@@ -44,8 +57,12 @@ const signInKnownDifferences: KnownDifference[] = (
   (["calm", "focus"] as const).flatMap((look) =>
     (["wide", "mid", "narrow"] as const).map((width) => ({
       id: `${screen}/${look}/${width}`,
-      reason: SIGN_IN_REASON,
-      ticket: "TOKI-136",
+      reason:
+        (screen === "signin-email" ? EMAIL_STEP_REASON : CODE_STEP_REASON) +
+        (width === "narrow" ? NARROW_REASON : "") +
+        PROTOTYPE_REASON +
+        (screen === "signin-code" ? PROTOTYPE_NOTE : "."),
+      ticket: "accepted",
     })),
   ),
 );
