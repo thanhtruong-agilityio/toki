@@ -39,3 +39,31 @@ Everything is in `packages/ui-web/src/sign-in/` and `packages/i18n`; no page, ro
 **Not done here:** no change to a text that the sign-in spec decided, to the disabled 'Sign in', to the 'Resend code' button, to the narrow layout or to the focused field.
 
 **What can break:** (1) the heading inherits `line-height: 1.45` (`base.css:17`), so its box goes from about 33px (20px text and 4px margin) to about 42px (22px text, 4px above and 6px below), about 9px more; (2) a two-line name block (14px and 11.5px lines at 1.45) is about 37px against the 34px logo, 3px more; the margins save 4px (14px under the row, 10px above the link); the net is about 10px, so the code step at 360 x 560 goes from about 446px to 456px by estimate and still fits, but the height check of `e2e/support/layout.ts` is the measure, on the join pages too, whose headings are longer; (3) `sources.test.ts` forbids colour literals and literal text, which the design respects; (4) the e2e sign-in cases read the placeholder nowhere, but the login route tests may query the code input by role.
+
+## AC -> step -> test
+| Requirement | Step | Test (named) |
+|---|---|---|
+| R1 shadow `var(--shadow)` | 1 | `styles.test.ts`: "the card draws --shadow, not --pop" |
+| R2 logo row and name | 1 | `styles.test.ts`: "the logo row and the name follow the prototype" |
+| R3 heading 22px, margin | 1 | `styles.test.ts`: "the heading of the code step is 22px with 4px and 6px" |
+| R4 placeholder `000000`, label stays | 2 | `CodeField.test.tsx`: "has the placeholder of codeLength zeros and keeps its label" |
+| R5 12 rows match or known with reason and `accepted` | 4 | a run of the check lists no new difference for the sign-in rows |
+| R6 existing tests pass; no other text or behaviour changes | 5 | `pnpm test`, `e2e/sign-in.spec.ts`; plus the shared users: `join.test.tsx`, `emergency.test.tsx`, `e2e/join.spec.ts` |
+| R7 second line with a name, none without; en and vi | 3 | `SignInCard.test.tsx`: "shows the second line with a name, in English and Vietnamese" and "shows none without a name"; `pnpm i18n:check` |
+| R8 link left, 10px above | 1 | `styles.test.ts`: "the link of the code step is at the left" |
+
+## Steps
+Each step: the test first, seen to fail for the right reason, then the code, then lint and the test, then a commit. Manual mode: stop after each step.
+1. **Styles** (files: `packages/ui-web/src/sign-in/sign-in.css`, new `packages/ui-web/tests/sign-in/styles.test.ts`). The test reads the CSS file, takes the declarations of one rule by its selector, and checks the values of D1 (R1, R2, R3, R8). Then change the CSS.
+2. **Placeholder** (files: `packages/ui-web/src/sign-in/CodeField.tsx`, `packages/ui-web/tests/sign-in/CodeField.test.tsx`). Test: the field is found by its label 'Code' and has `placeholder="000000"`, empty and with a digit (R4). Then pass `placeholder={"0".repeat(codeLength)}`.
+3. **Second line** (files: `packages/i18n/src/messages/en/signIn.ts`, `.../vi/signIn.ts`, `packages/ui-web/src/sign-in/SignInCard.tsx`, `packages/ui-web/src/sign-in/sign-in.css`, `packages/ui-web/tests/sign-in/SignInCard.test.tsx`). Test: with a name the second line is there (English; Vietnamese under `I18nProvider language="vi"`), without a name or with a blank one it is not (R7). Then add the key in both languages, the markup of D2 and the rules `.gwt` and `.gwp`; `pnpm i18n:check`.
+4. **Known differences and the check** (files: `e2e/parity/known-differences.ts`). Run the whole check in the container; look at the 12 sign-in pictures in Calm and Focus; remove the entries of rows that are within the limit; for the rows that stay, set the reason (what the sign-in spec decided, with its requirement) and the ticket `accepted`; rewrite the comment above the entries (R5). Run the check again: no new difference.
+5. **Whole check** (no files). `pnpm format:check`, `pnpm lint`, `pnpm typecheck`, `pnpm test`; `pnpm exec playwright test e2e/sign-in.spec.ts e2e/join.spec.ts` (the height check at 360 x 560 is the measure of the design's estimate); the tests of the other users of the card (R6, D6). If a height check fails, stop and ask: the spec's R29 (no scroll) and the prototype's spacing meet there.
+
+## Risks and the riskiest step
+Grilling, one round (tier M). Found and settled without a question:
+- **Riskiest: step 5, the height at 360 x 560** (about +10px by estimate; the join pages have longer headings). It is measured by the existing layout check, and a failure stops the work for a decision, not a workaround.
+- The style tests read CSS text, so a reformat of the file could break them: they take a rule by its selector and a declaration by its property, not by line or spacing.
+- `.gwt` as a column must keep `.gwn` a direct holder of the name, because two existing tests find it by `.gwn` text.
+- The Vietnamese `trên Toki` is a proposal; it is flagged in the pull request for the reviewer.
+- A product question remains none: every decision of the spec is answered.
