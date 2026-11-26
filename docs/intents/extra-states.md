@@ -11,7 +11,7 @@ The app shows a skeleton of the layout at once and replaces it with data when it
 ## Affected users and systems
 - Every Member and Admin on every screen that loads data, and on narrow screens, where the conversation list is the whole screen.
 - The web app (`apps/web`): the layout route, the conversation list pane, the root and conversation routes, the Admin no-access view, and the loading and failure stand-ins that earlier tickets left (listed in the spec).
-- The component package (`packages/ui-web`): the `Strip` and a `Skeleton`.
+- The component package (`packages/ui-web`): the `Strip`, a `Skeleton`, and one new prop of the conversation list that lets it draw a skeleton or a failure in place of its groups.
 - The texts (`packages/i18n`): a namespace for these states, in English and Vietnamese.
 - Neighbours: the sync engine (TOKI-040) and the connection (TOKI-039) whose state is read, the Undo, confirmation and online-gate patterns (TOKI-093) whose check is set here, the Pause and Focus strip (TOKI-076) and the update-available strip (TOKI-104), which use the same strip class.
 
