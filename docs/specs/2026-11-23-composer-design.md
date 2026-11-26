@@ -103,7 +103,7 @@ e2e/composer.spec.ts             the browser test (R2, R13 to R15)
 | Selector | Declarations | Source |
 | :---- | :---- | :---- |
 | `.composer` | `padding:0 20px 16px; position:relative` | line 311 (Calm) |
-| `[data-eff="focus"] .composer` | `padding:0 16px 12px` | line 312 |
+| `[data-look="focus"] .composer` | `padding:0 16px 12px` | line 312 |
 | `.cbox` | `border:1px solid var(--line); border-radius:var(--radius); background:var(--surface); transition:border-color .15s, box-shadow .15s` | line 313 |
 | `.cbox:focus-within` | `border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft)` | line 314 |
 | `.cbox textarea` | `display:block; width:100%; border:0; background:transparent; outline:0; resize:none; padding:12px 14px 4px; min-height:44px; max-height:160px; line-height:1.45; color:var(--ink)` | line 315 |
@@ -116,6 +116,8 @@ e2e/composer.spec.ts             the browser test (R2, R13 to R15)
 | `@media (max-width:719px)` `.composer` | `padding:0 max(12px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px))` | line 537; the Focus rule is overridden in the narrow block, as in TOKI-033 R14 |
 | `@media (max-width:719px)` | `.ctools .ib.sm{width:34px}`, `.sendg .btn span{display:none}`, `.sendg .btn{padding:0 12px}`, `.ctools{padding:2px 6px 8px}`; the 40 px minimum height of `.ib` and `.btn` is owned by `Button.css` and `IconButton.css` (TOKI-012 Table I) and is not repeated | lines 539 and 581 |
 | `.composer-notice` | the margins and border of `.composer` and `.cbox`, `padding:12px 14px; color:var(--muted); text-align:center` | the same as TOKI-101's `.arch-notice` |
+
+TOKI-142: every selector of this table was `[data-eff=...]` and is now `[data-look=...]`.
 
 Heights of the field in the browser test, in Chromium at 14 px and `line-height` 1.45 (measured on the prototype; each within 1 px): 1 line 44, 2 lines 57, 3 lines 77, 4 lines 97, 5 lines 117, 6 lines 138, 7 lines 158, 8 and more 160 (then it scrolls).
 
