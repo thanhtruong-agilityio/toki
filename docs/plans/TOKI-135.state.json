@@ -1,0 +1,40 @@
+{
+  "approved_auto": false,
+  "base": "github/main",
+  "branch": "feat/toki-135-ui-parity-save",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-26T01:40:28Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-26T01:40:28Z",
+      "stage": "explore"
+    },
+    {
+      "at": "2026-11-26T01:40:50Z",
+      "stage": "design"
+    },
+    {
+      "at": "2026-11-26T01:46:10Z",
+      "stage": "plan"
+    }
+  ],
+  "key": "TOKI-135",
+  "main_sha": "07f15eef59fd0fdd7212c70214c8fcc73ccaa034",
+  "metrics": {},
+  "mode": null,
+  "plan_approved": false,
+  "plan_hash": null,
+  "spec_commit": "197f081a140a494c82b75ba58c364b54f9d88ca5",
+  "spec_paths": [
+    "docs/specs/2026-11-25-ui-parity-save-design.md"
+  ],
+  "stage": "plan",
+  "tier": "M",
+  "verifier": {
+    "result": null,
+    "round": 0
+  }
+}
