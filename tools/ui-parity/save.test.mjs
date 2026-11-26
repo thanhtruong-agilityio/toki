@@ -7,12 +7,13 @@ import {
   mkdtempSync,
   readFileSync,
   readdirSync,
+  renameSync,
   rmSync,
   utimesSync,
   writeFileSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { basename, join } from "node:path";
 import {
   UsageError,
   parseSaveArgs,
@@ -469,7 +470,7 @@ test("no result: the check ends with a code other than 0 even when a report was 
 test("no result: report.json is missing (R4)", () => {
   const w = world({ rows: ROWS, writeOnRun: false });
   assert.equal(saveRun(OPTS, w.deps), 1);
-  assert.match(w.warns.join("\n"), /report\.json/);
+  assert.match(w.warns.join("\n"), /report\.json is missing or unreadable/);
   assert.equal(existsSync(join(w.repo, "docs/ui-parity")), false);
 });
 
@@ -622,6 +623,35 @@ test("--update keeps the old folder when the copy fails (R13)", () => {
   assert.equal(saveRun({ ...OPTS, update: true }, w.deps), 1);
   assert.equal(read(dir, "mark.txt"), "mine");
   assert.deepEqual(dotFiles(join(w.repo, "docs/ui-parity")), []);
+});
+
+test("--update puts the old folder back as it was when the last rename fails (R13)", () => {
+  const w = world({ rows: ROWS });
+  saveRun(OPTS, w.deps);
+  const dir = join(w.repo, "docs/ui-parity", NAME);
+  writeFileSync(join(dir, "mark.txt"), "mine");
+  w.deps.rename = (from, to) => {
+    if (basename(from).startsWith(".tmp-")) throw new Error("rename refused");
+    renameSync(from, to);
+  };
+  assert.equal(saveRun({ ...OPTS, update: true }, w.deps), 1);
+  assert.match(w.warns.join("\n"), /rename refused/);
+  assert.deepEqual(readdirSync(dir).sort(), [
+    "images",
+    "mark.txt",
+    "meta.json",
+    "report.json",
+    "report.md",
+  ]);
+  assert.deepEqual(dotFiles(join(w.repo, "docs/ui-parity")), []);
+});
+
+test("leftovers are removed even when the run keeps nothing (R13)", () => {
+  const w = world({ rows: ROWS, runCode: 1 });
+  const root = join(w.repo, "docs/ui-parity");
+  mkdirSync(join(root, ".tmp-dead"), { recursive: true });
+  assert.equal(saveRun(OPTS, w.deps), 1);
+  assert.deepEqual(readdirSync(root), []);
 });
 
 test("removes the leftovers of an earlier crash (R13)", () => {

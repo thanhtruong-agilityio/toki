@@ -252,8 +252,10 @@ const fail = (warn, message) => {
 export function saveRun(options, deps) {
   const { repo, git, runCheck, now, log, warn } = deps;
   const copy = deps.copy ?? cpSync;
+  const rename = deps.rename ?? renameSync;
   const out = join(repo, "e2e/assets/parity");
   const root = join(repo, "docs/ui-parity");
+  if (existsSync(root)) cleanLeftovers(root);
   const commit = git(["rev-parse", "HEAD"]).trim();
   const branch = git(["rev-parse", "--abbrev-ref", "HEAD"]).trim();
   const dirty = dirtyFiles(git(["status", "--porcelain"]));
@@ -319,7 +321,6 @@ export function saveRun(options, deps) {
   let aside = false;
   try {
     mkdirSync(root, { recursive: true });
-    cleanLeftovers(root);
     mkdirSync(tmp);
     copy(join(out, "report.md"), join(tmp, "report.md"));
     copy(join(out, "report.json"), join(tmp, "report.json"));
@@ -331,14 +332,17 @@ export function saveRun(options, deps) {
     }
     writeFileSync(join(tmp, "meta.json"), `${JSON.stringify(meta, null, 2)}\n`);
     if (existsSync(target)) {
-      renameSync(target, old);
+      rename(target, old);
       aside = true;
       writeFileSync(join(old, ".target"), name);
     }
     try {
-      renameSync(tmp, target);
+      rename(tmp, target);
     } catch (error) {
-      if (aside) renameSync(old, target);
+      if (aside) {
+        rmSync(join(old, ".target"), { force: true });
+        renameSync(old, target);
+      }
       aside = false;
       throw error;
     }
