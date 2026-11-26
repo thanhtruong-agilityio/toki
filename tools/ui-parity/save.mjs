@@ -1,3 +1,12 @@
+import {
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  statSync,
+  writeFileSync,
+} from "node:fs";
+import { join } from "node:path";
+
 // `pnpm ui:save`: keeps the results of the UI parity check in `docs/ui-parity/` (TOKI-135). The
 // functions are pure or get what touches the outside as arguments, so that the tests need no Docker.
 
@@ -118,4 +127,54 @@ export function renderIndex(entries) {
     ...rows,
     "",
   ].join("\n");
+}
+
+// R12: the kept runs: every folder of `root` (not a dot folder, not a file) that has a readable
+// `meta.json`. A folder whose `meta.json` is missing or bad is `unreadable`, and named.
+export function listRuns(root) {
+  const runs = [];
+  const unreadable = [];
+  let names = [];
+  try {
+    names = readdirSync(root);
+  } catch {
+    return { runs, unreadable };
+  }
+  for (const folder of names.sort()) {
+    if (folder.startsWith(".")) continue;
+    if (!statSync(join(root, folder)).isDirectory()) continue;
+    try {
+      const meta = JSON.parse(
+        readFileSync(join(root, folder, "meta.json"), "utf8"),
+      );
+      if (
+        typeof meta.date !== "string" ||
+        typeof meta.commit !== "string" ||
+        typeof meta.counts !== "object" ||
+        meta.counts === null
+      ) {
+        throw new Error("not a meta.json of ui:save");
+      }
+      runs.push({ folder, meta });
+    } catch {
+      unreadable.push(folder);
+    }
+  }
+  return { runs, unreadable };
+}
+
+// R12: writes `index.md` again from the folders, so a run removed by hand is gone from it.
+export function writeIndex(root) {
+  const { runs, unreadable } = listRuns(root);
+  mkdirSync(root, { recursive: true });
+  writeFileSync(join(root, "index.md"), renderIndex(runs));
+  return { unreadable };
+}
+
+// R18: the newest `n` kept runs and the older ones, newest first. A folder with no readable
+// `meta.json` is not counted.
+export function pruneLines(root, n) {
+  const { runs, unreadable } = listRuns(root);
+  const sorted = [...runs].sort(byNewest).map((run) => run.folder);
+  return { keep: sorted.slice(0, n), remove: sorted.slice(n), unreadable };
 }

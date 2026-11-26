@@ -1,6 +1,16 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  readdirSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import {
   UsageError,
   parseSaveArgs,
   folderName,
@@ -8,6 +18,9 @@ import {
   dirtyFiles,
   buildMeta,
   renderIndex,
+  listRuns,
+  writeIndex,
+  pruneLines,
 } from "./save.mjs";
 
 test("parseSaveArgs: defaults run and keep the images", () => {
@@ -240,4 +253,86 @@ test("renderIndex: a pipe in a branch name does not break the table", () => {
 
 test("renderIndex: no kept run gives the heading and an empty table", () => {
   assert.match(renderIndex([]), /\| Date \(UTC\) \|/);
+});
+
+const tmpRoot = () => mkdtempSync(join(tmpdir(), "ui-save-root-"));
+
+function keep(root, folder, m) {
+  mkdirSync(join(root, folder), { recursive: true });
+  writeFileSync(join(root, folder, "meta.json"), JSON.stringify(m));
+}
+
+function five() {
+  const root = tmpRoot();
+  for (let d = 21; d <= 25; d += 1) {
+    keep(
+      root,
+      `2026-11-${d}-aaaaaa${d % 10}`,
+      meta(`2026-11-${d}T10:00:00.000Z`),
+    );
+  }
+  return root;
+}
+
+test("listRuns: reads the folders, names an unreadable one and ignores files and dot folders", () => {
+  const root = tmpRoot();
+  keep(root, "2026-11-24-aaaaaaa", meta("2026-11-24T10:00:00.000Z"));
+  keep(root, "2026-11-26-bbbbbbb", meta("2026-11-26T10:00:00.000Z"));
+  mkdirSync(join(root, "2026-11-25-ccccccc")); // no meta.json
+  mkdirSync(join(root, "2026-11-25-ddddddd"));
+  writeFileSync(join(root, "2026-11-25-ddddddd", "meta.json"), "{"); // not JSON
+  mkdirSync(join(root, ".tmp-x"));
+  writeFileSync(join(root, "index.md"), "x");
+  const { runs, unreadable } = listRuns(root);
+  assert.deepEqual(
+    runs.map((r) => r.folder),
+    ["2026-11-24-aaaaaaa", "2026-11-26-bbbbbbb"],
+  );
+  assert.deepEqual(unreadable, ["2026-11-25-ccccccc", "2026-11-25-ddddddd"]);
+});
+
+test("listRuns: a missing root is no run and no error", () => {
+  assert.deepEqual(listRuns(join(tmpRoot(), "nope")), {
+    runs: [],
+    unreadable: [],
+  });
+});
+
+test("writeIndex: the list follows the folders, so a removed run is gone at the next write", () => {
+  const root = tmpRoot();
+  keep(root, "2026-11-24-aaaaaaa", meta("2026-11-24T10:00:00.000Z"));
+  keep(root, "2026-11-26-bbbbbbb", meta("2026-11-26T10:00:00.000Z"));
+  mkdirSync(join(root, "2026-11-01-bad"));
+  assert.deepEqual(writeIndex(root).unreadable, ["2026-11-01-bad"]);
+  assert.match(readFileSync(join(root, "index.md"), "utf8"), /aaaaaaa/);
+  rmSync(join(root, "2026-11-24-aaaaaaa"), { recursive: true });
+  writeIndex(root);
+  const md = readFileSync(join(root, "index.md"), "utf8");
+  assert.doesNotMatch(md, /aaaaaaa/);
+  assert.doesNotMatch(md, /bad/);
+  assert.match(md, /bbbbbbb/);
+});
+
+test("pruneLines: keeps the newest n and names the older ones, newest first", () => {
+  const r = pruneLines(five(), 2);
+  assert.deepEqual(r.keep, ["2026-11-25-aaaaaa5", "2026-11-24-aaaaaa4"]);
+  assert.deepEqual(r.remove, [
+    "2026-11-23-aaaaaa3",
+    "2026-11-22-aaaaaa2",
+    "2026-11-21-aaaaaa1",
+  ]);
+});
+
+test("pruneLines: n larger than the number of folders removes nothing", () => {
+  const r = pruneLines(five(), 9);
+  assert.equal(r.remove.length, 0);
+  assert.equal(r.keep.length, 5);
+});
+
+test("pruneLines: an unreadable folder is not counted and is named", () => {
+  const root = five();
+  mkdirSync(join(root, "2026-11-26-zzzzzzz"));
+  const r = pruneLines(root, 2);
+  assert.deepEqual(r.unreadable, ["2026-11-26-zzzzzzz"]);
+  assert.equal(r.keep.length + r.remove.length, 5);
 });
