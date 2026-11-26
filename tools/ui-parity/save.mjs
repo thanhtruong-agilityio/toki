@@ -134,7 +134,7 @@ export function renderIndex(entries) {
 export function listRuns(root) {
   const runs = [];
   const unreadable = [];
-  let names = [];
+  let names;
   try {
     names = readdirSync(root);
   } catch {
