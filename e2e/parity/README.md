@@ -70,6 +70,26 @@ A difference that the reviewer accepts goes in `known-differences.ts`: the row n
 the ticket that will fix it (or `accepted`). The report then lists it as `known`, and lists an
 entry that no longer matches a real difference as "no longer a difference: remove the entry".
 
+## Keep the results
+
+The report and the images of a run are written to `e2e/assets/parity`, which git ignores. To keep a
+run in the repository, run `pnpm ui:save` by hand. It runs the check, then copies the report and all
+the images into `docs/ui-parity/<UTC date>-<commit>/` with a `meta.json` (commit, branch, date,
+whether the tree had uncommitted changes, the counts), and makes `docs/ui-parity/index.md` again
+from the folders, newest first. Then you commit the folder in a pull request.
+
+- `--no-run` keeps the report that is already there instead of running the check. It records
+  `ran: false` in `meta.json` and prints the age of the report, but not its date.
+- `--no-images` keeps the report and `meta.json` without the images.
+- `--update` replaces a kept run of the same date and commit; without it the command refuses.
+- `pnpm ui:save --prune <n>` prints the `git rm -r` command for each run older than the newest `n`
+  and deletes nothing.
+
+`pnpm ui:save` deletes the last report of `e2e/assets/parity` before it runs the check, so that a
+failed run leaves no report to keep by mistake. A run that gives no result keeps nothing. A tree with
+uncommitted changes is kept, with `-dirty` at the end of the folder name and a warning. Git stores
+identical files once, so a run of an unchanged app adds almost nothing to the history.
+
 ## What it does not prove
 
 Pixel equality; hover, active and focus states; Safari and Firefox; states the prototype does not
