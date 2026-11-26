@@ -1,0 +1,18 @@
+{
+  "date": "2026-11-26T01:55:58.254Z",
+  "commit": "aeea9ec4465ab8501c86f17f8fdfbde944abb1f6",
+  "branch": "feat/toki-135-ui-parity-save",
+  "dirty": false,
+  "dirtyFiles": 0,
+  "ran": true,
+  "withImages": true,
+  "counts": {
+    "match": 24,
+    "differs": 0,
+    "known": 6,
+    "noLongerDifference": 0,
+    "notRun": 0
+  },
+  "imageTag": "mcr.microsoft.com/playwright:v1.65.1-noble",
+  "prototypeSha256": "8afc5b13cbc2f0a487eb3041421e2a81667ae0d783e6f87e65332e8377b7bb35"
+}
