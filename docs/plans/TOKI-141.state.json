@@ -1,0 +1,28 @@
+{
+  "approved_auto": false,
+  "base": "github/main",
+  "branch": "feat/toki-141",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-26T08:14:12Z",
+      "stage": "pick"
+    }
+  ],
+  "key": "TOKI-141",
+  "main_sha": "3def68eb3d05326d844b653cf4b1081e86bff9d6",
+  "metrics": {},
+  "mode": null,
+  "plan_approved": false,
+  "plan_hash": null,
+  "spec_commit": "c5a086d8215e83c502e11be9d541e1f90ad85be8",
+  "spec_paths": [
+    "docs/specs/2026-11-26-parity-app-screens-design.md"
+  ],
+  "stage": "pick",
+  "tier": "S",
+  "verifier": {
+    "result": null,
+    "round": 0
+  }
+}
