@@ -45,9 +45,10 @@ outside the container.
    export const files: ScreenDecl = {
      id: "files", // the name of the rows and of the images
      section: "files", // a key of the prototype's HASH: home, activity, later, files, mail,
-     // calendar, meet, tasks, people, admin, prefs
+     // calendar, meet, tasks, people, admin, prefs; or `guest`, its guest sign-in card
      prototypeSteps: [{ click: '[data-action="tab"][data-id="files"]' }], // to the state, on the prototype
      appRoute: "/files",
+     appRoot: ".app", // the element of the app that is captured; default `.app`, the app shell
      appSteps: [{ click: "text=Files" }], // to the same state, in the app
      ready: ".members-table", // a selector of the app that is visible once the screen has its content;
      // without it the check waits for the network to be idle
@@ -65,6 +66,17 @@ outside the container.
    chance). Never make a reference from the app.
 3. Run `pnpm test:e2e:parity` and read the report.
 4. In the pull request, say which images you added or replaced and why, and what the report shows.
+
+### A page outside the app shell
+
+The check takes the picture of `.app` on the side of the app, and `.app` is drawn only by the shell of
+the signed-in app. A page outside the shell, such as the sign-in page, names the element that it
+draws into: `appRoot: "#root"`. The side of the prototype is not changed: it is always `#app`.
+`e2e/parity/screens/signin.ts` is the example. Its prototype side is the guest sign-in card of the
+prototype (`section: "guest"`, the hash `#guest`), the email step and then the code step
+(`prototypeSteps`); on the app side it stubs the calls of `/api/v1/auth/` and goes through the same
+steps (`appSteps`). A step that clicks a field of the next step waits for it, so the picture is of
+that step and not of the one before.
 
 A difference that the reviewer accepts goes in `known-differences.ts`: the row name, the reason, and
 the ticket that will fix it (or `accepted`). The report then lists it as `known`, and lists an
