@@ -1,0 +1,32 @@
+{
+  "approved_auto": false,
+  "base": "github/main",
+  "branch": "feat/toki-136",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-26T07:06:38Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-26T07:07:28Z",
+      "stage": "design"
+    }
+  ],
+  "key": "TOKI-136",
+  "main_sha": "dc0f392a6aaa71f7acf4c13e45debabdea38e3dc",
+  "metrics": {},
+  "mode": "manual",
+  "plan_approved": false,
+  "plan_hash": null,
+  "spec_commit": "9c427e45c4469faf42300538b60705ad84e61ed8",
+  "spec_paths": [
+    "docs/specs/2026-11-26-signin-ui-parity-fixes-design.md"
+  ],
+  "stage": "design",
+  "tier": "M",
+  "verifier": {
+    "result": null,
+    "round": 0
+  }
+}
