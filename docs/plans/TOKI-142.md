@@ -52,7 +52,7 @@
 "Each edited line says what it was and what it is now in one phrase" is read as: each edited requirement line carries its "(was ...)" phrase, and a table of CSS rows that were all renamed the same way carries one note under the table. A line-by-line note on 33 renamed selector rows would be longer than the table.
 
 ### What is left alone
-- The model spec; the intents; `docs/plans/*` (historical: TOKI-009, TOKI-025 and TOKI-109 plans keep their words).
+- The intents; the model spec except its R5 check and R10 (amended after the code review so that they say what was built: Table J, and every spec that names `data-eff`); `docs/plans/*` (historical: TOKI-009, TOKI-025 and TOKI-109 plans keep their words).
 - Open concerns of the preferences spec that name "Match my device" (concerns 1, 4, 14): the text is reworded to the scheme, the status word is not changed (no decision is added for an owner who did not decide).
 - Prototype `data-look` words that describe the prototype itself (tokens line 48, parity R2's `applyLook` list): kept, with the new names beside them.
 
@@ -91,7 +91,7 @@
 **Files:** none edited except fixes the check finds.
 - [ ] `grep -rn "data-eff" docs/specs` finds only the model spec and "was" phrases; `grep -rn "Match my device" docs/specs` finds it only as the scheme option, in concern text or in a "was" phrase.
 - [ ] `spec-lint.sh` on every edited spec reports no gap; `spec-ready.sh` output equals the baseline saved before Task 1 (`<git common dir>/dev-state/TOKI-142.ready-before.txt`: 21 specs exit 0, 7 exit 1: text-formatting, composer, preferences, people, command-palette, pause-focus-time, pwa).
-- [ ] `git diff --stat github/main` lists only the 30 specs of Tasks 1 to 4 and the plan and state files.
+- [ ] `git diff --stat github/main` lists only the 30 specs of Tasks 1 to 4, the model spec (R5 check and R10) and the plan and state files.
 - [ ] Verifier agent with this plan, the diff and the AC table; `/code-review`.
 
 ## What can break (grilling round 1)
