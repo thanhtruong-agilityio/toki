@@ -28,6 +28,12 @@ The first line counts the rows: `match`, `differs` (new), `known`, `no longer a 
 - a screen: `admin/calm/wide` with the ratio of different pixels, the limit, the box
   `[left, top, right, bottom]` around the different pixels, and three images (the reference, the
   app, the difference).
+  The image of the difference is the image of the app with a magenta frame around each place that
+  differs from the prototype. Different pixels that are 6 pixels or less apart are one place, so a
+  line of text is one frame. A frame on an empty place means that the prototype draws something
+  there that the app does not. A frame around something the app draws means that the two draw it
+  differently (the colour, the size or the place), or that only the app draws it: look at the image
+  of the prototype next to it.
 
 **A difference does not fail the run.** Read the report; a part that is wrong becomes a ticket to
 fix that part, named by the row. The run fails only where no result can be given: a missing
