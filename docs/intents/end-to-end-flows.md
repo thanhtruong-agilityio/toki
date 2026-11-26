@@ -10,7 +10,7 @@ A command `pnpm test:e2e:flows` that runs 12 flows in Chromium, each at a deskto
 ## Affected users and systems
 - The builder and the reviewer of every pull request, who get one answer to "does it work end to end".
 - The product owner, who reads the list of 12 flows to see which journeys are proved.
-- The Playwright setup of TOKI-008 and its sign-in setup (TOKI-023), the seed of TOKI-081, the server's start file (`apps/server/src/main.ts`), and the CI workflow (TOKI-007).
+- The Playwright setup of TOKI-008 and its sign-in setup (TOKI-023), the seed of TOKI-081, the server's start file (`apps/server/src/main.ts`), the job queue's worker (TOKI-064, `worker.ts`), and the CI workflow (TOKI-007).
 - Every feature ticket of M1 to M5 that a flow passes through.
 
 ## Constraints
