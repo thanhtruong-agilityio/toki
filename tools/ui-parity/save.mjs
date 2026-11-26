@@ -1,11 +1,17 @@
+import { randomBytes } from "node:crypto";
 import {
+  cpSync,
+  existsSync,
   mkdirSync,
   readdirSync,
   readFileSync,
+  renameSync,
+  rmSync,
   statSync,
   writeFileSync,
 } from "node:fs";
 import { join } from "node:path";
+import { imageTag, playwrightVersion } from "./container.mjs";
 
 // `pnpm ui:save`: keeps the results of the UI parity check in `docs/ui-parity/` (TOKI-135). The
 // functions are pure or get what touches the outside as arguments, so that the tests need no Docker.
@@ -199,5 +205,158 @@ export function prune(root, n, io) {
   io.log(
     "then run `pnpm ui:save` next time: it makes index.md again from the folders",
   );
+  return 0;
+}
+
+// "1 h 0 min" for the age of the report kept by `--no-run` (R9).
+export function ago(ms) {
+  const min = Math.max(0, Math.floor(ms / 60000));
+  if (min < 60) return `${min} min`;
+  if (min < 1440) return `${Math.floor(min / 60)} h ${min % 60} min`;
+  return `${Math.floor(min / 1440)} d ${Math.floor((min % 1440) / 60)} h`;
+}
+
+// R13: what an earlier crash left behind. A `.tmp-*` folder is removed. An `.old-*` folder is the run
+// that `--update` set aside: it is put back when its folder is missing, else removed.
+function cleanLeftovers(root) {
+  for (const name of readdirSync(root)) {
+    const dir = join(root, name);
+    if (name.startsWith(".tmp-")) {
+      rmSync(dir, { recursive: true, force: true });
+    } else if (name.startsWith(".old-")) {
+      let target = null;
+      try {
+        target = readFileSync(join(dir, ".target"), "utf8").trim();
+      } catch {
+        // no .target: nothing to put back
+      }
+      if (target && !existsSync(join(root, target))) {
+        rmSync(join(dir, ".target"), { force: true });
+        renameSync(dir, join(root, target));
+      } else {
+        rmSync(dir, { recursive: true, force: true });
+      }
+    }
+  }
+}
+
+const fail = (warn, message) => {
+  warn(`nothing kept: ${message}`);
+  return 1;
+};
+
+// R2-R4, R6-R15: runs the check (or not), and keeps its output in `docs/ui-parity/<name>/`. What
+// touches the outside is in `deps`: { repo, git, runCheck, now, log, warn, copy? }.
+export function saveRun(options, deps) {
+  const { repo, git, runCheck, now, log, warn } = deps;
+  const copy = deps.copy ?? cpSync;
+  const out = join(repo, "e2e/assets/parity");
+  const root = join(repo, "docs/ui-parity");
+  const commit = git(["rev-parse", "HEAD"]).trim();
+  const branch = git(["rev-parse", "--abbrev-ref", "HEAD"]).trim();
+  const dirty = dirtyFiles(git(["status", "--porcelain"]));
+
+  if (options.run) {
+    for (const name of ["report.md", "report.json"]) {
+      rmSync(join(out, name), { force: true });
+    }
+    rmSync(join(out, "images"), { recursive: true, force: true });
+    const code = runCheck();
+    if (code !== 0) {
+      return fail(warn, `the check ended with code ${code}`);
+    }
+  }
+
+  let report;
+  try {
+    report = JSON.parse(readFileSync(join(out, "report.json"), "utf8"));
+  } catch {
+    return fail(warn, "e2e/assets/parity/report.json is missing or unreadable");
+  }
+  if (!Array.isArray(report.rows) || report.rows.length === 0) {
+    return fail(warn, "report.json has no row");
+  }
+  if (!options.run) {
+    const age = ago(
+      now().getTime() - statSync(join(out, "report.json")).mtimeMs,
+    );
+    log(`${report.summary} (report written ${age} ago)`);
+  }
+
+  const name = folderName(now().toISOString(), commit, dirty.length > 0);
+  const target = join(root, name);
+  if (existsSync(target) && !options.update) {
+    return fail(warn, `${target} is already kept; use --update to replace it`);
+  }
+  if (dirty.length > 0) {
+    warn(
+      `the working tree has ${dirty.length} uncommitted file(s); the run is kept and marked dirty`,
+    );
+  }
+
+  const meta = buildMeta({
+    now: now(),
+    commit,
+    branch,
+    dirty,
+    ran: options.run,
+    images: options.images,
+    counts: countRows(report.rows),
+    imageTag: imageTag(
+      playwrightVersion(readFileSync(join(repo, "pnpm-lock.yaml"), "utf8")),
+    ),
+    prototypeSha256: readFileSync(
+      join(repo, "e2e/parity/prototype.sha256"),
+      "utf8",
+    ).trim(),
+  });
+
+  const id = randomBytes(4).toString("hex");
+  const tmp = join(root, `.tmp-${id}`);
+  const old = join(root, `.old-${id}`);
+  let aside = false;
+  try {
+    mkdirSync(root, { recursive: true });
+    cleanLeftovers(root);
+    mkdirSync(tmp);
+    copy(join(out, "report.md"), join(tmp, "report.md"));
+    copy(join(out, "report.json"), join(tmp, "report.json"));
+    if (options.images) {
+      copy(join(out, "images"), join(tmp, "images"), {
+        recursive: true,
+        filter: (src) => statSync(src).isDirectory() || src.endsWith(".png"),
+      });
+    }
+    writeFileSync(join(tmp, "meta.json"), `${JSON.stringify(meta, null, 2)}\n`);
+    if (existsSync(target)) {
+      renameSync(target, old);
+      aside = true;
+      writeFileSync(join(old, ".target"), name);
+    }
+    try {
+      renameSync(tmp, target);
+    } catch (error) {
+      if (aside) renameSync(old, target);
+      aside = false;
+      throw error;
+    }
+    if (aside) rmSync(old, { recursive: true, force: true });
+  } catch (error) {
+    rmSync(tmp, { recursive: true, force: true });
+    return fail(warn, error.message);
+  }
+
+  const { unreadable } = writeIndex(root);
+  for (const folder of unreadable) {
+    warn(
+      `left out of index.md, no readable meta.json: docs/ui-parity/${folder}`,
+    );
+  }
+  const c = meta.counts;
+  log(`kept docs/ui-parity/${name}`);
+  log(
+    `match ${c.match} · differs ${c.differs} · known ${c.known} · no longer a difference ${c.noLongerDifference} · not run ${c.notRun}`,
+  );
+  log("next: git add docs/ui-parity");
   return 0;
 }
