@@ -15,7 +15,7 @@ The server side of the display name, job title, time zone, look, accent, density
 
 ## Affected users and systems
 - Every Member and Admin: the whole page, on every device.
-- The web app (`apps/web`): the page and its sections, the code that applies look, accent, density and language to the page, the first-paint script in `index.html`, the time zone field that the date context reads its zone from, the account card's name, one palette command.
+- The web app (`apps/web`): the page and its sections, the code that applies look, accent, density and language to the page, a first-paint script file referenced from the head of `index.html`, the time zone field that the date context reads its zone from, the account card's name, one palette command.
 - The sections that other work built or will build, which this work places on the page: the notification switches (TOKI-102), the push block (TOKI-074), Pause and Focus time (TOKI-076), the status editor (TOKI-056), the signed-in devices (TOKI-099).
 - The ticket "Profile and preferences (server)": what it must offer, stated here as its contract.
 - Colleagues: the display name, job title and time zone of a person are read from the same values on their screens (People, profile panel, messages).
@@ -38,7 +38,7 @@ The server side of the display name, job title, time zone, look, accent, density
 ## Open questions
 - What do a new account's look and density start as? The accent starts as teal (decided in the tokens work).
 - What is the longest job title?
-- How does a person choose a time zone, what does a person who never set one see, and does the profile show a city?
+- How does a person choose a time zone, what does a person who never set one see, and does the profile show a city (D-144 says it shows local time and a city, so the question is which form)?
 - What does the palette command "Switch look" do when the look is Match my device?
 - Who builds the saving of display name, job title, time zone, look, accent, density and language, and what must it offer this screen?
 - How does the page avoid showing the other look before the account has loaded?
