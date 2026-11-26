@@ -24,6 +24,10 @@
     {
       "at": "2026-11-26T07:11:16Z",
       "stage": "build"
+    },
+    {
+      "at": "2026-11-26T07:28:27Z",
+      "stage": "check"
     }
   ],
   "key": "TOKI-136",
@@ -36,7 +40,7 @@
   "spec_paths": [
     "docs/specs/2026-11-26-signin-ui-parity-fixes-design.md"
   ],
-  "stage": "build",
+  "stage": "check",
   "tier": "M",
   "verifier": {
     "result": null,
