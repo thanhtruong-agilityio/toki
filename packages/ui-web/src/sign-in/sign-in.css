@@ -17,14 +17,14 @@ body:has(.gsign) {
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  box-shadow: var(--pop);
+  box-shadow: var(--shadow);
   padding: 24px;
 }
 .gws {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 16px;
+  gap: 8px;
+  margin-bottom: 14px;
 }
 .gws .gwl {
   width: 34px;
@@ -39,15 +39,13 @@ body:has(.gsign) {
   font-size: 16px;
 }
 .gws .gwn {
-  font-family: "Bricolage Grotesque", sans-serif;
   font-weight: 700;
-  font-size: 17px;
-  letter-spacing: -0.01em;
+  font-size: 14px;
 }
 .gcard h1 {
-  margin: 0 0 4px;
+  margin: 4px 0 6px;
   font-family: "Bricolage Grotesque", sans-serif;
-  font-size: 20px;
+  font-size: 22px;
 }
 .gcard .gaddr {
   margin: 0;
@@ -69,8 +67,8 @@ body:has(.gsign) {
   margin-top: 8px;
 }
 .gcard .glinks {
-  margin-top: 12px;
-  text-align: center;
+  margin-top: 10px;
+  text-align: left;
 }
 .inp.shake {
   animation: gshake 0.3s;
