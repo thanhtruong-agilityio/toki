@@ -54,10 +54,11 @@ const tableA: Array<[string | null, string, string]> = [
   ],
   [null, ".prow .sub", "display:block"],
   // TOKI-140: the line of a Browse row is a flex row: the topic may shrink and is cut, the member
-  // count does not shrink, so a long topic never hides it.
+  // count does not shrink, so a long topic never hides it. `white-space: pre` keeps the space before
+  // the "·": at the start of a flex item the space would be dropped ("chat· 8 members").
   [null, ".prow .sub-line", "display:flex"],
   [null, ".prow .sub-lead", "min-width:0"],
-  [null, ".prow .sub-count", "flex:none; white-space:nowrap"],
+  [null, ".prow .sub-count", "flex:none; white-space:pre"],
   [
     null,
     ".mlist",

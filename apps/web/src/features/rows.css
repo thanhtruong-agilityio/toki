@@ -29,7 +29,8 @@
 }
 
 /* TOKI-140: the line under a Browse row's name is a flex row. The topic (and the word Private) may
-   shrink and is cut with an ellipsis; the member count does not shrink, so a long topic never hides it. */
+   shrink and is cut with an ellipsis; the member count does not shrink, so a long topic never hides it.
+   `white-space: pre` keeps the space before the "·", which a flex item would drop at its start. */
 .prow .sub-line {
   display: flex;
 }
@@ -40,7 +41,7 @@
 
 .prow .sub-count {
   flex: none;
-  white-space: nowrap;
+  white-space: pre;
 }
 
 .mlist {
