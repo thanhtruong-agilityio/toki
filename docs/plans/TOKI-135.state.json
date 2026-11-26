@@ -28,19 +28,27 @@
     {
       "at": "2026-11-26T01:47:48Z",
       "stage": "approve"
+    },
+    {
+      "at": "2026-11-26T01:48:15Z",
+      "stage": "mode"
+    },
+    {
+      "at": "2026-11-26T01:48:16Z",
+      "stage": "build"
     }
   ],
   "key": "TOKI-135",
   "main_sha": "07f15eef59fd0fdd7212c70214c8fcc73ccaa034",
   "metrics": {},
-  "mode": null,
+  "mode": "manual",
   "plan_approved": true,
   "plan_hash": "f38dacb0cafcec2efe388e47e6284075d82476d59fa15f444bf6dad6a85ebd55",
   "spec_commit": "197f081a140a494c82b75ba58c364b54f9d88ca5",
   "spec_paths": [
     "docs/specs/2026-11-25-ui-parity-save-design.md"
   ],
-  "stage": "approve",
+  "stage": "build",
   "tier": "M",
   "verifier": {
     "result": null,
