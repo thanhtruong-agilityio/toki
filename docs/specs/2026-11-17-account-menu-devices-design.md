@@ -89,8 +89,8 @@ apps/web/src/
 │  ├─ account.css            Table A
 │  └─ *.test.ts(x)
 ├─ routes/preferences.tsx    R21
-├─ shell/sections.ts         + the row preferences (R21)
-└─ shell/AppShellRoute.tsx   the card (R1), the provider (R3), the menu (R5), the tab listener (R12)
+├─ layout/sections.ts        + the row preferences (R21)
+└─ routes/app-layout.tsx     AppShellRoute: the card (R1), the provider (R3), the menu (R5), the tab listener (R12)
 packages/i18n/src/messages/{en,vi}/account.ts, common.ts (day words, role words), index.ts
 e2e/account-menu.spec.ts     R21
 ```
