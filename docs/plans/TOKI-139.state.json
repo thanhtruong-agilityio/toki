@@ -1,0 +1,28 @@
+{
+  "approved_auto": false,
+  "base": "github/main",
+  "branch": "feat/toki-139",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-26T08:43:31Z",
+      "stage": "pick"
+    }
+  ],
+  "key": "TOKI-139",
+  "main_sha": "4f74b4ab6fe2663d002e3596734e8191ec87ca2a",
+  "metrics": {},
+  "mode": null,
+  "plan_approved": false,
+  "plan_hash": null,
+  "spec_commit": "eb71324225f3964abc1ee5a551357b8e326f6114",
+  "spec_paths": [
+    "docs/specs/2026-11-26-details-panel-section-spacing-design.md"
+  ],
+  "stage": "pick",
+  "tier": "S",
+  "verifier": {
+    "result": null,
+    "round": 0
+  }
+}
