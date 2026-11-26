@@ -43,6 +43,9 @@ body:has(.gsign) {
   flex-direction: column;
   min-width: 0;
 }
+.gws .gwp {
+  display: block;
+}
 .gws .gwn {
   font-weight: 700;
   font-size: 14px;

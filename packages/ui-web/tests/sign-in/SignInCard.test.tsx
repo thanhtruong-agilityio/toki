@@ -16,21 +16,20 @@ describe("SignInCard (R4, R8, R38)", () => {
     expect(container.querySelector(".gwl")).not.toBeNull();
   });
 
-  test("shows the second line under the name, in English (TOKI-136 R7)", () => {
-    const { container } = render(
+  test("shows the second line with a name, in English and Vietnamese (TOKI-136 R7)", () => {
+    const english = render(
       <SignInCard workspaceName="Acme">
         <p>step</p>
       </SignInCard>,
     );
     expect(screen.getByText("on Toki")).toBeInTheDocument();
     // The name and the line are one block next to the logo, and the name stays alone in .gwn.
-    const block = container.querySelector(".gws > .gwt");
+    const block = english.container.querySelector(".gws > .gwt");
     expect(block).not.toBeNull();
     expect(block!.querySelector(".gwn")?.textContent).toBe("Acme");
     expect(block!.querySelector(".gwp")?.textContent).toBe("on Toki");
-  });
+    english.unmount();
 
-  test("shows the second line in Vietnamese (TOKI-136 R7)", () => {
     render(
       <I18nProvider language="vi">
         <SignInCard workspaceName="Acme">
@@ -42,7 +41,7 @@ describe("SignInCard (R4, R8, R38)", () => {
     expect(screen.queryByText("on Toki")).toBeNull();
   });
 
-  test("shows no second line without a name or with a blank one (TOKI-136 R7)", () => {
+  test("shows none without a name, or with a blank one (TOKI-136 R7)", () => {
     const { container, rerender } = render(
       <SignInCard>
         <p>step</p>
