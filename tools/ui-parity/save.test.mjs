@@ -7,6 +7,7 @@ import {
   countRows,
   dirtyFiles,
   buildMeta,
+  renderIndex,
 } from "./save.mjs";
 
 test("parseSaveArgs: defaults run and keep the images", () => {
@@ -162,4 +163,81 @@ test("buildMeta: a dirty tree is marked with the number of files", () => {
   assert.equal(meta.dirtyFiles, 2);
   assert.equal(meta.withImages, false);
   assert.equal(meta.ran, false);
+});
+
+const meta = (date, c = {}) => ({
+  date,
+  commit: "c".repeat(40),
+  branch: "main",
+  dirty: false,
+  dirtyFiles: 0,
+  ran: true,
+  withImages: true,
+  counts: {
+    match: 24,
+    differs: 0,
+    known: 6,
+    noLongerDifference: 0,
+    notRun: 0,
+    ...c,
+  },
+  imageTag: "t",
+  prototypeSha256: "h",
+});
+
+test("renderIndex: a heading, a sentence and a table, newest first", () => {
+  const md = renderIndex([
+    { folder: "2026-11-24-aaaaaaa", meta: meta("2026-11-24T10:00:00.000Z") },
+    {
+      folder: "2026-11-26-bbbbbbb-dirty",
+      meta: {
+        ...meta("2026-11-26T09:00:00.000Z"),
+        dirty: true,
+        dirtyFiles: 3,
+        branch: "feat/x",
+        commit: "b".repeat(40),
+      },
+    },
+  ]);
+  const lines = md.split("\n").filter((l) => l.startsWith("|"));
+  assert.equal(
+    lines[0],
+    "| Date (UTC) | Commit | Branch | Tree | Match | Differs | Known | No longer | Not run |",
+  );
+  assert.match(
+    lines[2],
+    /^\| 2026-11-26 \| \[bbbbbbb\]\(2026-11-26-bbbbbbb-dirty\/report\.md\) \| feat\/x \| dirty \| 24 \| 0 \| 6 \| 0 \| 0 \|$/,
+  );
+  assert.match(
+    lines[3],
+    /^\| 2026-11-24 \| \[ccccccc\]\(2026-11-24-aaaaaaa\/report\.md\) \| main \| clean \|/,
+  );
+});
+
+test("renderIndex: the same date is ordered by folder name, and the text is stable", () => {
+  const a = {
+    folder: "2026-11-26-aaaaaaa",
+    meta: meta("2026-11-26T10:00:00.000Z"),
+  };
+  const b = {
+    folder: "2026-11-26-bbbbbbb",
+    meta: meta("2026-11-26T10:00:00.000Z"),
+  };
+  assert.equal(renderIndex([a, b]), renderIndex([b, a]));
+  const md = renderIndex([a, b]);
+  assert.ok(md.indexOf("bbbbbbb") < md.indexOf("aaaaaaa"));
+});
+
+test("renderIndex: a pipe in a branch name does not break the table", () => {
+  const md = renderIndex([
+    {
+      folder: "2026-11-26-aaaaaaa",
+      meta: { ...meta("2026-11-26T10:00:00.000Z"), branch: "a|b" },
+    },
+  ]);
+  assert.ok(md.includes("a\\|b"));
+});
+
+test("renderIndex: no kept run gives the heading and an empty table", () => {
+  assert.match(renderIndex([]), /\| Date \(UTC\) \|/);
 });

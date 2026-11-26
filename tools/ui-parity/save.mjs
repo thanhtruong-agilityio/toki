@@ -90,3 +90,32 @@ export function buildMeta({
     prototypeSha256,
   };
 }
+
+// Newest first by the date of `meta.json`, then by the name of the folder.
+export const byNewest = (a, b) => {
+  if (a.meta.date !== b.meta.date) return a.meta.date < b.meta.date ? 1 : -1;
+  if (a.folder !== b.folder) return a.folder < b.folder ? 1 : -1;
+  return 0;
+};
+
+const cell = (value) => String(value).replace(/\|/g, "\\|");
+
+// R12: the list of kept runs, made from the folders and never edited by hand.
+export function renderIndex(entries) {
+  const head =
+    "| Date (UTC) | Commit | Branch | Tree | Match | Differs | Known | No longer | Not run |";
+  const rows = [...entries].sort(byNewest).map(({ folder, meta: m }) => {
+    const c = m.counts;
+    return `| ${m.date.slice(0, 10)} | [${m.commit.slice(0, 7)}](${folder}/report.md) | ${cell(m.branch)} | ${m.dirty ? "dirty" : "clean"} | ${c.match} | ${c.differs} | ${c.known} | ${c.noLongerDifference} | ${c.notRun} |`;
+  });
+  return [
+    "# UI parity: kept runs",
+    "",
+    "The runs that `pnpm ui:save` kept, newest first. This file is made again from the folders at every save; do not edit it by hand.",
+    "",
+    head,
+    "| --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+    ...rows,
+    "",
+  ].join("\n");
+}
