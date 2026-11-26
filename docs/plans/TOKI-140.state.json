@@ -1,25 +1,34 @@
 {
-  "approved_auto": false,
+  "approved_auto": true,
   "base": "github/main",
-  "branch": "feat/toki-140",
+  "branch": "feat/toki-140-browse-picker-hints",
   "deployed_sha": null,
   "history": [
     {
       "at": "2026-11-26T09:11:19Z",
       "stage": "pick"
+    },
+    {
+      "at": "2026-11-26T09:11:22Z",
+      "auto": true,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-26T09:11:22Z",
+      "stage": "build"
     }
   ],
   "key": "TOKI-140",
   "main_sha": "4f74b4ab6fe2663d002e3596734e8191ec87ca2a",
   "metrics": {},
-  "mode": null,
-  "plan_approved": false,
-  "plan_hash": null,
+  "mode": "manual",
+  "plan_approved": true,
+  "plan_hash": "7a28f2acdf540e4a675efbad47ab122022ea8f84b3f95daeeb0baa292cc77049",
   "spec_commit": "b05db9629e1d8dd7f80cf068c8b42de7e57dbdd5",
   "spec_paths": [
     "docs/specs/2026-11-26-browse-picker-hints-design.md"
   ],
-  "stage": "pick",
+  "stage": "build",
   "tier": "S",
   "verifier": {
     "result": null,

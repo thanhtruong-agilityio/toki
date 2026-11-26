@@ -53,6 +53,11 @@ const tableA: Array<[string | null, string, string]> = [
     "width:18px; display:grid; place-items:center; color:var(--muted); flex:none",
   ],
   [null, ".prow .sub", "display:block"],
+  // TOKI-140: the line of a Browse row is a flex row: the topic may shrink and is cut, the member
+  // count does not shrink, so a long topic never hides it.
+  [null, ".prow .sub-line", "display:flex"],
+  [null, ".prow .sub-lead", "min-width:0"],
+  [null, ".prow .sub-count", "flex:none; white-space:nowrap"],
   [
     null,
     ".mlist",
