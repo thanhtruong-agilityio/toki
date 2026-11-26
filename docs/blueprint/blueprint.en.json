@@ -4361,7 +4361,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #90",
-        "fix": ""
+        "fix": "Later changes and review fixes wait in PR #397."
        },
        "status": "done",
        "issue": 91
@@ -4704,7 +4704,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #218",
-        "fix": "Later changes and review fixes wait in PR #303."
+        "fix": "Later changes and review fixes wait in PR #398."
        },
        "status": "blocked",
        "issue": 279
@@ -4955,7 +4955,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #231",
-        "fix": "Later changes and review fixes wait in PR #305."
+        "fix": "Later changes and review fixes wait in PR #402."
        },
        "status": "blocked",
        "issue": 366
@@ -5033,7 +5033,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #239",
-        "fix": "Later changes and review fixes wait in PR #301."
+        "fix": "Later changes and review fixes wait in PR #399."
        },
        "status": "blocked",
        "issue": 358
@@ -5178,7 +5178,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #256",
-        "fix": "Later changes and review fixes wait in PR #263."
+        "fix": "Later changes and review fixes wait in PR #404."
        },
        "status": "blocked",
        "issue": 259
@@ -5351,7 +5351,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #292",
-        "fix": ""
+        "fix": "Later changes and review fixes wait in PR #403."
        },
        "status": "blocked",
        "issue": 376
@@ -5378,7 +5378,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #289",
-        "fix": ""
+        "fix": "Later changes and review fixes wait in PR #400."
        },
        "status": "blocked",
        "issue": 377
@@ -5444,7 +5444,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #297",
-        "fix": ""
+        "fix": "Later changes and review fixes wait in PR #401."
        },
        "status": "blocked",
        "issue": 382
@@ -5490,7 +5490,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #298",
-        "fix": ""
+        "fix": "Later changes and review fixes wait in PR #405."
        },
        "status": "blocked",
        "issue": 380
@@ -5554,8 +5554,14 @@
        "needs": [
         "017",
         "056",
-        "076"
-       ]
+        "076",
+        "080"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #389",
+        "fix": ""
+       }
       },
       {
        "id": "079",
@@ -5566,7 +5572,12 @@
         "055",
         "056",
         "094"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #384",
+        "fix": ""
+       }
       },
       {
        "id": "080",
@@ -5576,7 +5587,12 @@
        "needs": [
         "017"
        ],
-       "open": "Forms of address in Vietnamese"
+       "open": "Forms of address in Vietnamese",
+       "spec": {
+        "state": "pr",
+        "pr": "PR #385",
+        "fix": ""
+       }
       },
       {
        "id": "082",
@@ -5586,7 +5602,12 @@
        "needs": [
         "040",
         "093"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #386",
+        "fix": ""
+       }
       },
       {
        "id": "083",
@@ -5595,7 +5616,12 @@
        "size": "M",
        "needs": [
         "078"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #394",
+        "fix": ""
+       }
       },
       {
        "id": "092",
@@ -5607,7 +5633,12 @@
         "056",
         "071",
         "076"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #391",
+        "fix": ""
+       }
       },
       {
        "id": "104",
@@ -5615,8 +5646,16 @@
        "scope": "When a new version is deployed an open app shows the strip 'Update available · Reload'; the reload is forced only when the server says the page is too old (D-107)",
        "size": "S",
        "needs": [
-        "082"
-       ]
+        "076",
+        "080",
+        "082",
+        "084"
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #395",
+        "fix": ""
+       }
       }
      ]
     },
@@ -5630,7 +5669,12 @@
        "size": "M",
        "needs": [
         "004"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #387",
+        "fix": ""
+       }
       },
       {
        "id": "085",
@@ -5641,7 +5685,12 @@
         "007",
         "084"
        ],
-       "open": "Automatic deploy or a manual trigger"
+       "open": "Automatic deploy or a manual trigger",
+       "spec": {
+        "state": "pr",
+        "pr": "PR #396",
+        "fix": ""
+       }
       },
       {
        "id": "087",
@@ -5652,7 +5701,12 @@
         "026",
         "084",
         "096"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #390",
+        "fix": ""
+       }
       },
       {
        "id": "088",
@@ -5661,7 +5715,12 @@
        "size": "M",
        "needs": [
         "070"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #383",
+        "fix": ""
+       }
       },
       {
        "id": "089",
@@ -5670,7 +5729,12 @@
        "size": "L",
        "needs": [
         "084"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #392",
+        "fix": ""
+       }
       },
       {
        "id": "090",
@@ -5679,7 +5743,12 @@
        "size": "L",
        "needs": [
         "081"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #388",
+        "fix": ""
+       }
       },
       {
        "id": "091",
@@ -5688,7 +5757,12 @@
        "size": "M",
        "needs": [
         "084"
-       ]
+       ],
+       "spec": {
+        "state": "pr",
+        "pr": "PR #393",
+        "fix": ""
+       }
       }
      ]
     }

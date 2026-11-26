@@ -11433,7 +11433,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #90",
-        "fix": ""
+        "fix": "Later changes and review fixes wait in PR #397."
        },
        "status": "done",
        "issue": 91
@@ -11688,7 +11688,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #218",
-        "fix": "Later changes and review fixes wait in PR #303."
+        "fix": "Later changes and review fixes wait in PR #398."
        },
        "status": "blocked",
        "issue": 279
@@ -11886,7 +11886,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #231",
-        "fix": "Later changes and review fixes wait in PR #305."
+        "fix": "Later changes and review fixes wait in PR #402."
        },
        "status": "blocked",
        "issue": 366
@@ -11948,7 +11948,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #239",
-        "fix": "Later changes and review fixes wait in PR #301."
+        "fix": "Later changes and review fixes wait in PR #399."
        },
        "status": "blocked",
        "issue": 358
@@ -12048,7 +12048,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #256",
-        "fix": "Later changes and review fixes wait in PR #263."
+        "fix": "Later changes and review fixes wait in PR #404."
        },
        "status": "blocked",
        "issue": 259
@@ -12166,7 +12166,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #292",
-        "fix": ""
+        "fix": "Later changes and review fixes wait in PR #403."
        },
        "status": "blocked",
        "issue": 376
@@ -12179,7 +12179,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #289",
-        "fix": ""
+        "fix": "Later changes and review fixes wait in PR #400."
        },
        "status": "blocked",
        "issue": 377
@@ -12230,7 +12230,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #297",
-        "fix": ""
+        "fix": "Later changes and review fixes wait in PR #401."
        },
        "status": "blocked",
        "issue": 382
@@ -12256,7 +12256,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #298",
-        "fix": ""
+        "fix": "Later changes and review fixes wait in PR #405."
        },
        "status": "blocked",
        "issue": 380
@@ -12312,49 +12312,77 @@
        "title": "Preferences screen",
        "scope": "Look (Calm, Focus, Match my device), accent, density; notification switches including 'Notify me for @mentions even in muted channels', on by default (D-088); Pause, status; language: English by default or Tiếng Việt, switching the whole interface at once (D-018); profile: display name of 1 to 80 characters (D-033), job title, time zone (D-144), no picture upload (D-118); the 'Signed-in devices' list with sign out of one device or of all others, after confirmation (D-158); saved to the account and applied on every device (D-142). Owns the first-paint look when the saved look differs from the device setting. Takes over the `/prefs` page frame built in TOKI-099.",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #389",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-079",
        "title": "People screen",
        "scope": "Directory of active people as cards: initials avatar (D-118), presence, name, an Admin label where it applies (no Owner, D-152), job title, local time (D-144); search by name or job title; the first 50 shown, more on scroll (D-109); deactivated people are not listed (F41); the 'Nobody matches' empty state (D-074)",
        "size": "S",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #384",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-080",
        "title": "Full translation",
        "scope": "Every string in English (the default) and Vietnamese (D-018); CI fails when a string lacks a translation in either language (D-064); 24-hour time everywhere (D-123); one date format across the app, with the year shown when it is not the current year (D-073); times shown in the person's time zone",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #385",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-082",
        "title": "Extra states",
        "scope": "Loading skeletons; the banner 'Offline: showing saved messages' for the whole time offline, with no reconnecting state and no toast when the connection returns (D-102); one shared page for not found and no access (D-131); a request with no answer after 10 seconds shows Retry (D-126); while disconnected, writes are blocked with an explanation and only messages wait to resend (D-079). Replaces the plain not-found view of TOKI-006; the server's 404 and 500 format comes from TOKI-004. Calls `setConnectionCheck` of TOKI-093 with the real connection state; owns `.strip`.",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #386",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-083",
        "title": "Accessibility pass",
        "scope": "Keyboard, labels, focus, reduced motion",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #394",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-092",
        "title": "Entry points on narrow screens",
        "scope": "A More sheet with Search, People, Preferences, Admin (Admins only) and an account section with Set status, Pause notifications, Focus time and Sign out (D-158), so the phone lacks nothing (D-067, D-053); the sheet closes as soon as a destination is chosen (GAP-39)",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #391",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-104",
        "title": "Update-available strip",
        "scope": "When a new version is deployed an open app shows the strip 'Update available · Reload'; the reload is forced only when the server says the page is too old (D-107)",
        "size": "S",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #395",
+        "fix": ""
+       }
       }
      ]
     },
@@ -12367,49 +12395,77 @@
        "title": "Production image and Compose",
        "scope": "Dockerfile, Compose, Caddyfile, automatic TLS Builds named entries under `src/cli/` and leaves out the seed files of TOKI-081 from the production image.",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #387",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-085",
        "title": "Automated deploy",
        "scope": "Build the image on merge, deploy, run migrations, roll back",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #396",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-087",
        "title": "Installation guide",
        "scope": "Step-by-step instructions and .env.example: SMTP settings (D-027), the first Admin from server configuration (D-028), and the server command that prints a one-time sign-in link when mail cannot be sent (D-159); no backup steps in this phase (D-092). Points to the `.env.example` built in TOKI-096; it does not write a second one",
        "size": "S",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #390",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-088",
        "title": "Access-control test suite",
        "scope": "Every endpoint against a person without access: signed out; a Member on admin requests and on creating a channel (D-090, D-084); anyone, an Admin included, outside a private channel or DM (D-047); the messages of a channel not joined (D-116); also through search, file lists and direct links, with no access answered like not found (D-131). Uses the real-Postgres test setup of TOKI-008",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #383",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-089",
        "title": "Performance measurement",
        "scope": "A script that creates 1 million messages and measures the six targets with 200 people online (D-113). Reuses the 200 KB bundle measurement of TOKI-006 and TOKI-007",
        "size": "L",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #392",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-090",
        "title": "12 end-to-end flows",
        "scope": "The 12 flows follow the journeys accepted on 13 Nov (D-091): an Admin creates the channel (D-084), there is no Owner (D-152), a channel not joined shows no messages (D-116), Sign out (D-158); complete at desktop and phone widths (D-053). Uses the Playwright runner of TOKI-008; the 12 flows are chosen from the journeys as rewritten on 13 Nov 2026",
        "size": "L",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #388",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-091",
        "title": "Security review",
        "scope": "Headers, cookies, rate limits, dependencies",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #393",
+        "fix": ""
+       }
       }
      ]
     }

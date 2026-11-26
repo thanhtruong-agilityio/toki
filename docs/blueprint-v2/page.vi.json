@@ -11433,7 +11433,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #90",
-        "fix": ""
+        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #397."
        },
        "status": "done",
        "issue": 91
@@ -11688,7 +11688,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #218",
-        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #303."
+        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #398."
        },
        "status": "blocked",
        "issue": 279
@@ -11886,7 +11886,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #231",
-        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #305."
+        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #402."
        },
        "status": "blocked",
        "issue": 366
@@ -11948,7 +11948,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #239",
-        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #301."
+        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #399."
        },
        "status": "blocked",
        "issue": 358
@@ -12048,7 +12048,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #256",
-        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #263."
+        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #404."
        },
        "status": "blocked",
        "issue": 259
@@ -12166,7 +12166,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #292",
-        "fix": ""
+        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #403."
        },
        "status": "blocked",
        "issue": 376
@@ -12179,7 +12179,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #289",
-        "fix": ""
+        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #400."
        },
        "status": "blocked",
        "issue": 377
@@ -12230,7 +12230,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #297",
-        "fix": ""
+        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #401."
        },
        "status": "blocked",
        "issue": 382
@@ -12256,7 +12256,7 @@
        "spec": {
         "state": "merged",
         "pr": "PR #298",
-        "fix": ""
+        "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #405."
        },
        "status": "blocked",
        "issue": 380
@@ -12312,49 +12312,77 @@
        "title": "Màn hình Preferences",
        "scope": "Look (Calm, Focus, Match my device), accent, density; các công tắc thông báo, gồm 'Notify me for @mentions even in muted channels', mặc định bật (D-088); Pause, status; ngôn ngữ: English mặc định hoặc Tiếng Việt, đổi là cả giao diện đổi ngay (D-018); hồ sơ: tên hiển thị 1 tới 80 ký tự (D-033), chức danh, múi giờ (D-144), không tải ảnh đại diện (D-118); danh sách 'Signed-in devices', đăng xuất một thiết bị hoặc mọi thiết bị khác, có hỏi xác nhận (D-158); lưu theo tài khoản và áp dụng trên mọi thiết bị (D-142). Sở hữu giao diện lần vẽ đầu khi giao diện đã lưu khác cài đặt thiết bị. Tiếp quản khung trang `/prefs` do TOKI-099 dựng.",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #389",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-079",
        "title": "Màn hình People",
        "scope": "Danh bạ những người đang hoạt động, dạng thẻ: avatar chữ cái đầu (D-118), presence, tên, nhãn Admin nếu có (không có Owner, D-152), chức danh, giờ địa phương (D-144); tìm theo tên hoặc chức danh; hiện 50 người đầu, cuộn để tải thêm (D-109); không liệt kê người đã bị vô hiệu hóa (F41); trạng thái rỗng 'Nobody matches' (D-074)",
        "size": "S",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #384",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-080",
        "title": "Dịch đủ hai ngôn ngữ",
        "scope": "Mọi chuỗi có bản English (mặc định) và tiếng Việt (D-018); CI báo lỗi khi một chuỗi thiếu bản dịch ở một trong hai ngôn ngữ (D-064); giờ dạng 24 giờ ở mọi nơi (D-123); một định dạng ngày cho cả app, hiện năm khi không phải năm hiện tại (D-073); giờ hiện theo múi giờ của người dùng",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #385",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-082",
        "title": "Các trạng thái bổ sung",
        "scope": "Khung xương khi tải; banner 'Offline: showing saved messages' suốt lúc mất kết nối, không có trạng thái đang kết nối lại và không có toast khi có mạng lại (D-102); một trang chung cho không tìm thấy và không có quyền (D-131); yêu cầu không có phản hồi sau 10 giây thì hiện Retry (D-126); khi mất kết nối thì chặn thao tác ghi kèm lời giải thích, riêng tin nhắn chờ gửi lại (D-079). Thay trang not-found đơn giản của TOKI-006; định dạng 404 và 500 phía server lấy từ TOKI-004. Gọi `setConnectionCheck` của TOKI-093 với trạng thái kết nối thật; sở hữu `.strip`.",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #386",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-083",
        "title": "Rà soát khả năng tiếp cận",
        "scope": "Bàn phím, nhãn, focus, giảm chuyển động",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #394",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-092",
        "title": "Điểm vào trên khung hẹp",
        "scope": "Sheet More có Search, People, Preferences, Admin (chỉ Admin thấy) và phần tài khoản gồm Set status, Pause notifications, Focus time và Sign out (D-158), để điện thoại không thiếu tính năng nào (D-067, D-053); sheet đóng ngay khi chọn một đích đến (GAP-39)",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #391",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-104",
        "title": "Dải báo có bản cập nhật",
        "scope": "Khi có phiên bản mới được deploy, app đang mở hiện dải 'Update available · Reload'; chỉ bắt buộc tải lại khi server báo trang đã quá cũ (D-107)",
        "size": "S",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #395",
+        "fix": ""
+       }
       }
      ]
     },
@@ -12367,49 +12395,77 @@
        "title": "Image và Compose production",
        "scope": "Dockerfile, Compose, Caddyfile, TLS tự động Dựng các entry có tên trong `src/cli/` và để các file dữ liệu mẫu của TOKI-081 ra ngoài ảnh sản xuất.",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #387",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-085",
        "title": "Deploy tự động",
        "scope": "Build image khi merge, deploy, chạy migration, rollback",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #396",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-087",
        "title": "Tài liệu cài đặt",
        "scope": "Hướng dẫn từng bước và .env.example: cấu hình SMTP (D-027), Admin đầu tiên tạo từ cấu hình server (D-028), và lệnh trên server in ra link đăng nhập một lần khi không gửi được thư (D-159); phase này chưa có bước backup (D-092). Trỏ tới `.env.example` đã làm ở TOKI-096; không viết bản thứ hai",
        "size": "S",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #390",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-088",
        "title": "Bộ test quyền truy cập",
        "scope": "Mọi endpoint với người không có quyền: chưa đăng nhập; Member gọi các yêu cầu quản trị và tạo channel (D-090, D-084); bất kỳ ai, kể cả Admin, ở ngoài một private channel hoặc DM (D-047); tin nhắn của channel chưa tham gia (D-116); kể cả qua tìm kiếm, danh sách file và link trực tiếp, không có quyền được trả lời giống không tìm thấy (D-131). Dùng bộ test chạy Postgres thật của TOKI-008",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #383",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-089",
        "title": "Đo hiệu năng",
        "scope": "Script tạo 1 triệu tin, đo sáu chỉ số mục tiêu với 200 người đang online (D-113). Dùng lại phép đo bundle 200 KB của TOKI-006 và TOKI-007",
        "size": "L",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #392",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-090",
        "title": "12 luồng end-to-end",
        "scope": "12 luồng đi theo các hành trình đã chốt ngày 13/11 (D-091): Admin tạo channel (D-084), không có Owner (D-152), channel chưa tham gia không hiện tin (D-116), Sign out (D-158); hoàn chỉnh ở khung rộng và khung điện thoại (D-053). Dùng runner Playwright của TOKI-008; 12 luồng được chọn từ các hành trình đã viết lại ngày 13/11/2026",
        "size": "L",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #388",
+        "fix": ""
+       }
       },
       {
        "id": "TOKI-091",
        "title": "Rà soát bảo mật",
        "scope": "Header, cookie, giới hạn tần suất, phụ thuộc",
        "size": "M",
-       "spec": null
+       "spec": {
+        "state": "pr",
+        "pr": "PR #393",
+        "fix": ""
+       }
       }
      ]
     }
