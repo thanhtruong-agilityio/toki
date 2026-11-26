@@ -1,6 +1,7 @@
 import { PNG } from "pngjs";
 import { describe, expect, it } from "vitest";
 import {
+  appRootOf,
   compareImages,
   expandScreens,
   flattenDeclarations,
@@ -69,6 +70,16 @@ describe("compareImages (R9)", () => {
     expect(r.sameSize).toBe(false);
     expect(r.sizes).toEqual(["10x10", "12x10"]);
     expect(r.diff).toBeNull();
+  });
+});
+
+describe("appRootOf (TOKI-137 R1)", () => {
+  it("is .app when the declaration names no element", () => {
+    expect(appRootOf(decl())).toBe(".app");
+  });
+
+  it("is the element that the declaration names", () => {
+    expect(appRootOf(decl({ appRoot: "#root" }))).toBe("#root");
   });
 });
 

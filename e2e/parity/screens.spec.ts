@@ -2,6 +2,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { test } from "@playwright/test";
 import {
+  appRootOf,
   captureElement,
   compareImages,
   expandScreens,
@@ -65,7 +66,7 @@ for (const { decl, look, width, name } of entries.filter((e) => e.run)) {
     await waitUntilReady(page, decl.id, decl.ready);
     await runSteps(page, decl.id, decl.appSteps ?? []);
     await waitUntilReady(page, decl.id, decl.ready);
-    const app = await captureElement(page, ".app", decl.mask ?? []);
+    const app = await captureElement(page, appRootOf(decl), decl.mask ?? []);
 
     const result = compareImages(reference, app);
     const base = `images/${decl.id}-${look}-${width}`;
