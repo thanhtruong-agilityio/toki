@@ -25,6 +25,10 @@ export interface ScreenDecl {
   section: string;
   prototypeSteps?: Step[];
   appRoute: string;
+  // The element of the app that is captured, a CSS selector (TOKI-137). Without it the element is
+  // `.app`, the shell of the signed-in app; a page outside the shell (the sign-in page) names its
+  // own, for example "#root". The side of the prototype is always `#app`.
+  appRoot?: string;
   appSteps?: Step[];
   // Selectors masked on both sides, besides the running counts `[data-timer]`.
   mask?: string[];
@@ -47,6 +51,9 @@ export interface ScreenEntry {
   name: string;
   run: boolean;
 }
+
+// TOKI-137 R1: the element of the app that a declaration captures.
+export const appRootOf = (decl: ScreenDecl): string => decl.appRoot ?? ".app";
 
 export function expandScreens(decls: ScreenDecl[]): ScreenEntry[] {
   return decls.flatMap((decl) =>

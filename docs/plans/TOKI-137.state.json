@@ -1,0 +1,45 @@
+{
+  "approved_auto": true,
+  "base": "github/main",
+  "branch": "feat/toki-137",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-26T04:51:30Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-26T04:51:49Z",
+      "auto": true,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-26T04:51:49Z",
+      "stage": "plan"
+    },
+    {
+      "at": "2026-11-26T04:51:58Z",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-26T05:03:49Z",
+      "stage": "check"
+    }
+  ],
+  "key": "TOKI-137",
+  "main_sha": "5dce21455248d7d5a26d75c024453b191609e11b",
+  "metrics": {},
+  "mode": "manual",
+  "plan_approved": true,
+  "plan_hash": "537856701b80214b6def88d016ff1225b17d2afb5211415e4f3d623454a4f077",
+  "spec_commit": "ee92359dbd39f1b9fd0c4eda241e7e98fdf8b419",
+  "spec_paths": [
+    "docs/specs/2026-11-26-parity-app-root-design.md"
+  ],
+  "stage": "check",
+  "tier": "S",
+  "verifier": {
+    "result": "PASS",
+    "round": 1
+  }
+}
