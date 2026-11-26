@@ -14,7 +14,7 @@
 - `data-eff` stays in `docs/specs` only in the model spec itself and in "was ... now ..." phrases of the edited specs (model R1). `docs/intents` and `docs/plans` are out of the check.
 - Layout is selected by `data-look` (`calm`, `focus`, `classic`) and never by `data-scheme`; colours by `data-scheme` (`light`, `dark`) through the tokens; `data-accent` and `data-density` stay (model R1).
 - "Match my device" is the value `device` of the scheme, not a look (model R3). Defaults: look Calm, scheme `device` (model R7, concern 2).
-- Table F, Classic column equals the Focus column (rail 68 px, column 288 px, 356 px on Home) (model R5, concern 3).
+- Table J, the Classic row equals the Focus numbers (rail 68 px, column 288 px, 356 px on Home) (model R5, concern 3).
 - A spec's readiness must not change: `spec-ready.sh` gives the same exit code and the same gap lines before and after (a spec with an open concern keeps it open, and no word "Decided" is added for an owner who did not decide).
 - No change of any requirement number, ticket number, or of a requirement that has nothing to do with the look.
 
@@ -30,7 +30,7 @@
 | R2: six states, tests that can fail | T2 (tokens R11 to R16, QA spec) | tokens spec lists six blocks and a test that fails on a missing property, a non-literal value, or two equal blocks |
 | R3: scheme `device`, `applyAppearance({ look, scheme, accent, density })` | T1 (shell R28, Design, concern 10) | `grep -n "scheme" docs/specs/2026-11-16-app-shell-design.md` shows R28 with both `look` and `scheme` values |
 | R4: Look cards Calm, Focus, Classic, four texts, no "Match my device" card | T3 (preferences R3, Table B keys) | preferences R3 names the three cards and the four texts; `grep -n "Match my device" ` finds it only as the scheme option |
-| R5: layouts; Table F column per look; Classic column equals Focus | T1 (R18, Table F) | Table F has three columns and the Classic numbers equal the Focus column (read by eye and by `grep`) |
+| R5: layouts; Classic row in Table J equals Focus | T1 (R18, Table J) | Table J has a Classic row and the Classic numbers equal the Focus column (read by eye and by `grep`) |
 | R6: saved `look` and `scheme`, copy of both for first paint | T3 (preferences R2, R6, R8) | the three requirements name both values and the copy holds both |
 | R7: first paint, device block `:root:not([data-scheme])`, 78 states | T2 (tokens R11, R12, R16 and Testing) | tokens R16 counts 78 states and R12 names the selector |
 | R8: move of a saved look, where it runs, old copy, old client | T3 (preferences, new requirement and table) | preferences has the table, the place, the rule for a saved `scheme`, the old client rule |
@@ -45,7 +45,7 @@
 2. **Selector-ban lists (class P).** "`data-eff`, `data-look`, `data-accent` or `data-density`" becomes "`data-look`, `data-scheme`, `data-accent` or `data-density`" (was `data-eff`), in the requirement and in its QA copy.
 3. **Colour uses (class C).** A token block or a colour statement that named `data-eff` names the new block (`:root[data-look="calm"][data-scheme="light"]` for the first one and so on), with one "was" phrase.
 4. **Device uses (class D).** "Match my device" and `look: "device"` become the scheme value `device`. Where a sentence said the device chooses Calm or Focus, it says the device chooses the scheme, and the look is the saved one.
-5. **Requirements that change in substance** (shell R17, R18, R28, Table F; tokens R10 to R16 and the first-paint text; preferences R2, R3, R6, R8, R9, R20, R24; parity R2): rewritten by hand with the numbers of the model; each edited line ends with "(was ...)" in one phrase (R10).
+5. **Requirements that change in substance** (shell R17, R18, R28, Table J; tokens R10 to R16 and the first-paint text; preferences R2, R3, R6, R8, R9, R20, R24; parity R2): rewritten by hand with the numbers of the model; each edited line ends with "(was ...)" in one phrase (R10).
 6. **New requirements** in the preferences spec: the move of a saved look (model R8) and the scheme control (model R9), numbered after the last requirement so no number changes.
 
 ### Interpretation of R10
@@ -61,7 +61,7 @@
 **Files:** `docs/specs/2026-11-16-app-shell-design.md`
 - [ ] Rename the selectors of Table C (lines 267 to 308 and the sentences of Scope 14, 41 and R17 at 93, "The three layouts" at 141) by rule 1.
 - [ ] Rewrite R28 (108), "The look on the page" (187), Errors (433), the constraint row (473) and concern 10 (496) by rule 5 and 4: `applyAppearance({ look, scheme, accent, density })`, `scheme` in `light | dark | device`, `data-look` and `data-scheme`, `main.tsx` calls `applyAppearance({ look: "calm", scheme: "device" })` (was `{ look: "device" }`).
-- [ ] R18 and Table F: three looks; add the Classic column equal to the Focus column; the narrow layout keeps the bottom bar for all three.
+- [ ] R18 and Table J: three looks; add the Classic row equal to the Focus numbers (the shell's Table F has no column per look); the narrow layout keeps the bottom bar for all three.
 - [ ] Check: `grep -c "data-eff" ...` only in "was" phrases; `spec-lint.sh`; `spec-ready.sh` same as the baseline.
 - [ ] Commit: `docs(spec): the shell selects its layout by data-look (TOKI-142)`.
 
