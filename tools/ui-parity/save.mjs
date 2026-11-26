@@ -30,3 +30,63 @@ export function parseSaveArgs(argv) {
 // changes.
 export const folderName = (iso, commit, dirty) =>
   `${iso.slice(0, 10)}-${commit.slice(0, 7)}${dirty ? "-dirty" : ""}`;
+
+// R7: the rows of `report.json` counted by status (`stale-known` is "no longer a difference").
+export function countRows(rows) {
+  const c = {
+    match: 0,
+    differs: 0,
+    known: 0,
+    noLongerDifference: 0,
+    notRun: 0,
+  };
+  for (const { status } of rows) {
+    if (status === "match") c.match += 1;
+    else if (status === "differs") c.differs += 1;
+    else if (status === "known") c.known += 1;
+    else if (status === "stale-known") c.noLongerDifference += 1;
+    else if (status === "not-run") c.notRun += 1;
+  }
+  return c;
+}
+
+const unquote = (path) =>
+  path.length >= 2 && path.startsWith('"') && path.endsWith('"')
+    ? path.slice(1, -1)
+    : path;
+
+// R11: `git status --porcelain` gives "XY path" or "XY old -> new". The kept runs themselves, not yet
+// committed, do not count as changes.
+export function dirtyFiles(porcelain) {
+  return porcelain
+    .split("\n")
+    .filter((line) => line.length > 3)
+    .flatMap((line) => line.slice(3).split(" -> ").map(unquote))
+    .filter((path) => !path.startsWith("docs/ui-parity/"));
+}
+
+// R7: the record of a kept run. It holds no name or address of a person.
+export function buildMeta({
+  now,
+  commit,
+  branch,
+  dirty,
+  ran,
+  images,
+  counts,
+  imageTag,
+  prototypeSha256,
+}) {
+  return {
+    date: now.toISOString(),
+    commit,
+    branch,
+    dirty: dirty.length > 0,
+    dirtyFiles: dirty.length,
+    ran,
+    withImages: images,
+    counts,
+    imageTag,
+    prototypeSha256,
+  };
+}
