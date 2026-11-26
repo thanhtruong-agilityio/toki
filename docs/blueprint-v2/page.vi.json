@@ -37,7 +37,7 @@
    ]
   ]
  },
- "built": "25/11/2026",
+ "built": "26/11/2026",
  "overview": {
   "summary": "Toki là ứng dụng chat nội bộ cho một công ty: kênh, tin nhắn riêng, thread và file; về sau thêm công việc, lịch, họp video, cổng cho khách, tự động hóa, mail và tóm tắt bằng AI. Mỗi công ty tự chạy một bản trên server của mình.",
   "product": [
@@ -5919,7 +5919,7 @@
   }
  ],
  "tagline": "Mọi thứ đã thống nhất cho Toki ở một nơi: prototype, yêu cầu rút ra từ nó, luồng theo vai trò, mọi câu hỏi và gap kèm câu trả lời, thiết kế kỹ thuật, và kế hoạch phase 1.",
- "ticketsSynced": "2026-11-25",
+ "ticketsSynced": "2026-11-26",
  "repo": "github.com/thanhtruong-agilityio/toki",
  "intents": [
   {
@@ -11676,7 +11676,9 @@
         "state": "merged",
         "pr": "PR #211",
         "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #313."
-       }
+       },
+       "status": "blocked",
+       "issue": 359
       },
       {
        "id": "TOKI-041",
@@ -11713,7 +11715,9 @@
         "state": "merged",
         "pr": "PR #217",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 363
       },
       {
        "id": "TOKI-044",
@@ -11752,7 +11756,9 @@
         "state": "merged",
         "pr": "PR #214",
         "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #302."
-       }
+       },
+       "status": "blocked",
+       "issue": 374
       },
       {
        "id": "TOKI-046",
@@ -11789,7 +11795,9 @@
         "state": "merged",
         "pr": "PR #216",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 369
       },
       {
        "id": "TOKI-049",
@@ -11813,7 +11821,9 @@
         "state": "merged",
         "pr": "PR #222",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 368
       },
       {
        "id": "TOKI-051",
@@ -11824,7 +11834,9 @@
         "state": "merged",
         "pr": "PR #219",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 373
       },
       {
        "id": "TOKI-052",
@@ -11848,7 +11860,9 @@
         "state": "merged",
         "pr": "PR #220",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 371
       }
      ]
     }
@@ -11873,7 +11887,9 @@
         "state": "merged",
         "pr": "PR #231",
         "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #305."
-       }
+       },
+       "status": "blocked",
+       "issue": 366
       }
      ]
     },
@@ -11894,7 +11910,9 @@
         "state": "merged",
         "pr": "PR #234",
         "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #299."
-       }
+       },
+       "status": "blocked",
+       "issue": 356
       },
       {
        "id": "TOKI-054",
@@ -11918,7 +11936,9 @@
         "state": "merged",
         "pr": "PR #232",
         "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #307."
-       }
+       },
+       "status": "blocked",
+       "issue": 370
       },
       {
        "id": "TOKI-056",
@@ -11929,7 +11949,9 @@
         "state": "merged",
         "pr": "PR #239",
         "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #301."
-       }
+       },
+       "status": "blocked",
+       "issue": 358
       },
       {
        "id": "TOKI-057",
@@ -11975,7 +11997,9 @@
         "state": "merged",
         "pr": "PR #244",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 362
       },
       {
        "id": "TOKI-060",
@@ -11986,7 +12010,9 @@
         "state": "merged",
         "pr": "PR #245",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 365
       },
       {
        "id": "TOKI-061",
@@ -11997,7 +12023,9 @@
         "state": "merged",
         "pr": "PR #241",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 367
       },
       {
        "id": "TOKI-062",
@@ -12034,7 +12062,9 @@
         "state": "merged",
         "pr": "PR #230",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 364
       }
      ]
     },
@@ -12066,7 +12096,9 @@
         "state": "merged",
         "pr": "PR #242",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 372
       },
       {
        "id": "TOKI-071",
@@ -12119,10 +12151,12 @@
        "scope": "Tạo mục từ mention, reply trong thread người đó đang theo dõi, reaction; API và sự kiện. Người viết tin gốc, người đã reply và người được nhắc tự động theo dõi thread; không có Unfollow (D-119). Không báo cho chính người làm; xếp mới nhất trước; mục tự xong khi việc đã làm (D-071); mục bị gỡ khi tin gốc bị xóa hoặc mention bị sửa bỏ (F13); rời channel thì xóa các mục đang mở của người đó trong channel ấy (D-133). Loại Khác: được thêm vào channel, đổi vai trò, tin bị Admin xóa (D-049, F27). Cài đặt đủ 15 tình huống của bảng Khi bạn được nhắc, gồm cả mention trong hội thoại đã mute (D-088) Sở hữu mục hoạt động, quy tắc theo dõi thread, API và thay đổi `activity`; màn hình thuộc TOKI-066 và việc gửi thông báo thuộc TOKI-073.",
        "size": "L",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #291",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 360
       },
       {
        "id": "TOKI-066",
@@ -12130,10 +12164,12 @@
        "scope": "Chip lọc cho mọi loại mục, số trên chip bằng số dòng đang hiện (D-071, D-074); đánh dấu xong có Hoàn tác trong 5 giây (D-069), snooze, Mark all read; Done và Snooze luôn hiện trên thiết bị chạm (D-067, D-053). Mốc hoãn: 1 giờ nữa, 15:00 hôm nay, 9:00 sáng mai; mốc đã qua thì ẩn đi và 'In 3 hours' thế chỗ (D-114) Sở hữu màn Activity, store phía client, menu Snooze và thao tác bấm một mục (qua `useOpenMessage`).",
        "size": "L",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #292",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 376
       },
       {
        "id": "TOKI-067",
@@ -12141,10 +12177,12 @@
        "scope": "Lưu tin, In progress và Completed, đặt reminder bắn đúng giờ và phải ở tương lai (D-073); reminder tới hạn trong lúc Pause hoặc Focus thì được giữ lại (D-072); tin gốc bị xóa thì hiện dòng thay thế và số đếm vẫn khớp (D-074); gỡ khỏi Later có Hoàn tác (D-061). Mốc nhắc giống mốc hoãn, mốc đã qua thì 'In 3 hours' thế chỗ (D-114) Sở hữu mục đã lưu, job nhắc và quy tắc giữ nhắc; việc giữ và gửi thật thuộc TOKI-073 và TOKI-076.",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #289",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 377
       },
       {
        "id": "TOKI-068",
@@ -12155,7 +12193,9 @@
         "state": "merged",
         "pr": "PR #266",
         "fix": "Các thay đổi sau và bản sửa theo review đang chờ ở PR #310."
-       }
+       },
+       "status": "blocked",
+       "issue": 375
       }
      ]
     },
@@ -12175,10 +12215,12 @@
        "scope": "Ai nhận toast, push hay âm báo, dựa trên: mức thông báo của hội thoại, mặc định 'Mentions only' cho channel và 'All messages' cho DM (D-046); mute, trong đó mention vẫn báo khi công tắc riêng của người đó đang bật, mặc định bật (D-088, D-103); Pause và Focus (D-072); và hội thoại đó có đang hiện trên màn hình hay không (F36). Việc mình tự làm không bao giờ báo cho mình (D-071); người ngoài hội thoại không được báo (D-058) Quyết định ai nhận toast, push hay âm thanh, trên server; TOKI-074 gửi push, TOKI-075 hiện toast và phát âm thanh, TOKI-076 giữ thông báo khi Pause và Focus.",
        "size": "L",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #293",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 378
       },
       {
        "id": "TOKI-074",
@@ -12186,10 +12228,12 @@
        "scope": "Khóa VAPID, service worker chỉ dùng cho push (D-030), đăng ký thiết bị kèm một thông báo thử, bấm thông báo mở Toki tại đúng tin đó; thông báo hiện tên người gửi, tên hội thoại và đoạn đầu của tin (D-044); thẻ hỏi bật thông báo ở lần đầu, chỉ hỏi quyền trình duyệt sau khi bấm Turn on (F36); trên iPhone push chỉ chạy khi Toki đã được thêm vào màn hình chính (D-108); đăng xuất thì gỡ đăng ký push của thiết bị đó (D-158). Thêm khoá VAPID vào bảng kê cấu hình và `.env.example` của TOKI-096. Sở hữu việc nhận biết iPhone và thêm khoá VAPID vào bảng kê cấu hình. Đăng ký qua `onSessionsEnded` của TOKI-022 và xoá đăng ký push của phiên đã kết thúc. Sở hữu service worker `push-sw.js`, đăng ký thiết bị, nội dung push và chữ hướng dẫn Add to Home Screen.",
        "size": "L",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #297",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 382
       },
       {
        "id": "TOKI-075",
@@ -12197,10 +12241,12 @@
        "scope": "Toast khi có tin ở hội thoại khác, âm báo. Sở hữu việc mở khoá âm thanh ở Safari. Sở hữu đầu nhận toast và âm thanh cùng bước mở khoá âm thanh trên Safari; tệp âm thanh làm riêng cho Toki (đề xuất).",
        "size": "S",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #296",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 381
       },
       {
        "id": "TOKI-076",
@@ -12208,10 +12254,12 @@
        "scope": "API, việc nền kết thúc đúng giờ, dải trạng thái, tổng kết những gì đã đến. Giữ lại mọi thông báo kể cả reminder; bật Focus lần nữa thì gia hạn; kết thúc thì trả lại status cũ (D-072). Banner của nó dùng `.strip`, do TOKI-082 ở M6 sở hữu: hoặc chuyển chủ sang ticket ở M5, hoặc ticket này tự dựng class (cần quyết). Sở hữu `HoldPort`, toast tóm tắt và lớp `.strip` (đề xuất cho đến khi chốt ai sở hữu `.strip`).",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #298",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 380
       },
       {
        "id": "TOKI-077",
@@ -12219,10 +12267,12 @@
        "scope": "Manifest, icon, cài lên màn hình chính Manifest, biểu tượng và cài đặt; service worker thuộc TOKI-074.",
        "size": "S",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #295",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 361
       },
       {
        "id": "TOKI-102",
@@ -12230,10 +12280,12 @@
        "scope": "Các công tắc theo tài khoản mà bộ quyết định thông báo đọc: Desktop notifications, Play a sound, và 'Notify me for @mentions even in muted channels', mặc định bật (D-088); một bộ cho mỗi người trên mọi thiết bị, chỉ quyền push của trình duyệt là theo thiết bị (D-142); API và sự kiện Ba công tắc theo tài khoản; mặc định của Desktop và Sound chờ chủ sản phẩm (D-176).",
        "size": "S",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #288",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 379
       }
      ]
     }

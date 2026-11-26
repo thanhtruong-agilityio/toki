@@ -37,7 +37,7 @@
    ]
   ]
  },
- "built": "25 Nov 2026",
+ "built": "26 Nov 2026",
  "overview": {
   "summary": "Toki is an internal team chat for one company: channels, direct messages, threads and files, and later tasks, calendar, video meetings, a guest portal, automations, mail and AI summaries. Each company runs its own copy on its own server.",
   "product": [
@@ -5919,7 +5919,7 @@
   }
  ],
  "tagline": "Everything agreed for Toki in one place: the prototype itself, the requirements read from it, user flows per role, every question and gap with its answer, the technical design, and the phase 1 plan.",
- "ticketsSynced": "2026-11-25",
+ "ticketsSynced": "2026-11-26",
  "repo": "github.com/thanhtruong-agilityio/toki",
  "intents": [
   {
@@ -11676,7 +11676,9 @@
         "state": "merged",
         "pr": "PR #211",
         "fix": "Later changes and review fixes wait in PR #313."
-       }
+       },
+       "status": "blocked",
+       "issue": 359
       },
       {
        "id": "TOKI-041",
@@ -11713,7 +11715,9 @@
         "state": "merged",
         "pr": "PR #217",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 363
       },
       {
        "id": "TOKI-044",
@@ -11752,7 +11756,9 @@
         "state": "merged",
         "pr": "PR #214",
         "fix": "Later changes and review fixes wait in PR #302."
-       }
+       },
+       "status": "blocked",
+       "issue": 374
       },
       {
        "id": "TOKI-046",
@@ -11789,7 +11795,9 @@
         "state": "merged",
         "pr": "PR #216",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 369
       },
       {
        "id": "TOKI-049",
@@ -11813,7 +11821,9 @@
         "state": "merged",
         "pr": "PR #222",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 368
       },
       {
        "id": "TOKI-051",
@@ -11824,7 +11834,9 @@
         "state": "merged",
         "pr": "PR #219",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 373
       },
       {
        "id": "TOKI-052",
@@ -11848,7 +11860,9 @@
         "state": "merged",
         "pr": "PR #220",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 371
       }
      ]
     }
@@ -11873,7 +11887,9 @@
         "state": "merged",
         "pr": "PR #231",
         "fix": "Later changes and review fixes wait in PR #305."
-       }
+       },
+       "status": "blocked",
+       "issue": 366
       }
      ]
     },
@@ -11894,7 +11910,9 @@
         "state": "merged",
         "pr": "PR #234",
         "fix": "Later changes and review fixes wait in PR #299."
-       }
+       },
+       "status": "blocked",
+       "issue": 356
       },
       {
        "id": "TOKI-054",
@@ -11918,7 +11936,9 @@
         "state": "merged",
         "pr": "PR #232",
         "fix": "Later changes and review fixes wait in PR #307."
-       }
+       },
+       "status": "blocked",
+       "issue": 370
       },
       {
        "id": "TOKI-056",
@@ -11929,7 +11949,9 @@
         "state": "merged",
         "pr": "PR #239",
         "fix": "Later changes and review fixes wait in PR #301."
-       }
+       },
+       "status": "blocked",
+       "issue": 358
       },
       {
        "id": "TOKI-057",
@@ -11975,7 +11997,9 @@
         "state": "merged",
         "pr": "PR #244",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 362
       },
       {
        "id": "TOKI-060",
@@ -11986,7 +12010,9 @@
         "state": "merged",
         "pr": "PR #245",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 365
       },
       {
        "id": "TOKI-061",
@@ -11997,7 +12023,9 @@
         "state": "merged",
         "pr": "PR #241",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 367
       },
       {
        "id": "TOKI-062",
@@ -12034,7 +12062,9 @@
         "state": "merged",
         "pr": "PR #230",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 364
       }
      ]
     },
@@ -12066,7 +12096,9 @@
         "state": "merged",
         "pr": "PR #242",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 372
       },
       {
        "id": "TOKI-071",
@@ -12119,10 +12151,12 @@
        "scope": "Create items from mentions, replies in threads the person follows, and reactions; API and events. The root author, repliers and people mentioned follow a thread automatically; there is no Unfollow (D-119). Never notify the actor; newest first; items complete themselves when the work is done (D-071); an item is removed when its source message is deleted or the mention edited out (F13); leaving a channel clears that person's open items for it (D-133). An Other kind: added to a channel, role changed, message deleted by an admin (D-049, F27). Implements all 15 situations of the 'When you are mentioned' table, including a mention in a muted conversation (D-088) Owns the activity items, the follow-thread rule, the API and the `activity` change; the screen belongs to TOKI-066 and delivery to TOKI-073.",
        "size": "L",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #291",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 360
       },
       {
        "id": "TOKI-066",
@@ -12130,10 +12164,12 @@
        "scope": "A filter chip for every kind, each count equal to the rows shown (D-071, D-074); Done with a 5-second Undo (D-069), Snooze, Mark all read; Done and Snooze always visible on touch devices (D-067, D-053). Snooze times: In 1 hour, Today 15:00, Tomorrow 09:00; a choice already past is hidden and 'In 3 hours' takes its place (D-114) Owns the Activity screen, its client store, the snooze menu and the press of an item (through `useOpenMessage`).",
        "size": "L",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #292",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 376
       },
       {
        "id": "TOKI-067",
@@ -12141,10 +12177,12 @@
        "scope": "Save a message, In progress and Completed, set a reminder that fires on time and must be in the future (D-073); a reminder due during Pause or Focus is held (D-072); a replacement row when the source message was deleted, with the count still matching (D-074); removing from Later offers Undo (D-061). Reminder times match snooze times, with 'In 3 hours' replacing a choice already past (D-114) Owns saved items, the reminder job and the held-reminder rule; the real hold and delivery are TOKI-073's and TOKI-076's.",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #289",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 377
       },
       {
        "id": "TOKI-068",
@@ -12155,7 +12193,9 @@
         "state": "merged",
         "pr": "PR #266",
         "fix": "Later changes and review fixes wait in PR #310."
-       }
+       },
+       "status": "blocked",
+       "issue": 375
       }
      ]
     },
@@ -12175,10 +12215,12 @@
        "scope": "Who gets a toast, push or sound, from: the conversation's level, by default 'Mentions only' for channels and 'All messages' for DMs (D-046); Mute, where a mention still notifies while the person's own switch is on, on by default (D-088, D-103); Pause and Focus (D-072); and whether that conversation is on screen (F36). Your own action never notifies you (D-071); people outside the conversation are not notified (D-058) Decides who gets a toast, a push or a sound, on the server; TOKI-074 sends the push, TOKI-075 shows the toast and plays the sound, TOKI-076 holds notices during Pause and Focus.",
        "size": "L",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #293",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 378
       },
       {
        "id": "TOKI-074",
@@ -12186,10 +12228,12 @@
        "scope": "VAPID keys, a service worker used for push only (D-030), device registration with a test notification, a click that opens Toki at that message; the notification shows sender, conversation and the start of the message (D-044); a card offering notifications on first visit, the browser asked only after Turn on (F36); on iPhone push works only once Toki is added to the Home Screen (D-108); signing out removes that device's registration (D-158). Adds the VAPID keys to the configuration list and `.env.example` of TOKI-096. Owns iPhone detection and adds the VAPID keys to the configuration list. Registers through `onSessionsEnded` of TOKI-022 and removes the push registration of an ended session. Owns the push service worker `push-sw.js`, device registration, the payload and the Add to Home Screen text.",
        "size": "L",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #297",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 382
       },
       {
        "id": "TOKI-075",
@@ -12197,10 +12241,12 @@
        "scope": "A toast for messages in other conversations, and a sound. Owns the Safari sound unlock. Owns the toast and sound sink and the Safari sound unlock; the sound file is made for Toki (a proposal).",
        "size": "S",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #296",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 381
       },
       {
        "id": "TOKI-076",
@@ -12208,10 +12254,12 @@
        "scope": "API, a job that ends it on time, the status strip, a summary of what arrived. Holds every notification including reminders; starting Focus again extends it; ending restores the earlier status (D-072). Its banner uses `.strip`, owned by TOKI-082 in M6: either the owner moves to an M5 ticket or this ticket builds the class (to decide). Owns `HoldPort`, the summary toast and the `.strip` class (a proposal until the owner of `.strip` is decided).",
        "size": "M",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #298",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 380
       },
       {
        "id": "TOKI-077",
@@ -12219,10 +12267,12 @@
        "scope": "Manifest, icons, install to the home screen Manifest, icons and install; the service worker belongs to TOKI-074.",
        "size": "S",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #295",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 361
       },
       {
        "id": "TOKI-102",
@@ -12230,10 +12280,12 @@
        "scope": "Per-account switches read by the decision engine: Desktop notifications, Play a sound, and 'Notify me for @mentions even in muted channels', on by default (D-088); one set for the person on every device, only the browser's push permission is per device (D-142); API and events Three per-account switches; the defaults of Desktop and Sound wait for the owner (D-176).",
        "size": "S",
        "spec": {
-        "state": "pr",
+        "state": "merged",
         "pr": "PR #288",
         "fix": ""
-       }
+       },
+       "status": "blocked",
+       "issue": 379
       }
      ]
     }
