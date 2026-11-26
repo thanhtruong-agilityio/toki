@@ -134,6 +134,140 @@ export interface Comparison {
   diff: Buffer | null;
 }
 
+// TOKI-138: the picture of a difference is read by a person, so it is the image of the app as it is,
+// and nothing is painted over it except a frame around each group of different pixels. The colour
+// is magenta: it is no token of the app or of the prototype, and shows on the Calm and on the Focus
+// background.
+const FRAME_COLOUR = [255, 0, 255] as const;
+const FRAME_REACH = 6;
+const FRAME_WIDTH = 2;
+
+export type Rectangle = [
+  left: number,
+  top: number,
+  right: number,
+  bottom: number,
+];
+
+// TOKI-138 R2: the rectangles of the groups of different pixels. Two pixels whose x and y each
+// differ by 6 or less are in one group, and so are the pixels that a chain of such pairs joins. A
+// rectangle is the box of the pixels of a group, grown by 6 on each side and clipped to the image.
+// The groups are in the order of their first pixel in reading order. The pixels are put in cells of
+// 7 by 7, so that two pixels 6 apart are in the same cell or in two cells that touch, and only those
+// are compared.
+export function groupDifferences(
+  different: Uint8Array,
+  width: number,
+  height: number,
+): Rectangle[] {
+  const xs: number[] = [];
+  const ys: number[] = [];
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      if (different[y * width + x]) {
+        xs.push(x);
+        ys.push(y);
+      }
+    }
+  }
+  const n = xs.length;
+  if (n === 0) return [];
+
+  const parent = Int32Array.from({ length: n }, (_, i) => i);
+  const find = (i: number): number => {
+    let root = i;
+    while (parent[root] !== root) root = parent[root]!;
+    while (parent[i] !== root) {
+      const next = parent[i]!;
+      parent[i] = root;
+      i = next;
+    }
+    return root;
+  };
+
+  const cell = FRAME_REACH + 1;
+  const columns = Math.ceil(width / cell);
+  const rows = Math.ceil(height / cell);
+  const cells: number[][] = Array.from({ length: columns * rows }, () => []);
+  for (let i = 0; i < n; i++) {
+    cells[
+      Math.floor(ys[i]! / cell) * columns + Math.floor(xs[i]! / cell)
+    ]!.push(i);
+  }
+  for (let i = 0; i < n; i++) {
+    const cx = Math.floor(xs[i]! / cell);
+    const cy = Math.floor(ys[i]! / cell);
+    for (let ny = Math.max(0, cy - 1); ny <= Math.min(rows - 1, cy + 1); ny++) {
+      for (
+        let nx = Math.max(0, cx - 1);
+        nx <= Math.min(columns - 1, cx + 1);
+        nx++
+      ) {
+        for (const j of cells[ny * columns + nx]!) {
+          if (
+            j > i &&
+            Math.abs(xs[j]! - xs[i]!) <= FRAME_REACH &&
+            Math.abs(ys[j]! - ys[i]!) <= FRAME_REACH
+          ) {
+            parent[find(j)] = find(i);
+          }
+        }
+      }
+    }
+  }
+
+  const order = new Map<number, number>();
+  const boxes: Rectangle[] = [];
+  for (let i = 0; i < n; i++) {
+    const root = find(i);
+    let index = order.get(root);
+    if (index === undefined) {
+      index = boxes.length;
+      order.set(root, index);
+      boxes.push([width, height, -1, -1]);
+    }
+    const box = boxes[index]!;
+    box[0] = Math.min(box[0], xs[i]!);
+    box[1] = Math.min(box[1], ys[i]!);
+    box[2] = Math.max(box[2], xs[i]!);
+    box[3] = Math.max(box[3], ys[i]!);
+  }
+  return boxes.map(([left, top, right, bottom]) => [
+    Math.max(0, left - FRAME_REACH),
+    Math.max(0, top - FRAME_REACH),
+    Math.min(width - 1, right + FRAME_REACH),
+    Math.min(height - 1, bottom + FRAME_REACH),
+  ]);
+}
+
+// TOKI-138 R1, R3: a copy of the image of the app with a 2-pixel frame, inside the rectangle of
+// each group. A later frame is drawn over an earlier one.
+export function frameDifferences(image: PNG, different: Uint8Array): PNG {
+  const { width, height } = image;
+  const out = new PNG({ width, height });
+  out.data.set(image.data);
+  const paint = (x: number, y: number): void => {
+    out.data.set([...FRAME_COLOUR, 255], (y * width + x) * 4);
+  };
+  for (const [left, top, right, bottom] of groupDifferences(
+    different,
+    width,
+    height,
+  )) {
+    for (let t = 0; t < FRAME_WIDTH; t++) {
+      for (let x = left; x <= right; x++) {
+        paint(x, top + t);
+        paint(x, bottom - t);
+      }
+      for (let y = top; y <= bottom; y++) {
+        paint(left + t, y);
+        paint(right - t, y);
+      }
+    }
+  }
+  return out;
+}
+
 // R9: a pixel is different by the rule of LIMITS (pixelmatch threshold and includeAA).
 export function compareImages(a: Buffer, b: Buffer): Comparison {
   const first = PNG.sync.read(a);
@@ -151,6 +285,7 @@ export function compareImages(a: Buffer, b: Buffer): Comparison {
     threshold: LIMITS.threshold,
     includeAA: LIMITS.includeAA,
   });
+  const different = new Uint8Array(width * height);
   let box: Comparison["box"] = null;
   if (count > 0) {
     let [left, top, right, bottom] = [width, height, -1, -1];
@@ -163,6 +298,7 @@ export function compareImages(a: Buffer, b: Buffer): Comparison {
           out.data[i + 1] === 0 &&
           out.data[i + 2] === 0
         ) {
+          different[y * width + x] = 1;
           left = Math.min(left, x);
           top = Math.min(top, y);
           right = Math.max(right, x);
@@ -177,7 +313,7 @@ export function compareImages(a: Buffer, b: Buffer): Comparison {
     sizes,
     ratio: count / (width * height),
     box,
-    diff: PNG.sync.write(out),
+    diff: PNG.sync.write(frameDifferences(second, different)),
   };
 }
 
