@@ -73,6 +73,17 @@ outside the container.
 3. Run `pnpm test:e2e:parity` and read the report.
 4. In the pull request, say which images you added or replaced and why, and what the report shows.
 
+### The screens of the shell, on the prototype's data
+
+The screens of the shell (the conversation page, the Details panel, the dialogs, Preferences) are
+shown on `e2e/support/prototype-world.ts`: the workspace of the prototype's sample data (Hugepig
+Studio, 8 people, the conversations that Lan is in), with `stubWorld(page)` for the calls that the
+screens make. A declaration uses it as its `setup`; `e2e/parity/screens/app-screens.ts` is the
+example. A dialog of the app is drawn outside `.app`, so a declaration of a dialog captures the whole
+window: `appRoot: "html"`. A screen that the prototype and the app do not draw in the same way at a
+width (on a narrow screen the prototype shows the list of conversations and the app the open
+conversation) is not declared at that width: `widths`.
+
 ### A page outside the app shell
 
 The check takes the picture of `.app` on the side of the app, and `.app` is drawn only by the shell of

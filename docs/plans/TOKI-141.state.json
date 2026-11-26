@@ -1,0 +1,41 @@
+{
+  "approved_auto": true,
+  "base": "github/main",
+  "branch": "feat/toki-141-parity-app-screens",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-26T08:14:12Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-26T08:14:15Z",
+      "auto": true,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-26T08:14:15Z",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-26T08:26:52Z",
+      "stage": "check"
+    }
+  ],
+  "key": "TOKI-141",
+  "main_sha": "3def68eb3d05326d844b653cf4b1081e86bff9d6",
+  "metrics": {},
+  "mode": "manual",
+  "plan_approved": true,
+  "plan_hash": "17baf289e3ccf8652eb0e298c6efadb1c722d17310d24df8a079b74880049904",
+  "spec_commit": "c5a086d8215e83c502e11be9d541e1f90ad85be8",
+  "spec_paths": [
+    "docs/specs/2026-11-26-parity-app-screens-design.md"
+  ],
+  "stage": "check",
+  "tier": "S",
+  "verifier": {
+    "result": "PASS",
+    "round": 2
+  }
+}
