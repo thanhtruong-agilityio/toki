@@ -150,8 +150,8 @@ export function listRuns(root) {
   }
   for (const folder of names.sort()) {
     if (folder.startsWith(".")) continue;
-    if (!statSync(join(root, folder)).isDirectory()) continue;
     try {
+      if (!statSync(join(root, folder)).isDirectory()) continue;
       const meta = JSON.parse(
         readFileSync(join(root, folder, "meta.json"), "utf8"),
       );
@@ -336,18 +336,23 @@ export function saveRun(options, deps) {
       aside = true;
       writeFileSync(join(old, ".target"), name);
     }
-    try {
-      rename(tmp, target);
-    } catch (error) {
-      if (aside) {
-        rmSync(join(old, ".target"), { force: true });
-        renameSync(old, target);
-      }
+    rename(tmp, target);
+    if (aside) {
       aside = false;
-      throw error;
+      try {
+        rmSync(old, { recursive: true, force: true });
+      } catch (error) {
+        warn(
+          `the run is kept, but ${old} could not be removed: ${error.message}`,
+        );
+      }
     }
-    if (aside) rmSync(old, { recursive: true, force: true });
   } catch (error) {
+    // Any failure before the swap is done: the old run goes back as it was (R13).
+    if (aside) {
+      rmSync(join(old, ".target"), { force: true });
+      renameSync(old, target);
+    }
     rmSync(tmp, { recursive: true, force: true });
     return fail(warn, error.message);
   }

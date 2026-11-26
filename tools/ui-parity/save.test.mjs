@@ -9,6 +9,7 @@ import {
   readdirSync,
   renameSync,
   rmSync,
+  symlinkSync,
   utimesSync,
   writeFileSync,
 } from "node:fs";
@@ -644,6 +645,15 @@ test("--update puts the old folder back as it was when the last rename fails (R1
     "report.md",
   ]);
   assert.deepEqual(dotFiles(join(w.repo, "docs/ui-parity")), []);
+});
+
+test("a dangling entry in docs/ui-parity is named, not a crash (R12)", () => {
+  const w = world({ rows: ROWS });
+  const root = join(w.repo, "docs/ui-parity");
+  mkdirSync(root, { recursive: true });
+  symlinkSync(join(root, "nowhere"), join(root, "2026-11-01-broken"));
+  assert.equal(saveRun(OPTS, w.deps), 0);
+  assert.ok(w.warns.some((l) => l.includes("2026-11-01-broken")));
 });
 
 test("leftovers are removed even when the run keeps nothing (R13)", () => {

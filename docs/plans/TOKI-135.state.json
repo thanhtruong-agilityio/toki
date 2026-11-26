@@ -36,6 +36,10 @@
     {
       "at": "2026-11-26T01:48:16Z",
       "stage": "build"
+    },
+    {
+      "at": "2026-11-26T02:01:09Z",
+      "stage": "check"
     }
   ],
   "key": "TOKI-135",
@@ -48,10 +52,10 @@
   "spec_paths": [
     "docs/specs/2026-11-25-ui-parity-save-design.md"
   ],
-  "stage": "build",
+  "stage": "check",
   "tier": "M",
   "verifier": {
-    "result": null,
-    "round": 0
+    "result": "PASS",
+    "round": 1
   }
 }
