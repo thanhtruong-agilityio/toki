@@ -1,25 +1,34 @@
 {
-  "approved_auto": false,
+  "approved_auto": true,
   "base": "github/main",
-  "branch": "feat/toki-139",
+  "branch": "feat/toki-139-details-panel-section-spacing",
   "deployed_sha": null,
   "history": [
     {
       "at": "2026-11-26T08:43:31Z",
       "stage": "pick"
+    },
+    {
+      "at": "2026-11-26T08:43:34Z",
+      "auto": true,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-26T08:43:34Z",
+      "stage": "build"
     }
   ],
   "key": "TOKI-139",
   "main_sha": "4f74b4ab6fe2663d002e3596734e8191ec87ca2a",
   "metrics": {},
-  "mode": null,
-  "plan_approved": false,
-  "plan_hash": null,
+  "mode": "manual",
+  "plan_approved": true,
+  "plan_hash": "403411743325a1e448d5c1358e3ef8f36deb3e9c05937f0f2b5c5f97ab5a93bc",
   "spec_commit": "eb71324225f3964abc1ee5a551357b8e326f6114",
   "spec_paths": [
     "docs/specs/2026-11-26-details-panel-section-spacing-design.md"
   ],
-  "stage": "pick",
+  "stage": "build",
   "tier": "S",
   "verifier": {
     "result": null,

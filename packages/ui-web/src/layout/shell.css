@@ -78,6 +78,11 @@
 .sb h3:first-child {
   margin-top: 0;
 }
+/* TOKI-139: each section draws its heading as its own first child, so the rule above would take the
+   space off every heading; a section after a section is set apart by the prototype's 18 px. */
+.sb section + section {
+  margin-top: 18px;
+}
 .sechead {
   display: flex;
   align-items: center;

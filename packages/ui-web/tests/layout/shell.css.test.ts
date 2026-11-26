@@ -81,6 +81,9 @@ const tables: Row[] = [
     "font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); margin:18px 0 8px; font-weight:600",
   ),
   C(".sb h3:first-child", "margin-top:0"),
+  // TOKI-139: each heading is the first child of its own `section`, so the rule above would take the
+  // space off every heading; a `section` after a `section` has the prototype's 18 px above it.
+  C(".sb section + section", "margin-top:18px"),
   C(
     ".sechead",
     "display:flex; align-items:center; gap:12px; padding:18px 24px 10px; flex-wrap:wrap",
