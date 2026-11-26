@@ -67,7 +67,79 @@ const signInKnownDifferences: KnownDifference[] = (
   ),
 );
 
+// The conversation page, the Details panel, Browse channels, New message and Preferences
+// (TOKI-141), on the prototype's sample data (e2e/support/prototype-world.ts). Each reason says
+// what stays different and why: a feature that is not built yet (with the ticket that builds it) or
+// what a spec decided (with its requirement). A row that holds a difference that a ticket fixes
+// names it too. The ticket is `accepted`: these rows stay known, because each also holds
+// differences that are there for good, so none becomes "no longer a difference" when one is fixed.
+const LIST_SPEC = "docs/specs/2026-11-17-conversation-list-design.md";
+const SHELL_SPEC = "docs/specs/2026-11-16-app-shell-design.md";
+const DETAILS_SPEC =
+  "docs/specs/2026-11-17-conversation-header-details-design.md";
+const PICKER_SPEC =
+  "docs/specs/2026-11-17-browse-channels-people-picker-design.md";
+
+// The sidebar is drawn on the screens of the shell: the conversation page and the Details panel.
+const SIDEBAR_REASON =
+  "The sidebar: the app draws the sections that have a route, which are Home and Admin, and not " +
+  `the sections of later phases (${SHELL_SPEC}, "Not in phase 1"); the top search is the command ` +
+  "palette (TOKI-071), the list has its own name search (" +
+  `${LIST_SPEC}, R9); the '+' of the Direct messages heading and no pencil icon (the same spec, ` +
+  "scope, D-154, D-155); the unread badges (TOKI-054) and the presence (TOKI-055) are not built; " +
+  `no Owner role (${SHELL_SPEC}, D-152).`;
+const CHANNEL_REASON =
+  "The conversation page: the header is built, the rest is not: the message list (TOKI-041), the " +
+  "composer (TOKI-043), the reactions (TOKI-046), the Pinned tab (TOKI-048) and the " +
+  `Meet in progress (phase 4, ${LIST_SPEC}, scope). ` +
+  SIDEBAR_REASON;
+const DETAILS_REASON =
+  `The Details panel: what the panel's spec decided (${DETAILS_SPEC}): the sections About, ` +
+  "Members, Notifications, Settings and Leave (R12 to R21), the button Edit (R15) and, from " +
+  "docs/specs/2026-11-17-add-remove-people-design.md, the buttons Add people and Remove; the " +
+  "dates are written by formatDate, day before month (docs/specs/2026-11-16-date-time-rules-design.md, " +
+  "R2); the job titles and the presence in the member rows are TOKI-057 and TOKI-055; the " +
+  "sections Guests, Email this channel and Automations are phases 5 and 4 (the panel's spec, scope); the space above the " +
+  "headings of the sections is fixed by TOKI-139. " +
+  SIDEBAR_REASON +
+  " The page behind the panel is the conversation page, with the differences above.";
+const BROWSE_REASON =
+  `Browse channels: what the dialogs' spec decided (${PICKER_SPEC}): a row holds the name, the ` +
+  "topic and the member count (R6), the buttons Join and Open, no job title; a long topic hides " +
+  "the member count, which TOKI-140 fixes; which channels the list holds is the data of the stub " +
+  "of the check. The page behind the dialog is the conversation page, with the differences of " +
+  "that screen.";
+const NEW_MESSAGE_REASON =
+  `New message: what the dialogs' spec decided (${PICKER_SPEC}): the list holds people and no ` +
+  "channel, and the footer has the buttons Cancel and Start (R21); the job titles and the " +
+  "presence in the rows are TOKI-057 and TOKI-055; the search box shows no hint, which TOKI-140 " +
+  "fixes. The page behind the dialog is the conversation page, with the differences of that screen.";
+const PREFS_REASON =
+  "Preferences: the page holds the section of the signed-in devices only; the sections Look, " +
+  "Accent, Density, Claude, Notifications, Pause notifications and Language are built by " +
+  `TOKI-078. ` +
+  SIDEBAR_REASON;
+
+const appScreenKnownDifferences: KnownDifference[] = (
+  [
+    ["channel", CHANNEL_REASON, ["wide", "mid"]],
+    ["details", DETAILS_REASON, ["wide", "mid"]],
+    ["browse", BROWSE_REASON, ["wide", "mid"]],
+    ["new-message", NEW_MESSAGE_REASON, ["wide", "mid"]],
+    ["prefs", PREFS_REASON, ["wide", "mid", "narrow"]],
+  ] as const
+).flatMap(([screen, reason, widths]) =>
+  (["calm", "focus"] as const).flatMap((look) =>
+    widths.map((width) => ({
+      id: `${screen}/${look}/${width}`,
+      reason,
+      ticket: "accepted",
+    })),
+  ),
+);
+
 export const knownDifferences: KnownDifference[] = [
   ...adminKnownDifferences,
   ...signInKnownDifferences,
+  ...appScreenKnownDifferences,
 ];
