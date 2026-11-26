@@ -29,13 +29,15 @@ export function BrowseRow({
 }: BrowseRowProps) {
   const { t } = useTranslation();
   const action = browseRowAction(channel);
-  const sub = [
+  // The line has two parts (TOKI-140): the word Private and the topic, which are cut with an ellipsis
+  // when they do not fit, and the member count, which is never cut. The text is the same as one line.
+  const lead = [
     channel.isPrivate ? t("browse.row.private") : null,
     channel.topic,
-    t("browse.row.members", { count: channel.memberCount }),
   ]
     .filter((part): part is string => part !== null && part !== "")
     .join(" · ");
+  const count = t("browse.row.members", { count: channel.memberCount });
 
   return (
     <li className="prow">
@@ -48,7 +50,13 @@ export function BrowseRow({
         <b className="ell" style={{ display: "block" }}>
           {channel.name}
         </b>
-        <span className="xs muted sub ell">{sub}</span>
+        <span className="xs muted sub sub-line">
+          {lead !== "" ? <span className="ell sub-lead">{lead}</span> : null}
+          <span className="sub-count">
+            {lead !== "" ? " · " : ""}
+            {count}
+          </span>
+        </span>
       </span>
       {channel.archived ? <Tag>{t("browse.row.archived")}</Tag> : null}
       {action === "open" ? (

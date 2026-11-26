@@ -61,6 +61,32 @@ describe("BrowseRow (TOKI-034 R6, R7)", () => {
     expect(li.querySelector(".sub")!.textContent).toBe("1 member");
   });
 
+  test("a long topic is cut alone: the topic and the count are two parts, in that order (TOKI-140 R1, R2)", () => {
+    const topic =
+      "Everything for the 1.0 launch: checklist, builds, announcement ".repeat(
+        4,
+      );
+    const { li } = row({ topic });
+    const sub = li.querySelector(".grow .sub")!;
+    // The text is the same as before: the topic, " · " and the count.
+    expect(sub.textContent).toBe(`${topic} · 25 members`);
+    const lead = sub.querySelector(".sub-lead");
+    const count = sub.querySelector(".sub-count");
+    expect(lead?.textContent).toBe(topic);
+    expect(lead?.className).toContain("ell");
+    expect(count?.textContent).toBe(" · 25 members");
+    expect(lead!.compareDocumentPosition(count!)).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING,
+    );
+  });
+
+  test("with no topic the count stands alone, with no separator (TOKI-140 R2)", () => {
+    const { li } = row({ memberCount: 3, topic: null });
+    const sub = li.querySelector(".sub")!;
+    expect(sub.querySelector(".sub-lead")).toBeNull();
+    expect(sub.querySelector(".sub-count")?.textContent).toBe("3 members");
+  });
+
   test("a private channel says so first", () => {
     const { li } = row({ isPrivate: true, isMember: true });
     expect(li.querySelector(".sub")!.textContent).toBe(

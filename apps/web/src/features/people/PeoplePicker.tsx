@@ -115,6 +115,7 @@ export function PeoplePicker({
           ref={input}
           type="search"
           aria-label={searchLabel}
+          placeholder={searchLabel}
           data-autofocus
           value={text}
           onChange={onText}
