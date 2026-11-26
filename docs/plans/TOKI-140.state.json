@@ -16,6 +16,10 @@
     {
       "at": "2026-11-26T09:11:22Z",
       "stage": "build"
+    },
+    {
+      "at": "2026-11-26T09:28:04Z",
+      "stage": "check"
     }
   ],
   "key": "TOKI-140",
@@ -28,7 +32,7 @@
   "spec_paths": [
     "docs/specs/2026-11-26-browse-picker-hints-design.md"
   ],
-  "stage": "build",
+  "stage": "check",
   "tier": "S",
   "verifier": {
     "result": null,
