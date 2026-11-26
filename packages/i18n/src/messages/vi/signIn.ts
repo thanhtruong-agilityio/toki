@@ -1,6 +1,9 @@
 // Các văn bản của trang đăng nhập (TOKI-023). Xưng hô "bạn" (D-188), cần được review cùng bản tiếng Anh.
 export const signIn = {
   pageTitle: "Đăng nhập · Toki",
+  card: {
+    platform: "trên Toki",
+  },
   email: {
     label: "Email",
     submit: "Gửi mã",

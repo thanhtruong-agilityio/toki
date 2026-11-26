@@ -1,6 +1,9 @@
 // The texts of the sign-in page (TOKI-023). Wordings signed off on 2026-11-19.
 export const signIn = {
   pageTitle: "Sign in · Toki",
+  card: {
+    platform: "on Toki",
+  },
   email: {
     label: "Email",
     submit: "Send code",

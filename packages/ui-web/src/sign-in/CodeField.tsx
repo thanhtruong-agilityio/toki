@@ -63,6 +63,7 @@ export const CodeField = forwardRef<HTMLInputElement, CodeFieldProps>(
         ref={ref}
         label={t("signIn.code.label")}
         variant="code"
+        placeholder={"0".repeat(codeLength)}
         className={cx(shake && "shake")}
         value={value}
         onChange={handle}

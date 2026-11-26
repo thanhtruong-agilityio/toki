@@ -33,6 +33,23 @@ describe("CodeField (R9, R10)", () => {
     expect(screen.getByLabelText("Code")).toBe(box());
   });
 
+  test("has the placeholder of codeLength zeros and keeps its label (TOKI-136 R4)", async () => {
+    const user = userEvent.setup();
+    render(<Harness codeLength={6} />);
+    // The placeholder is an attribute: it stays in the DOM whatever the value is, and the browser
+    // hides it once a digit is typed (not asserted here: jsdom does not render it).
+    expect(box()).toHaveAttribute("placeholder", "000000");
+    expect(screen.getByLabelText("Code")).toBe(box()); // the label is the name of the field
+    await user.type(box(), "1");
+    expect(box()).toHaveAttribute("placeholder", "000000");
+    expect(screen.getByLabelText("Code")).toBe(box());
+  });
+
+  test("the placeholder has as many zeros as the code has digits (TOKI-136 R4)", () => {
+    render(<Harness codeLength={4} />);
+    expect(box()).toHaveAttribute("placeholder", "0000");
+  });
+
   test("takes the length from the prop, not from a number of its own", () => {
     render(<Harness codeLength={4} />);
     expect(box()).toHaveAttribute("maxlength", "4");

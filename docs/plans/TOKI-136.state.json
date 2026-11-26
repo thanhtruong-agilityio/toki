@@ -1,0 +1,49 @@
+{
+  "approved_auto": false,
+  "base": "github/main",
+  "branch": "feat/toki-136-signin-ui-parity-fixes",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-26T07:06:38Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-26T07:07:28Z",
+      "stage": "design"
+    },
+    {
+      "at": "2026-11-26T07:10:56Z",
+      "stage": "plan"
+    },
+    {
+      "at": "2026-11-26T07:11:16Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-26T07:11:16Z",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-26T07:28:27Z",
+      "stage": "check"
+    }
+  ],
+  "key": "TOKI-136",
+  "main_sha": "dc0f392a6aaa71f7acf4c13e45debabdea38e3dc",
+  "metrics": {},
+  "mode": "manual",
+  "plan_approved": true,
+  "plan_hash": "cbf326ab840100484e111e16cd5b459daf3f60d453755169e675f29a8a93fd43",
+  "spec_commit": "9c427e45c4469faf42300538b60705ad84e61ed8",
+  "spec_paths": [
+    "docs/specs/2026-11-26-signin-ui-parity-fixes-design.md"
+  ],
+  "stage": "check",
+  "tier": "M",
+  "verifier": {
+    "result": "PASS",
+    "round": 2
+  }
+}
