@@ -5,6 +5,8 @@ import {
   compareImages,
   expandScreens,
   flattenDeclarations,
+  frameDifferences,
+  groupDifferences,
   screenRow,
   seededOnce,
   type ScreenDecl,
@@ -70,6 +72,171 @@ describe("compareImages (R9)", () => {
     expect(r.sameSize).toBe(false);
     expect(r.sizes).toEqual(["10x10", "12x10"]);
     expect(r.diff).toBeNull();
+  });
+});
+
+// A mask of w x h with a 1 at each of the given points.
+function mask(w: number, h: number, dots: [number, number][]): Uint8Array {
+  const m = new Uint8Array(w * h);
+  for (const [x, y] of dots) m[y * w + x] = 1;
+  return m;
+}
+
+describe("groupDifferences (TOKI-138 R2)", () => {
+  it("two different pixels 6 apart are one group", () => {
+    expect(
+      groupDifferences(
+        mask(60, 40, [
+          [10, 20],
+          [16, 20],
+        ]),
+        60,
+        40,
+      ),
+    ).toHaveLength(1);
+  });
+
+  it("two different pixels 7 apart are two groups", () => {
+    expect(
+      groupDifferences(
+        mask(60, 40, [
+          [10, 20],
+          [17, 20],
+        ]),
+        60,
+        40,
+      ),
+    ).toHaveLength(2);
+  });
+
+  it("the square sense: 6 across and 6 down is one group, 6 across and 7 down is two", () => {
+    expect(
+      groupDifferences(
+        mask(60, 40, [
+          [10, 10],
+          [16, 16],
+        ]),
+        60,
+        40,
+      ),
+    ).toHaveLength(1);
+    expect(
+      groupDifferences(
+        mask(60, 40, [
+          [10, 10],
+          [16, 17],
+        ]),
+        60,
+        40,
+      ),
+    ).toHaveLength(2);
+  });
+
+  it("a chain of pixels, each 6 from the next, is one group", () => {
+    const dots: [number, number][] = [
+      [5, 20],
+      [11, 20],
+      [17, 20],
+      [23, 20],
+      [29, 20],
+    ];
+    expect(groupDifferences(mask(60, 40, dots), 60, 40)).toHaveLength(1);
+  });
+
+  it("the rectangle is the box of the pixels grown by 6, clipped to the image", () => {
+    const [r] = groupDifferences(
+      mask(60, 40, [
+        [20, 20],
+        [23, 22],
+      ]),
+      60,
+      40,
+    );
+    expect(r).toEqual([14, 14, 29, 28]);
+    const [edge] = groupDifferences(mask(60, 40, [[2, 1]]), 60, 40);
+    expect(edge).toEqual([0, 0, 8, 7]);
+  });
+
+  it("the groups are in the order of the first pixel in reading order", () => {
+    const rects = groupDifferences(
+      mask(80, 40, [
+        [50, 5],
+        [10, 30],
+      ]),
+      80,
+      40,
+    );
+    expect(rects[0]![0]).toBe(44); // the pixel of the top row first
+    expect(rects[1]![0]).toBe(4);
+  });
+
+  it("no different pixel, no group", () => {
+    expect(groupDifferences(mask(20, 20, []), 20, 20)).toEqual([]);
+  });
+});
+
+describe("frameDifferences (TOKI-138 R1, R3)", () => {
+  const grey = (w: number, h: number): PNG =>
+    PNG.sync.read(png(w, h, [9, 9, 9]));
+  const at = (img: PNG, x: number, y: number): number[] => [
+    ...img.data.subarray((y * img.width + x) * 4, (y * img.width + x) * 4 + 3),
+  ];
+  const MAGENTA = [255, 0, 255];
+
+  it("has the size of the image and leaves the pixels inside a frame and far from it as they were (R1)", () => {
+    const out = frameDifferences(grey(60, 40), mask(60, 40, [[30, 20]]));
+    expect([out.width, out.height]).toEqual([60, 40]);
+    expect(at(out, 30, 20)).toEqual([9, 9, 9]); // inside the frame
+    expect(at(out, 0, 0)).toEqual([9, 9, 9]); // far from it
+    expect(at(out, 59, 39)).toEqual([9, 9, 9]);
+  });
+
+  it("draws a 2-pixel magenta frame inside the rectangle (R3)", () => {
+    const out = frameDifferences(grey(60, 40), mask(60, 40, [[30, 20]])); // rectangle 24..36, 14..26
+    expect(at(out, 24, 20)).toEqual(MAGENTA); // the left edge
+    expect(at(out, 25, 20)).toEqual(MAGENTA); // the second pixel of the edge
+    expect(at(out, 26, 20)).toEqual([9, 9, 9]); // inside the frame
+    expect(at(out, 23, 20)).toEqual([9, 9, 9]); // next to it, outside
+    expect(at(out, 36, 20)).toEqual(MAGENTA); // the right edge
+    expect(at(out, 30, 14)).toEqual(MAGENTA); // the top edge
+    expect(at(out, 30, 26)).toEqual(MAGENTA); // the bottom edge
+  });
+
+  it("a frame near the edge of the image is drawn on the edge row and column, inside the image", () => {
+    const out = frameDifferences(grey(60, 40), mask(60, 40, [[1, 1]])); // rectangle 0..7, 0..7
+    expect(at(out, 0, 3)).toEqual(MAGENTA);
+    expect(at(out, 3, 0)).toEqual(MAGENTA);
+    expect(at(out, 7, 3)).toEqual(MAGENTA);
+  });
+
+  it("the colour is magenta whatever the app draws", () => {
+    const white = PNG.sync.read(png(60, 40, [255, 255, 255]));
+    const out = frameDifferences(white, mask(60, 40, [[30, 20]]));
+    expect(at(out, 24, 20)).toEqual(MAGENTA);
+  });
+
+  it("two frames far apart are both drawn", () => {
+    const out = frameDifferences(
+      grey(80, 40),
+      mask(80, 40, [
+        [10, 20],
+        [60, 20],
+      ]),
+    );
+    expect(at(out, 4, 20)).toEqual(MAGENTA);
+    expect(at(out, 54, 20)).toEqual(MAGENTA);
+  });
+});
+
+describe("compareImages draws the frames (TOKI-138)", () => {
+  it("gives a picture of the size of the images, with the app unchanged far from the difference", () => {
+    const r = compareImages(
+      png(40, 40, [9, 9, 9]),
+      png(40, 40, [9, 9, 9], [[20, 20]]),
+    );
+    const out = PNG.sync.read(r.diff!);
+    expect([out.width, out.height]).toEqual([40, 40]);
+    expect([...out.data.subarray(0, 3)]).toEqual([9, 9, 9]);
   });
 });
 

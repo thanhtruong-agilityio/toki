@@ -1,0 +1,41 @@
+{
+  "approved_auto": true,
+  "base": "github/main",
+  "branch": "feat/toki-138",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-26T05:08:13Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-26T05:08:16Z",
+      "auto": true,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-26T05:08:16Z",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-26T07:01:44Z",
+      "stage": "check"
+    }
+  ],
+  "key": "TOKI-138",
+  "main_sha": "05fc3bb03c503e4ef93d3ad7385a03342fb1b609",
+  "metrics": {},
+  "mode": "manual",
+  "plan_approved": true,
+  "plan_hash": "0b3e29a0c0dcac389d02f328372a922cb4d8ce86149f99e5ce52039f383738a3",
+  "spec_commit": "7194a8e31b92488a44f27fd10c1a88c30c06bfae",
+  "spec_paths": [
+    "docs/specs/2026-11-26-parity-diff-frame-design.md"
+  ],
+  "stage": "check",
+  "tier": "S",
+  "verifier": {
+    "result": "PASS",
+    "round": 1
+  }
+}
