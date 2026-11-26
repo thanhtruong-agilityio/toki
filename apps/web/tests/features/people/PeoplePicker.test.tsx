@@ -51,6 +51,13 @@ describe("PeoplePicker (TOKI-034 R18 to R20)", () => {
     expect(container.querySelector("div.mlist.people ul")).not.toBeNull();
   });
 
+  test("the search input shows its label as a hint and keeps it as its name (TOKI-140 R3)", () => {
+    render(<Harness searchLabel="Find someone" />);
+    const input = screen.getByRole("searchbox", { name: "Find someone" });
+    // The placeholder is the label the page passes in, not a text of its own.
+    expect(input).toHaveAttribute("placeholder", "Find someone");
+  });
+
   test("pressing a row adds a chip and clears the text; pressing again removes it", async () => {
     const user = userEvent.setup();
     const changes = vi.fn();

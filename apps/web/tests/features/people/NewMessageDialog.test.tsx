@@ -2,6 +2,7 @@
 import { act, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ApiError } from "@toki/client-core";
+import { I18nProvider } from "@toki/i18n/react";
 import { ErrorCodes } from "@toki/shared";
 import { useState } from "react";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
@@ -66,6 +67,28 @@ describe("NewMessageDialog (TOKI-034 R21 to R25)", () => {
     expect(
       screen.getByRole("searchbox", { name: "Search people" }),
     ).toHaveFocus();
+  });
+
+  test("the search box shows its label as a hint, in English and in Vietnamese (TOKI-140 R3)", () => {
+    const english = render(<Host />);
+    expect(
+      screen.getByRole("searchbox", { name: "Search people" }),
+    ).toHaveAttribute("placeholder", "Search people");
+    english.unmount();
+    render(
+      <Providers>
+        <I18nProvider language="vi">
+          <NewMessageDialog
+            open
+            onClose={() => {}}
+            onOpenConversation={() => {}}
+          />
+        </I18nProvider>
+      </Providers>,
+    );
+    expect(
+      screen.getByRole("searchbox", { name: "Tìm người" }),
+    ).toHaveAttribute("placeholder", "Tìm người");
   });
 
   test("Start is disabled with no chip and enabled with one; the title states no kind", async () => {
