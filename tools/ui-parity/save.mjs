@@ -178,3 +178,26 @@ export function pruneLines(root, n) {
   const sorted = [...runs].sort(byNewest).map((run) => run.folder);
   return { keep: sorted.slice(0, n), remove: sorted.slice(n), unreadable };
 }
+
+// R18: `--prune <n>` only prints. It keeps the newest `n` kept runs and prints the `git rm` command
+// for each older one; the builder runs them. It deletes nothing itself.
+export function prune(root, n, io) {
+  const { keep, remove, unreadable } = pruneLines(root, n);
+  for (const folder of unreadable) {
+    io.warn(`not counted, no readable meta.json: docs/ui-parity/${folder}`);
+  }
+  if (remove.length === 0) {
+    io.log(
+      `nothing is older than the newest ${n} kept runs (${keep.length} kept)`,
+    );
+    return 0;
+  }
+  io.log(
+    `keeping the newest ${n}; to remove the ${remove.length} older runs, run:`,
+  );
+  for (const folder of remove) io.log(`git rm -r docs/ui-parity/${folder}`);
+  io.log(
+    "then run `pnpm ui:save` next time: it makes index.md again from the folders",
+  );
+  return 0;
+}

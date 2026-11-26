@@ -4,6 +4,7 @@ import {
   mkdirSync,
   mkdtempSync,
   readFileSync,
+  readdirSync,
   rmSync,
   writeFileSync,
 } from "node:fs";
@@ -20,6 +21,7 @@ import {
   listRuns,
   writeIndex,
   pruneLines,
+  prune,
 } from "./save.mjs";
 
 test("parseSaveArgs: defaults run and keep the images", () => {
@@ -334,4 +336,42 @@ test("pruneLines: an unreadable folder is not counted and is named", () => {
   const r = pruneLines(root, 2);
   assert.deepEqual(r.unreadable, ["2026-11-26-zzzzzzz"]);
   assert.equal(r.keep.length + r.remove.length, 5);
+});
+
+function io() {
+  const logs = [];
+  const warns = [];
+  return { logs, warns, log: (l) => logs.push(l), warn: (l) => warns.push(l) };
+}
+
+test("prune: prints the git rm commands for the runs older than the newest n and deletes nothing", () => {
+  const root = five();
+  const before = readdirSync(root).sort();
+  const o = io();
+  assert.equal(prune(root, 2, o), 0);
+  assert.deepEqual(
+    o.logs.filter((l) => l.startsWith("git rm")),
+    [
+      "git rm -r docs/ui-parity/2026-11-23-aaaaaa3",
+      "git rm -r docs/ui-parity/2026-11-22-aaaaaa2",
+      "git rm -r docs/ui-parity/2026-11-21-aaaaaa1",
+    ],
+  );
+  assert.ok(o.logs.some((l) => /makes index\.md again/.test(l)));
+  assert.deepEqual(readdirSync(root).sort(), before);
+});
+
+test("prune: says that nothing is older when n is larger than the number of folders", () => {
+  const o = io();
+  assert.equal(prune(five(), 9, o), 0);
+  assert.ok(o.logs.some((l) => /nothing is older/.test(l)));
+  assert.equal(o.logs.filter((l) => l.startsWith("git rm")).length, 0);
+});
+
+test("prune: names a folder with no readable meta.json", () => {
+  const root = five();
+  mkdirSync(join(root, "2026-11-26-zzzzzzz"));
+  const o = io();
+  prune(root, 2, o);
+  assert.ok(o.warns.some((l) => l.includes("2026-11-26-zzzzzzz")));
 });
