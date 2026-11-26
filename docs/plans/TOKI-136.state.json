@@ -1,7 +1,7 @@
 {
   "approved_auto": false,
   "base": "github/main",
-  "branch": "feat/toki-136",
+  "branch": "feat/toki-136-signin-ui-parity-fixes",
   "deployed_sha": null,
   "history": [
     {
@@ -43,7 +43,7 @@
   "stage": "check",
   "tier": "M",
   "verifier": {
-    "result": "FAIL",
-    "round": 1
+    "result": "PASS",
+    "round": 2
   }
 }
