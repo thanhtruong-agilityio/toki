@@ -114,10 +114,13 @@ const NEW_MESSAGE_REASON =
   "channel, and the footer has the buttons Cancel and Start (R21); the job titles and the " +
   "presence in the rows are TOKI-057 and TOKI-055; the search box shows no hint, which TOKI-140 " +
   "fixes. The page behind the dialog is the conversation page, with the differences of that screen.";
+const PREFS_SPEC = "docs/specs/2026-11-26-preferences-screen-design.md";
 const PREFS_REASON =
-  "Preferences: the page holds the section of the signed-in devices only; the sections Look, " +
-  "Accent, Density, Claude, Notifications, Pause notifications and Language are built by " +
-  `TOKI-078. ` +
+  "Preferences: the page holds the section of the signed-in devices only. TOKI-078 builds Look, " +
+  "Accent, Density, Language, Notifications (three switches), Pause, Your status and Profile " +
+  `(${PREFS_SPEC}, R3 to R14), and leaves out 'Claude on this computer' (D-008), the switch ` +
+  "'Email me about missed mentions' (D-016, phase 5) and every '(demo)' choice of the " +
+  `prototype (${PREFS_SPEC}, R26). ` +
   SIDEBAR_REASON;
 
 const appScreenKnownDifferences: KnownDifference[] = (
