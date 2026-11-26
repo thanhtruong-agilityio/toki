@@ -1,3 +1,4 @@
+import { spawnSync } from "node:child_process";
 import { randomBytes } from "node:crypto";
 import {
   cpSync,
@@ -10,7 +11,8 @@ import {
   statSync,
   writeFileSync,
 } from "node:fs";
-import { join } from "node:path";
+import { dirname, join, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import { imageTag, playwrightVersion } from "./container.mjs";
 
 // `pnpm ui:save`: keeps the results of the UI parity check in `docs/ui-parity/` (TOKI-135). The
@@ -359,4 +361,52 @@ export function saveRun(options, deps) {
   );
   log("next: git add docs/ui-parity");
   return 0;
+}
+
+const USAGE =
+  "usage: pnpm ui:save [--no-run] [--no-images] [--update]   |   pnpm ui:save --prune <n>";
+
+// The command line. `io` replaces what touches the outside; the defaults are the real thing.
+export function main(argv, io = {}) {
+  const repo =
+    io.repo ?? resolve(dirname(fileURLToPath(import.meta.url)), "../..");
+  const deps = {
+    ...io,
+    repo,
+    git:
+      io.git ??
+      ((args) => {
+        const r = spawnSync("git", args, { cwd: repo, encoding: "utf8" });
+        if (r.status !== 0) {
+          throw new Error(`git ${args.join(" ")} failed: ${r.stderr.trim()}`);
+        }
+        return r.stdout;
+      }),
+    runCheck:
+      io.runCheck ??
+      (() =>
+        spawnSync(process.execPath, ["tools/ui-parity/container.mjs", "test"], {
+          cwd: repo,
+          stdio: "inherit",
+        }).status ?? 1),
+    now: io.now ?? (() => new Date()),
+    log: io.log ?? ((line) => console.log(line)),
+    warn: io.warn ?? ((line) => console.error(line)),
+  };
+  let options;
+  try {
+    options = parseSaveArgs(argv);
+  } catch (error) {
+    if (!(error instanceof UsageError)) throw error;
+    deps.warn(`${error.message}\n${USAGE}`);
+    return 2;
+  }
+  if (options.prune !== null) {
+    return prune(join(repo, "docs/ui-parity"), options.prune, deps);
+  }
+  return saveRun(options, deps);
+}
+
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  process.exit(main(process.argv.slice(2)));
 }

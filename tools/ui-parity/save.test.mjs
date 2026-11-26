@@ -25,6 +25,7 @@ import {
   writeIndex,
   pruneLines,
   prune,
+  main,
   saveRun,
 } from "./save.mjs";
 
@@ -677,4 +678,34 @@ test("the list follows the folders after a save, and names a bad folder (R12)", 
   const md = read(w.repo, "docs/ui-parity/index.md");
   assert.match(md, /2026-11-27/);
   assert.doesNotMatch(md, /2026-11-26/);
+});
+
+test("main: a usage error exits 2 and prints the usage line (R1)", () => {
+  const w = world({ rows: ROWS });
+  assert.equal(main(["--prune", "0"], { ...w.deps }), 2);
+  assert.match(w.warns.join("\n"), /usage: pnpm ui:save/);
+  assert.equal(main(["--nope"], { ...w.deps }), 2);
+});
+
+test("main: --prune prints the commands for the older runs and exits 0 (R18)", () => {
+  const w = world({ rows: ROWS });
+  const root = join(w.repo, "docs/ui-parity");
+  for (let d = 1; d <= 5; d += 1) {
+    const dir = join(root, `2026-11-0${d}-aaaaaa${d}`);
+    mkdirSync(dir, { recursive: true });
+    writeFileSync(
+      join(dir, "meta.json"),
+      JSON.stringify(meta(`2026-11-0${d}T10:00:00.000Z`)),
+    );
+  }
+  assert.equal(main(["--prune", "2"], { ...w.deps }), 0);
+  assert.equal(w.logs.filter((l) => l.startsWith("git rm -r")).length, 3);
+  assert.equal(readdirSync(root).length, 5);
+});
+
+test("main: --no-run saves the report that is there (R9)", () => {
+  const w = world({ rows: ROWS, writeOnRun: false });
+  w.writeReport();
+  assert.equal(main(["--no-run"], { ...w.deps }), 0);
+  assert.equal(existsSync(join(w.repo, "docs/ui-parity", NAME)), true);
 });
