@@ -24,7 +24,7 @@ The 200 KB figure reuses the measurement of the web skeleton and the CI ticket, 
 - It runs against the production stack of TOKI-084, through Caddy, on a machine of the first VPS: 2 vCPU, 4 GB RAM, 80 GB. Source: TOKI-084 (Scope, Hand-offs), technical design, Deployment, NFR-04, NFR-07.
 - The messages are created in bulk outside the app, and the indexes the real database has are documented. Source: TOKI-089 plan line; TOKI-069 R4, R11 and TOKI-036 R11.
 - The results are recorded in a file, not as a pass or fail of the shared pipeline. Source: the plan line of this ticket; the shared pipeline is a pull-request check (TOKI-007).
-- The measurement uses real time, and no other test of the repository does. Source: TOKI-008 R19 (no real timers in tests).
+- The measurement uses real time; the tests of the script take time and timers as parameters and never wait. Source: TOKI-008 R19 (application code takes the clock as a parameter); the rule for the tests is this ticket's own choice, not a repository rule.
 - No real person's data and no secret: every account, message and secret is made for the run. Source: TOKI-084 R27 (secrets stay in `.env` and in no image or file of the repository).
 - Milestone M6, size L. Needs TOKI-084. Source: plan, ticket TOKI-089.
 
@@ -35,3 +35,7 @@ The 200 KB figure reuses the measurement of the web skeleton and the CI ticket, 
 - On which machine is the reference run made, and where does the script run in relation to the stack?
 - When a figure is over its target, what happens to the milestone?
 - Is the 200 KB figure measured on the source tree or on what the image serves?
+- Is the delivery figure the time on a socket or the time on a screen?
+- What does "scrolls 10,000 messages" measure: a list already loaded, or one that loads while it scrolls?
+- What is the workload while measuring (how many people send, at what pace, how many samples)?
+- How large is the reader with many conversations (D-117 says to revisit past 500)?
