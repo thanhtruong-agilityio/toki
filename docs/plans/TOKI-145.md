@@ -38,6 +38,8 @@ Approved by Thanh Truong on 2026-11-27.
 - **Narrow Calm main area.** From 720 to 727 px the main area (352 to 359 px) is narrower than the 360 px panel, which then covers up to 8 px of the conversation column. Decided by Thanh Truong on 2026-11-27 during the build: the panel stays 360 px; no new style rule. The browser test of R19 allows exactly that overlap, and the specs say it (Task 5).
 - **Test change the spec did not name.** `look-selectors.test.ts` allows Focus only in the pair `focus, classic`; it also allows the three-look list.
 
+The branch also holds `docs/plans/TOKI-145.state.json`, the state file of the Dev flow. Its script writes it and it is committed with the plan, as on earlier tickets.
+
 ## Global Constraints
 
 - Focus and Classic look and behave as before; so does every look under 720 px.
@@ -499,7 +501,7 @@ Run the command of step 2. Expected: PASS.
 | `2026-11-23-composer-design.md` | 100 | the Calm main area at 720 is 352 px |
 | `2026-11-26-accessibility-pass-design.md` | 79 | "Calm and Focus column" |
 
-`2026-11-16-base-components-2-design.md:79` describes a test page with a column of 272 px, not Calm's layout: it stays, and the pull request says so.
+`2026-11-16-base-components-2-design.md:79` describes a test page with a column of 272 px, not Calm's layout: it stays, and the pull request says so. Line 129 of the same spec quotes a measurement of the older prototype (the user card from x 12 to 260, inside the 272 px sidebar): it is marked as measured before TOKI-145.
 
 - [ ] **Step 1:** Edit the lines.
 - [ ] **Step 2:** `for f in docs/specs/*.md; do bash .github/scripts/spec-ready.sh "$f" >/dev/null || echo "$f"; done` prints the same list before and after the edit.
