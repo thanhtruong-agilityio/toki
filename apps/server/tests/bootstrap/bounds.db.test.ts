@@ -191,7 +191,7 @@ describe("the number of statements does not grow with the answer (R14)", () => {
     };
   }
 
-  it("counts 7 or fewer on the transaction, equal for 3 and for 500 conversations, and equal totals", async () => {
+  it("counts 8 or fewer on the transaction, equal for 3 and for 500 conversations, and equal totals", async () => {
     const small = await fill({
       ...ordinary,
       people: 3,
@@ -202,17 +202,17 @@ describe("the number of statements does not grow with the answer (R14)", () => {
     const big = await fill(ordinary);
     const a = await count(small.h, small.reader);
     const b = await count(big.h, big.reader);
-    expect(a.transaction.length).toBeLessThanOrEqual(7);
+    expect(a.transaction.length).toBeLessThanOrEqual(8);
     expect(a.transaction.length).toBe(b.transaction.length);
     expect(a.total).toBe(b.total);
-    // What the seven are: begin, account, accounts by ids, workspace, people,
-    // conversations, commit. The event number reads nothing yet.
+    // What the eight are: begin, account, accounts by ids, workspace, people,
+    // conversations, event number, commit.
     expect(a.transaction[0]!.toLowerCase()).toBe(
       "begin isolation level repeatable read read only",
     );
     expect(a.transaction.at(-1)!.toLowerCase()).toBe("commit");
-    expect(a.transaction).toHaveLength(7);
-    // The five reads in between, by what each selects.
+    expect(a.transaction).toHaveLength(8);
+    // The six reads in between, by what each selects.
     const reads = a.transaction.slice(1, -1).map((q) => q.toLowerCase());
     expect(reads[0]).toMatch(/from "users"/); // the account
     expect(reads[0]).toMatch(/"email"/);
@@ -223,5 +223,6 @@ describe("the number of statements does not grow with the answer (R14)", () => {
     expect(reads[3]).toMatch(/collate "c"/);
     expect(reads[4]).toMatch(/from "conversations"/);
     expect(reads[4]).toMatch(/inner join "conversation_members"/);
+    expect(reads[5]).toMatch(/from "event_counters"/);
   });
 });
