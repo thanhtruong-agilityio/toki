@@ -2,6 +2,7 @@
 
 Date: 2026-11-27 · Status: draft for review
 Intent: docs/intents/classic-column-header.md (Thanh Truong, lead)
+Ticket: TOKI-149
 
 ## Goal
 With the look Classic the conversation column is dark (TOKI-144), but its top is still the top of Focus: a heading "Conversations" with a Browse channels button, then the name search field and the chips. The owner's picture and the prototype show another top: the workspace name and an online dot on the left, a filter button and a compose button on the right, and under them a box "Find a conversation". This ticket draws that header in the app, in the dark column, in both schemes. It draws the header only: the quick links, the buttons of the rail and the workspace tile, and the Look cards are other tickets.
