@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import {
   accents,
+  getSideColours,
   getTheme,
   looks,
   schemes,
@@ -230,5 +231,35 @@ describe("the values of the tokens are the values of the prototype (TOKI-143 R13
     expect(differences(getTheme("focus", "dark", "teal"), values)).toEqual([
       expect.stringContaining("--bg"),
     ]);
+  });
+});
+
+describe("the sidebar colours are the prototype's (TOKI-144 R1)", () => {
+  const names = {
+    rail: "--side-rail",
+    sideBg: "--side-bg",
+    ink: "--side-ink",
+    muted: "--side-muted",
+    line: "--side-line",
+    hover: "--side-hover",
+  } as const;
+  for (const scheme of schemes) {
+    it(`Classic ${scheme}`, () => {
+      const values = prototypeValues("classic", scheme, "teal");
+      const side = getSideColours(scheme);
+      for (const [key, name] of Object.entries(names)) {
+        expect(
+          normalise("colour", side[key as keyof typeof side]),
+          `${scheme} ${name}`,
+        ).toBe(normalise("colour", values[name]!));
+      }
+    });
+  }
+
+  it("Calm and Focus have no sidebar colours in the prototype", () => {
+    for (const look of ["calm", "focus"] as const)
+      expect(
+        prototypeValues(look, "dark", "teal")["--side-bg"],
+      ).toBeUndefined();
   });
 });

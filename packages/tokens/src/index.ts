@@ -9,6 +9,7 @@ export {
   radii,
   schemes,
   shadows,
+  sideColours,
 } from "./tokens";
 export type {
   Accent,
@@ -21,6 +22,7 @@ export type {
   Scheme,
   ShadowLayer,
   Shadows,
+  SideColours,
 } from "./tokens";
-export { getTheme } from "./theme";
+export { getSideColours, getTheme } from "./theme";
 export type { Theme } from "./theme";

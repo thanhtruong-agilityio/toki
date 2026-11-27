@@ -179,6 +179,12 @@
   --radius-sm: 8px;
   --shadow: none;
   --pop: 0px 0px 0px 1px #DDE3DC, 0px 16px 40px 0px rgba(22,32,29,0.16);
+  --side-rail: #0F1719;
+  --side-bg: #16201D;
+  --side-ink: #E4EBE8;
+  --side-muted: #9AA8A3;
+  --side-line: #26332F;
+  --side-hover: rgba(255,255,255,0.07);
 }
 
 :root[data-look="classic"][data-scheme="dark"] {
@@ -215,6 +221,12 @@
   --radius-sm: 8px;
   --shadow: none;
   --pop: 0px 0px 0px 1px #283035, 0px 16px 40px 0px rgba(0,0,0,0.5);
+  --side-rail: #0A0E0F;
+  --side-bg: #12181A;
+  --side-ink: #E8EDEB;
+  --side-muted: #96A29D;
+  --side-line: #232C30;
+  --side-hover: rgba(255,255,255,0.07);
 }
 
 @media (prefers-color-scheme: dark) {

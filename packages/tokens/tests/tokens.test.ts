@@ -9,6 +9,7 @@ import {
   lookDensity,
   densities,
   densityValues,
+  getSideColours,
   getTheme,
   looks,
   palettes,
@@ -242,6 +243,34 @@ const tableE: Record<LookName, Record<SchemeName, ShadowPair>> = {
   classic: { light: focusLightShadows, dark: focusDarkShadows },
 };
 
+// TOKI-144 Table A: the six sidebar properties of the two Classic blocks (the prototype's values).
+const sideNames = [
+  "--side-rail",
+  "--side-bg",
+  "--side-ink",
+  "--side-muted",
+  "--side-line",
+  "--side-hover",
+];
+const sideTable: Record<SchemeName, Record<string, string>> = {
+  light: {
+    "--side-rail": "#0F1719",
+    "--side-bg": "#16201D",
+    "--side-ink": "#E4EBE8",
+    "--side-muted": "#9AA8A3",
+    "--side-line": "#26332F",
+    "--side-hover": "rgba(255,255,255,0.07)",
+  },
+  dark: {
+    "--side-rail": "#0A0E0F",
+    "--side-bg": "#12181A",
+    "--side-ink": "#E8EDEB",
+    "--side-muted": "#96A29D",
+    "--side-line": "#232C30",
+    "--side-hover": "rgba(255,255,255,0.07)",
+  },
+};
+
 const lookList: LookName[] = ["calm", "focus", "classic"];
 const schemeList: SchemeName[] = ["light", "dark"];
 const accentList: AccentName[] = ["teal", "indigo", "clay", "violet"];
@@ -400,6 +429,24 @@ describe("R7 getTheme", () => {
       }
     }
   }
+});
+
+describe("getSideColours (TOKI-144 R1)", () => {
+  it("returns the six values of the scheme, as a copy", () => {
+    for (const scheme of schemeList) {
+      const got = getSideColours(scheme);
+      expect(Object.keys(got).sort()).toEqual(
+        ["hover", "ink", "line", "muted", "rail", "sideBg"].sort(),
+      );
+      expect(got.sideBg).toBe(sideTable[scheme]["--side-bg"]);
+      expect(got.rail).toBe(sideTable[scheme]["--side-rail"]);
+      got.ink = "#000000";
+      expect(getSideColours(scheme).ink).toBe(sideTable[scheme]["--side-ink"]);
+    }
+  });
+  it("getTheme still has the 32 keys, and none of them is a sidebar one", () => {
+    expect(Object.keys(getTheme("classic", "dark", "teal"))).toHaveLength(32);
+  });
 });
 
 describe("getTheme isolation", () => {
@@ -590,17 +637,49 @@ describe("tokens.css", () => {
     expect(text, `tokens.css is stale: run ${generateCommand}`).toBe(toCss());
   });
 
-  it("R10 declares exactly the 32 custom properties and no other", () => {
+  it("R10 declares exactly the 32 custom properties, and the six sidebar ones in the two Classic blocks only (TOKI-144 R1)", () => {
     const names = new Set<string>();
     for (const b of blocks) {
       for (const p of Object.keys(b.decls))
-        if (p !== "color-scheme") names.add(p);
+        if (p !== "color-scheme" && !sideNames.includes(p)) names.add(p);
     }
     expect([...names].sort()).toEqual([...allNames].sort());
     expect(allNames).toHaveLength(32);
+    for (const b of blocks) {
+      const side = Object.keys(b.decls).filter((p) => sideNames.includes(p));
+      const classic =
+        b.selector === pairSelector("classic", "light") ||
+        b.selector === pairSelector("classic", "dark");
+      expect(side.sort(), b.selector).toEqual(
+        classic ? [...sideNames].sort() : [],
+      );
+    }
+  });
+
+  it("a Classic block declares 38 properties and each other pair block 32 (TOKI-144 R1)", () => {
+    for (const { look, scheme } of pairs) {
+      const props = Object.keys(pairBlock(look, scheme).decls).filter(
+        (p) => p !== "color-scheme",
+      );
+      expect(props, `${look} ${scheme}`).toHaveLength(
+        look === "classic" ? 38 : 32,
+      );
+    }
+  });
+
+  it("the six sidebar values are Table A of TOKI-144, in both Classic blocks", () => {
+    for (const scheme of schemeList) {
+      const decls = pairBlock("classic", scheme).decls;
+      for (const [name, value] of Object.entries(sideTable[scheme]))
+        expect(decls[name], `${scheme} ${name}`).toBe(value);
+    }
   });
 
   it("R11 has six blocks, one for each look and scheme, with all 32 properties and color-scheme", () => {
+    const sideless = (decls: Record<string, string>) =>
+      Object.keys(decls).filter(
+        (p) => p !== "color-scheme" && !sideNames.includes(p),
+      );
     const pairBlocks = plain.filter(
       (b) =>
         b.selector.includes("data-scheme") &&
@@ -610,8 +689,7 @@ describe("tokens.css", () => {
     for (const { look, scheme } of pairs) {
       const b = pairBlock(look, scheme);
       expect(b, `block for ${look} ${scheme}`).toBeDefined();
-      const props = Object.keys(b.decls).filter((p) => p !== "color-scheme");
-      expect(props.sort()).toEqual([...allNames].sort());
+      expect(sideless(b.decls).sort()).toEqual([...allNames].sort());
       expect(b.decls["color-scheme"]).toBe(scheme);
     }
   });
