@@ -174,7 +174,6 @@ function ShellBody({
     href: row.to,
     tab: row.tab,
     more: row.more,
-    calmHidden: row.calmHidden,
   }));
 
   // The card of the signed-in person (TOKI-099 R1); with none, the shell draws no card.

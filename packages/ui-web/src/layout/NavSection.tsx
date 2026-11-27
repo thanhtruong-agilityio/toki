@@ -14,8 +14,6 @@ export type NavSection = {
   tab?: boolean;
   // Reached from the More sheet on a narrow screen.
   more?: boolean;
-  // Hidden in the Calm sidebar from 720 px; the Focus rail keeps it.
-  calmHidden?: boolean;
 };
 
 export type NavigateHandler = (
@@ -56,7 +54,6 @@ export function NavItem({
       className="ni"
       href={section.href}
       data-id={section.id}
-      data-calm-hidden={section.calmHidden ? "" : undefined}
       aria-current={current ? "page" : undefined}
       onClick={(event) => {
         if (!onNavigate || !isPlainClick(event)) return;

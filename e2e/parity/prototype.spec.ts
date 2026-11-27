@@ -58,3 +58,35 @@ for (const width of ["wide", "mid", "narrow"] as Width[]) {
     expect(box?.height).toBe(WIDTHS[width].height);
   });
 }
+
+// TOKI-145 R9: Calm has the rail and the conversation column; the chat stays a card.
+for (const width of ["wide", "mid"] as Width[]) {
+  test(`calm draws the rail, the column and the main card at the ${width} width`, async ({
+    page,
+  }) => {
+    await openPrototype(page, { look: "calm", width, hash: "home" });
+    const app = (await page.locator("#app").boundingBox())!;
+    const nav = (await page.locator("#app .nav").boundingBox())!;
+    const convs = (await page.locator("#app .convs").boundingBox())!;
+    const main = (await page.locator("#app .main").boundingBox())!;
+    expect(nav.x - app.x).toBeCloseTo(0, 0);
+    expect(nav.width).toBeCloseTo(68, 0);
+    expect(convs.x - app.x).toBeCloseTo(68, 0);
+    expect(convs.width).toBeCloseTo(288, 0);
+    expect(main.x - app.x).toBeCloseTo(356, 0);
+    expect(app.x + app.width - (main.x + main.width)).toBeCloseTo(12, 0);
+    await expect(page.locator('#app .ni[data-id="prefs"]')).toBeVisible();
+    // The Dev's decision of 2026-11-27: the search field shows, as in the app.
+    await expect(page.locator("#app .cfilter .field")).toBeVisible();
+    const style = await page.evaluate(() => {
+      const of = (selector: string) =>
+        getComputedStyle(document.querySelector(selector)!);
+      return {
+        rail: of("#app .nav").borderRightWidth,
+        column: of("#app .convs").borderRightWidth,
+        radius: of("#app .main").borderTopLeftRadius,
+      };
+    });
+    expect(style).toEqual({ rail: "1px", column: "0px", radius: "16px" });
+  });
+}
