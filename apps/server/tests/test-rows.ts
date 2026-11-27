@@ -166,6 +166,27 @@ export async function insertConversationMember(
   } as unknown as Record<string, never>)}`;
 }
 
+// A user message by default (TOKI-036). A reply passes `parent_id`; a system
+// line passes `kind`, `system_type`, `system_user_ids` and an empty body.
+export function insertMessage(
+  sql: Sql,
+  values: {
+    workspace_id: string;
+    conversation_id: string;
+    author_id: string;
+  } & Values,
+): Promise<string> {
+  const id = crypto.randomUUID();
+  return insert(sql, "messages", {
+    id,
+    kind: "user",
+    body: "Test message",
+    also_in_channel: false,
+    created_at: FIXED,
+    ...values,
+  });
+}
+
 // A direct message (2 people) or group (3 to 8) and its member rows, in one
 // transaction, with the key sorted in byte order as the database checks it.
 export function insertDirectConversation(

@@ -36,6 +36,13 @@
       "when": 1795081174876,
       "tag": "0004_emergency_links",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1795773156095,
+      "tag": "0005_messages_events_tables",
+      "breakpoints": true
     }
   ]
 }
