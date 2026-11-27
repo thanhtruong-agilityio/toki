@@ -6,12 +6,15 @@ import type { Page } from "@playwright/test";
 export type TokenKind = "colour" | "length" | "percent" | "shadow";
 
 // R4: the names come from the CSS that `@toki/tokens` generates (exported as `./tokens.css`), the
-// custom properties of its first block, `:root, :root[data-eff="calm"]`. There is no second list.
+// custom properties of its first block, `:root, :root[data-look="calm"][data-scheme="light"]`. There
+// is no second list.
 export function parseTokenNames(css: string): string[] {
-  const start = css.search(/:root,\s*:root\[data-eff="calm"\]\s*\{/);
+  const start = css.search(
+    /:root,\s*:root\[data-look="calm"\]\[data-scheme="light"\]\s*\{/,
+  );
   if (start < 0) {
     throw new Error(
-      'tokens.css has no ":root, :root[data-eff="calm"]" block to read the token names from',
+      'tokens.css has no ":root, :root[data-look="calm"][data-scheme="light"]" block to read the token names from',
     );
   }
   const open = css.indexOf("{", start);

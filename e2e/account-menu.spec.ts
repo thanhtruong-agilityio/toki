@@ -1,4 +1,5 @@
 import { expect, test, type BrowserContext, type Page } from "@playwright/test";
+import { setLook } from "./support/sign-in";
 
 // TOKI-099 R21: the account menu, Sign out and "Signed-in devices" in the browser. The calls of
 // `/api/v1/auth/*` are stubbed with `page.route`; nothing else is needed, the shell sends no other call.
@@ -96,9 +97,7 @@ const WIDTHS = [
   { width: 1100, height: 800 },
 ];
 
-async function look(page: Page, name: (typeof LOOKS)[number]) {
-  await page.emulateMedia({ colorScheme: name === "focus" ? "dark" : "light" });
-}
+const look = (page: Page, name: (typeof LOOKS)[number]) => setLook(page, name);
 
 for (const name of LOOKS) {
   test.describe(`the account menu, ${name}`, () => {

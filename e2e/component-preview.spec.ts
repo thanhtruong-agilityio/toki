@@ -13,6 +13,10 @@ export const PENDING_TOKI_010 = "waits for TOKI-010 (fonts are not on main)";
 
 const root = (page: import("@playwright/test").Page) => page.locator("html");
 
+// The look no longer brings a scheme (TOKI-143 R10): Calm is drawn in light and Focus and Classic in
+// dark, the states these checks have always drawn.
+const schemeOf = (look: string) => (look === "calm" ? "light" : "dark");
+
 test.describe("page and controls (R1, R4)", () => {
   test("R1: the page opens, has the root element, the title and the viewport meta", async ({
     page,
@@ -38,7 +42,8 @@ test.describe("page and controls (R1, R4)", () => {
     page,
   }) => {
     await page.goto("/preview.html");
-    await expect(root(page)).toHaveAttribute("data-eff", "calm");
+    await expect(root(page)).toHaveAttribute("data-look", "calm");
+    await expect(root(page)).toHaveAttribute("data-scheme", "light");
     await expect(root(page)).toHaveAttribute("data-accent", "teal");
     await expect(root(page)).not.toHaveAttribute("data-density", /.*/);
   });
@@ -46,18 +51,34 @@ test.describe("page and controls (R1, R4)", () => {
   test("R4: an address with the three values applies them", async ({
     page,
   }) => {
-    await page.goto("/preview.html?look=focus&accent=clay&density=compact");
-    await expect(root(page)).toHaveAttribute("data-eff", "focus");
+    await page.goto(
+      "/preview.html?look=focus&scheme=dark&accent=clay&density=compact",
+    );
+    await expect(root(page)).toHaveAttribute("data-look", "focus");
+    await expect(root(page)).toHaveAttribute("data-scheme", "dark");
     await expect(root(page)).toHaveAttribute("data-accent", "clay");
     await expect(root(page)).toHaveAttribute("data-density", "compact");
     await expect(page.locator('[data-control="look"]')).toHaveValue("focus");
+    await expect(page.locator('[data-control="scheme"]')).toHaveValue("dark");
+  });
+
+  test("R10: a look alone is in light, and a scheme alone is Calm", async ({
+    page,
+  }) => {
+    await page.goto("/preview.html?look=focus");
+    await expect(root(page)).toHaveAttribute("data-look", "focus");
+    await expect(root(page)).toHaveAttribute("data-scheme", "light");
+    await page.goto("/preview.html?scheme=dark");
+    await expect(root(page)).toHaveAttribute("data-look", "calm");
+    await expect(root(page)).toHaveAttribute("data-scheme", "dark");
   });
 
   test("R4: an unknown value gives the default of that control", async ({
     page,
   }) => {
     await page.goto("/preview.html?look=sepia&accent=indigo&density=huge");
-    await expect(root(page)).toHaveAttribute("data-eff", "calm");
+    await expect(root(page)).toHaveAttribute("data-look", "calm");
+    await expect(root(page)).toHaveAttribute("data-scheme", "light");
     await expect(root(page)).toHaveAttribute("data-accent", "indigo");
     await expect(root(page)).not.toHaveAttribute("data-density", /.*/);
   });
@@ -67,10 +88,18 @@ test.describe("page and controls (R1, R4)", () => {
     context,
   }) => {
     await page.goto("/preview.html");
-    const [look, accent, density] = ["look", "accent", "density"].map((name) =>
-      page.locator(`[data-control="${name}"]`),
-    );
-    await expect(look.locator("option")).toHaveText(["calm", "focus"]);
+    const [look, scheme, accent, density] = [
+      "look",
+      "scheme",
+      "accent",
+      "density",
+    ].map((name) => page.locator(`[data-control="${name}"]`));
+    await expect(look.locator("option")).toHaveText([
+      "calm",
+      "focus",
+      "classic",
+    ]);
+    await expect(scheme.locator("option")).toHaveText(["light", "dark"]);
     await expect(accent.locator("option")).toHaveText([
       "teal",
       "indigo",
@@ -80,7 +109,10 @@ test.describe("page and controls (R1, R4)", () => {
     await expect(density.locator("option")).toHaveCount(3);
 
     await look.selectOption("focus");
-    await expect(root(page)).toHaveAttribute("data-eff", "focus");
+    await expect(root(page)).toHaveAttribute("data-look", "focus");
+    await expect(root(page)).toHaveAttribute("data-scheme", "light");
+    await scheme.selectOption("dark");
+    await expect(root(page)).toHaveAttribute("data-scheme", "dark");
     await accent.selectOption("violet");
     await expect(root(page)).toHaveAttribute("data-accent", "violet");
     await density.selectOption("comfortable");
@@ -89,6 +121,7 @@ test.describe("page and controls (R1, R4)", () => {
     const url = new URL(page.url());
     expect(url.pathname).toBe("/preview.html");
     expect(url.searchParams.get("look")).toBe("focus");
+    expect(url.searchParams.get("scheme")).toBe("dark");
     expect(url.searchParams.get("accent")).toBe("violet");
     expect(url.searchParams.get("density")).toBe("comfortable");
 
@@ -104,12 +137,13 @@ test.describe("page and controls (R1, R4)", () => {
     expect(await context.cookies()).toEqual([]);
   });
 
-  test("R4: the device's dark setting does not decide the look", async ({
+  test("R4: the device's dark setting does not decide the look or the scheme", async ({
     page,
   }) => {
     await page.emulateMedia({ colorScheme: "dark" });
     await page.goto("/preview.html?look=calm");
-    await expect(root(page)).toHaveAttribute("data-eff", "calm");
+    await expect(root(page)).toHaveAttribute("data-look", "calm");
+    await expect(root(page)).toHaveAttribute("data-scheme", "light");
     await expect(page.locator("body")).toHaveCSS(
       "background-color",
       "rgb(242, 244, 239)",
@@ -202,7 +236,7 @@ const COMPONENTS = [
 test.describe("component sections and figures (R5, R6, R7)", () => {
   for (const look of LOOKS) {
     test(`R5: one section per entry, in order (${look})`, async ({ page }) => {
-      await page.goto(`/preview.html?look=${look}`);
+      await page.goto(`/preview.html?look=${look}&scheme=${schemeOf(look)}`);
       const names = await page
         .locator("section[data-component]")
         .evaluateAll((nodes) =>
@@ -218,7 +252,7 @@ test.describe("component sections and figures (R5, R6, R7)", () => {
     test(`R6: figures per entry equal data-count, with a caption and a surface panel (${look})`, async ({
       page,
     }) => {
-      await page.goto(`/preview.html?look=${look}`);
+      await page.goto(`/preview.html?look=${look}&scheme=${schemeOf(look)}`);
       const sections = page.locator("section[data-component]");
       const count = await sections.count();
       expect(count).toBeGreaterThanOrEqual(COMPONENTS.length);
@@ -249,7 +283,7 @@ test.describe("component sections and figures (R5, R6, R7)", () => {
     });
 
     test(`R7: no figure failed (${look})`, async ({ page }) => {
-      await page.goto(`/preview.html?look=${look}`);
+      await page.goto(`/preview.html?look=${look}&scheme=${schemeOf(look)}`);
       await expect(page.locator("figure").first()).toBeVisible();
       await expect(page.locator("[data-failed]")).toHaveCount(0);
     });
@@ -398,7 +432,7 @@ test.describe("Table B1 and B2 (R8)", () => {
     test(`every selector of Table B1 matches inside a figure (${look})`, async ({
       page,
     }) => {
-      await page.goto(`/preview.html?look=${look}`);
+      await page.goto(`/preview.html?look=${look}&scheme=${schemeOf(look)}`);
       await expect(page.locator("figure").first()).toBeVisible();
       const missing: string[] = [];
       for (const [component, checks] of Object.entries(TABLE_B1)) {
@@ -413,7 +447,7 @@ test.describe("Table B1 and B2 (R8)", () => {
     });
 
     test(`Table B2 is reported, not failed (${look})`, async ({ page }) => {
-      await page.goto(`/preview.html?look=${look}`);
+      await page.goto(`/preview.html?look=${look}&scheme=${schemeOf(look)}`);
       await expect(page.locator("figure").first()).toBeVisible();
       for (const [component, selectors] of Object.entries(TABLE_B2)) {
         for (const selector of selectors) {
@@ -567,8 +601,10 @@ test.describe("section order, icons, tokens (R5, R9, R11)", () => {
     await page.locator('[data-control="accent"]').selectOption("indigo");
     await expect(value("--accent")).toHaveText("#4F46E5");
     await page.locator('[data-control="look"]').selectOption("focus");
+    await page.locator('[data-control="scheme"]').selectOption("dark");
     await expect(value("--accent")).toHaveText("#A5B4FC");
     await page.locator('[data-control="look"]').selectOption("calm");
+    await page.locator('[data-control="scheme"]').selectOption("light");
     await page.locator('[data-control="accent"]').selectOption("teal");
     await expect(value("--bg")).toHaveText("#F2F4EF");
     await expect(value("--av")).toHaveText("36px");
@@ -671,7 +707,7 @@ test.describe("console and requests (R20)", () => {
           foreign.push(request.url());
         }
       });
-      await page.goto(`/preview.html?look=${look}`);
+      await page.goto(`/preview.html?look=${look}&scheme=${schemeOf(look)}`);
       await expect(page.locator("figure").first()).toBeVisible();
       await page.waitForLoadState("networkidle");
       expect(logged).toEqual([]);
@@ -835,7 +871,9 @@ const TABLE_C: Row[] = [
 test.describe("Table C (R14)", () => {
   for (const look of LOOKS) {
     test(`the 13 rows hold in ${look}`, async ({ page }) => {
-      await page.goto(`/preview.html?look=${look}&accent=teal`);
+      await page.goto(
+        `/preview.html?look=${look}&scheme=${schemeOf(look)}&accent=teal`,
+      );
       await expect(page.locator("figure").first()).toBeVisible();
       for (const row of TABLE_C) {
         const element = page.locator(`figure ${row.selector}`).first();
@@ -871,7 +909,7 @@ test.describe("accent and density reach the components (R15)", () => {
   });
 
   test("Focus and indigo", async ({ page }) => {
-    await page.goto("/preview.html?look=focus&accent=indigo");
+    await page.goto("/preview.html?look=focus&scheme=dark&accent=indigo");
     const primary = page.locator(`figure .btn.primary${X}`).first();
     await expect(primary).toHaveCSS("background-color", rgb("#A5B4FC"));
     await expect(primary).toHaveCSS("color", rgb("#1E1B4B"));
@@ -891,7 +929,9 @@ test.describe("accent and density reach the components (R15)", () => {
       page,
     }) => {
       const query = density ? `&density=${density}` : "";
-      await page.goto(`/preview.html?look=${look}${query}`);
+      await page.goto(
+        `/preview.html?look=${look}&scheme=${schemeOf(look)}${query}`,
+      );
       const av = page.locator('figure .av:not([style*="--s"])').first();
       await expect(av).toHaveCSS("width", width);
     });
@@ -933,7 +973,7 @@ test.describe("layouts (R16)", () => {
         page,
       }) => {
         await page.setViewportSize({ width, height });
-        await page.goto(`/preview.html?look=${look}`);
+        await page.goto(`/preview.html?look=${look}&scheme=${schemeOf(look)}`);
         await expect(page.locator("figure").first()).toBeVisible();
         const measured = await page.evaluate(() => ({
           scroll: document.documentElement.scrollWidth,
@@ -1096,7 +1136,7 @@ test.describe("the 13 overlay examples (R23)", () => {
       test(`${row.entry}/${row.id} opens and closes (${look})`, async ({
         page,
       }) => {
-        await page.goto(`/preview.html?look=${look}`);
+        await page.goto(`/preview.html?look=${look}&scheme=${schemeOf(look)}`);
         const figure = page.locator(
           `figure[data-example="${row.entry}/${row.id}"]`,
         );
@@ -1139,7 +1179,9 @@ test.describe("the panel stays inside the window (R23)", () => {
           page,
         }) => {
           await page.setViewportSize({ width, height });
-          await page.goto(`/preview.html?look=${look}`);
+          await page.goto(
+            `/preview.html?look=${look}&scheme=${schemeOf(look)}`,
+          );
           await page
             .locator(`figure[data-example="${open.entry}/${open.id}"] button`)
             .first()
@@ -1162,5 +1204,25 @@ test.describe("the panel stays inside the window (R23)", () => {
         });
       }
     }
+  }
+});
+
+// TOKI-143 R9: the button of a toast takes its colour from the scheme, because the toast's own
+// background (--ink) is dark in a light scheme and light in a dark one.
+test.describe("the colour of the toast button (TOKI-143 R9)", () => {
+  const states = [
+    ["calm", "light", "#DCEFEA"],
+    ["focus", "light", "#DCEFEA"],
+    ["classic", "light", "#DCEFEA"],
+    ["calm", "dark", "#5EEAD4"],
+    ["focus", "dark", "#5EEAD4"],
+    ["classic", "dark", "#5EEAD4"],
+  ] as const;
+  for (const [look, scheme, colour] of states) {
+    test(`${look} ${scheme}: the button is ${colour}`, async ({ page }) => {
+      await page.goto(`/preview.html?look=${look}&scheme=${scheme}`);
+      const button = page.locator("figure .toast button").first();
+      await expect(button).toHaveCSS("color", rgb(colour));
+    });
   }
 });
