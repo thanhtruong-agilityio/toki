@@ -1,4 +1,4 @@
-import { getTheme, type Theme } from "./theme";
+import { getSideColours, getTheme, type Theme } from "./theme";
 import {
   accents,
   densityValues,
@@ -90,10 +90,23 @@ const accentNames = [
 ];
 
 function pairLines(look: Look, scheme: Scheme, indent: string): string[] {
-  return [
+  const lines = [
     `${indent}color-scheme: ${scheme};`,
     ...declarations(getTheme(look, scheme, "teal"), allNames, indent),
   ];
+  // The six sidebar colours: in the two Classic blocks only (TOKI-144 R1).
+  if (look === "classic") {
+    const side = getSideColours(scheme);
+    lines.push(
+      `${indent}--side-rail: ${side.rail};`,
+      `${indent}--side-bg: ${side.sideBg};`,
+      `${indent}--side-ink: ${side.ink};`,
+      `${indent}--side-muted: ${side.muted};`,
+      `${indent}--side-line: ${side.line};`,
+      `${indent}--side-hover: ${side.hover};`,
+    );
+  }
+  return lines;
 }
 
 const pairSelector = (look: Look, scheme: Scheme) =>

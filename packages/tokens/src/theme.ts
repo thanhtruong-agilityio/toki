@@ -5,6 +5,7 @@ import {
   palettes,
   radii,
   shadows,
+  sideColours,
   type Accent,
   type AccentValues,
   type Density,
@@ -15,6 +16,7 @@ import {
   type Radii,
   type ShadowLayer,
   type Shadows,
+  type SideColours,
 } from "./tokens";
 
 // Every value of one look, accent and density, resolved: the object-side
@@ -39,4 +41,9 @@ export function getTheme(
     shadow: copyLayers(shadows[look][scheme].shadow),
     pop: copyLayers(shadows[look][scheme].pop),
   };
+}
+
+// The six sidebar colours of a scheme, as a copy (TOKI-144 R1).
+export function getSideColours(scheme: Scheme): SideColours {
+  return { ...sideColours[scheme] };
 }

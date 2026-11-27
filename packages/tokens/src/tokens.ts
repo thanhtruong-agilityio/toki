@@ -277,3 +277,34 @@ export const shadows: Record<Look, Record<Scheme, Shadows>> = {
   focus: { light: focusLightShadows, dark: focusDarkShadows },
   classic: { light: focusLightShadows, dark: focusDarkShadows },
 };
+
+// The colours of the Classic sidebar (TOKI-144 R1): a dark rail and a dark column in both schemes.
+// They are not among the 32 properties: only the two Classic blocks of tokens.css declare them.
+// Source: docs/specs/2026-11-27-classic-sidebar-frame-design.md, Table A (the prototype's blocks).
+export type SideColours = {
+  rail: string;
+  sideBg: string;
+  ink: string;
+  muted: string;
+  line: string;
+  hover: string;
+};
+
+export const sideColours: Record<Scheme, SideColours> = {
+  light: {
+    rail: "#0F1719",
+    sideBg: "#16201D",
+    ink: "#E4EBE8",
+    muted: "#9AA8A3",
+    line: "#26332F",
+    hover: "rgba(255,255,255,0.07)",
+  },
+  dark: {
+    rail: "#0A0E0F",
+    sideBg: "#12181A",
+    ink: "#E8EDEB",
+    muted: "#96A29D",
+    line: "#232C30",
+    hover: "rgba(255,255,255,0.07)",
+  },
+};
