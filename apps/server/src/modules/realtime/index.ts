@@ -8,4 +8,4 @@ export {
   getOldestEventNumber,
   readEventsAfter,
 } from "./read.js";
-export { pruneEvents } from "./prune.js";
+export { pruneEvents, startEventPruning } from "./prune.js";

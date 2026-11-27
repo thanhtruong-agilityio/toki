@@ -1,11 +1,18 @@
+import {
+  type Clock,
+  EVENT_PRUNE_INTERVAL_MS,
+  EVENT_RETENTION_DAYS,
+} from "@toki/shared";
 import { and, asc, eq, lt, lte, sql } from "drizzle-orm";
+import type { FastifyBaseLogger } from "fastify";
 import type { Db } from "../../db/client.js";
 import { events } from "./schema.js";
 
-// The removal of old events (TOKI-036 R20). It never touches the counter, so
-// the numbers go on.
+// The removal of old events (TOKI-036 R20) and its run (R21). It never touches
+// the counter, so the numbers go on.
 
 const BATCH_SIZE = 5_000;
+const DAY_MS = 86_400_000;
 
 // Removes, for every workspace, the events older than `before` and every event
 // with a smaller number, so the kept events stay a whole run up to the last
@@ -48,4 +55,46 @@ export async function pruneEvents(
     } while (count === batchSize);
   }
   return removed;
+}
+
+// Calls `run` every `intervalMs` and returns what cancels it.
+export type Schedule = (run: () => void, intervalMs: number) => () => void;
+
+// Prunes at once and then on the schedule. A run that fails is logged and the
+// later ones go on. A tick during a run starts no second one. The function that
+// is returned cancels the schedule and resolves when the run in progress ended.
+export function startEventPruning({
+  db,
+  clock,
+  schedule,
+  log,
+}: {
+  db: Db;
+  clock: Clock;
+  schedule: Schedule;
+  log: Pick<FastifyBaseLogger, "info" | "error">;
+}): () => Promise<void> {
+  let running: Promise<void> | null = null;
+  const prune = async () => {
+    try {
+      const before = new Date(clock.now() - EVENT_RETENTION_DAYS * DAY_MS);
+      const count = await pruneEvents(db, { before });
+      log.info({ count }, "events_pruned");
+    } catch (error) {
+      // The queries of the pruning carry no payload.
+      log.error({ err: error, count: 0 }, "event_pruning_failed");
+    }
+  };
+  const run = () => {
+    running ??= prune().finally(() => {
+      running = null;
+    });
+  };
+  const cancel = schedule(run, EVENT_PRUNE_INTERVAL_MS);
+  run();
+  return async () => {
+    cancel();
+    await running;
+    log.info({}, "event_pruning_stopped");
+  };
 }
