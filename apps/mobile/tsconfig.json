@@ -1,0 +1,5 @@
+{
+  "extends": ["expo/tsconfig.base", "../../tsconfig.base.json"],
+  "include": ["src", "app.config.ts", "expo-env.d.ts", ".expo/types/**/*.ts"],
+  "exclude": ["ios", "android", "node_modules"]
+}
