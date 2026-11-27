@@ -43,7 +43,7 @@ function watchPairs() {
 describe("applyAppearance (TOKI-143 R6)", () => {
   beforeEach(() => {
     for (const a of [
-      "data-eff",
+      "data-" + "eff",
       "data-look",
       "data-scheme",
       "data-accent",
@@ -66,7 +66,7 @@ describe("applyAppearance (TOKI-143 R6)", () => {
     expect(attrs()).toEqual([look, scheme]);
     expect(html().dataset.accent).toBe("teal");
     expect(html().hasAttribute("data-density")).toBe(false);
-    expect(html().hasAttribute("data-eff")).toBe(false);
+    expect(html().hasAttribute("data-" + "eff")).toBe(false);
   });
 
   test("device sets the scheme the device has and follows its setting", () => {

@@ -168,105 +168,132 @@ const tables: Row[] = [
   D(".sh .back-side", "display:none"),
   // Table E (Calm)
   D(
-    '[data-eff="calm"] .sidebar',
+    '[data-look="calm"] .sidebar',
     'width:272px; grid-template-columns:minmax(0,1fr); grid-template-rows:minmax(0,1fr) auto; grid-template-areas:"nav" "user"',
   ),
   D(
-    '[data-eff="calm"] .sidebar[data-has-list]',
+    '[data-look="calm"] .sidebar[data-has-list]',
     'grid-template-rows:minmax(0,max-content) minmax(var(--shell-convs-min),1fr) auto; grid-template-areas:"nav" "convs" "user"',
   ),
   D(
-    '[data-eff="calm"] .nav',
+    '[data-look="calm"] .nav',
     "grid-area:nav; display:flex; flex-direction:column; gap:2px; padding:10px 12px 4px; min-height:0",
   ),
-  D('[data-eff="calm"] .ws', "padding:2px 8px 8px"),
-  D('[data-eff="calm"] .srch', "height:34px; margin-bottom:6px"),
-  D('[data-eff="calm"] .ni', "height:30px; font-size:13.5px"),
-  D('[data-eff="calm"] .ni[data-calm-hidden]', "display:none"),
-  D('[data-eff="calm"] .ni .ic', "width:17px; height:17px"),
+  D('[data-look="calm"] .ws', "padding:2px 8px 8px"),
+  D('[data-look="calm"] .srch', "height:34px; margin-bottom:6px"),
+  D('[data-look="calm"] .ni', "height:30px; font-size:13.5px"),
+  D('[data-look="calm"] .ni[data-calm-hidden]', "display:none"),
+  D('[data-look="calm"] .ni .ic', "width:17px; height:17px"),
   D(
-    '[data-eff="calm"] .usercard',
+    '[data-look="calm"] .usercard',
     "padding:4px 0 10px; margin:0 12px; border-top:1px solid var(--line)",
   ),
   D(
-    '[data-eff="calm"] .main',
+    '[data-look="calm"] .main',
     "margin:12px 12px 12px 0; border-radius:var(--radius); box-shadow:var(--shadow)",
   ),
   D(
-    '[data-eff="calm"] .side',
+    '[data-look="calm"] .side',
     "margin:12px 12px 12px 0; border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden",
   ),
-  D('[data-eff="calm"] .toast-anchor', "margin:12px 12px 12px 0"),
+  D('[data-look="calm"] .toast-anchor', "margin:12px 12px 12px 0"),
   // Table F, Focus rows
   D(
-    '[data-eff="focus"] .sidebar',
+    ':is([data-look="focus"], [data-look="classic"]) .sidebar',
     'width:68px; grid-template-columns:68px; grid-template-rows:minmax(0,1fr) auto; grid-template-areas:"nav" "user"',
   ),
   D(
-    '[data-eff="focus"] .app[data-section="home"] .sidebar[data-has-list]',
+    ':is([data-look="focus"], [data-look="classic"]) .app[data-section="home"] .sidebar[data-has-list]',
     'width:356px; grid-template-columns:68px 288px; grid-template-areas:"nav convs" "user convs"',
   ),
   D(
-    '[data-eff="focus"] .app:not([data-section="home"]) .convs',
+    ':is([data-look="focus"], [data-look="classic"]) .app:not([data-section="home"]) .convs',
     "display:none",
   ),
   D(
-    '[data-eff="focus"] .nav',
+    ':is([data-look="focus"], [data-look="classic"]) .nav',
     "grid-area:nav; display:flex; flex-direction:column; gap:4px; padding:10px 8px 0; background:var(--bg); border-right:1px solid var(--line); align-items:stretch; min-height:0; overflow:hidden",
   ),
-  D('[data-eff="focus"] .nav-items', "flex:1 1 auto; min-height:0"),
   D(
-    '[data-eff="focus"] .ws',
+    ':is([data-look="focus"], [data-look="classic"]) .nav-items',
+    "flex:1 1 auto; min-height:0",
+  ),
+  D(
+    ':is([data-look="focus"], [data-look="classic"]) .ws',
     "padding:0; justify-content:center; margin-bottom:6px",
   ),
-  D('[data-eff="focus"] .wst', "display:none"),
+  D(':is([data-look="focus"], [data-look="classic"]) .wst', "display:none"),
   D(
-    '[data-eff="focus"] .srch',
+    ':is([data-look="focus"], [data-look="classic"]) .srch',
     "height:36px; justify-content:center; padding:0; background:transparent; border-color:transparent; margin-bottom:6px",
   ),
-  D('[data-eff="focus"] .srch:hover', "background:var(--hover)"),
   D(
-    '[data-eff="focus"] .srch .t, [data-eff="focus"] .srch .kbd',
+    ':is([data-look="focus"], [data-look="classic"]) .srch:hover',
+    "background:var(--hover)",
+  ),
+  D(
+    ':is([data-look="focus"], [data-look="classic"]) .srch .t, :is([data-look="focus"], [data-look="classic"]) .srch .kbd',
     "display:none",
   ),
   D(
-    '[data-eff="focus"] .ni',
+    ':is([data-look="focus"], [data-look="classic"]) .ni',
     "flex-direction:column; justify-content:center; gap:3px; height:50px; padding:0; font-size:10.5px; font-weight:500",
   ),
-  D('[data-eff="focus"] .ni .ic', "width:20px; height:20px"),
   D(
-    '[data-eff="focus"] .ni .cnt',
+    ':is([data-look="focus"], [data-look="classic"]) .ni .ic',
+    "width:20px; height:20px",
+  ),
+  D(
+    ':is([data-look="focus"], [data-look="classic"]) .ni .cnt',
     "position:absolute; top:4px; right:auto; left:calc(50% + 5px); margin:0; min-width:16px; height:16px; font-size:10px; box-shadow:0 0 0 2px var(--bg)",
   ),
   D(
-    '[data-eff="focus"] .ni .cnt.mute',
+    ':is([data-look="focus"], [data-look="classic"]) .ni .cnt.mute',
     "background:var(--accent); color:var(--on-accent)",
   ),
   D(
-    '[data-eff="focus"] .usercard',
+    ':is([data-look="focus"], [data-look="classic"]) .usercard',
     "grid-area:user; padding:6px 8px 10px; background:var(--bg); border-right:1px solid var(--line)",
   ),
-  D('[data-eff="focus"] .ucard', "justify-content:center; padding:6px"),
-  D('[data-eff="focus"] .ucard .uct', "display:none"),
   D(
-    '[data-eff="focus"] .convs',
+    ':is([data-look="focus"], [data-look="classic"]) .ucard',
+    "justify-content:center; padding:6px",
+  ),
+  D(
+    ':is([data-look="focus"], [data-look="classic"]) .ucard .uct',
+    "display:none",
+  ),
+  D(
+    ':is([data-look="focus"], [data-look="classic"]) .convs',
     "border-right:1px solid var(--line); background:var(--bg)",
   ),
-  D('[data-eff="focus"] .side', "border-left:1px solid var(--line)"),
-  D('[data-eff="focus"] .sechead', "padding:14px 20px 8px"),
-  D('[data-eff="focus"] .secbody', "padding:0 20px 20px"),
-  D('[data-eff="focus"] .toolbar', "padding:0 20px 10px"),
+  D(
+    ':is([data-look="focus"], [data-look="classic"]) .side',
+    "border-left:1px solid var(--line)",
+  ),
+  D(
+    ':is([data-look="focus"], [data-look="classic"]) .sechead',
+    "padding:14px 20px 8px",
+  ),
+  D(
+    ':is([data-look="focus"], [data-look="classic"]) .secbody',
+    "padding:0 20px 20px",
+  ),
+  D(
+    ':is([data-look="focus"], [data-look="classic"]) .toolbar',
+    "padding:0 20px 10px",
+  ),
   // Table F, the overlay and the toast anchor beside it
   O(
     ".app[data-panel] .side",
     "grid-area:auto; position:absolute; top:0; right:0; bottom:0; z-index:6; width:min(var(--shell-panel),100%); box-shadow:var(--pop)",
   ),
   B(
-    '[data-eff="calm"] .app[data-panel] .toast-anchor',
+    '[data-look="calm"] .app[data-panel] .toast-anchor',
     "margin-right:calc(var(--shell-panel) + 12px)",
   ),
   B(
-    '[data-eff="focus"] .app[data-panel] .toast-anchor',
+    ':is([data-look="focus"], [data-look="classic"]) .app[data-panel] .toast-anchor',
     "margin-right:var(--shell-panel)",
   ),
   // Table G
@@ -436,9 +463,9 @@ describe("shell.css uses the design system's names (R17)", () => {
     ]);
   });
 
-  test("no selector names data-look, data-accent or data-density", () => {
+  test("no selector names data-scheme, data-accent or data-density (the shell names the look only)", () => {
     for (const r of rules)
-      expect(r.selector).not.toMatch(/data-(look|accent|density)/);
+      expect(r.selector).not.toMatch(/data-(scheme|accent|density)/);
   });
 
   test("no :hover rule hides an element (D-067)", () => {
@@ -506,6 +533,6 @@ describe("shell.css uses the design system's names (R17)", () => {
 
   test("the narrow rules never name a look (R17)", () => {
     for (const r of rules.filter((x) => x.media === NARROW))
-      expect(r.selector).not.toMatch(/data-eff/);
+      expect(r.selector).not.toMatch(/data-look|data-scheme/);
   });
 });

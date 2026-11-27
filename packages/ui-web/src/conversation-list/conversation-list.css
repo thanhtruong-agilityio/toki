@@ -16,7 +16,7 @@
 }
 
 @media (min-width: 720px) {
-  [data-eff="focus"] .ch {
+  :is([data-look="focus"], [data-look="classic"]) .ch {
     padding: 12px 14px 6px;
   }
 }
@@ -184,26 +184,26 @@
 }
 
 @media (min-width: 720px) {
-  [data-eff="calm"] .ch {
+  [data-look="calm"] .ch {
     padding: 8px 14px 4px 20px;
   }
 }
 
 @media (min-width: 720px) {
-  [data-eff="calm"] .cfilter {
+  [data-look="calm"] .cfilter {
     padding-bottom: 4px;
   }
 }
 
 @media (min-width: 720px) {
-  [data-eff="calm"] .cr {
+  [data-look="calm"] .cr {
     min-height: 32px;
     padding: 2px 10px;
   }
 }
 
 @media (min-width: 720px) {
-  [data-eff="calm"] .sec {
+  [data-look="calm"] .sec {
     padding: 8px 8px 2px;
   }
 }

@@ -10,7 +10,7 @@
   min-height: 56px;
 }
 
-[data-eff="focus"] .mh {
+:is([data-look="focus"], [data-look="classic"]) .mh {
   padding: 10px 16px 0;
   min-height: 48px;
 }

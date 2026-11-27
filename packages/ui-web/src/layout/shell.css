@@ -299,19 +299,19 @@
 
 /* Table E: Calm. */
 @media (min-width: 720px) {
-  [data-eff="calm"] .sidebar {
+  [data-look="calm"] .sidebar {
     width: 272px;
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: minmax(0, 1fr) auto;
     grid-template-areas: "nav" "user";
   }
-  [data-eff="calm"] .sidebar[data-has-list] {
+  [data-look="calm"] .sidebar[data-has-list] {
     grid-template-rows:
       minmax(0, max-content) minmax(var(--shell-convs-min), 1fr)
       auto;
     grid-template-areas: "nav" "convs" "user";
   }
-  [data-eff="calm"] .nav {
+  [data-look="calm"] .nav {
     grid-area: nav;
     display: flex;
     flex-direction: column;
@@ -319,62 +319,66 @@
     padding: 10px 12px 4px;
     min-height: 0;
   }
-  [data-eff="calm"] .ws {
+  [data-look="calm"] .ws {
     padding: 2px 8px 8px;
   }
-  [data-eff="calm"] .srch {
+  [data-look="calm"] .srch {
     height: 34px;
     margin-bottom: 6px;
   }
-  [data-eff="calm"] .ni {
+  [data-look="calm"] .ni {
     height: 30px;
     font-size: 13.5px;
   }
-  [data-eff="calm"] .ni[data-calm-hidden] {
+  [data-look="calm"] .ni[data-calm-hidden] {
     display: none;
   }
-  [data-eff="calm"] .ni .ic {
+  [data-look="calm"] .ni .ic {
     width: 17px;
     height: 17px;
   }
-  [data-eff="calm"] .usercard {
+  [data-look="calm"] .usercard {
     padding: 4px 0 10px;
     margin: 0 12px;
     border-top: 1px solid var(--line);
   }
-  [data-eff="calm"] .main {
+  [data-look="calm"] .main {
     margin: 12px 12px 12px 0;
     border-radius: var(--radius);
     box-shadow: var(--shadow);
   }
-  [data-eff="calm"] .side {
+  [data-look="calm"] .side {
     margin: 12px 12px 12px 0;
     border-radius: var(--radius);
     box-shadow: var(--shadow);
     overflow: hidden;
   }
-  [data-eff="calm"] .toast-anchor {
+  [data-look="calm"] .toast-anchor {
     margin: 12px 12px 12px 0;
   }
 }
 
 /* Table F, the Focus rows: the rail and, on Home, the conversation column. */
 @media (min-width: 720px) {
-  [data-eff="focus"] .sidebar {
+  :is([data-look="focus"], [data-look="classic"]) .sidebar {
     width: 68px;
     grid-template-columns: 68px;
     grid-template-rows: minmax(0, 1fr) auto;
     grid-template-areas: "nav" "user";
   }
-  [data-eff="focus"] .app[data-section="home"] .sidebar[data-has-list] {
+  :is([data-look="focus"], [data-look="classic"])
+    .app[data-section="home"]
+    .sidebar[data-has-list] {
     width: 356px;
     grid-template-columns: 68px 288px;
     grid-template-areas: "nav convs" "user convs";
   }
-  [data-eff="focus"] .app:not([data-section="home"]) .convs {
+  :is([data-look="focus"], [data-look="classic"])
+    .app:not([data-section="home"])
+    .convs {
     display: none;
   }
-  [data-eff="focus"] .nav {
+  :is([data-look="focus"], [data-look="classic"]) .nav {
     grid-area: nav;
     display: flex;
     flex-direction: column;
@@ -386,19 +390,19 @@
     min-height: 0;
     overflow: hidden;
   }
-  [data-eff="focus"] .nav-items {
+  :is([data-look="focus"], [data-look="classic"]) .nav-items {
     flex: 1 1 auto;
     min-height: 0;
   }
-  [data-eff="focus"] .ws {
+  :is([data-look="focus"], [data-look="classic"]) .ws {
     padding: 0;
     justify-content: center;
     margin-bottom: 6px;
   }
-  [data-eff="focus"] .wst {
+  :is([data-look="focus"], [data-look="classic"]) .wst {
     display: none;
   }
-  [data-eff="focus"] .srch {
+  :is([data-look="focus"], [data-look="classic"]) .srch {
     height: 36px;
     justify-content: center;
     padding: 0;
@@ -406,14 +410,14 @@
     border-color: transparent;
     margin-bottom: 6px;
   }
-  [data-eff="focus"] .srch:hover {
+  :is([data-look="focus"], [data-look="classic"]) .srch:hover {
     background: var(--hover);
   }
-  [data-eff="focus"] .srch .t,
-  [data-eff="focus"] .srch .kbd {
+  :is([data-look="focus"], [data-look="classic"]) .srch .t,
+  :is([data-look="focus"], [data-look="classic"]) .srch .kbd {
     display: none;
   }
-  [data-eff="focus"] .ni {
+  :is([data-look="focus"], [data-look="classic"]) .ni {
     flex-direction: column;
     justify-content: center;
     gap: 3px;
@@ -422,11 +426,11 @@
     font-size: 10.5px;
     font-weight: 500;
   }
-  [data-eff="focus"] .ni .ic {
+  :is([data-look="focus"], [data-look="classic"]) .ni .ic {
     width: 20px;
     height: 20px;
   }
-  [data-eff="focus"] .ni .cnt {
+  :is([data-look="focus"], [data-look="classic"]) .ni .cnt {
     position: absolute;
     top: 4px;
     right: auto;
@@ -437,37 +441,37 @@
     font-size: 10px;
     box-shadow: 0 0 0 2px var(--bg);
   }
-  [data-eff="focus"] .ni .cnt.mute {
+  :is([data-look="focus"], [data-look="classic"]) .ni .cnt.mute {
     background: var(--accent);
     color: var(--on-accent);
   }
-  [data-eff="focus"] .usercard {
+  :is([data-look="focus"], [data-look="classic"]) .usercard {
     grid-area: user;
     padding: 6px 8px 10px;
     background: var(--bg);
     border-right: 1px solid var(--line);
   }
-  [data-eff="focus"] .ucard {
+  :is([data-look="focus"], [data-look="classic"]) .ucard {
     justify-content: center;
     padding: 6px;
   }
-  [data-eff="focus"] .ucard .uct {
+  :is([data-look="focus"], [data-look="classic"]) .ucard .uct {
     display: none;
   }
-  [data-eff="focus"] .convs {
+  :is([data-look="focus"], [data-look="classic"]) .convs {
     border-right: 1px solid var(--line);
     background: var(--bg);
   }
-  [data-eff="focus"] .side {
+  :is([data-look="focus"], [data-look="classic"]) .side {
     border-left: 1px solid var(--line);
   }
-  [data-eff="focus"] .sechead {
+  :is([data-look="focus"], [data-look="classic"]) .sechead {
     padding: 14px 20px 8px;
   }
-  [data-eff="focus"] .secbody {
+  :is([data-look="focus"], [data-look="classic"]) .secbody {
     padding: 0 20px 20px;
   }
-  [data-eff="focus"] .toolbar {
+  :is([data-look="focus"], [data-look="classic"]) .toolbar {
     padding: 0 20px 10px;
   }
 }
@@ -492,10 +496,12 @@
 /* Table F, the toast anchor beside an overlay panel (R23): from 956 px the
    anchor leaves out the panel (Calm: its 360 px and the 12 px margin). */
 @media (min-width: 956px) and (max-width: 1099px) {
-  [data-eff="calm"] .app[data-panel] .toast-anchor {
+  [data-look="calm"] .app[data-panel] .toast-anchor {
     margin-right: calc(var(--shell-panel) + 12px);
   }
-  [data-eff="focus"] .app[data-panel] .toast-anchor {
+  :is([data-look="focus"], [data-look="classic"])
+    .app[data-panel]
+    .toast-anchor {
     margin-right: var(--shell-panel);
   }
 }

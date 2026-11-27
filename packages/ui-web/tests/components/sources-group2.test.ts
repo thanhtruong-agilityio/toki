@@ -87,13 +87,13 @@ describe("group 2 sources (R1, R3)", () => {
     }
   });
 
-  test("the only look selector is the Toast button's (R20)", () => {
+  test("the only look or scheme selector is the Toast button's, and it names the scheme (R20, TOKI-143 R9)", () => {
     const withLook = cssFiles.flatMap((file) =>
       readCss(file)
-        .filter((r) => /data-(eff|look|accent|density)/.test(r.selector))
+        .filter((r) => /data-(look|scheme|accent|density)/.test(r.selector))
         .map((r) => r.selector),
     );
-    expect(withLook).toEqual(['[data-eff="focus"] .toast button']);
+    expect(withLook).toEqual(['[data-scheme="dark"] .toast button']);
   });
 
   test("no source imports i18n, tokens or platform, or uses a storage, notification or audio API (R3)", () => {

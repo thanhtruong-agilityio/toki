@@ -135,7 +135,7 @@ describe("membership.css (R17)", () => {
   test("has no colour literal, motion, hover or look selector", () => {
     expect(css).not.toMatch(/#[0-9a-fA-F]{3,8}\b|rgb\(|hsl\(/);
     expect(css).not.toMatch(
-      /transition|animation|:hover|data-eff|data-look|data-accent|data-density/,
+      /transition|animation|:hover|data-look|data-scheme|data-accent|data-density/,
     );
     expect(css).not.toMatch(/\.mrow|\.dp-|\.prow/);
   });

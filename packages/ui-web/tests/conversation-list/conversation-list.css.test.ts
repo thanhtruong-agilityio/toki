@@ -44,7 +44,10 @@ const table: Row[] = [
     ".ch h2",
     "margin:0; font-size:12px; font-weight:600; color:var(--muted); letter-spacing:.05em; text-transform:uppercase; flex:1",
   ),
-  D('[data-eff="focus"] .ch', "padding:12px 14px 6px"),
+  D(
+    ':is([data-look="focus"], [data-look="classic"]) .ch',
+    "padding:12px 14px 6px",
+  ),
   C(
     ".cfilter",
     "padding:2px 16px 8px; display:flex; flex-direction:column; gap:8px",
@@ -98,10 +101,10 @@ const table: Row[] = [
   ),
   C(".cr.browse", "color:var(--muted); margin-top:6px"),
   C(".cr.browse .nm", "font-weight:500"),
-  D('[data-eff="calm"] .ch', "padding:8px 14px 4px 20px"),
-  D('[data-eff="calm"] .cfilter', "padding-bottom:4px"),
-  D('[data-eff="calm"] .cr', "min-height:32px; padding:2px 10px"),
-  D('[data-eff="calm"] .sec', "padding:8px 8px 2px"),
+  D('[data-look="calm"] .ch', "padding:8px 14px 4px 20px"),
+  D('[data-look="calm"] .cfilter', "padding-bottom:4px"),
+  D('[data-look="calm"] .cr', "min-height:32px; padding:2px 10px"),
+  D('[data-look="calm"] .sec', "padding:8px 8px 2px"),
   G(
     ".ch",
     "padding-left:max(16px,env(safe-area-inset-left,0px)); padding-right:max(16px,env(safe-area-inset-right,0px)); padding-top:max(14px,env(safe-area-inset-top,0px))",
