@@ -47,6 +47,17 @@ describe("the ratio", () => {
   });
 });
 
+describe("the open row is drawn on the accent (TOKI-144 R4, R5)", () => {
+  // Why the open row uses --on-accent for every text and never --side-muted: the muted colour on
+  // the light accents is under the limit.
+  it("--side-muted on the teal accent of the light scheme is under the limit", () => {
+    const theme = getTheme("classic", "light", "teal");
+    expect(ratio(getSideColours("light").muted, theme.accent)).toBeLessThan(
+      LIMIT,
+    );
+  });
+});
+
 describe("the sidebar text is readable (TOKI-144 R5)", () => {
   for (const scheme of schemes) {
     const side = getSideColours(scheme);

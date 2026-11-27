@@ -481,17 +481,7 @@
    of the sidebar is drawn dark without a rule of its own. They come after the shared rules of the
    frame above, which they win by order. */
 @media (min-width: 720px) {
-  [data-look="classic"] .nav {
-    background: var(--side-rail);
-    border-right: 1px solid var(--side-line);
-    --bg: var(--side-rail);
-    --surface: var(--side-rail);
-    --ink: var(--side-ink);
-    --ink-2: var(--side-muted);
-    --muted: var(--side-muted);
-    --line: var(--side-line);
-    --hover: var(--side-hover);
-  }
+  [data-look="classic"] .nav,
   [data-look="classic"] .usercard {
     background: var(--side-rail);
     border-right: 1px solid var(--side-line);

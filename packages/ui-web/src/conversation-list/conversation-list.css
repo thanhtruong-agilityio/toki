@@ -226,7 +226,7 @@
     color: var(--on-accent);
   }
   [data-look="classic"] .cr[aria-current="page"] .gl,
-  [data-look="classic"] .cr[aria-current="page"].un .nm,
+  [data-look="classic"] .cr[aria-current="page"] .nm,
   [data-look="classic"] .cr[aria-current="page"] .star {
     color: var(--on-accent);
   }

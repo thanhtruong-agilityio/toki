@@ -111,36 +111,38 @@ for (const scheme of ["light", "dark"] as const) {
   const side = SIDE[scheme];
 
   test.describe(`the Classic frame, ${scheme}`, () => {
-    test("R2: the rail and the column are dark, with a side-coloured line", async ({
-      page,
-    }) => {
-      await open(page, "classic", scheme);
-      await expect(page.locator(".nav")).toHaveCSS(
-        "background-color",
-        rgb(side.rail),
-      );
-      await expect(page.locator(".nav")).toHaveCSS(
-        "border-right-color",
-        rgb(side.line),
-      );
-      await expect(page.locator(".usercard")).toHaveCSS(
-        "background-color",
-        rgb(side.rail),
-      );
-      await expect(page.locator(".convs")).toHaveCSS(
-        "background-color",
-        rgb(side.bg),
-      );
-      await expect(page.locator(".convs")).toHaveCSS(
-        "border-right-color",
-        rgb(side.line),
-      );
-      // The page keeps the colours of the scheme.
-      await expect(page.locator(".main")).toHaveCSS(
-        "background-color",
-        rgb(SURFACE[scheme]),
-      );
-    });
+    for (const width of [1100, 720]) {
+      test(`R2: the rail and the column are dark, with a side-coloured line at ${width} px`, async ({
+        page,
+      }) => {
+        await open(page, "classic", scheme, width);
+        await expect(page.locator(".nav")).toHaveCSS(
+          "background-color",
+          rgb(side.rail),
+        );
+        await expect(page.locator(".nav")).toHaveCSS(
+          "border-right-color",
+          rgb(side.line),
+        );
+        await expect(page.locator(".usercard")).toHaveCSS(
+          "background-color",
+          rgb(side.rail),
+        );
+        await expect(page.locator(".convs")).toHaveCSS(
+          "background-color",
+          rgb(side.bg),
+        );
+        await expect(page.locator(".convs")).toHaveCSS(
+          "border-right-color",
+          rgb(side.line),
+        );
+        // The page keeps the colours of the scheme.
+        await expect(page.locator(".main")).toHaveCSS(
+          "background-color",
+          rgb(SURFACE[scheme]),
+        );
+      });
+    }
 
     test("R2: a rail item is muted, and the open one is ink on the hover colour", async ({
       page,

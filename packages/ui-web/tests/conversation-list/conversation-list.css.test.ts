@@ -117,7 +117,7 @@ const table: Row[] = [
     "background:var(--accent); color:var(--on-accent)",
   ),
   D(
-    '[data-look="classic"] .cr[aria-current="page"] .gl, [data-look="classic"] .cr[aria-current="page"].un .nm, [data-look="classic"] .cr[aria-current="page"] .star',
+    '[data-look="classic"] .cr[aria-current="page"] .gl, [data-look="classic"] .cr[aria-current="page"] .nm, [data-look="classic"] .cr[aria-current="page"] .star',
     "color:var(--on-accent)",
   ),
   D(

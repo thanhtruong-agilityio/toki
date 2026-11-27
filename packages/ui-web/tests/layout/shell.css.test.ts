@@ -286,11 +286,7 @@ const tables: Row[] = [
   // Table K, the Classic rows (TOKI-144 R2): a dark rail and a dark column; inside them the colour
   // names ink, muted, line, hover, bg and surface mean the side colours.
   D(
-    '[data-look="classic"] .nav',
-    "background:var(--side-rail); border-right:1px solid var(--side-line); --bg:var(--side-rail); --surface:var(--side-rail); --ink:var(--side-ink); --ink-2:var(--side-muted); --muted:var(--side-muted); --line:var(--side-line); --hover:var(--side-hover)",
-  ),
-  D(
-    '[data-look="classic"] .usercard',
+    '[data-look="classic"] .nav, [data-look="classic"] .usercard',
     "background:var(--side-rail); border-right:1px solid var(--side-line); --bg:var(--side-rail); --surface:var(--side-rail); --ink:var(--side-ink); --ink-2:var(--side-muted); --muted:var(--side-muted); --line:var(--side-line); --hover:var(--side-hover)",
   ),
   D(
