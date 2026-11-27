@@ -7,6 +7,7 @@ export {
   looks,
   palettes,
   radii,
+  schemes,
   shadows,
 } from "./tokens";
 export type {
@@ -17,6 +18,7 @@ export type {
   Look,
   Palette,
   Radii,
+  Scheme,
   ShadowLayer,
   Shadows,
 } from "./tokens";

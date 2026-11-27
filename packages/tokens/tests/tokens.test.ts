@@ -1,7 +1,7 @@
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { describe, expect, it } from "vitest";
+import { describe, expect, expectTypeOf, it } from "vitest";
 import { toCss } from "../src/css";
 import {
   accentColors,
@@ -12,9 +12,11 @@ import {
   getTheme,
   looks,
   palettes,
+  schemes,
   radii,
   shadows,
 } from "../src/index";
+import type { Look, Scheme } from "../src/index";
 
 const SRC_URL = new URL(
   "../src/tokens.test.ts",
@@ -25,7 +27,8 @@ const SRC_URL = new URL(
 // (docs/specs/2026-11-16-tokens-package-design.md), typed in from the spec.
 // The package is compared with this copy, never with itself.
 
-type LookName = "calm" | "focus";
+type LookName = "calm" | "focus" | "classic";
+type SchemeName = "light" | "dark";
 type AccentName = "teal" | "indigo" | "clay" | "violet";
 type DensityName = "comfortable" | "compact";
 type Layer = {
@@ -36,108 +39,144 @@ type Layer = {
   color: string;
 };
 
-const tableA: Record<LookName, Record<string, string | number>> = {
-  calm: {
-    bg: "#F2F4EF",
-    surface: "#FFFFFF",
-    surface2: "#F7F8F5",
-    ink: "#16201D",
-    ink2: "#3A4541",
-    muted: "#5A6662",
-    line: "#E0E5DF",
-    mentionBg: "#FDF0C4",
-    mentionInk: "#5C4400",
-    danger: "#B42318",
-    dangerSoft: "#FCE8E6",
-    live: "#C2410C",
-    onLive: "#FFFFFF",
-    idea: "#6D4AC7",
-    ideaSoft: "#ECE6FA",
-    hover: "rgba(22,32,29,0.055)",
-    scrim: "rgba(22,32,29,0.38)",
-    avatarBgSaturation: 45,
-    avatarBgLightness: 88,
-    avatarTextSaturation: 55,
-    avatarTextLightness: 28,
-  },
-  focus: {
-    bg: "#0E1214",
-    surface: "#161B1E",
-    surface2: "#1D2327",
-    ink: "#E8EDEB",
-    ink2: "#C9D1CE",
-    muted: "#96A29D",
-    line: "#283035",
-    mentionBg: "rgba(250,204,21,0.12)",
-    mentionInk: "#FDE68A",
-    danger: "#F97066",
-    dangerSoft: "#3A1614",
-    live: "#FB923C",
-    onLive: "#1A0B02",
-    idea: "#B9A2F5",
-    ideaSoft: "#2A2145",
-    hover: "rgba(232,237,235,0.07)",
-    scrim: "rgba(0,0,0,0.55)",
-    avatarBgSaturation: 35,
-    avatarBgLightness: 24,
-    avatarTextSaturation: 70,
-    avatarTextLightness: 86,
-  },
+// Table A: the 32 properties' colours and avatar tints of the six states (TOKI-143 R2).
+// Calm light and Focus dark are the values of today; the other four are Table A of the spec of
+// TOKI-143 (the prototype's blocks); Classic has the values of Focus in the same scheme.
+const calmLight: Record<string, string | number> = {
+  bg: "#F2F4EF",
+  surface: "#FFFFFF",
+  surface2: "#F7F8F5",
+  ink: "#16201D",
+  ink2: "#3A4541",
+  muted: "#5A6662",
+  line: "#E0E5DF",
+  mentionBg: "#FDF0C4",
+  mentionInk: "#5C4400",
+  danger: "#B42318",
+  dangerSoft: "#FCE8E6",
+  live: "#C2410C",
+  onLive: "#FFFFFF",
+  idea: "#6D4AC7",
+  ideaSoft: "#ECE6FA",
+  hover: "rgba(22,32,29,0.055)",
+  scrim: "rgba(22,32,29,0.38)",
+  avatarBgSaturation: 45,
+  avatarBgLightness: 88,
+  avatarTextSaturation: 55,
+  avatarTextLightness: 28,
+};
+const focusDark: Record<string, string | number> = {
+  bg: "#0E1214",
+  surface: "#161B1E",
+  surface2: "#1D2327",
+  ink: "#E8EDEB",
+  ink2: "#C9D1CE",
+  muted: "#96A29D",
+  line: "#283035",
+  mentionBg: "rgba(250,204,21,0.12)",
+  mentionInk: "#FDE68A",
+  danger: "#F97066",
+  dangerSoft: "#3A1614",
+  live: "#FB923C",
+  onLive: "#1A0B02",
+  idea: "#B9A2F5",
+  ideaSoft: "#2A2145",
+  hover: "rgba(232,237,235,0.07)",
+  scrim: "rgba(0,0,0,0.55)",
+  avatarBgSaturation: 35,
+  avatarBgLightness: 24,
+  avatarTextSaturation: 70,
+  avatarTextLightness: 86,
+};
+const calmDark: Record<string, string | number> = {
+  ...focusDark,
+  bg: "#0B0F10",
+  surface2: "#1B2125",
+  line: "#263035",
+  avatarBgSaturation: 45,
+  avatarBgLightness: 88,
+  avatarTextSaturation: 55,
+  avatarTextLightness: 28,
+};
+const focusLight: Record<string, string | number> = {
+  ...calmLight,
+  bg: "#EEF1EC",
+  surface2: "#F4F6F2",
+  line: "#DDE3DC",
+  avatarBgSaturation: 35,
+  avatarBgLightness: 24,
+  avatarTextSaturation: 70,
+  avatarTextLightness: 86,
+};
+const tableA: Record<
+  LookName,
+  Record<SchemeName, Record<string, string | number>>
+> = {
+  calm: { light: calmLight, dark: calmDark },
+  focus: { light: focusLight, dark: focusDark },
+  classic: { light: focusLight, dark: focusDark },
 };
 
-const tableB: Record<LookName, Record<AccentName, Record<string, string>>> = {
-  calm: {
-    teal: {
-      accent: "#0F766E",
-      onAccent: "#FFFFFF",
-      accentSoft: "#DCEFEA",
-      accentText: "#0B5D56",
-    },
-    indigo: {
-      accent: "#4F46E5",
-      onAccent: "#FFFFFF",
-      accentSoft: "#E3E5FB",
-      accentText: "#3730A3",
-    },
-    clay: {
-      accent: "#B4532A",
-      onAccent: "#FFFFFF",
-      accentSoft: "#F6E3DA",
-      accentText: "#8A3A17",
-    },
-    violet: {
-      accent: "#7C3AED",
-      onAccent: "#FFFFFF",
-      accentSoft: "#EBE3FB",
-      accentText: "#5B21B6",
-    },
+// Table B: the accent values of a scheme (a light scheme has Calm's today, a dark scheme Focus's).
+const accentsLight: Record<AccentName, Record<string, string>> = {
+  teal: {
+    accent: "#0F766E",
+    onAccent: "#FFFFFF",
+    accentSoft: "#DCEFEA",
+    accentText: "#0B5D56",
   },
-  focus: {
-    teal: {
-      accent: "#5EEAD4",
-      onAccent: "#04201C",
-      accentSoft: "#123B36",
-      accentText: "#7EF0DE",
-    },
-    indigo: {
-      accent: "#A5B4FC",
-      onAccent: "#1E1B4B",
-      accentSoft: "#25285A",
-      accentText: "#C7D2FE",
-    },
-    clay: {
-      accent: "#FDBA8C",
-      onAccent: "#3B1405",
-      accentSoft: "#4A2415",
-      accentText: "#FED7BF",
-    },
-    violet: {
-      accent: "#C4B5FD",
-      onAccent: "#2E1065",
-      accentSoft: "#34205E",
-      accentText: "#DDD6FE",
-    },
+  indigo: {
+    accent: "#4F46E5",
+    onAccent: "#FFFFFF",
+    accentSoft: "#E3E5FB",
+    accentText: "#3730A3",
   },
+  clay: {
+    accent: "#B4532A",
+    onAccent: "#FFFFFF",
+    accentSoft: "#F6E3DA",
+    accentText: "#8A3A17",
+  },
+  violet: {
+    accent: "#7C3AED",
+    onAccent: "#FFFFFF",
+    accentSoft: "#EBE3FB",
+    accentText: "#5B21B6",
+  },
+};
+const accentsDark: Record<AccentName, Record<string, string>> = {
+  teal: {
+    accent: "#5EEAD4",
+    onAccent: "#04201C",
+    accentSoft: "#123B36",
+    accentText: "#7EF0DE",
+  },
+  indigo: {
+    accent: "#A5B4FC",
+    onAccent: "#1E1B4B",
+    accentSoft: "#25285A",
+    accentText: "#C7D2FE",
+  },
+  clay: {
+    accent: "#FDBA8C",
+    onAccent: "#3B1405",
+    accentSoft: "#4A2415",
+    accentText: "#FED7BF",
+  },
+  violet: {
+    accent: "#C4B5FD",
+    onAccent: "#2E1065",
+    accentSoft: "#34205E",
+    accentText: "#DDD6FE",
+  },
+};
+const tableB: Record<
+  LookName,
+  Record<SchemeName, Record<AccentName, Record<string, string>>>
+> = {
+  calm: { light: accentsLight, dark: accentsDark },
+  focus: { light: accentsLight, dark: accentsDark },
+  classic: { light: accentsLight, dark: accentsDark },
 };
 
 const tableC: Record<
@@ -151,6 +190,7 @@ const tableC: Record<
 const tableD: Record<LookName, { radius: number; radiusSm: number }> = {
   calm: { radius: 16, radiusSm: 10 },
   focus: { radius: 10, radiusSm: 8 },
+  classic: { radius: 10, radiusSm: 8 },
 };
 
 const layer = (
@@ -167,29 +207,49 @@ const layer = (
   color,
 });
 
-const tableE: Record<LookName, { shadow: Layer[]; pop: Layer[] }> = {
-  calm: {
-    shadow: [
-      layer(0, 1, 2, 0, "rgba(22,32,29,0.06)"),
-      layer(0, 8, 24, 0, "rgba(22,32,29,0.06)"),
-    ],
-    pop: [
-      layer(0, 4, 8, 0, "rgba(22,32,29,0.08)"),
-      layer(0, 16, 40, 0, "rgba(22,32,29,0.16)"),
-    ],
-  },
-  focus: {
-    shadow: [],
-    pop: [layer(0, 0, 0, 1, "#283035"), layer(0, 16, 40, 0, "rgba(0,0,0,0.5)")],
-  },
+type ShadowPair = { shadow: Layer[]; pop: Layer[] };
+const calmLightShadows: ShadowPair = {
+  shadow: [
+    layer(0, 1, 2, 0, "rgba(22,32,29,0.06)"),
+    layer(0, 8, 24, 0, "rgba(22,32,29,0.06)"),
+  ],
+  pop: [
+    layer(0, 4, 8, 0, "rgba(22,32,29,0.08)"),
+    layer(0, 16, 40, 0, "rgba(22,32,29,0.16)"),
+  ],
+};
+const focusDarkShadows: ShadowPair = {
+  shadow: [],
+  pop: [layer(0, 0, 0, 1, "#283035"), layer(0, 16, 40, 0, "rgba(0,0,0,0.5)")],
+};
+const calmDarkShadows: ShadowPair = {
+  shadow: [
+    layer(0, 1, 2, 0, "rgba(0,0,0,0.4)"),
+    layer(0, 8, 24, 0, "rgba(0,0,0,0.3)"),
+  ],
+  pop: focusDarkShadows.pop,
+};
+const focusLightShadows: ShadowPair = {
+  shadow: [],
+  pop: [
+    layer(0, 0, 0, 1, "#DDE3DC"),
+    layer(0, 16, 40, 0, "rgba(22,32,29,0.16)"),
+  ],
+};
+const tableE: Record<LookName, Record<SchemeName, ShadowPair>> = {
+  calm: { light: calmLightShadows, dark: calmDarkShadows },
+  focus: { light: focusLightShadows, dark: focusDarkShadows },
+  classic: { light: focusLightShadows, dark: focusDarkShadows },
 };
 
-const lookList: LookName[] = ["calm", "focus"];
+const lookList: LookName[] = ["calm", "focus", "classic"];
+const schemeList: SchemeName[] = ["light", "dark"];
 const accentList: AccentName[] = ["teal", "indigo", "clay", "violet"];
 const densityList: DensityName[] = ["comfortable", "compact"];
 const lookDensityExpected: Record<LookName, DensityName> = {
   calm: "comfortable",
   focus: "compact",
+  classic: "compact",
 };
 
 // Object key -> CSS variable and the form the variable takes in tokens.css (R10, R15).
@@ -233,15 +293,16 @@ const allNames = Object.values(variables).map((v) => v.name);
 
 function expectedTheme(
   look: LookName,
+  scheme: SchemeName,
   accent: AccentName,
   density?: DensityName,
 ) {
   return {
-    ...tableA[look],
-    ...tableB[look][accent],
+    ...tableA[look][scheme],
+    ...tableB[look][scheme][accent],
     ...tableC[density ?? lookDensityExpected[look]],
     ...tableD[look],
-    ...tableE[look],
+    ...tableE[look][scheme],
   };
 }
 
@@ -262,25 +323,45 @@ function cssForm(kind: Kind, value: unknown): string {
 describe("R1 names and lists", () => {
   it("lists hold exactly the values, in order", () => {
     expect(looks).toEqual(lookList);
+    expect(schemes).toEqual(schemeList);
     expect(accents).toEqual(accentList);
     expect(densities).toEqual(["comfortable", "compact"]);
+  });
+  it("Look and Scheme are the values of the lists (TOKI-143 R1)", () => {
+    expectTypeOf<Look>().toEqualTypeOf<"calm" | "focus" | "classic">();
+    expectTypeOf<Scheme>().toEqualTypeOf<"light" | "dark">();
   });
 });
 
 describe("R2 palettes", () => {
   for (const look of lookList) {
-    it(`palettes.${look} holds exactly the Table A values`, () => {
-      expect(palettes[look]).toEqual(tableA[look]);
-    });
+    for (const scheme of schemeList) {
+      it(`palettes.${look}.${scheme} holds exactly the Table A values`, () => {
+        expect(palettes[look][scheme]).toEqual(tableA[look][scheme]);
+      });
+    }
   }
+  it("Classic has the values of Focus in the same scheme", () => {
+    for (const scheme of schemeList) {
+      expect(palettes.classic[scheme]).toEqual(palettes.focus[scheme]);
+    }
+  });
+  it("keeps the values of Calm light and Focus dark as they were", () => {
+    expect(palettes.calm.light.bg).toBe("#F2F4EF");
+    expect(palettes.focus.dark.bg).toBe("#0E1214");
+  });
 });
 
 describe("R3 accent colours", () => {
   for (const look of lookList) {
-    for (const accent of accentList) {
-      it(`accentColors.${look}.${accent} holds the Table B values`, () => {
-        expect(accentColors[look][accent]).toEqual(tableB[look][accent]);
-      });
+    for (const scheme of schemeList) {
+      for (const accent of accentList) {
+        it(`accentColors.${look}.${scheme}.${accent} holds the Table B values`, () => {
+          expect(accentColors[look][scheme][accent]).toEqual(
+            tableB[look][scheme][accent],
+          );
+        });
+      }
     }
   }
 });
@@ -289,7 +370,7 @@ describe("R4 density", () => {
   it("densityValues holds Table C", () => {
     expect(densityValues).toEqual(tableC);
   });
-  it("lookDensity is comfortable for calm and compact for focus", () => {
+  it("lookDensity is comfortable for calm and compact for focus and classic", () => {
     expect(lookDensity).toEqual(lookDensityExpected);
   });
 });
@@ -300,19 +381,22 @@ describe("R5 radii and R6 shadows", () => {
   });
   it("shadows holds Table E, an empty list for no shadow", () => {
     expect(shadows).toEqual(tableE);
-    expect(shadows.focus.shadow).toEqual([]);
+    expect(shadows.focus.dark.shadow).toEqual([]);
+    expect(shadows.focus.light.shadow).toEqual([]);
   });
 });
 
 describe("R7 getTheme", () => {
   for (const look of lookList) {
-    for (const accent of accentList) {
-      for (const density of [...densityList, undefined]) {
-        it(`${look} ${accent} ${density ?? "default density"}`, () => {
-          const theme = getTheme(look, accent, density);
-          expect(Object.keys(theme).sort()).toEqual([...allKeys].sort());
-          expect(theme).toEqual(expectedTheme(look, accent, density));
-        });
+    for (const scheme of schemeList) {
+      for (const accent of accentList) {
+        for (const density of [...densityList, undefined]) {
+          it(`${look} ${scheme} ${accent} ${density ?? "default density"}`, () => {
+            const theme = getTheme(look, scheme, accent, density);
+            expect(Object.keys(theme).sort()).toEqual([...allKeys].sort());
+            expect(theme).toEqual(expectedTheme(look, scheme, accent, density));
+          });
+        }
       }
     }
   }
@@ -320,10 +404,10 @@ describe("R7 getTheme", () => {
 
 describe("getTheme isolation", () => {
   it("does not share shadow layers with the tokens", () => {
-    const theme = getTheme("calm", "teal");
+    const theme = getTheme("calm", "light", "teal");
     theme.shadow.push({ x: 1, y: 1, blur: 1, spread: 1, color: "#000000" });
     theme.pop[0]!.blur = 99;
-    expect(shadows.calm).toEqual(tableE.calm);
+    expect(shadows.calm.light).toEqual(tableE.calm.light);
   });
 });
 
@@ -364,10 +448,12 @@ describe("R8 values usable in React Native", () => {
 
   it("every value of every look, accent and density has the right form", () => {
     for (const look of lookList) {
-      for (const accent of accentList) {
-        for (const density of densityList) {
-          const theme = getTheme(look, accent, density);
-          for (const [key, value] of Object.entries(theme)) check(key, value);
+      for (const scheme of schemeList) {
+        for (const accent of accentList) {
+          for (const density of densityList) {
+            const theme = getTheme(look, scheme, accent, density);
+            for (const [key, value] of Object.entries(theme)) check(key, value);
+          }
         }
       }
     }

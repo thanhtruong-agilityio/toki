@@ -10,6 +10,7 @@ import {
   type Density,
   type DensityValues,
   type Look,
+  type Scheme,
   type Palette,
   type Radii,
   type ShadowLayer,
@@ -24,13 +25,18 @@ export type Theme = Palette & AccentValues & DensityValues & Radii & Shadows;
 const copyLayers = (layers: ShadowLayer[]): ShadowLayer[] =>
   layers.map((l) => ({ ...l }));
 
-export function getTheme(look: Look, accent: Accent, density?: Density): Theme {
+export function getTheme(
+  look: Look,
+  scheme: Scheme,
+  accent: Accent,
+  density?: Density,
+): Theme {
   return {
-    ...palettes[look],
-    ...accentColors[look][accent],
+    ...palettes[look][scheme],
+    ...accentColors[look][scheme][accent],
     ...densityValues[density ?? lookDensity[look]],
     ...radii[look],
-    shadow: copyLayers(shadows[look].shadow),
-    pop: copyLayers(shadows[look].pop),
+    shadow: copyLayers(shadows[look][scheme].shadow),
+    pop: copyLayers(shadows[look][scheme].pop),
   };
 }
