@@ -3,13 +3,16 @@ import {
   accents,
   densityValues,
   looks,
+  schemes,
   type Density,
   type Look,
+  type Scheme,
 } from "./tokens";
 
 // Builds the text of tokens.css from the token objects. Pure: no file access.
-// The order of the blocks is fixed (see the spec, Design): Calm, the device
-// block, Focus, the six accent blocks, the two density blocks.
+// The order of the blocks is fixed (see the spec, Design): Calm light, the
+// device block, the other five pairs of a look and a scheme, the eighteen
+// accent blocks, the two density blocks.
 
 type Kind = "color" | "px" | "pct" | "shadow";
 
@@ -86,13 +89,15 @@ const accentNames = [
   "--accent-text",
 ];
 
-function lookLines(look: Look, indent: string): string[] {
-  const scheme = look === "calm" ? "light" : "dark";
+function pairLines(look: Look, scheme: Scheme, indent: string): string[] {
   return [
     `${indent}color-scheme: ${scheme};`,
-    ...declarations(getTheme(look, "teal"), allNames, indent),
+    ...declarations(getTheme(look, scheme, "teal"), allNames, indent),
   ];
 }
+
+const pairSelector = (look: Look, scheme: Scheme) =>
+  `:root[data-look="${look}"][data-scheme="${scheme}"]`;
 
 function densityLines(density: Density, indent: string): string[] {
   const v = densityValues[density];
@@ -107,27 +112,51 @@ export function toCss(): string {
   const parts: string[] = [
     "/* Generated from src/tokens.ts. Do not edit by hand.\n   Rewrite it with: pnpm --filter @toki/tokens generate */",
   ];
-  parts.push(block(':root, :root[data-eff="calm"]', lookLines("calm", "  ")));
+  parts.push(
+    block(
+      `:root, ${pairSelector("calm", "light")}`,
+      pairLines("calm", "light", "  "),
+    ),
+  );
+  // A page that has not set data-scheme yet: Calm in the scheme of the device.
   parts.push(
     block("@media (prefers-color-scheme: dark)", [
-      block(":root:not([data-eff])", lookLines("focus", "    "), "  "),
+      block(
+        ":root:not([data-scheme])",
+        pairLines("calm", "dark", "    "),
+        "  ",
+      ),
     ]),
   );
-  parts.push(block(':root[data-eff="focus"]', lookLines("focus", "  ")));
   for (const look of looks) {
-    for (const accent of accents) {
-      if (accent === "teal") continue;
+    for (const scheme of schemes) {
+      if (look === "calm" && scheme === "light") continue;
       parts.push(
-        block(
-          `:root[data-eff="${look}"][data-accent="${accent}"]`,
-          declarations(getTheme(look, accent), accentNames, "  "),
-        ),
+        block(pairSelector(look, scheme), pairLines(look, scheme, "  ")),
       );
     }
   }
+  for (const look of looks) {
+    for (const scheme of schemes) {
+      for (const accent of accents) {
+        if (accent === "teal") continue;
+        parts.push(
+          block(
+            `${pairSelector(look, scheme)}[data-accent="${accent}"]`,
+            declarations(getTheme(look, scheme, accent), accentNames, "  "),
+          ),
+        );
+      }
+    }
+  }
+  // Three attributes strong, like a pair block, and after it: a chosen density
+  // wins over the density of the look in every look and scheme.
   for (const density of ["compact", "comfortable"] as const) {
     parts.push(
-      block(`:root[data-density="${density}"]`, densityLines(density, "  ")),
+      block(
+        `:root:root[data-density="${density}"]`,
+        densityLines(density, "  "),
+      ),
     );
   }
   return parts.join("\n\n") + "\n";

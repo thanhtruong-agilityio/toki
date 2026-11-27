@@ -563,9 +563,20 @@ describe("tokens.css", () => {
   const text = readFileSync(cssPath, "utf8");
   const blocks = parseCss(text);
   const plain = blocks.filter((b) => b.media === undefined);
-  const lookBlockSelectors = [
-    `:root, :root[data-eff="calm"]`,
-    `:root[data-eff="focus"]`,
+  const pairSelector = (look: LookName, scheme: SchemeName) =>
+    look === "calm" && scheme === "light"
+      ? `:root, :root[data-look="calm"][data-scheme="light"]`
+      : `:root[data-look="${look}"][data-scheme="${scheme}"]`;
+  const pairs = lookList.flatMap((look) =>
+    schemeList.map((scheme) => ({ look, scheme })),
+  );
+  const pairBlock = (look: LookName, scheme: SchemeName) =>
+    plain.find((x) => x.selector === pairSelector(look, scheme))!;
+  const accentSelector = (look: LookName, scheme: SchemeName, accent: string) =>
+    `:root[data-look="${look}"][data-scheme="${scheme}"][data-accent="${accent}"]`;
+  const densitySelectors = [
+    ':root:root[data-density="compact"]',
+    ':root:root[data-density="comfortable"]',
   ];
 
   it("R17 starts with a comment that says it is generated and names the command", () => {
@@ -589,36 +600,43 @@ describe("tokens.css", () => {
     expect(allNames).toHaveLength(32);
   });
 
-  it("R11 has a Calm block and a Focus block with all 32 properties and color-scheme", () => {
-    for (const [i, look] of lookList.entries()) {
-      const b = plain.find((x) => x.selector === lookBlockSelectors[i]);
-      expect(b, `block for ${look}`).toBeDefined();
-      const props = Object.keys(b!.decls).filter((p) => p !== "color-scheme");
+  it("R11 has six blocks, one for each look and scheme, with all 32 properties and color-scheme", () => {
+    const pairBlocks = plain.filter(
+      (b) =>
+        b.selector.includes("data-scheme") &&
+        !b.selector.includes("data-accent"),
+    );
+    expect(pairBlocks).toHaveLength(6);
+    for (const { look, scheme } of pairs) {
+      const b = pairBlock(look, scheme);
+      expect(b, `block for ${look} ${scheme}`).toBeDefined();
+      const props = Object.keys(b.decls).filter((p) => p !== "color-scheme");
       expect(props.sort()).toEqual([...allNames].sort());
-      expect(b!.decls["color-scheme"]).toBe(look === "calm" ? "light" : "dark");
+      expect(b.decls["color-scheme"]).toBe(scheme);
     }
   });
 
-  it("R12 has one dark-device block with the declarations of the Focus block", () => {
+  it("R12 has one dark-device block that is the block of Calm dark", () => {
     const media = blocks.filter((b) => b.media !== undefined);
     expect(media).toHaveLength(1);
     expect(media[0]!.media).toMatch(
       /^@media\s*\(prefers-color-scheme:\s*dark\)$/,
     );
-    expect(media[0]!.selector).toBe(":root:not([data-eff])");
-    const focus = plain.find((x) => x.selector === lookBlockSelectors[1])!;
-    expect(media[0]!.decls).toEqual(focus.decls);
+    expect(media[0]!.selector).toBe(":root:not([data-scheme])");
+    expect(media[0]!.decls).toEqual(pairBlock("calm", "dark").decls);
+    expect(media[0]!.decls["color-scheme"]).toBe("dark");
   });
 
-  it("R13 has six accent blocks with four properties each and none for teal", () => {
+  it("R13 has eighteen accent blocks with four properties each and none for teal", () => {
     const accentBlocks = plain.filter((b) =>
       b.selector.includes("data-accent"),
     );
-    const expected = lookList.flatMap((look) =>
-      (["indigo", "clay", "violet"] as const).map(
-        (accent) => `:root[data-eff="${look}"][data-accent="${accent}"]`,
+    const expected = pairs.flatMap(({ look, scheme }) =>
+      (["indigo", "clay", "violet"] as const).map((accent) =>
+        accentSelector(look, scheme, accent),
       ),
     );
+    expect(accentBlocks).toHaveLength(18);
     expect(accentBlocks.map((b) => b.selector).sort()).toEqual(
       [...expected].sort(),
     );
@@ -630,20 +648,19 @@ describe("tokens.css", () => {
     expect(text).not.toContain('data-accent="teal"');
   });
 
-  it("R14 has two density blocks with three properties each, after every look block", () => {
+  it("R14 has two density blocks with three properties each, after every look block, as strong as a look block", () => {
     const densityBlocks = plain.filter((b) =>
       b.selector.includes("data-density"),
     );
-    expect(densityBlocks.map((b) => b.selector).sort()).toEqual([
-      ':root[data-density="comfortable"]',
-      ':root[data-density="compact"]',
-    ]);
+    expect(densityBlocks.map((b) => b.selector).sort()).toEqual(
+      [...densitySelectors].sort(),
+    );
     for (const b of densityBlocks) {
       expect(Object.keys(b.decls).sort()).toEqual(["--av", "--gap", "--row"]);
       expect(blocks.indexOf(b)).toBeGreaterThan(
         Math.max(
-          ...lookBlockSelectors.map((s) =>
-            blocks.findIndex((x) => x.selector === s),
+          ...pairs.map(({ look, scheme }) =>
+            blocks.findIndex((x) => x.selector === pairSelector(look, scheme)),
           ),
         ),
       );
@@ -655,23 +672,24 @@ describe("tokens.css", () => {
 
   it("R10-R14 the blocks stand in the fixed order of the file", () => {
     expect(blocks.map((b) => b.selector)).toEqual([
-      ':root, :root[data-eff="calm"]',
-      ":root:not([data-eff])",
-      ':root[data-eff="focus"]',
-      ...lookList.flatMap((look) =>
-        (["indigo", "clay", "violet"] as const).map(
-          (accent) => `:root[data-eff="${look}"][data-accent="${accent}"]`,
+      pairSelector("calm", "light"),
+      ":root:not([data-scheme])",
+      ...pairs
+        .filter(({ look, scheme }) => !(look === "calm" && scheme === "light"))
+        .map(({ look, scheme }) => pairSelector(look, scheme)),
+      ...pairs.flatMap(({ look, scheme }) =>
+        (["indigo", "clay", "violet"] as const).map((accent) =>
+          accentSelector(look, scheme, accent),
         ),
       ),
-      ':root[data-density="compact"]',
-      ':root[data-density="comfortable"]',
+      ...densitySelectors,
     ]);
     expect(blocks[1]!.media).toBeDefined();
   });
 
-  it("R15 gives the five worked examples exactly as the file holds them", () => {
-    const calm = plain.find((x) => x.selector === lookBlockSelectors[0])!;
-    const focus = plain.find((x) => x.selector === lookBlockSelectors[1])!;
+  it("R15 gives the worked examples exactly as the file holds them", () => {
+    const calm = pairBlock("calm", "light");
+    const focus = pairBlock("focus", "dark");
     expect(calm.decls["--shadow"]).toBe(
       "0px 1px 2px 0px rgba(22,32,29,0.06), 0px 8px 24px 0px rgba(22,32,29,0.06)",
     );
@@ -681,6 +699,12 @@ describe("tokens.css", () => {
     expect(focus.decls["--shadow"]).toBe("none");
     expect(calm.decls["--radius"]).toBe("16px");
     expect(calm.decls["--av-s"]).toBe("45%");
+    expect(pairBlock("calm", "dark").decls["--shadow"]).toBe(
+      "0px 1px 2px 0px rgba(0,0,0,0.4), 0px 8px 24px 0px rgba(0,0,0,0.3)",
+    );
+    expect(pairBlock("focus", "light").decls["--pop"]).toBe(
+      "0px 0px 0px 1px #DDE3DC, 0px 16px 40px 0px rgba(22,32,29,0.16)",
+    );
   });
 
   it("R15 every length ends in px, every avatar tint in %, every shadow layer has four lengths", () => {
@@ -703,18 +727,15 @@ describe("tokens.css", () => {
 
   it("R15 writes px, %, none and shadow layers in the documented form", () => {
     for (const [key, { name, kind }] of Object.entries(variables)) {
-      for (const look of lookList) {
-        const b = plain.find(
-          (x) => x.selector === lookBlockSelectors[look === "calm" ? 0 : 1],
-        )!;
-        const value = b.decls[name]!;
+      for (const { look, scheme } of pairs) {
+        const value = pairBlock(look, scheme).decls[name]!;
         const expected = cssForm(
           kind,
-          expectedTheme(look, "teal")[
+          expectedTheme(look, scheme, "teal")[
             key as keyof ReturnType<typeof expectedTheme>
           ],
         );
-        expect(value, `${look} ${name}`).toBe(expected);
+        expect(value, `${look} ${scheme} ${name}`).toBe(expected);
       }
     }
   });
@@ -731,54 +752,76 @@ describe("tokens.css", () => {
     }
   }
 
-  it("R16a gives each look, accent and density the values of getTheme, on a light and a dark device", () => {
-    for (const look of lookList) {
+  it("R16a gives each look, scheme, accent and density the values of getTheme, on a light and a dark device", () => {
+    let states = 0;
+    for (const { look, scheme } of pairs) {
       for (const accent of accentList) {
         for (const density of [...densityList, undefined]) {
-          const attrs: Record<string, string> = { eff: look, accent };
+          const attrs: Record<string, string> = {
+            look,
+            scheme,
+            accent,
+          };
           if (density !== undefined) attrs.density = density;
           for (const dark of [false, true]) {
             const got = resolve(blocks, attrs, dark);
             expectSame(
               got,
-              getTheme(look, accent, density),
-              `${look} ${accent} ${density ?? "none"} dark=${dark}`,
+              getTheme(look, scheme, accent, density),
+              `${look} ${scheme} ${accent} ${density ?? "none"} dark=${dark}`,
             );
-            expect(got["color-scheme"]).toBe(
-              look === "calm" ? "light" : "dark",
-            );
+            expect(got["color-scheme"]).toBe(scheme);
           }
+          states++;
         }
       }
     }
+    expect(states).toBe(72);
   });
 
-  it("R16b gives a page without data-eff the values of Calm on a light device and Focus on a dark one", () => {
+  it("R16b gives a page with no attribute but a density the values of Calm in the scheme of the device", () => {
+    let states = 0;
     for (const dark of [false, true]) {
       for (const density of [...densityList, undefined]) {
         const attrs: Record<string, string> = {};
         if (density !== undefined) attrs.density = density;
-        const look = dark ? "focus" : "calm";
+        const scheme = dark ? "dark" : "light";
         const got = resolve(blocks, attrs, dark);
         expectSame(
           got,
-          getTheme(look, "teal", density),
-          `${look} ${density ?? "none"}`,
+          getTheme("calm", scheme, "teal", density),
+          `calm ${scheme} ${density ?? "none"}`,
         );
-        expect(got["color-scheme"]).toBe(dark ? "dark" : "light");
+        expect(got["color-scheme"]).toBe(scheme);
+        states++;
       }
     }
+    expect(states).toBe(6);
   });
 
-  it("R12 shows Focus on a dark device and Calm on a light device before data-eff is set", () => {
+  it("R12 shows Calm in the scheme of the device before data-scheme is set", () => {
     const light = resolve(blocks, {}, false);
     const dark = resolve(blocks, {}, true);
-    expect(light["--bg"]).toBe(tableA.calm.bg);
+    expect(light["--bg"]).toBe(tableA.calm.light.bg);
     expect(light["color-scheme"]).toBe("light");
-    expect(dark["--bg"]).toBe(tableA.focus.bg);
+    expect(dark["--bg"]).toBe(tableA.calm.dark.bg);
     expect(dark["color-scheme"]).toBe("dark");
-    // Once data-eff is set, only the attribute counts.
-    expect(resolve(blocks, { eff: "calm" }, true)["--bg"]).toBe(tableA.calm.bg);
+    // Once data-look and data-scheme are set, only the attributes count.
+    expect(
+      resolve(blocks, { look: "calm", scheme: "light" }, true)["--bg"],
+    ).toBe(tableA.calm.light.bg);
+  });
+
+  it("a chosen density wins over the density of the look in each of the six pairs", () => {
+    for (const { look, scheme } of pairs) {
+      for (const density of densityList) {
+        const got = resolve(blocks, { look, scheme, density }, false);
+        expect(got["--av"], `${look} ${scheme} ${density}`).toBe(
+          `${tableC[density].avatarSize}px`,
+        );
+        expect(got["--row"]).toBe(`${tableC[density].rowHeight}px`);
+      }
+    }
   });
 });
 
