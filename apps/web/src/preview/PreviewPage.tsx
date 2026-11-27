@@ -6,7 +6,7 @@ import {
   writeAddress,
   type Controls,
 } from "./controls";
-import { accents, looks } from "@toki/tokens";
+import { accents, looks, schemes } from "@toki/tokens";
 import { componentExamples } from "@toki/ui-web/examples";
 import { ExampleSection } from "./ExampleSection";
 import { IconsSection } from "./IconsSection";
@@ -62,6 +62,26 @@ export function PreviewPage() {
               {looks.map((look) => (
                 <option key={look} value={look}>
                   {look}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="pv-control">
+            <span>Scheme</span>
+            <select
+              className="pv-select"
+              data-control="scheme"
+              value={controls.scheme}
+              onChange={(event) =>
+                change({
+                  ...controls,
+                  scheme: pickOf(schemes, event.target.value, controls.scheme),
+                })
+              }
+            >
+              {schemes.map((scheme) => (
+                <option key={scheme} value={scheme}>
+                  {scheme}
                 </option>
               ))}
             </select>

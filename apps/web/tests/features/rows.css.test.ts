@@ -109,7 +109,7 @@ describe("rows.css (TOKI-034 R26, Table A)", () => {
   });
 
   test("no look selector, no transition, no animation; a :hover rule sets only background", () => {
-    expect(css).not.toMatch(/data-eff|data-look|data-accent|data-density/);
+    expect(css).not.toMatch(/data-look|data-scheme|data-accent|data-density/);
     expect(css).not.toMatch(/transition|animation/);
     for (const rule of rules.filter((r) => r.selector.includes(":hover"))) {
       expect(rule.decl.every((d) => d.startsWith("background:"))).toBe(true);

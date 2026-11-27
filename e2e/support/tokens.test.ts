@@ -22,7 +22,7 @@ describe("parseTokenNames (R4)", () => {
   });
 
   it("reads a tiny stylesheet", () => {
-    const tiny = `:root, :root[data-eff="calm"] {\n  --a: 1;\n  --b-c: 2;\n}\n:root[data-eff="focus"] {\n  --z: 3;\n}`;
+    const tiny = `:root, :root[data-look="calm"][data-scheme="light"] {\n  --a: 1;\n  --b-c: 2;\n}\n:root[data-look="focus"][data-scheme="dark"] {\n  --z: 3;\n}`;
     expect(parseTokenNames(tiny)).toEqual(["--a", "--b-c"]);
   });
 

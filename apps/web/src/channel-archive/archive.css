@@ -34,7 +34,7 @@
 }
 
 @media (min-width: 720px) {
-  [data-eff="focus"] .arch-notice {
+  :is([data-look="focus"], [data-look="classic"]) .arch-notice {
     margin: 0 16px 12px;
   }
 }

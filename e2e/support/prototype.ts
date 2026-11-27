@@ -8,6 +8,11 @@ import type { Page } from "@playwright/test";
 
 export type Look = "calm" | "focus" | "classic";
 export type Scheme = "light" | "dark";
+
+// The scheme in which a look is drawn when nothing says otherwise: Calm in light, Focus and Classic
+// in dark, the states the parity check draws (TOKI-143). The one place that holds this rule.
+export const defaultScheme = (look: Look): Scheme =>
+  look === "calm" ? "light" : "dark";
 export type Accent = "teal" | "indigo" | "clay" | "violet";
 export type Density = "own" | "comfortable" | "compact";
 export type Width = "wide" | "mid" | "narrow";
@@ -102,7 +107,7 @@ export async function openPrototype(
   const file = verifyPrototype();
   const {
     look,
-    scheme = look === "calm" ? "light" : "dark",
+    scheme = defaultScheme(look),
     accent = "teal",
     density = "own",
     width = "wide",

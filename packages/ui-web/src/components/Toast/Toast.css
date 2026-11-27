@@ -31,7 +31,7 @@
   padding: 2px 6px;
 }
 
-[data-eff="focus"] .toast button {
+[data-scheme="dark"] .toast button {
   color: var(--accent);
 }
 

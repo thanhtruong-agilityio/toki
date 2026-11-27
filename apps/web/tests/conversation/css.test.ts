@@ -25,7 +25,10 @@ const table: Row[] = [
     ".mh",
     "display:flex; align-items:center; gap:10px; padding:14px 20px 0; min-height:56px",
   ),
-  C('[data-eff="focus"] .mh', "padding:10px 16px 0; min-height:48px"),
+  C(
+    ':is([data-look="focus"], [data-look="classic"]) .mh',
+    "padding:10px 16px 0; min-height:48px",
+  ),
   C(".mh .back", "display:none"),
   C(
     ".mh h1",

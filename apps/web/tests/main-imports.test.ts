@@ -27,3 +27,19 @@ describe("the imports of main.tsx (TOKI-097 R26)", () => {
     );
   });
 });
+
+// TOKI-143 R7: a person with nothing saved sees Calm in the scheme of the device, and the call is the one
+// that TOKI-078 replaces with the saved values.
+describe("the default look of main.tsx (TOKI-143 R7)", () => {
+  const source = readFileSync(
+    join(import.meta.dirname, "../src/main.tsx"),
+    "utf8",
+  );
+  it("applies Calm with the scheme of the device before the app is mounted", () => {
+    const call = source.indexOf(
+      'applyAppearance({ look: "calm", scheme: "device" })',
+    );
+    expect(call).toBeGreaterThanOrEqual(0);
+    expect(call).toBeLessThan(source.indexOf("createRoot("));
+  });
+});

@@ -33,7 +33,7 @@ const table: Row[] = [
   },
   {
     media: "(min-width:720px)",
-    selector: '[data-eff="focus"] .arch-notice',
+    selector: ':is([data-look="focus"], [data-look="classic"]) .arch-notice',
     decl: "margin:0 16px 12px",
   },
   {

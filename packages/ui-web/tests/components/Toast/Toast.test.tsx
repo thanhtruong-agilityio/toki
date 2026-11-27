@@ -430,11 +430,11 @@ describe("Toast.css (R20, R21, R32, R33)", () => {
     );
   });
 
-  test("the button has the Calm label and the Focus look selector has the accent", () => {
+  test("the button has the accent-soft label, and the dark scheme has the accent (TOKI-143 R9)", () => {
     expect(rule(".toast button")!.declarations).toEqual(
       decl("color:var(--accent-soft); font-weight:700; padding:2px 6px"),
     );
-    expect(rule('[data-eff="focus"] .toast button')!.declarations).toEqual({
+    expect(rule('[data-scheme="dark"] .toast button')!.declarations).toEqual({
       color: "var(--accent)",
     });
   });

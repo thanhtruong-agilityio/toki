@@ -1,5 +1,6 @@
 import type { Locator, Page, Route } from "@playwright/test";
 import { stubBootstrap } from "./bootstrap";
+import { defaultScheme } from "./prototype";
 
 // Helpers of e2e/sign-in.spec.ts (TOKI-023 R29 to R34). The server of TOKI-022 cannot be seeded yet
 // (TOKI-008), so every answer of `/api/v1/auth/*` is a stub in the browser. Fake data only: the
@@ -17,7 +18,8 @@ export const USER = {
 };
 
 export type Language = "en" | "vi";
-export type Look = "calm" | "focus";
+export type Look = "calm" | "focus" | "classic";
+export type Scheme = "light" | "dark";
 
 // The texts the tests look for, from packages/i18n (signIn, sessionEnded).
 export const TEXT = {
@@ -158,10 +160,43 @@ export async function setDeviceLanguage(
   }, language);
 }
 
-// Calm and Focus are chosen the way the app chooses them: the look is `device`, and the device asks for
-// Focus with a dark colour scheme (applyAppearance in packages/ui-web).
-export async function setLook(page: Page, look: Look): Promise<void> {
-  await page.emulateMedia({ colorScheme: look === "focus" ? "dark" : "light" });
+// Keeps the page in a look and a scheme (TOKI-143 R12). Call it before the page loads. The app's own
+// call sets Calm in the scheme of the device until the saved values are read (TOKI-078), so the
+// device's setting alone no longer reaches Focus: the device is given `scheme` (light for Calm, dark
+// for Focus and Classic when it is left out), and an init script sets `data-look` and `data-scheme`
+// on the root element and sets them again whenever the page changes them.
+export async function setLook(
+  page: Page,
+  look: Look,
+  scheme?: Scheme,
+): Promise<void> {
+  const asked = scheme ?? defaultScheme(look);
+  await page.emulateMedia({ colorScheme: asked });
+  await page.addInitScript(
+    ({ look: wantLook, scheme: wantScheme }) => {
+      // The init script runs before the page has a root element, so it waits for it.
+      let watching = false;
+      const keep = () => {
+        const root = document.documentElement;
+        if (!root) return;
+        if (root.getAttribute("data-look") !== wantLook)
+          root.setAttribute("data-look", wantLook);
+        if (root.getAttribute("data-scheme") !== wantScheme)
+          root.setAttribute("data-scheme", wantScheme);
+        if (!watching) {
+          watching = true;
+          new MutationObserver(keep).observe(root, {
+            attributes: true,
+            attributeFilter: ["data-look", "data-scheme"],
+          });
+        }
+      };
+      keep();
+      if (!document.documentElement)
+        new MutationObserver(keep).observe(document, { childList: true });
+    },
+    { look, scheme: asked },
+  );
 }
 
 export function field(page: Page, kind: "email" | "code"): Locator {

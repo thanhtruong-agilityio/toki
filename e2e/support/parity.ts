@@ -3,7 +3,13 @@ import pixelmatch from "pixelmatch";
 import { PNG } from "pngjs";
 import { LIMITS } from "../parity/limits";
 import type { Row } from "./parity-reporter";
-import { openPrototype, type Look, type Width } from "./prototype";
+import {
+  defaultScheme,
+  openPrototype,
+  type Look,
+  type Scheme,
+  type Width,
+} from "./prototype";
 
 // The screen check of the UI parity check (TOKI-109 R5 to R13): declared screens, the capture of
 // both sides, the comparison and the row that goes into the report.
@@ -33,6 +39,10 @@ export interface ScreenDecl {
   // Selectors masked on both sides, besides the running counts `[data-timer]`.
   mask?: string[];
   looks?: Look[];
+  // The scheme of the page for every look of the declaration (TOKI-143 R13). Left out: light for
+  // Calm, dark for Focus and Classic, the states the check has always drawn. The reference images
+  // carry no scheme in their names, so a declaration names one scheme.
+  scheme?: Scheme;
   widths?: Width[];
   // A selector of the app that is visible once the screen has its content. The check waits for it
   // before it captures; without it the check waits for the network to be idle.
@@ -46,6 +56,7 @@ export interface ScreenDecl {
 export interface ScreenEntry {
   decl: ScreenDecl;
   look: Look;
+  scheme: Scheme;
   width: Width;
   // The name is the same on every run: it is the row name in the report.
   name: string;
@@ -55,12 +66,17 @@ export interface ScreenEntry {
 // TOKI-137 R1: the element of the app that a declaration captures.
 export const appRootOf = (decl: ScreenDecl): string => decl.appRoot ?? ".app";
 
+// TOKI-143 R13: the scheme in which a look is drawn by a declaration.
+export const schemeOf = (decl: ScreenDecl, look: Look): Scheme =>
+  decl.scheme ?? defaultScheme(look);
+
 export function expandScreens(decls: ScreenDecl[]): ScreenEntry[] {
   return decls.flatMap((decl) =>
     (decl.looks ?? LOOKS).flatMap((look) =>
       (decl.widths ?? WIDTH_NAMES).map((width) => ({
         decl,
         look,
+        scheme: schemeOf(decl, look),
         width,
         name: `${decl.id}/${look}/${width}`,
         run: !decl.seed,
@@ -98,6 +114,14 @@ export function flattenDeclarations(
         if (!isDeclaration(item)) {
           throw new Error(
             `${file}: export ${key} is not a screen declaration (it needs id, section and appRoute)`,
+          );
+        }
+        if (
+          item.scheme !== undefined &&
+          !["light", "dark"].includes(item.scheme)
+        ) {
+          throw new Error(
+            `${file}: screen "${item.id}" has the scheme "${String(item.scheme)}"; it must be light or dark`,
           );
         }
         if (!ID_PATTERN.test(item.id)) {
@@ -441,7 +465,12 @@ export async function captureReference(
   look: Look,
   width: Width,
 ): Promise<Buffer> {
-  await openPrototype(page, { look, width, hash: decl.section });
+  await openPrototype(page, {
+    look,
+    scheme: schemeOf(decl, look),
+    width,
+    hash: decl.section,
+  });
   await runSteps(page, decl.id, decl.prototypeSteps ?? []);
   return captureElement(page, "#app", decl.mask ?? []);
 }

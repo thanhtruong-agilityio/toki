@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { describe, expect, test } from "vitest";
+import { appearanceFromAddress } from "../../scripts/shell-fixture/address";
 
 // The folder this file sat in before the tests moved to tests/: its relative paths still start here.
 const SRC_DIR = `${import.meta.dirname}/../../scripts/shell-fixture`;
@@ -28,9 +29,24 @@ describe("the shell fixture entry (R32)", () => {
   });
 
   test("calls applyAppearance from the address and sets no storage", () => {
-    expect(main).toContain("applyAppearance");
-    expect(main).toContain('params.get("look")');
+    expect(main).toContain("applyAppearance(appearanceFromAddress(params))");
     expect(main).not.toMatch(/localStorage|sessionStorage|indexedDB/);
+  });
+
+  test("reads the look and the scheme with calm and device as the defaults (TOKI-143 R11)", () => {
+    const read = (search: string) =>
+      appearanceFromAddress(new URLSearchParams(search));
+    expect(read("")).toEqual({ look: "calm", scheme: "device" });
+    expect(read("?look=classic&scheme=dark")).toEqual({
+      look: "classic",
+      scheme: "dark",
+    });
+    expect(read("?look=focus")).toEqual({ look: "focus", scheme: "device" });
+    expect(read("?scheme=light")).toEqual({ look: "calm", scheme: "light" });
+    expect(read("?look=loud&scheme=sepia")).toEqual({
+      look: "calm",
+      scheme: "device",
+    });
   });
 
   test("the page loads the entry and links no style sheet", () => {
