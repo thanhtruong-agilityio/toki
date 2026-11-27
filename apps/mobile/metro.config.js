@@ -5,6 +5,8 @@
 // resolver fails on a relative `.js` import from a file under packages/, the
 // same path is tried with `.ts`, then `.tsx`. Imports that resolve today are
 // not touched, and no file of packages/ is changed for it.
+// Metro passes the real (symlink-resolved) path of the importing file, so a
+// workspace package is seen under packages/<name>/src, not node_modules.
 // The project is an ES module ("type": "module"), so this file is one too
 // (TOKI-146, R24): Expo loads it with import, and it needs no lint exception.
 import path from "node:path";
