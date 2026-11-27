@@ -267,6 +267,21 @@ describe("expandScreens (R5, R12)", () => {
     ]);
   });
 
+  it("gives each look its default scheme, and a declaration may name one (TOKI-143 R13)", () => {
+    const entries = expandScreens([
+      decl({ looks: ["calm", "focus", "classic"], widths: ["wide"] }),
+    ]);
+    expect(entries.map((e) => `${e.look}/${e.scheme}`)).toEqual([
+      "calm/light",
+      "focus/dark",
+      "classic/dark",
+    ]);
+    const named = expandScreens([
+      decl({ looks: ["focus"], widths: ["wide"], scheme: "light" }),
+    ]);
+    expect(named.map((e) => `${e.look}/${e.scheme}`)).toEqual(["focus/light"]);
+  });
+
   it("does not run a seeded declaration, and still lists it", () => {
     const entries = expandScreens([decl({ seed: true })]);
     expect(entries).toHaveLength(6);

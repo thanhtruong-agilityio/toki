@@ -37,44 +37,6 @@
   --pop: 0px 4px 8px 0px rgba(22,32,29,0.08), 0px 16px 40px 0px rgba(22,32,29,0.16);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-scheme]) {
-    color-scheme: dark;
-    --bg: #0B0F10;
-    --surface: #161B1E;
-    --surface-2: #1B2125;
-    --ink: #E8EDEB;
-    --ink-2: #C9D1CE;
-    --muted: #96A29D;
-    --line: #263035;
-    --accent: #5EEAD4;
-    --on-accent: #04201C;
-    --accent-soft: #123B36;
-    --accent-text: #7EF0DE;
-    --mention-bg: rgba(250,204,21,0.12);
-    --mention-ink: #FDE68A;
-    --danger: #F97066;
-    --danger-soft: #3A1614;
-    --live: #FB923C;
-    --on-live: #1A0B02;
-    --idea: #B9A2F5;
-    --idea-soft: #2A2145;
-    --hover: rgba(232,237,235,0.07);
-    --scrim: rgba(0,0,0,0.55);
-    --av-s: 45%;
-    --av-l: 88%;
-    --av-ts: 55%;
-    --av-tl: 28%;
-    --av: 36px;
-    --gap: 14px;
-    --row: 36px;
-    --radius: 16px;
-    --radius-sm: 10px;
-    --shadow: 0px 1px 2px 0px rgba(0,0,0,0.4), 0px 8px 24px 0px rgba(0,0,0,0.3);
-    --pop: 0px 0px 0px 1px #283035, 0px 16px 40px 0px rgba(0,0,0,0.5);
-  }
-}
-
 :root[data-look="calm"][data-scheme="dark"] {
   color-scheme: dark;
   --bg: #0B0F10;
@@ -253,6 +215,44 @@
   --radius-sm: 8px;
   --shadow: none;
   --pop: 0px 0px 0px 1px #283035, 0px 16px 40px 0px rgba(0,0,0,0.5);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-scheme]) {
+    color-scheme: dark;
+    --bg: #0B0F10;
+    --surface: #161B1E;
+    --surface-2: #1B2125;
+    --ink: #E8EDEB;
+    --ink-2: #C9D1CE;
+    --muted: #96A29D;
+    --line: #263035;
+    --accent: #5EEAD4;
+    --on-accent: #04201C;
+    --accent-soft: #123B36;
+    --accent-text: #7EF0DE;
+    --mention-bg: rgba(250,204,21,0.12);
+    --mention-ink: #FDE68A;
+    --danger: #F97066;
+    --danger-soft: #3A1614;
+    --live: #FB923C;
+    --on-live: #1A0B02;
+    --idea: #B9A2F5;
+    --idea-soft: #2A2145;
+    --hover: rgba(232,237,235,0.07);
+    --scrim: rgba(0,0,0,0.55);
+    --av-s: 45%;
+    --av-l: 88%;
+    --av-ts: 55%;
+    --av-tl: 28%;
+    --av: 36px;
+    --gap: 14px;
+    --row: 36px;
+    --radius: 16px;
+    --radius-sm: 10px;
+    --shadow: 0px 1px 2px 0px rgba(0,0,0,0.4), 0px 8px 24px 0px rgba(0,0,0,0.3);
+    --pop: 0px 0px 0px 1px #283035, 0px 16px 40px 0px rgba(0,0,0,0.5);
+  }
 }
 
 :root[data-look="calm"][data-scheme="light"][data-accent="indigo"] {

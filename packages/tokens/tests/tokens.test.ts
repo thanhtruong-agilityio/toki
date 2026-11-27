@@ -673,10 +673,10 @@ describe("tokens.css", () => {
   it("R10-R14 the blocks stand in the fixed order of the file", () => {
     expect(blocks.map((b) => b.selector)).toEqual([
       pairSelector("calm", "light"),
-      ":root:not([data-scheme])",
       ...pairs
         .filter(({ look, scheme }) => !(look === "calm" && scheme === "light"))
         .map(({ look, scheme }) => pairSelector(look, scheme)),
+      ":root:not([data-scheme])",
       ...pairs.flatMap(({ look, scheme }) =>
         (["indigo", "clay", "violet"] as const).map((accent) =>
           accentSelector(look, scheme, accent),
@@ -684,7 +684,7 @@ describe("tokens.css", () => {
       ),
       ...densitySelectors,
     ]);
-    expect(blocks[1]!.media).toBeDefined();
+    expect(blocks[6]!.media).toBeDefined();
   });
 
   it("R15 gives the worked examples exactly as the file holds them", () => {

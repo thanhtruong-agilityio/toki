@@ -145,20 +145,19 @@ const focusTints: Tints = {
   avatarTextLightness: 86,
 };
 
-// Classic has the colours, the tints, the radii and the shadows of Focus.
+// Classic has the colours, the tints, the radii and the shadows of Focus: it holds the same
+// objects.
+const focusPalettes: Record<Scheme, Palette> = {
+  light: { ...focusLightColours, ...focusTints },
+  dark: { ...darkColours, ...focusTints },
+};
 export const palettes: Record<Look, Record<Scheme, Palette>> = {
   calm: {
     light: { ...lightColours, ...calmTints },
     dark: { ...calmDarkColours, ...calmTints },
   },
-  focus: {
-    light: { ...focusLightColours, ...focusTints },
-    dark: { ...darkColours, ...focusTints },
-  },
-  classic: {
-    light: { ...focusLightColours, ...focusTints },
-    dark: { ...darkColours, ...focusTints },
-  },
+  focus: focusPalettes,
+  classic: focusPalettes,
 };
 
 // A light scheme has the accents of Calm and a dark scheme those of Focus, in all three looks.

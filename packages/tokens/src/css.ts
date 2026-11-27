@@ -10,9 +10,9 @@ import {
 } from "./tokens";
 
 // Builds the text of tokens.css from the token objects. Pure: no file access.
-// The order of the blocks is fixed (see the spec, Design): Calm light, the
-// device block, the other five pairs of a look and a scheme, the eighteen
-// accent blocks, the two density blocks.
+// The order of the blocks is fixed (see the spec, Design): the six pairs of a
+// look and a scheme (Calm light first), the device block, the eighteen accent
+// blocks, the two density blocks.
 
 type Kind = "color" | "px" | "pct" | "shadow";
 
@@ -118,6 +118,14 @@ export function toCss(): string {
       pairLines("calm", "light", "  "),
     ),
   );
+  for (const look of looks) {
+    for (const scheme of schemes) {
+      if (look === "calm" && scheme === "light") continue;
+      parts.push(
+        block(pairSelector(look, scheme), pairLines(look, scheme, "  ")),
+      );
+    }
+  }
   // A page that has not set data-scheme yet: Calm in the scheme of the device.
   parts.push(
     block("@media (prefers-color-scheme: dark)", [
@@ -128,14 +136,6 @@ export function toCss(): string {
       ),
     ]),
   );
-  for (const look of looks) {
-    for (const scheme of schemes) {
-      if (look === "calm" && scheme === "light") continue;
-      parts.push(
-        block(pairSelector(look, scheme), pairLines(look, scheme, "  ")),
-      );
-    }
-  }
   for (const look of looks) {
     for (const scheme of schemes) {
       for (const accent of accents) {

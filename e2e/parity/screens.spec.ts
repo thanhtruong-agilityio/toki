@@ -42,7 +42,9 @@ for (const { decl } of seededOnce(entries)) {
   });
 }
 
-for (const { decl, look, width, name } of entries.filter((e) => e.run)) {
+for (const { decl, look, scheme, width, name } of entries.filter(
+  (e) => e.run,
+)) {
   test(`screen ${name}`, async ({ page }, info) => {
     // R10: a missing reference image is a failed run, because there is no result to give.
     const referenceFile = `${REFERENCE_DIR}/${decl.id}-${look}-${width}-chromium-linux.png`;
@@ -57,7 +59,7 @@ for (const { decl, look, width, name } of entries.filter((e) => e.run)) {
     // sets Calm in the scheme of the device until the saved values are read), the time is fixed,
     // and the API is stubbed by the declaration.
     await decl.setup?.(page);
-    await setLook(page, look);
+    await setLook(page, look, scheme);
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.setViewportSize(WIDTHS[width]);
     await page.clock.install({ time: FIXED_TIME });
