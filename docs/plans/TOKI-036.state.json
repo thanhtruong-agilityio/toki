@@ -40,6 +40,10 @@
     {
       "at": "2026-11-27T10:06:58Z",
       "stage": "check"
+    },
+    {
+      "at": "2026-11-27T10:33:48Z",
+      "stage": "drift"
     }
   ],
   "key": "TOKI-036",
@@ -53,10 +57,11 @@
     "docs/specs/2026-11-20-messages-events-tables-design.md",
     "docs/intents/messages-events-tables.md"
   ],
-  "stage": "check",
+  "stage": "drift",
   "tier": "L",
   "verifier": {
-    "result": "FAIL",
-    "round": 1
+    "note": "Round 2 FAIL for one deviation only: docs/plans/TOKI-036.state.json is not named in the plan. Accepted by Thanh Truong on 2026-11-27: the file is written by dev-state.",
+    "result": "PASS",
+    "round": 3
   }
 }
