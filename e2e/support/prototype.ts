@@ -6,7 +6,8 @@ import type { Page } from "@playwright/test";
 // The fixed copy of the prototype and the way the UI parity check opens it (TOKI-109 R1, R2, R6,
 // R7, R17).
 
-export type Look = "calm" | "focus";
+export type Look = "calm" | "focus" | "classic";
+export type Scheme = "light" | "dark";
 export type Accent = "teal" | "indigo" | "clay" | "violet";
 export type Density = "own" | "comfortable" | "compact";
 export type Width = "wide" | "mid" | "narrow";
@@ -79,6 +80,9 @@ export function verifyPrototype(): Buffer {
 
 export interface PrototypeState {
   look: Look;
+  // The scheme of the page. Left out, Calm is light and Focus and Classic are dark: the states the
+  // parity check draws (TOKI-142 R5).
+  scheme?: Scheme;
   accent?: Accent;
   density?: Density;
   width?: Width;
@@ -89,7 +93,8 @@ export interface PrototypeState {
 const prepared = new WeakSet<Page>();
 
 // Opens the prototype in the given state. Look, accent and density are set the way the prototype
-// sets them itself (`applyLook`, its line 1137), from its own state object.
+// sets them itself (`applyLook`), from its own state object: `data-look`, `data-scheme`, `data-accent`
+// and `data-density` on the root element.
 export async function openPrototype(
   page: Page,
   state: PrototypeState,
@@ -97,6 +102,7 @@ export async function openPrototype(
   const file = verifyPrototype();
   const {
     look,
+    scheme = look === "calm" ? "light" : "dark",
     accent = "teal",
     density = "own",
     width = "wide",
@@ -123,7 +129,7 @@ export async function openPrototype(
   }
   await page.setViewportSize(WIDTHS[width]);
   await page.emulateMedia({
-    colorScheme: look === "focus" ? "dark" : "light",
+    colorScheme: scheme,
     reducedMotion: "reduce",
   });
   await page.goto("about:blank");
@@ -133,6 +139,7 @@ export async function openPrototype(
   await page.evaluate(
     `(() => {
       S.look = ${JSON.stringify(look)};
+      S.scheme = ${JSON.stringify(scheme)};
       S.prefs.accent = ${JSON.stringify(accent)};
       S.prefs.density = ${JSON.stringify(density === "own" ? null : density)};
       applyLook();
