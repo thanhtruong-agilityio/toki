@@ -29,7 +29,7 @@ const rows: SectionRow[] = [
   row("files", "folder", true),
   row("people", "users"),
   { ...row("admin", "shield"), roles: ["admin"] },
-  { ...row("preferences", "settings"), calmHidden: true, more: true },
+  { ...row("preferences", "settings"), more: true },
 ];
 
 function row(id: string, icon: SectionRow["icon"], tab = false): SectionRow {
@@ -145,7 +145,6 @@ export function Fixture({ params }: { params: URLSearchParams }) {
     href: item.to,
     tab: item.tab,
     more: item.more,
-    calmHidden: item.calmHidden,
     badge: item.id === "home" ? 3 : item.id === "activity" ? 12 : undefined,
   }));
 

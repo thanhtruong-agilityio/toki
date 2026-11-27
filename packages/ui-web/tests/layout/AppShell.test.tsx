@@ -20,7 +20,8 @@ const sections: NavSection[] = [
     icon: "settings",
     label: "P",
     href: "/prefs",
-    calmHidden: true,
+    // A field the type no longer has (TOKI-145 R5): the item writes no attribute for it.
+    ...{ calmHidden: true },
   },
 ];
 // Records whether React's handler cancelled the click, then cancels it so that
@@ -189,8 +190,7 @@ describe("AppShell navigation (R5, R7)", () => {
     }
     expect(items[0]).toHaveAttribute("aria-current", "page");
     expect(items[1]).not.toHaveAttribute("aria-current");
-    expect(items[3]).toHaveAttribute("data-calm-hidden");
-    expect(items[2]).not.toHaveAttribute("data-calm-hidden");
+    for (const a of items) expect(a).not.toHaveAttribute("data-calm-hidden");
   });
 
   test("badge: mute for home, default for others, label from badgeLabel", () => {
