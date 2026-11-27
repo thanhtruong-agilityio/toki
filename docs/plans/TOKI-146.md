@@ -8,15 +8,17 @@
 
 **Extends order (R14):** SDK 58's `expo/tsconfig.base` sets `module: preserve`, `moduleResolution: bundler`, `noEmit`, `jsx: react-jsx`, `target: ESNext` and the `react-native` custom condition; the root base then sets `strict`, `target: ES2022`, `module: ESNext`, `moduleResolution: Bundler` and `noEmit`. `ESNext` with `Bundler` is a valid pair, the custom condition is kept, and `pnpm typecheck` passes, so the order undoes nothing Expo needs. `include` and `exclude` are those of R14.
 
-**Tech stack:** Expo SDK 58 (`expo` 58.0.26), React Native 0.88.1, React 19.3.0, Expo Router 58.0.32, TypeScript from the root.
+**Tech stack:** Expo SDK 58 (`expo` 58.1.0), React Native 0.88.1, React 19.3.0, Expo Router 58.0.33, TypeScript from the root.
 
 **Spec:** `docs/specs/2026-11-27-mobile-app-skeleton-design.md` (R1 to R23). Intent: `docs/intents/mobile-app-skeleton.md`.
 
 ## SDK in use (R3)
 
-- Expo SDK 58. The newest SDK 58 release on 2026-11-27 is `expo` 58.1.0, published on 2026-11-26. pnpm's default minimum release age (one day) refuses it and would write a `minimumReleaseAgeExclude` list into `pnpm-workspace.yaml`. The plan takes the previous release, `expo` 58.0.26 (2026-11-17), and the versions its `bundledNativeModules.json` names, so no age exception is added.
-- Pinned exactly (no `^` or `~`): `expo` 58.0.26, `expo-router` 58.0.32, `expo-dev-client` 58.0.21, `expo-constants` 58.0.16, `expo-linking` 58.0.17, `expo-status-bar` 58.0.5, `react` 19.3.0, `react-dom` 19.3.0, `react-native` 0.88.1, `react-native-safe-area-context` 5.11.1, `react-native-screens` 4.30.1, `@types/react` 19.3.3.
+- Expo SDK 58, `expo` 58.1.0 (published 2026-11-26), the newest stable release when the ticket was built.
+- pnpm's default minimum release age (one day) refused 58.1.0 on its first day and would have written a `minimumReleaseAgeExclude` list into `pnpm-workspace.yaml`. The branch first took 58.0.26 and moved to 58.1.0 once the release was a day old, so no age exception is added.
+- Pinned exactly (no `^` or `~`): `expo` 58.1.0, `expo-router` 58.0.33, `expo-dev-client` 58.0.22, `expo-constants` 58.0.16, `expo-linking` 58.0.17, `expo-status-bar` 58.0.5, `react` 19.3.0, `react-dom` 19.3.0, `react-native` 0.88.1, `react-native-safe-area-context` 5.11.1, `react-native-screens` 4.30.1, `@types/react` 19.3.3.
 - `react-dom` 19.3.0 is listed because `@expo/metro-runtime` peer-depends on it; without it pnpm brings the web app's 19.3.1, which asks for `react` ^19.3.1, and `pnpm peers check` fails.
+- iOS builds of SDK 58 need Xcode 26 (Swift 6.2), which needs macOS 15.6 or later.
 
 ## Global constraints
 
