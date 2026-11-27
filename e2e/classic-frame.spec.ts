@@ -259,6 +259,19 @@ for (const scheme of ["light", "dark"] as const) {
       expect(browse.y + browse.height).toBeLessThanOrEqual(direct.y + 1);
     });
 
+    test("R3: the '+' of the Direct messages heading is drawn in the side colours", async ({
+      page,
+    }) => {
+      await open(page, "classic", scheme);
+      const add = page.locator(".convs .sec-add");
+      await expect(add).toHaveCount(1);
+      await page
+        .locator('.convs .cgroup[data-group="direct"] button.sec')
+        .hover();
+      await expect(add).toHaveCSS("opacity", "1");
+      await expect(add).toHaveCSS("color", rgb(side.muted));
+    });
+
     test("R2: the account menu is not drawn in the side colours", async ({
       page,
     }) => {
