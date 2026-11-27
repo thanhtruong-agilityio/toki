@@ -19,19 +19,50 @@
     {
       "at": "2026-11-27T08:04:37Z",
       "stage": "plan"
+    },
+    {
+      "at": "2026-11-27T08:08:41Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-27T08:08:41Z",
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-27T08:08:59Z",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-27T08:14:56Z",
+      "stage": "blocked"
+    },
+    {
+      "at": "2026-11-27T08:16:14Z",
+      "note": "unblocked",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-27T08:16:14Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-27T08:16:14Z",
+      "stage": "build"
     }
   ],
   "key": "TOKI-145",
   "main_sha": "0c7482530c22af02160f93ba23db8cd3338aa291",
   "metrics": {},
-  "mode": null,
-  "plan_approved": false,
-  "plan_hash": null,
+  "mode": "auto-pr",
+  "plan_approved": true,
+  "plan_hash": "031ee21b30305c664f905ff104032abc344d3cabe0d9199f77f8b05ec67d8e62",
   "spec_commit": "0c7482530c22af02160f93ba23db8cd3338aa291",
   "spec_paths": [
     "docs/specs/2026-11-27-calm-two-column-frame-design.md"
   ],
-  "stage": "plan",
+  "stage": "build",
   "tier": "L",
   "verifier": {
     "result": null,

@@ -35,6 +35,7 @@ Approved by Thanh Truong on 2026-11-27.
 - **Style sheet.** Calm keeps only its rules for `.main`, `.side` and `.toast-anchor`, plus one new rule that removes the right line of its conversation column. `--shell-convs-min` is removed. The side panel's border, `.sechead`, `.secbody` and `.toolbar` stay Focus and Classic only. The Classic block and the narrow block do not change.
 - **Components.** `calmHidden` and `data-calm-hidden` are removed from `NavSection`, `sections.ts`, `app-layout.tsx` and the shell fixture.
 - **Prototype.** The rail and column rules also name Calm; the 272 px sidebar rules, the hidden Preferences rule and the rule that hides the conversation search field are removed. The last one is the Dev's decision of 2026-11-27: the app shows the field (conversation list spec, concern 1), so the prototype now does too. The list row, card, phone and guest rules stay.
+- **Narrow Calm main area.** From 720 to 727 px the main area (352 to 359 px) is narrower than the 360 px panel, which then covers up to 8 px of the conversation column. Decided by Thanh Truong on 2026-11-27 during the build: the panel stays 360 px; no new style rule. The browser test of R19 allows exactly that overlap, and the specs say it (Task 5).
 - **Test change the spec did not name.** `look-selectors.test.ts` allows Focus only in the pair `focus, classic`; it also allows the three-look list.
 
 ## Global Constraints
@@ -489,6 +490,8 @@ Run the command of step 2. Expected: PASS.
 | same | the Table F note and rows | the rows from `.sidebar` to `.convs` name the three looks; add the Calm `.convs` row |
 | same | 386 to 406 (Table J) | the Calm numbers of Task 2 |
 | same | 505 (concern 1), 511 (concern 7) | replaced by TOKI-145 |
+| `2026-11-27-calm-two-column-frame-design.md` | R7 | add: from 720 to 727 px the panel covers up to 8 px of the conversation column (decided 2026-11-27) |
+| `2026-11-16-app-shell-design.md` | 97 (R19) | the same sentence for the panel that "lies over `.main`" |
 | `2026-11-26-look-and-scheme-model-design.md` | 21 (R5), 70 | Calm has the frame of Focus |
 | `2026-11-17-conversation-list-design.md` | 69 (R24 a), 267, 289 | Calm shows the column on Home only; no 240 px floor; the prototype no longer hides the field |
 | `2026-11-17-account-menu-devices-design.md` | 61 (R21), 178 | no `calmHidden`; both looks show the row, the menu keeps its entry |
