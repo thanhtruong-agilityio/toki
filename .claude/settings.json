@@ -15,6 +15,10 @@
   },
   "model": "claude-sonnet-5-5",
   "advisorModel": "opus",
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
   "hooks": {
     "Stop": [
       {
