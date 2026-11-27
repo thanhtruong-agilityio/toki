@@ -9,6 +9,7 @@ Toki is an internal team chat for one company: channels, direct messages, thread
 ```
 toki/
 ├─ apps/
+│  ├─ mobile/        Expo + React Native (phone app)
 │  ├─ server/        Fastify: REST API + WebSocket + worker
 │  └─ web/           React + Vite
 ├─ packages/
@@ -88,6 +89,13 @@ The root `pnpm` scripts, run from the repository root under Node 22 (`.nvmrc`) w
 ```bash
 # One package: test, or any script of its package.json
 pnpm --filter @toki/<name> test
+
+# The phone app (apps/mobile), from the repository root: start Metro; build and launch the development
+# build on an iOS simulator or an Android emulator (needs a Mac with Xcode, or Android Studio; each runs
+# `expo prebuild` first when the native folder is missing). Not started by `pnpm dev`.
+pnpm --filter @toki/mobile start
+pnpm --filter @toki/mobile ios
+pnpm --filter @toki/mobile android
 
 # Print a one-time sign-in link, valid 10 minutes, for one member when mail is down. Standard output
 # holds the link alone; the log line and every explanation go to standard error. Exit 0 a link was
