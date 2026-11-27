@@ -173,18 +173,26 @@ export async function setLook(
   await page.emulateMedia({ colorScheme: asked });
   await page.addInitScript(
     ({ look: wantLook, scheme: wantScheme }) => {
-      const root = document.documentElement;
+      // The init script runs before the page has a root element, so it waits for it.
+      let watching = false;
       const keep = () => {
+        const root = document.documentElement;
+        if (!root) return;
         if (root.getAttribute("data-look") !== wantLook)
           root.setAttribute("data-look", wantLook);
         if (root.getAttribute("data-scheme") !== wantScheme)
           root.setAttribute("data-scheme", wantScheme);
+        if (!watching) {
+          watching = true;
+          new MutationObserver(keep).observe(root, {
+            attributes: true,
+            attributeFilter: ["data-look", "data-scheme"],
+          });
+        }
       };
       keep();
-      new MutationObserver(keep).observe(root, {
-        attributes: true,
-        attributeFilter: ["data-look", "data-scheme"],
-      });
+      if (!document.documentElement)
+        new MutationObserver(keep).observe(document, { childList: true });
     },
     { look, scheme: asked },
   );

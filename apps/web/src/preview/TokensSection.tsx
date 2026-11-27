@@ -58,7 +58,7 @@ export function TokensSection({ controls }: { controls: Controls }) {
         TOKEN_NAMES.map((name) => [name, style.getPropertyValue(name).trim()]),
       ),
     );
-  }, [controls.look, controls.accent, controls.density]);
+  }, [controls.look, controls.scheme, controls.accent, controls.density]);
   return (
     <section
       className="pv-section"
