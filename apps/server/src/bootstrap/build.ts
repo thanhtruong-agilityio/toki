@@ -25,7 +25,7 @@ export type BootstrapDeps = {
   afterAccount?: (tx: Tx) => Promise<void>;
   getAccountsByIds?: typeof getAccountsByIds;
   getWorkspace?: typeof getWorkspace;
-  readEventNumber?: (tx: Tx) => Promise<number>;
+  readEventNumber?: (tx: Tx, workspaceId: string) => Promise<number>;
 };
 
 const internal = (message: string) => new Error(message);
@@ -81,7 +81,7 @@ export async function buildBootstrap(
       facts.workspaceId,
       me.id,
     );
-    const eventNumber = await readNumber(tx);
+    const eventNumber = await readNumber(tx, facts.workspaceId);
 
     const user: BootstrapUser = {
       id: me.id,

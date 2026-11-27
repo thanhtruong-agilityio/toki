@@ -196,6 +196,7 @@ describe("buildBootstrap: the event number (R11)", () => {
   it("returns what the function returns, called with the transaction the other reads used", async () => {
     let seam: Tx | undefined;
     let given: Tx | undefined;
+    let givenWorkspace: string | undefined;
     const answer = await buildBootstrap(
       h.db,
       { id: admin },
@@ -203,8 +204,9 @@ describe("buildBootstrap: the event number (R11)", () => {
         afterAccount: async (tx) => {
           seam = tx;
         },
-        readEventNumber: async (tx) => {
+        readEventNumber: async (tx, workspaceId) => {
           given = tx;
+          givenWorkspace = workspaceId;
           return 41;
         },
       },
@@ -212,5 +214,6 @@ describe("buildBootstrap: the event number (R11)", () => {
     expect(answer.eventNumber).toBe(41);
     expect(given).toBeDefined();
     expect(given).toBe(seam);
+    expect(givenWorkspace).toBe(h.workspaceId);
   });
 });

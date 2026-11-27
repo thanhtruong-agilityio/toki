@@ -1,0 +1,71 @@
+{
+  "approved_auto": false,
+  "base": "github/main",
+  "branch": "feat/toki-036-messages-events-tables",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-27T08:54:33Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-27T08:54:34Z",
+      "stage": "tier"
+    },
+    {
+      "at": "2026-11-27T08:54:34Z",
+      "stage": "explore"
+    },
+    {
+      "at": "2026-11-27T09:01:20Z",
+      "stage": "design"
+    },
+    {
+      "at": "2026-11-27T09:31:30Z",
+      "stage": "plan"
+    },
+    {
+      "at": "2026-11-27T09:40:51Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-27T09:40:51Z",
+      "stage": "mode"
+    },
+    {
+      "at": "2026-11-27T09:42:02Z",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-27T10:06:58Z",
+      "stage": "check"
+    },
+    {
+      "at": "2026-11-27T10:33:48Z",
+      "stage": "drift"
+    },
+    {
+      "at": "2026-11-27T10:37:41Z",
+      "stage": "ship"
+    }
+  ],
+  "key": "TOKI-036",
+  "main_sha": "f063c70bda9bf5120715b01ae518843cf750261a",
+  "metrics": {},
+  "mode": "Auto to PR",
+  "plan_approved": true,
+  "plan_hash": "765e1fbfb86cb122fb88e2a212cdcb37d9ab13ee741f551a6072337d33fa05a1",
+  "spec_commit": "3bfbf78ae7e385f951c52db7ee5324cac4fecd5d",
+  "spec_paths": [
+    "docs/specs/2026-11-20-messages-events-tables-design.md",
+    "docs/intents/messages-events-tables.md"
+  ],
+  "stage": "ship",
+  "tier": "L",
+  "verifier": {
+    "note": "Round 2 FAIL for one deviation only: docs/plans/TOKI-036.state.json is not named in the plan. Accepted by Thanh Truong on 2026-11-27: the file is written by dev-state.",
+    "result": "PASS",
+    "round": 3
+  }
+}

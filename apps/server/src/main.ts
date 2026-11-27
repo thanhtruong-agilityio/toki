@@ -3,6 +3,7 @@ import { buildApp } from "./app.js";
 import { ConfigError, loadProcessConfig } from "./config.js";
 import { createDb } from "./db/client.js";
 import { ensureFirstAdmin } from "./first-admin.js";
+import { startEventPruning } from "./modules/realtime/index.js";
 
 // A startup failure is plain text on standard error, one line per variable
 // name and never a value; the logger does not exist yet.
@@ -31,13 +32,17 @@ const app = buildApp({ config, db: connection.db });
 // at 10 seconds), and only then closes the connection under it.
 const stopFirstAdmin = new AbortController();
 let firstAdmin: Promise<unknown> = Promise.resolve();
+// The pruning of old events (TOKI-036 R21) starts at the same point and is
+// waited for in the same hook, so no run uses a closed connection.
+let stopPruning: () => Promise<void> = async () => {};
 app.addHook("onClose", async () => {
   stopFirstAdmin.abort();
   await firstAdmin;
+  await stopPruning();
   await connection.close();
 });
 
-// The only global timer of this step; unref'd so it never keeps the process up.
+// The wait of the first set-up; unref'd so it never keeps the process up.
 const sleep = (ms: number) =>
   new Promise<void>((resolve) => setTimeout(resolve, ms).unref());
 
@@ -69,4 +74,14 @@ firstAdmin = ensureFirstAdmin({
   logger: app.log,
   sleep,
   signal: stopFirstAdmin.signal,
+});
+
+stopPruning = startEventPruning({
+  db: connection.db,
+  clock: systemClock,
+  schedule: (run, intervalMs) => {
+    const timer = setInterval(run, intervalMs).unref();
+    return () => clearInterval(timer);
+  },
+  log: app.log,
 });

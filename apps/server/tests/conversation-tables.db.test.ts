@@ -19,6 +19,7 @@ import {
   insertEmergencyLink,
   insertDirectConversation,
   insertLoginCode,
+  insertMessage,
   insertSession,
   insertUser,
   insertWorkspace,
@@ -1076,7 +1077,7 @@ describe("R22: a conversation is never deleted", () => {
 });
 
 describe("R23: one TRUNCATE empties every table", () => {
-  it("empties the eight tables named, with no CASCADE", async () => {
+  it("empties the eleven tables named, with no CASCADE", async () => {
     const t = await createThrowawayDb();
     try {
       await runMigrations(t.url, migrationsFolder);
@@ -1104,6 +1105,16 @@ describe("R23: one TRUNCATE empties every table", () => {
           user_id: u,
           session_id: session,
         });
+        // The tables of TOKI-036: a message, a counter and its first event.
+        await insertMessage(db, {
+          workspace_id: w,
+          conversation_id: c,
+          author_id: u,
+        });
+        await db`insert into event_counters (workspace_id, last_number) values (${w}, 1)`;
+        await db`
+          insert into events (workspace_id, number, scope, type, payload, created_at)
+          values (${w}, 1, 'workspace', 'message.created', '{}', now())`;
         const tables = [
           "workspaces",
           "users",
@@ -1113,6 +1124,9 @@ describe("R23: one TRUNCATE empties every table", () => {
           "devices",
           "conversations",
           "conversation_members",
+          "messages",
+          "events",
+          "event_counters",
         ];
         for (const table of tables) {
           const [row] = await db.unsafe(
