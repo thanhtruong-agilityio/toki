@@ -198,13 +198,13 @@ export async function checkSession(
   });
   if (!loaded || !loaded.account) throw unauthenticated();
   const { session, account } = loaded;
-  if (account.status === "deactivated") {
-    throw new AppError(
+  const deactivated = () =>
+    new AppError(
       401,
       ErrorCodes.accountDeactivated,
       "This account has been deactivated.",
     );
-  }
+  if (account.status === "deactivated") throw deactivated();
   const ended = () =>
     new AppError(401, ErrorCodes.sessionEnded, "The session has ended.");
   if (session.endedAt) throw ended();
@@ -215,7 +215,13 @@ export async function checkSession(
     .set({ lastUsedAt: new Date(now) })
     .where(and(eq(sessions.id, session.id), isNull(sessions.endedAt)))
     .returning({ id: sessions.id });
-  if (renewed.length === 0) throw ended();
+  if (renewed.length === 0) {
+    // The session ended after it was read. If the account was deactivated in that moment, the
+    // deactivation ended the session, and the account comes before the session (R27): say so.
+    const again = await getAccountById(client, session.userId);
+    if (again?.status === "deactivated") throw deactivated();
+    throw ended();
+  }
   return {
     sessionId: session.id,
     account,
