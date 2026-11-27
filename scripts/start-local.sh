@@ -180,9 +180,11 @@ fi
 pnpm dev &
 dev_pid=$!
 
-# 6. Wait until the web app answers, then say where to go.
+# 6. Wait until the web app answers, then say where to go. Vite listens on one
+# address, the one `localhost` resolves to (::1 or 127.0.0.1), so ask for
+# `localhost`: curl tries both.
 waited=0
-until curl -fsS -o /dev/null "http://127.0.0.1:$WEB_PORT/healthz" 2>/dev/null; do
+until curl -fsS -o /dev/null "http://localhost:$WEB_PORT/healthz" 2>/dev/null; do
   if ! kill -0 "$dev_pid" 2>/dev/null; then
     fail "pnpm start:local stopped at: pnpm dev ended before the web app answered."
     exit 1

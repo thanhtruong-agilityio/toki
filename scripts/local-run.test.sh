@@ -117,8 +117,19 @@ FAKE
 
 cat > "$T/fakes/curl" <<'FAKE'
 #!/bin/sh
-[ -e "$FAKE_DIR/dev.started" ] && exit 0
-exit 22
+[ -e "$FAKE_DIR/dev.started" ] || exit 22
+# FAKE_WEB_ADDRESS is the one address the web app listens on (unset: any).
+# As with the real curl, `localhost` tries both loopback addresses and a
+# numeric address tries only itself.
+[ -n "${FAKE_WEB_ADDRESS:-}" ] || exit 0
+for a in "$@"; do
+  case "$a" in
+    "http://localhost:"*) exit 0 ;;
+    "http://127.0.0.1:"*) [ "$FAKE_WEB_ADDRESS" = "127.0.0.1" ] && exit 0 ;;
+    "http://[::1]:"*) [ "$FAKE_WEB_ADDRESS" = "::1" ] && exit 0 ;;
+  esac
+done
+exit 7
 FAKE
 
 cat > "$T/fakes/lsof" <<'FAKE'
@@ -611,6 +622,17 @@ sleep 0.3
 kill -TERM "$bgpid" 2>/dev/null
 wait "$bgpid" 2>/dev/null
 stop_check "R15 two signals"
+
+# R14: Vite listens on the address `localhost` resolves to on the machine, so
+# the run sees the web app on the IPv4 and on the IPv6 loopback address.
+for address in 127.0.0.1 ::1; do
+  new_case
+  write_env
+  start_bg "FAKE_WEB_ADDRESS=$address" start-local.sh
+  if wait_text "$C/out" "Toki is running." 15; then pass; else flunk "R14 web app on $address: not reported as running"; fi
+  wait_text "$C/dev.pids" "" 10
+  stop_bg
+done
 
 # R12: the run file is there before dev:up, and a run removes it when it ends.
 new_case
