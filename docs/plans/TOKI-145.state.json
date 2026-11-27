@@ -72,6 +72,14 @@
     {
       "at": "2026-11-27T08:46:24Z",
       "stage": "check"
+    },
+    {
+      "at": "2026-11-27T08:49:59Z",
+      "stage": "drift"
+    },
+    {
+      "at": "2026-11-27T08:50:06Z",
+      "stage": "ship"
     }
   ],
   "key": "TOKI-145",
@@ -84,10 +92,10 @@
   "spec_paths": [
     "docs/specs/2026-11-27-calm-two-column-frame-design.md"
   ],
-  "stage": "check",
+  "stage": "ship",
   "tier": "L",
   "verifier": {
-    "result": "FAIL",
-    "round": 2
+    "result": "PASS",
+    "round": 3
   }
 }
