@@ -152,6 +152,26 @@ for (const name of LOOKS) {
       ).toEqual(["DELETE /auth/session"]);
     });
 
+    test("the rail's Preferences button opens the page and the menu keeps its entry", async ({
+      page,
+      context,
+    }) => {
+      await stub(context);
+      await look(page, name);
+      await page.setViewportSize({ width: 1100, height: 800 });
+      await page.goto("/");
+      await page.getByTestId("shell").waitFor();
+      await page
+        .getByRole("navigation")
+        .getByRole("link", { name: "Preferences" })
+        .click();
+      await expect(page).toHaveURL(/\/prefs$/);
+      await page.getByRole("button", { name: "Your account menu" }).click();
+      await expect(
+        page.getByRole("menuitem", { name: "Preferences" }),
+      ).toBeVisible();
+    });
+
     for (const width of [720, 1100]) {
       test(`the menu opens at ${width}px with Preferences and Sign out`, async ({
         page,

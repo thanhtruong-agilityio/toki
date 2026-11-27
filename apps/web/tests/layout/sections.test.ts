@@ -40,7 +40,6 @@ describe("the section list (R10, R30)", () => {
     expect(admin.roles).toEqual(["admin"]);
     expect(admin.more).toBe(true);
     expect(admin.tab).toBeUndefined();
-    expect(admin.calmHidden).toBeUndefined();
     expect(admin.match("/admin")).toBe(true);
     expect(admin.match("/admin/anything")).toBe(true);
     expect(admin.match("/administrator")).toBe(false);
@@ -78,7 +77,8 @@ describe("the section list (R10, R30)", () => {
     expect(row.icon).toBe("settings");
     expect(row.labelKey).toBe("nav.preferences");
     expect(row.to).toBe("/prefs");
-    expect(row.calmHidden).toBe(true);
+    // TOKI-145 R5: Calm shows the row on its rail, so no row says it is hidden.
+    expect(row).not.toHaveProperty("calmHidden");
     expect(row.more).toBe(true);
     expect(row.roles).toBeUndefined();
     expect(row.match("/prefs")).toBe(true);

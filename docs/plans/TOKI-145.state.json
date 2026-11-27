@@ -1,0 +1,101 @@
+{
+  "approved_auto": false,
+  "base": "github/main",
+  "branch": "feat/toki-145-calm-two-column-frame",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-27T08:02:57Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-27T08:02:57Z",
+      "stage": "explore"
+    },
+    {
+      "at": "2026-11-27T08:03:58Z",
+      "stage": "design"
+    },
+    {
+      "at": "2026-11-27T08:04:37Z",
+      "stage": "plan"
+    },
+    {
+      "at": "2026-11-27T08:08:41Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-27T08:08:41Z",
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-27T08:08:59Z",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-27T08:14:56Z",
+      "stage": "blocked"
+    },
+    {
+      "at": "2026-11-27T08:16:14Z",
+      "note": "unblocked",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-27T08:16:14Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-27T08:16:14Z",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-27T08:26:01Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-27T08:26:01Z",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-27T08:42:08Z",
+      "stage": "check"
+    },
+    {
+      "at": "2026-11-27T08:46:24Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-27T08:46:24Z",
+      "stage": "check"
+    },
+    {
+      "at": "2026-11-27T08:49:59Z",
+      "stage": "drift"
+    },
+    {
+      "at": "2026-11-27T08:50:06Z",
+      "stage": "ship"
+    }
+  ],
+  "key": "TOKI-145",
+  "main_sha": "0c7482530c22af02160f93ba23db8cd3338aa291",
+  "metrics": {},
+  "mode": "auto-pr",
+  "plan_approved": true,
+  "plan_hash": "5a71f1eb2c2a51c0ce64742f856dc45908a245a8d8e584e561acbba299fcb92c",
+  "spec_commit": "0c7482530c22af02160f93ba23db8cd3338aa291",
+  "spec_paths": [
+    "docs/specs/2026-11-27-calm-two-column-frame-design.md"
+  ],
+  "stage": "ship",
+  "tier": "L",
+  "verifier": {
+    "result": "PASS",
+    "round": 3
+  }
+}

@@ -20,6 +20,9 @@ const literalColour = /#[0-9a-fA-F]{3,8}\b|\brgba?\(|\bhsla?\(/;
 describe("the rules of the five style sheets that name a look (TOKI-143 R8, R9)", () => {
   const rules = files.flatMap((file) => readCss(file));
   const byLook = rules.filter((r) => /data-look/.test(r.selector));
+  // The list of the three looks that share the frame (TOKI-145).
+  const frame =
+    ':is([data-look="calm"], [data-look="focus"], [data-look="classic"])';
 
   test("there are such rules, and each names calm, focus or classic", () => {
     expect(byLook.length).toBeGreaterThan(30);
@@ -36,13 +39,14 @@ describe("the rules of the five style sheets that name a look (TOKI-143 R8, R9)"
   });
 
   test("a look selector names Focus together with Classic, because Classic has the frame of Focus", () => {
-    // Every mention of Focus is the shared pair; a rule of Classic's own (TOKI-144) names Classic
-    // alone, which the next test checks.
+    // Every mention of Focus is in a shared list: the pair, or the three looks of the frame
+    // (TOKI-145). A rule of Classic's own (TOKI-144) names Classic alone, which the next test checks.
     const pair = ':is([data-look="focus"], [data-look="classic"])';
     for (const r of byLook)
-      expect(r.selector.split(pair).join(""), r.selector).not.toMatch(
-        /"focus"/,
-      );
+      expect(
+        r.selector.split(frame).join("").split(pair).join(""),
+        r.selector,
+      ).not.toMatch(/"focus"/);
   });
 
   test('a rule of the Classic sidebar names [data-look="classic"] alone (TOKI-144 R10)', () => {
@@ -50,7 +54,12 @@ describe("the rules of the five style sheets that name a look (TOKI-143 R8, R9)"
     // :is(focus, classic) of the frame. Calm and Focus are not named by them.
     const pair = ':is([data-look="focus"], [data-look="classic"])';
     const own = byLook.filter((r) =>
-      r.selector.split(pair).join("").includes('[data-look="classic"]'),
+      r.selector
+        .split(frame)
+        .join("")
+        .split(pair)
+        .join("")
+        .includes('[data-look="classic"]'),
     );
     expect(own.length).toBeGreaterThan(10);
     for (const r of own)

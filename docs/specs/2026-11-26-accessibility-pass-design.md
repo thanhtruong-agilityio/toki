@@ -76,7 +76,7 @@ Every screen of phase 1 and each state that has its own markup, in the roles tha
 | S01 | Sign-in: email step, code step, code step with a message, "session ended" cover | `/login` | none | TOKI-023 (already scanned there; kept here so the matrix is whole) |
 | S02 | Join page (invitation) | `/join` | none | TOKI-097 |
 | S03 | Emergency access page | `/emergency` | none | TOKI-026 |
-| S04 | Conversation list: Calm sidebar, Focus column, narrow list pane; skeleton, empty, failed | `/` | Member | TOKI-033, TOKI-082 |
+| S04 | Conversation list: Calm column, Focus column, narrow list pane; skeleton, empty, failed | `/` | Member | TOKI-033, TOKI-082 |
 | S05 | A channel: Messages tab with the New divider, a pending and a failed message, a deleted one, the typing line; skeleton | `/c/:id` | Member | TOKI-041, 042, 043, 054, 044 |
 | S06 | Files tab, Pinned tab of a channel | `/c/:id` | Member | TOKI-063, TOKI-048 |
 | S07 | A direct message; the person is paused; the other person is deactivated | `/c/:id` | Member | TOKI-035, TOKI-076 |

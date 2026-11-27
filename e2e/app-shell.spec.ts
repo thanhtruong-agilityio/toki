@@ -7,12 +7,11 @@ import { expect, test, type Page } from "@playwright/test";
 // reads rectangles and computed styles and writes nothing.
 //
 // The fixture links no `fonts.css` (TOKI-010 is not on main yet), so a height
-// that depends on text is measured against the fallback fonts. Every number of
-// Table J that depends on text (the Calm `.ws` 45.4, the account card 67 and 64,
-// the Calm navigation 253, 173 and 113 and the item boxes that follow from it)
-// matched the spec with the fallback fonts: each comes from a line height set as
-// a number or from a fixed height, not from a font's own metrics. They are
-// marked `fallback fonts, re-measure with TOKI-010` where they are asserted.
+// that depends on text is measured against the fallback fonts. The number of
+// Table J that depends on text (the account card, 64) matched the spec with the
+// fallback fonts: it comes from a line height set as a number or from a fixed
+// height, not from a font's own metrics. It is marked `fallback fonts,
+// re-measure with TOKI-010` where it is asserted.
 
 const LOOKS = ["calm", "focus"] as const;
 type Look = (typeof LOOKS)[number];
@@ -118,41 +117,32 @@ for (const look of LOOKS) {
         expectNear(avatar.width, 36, "avatar width");
         const card = await box(page, ".usercard");
         const main = await box(page, ".main");
+        // TOKI-145 R1 and R3: the three looks share the rail and, on Home, the column.
+        expectNear((await box(page, ".nav")).width, 68, "rail width");
+        expectNear(
+          (await box(page, ".convs")).right,
+          356,
+          "conversation column ends at",
+        );
+        expectNear(main.x, 356, "main x");
+        // fallback fonts, re-measure with TOKI-010 (the two text lines are 34 px)
+        expectNear(card.height, 64, "account card height");
+        const ws = await box(page, ".ws");
+        expectNear(ws.width, 51, ".ws width");
+        // `.wst` is not displayed: it and its children have no box.
+        for (const sel of [".wst", ".wsn", ".wss"]) {
+          const b = await box(page, sel);
+          expect(b.display === "none" || b.width === 0, sel).toBe(true);
+          expect(b.width, `${sel} width`).toBe(0);
+          expect(b.height, `${sel} height`).toBe(0);
+        }
+        // R4: Calm draws the main area as a card.
         if (look === "calm") {
-          expectNear((await box(page, ".sidebar")).width, 272, "sidebar width");
-          expectNear(main.x, 272, "main x");
           expectNear(main.right, width - 12, "main right");
           expectNear(main.y, 12, "main margin top");
           expectNear(main.bottom, height - 12, "main margin bottom");
-          // fallback fonts, re-measure with TOKI-010 (the two text lines are 34 px)
-          expectNear(card.height, 67, "account card height");
-          const ws = await box(page, ".ws");
-          // fallback fonts, re-measure with TOKI-010 (the spec's 45.4 held: it
-          // follows from the two line heights, 17 px at 1.1 and 11.5 px at 1.45).
-          expectNear(ws.height, 45.4, "Calm .ws height");
-          const wsn = await box(page, ".wsn");
-          const wss = await box(page, ".wss");
-          expectNear(wss.y, wsn.bottom, "top of .wss against bottom of .wsn");
         } else {
-          expectNear((await box(page, ".nav")).width, 68, "rail width");
-          expectNear(
-            (await box(page, ".convs")).right,
-            356,
-            "conversation column ends at",
-          );
-          expectNear(main.x, 356, "main x");
           expectNear(main.right, width, "main right");
-          // fallback fonts, re-measure with TOKI-010 (the two text lines are 34 px)
-          expectNear(card.height, 64, "account card height");
-          const ws = await box(page, ".ws");
-          expectNear(ws.width, 51, "Focus .ws width");
-          // `.wst` is not displayed: it and its children have no box.
-          for (const sel of [".wst", ".wsn", ".wss"]) {
-            const b = await box(page, sel);
-            expect(b.display === "none" || b.width === 0, sel).toBe(true);
-            expect(b.width, `${sel} width`).toBe(0);
-            expect(b.height, `${sel} height`).toBe(0);
-          }
         }
       } else {
         // No sidebar and no rail: the bottom bar is 62 px high and ends at the
@@ -174,25 +164,54 @@ for (const look of LOOKS) {
     });
   }
 
-  // In the section `activity` Focus has the rail only (x 0 to 68) and the
-  // main area from 68 to the edge; Calm keeps its sidebar.
+  // In the section `activity` each look has the rail only (x 0 to 68); Calm keeps
+  // the margin of its card.
   for (const width of [720, 1100]) {
     test(`R18 ${look} section activity at ${width}`, async ({ page }) => {
       await open(page, look, width, TALL, { section: "activity" });
       const main = await box(page, ".main");
-      if (look === "focus") {
-        const sidebar = await box(page, ".sidebar");
-        expectNear(sidebar.x, 0, "rail x");
-        expectNear(sidebar.right, 68, "rail ends at");
-        expect((await box(page, ".convs")).display).toBe("none");
-        expectNear(main.x, 68, "main x");
-        expectNear(main.right, width, "main right");
-      } else {
-        expectNear(main.x, 272, "main x");
-        expectNear(main.right, width - 12, "main right");
-      }
+      const sidebar = await box(page, ".sidebar");
+      expectNear(sidebar.x, 0, "rail x");
+      expectNear(sidebar.right, 68, "rail ends at");
+      expect((await box(page, ".convs")).display).toBe("none");
+      expectNear(main.x, 68, "main x");
+      expectNear(
+        main.right,
+        look === "calm" ? width - 12 : width,
+        "main right",
+      );
     });
   }
+}
+
+// TOKI-145 R3 and R4: Calm takes the rail's line, keeps its cards and draws no line
+// on the conversation column.
+for (const width of [720, 1100]) {
+  test(`TOKI-145 R3 R4 calm lines and cards at ${width}`, async ({ page }) => {
+    await open(page, "calm", width, TALL, { panel: 1 });
+    const style = (selector: string) =>
+      page.locator(selector).evaluate((el) => {
+        const s = getComputedStyle(el);
+        return {
+          line: s.borderRightWidth,
+          margin: [s.marginTop, s.marginRight, s.marginBottom, s.marginLeft],
+          radius: s.borderTopLeftRadius,
+          shadow: s.boxShadow,
+        };
+      });
+    expect((await style(".nav")).line).toBe("1px");
+    expect((await style(".usercard")).line).toBe("1px");
+    expect((await style(".convs")).line).toBe("0px");
+    for (const card of [".main", ".side"]) {
+      const s = await style(card);
+      expect(s.margin, card).toEqual(["12px", "12px", "12px", "0px"]);
+      expect(s.radius, card).toBe("16px");
+      expect(s.shadow, card).not.toBe("none");
+    }
+    await expect(
+      page.getByRole("navigation").getByRole("link", { name: "Preferences" }),
+    ).toBeVisible();
+  });
 }
 
 // ---------------------------------------------------------------------------
@@ -201,19 +220,19 @@ for (const look of LOOKS) {
 // ---------------------------------------------------------------------------
 
 // Table J: main width with and without a panel. The values for 1400 follow
-// from the same arithmetic as 1100 (Calm: the window less the sidebar, the
-// margin and, with a panel, its 360 px and 12 px margin; Focus: the window less
-// the 356 px column and, with a panel, its 360 px).
+// from the same arithmetic as 1100 (Calm: the window less the 356 px column, the
+// 12 px margin and, with a panel, its 360 px and 12 px margin; Focus: the window
+// less the 356 px column and, with a panel, its 360 px).
 const MAIN_WIDTH: Record<
   Look,
   Record<number, [none: number, panel: number]>
 > = {
   calm: {
-    720: [436, 436],
-    800: [516, 516],
-    1099: [815, 815],
-    1100: [816, 444],
-    1400: [1116, 744],
+    720: [352, 352],
+    800: [432, 432],
+    1099: [731, 731],
+    1100: [732, 360],
+    1400: [1032, 660],
   },
   focus: {
     720: [364, 364],
@@ -247,7 +266,11 @@ for (const look of LOOKS) {
         for (const key of ["x", "y", "width", "height"] as const) {
           expectNear(after[key], before[key], `main ${key} with a panel`);
         }
-        expect(side.x).toBeGreaterThanOrEqual(after.x - TOL);
+        // TOKI-145: where the main area is narrower than the panel (Calm under 728 px,
+        // 352 px at 720), the overlay reaches past it by the difference and no more.
+        expect(side.x).toBeGreaterThanOrEqual(
+          after.x - Math.max(0, 360 - none) - TOL,
+        );
         const z = (value: string) => (value === "auto" ? 0 : Number(value));
         expect(z(side.zIndex)).toBeGreaterThan(z(after.zIndex));
       } else {
@@ -265,40 +288,22 @@ for (const look of LOOKS) {
 type Scenario = {
   name: string;
   query: Record<string, string>;
-  // Calm: the content height of `.nav-items` at 560; Focus likewise.
-  content: Record<Look, number>;
+  // The content height of `.nav-items`.
+  content: number;
 };
 
 const SCENARIOS: Scenario[] = [
-  {
-    name: "an Admin",
-    query: { role: "admin" },
-    content: { calm: 185, focus: 356 },
-  },
-  {
-    name: "a Member",
-    query: { role: "member" },
-    content: { calm: 154, focus: 305 },
-  },
+  { name: "an Admin", query: { role: "admin" }, content: 356 },
+  { name: "a Member", query: { role: "member" }, content: 305 },
   {
     name: "an Admin with two more rows",
     query: { role: "admin", extra: "2" },
-    content: { calm: 247, focus: 356 + 2 * 51 },
+    content: 356 + 2 * 51,
   },
 ];
 
 // Table J: the navigation box at 560, 480 and 420 (the heights of the window).
-const CALM_NAV_ITEMS_BOX: Record<number, number> = {
-  560: 149.6,
-  480: 69.6,
-  420: 9.6,
-};
-const CALM_NAV_HEIGHT: Record<number, number> = {
-  560: 253,
-  480: 173,
-  420: 113,
-};
-const FOCUS_NAV_ITEMS_BOX: Record<number, number> = {
+const NAV_ITEMS_BOX: Record<number, number> = {
   560: 396,
   480: 316,
   420: 256,
@@ -327,23 +332,19 @@ for (const look of LOOKS) {
         }));
         expect(items.overflowY).toBe("auto");
 
-        const expectedBox =
-          look === "calm"
-            ? CALM_NAV_ITEMS_BOX[height]!
-            : FOCUS_NAV_ITEMS_BOX[height]!;
+        const expectedBox = NAV_ITEMS_BOX[height]!;
         expectNear(items.box, expectedBox, "nav-items box");
-        expectNear(items.content, scenario.content[look], "nav-items content");
+        expectNear(items.content, scenario.content, "nav-items content");
         // It scrolls when its content is higher than its box.
         expect(items.scrolls, "scrolls").toBe(
-          scenario.content[look] > expectedBox + 0.5,
+          scenario.content > expectedBox + 0.5,
         );
 
         // Each visible .ni keeps its height.
         const rows = (await boxes(page, ".ni")).filter(
           (row) => row.display !== "none",
         );
-        const rowHeight = look === "calm" ? 30 : 50;
-        for (const row of rows) expectNear(row.height, rowHeight, ".ni height");
+        for (const row of rows) expectNear(row.height, 50, ".ni height");
 
         // Everything lies inside the window.
         for (const sel of [".ws", ".srch", ".convs", ".usercard"]) {
@@ -354,17 +355,6 @@ for (const look of LOOKS) {
             expect(b.y, `${sel} top`).toBeGreaterThanOrEqual(-TOL);
             expect(b.bottom, `${sel} bottom`).toBeLessThanOrEqual(height + TOL);
           }
-        }
-
-        if (look === "calm") {
-          // The conversation column keeps its 240 px floor (concern 1).
-          expectNear((await box(page, ".convs")).height, 240, "convs height");
-          // fallback fonts, re-measure with TOKI-010 (the header's text lines)
-          expectNear(
-            (await box(page, ".nav")).height,
-            CALM_NAV_HEIGHT[height]!,
-            "navigation height",
-          );
         }
       });
     }
@@ -602,7 +592,7 @@ for (const look of LOOKS) {
 
 // Table J: the toast anchor's width with the panel open.
 const ANCHOR_WITH_PANEL: Record<Look, Record<number, number>> = {
-  calm: { 720: 436, 800: 516, 956: 312, 1099: 455, 1100: 444 },
+  calm: { 720: 352, 800: 432, 956: 228, 1099: 371, 1100: 360 },
   focus: { 720: 364, 800: 444, 956: 240, 1099: 383, 1100: 384 },
 };
 
