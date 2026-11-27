@@ -7,12 +7,11 @@ import { expect, test, type Page } from "@playwright/test";
 // reads rectangles and computed styles and writes nothing.
 //
 // The fixture links no `fonts.css` (TOKI-010 is not on main yet), so a height
-// that depends on text is measured against the fallback fonts. Every number of
-// Table J that depends on text (the Calm `.ws` 45.4, the account card 67 and 64,
-// the Calm navigation 253, 173 and 113 and the item boxes that follow from it)
-// matched the spec with the fallback fonts: each comes from a line height set as
-// a number or from a fixed height, not from a font's own metrics. They are
-// marked `fallback fonts, re-measure with TOKI-010` where they are asserted.
+// that depends on text is measured against the fallback fonts. The number of
+// Table J that depends on text (the account card, 64) matched the spec with the
+// fallback fonts: it comes from a line height set as a number or from a fixed
+// height, not from a font's own metrics. It is marked `fallback fonts,
+// re-measure with TOKI-010` where it is asserted.
 
 const LOOKS = ["calm", "focus"] as const;
 type Look = (typeof LOOKS)[number];
