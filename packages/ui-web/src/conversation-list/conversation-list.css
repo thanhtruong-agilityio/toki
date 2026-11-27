@@ -208,6 +208,40 @@
   }
 }
 
+/* The Classic rows (TOKI-144 R3, R4, R8): the colours of what the column holds come from the side
+   colours that shell.css gives to the names ink, muted, line, hover and surface inside .convs; these
+   rules are the few that are not a plain name, and the place of the Browse link. */
+@media (min-width: 720px) {
+  [data-look="classic"] .cfilter .field {
+    background: var(--side-hover);
+  }
+  [data-look="classic"] .cfilter .chip {
+    background: var(--side-hover);
+  }
+  [data-look="classic"] .cfilter .chip[aria-pressed="true"] {
+    background: var(--accent-soft);
+  }
+  [data-look="classic"] .cr[aria-current="page"] {
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+  [data-look="classic"] .cr[aria-current="page"] .gl,
+  [data-look="classic"] .cr[aria-current="page"].un .nm,
+  [data-look="classic"] .cr[aria-current="page"] .star {
+    color: var(--on-accent);
+  }
+  [data-look="classic"] .cgroup[data-group="starred"],
+  [data-look="classic"] .cgroup[data-group="channels"] {
+    order: 0;
+  }
+  [data-look="classic"] .cr.browse {
+    order: 1;
+  }
+  [data-look="classic"] .cgroup[data-group="direct"] {
+    order: 2;
+  }
+}
+
 @media (max-width: 719px) {
   .ch {
     padding-left: max(16px, env(safe-area-inset-left, 0px));

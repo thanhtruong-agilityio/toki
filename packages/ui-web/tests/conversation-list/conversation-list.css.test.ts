@@ -105,6 +105,27 @@ const table: Row[] = [
   D('[data-look="calm"] .cfilter', "padding-bottom:4px"),
   D('[data-look="calm"] .cr', "min-height:32px; padding:2px 10px"),
   D('[data-look="calm"] .sec', "padding:8px 8px 2px"),
+  // The Classic rows (TOKI-144 R3, R4, R8)
+  D('[data-look="classic"] .cfilter .field', "background:var(--side-hover)"),
+  D('[data-look="classic"] .cfilter .chip', "background:var(--side-hover)"),
+  D(
+    '[data-look="classic"] .cfilter .chip[aria-pressed="true"]',
+    "background:var(--accent-soft)",
+  ),
+  D(
+    '[data-look="classic"] .cr[aria-current="page"]',
+    "background:var(--accent); color:var(--on-accent)",
+  ),
+  D(
+    '[data-look="classic"] .cr[aria-current="page"] .gl, [data-look="classic"] .cr[aria-current="page"].un .nm, [data-look="classic"] .cr[aria-current="page"] .star',
+    "color:var(--on-accent)",
+  ),
+  D(
+    '[data-look="classic"] .cgroup[data-group="starred"], [data-look="classic"] .cgroup[data-group="channels"]',
+    "order:0",
+  ),
+  D('[data-look="classic"] .cr.browse', "order:1"),
+  D('[data-look="classic"] .cgroup[data-group="direct"]', "order:2"),
   G(
     ".ch",
     "padding-left:max(16px,env(safe-area-inset-left,0px)); padding-right:max(16px,env(safe-area-inset-right,0px)); padding-top:max(14px,env(safe-area-inset-top,0px))",
@@ -155,7 +176,7 @@ describe("conversation-list.css (R12, Table A)", () => {
   });
 
   test("the Calm rule that hid the search field is not there", () => {
-    expect(text).not.toMatch(/\.cfilter\s+\.field/);
+    expect(text).not.toMatch(/\[data-look="calm"\]\s+\.cfilter\s+\.field/);
   });
 });
 

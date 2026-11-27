@@ -36,11 +36,30 @@ describe("the rules of the five style sheets that name a look (TOKI-143 R8, R9)"
   });
 
   test("a look selector names Focus together with Classic, because Classic has the frame of Focus", () => {
+    // Every mention of Focus is the shared pair; a rule of Classic's own (TOKI-144) names Classic
+    // alone, which the next test checks.
     const pair = ':is([data-look="focus"], [data-look="classic"])';
     for (const r of byLook)
       expect(r.selector.split(pair).join(""), r.selector).not.toMatch(
-        /"(focus|classic)"/,
+        /"focus"/,
       );
+  });
+
+  test('a rule of the Classic sidebar names [data-look="classic"] alone (TOKI-144 R10)', () => {
+    // The rules that are Classic's own: a selector with the look Classic outside the shared
+    // :is(focus, classic) of the frame. Calm and Focus are not named by them.
+    const pair = ':is([data-look="focus"], [data-look="classic"])';
+    const own = byLook.filter((r) =>
+      r.selector.split(pair).join("").includes('[data-look="classic"]'),
+    );
+    expect(own.length).toBeGreaterThan(10);
+    for (const r of own)
+      for (const part of r.selector.split(/,\s*/))
+        expect(part, r.selector).toMatch(/^\[data-look="classic"\] /);
+    for (const r of own)
+      expect(r.selector, r.selector).not.toMatch(/"calm"|"focus"/);
+    // They are all in the wide window: the narrow layout has no Classic rule.
+    for (const r of own) expect(r.media, r.selector).toBe("(min-width:720px)");
   });
 
   test("no rule names the old attribute", () => {

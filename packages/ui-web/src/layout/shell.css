@@ -476,6 +476,50 @@
   }
 }
 
+/* Table K, the Classic rows (TOKI-144 R2): a dark rail and a dark column in both schemes. Inside them
+   the colour names ink, muted, line, hover, bg and surface mean the side colours, so every component
+   of the sidebar is drawn dark without a rule of its own. They come after the shared rules of the
+   frame above, which they win by order. */
+@media (min-width: 720px) {
+  [data-look="classic"] .nav {
+    background: var(--side-rail);
+    border-right: 1px solid var(--side-line);
+    --bg: var(--side-rail);
+    --surface: var(--side-rail);
+    --ink: var(--side-ink);
+    --ink-2: var(--side-muted);
+    --muted: var(--side-muted);
+    --line: var(--side-line);
+    --hover: var(--side-hover);
+  }
+  [data-look="classic"] .usercard {
+    background: var(--side-rail);
+    border-right: 1px solid var(--side-line);
+    --bg: var(--side-rail);
+    --surface: var(--side-rail);
+    --ink: var(--side-ink);
+    --ink-2: var(--side-muted);
+    --muted: var(--side-muted);
+    --line: var(--side-line);
+    --hover: var(--side-hover);
+  }
+  [data-look="classic"] .convs {
+    background: var(--side-bg);
+    border-right: 1px solid var(--side-line);
+    --bg: var(--side-bg);
+    --surface: var(--side-bg);
+    --ink: var(--side-ink);
+    --ink-2: var(--side-muted);
+    --muted: var(--side-muted);
+    --line: var(--side-line);
+    --hover: var(--side-hover);
+  }
+  [data-look="classic"] .ni[aria-current="page"] {
+    background: var(--side-hover);
+    color: var(--side-ink);
+  }
+}
+
 /* Table F, the overlay: from 720 to 1099 px a panel lies over the chat and
    does not squeeze it (R19). grid-area:auto because an absolutely placed grid
    item takes its grid area as the containing block, which is 0 px wide when the
