@@ -22,6 +22,10 @@ export async function pruneEvents(
   db: Db,
   { before, batchSize = BATCH_SIZE }: { before: Date; batchSize?: number },
 ): Promise<number> {
+  // A batch of 0 removes nothing and would never be the last one.
+  if (!Number.isInteger(batchSize) || batchSize < 1) {
+    throw new Error("'batchSize' is not a whole number of 1 or more.");
+  }
   const cuts = await db
     .select({
       workspaceId: events.workspaceId,

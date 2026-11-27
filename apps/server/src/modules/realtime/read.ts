@@ -40,7 +40,8 @@ export async function readEventsAfter(
   after: number,
   limit: number,
 ): Promise<StoredEvent[]> {
-  if (!Number.isInteger(after) || after < 0) {
+  // A safe integer: a larger one does not stay exact on its way to the bigint.
+  if (!Number.isSafeInteger(after) || after < 0) {
     throw new Error("'after' is not a whole number of 0 or more.");
   }
   if (!Number.isInteger(limit) || limit < 1 || limit > MAX_LIMIT) {

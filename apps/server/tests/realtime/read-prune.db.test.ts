@@ -144,6 +144,17 @@ describe("R20: the oldest number and the pruning", () => {
     },
   );
 
+  it.each([0, -1, 1.5])(
+    "R20: refuses a batch size of %d before a statement",
+    async (batchSize) => {
+      const { db, log } = await t.counted();
+      await expect(
+        pruneEvents(db, { before: day(2), batchSize }),
+      ).rejects.toThrow(/'batchSize'/);
+      expect(log).toEqual([]);
+    },
+  );
+
   it("R20: two prunes at once leave what one leaves", async () => {
     const { workspace } = await t.scene();
     await old(workspace, 200);
@@ -204,6 +215,8 @@ describe("R26: readEventsAfter", () => {
     [-1, 10],
     [1.5, 10],
     [Number.NaN, 10],
+    // Larger than a number that stays exact: Postgres would refuse it.
+    [1e21, 10],
   ])(
     "R26: refuses after %d with limit %d before a statement",
     async (after, limit) => {
