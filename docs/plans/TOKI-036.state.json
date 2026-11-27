@@ -23,23 +23,40 @@
     {
       "at": "2026-11-27T09:31:30Z",
       "stage": "plan"
+    },
+    {
+      "at": "2026-11-27T09:40:51Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-27T09:40:51Z",
+      "stage": "mode"
+    },
+    {
+      "at": "2026-11-27T09:42:02Z",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-27T10:06:58Z",
+      "stage": "check"
     }
   ],
   "key": "TOKI-036",
   "main_sha": "f063c70bda9bf5120715b01ae518843cf750261a",
   "metrics": {},
-  "mode": null,
-  "plan_approved": false,
-  "plan_hash": null,
+  "mode": "Auto to PR",
+  "plan_approved": true,
+  "plan_hash": "765e1fbfb86cb122fb88e2a212cdcb37d9ab13ee741f551a6072337d33fa05a1",
   "spec_commit": "3bfbf78ae7e385f951c52db7ee5324cac4fecd5d",
   "spec_paths": [
     "docs/specs/2026-11-20-messages-events-tables-design.md",
     "docs/intents/messages-events-tables.md"
   ],
-  "stage": "plan",
+  "stage": "check",
   "tier": "L",
   "verifier": {
-    "result": null,
-    "round": 0
+    "result": "FAIL",
+    "round": 1
   }
 }
