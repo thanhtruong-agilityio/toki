@@ -113,6 +113,25 @@ describe("the last Admin under load (R27)", () => {
     expect((await h.user(c.id)).role).toBe("member");
   });
 
+  it("a request whose session ends while it is being checked gets 401 account_deactivated when the account was deactivated", async () => {
+    // The check read an active account and an active session; then the account was deactivated and
+    // its sessions ended (committed after that read). The renewal of the session finds it ended:
+    // the account comes before the session (R27), so the answer is account_deactivated and not
+    // session_ended. The rows of the session are locked as a deactivation locks them.
+    await h.admin(mail("a"));
+    const b = await h.admin(mail("b"));
+    let waiting!: ReturnType<typeof h.post>;
+    await h.sql.begin(async (tx) => {
+      await tx`update sessions set ended_at = now(), ended_reason = 'deactivated' where user_id = ${b.id}`;
+      await tx`update users set status = 'deactivated' where id = ${b.id}`;
+      waiting = h.post(b, `/members/${b.id}/role`, { role: "member" });
+      await someoneWaits();
+    });
+    const res = await waiting;
+    expect(res.statusCode).toBe(401);
+    expect(h.body(res).error.code).toBe("account_deactivated");
+  });
+
   it("counts an Admin promoted by a request that committed while this one waited", async () => {
     // One Admin; a second is being promoted. The demotion of the first waits
     // and then sees two Admins, so it succeeds: the count is read under the lock.
