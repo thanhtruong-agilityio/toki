@@ -11,22 +11,31 @@
     {
       "at": "2026-11-27T04:45:34Z",
       "stage": "plan"
+    },
+    {
+      "at": "2026-11-27T04:45:58Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-27T04:46:15Z",
+      "stage": "build"
     }
   ],
   "key": "TOKI-144",
   "main_sha": "88f92548ad8c04d81489354f97e6b3d10f5549c9",
   "metrics": {},
-  "mode": null,
-  "plan_approved": false,
-  "plan_hash": null,
+  "mode": "manual",
+  "plan_approved": true,
+  "plan_hash": "9edd4a546503abf7ce31e374b484eab147d83093e12c5b3953a5700b137a038d",
   "spec_commit": null,
   "spec_paths": [
     "docs/specs/2026-11-27-classic-sidebar-frame-design.md"
   ],
-  "stage": "plan",
+  "stage": "build",
   "tier": "L",
   "verifier": {
-    "result": null,
-    "round": 0
+    "result": "PASS",
+    "round": 1
   }
 }
