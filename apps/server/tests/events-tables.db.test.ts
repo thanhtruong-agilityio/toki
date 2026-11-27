@@ -96,8 +96,13 @@ function event(
     created_at: FIXED,
     ...over,
   };
+  // postgres.js sends a null value as SQL null, so JSON null is written out.
   row.payload =
-    row.payload === undefined ? null : sql.json(row.payload as never);
+    row.payload === undefined
+      ? null
+      : row.payload === null
+        ? sql`'null'::jsonb`
+        : sql.json(row.payload as never);
   return sql`insert into events ${sql(row as Record<string, never>)}`;
 }
 
@@ -256,7 +261,8 @@ describe("R13: the table events", () => {
     },
   );
 
-  it.each([[[]], ["text"], [1]])(
+  // JSON null is a value of jsonb; SQL null is the next case.
+  it.each([[[]], ["text"], [1], [null]])(
     "R13: refuses the payload %j",
     async (payload) => {
       const s = await scene();
@@ -339,6 +345,11 @@ describe("R14: the counter and the two triggers", () => {
     const zero = await scene(0);
     await setCounter(zero.workspace, 1);
     const one = await scene(1);
+    await failsWith(
+      setCounter(one.workspace, 3),
+      CHECK,
+      "event_counters_step_trg",
+    );
     await setCounter(one.workspace, 2);
     await setCounter(one.workspace, 3);
     for (const value of [5, 2, 3]) {

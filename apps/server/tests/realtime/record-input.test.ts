@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import type { Db, Tx } from "../../src/db/client.js";
 import {
   type EventInput,
+  lockEventCounter,
   recordEvent,
 } from "../../src/modules/realtime/index.js";
 
@@ -78,4 +79,8 @@ describe("recordEvent: the scope and the ids (R15)", () => {
 const typeOnly = (db: Db, event: EventInput) =>
   // @ts-expect-error recordEvent takes a transaction, not the database
   recordEvent(db, event);
+const lockTypeOnly = (db: Db) =>
+  // @ts-expect-error lockEventCounter takes a transaction, not the database
+  lockEventCounter(db, "workspace");
 void typeOnly;
+void lockTypeOnly;

@@ -1,6 +1,7 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import type { Db, Tx } from "../../src/db/client.js";
+import type { Tx } from "../../src/db/client.js";
 import {
+  getLastEventNumber,
   lockEventCounter,
   recordEvent,
 } from "../../src/modules/realtime/index.js";
@@ -64,10 +65,7 @@ describe("R27: lockEventCounter", () => {
     ] as const) {
       await t.db.transaction(async (tx) => {
         await lockEventCounter(tx, workspace);
-        const [row] = await tx.execute(
-          `select last_number from event_counters where workspace_id = '${workspace}'`,
-        );
-        expect(Number(row!.last_number)).toBe(before);
+        expect(await getLastEventNumber(tx, workspace)).toBe(before);
         const event = await recordEvent(tx, input(workspace));
         expect(event.number).toBe(before + 1);
       });
@@ -118,9 +116,3 @@ describe("R27: lockEventCounter", () => {
     );
   });
 });
-
-// Never run: the type checker proves that the database does not pass.
-const typeOnly = (db: Db) =>
-  // @ts-expect-error lockEventCounter takes a transaction, not the database
-  lockEventCounter(db, "workspace");
-void typeOnly;

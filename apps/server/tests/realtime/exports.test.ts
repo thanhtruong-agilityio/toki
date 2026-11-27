@@ -5,7 +5,18 @@ import type {
   StoredEvent,
 } from "../../src/modules/realtime/index.js";
 import * as schema from "../../src/modules/realtime/schema.js";
-import { leakedTables } from "./leaked-tables.js";
+
+// The names of the exports that are a definition of schema.ts, as in the
+// export test of the conversations module.
+function leakedTables(
+  exported: Record<string, unknown>,
+  tables: Record<string, unknown>,
+): string[] {
+  const tableObjects = new Set<unknown>(Object.values(tables));
+  return Object.entries(exported)
+    .filter(([, value]) => tableObjects.has(value))
+    .map(([name]) => name);
+}
 
 // The names the realtime module exports, extended by every later ticket in its
 // own change (TOKI-036 R24). appendEvent stays inside the module.
