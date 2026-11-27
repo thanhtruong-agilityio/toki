@@ -74,36 +74,47 @@ function importsOf(code: string): Import[] {
   return found;
 }
 
-describe("readControls (R4)", () => {
-  test("a valid address gives the three values", () => {
-    expect(readControls("?look=focus&accent=clay&density=compact")).toEqual({
+describe("readControls (R4, TOKI-143 R10)", () => {
+  test("a valid address gives the four values", () => {
+    expect(
+      readControls("?look=focus&scheme=dark&accent=clay&density=compact"),
+    ).toEqual({
       look: "focus",
+      scheme: "dark",
       accent: "clay",
       density: "compact",
     });
+    expect(readControls("?look=classic").look).toBe("classic");
   });
 
-  test("a missing value gives calm, teal and the look's own density", () => {
+  test("a missing value gives calm, light, teal and the look's own density", () => {
     expect(readControls("")).toEqual({
       look: "calm",
+      scheme: "light",
       accent: "teal",
       density: "own",
     });
+    // ?look=focus alone is Focus in light: the look no longer brings a scheme
     expect(readControls("?look=focus")).toEqual({
       look: "focus",
+      scheme: "light",
       accent: "teal",
       density: "own",
     });
   });
 
   test("an unknown value gives the default of that control only", () => {
-    expect(readControls("?look=sepia&accent=indigo&density=huge")).toEqual({
+    expect(
+      readControls("?look=sepia&scheme=device&accent=indigo&density=huge"),
+    ).toEqual({
       look: "calm",
+      scheme: "light",
       accent: "indigo",
       density: "own",
     });
-    expect(readControls("?look=&accent=&density=")).toEqual({
+    expect(readControls("?look=&scheme=&accent=&density=")).toEqual({
       look: "calm",
+      scheme: "light",
       accent: "teal",
       density: "own",
     });
@@ -112,6 +123,7 @@ describe("readControls (R4)", () => {
   test("a repeated value uses the first one, and a wrong case is unknown", () => {
     expect(readControls("?look=focus&look=calm").look).toBe("focus");
     expect(readControls("?look=calm&look=focus").look).toBe("calm");
+    expect(readControls("?scheme=dark&scheme=light").scheme).toBe("dark");
     expect(readControls("?accent=Indigo").accent).toBe("teal");
   });
 
@@ -131,16 +143,18 @@ function fakeRoot() {
   };
 }
 
-describe("applyControls and writeAddress (R4)", () => {
-  test("sets data-eff, data-accent and data-density", () => {
+describe("applyControls and writeAddress (R4, TOKI-143 R10)", () => {
+  test("sets data-look, data-scheme, data-accent and data-density", () => {
     const root = fakeRoot();
     applyControls(root, {
       look: "focus",
+      scheme: "dark",
       accent: "violet",
       density: "compact",
     });
     expect(Object.fromEntries(root.attrs)).toEqual({
-      "data-eff": "focus",
+      "data-look": "focus",
+      "data-scheme": "dark",
       "data-accent": "violet",
       "data-density": "compact",
     });
@@ -148,20 +162,33 @@ describe("applyControls and writeAddress (R4)", () => {
 
   test("the look's own density sets no data-density and removes an old one", () => {
     const root = fakeRoot();
-    applyControls(root, { look: "calm", accent: "teal", density: "compact" });
-    applyControls(root, { look: "calm", accent: "teal", density: "own" });
+    const base = { look: "calm", scheme: "light", accent: "teal" } as const;
+    applyControls(root, { ...base, density: "compact" });
+    applyControls(root, { ...base, density: "own" });
     expect(root.attrs.has("data-density")).toBe(false);
-    expect(root.attrs.get("data-eff")).toBe("calm");
+    expect(root.attrs.get("data-look")).toBe("calm");
   });
 
-  test("data-eff is always set, so the device setting never decides", () => {
+  test("data-look and data-scheme are always set together, so the device setting never decides", () => {
     const root = fakeRoot();
     applyControls(root, readControls(""));
-    expect(root.attrs.get("data-eff")).toBe("calm");
+    expect(root.attrs.get("data-look")).toBe("calm");
+    expect(root.attrs.get("data-scheme")).toBe("light");
     expect(root.attrs.get("data-accent")).toBe("teal");
+    for (const look of ["calm", "focus", "classic"] as const) {
+      for (const scheme of ["light", "dark"] as const) {
+        const r = fakeRoot();
+        applyControls(r, { look, scheme, accent: "teal", density: "own" });
+        expect(r.attrs.has("data-look")).toBe(r.attrs.has("data-scheme"));
+        expect([r.attrs.get("data-look"), r.attrs.get("data-scheme")]).toEqual([
+          look,
+          scheme,
+        ]);
+      }
+    }
   });
 
-  test("the address carries look, accent and density", () => {
+  test("the address carries look, scheme, accent and density", () => {
     const calls: string[] = [];
     const history = {
       replaceState: (_state: unknown, _title: string, url: string) =>
@@ -169,12 +196,16 @@ describe("applyControls and writeAddress (R4)", () => {
     };
     writeAddress(history, "/preview.html", {
       look: "focus",
+      scheme: "dark",
       accent: "clay",
       density: "own",
     });
-    expect(calls).toEqual(["/preview.html?look=focus&accent=clay&density=own"]);
+    expect(calls).toEqual([
+      "/preview.html?look=focus&scheme=dark&accent=clay&density=own",
+    ]);
     expect(readControls(calls[0].slice(calls[0].indexOf("?")))).toEqual({
       look: "focus",
+      scheme: "dark",
       accent: "clay",
       density: "own",
     });
@@ -269,7 +300,7 @@ describe("imports of the page (R19)", () => {
     "ToastProvider",
     "useToasts",
   ]);
-  const allowedTokens = new Set(["looks", "accents", "densities"]);
+  const allowedTokens = new Set(["looks", "schemes", "accents", "densities"]);
 
   test("from @toki/ui-web only five names, and the two style sheets", () => {
     for (const path of sources) {
@@ -290,7 +321,7 @@ describe("imports of the page (R19)", () => {
     }
   });
 
-  test("from @toki/tokens only looks, accents, densities and tokens.css", () => {
+  test("from @toki/tokens only looks, schemes, accents, densities and tokens.css", () => {
     for (const path of sources) {
       for (const entry of importsOf(read(path))) {
         const where = relative(webDir, path);
