@@ -19,7 +19,7 @@ The screens of the sidebar, Browse channels, the people picker and the conversat
   - Any screen, hook, text or style: TOKI-033 (the list), TOKI-034, TOKI-035. This ticket adds no file in `packages/ui-web`, `packages/i18n` or `packages/tokens`.
   - Where the open collapsed groups, the chosen filter and the search text are kept, and their storage per device (F09): TOKI-033. The store takes the filter and the search text as arguments of a selector and keeps neither.
   - The session state, `reportUnauthenticated` and the sign-in screens: TOKI-023 (`packages/client-core/src/auth/`). This ticket owns the connection of the API client's 401 hook to it (R7, R25): Decided in this spec, because the wiring file is this ticket's. The client does not import `auth/`; only `apps/web/src/client.ts` does.
-  - The WebSocket, events, optimistic send, the queue of unsent messages and the saved cache for offline use: TOKI-038, TOKI-040. The store is in memory only.
+  - The WebSocket, events, optimistic send, the queue of unsent messages and the saved cache for offline use: TOKI-038, TOKI-040 (the saved cache is not in phase 1: TOKI-040 concern 2, decided 2026-11-27). The store is in memory only.
   - Unread counts and the mention mark: the read pointer, TOKI-053. This ticket defines the slot they fill and the filter rules over it (R20).
   - Who calls `setUnread`: TOKI-053 (R20).
   - The controls that change a person's notification level, mute and star: TOKI-035. This ticket builds the client method and the store command they call (R9, R15, concern 9); TOKI-029 builds the request (its R22).
