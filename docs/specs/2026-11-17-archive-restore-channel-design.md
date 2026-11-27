@@ -133,8 +133,10 @@ The prototype has no archive screen, so every value is decided here; the source 
 | `.arch-page` | `display:flex; flex-direction:column; flex:1; min-height:0` | decided: the page fills `.main`, so the notice sits at the bottom where the composer sits |
 | `.arch-body` | `display:flex; flex-direction:column; flex:1; min-height:0` | decided: the body takes the space between the header and the notice; it sets no `overflow`, so the scroll of the history belongs to the list that TOKI-041 puts in it |
 | `.arch-notice` | `margin:0 20px 16px; padding:12px 14px; border:1px solid var(--line); border-radius:var(--radius); background:var(--surface); color:var(--muted); text-align:center` | decided: the box has the margins of the prototype's `.composer` (line 311) and the border of its `.cbox` (line 313) |
-| `@media (min-width: 720px)` `[data-eff="focus"] .arch-notice` | `margin:0 16px 12px` | line 312, the Focus look of the composer; it sits in the wide block so that the narrow rule below applies in both looks (as TOKI-033 R14 does for its Focus rule), and it matches the 16 px of the Focus header (TOKI-035 Table C) |
+| `@media (min-width: 720px)` `[data-look="focus"] .arch-notice` | `margin:0 16px 12px` | line 312, the Focus look of the composer; it sits in the wide block so that the narrow rule below applies in both looks (as TOKI-033 R14 does for its Focus rule), and it matches the 16 px of the Focus header (TOKI-035 Table C) |
 | `@media (max-width: 719px)` `.arch-notice` | `margin:0 max(12px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px))` | line 537, the same margins as the composer on a narrow screen |
+
+TOKI-142: every selector of this table was `[data-eff=...]` and is now `[data-look=...]`.
 
 ### Layout
 ```

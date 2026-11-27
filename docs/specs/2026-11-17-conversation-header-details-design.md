@@ -211,7 +211,7 @@ Rules from the prototype, as written, except the media condition (TOKI-015 decid
 | Selector | Declarations | Source |
 | :---- | :---- | :---- |
 | `.mh` | `display:flex; align-items:center; gap:10px; padding:14px 20px 0; min-height:56px` | 210 |
-| `[data-eff="focus"] .mh` | `padding:10px 16px 0; min-height:48px` | 211 |
+| `[data-look="focus"] .mh` | `padding:10px 16px 0; min-height:48px` | 211 |
 | `.mh .back` | `display:none` | 212 |
 | `.mh h1` | `margin:0; font-size:16px; font-weight:700; display:flex; align-items:center; gap:6px; min-width:0` | 213 |
 | `.mh .topic` | `font-size:12.5px; color:var(--muted); margin-top:1px` | 214 |
@@ -231,6 +231,8 @@ Rules from the prototype, as written, except the media condition (TOKI-015 decid
 | `@media (max-width: 719px)` `.mh .back` | `display:inline-grid` | 531 |
 | `@media (max-width: 719px)` `.mh .memb` | `padding:0 6px` | 584 |
 | `@media (max-width: 719px)` `.opt` | `min-height:40px` | decided (R29) |
+
+TOKI-142: every selector of this table was `[data-eff=...]` and is now `[data-look=...]`.
 
 `.later-ic` is named by another ticket too (the prototype's star mark on Later): this work is the first to write it, and the ticket that draws the next use moves the rule to a shared file with the same text. `.mrow` is owned by this work (Decided in this spec): the member rows are its own and TOKI-034 draws its lists with a class of its own, so the rule is written once. The prototype's `.mrow:hover` (line 337) is written here with the rows that are pressable (TOKI-057 R14). The prototype's `.setrow` (lines 342, 343: `display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--line)`, and `.setrow:last-child{border-bottom:0}`) is used by R18 and by TOKI-057's profile card, so it is in `apps/web/src/patterns/setrow.css` and not in this table (TOKI-057 R19). Every style that R12 and R21 need is in this table (`.dp-name`, `.dp-topic`, `.dp-leave`), and `.dp-empty` and `.dp-actions` serve R13 and R15; `h3`, `.sm`, `.xs`, `.muted`, `.grow`, `.ell` and `.mono` are TOKI-015's (`.sb h3`, Table H). The `.mh .btn{padding:0 10px}` rule of the prototype (line 584) belongs to the Meet button and is not written here.
 

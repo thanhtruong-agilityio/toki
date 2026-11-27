@@ -1,0 +1,59 @@
+{
+  "approved_auto": false,
+  "base": "github/main",
+  "branch": "docs/toki-142-look-and-scheme-specs",
+  "deployed_sha": null,
+  "history": [
+    {
+      "at": "2026-11-26T12:53:52Z",
+      "stage": "pick"
+    },
+    {
+      "at": "2026-11-26T12:53:52Z",
+      "stage": "explore"
+    },
+    {
+      "at": "2026-11-26T13:10:02Z",
+      "stage": "plan"
+    },
+    {
+      "at": "2026-11-26T13:18:47Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-26T13:18:47Z",
+      "stage": "build"
+    },
+    {
+      "at": "2026-11-26T13:21:01Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-26T14:01:32Z",
+      "stage": "check"
+    },
+    {
+      "at": "2026-11-26T14:14:40Z",
+      "auto": false,
+      "stage": "approve"
+    }
+  ],
+  "key": "TOKI-142",
+  "main_sha": "a230aa28bd151407e9fb60d3ef93b6844c69cb7a",
+  "metrics": {},
+  "mode": "manual",
+  "plan_approved": true,
+  "plan_hash": "8511fd64784b072b2dfca6b67a11591107552df14c18659f6dcf41f95b29ca95",
+  "spec_commit": "a230aa28bd151407e9fb60d3ef93b6844c69cb7a",
+  "spec_paths": [
+    "docs/specs/2026-11-26-look-and-scheme-model-design.md"
+  ],
+  "stage": "check",
+  "tier": "M",
+  "verifier": {
+    "result": "PASS",
+    "round": 2
+  }
+}
