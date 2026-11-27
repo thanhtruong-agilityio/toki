@@ -50,6 +50,15 @@
     {
       "at": "2026-11-27T08:16:14Z",
       "stage": "build"
+    },
+    {
+      "at": "2026-11-27T08:26:01Z",
+      "auto": false,
+      "stage": "approve"
+    },
+    {
+      "at": "2026-11-27T08:26:01Z",
+      "stage": "build"
     }
   ],
   "key": "TOKI-145",
@@ -57,7 +66,7 @@
   "metrics": {},
   "mode": "auto-pr",
   "plan_approved": true,
-  "plan_hash": "031ee21b30305c664f905ff104032abc344d3cabe0d9199f77f8b05ec67d8e62",
+  "plan_hash": "788bda5e79686a4b9d4b4315b29ce0e090392dc7f9c7a9f0cde38db7cc35986a",
   "spec_commit": "0c7482530c22af02160f93ba23db8cd3338aa291",
   "spec_paths": [
     "docs/specs/2026-11-27-calm-two-column-frame-design.md"

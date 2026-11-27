@@ -34,7 +34,7 @@ Approved by Thanh Truong on 2026-11-27.
 - **Approach.** The frame rules name the three looks, as the spec's Design says. Rejected: dropping the look prefix because all looks now share the frame; it changes selector specificity and is not what the spec decided.
 - **Style sheet.** Calm keeps only its rules for `.main`, `.side` and `.toast-anchor`, plus one new rule that removes the right line of its conversation column. `--shell-convs-min` is removed. The side panel's border, `.sechead`, `.secbody` and `.toolbar` stay Focus and Classic only. The Classic block and the narrow block do not change.
 - **Components.** `calmHidden` and `data-calm-hidden` are removed from `NavSection`, `sections.ts`, `app-layout.tsx` and the shell fixture.
-- **Prototype.** The rail and column rules also name Calm; the 272 px sidebar rules, the hidden Preferences rule and the rule that hides the conversation search field are removed. The last one is the Dev's decision of 2026-11-27: the app shows the field (conversation list spec, concern 1), so the prototype now does too. The list row, card, phone and guest rules stay.
+- **Prototype.** Calm gets the rail and column rules inside the wide block, as copies of the Focus lines; the 272 px sidebar rules, the hidden Preferences rule and the rule that hides the conversation search field are removed. The last one is the Dev's decision of 2026-11-27: the app shows the field (conversation list spec, concern 1), so the prototype now does too. The list row, card, phone and guest rules stay. Changed during the build: naming Calm in the Focus lines themselves, as first planned, also changed Calm's bottom bar under 720 px, because those lines sit outside the wide block; R9 says the phone layout does not change.
 - **Narrow Calm main area.** From 720 to 727 px the main area (352 to 359 px) is narrower than the 360 px panel, which then covers up to 8 px of the conversation column. Decided by Thanh Truong on 2026-11-27 during the build: the panel stays 360 px; no new style rule. The browser test of R19 allows exactly that overlap, and the specs say it (Task 5).
 - **Test change the spec did not name.** `look-selectors.test.ts` allows Focus only in the pair `focus, classic`; it also allows the three-look list.
 
@@ -441,14 +441,9 @@ Expected: the two new tests FAIL (the nav has no box under `display:contents`); 
 
 - [ ] **Step 3: Edit the prototype** (line numbers are those of `0c74825`)
 
-First widen the selectors, while the line numbers still hold:
-
-```bash
-perl -pi -e 's/:is\(\[data-look="focus"\],\[data-look="classic"\]\)/:is([data-look="calm"],[data-look="focus"],[data-look="classic"])/g if ($. >= 184 && $. <= 200) || $. == 618 || $. == 619 || ($. >= 650 && $. <= 652) || $. == 818 || $. == 819' e2e/prototype/index.html
-```
+Copy each Focus frame line (184 to 200, 618, 619, 650 to 652, 818 and 819), with `[data-look="calm"]` in place of the pair, in the same order, to the start of the later `@container app (min-width:721px)` block that holds the Calm list rules, with a comment that says why. After the copied `.convs` line add `[data-look="calm"] .convs{border-right:0}`. The Focus lines stay as they are.
 
 Then, by their text:
-- after the widened `.convs{border-right:1px solid var(--line);background:var(--bg)}` line, add the line `[data-look="calm"] .convs{border-right:0}`;
 - delete the block `@container app (min-width:721px){` that holds only `[data-look="calm"] .ni{height:32px}`, `[data-look="calm"] .ni[data-id="prefs"]{display:none}` and `[data-look="calm"] .cfilter .field{display:none}`, with its closing brace;
 - delete the Calm lines for `.navtop`, `.ws`, `.srch`, `.ni`, `.ni .ic` and `.usercard` in the later wide block; keep `.ch`, `.cfilter`, `.cr` and `.sec`.
 
@@ -469,7 +464,7 @@ Run the command of step 2. Expected: PASS.
 **Files:** `e2e/parity/reference/*-calm-*.png`
 
 - [ ] **Step 1:** `corepack pnpm ui:reference --all --update`
-- [ ] **Step 2:** `git status --short e2e/parity/reference`. Expected: only files named `*-calm-mid-*` or `*-calm-wide-*`. A changed Focus, Classic or narrow image stops the task: look at it, find the rule, and fix the prototype.
+- [ ] **Step 2:** The committed references are older than the prototype of `0c74825`: made from that file, 26 of them already differ. So compare with images made from the old prototype, not with the committed ones: between the old and the new prototype only `*-calm-mid-*` and `*-calm-wide-*` may differ (a single pixel off by 1 is noise). Then keep the Focus images as committed (`git checkout` them) and keep every changed Calm image, narrow ones included, since R10 asks for each Calm reference made from the changed prototype. The older drift of the Focus references is named in the pull request, not fixed here.
 - [ ] **Step 3:** Look at each changed image: rail, column on Home only, card, search field.
 - [ ] **Step 4:** `corepack pnpm test:e2e:parity`. Expected: no missing reference. Keep the counts and the Calm rows of `e2e/assets/parity/report.md` for the pull request.
 - [ ] **Step 5: Commit** `test(e2e): make the calm reference images again (TOKI-145)`
