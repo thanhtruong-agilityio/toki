@@ -14,6 +14,10 @@ const NARROW = "(max-width:719px)";
 const OVERLAY = "(min-width:720px)and(max-width:1099px)";
 const BESIDE = "(min-width:956px)and(max-width:1099px)";
 const MONO = '"JetBrains Mono",ui-monospace,"SF Mono",Menlo,monospace';
+// The selector lists of the looks that share the frame (TOKI-145) and of the two dense looks.
+const FRAME =
+  ':is([data-look="calm"], [data-look="focus"], [data-look="classic"])';
+const DENSE = ':is([data-look="focus"], [data-look="classic"])';
 
 type Row = { media: string | null; selector: string; decl: string };
 const C = (selector: string, decl: string): Row => ({
@@ -154,7 +158,7 @@ const tables: Row[] = [
   C(".ucard .un", "font-weight:600; line-height:1.2; display:block"),
   C(".ucard .us", "font-size:12px; color:var(--muted); display:block"),
   C(".ucard .uct", "flex:1; min-width:0"),
-  C(".app", "--shell-panel:360px; --shell-convs-min:240px"),
+  C(".app", "--shell-panel:360px"),
   C(
     ".convs:focus-visible, .main:focus-visible, .side:focus-visible",
     "outline:none",
@@ -166,28 +170,7 @@ const tables: Row[] = [
   ),
   D(".sidebar", "grid-area:sidebar; display:grid"),
   D(".sh .back-side", "display:none"),
-  // Table E (Calm)
-  D(
-    '[data-look="calm"] .sidebar',
-    'width:272px; grid-template-columns:minmax(0,1fr); grid-template-rows:minmax(0,1fr) auto; grid-template-areas:"nav" "user"',
-  ),
-  D(
-    '[data-look="calm"] .sidebar[data-has-list]',
-    'grid-template-rows:minmax(0,max-content) minmax(var(--shell-convs-min),1fr) auto; grid-template-areas:"nav" "convs" "user"',
-  ),
-  D(
-    '[data-look="calm"] .nav',
-    "grid-area:nav; display:flex; flex-direction:column; gap:2px; padding:10px 12px 4px; min-height:0",
-  ),
-  D('[data-look="calm"] .ws', "padding:2px 8px 8px"),
-  D('[data-look="calm"] .srch', "height:34px; margin-bottom:6px"),
-  D('[data-look="calm"] .ni', "height:30px; font-size:13.5px"),
-  D('[data-look="calm"] .ni[data-calm-hidden]', "display:none"),
-  D('[data-look="calm"] .ni .ic', "width:17px; height:17px"),
-  D(
-    '[data-look="calm"] .usercard',
-    "padding:4px 0 10px; margin:0 12px; border-top:1px solid var(--line)",
-  ),
+  // Table E (Calm): the cards (its frame is that of Table F, TOKI-145)
   D(
     '[data-look="calm"] .main',
     "margin:12px 12px 12px 0; border-radius:var(--radius); box-shadow:var(--shadow)",
@@ -197,92 +180,57 @@ const tables: Row[] = [
     "margin:12px 12px 12px 0; border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden",
   ),
   D('[data-look="calm"] .toast-anchor', "margin:12px 12px 12px 0"),
-  // Table F, Focus rows
+  // Table F, the frame of the three looks, then what Focus and Classic have alone
   D(
-    ':is([data-look="focus"], [data-look="classic"]) .sidebar',
+    `${FRAME} .sidebar`,
     'width:68px; grid-template-columns:68px; grid-template-rows:minmax(0,1fr) auto; grid-template-areas:"nav" "user"',
   ),
   D(
-    ':is([data-look="focus"], [data-look="classic"]) .app[data-section="home"] .sidebar[data-has-list]',
+    `${FRAME} .app[data-section="home"] .sidebar[data-has-list]`,
     'width:356px; grid-template-columns:68px 288px; grid-template-areas:"nav convs" "user convs"',
   ),
+  D(`${FRAME} .app:not([data-section="home"]) .convs`, "display:none"),
   D(
-    ':is([data-look="focus"], [data-look="classic"]) .app:not([data-section="home"]) .convs',
-    "display:none",
-  ),
-  D(
-    ':is([data-look="focus"], [data-look="classic"]) .nav',
+    `${FRAME} .nav`,
     "grid-area:nav; display:flex; flex-direction:column; gap:4px; padding:10px 8px 0; background:var(--bg); border-right:1px solid var(--line); align-items:stretch; min-height:0; overflow:hidden",
   ),
+  D(`${FRAME} .nav-items`, "flex:1 1 auto; min-height:0"),
+  D(`${FRAME} .ws`, "padding:0; justify-content:center; margin-bottom:6px"),
+  D(`${FRAME} .wst`, "display:none"),
   D(
-    ':is([data-look="focus"], [data-look="classic"]) .nav-items',
-    "flex:1 1 auto; min-height:0",
-  ),
-  D(
-    ':is([data-look="focus"], [data-look="classic"]) .ws',
-    "padding:0; justify-content:center; margin-bottom:6px",
-  ),
-  D(':is([data-look="focus"], [data-look="classic"]) .wst', "display:none"),
-  D(
-    ':is([data-look="focus"], [data-look="classic"]) .srch',
+    `${FRAME} .srch`,
     "height:36px; justify-content:center; padding:0; background:transparent; border-color:transparent; margin-bottom:6px",
   ),
+  D(`${FRAME} .srch:hover`, "background:var(--hover)"),
+  D(`${FRAME} .srch .t, ${FRAME} .srch .kbd`, "display:none"),
   D(
-    ':is([data-look="focus"], [data-look="classic"]) .srch:hover',
-    "background:var(--hover)",
-  ),
-  D(
-    ':is([data-look="focus"], [data-look="classic"]) .srch .t, :is([data-look="focus"], [data-look="classic"]) .srch .kbd',
-    "display:none",
-  ),
-  D(
-    ':is([data-look="focus"], [data-look="classic"]) .ni',
+    `${FRAME} .ni`,
     "flex-direction:column; justify-content:center; gap:3px; height:50px; padding:0; font-size:10.5px; font-weight:500",
   ),
+  D(`${FRAME} .ni .ic`, "width:20px; height:20px"),
   D(
-    ':is([data-look="focus"], [data-look="classic"]) .ni .ic',
-    "width:20px; height:20px",
-  ),
-  D(
-    ':is([data-look="focus"], [data-look="classic"]) .ni .cnt',
+    `${FRAME} .ni .cnt`,
     "position:absolute; top:4px; right:auto; left:calc(50% + 5px); margin:0; min-width:16px; height:16px; font-size:10px; box-shadow:0 0 0 2px var(--bg)",
   ),
   D(
-    ':is([data-look="focus"], [data-look="classic"]) .ni .cnt.mute',
+    `${FRAME} .ni .cnt.mute`,
     "background:var(--accent); color:var(--on-accent)",
   ),
   D(
-    ':is([data-look="focus"], [data-look="classic"]) .usercard',
+    `${FRAME} .usercard`,
     "grid-area:user; padding:6px 8px 10px; background:var(--bg); border-right:1px solid var(--line)",
   ),
+  D(`${FRAME} .ucard`, "justify-content:center; padding:6px"),
+  D(`${FRAME} .ucard .uct`, "display:none"),
   D(
-    ':is([data-look="focus"], [data-look="classic"]) .ucard',
-    "justify-content:center; padding:6px",
-  ),
-  D(
-    ':is([data-look="focus"], [data-look="classic"]) .ucard .uct',
-    "display:none",
-  ),
-  D(
-    ':is([data-look="focus"], [data-look="classic"]) .convs',
+    `${FRAME} .convs`,
     "border-right:1px solid var(--line); background:var(--bg)",
   ),
-  D(
-    ':is([data-look="focus"], [data-look="classic"]) .side',
-    "border-left:1px solid var(--line)",
-  ),
-  D(
-    ':is([data-look="focus"], [data-look="classic"]) .sechead',
-    "padding:14px 20px 8px",
-  ),
-  D(
-    ':is([data-look="focus"], [data-look="classic"]) .secbody',
-    "padding:0 20px 20px",
-  ),
-  D(
-    ':is([data-look="focus"], [data-look="classic"]) .toolbar',
-    "padding:0 20px 10px",
-  ),
+  D('[data-look="calm"] .convs', "border-right:0"),
+  D(`${DENSE} .side`, "border-left:1px solid var(--line)"),
+  D(`${DENSE} .sechead`, "padding:14px 20px 8px"),
+  D(`${DENSE} .secbody`, "padding:0 20px 20px"),
+  D(`${DENSE} .toolbar`, "padding:0 20px 10px"),
   // Table K, the Classic rows (TOKI-144 R2): a dark rail and a dark column; inside them the colour
   // names ink, muted, line, hover, bg and surface mean the side colours.
   D(
@@ -435,9 +383,9 @@ describe("shell.css uses the design system's names (R17)", () => {
       ...readFileSync(tokensCss, "utf8").matchAll(/^\s*(--[a-z0-9-]+)\s*:/gm),
     ].map((m) => m[1]),
   );
-  const own = new Set(["--tabh", "--shell-panel", "--shell-convs-min"]);
+  const own = new Set(["--tabh", "--shell-panel"]);
 
-  test("every var() names a token or one of the three own properties", () => {
+  test("every var() names a token or one of the two own properties", () => {
     const text = readFileSync(file, "utf8");
     for (const m of text.matchAll(/var\(\s*(--[a-z0-9-]+)/g)) {
       expect(tokenNames.has(m[1]!) || own.has(m[1]!), m[1]).toBe(true);

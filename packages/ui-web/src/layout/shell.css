@@ -274,7 +274,6 @@
 }
 .app {
   --shell-panel: 360px;
-  --shell-convs-min: 240px;
 }
 .convs:focus-visible,
 .main:focus-visible,
@@ -297,51 +296,9 @@
   }
 }
 
-/* Table E: Calm. */
+/* Table E: Calm draws the main area and the side panel as cards (TOKI-145: its frame is the
+   frame of Table F). */
 @media (min-width: 720px) {
-  [data-look="calm"] .sidebar {
-    width: 272px;
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: minmax(0, 1fr) auto;
-    grid-template-areas: "nav" "user";
-  }
-  [data-look="calm"] .sidebar[data-has-list] {
-    grid-template-rows:
-      minmax(0, max-content) minmax(var(--shell-convs-min), 1fr)
-      auto;
-    grid-template-areas: "nav" "convs" "user";
-  }
-  [data-look="calm"] .nav {
-    grid-area: nav;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    padding: 10px 12px 4px;
-    min-height: 0;
-  }
-  [data-look="calm"] .ws {
-    padding: 2px 8px 8px;
-  }
-  [data-look="calm"] .srch {
-    height: 34px;
-    margin-bottom: 6px;
-  }
-  [data-look="calm"] .ni {
-    height: 30px;
-    font-size: 13.5px;
-  }
-  [data-look="calm"] .ni[data-calm-hidden] {
-    display: none;
-  }
-  [data-look="calm"] .ni .ic {
-    width: 17px;
-    height: 17px;
-  }
-  [data-look="calm"] .usercard {
-    padding: 4px 0 10px;
-    margin: 0 12px;
-    border-top: 1px solid var(--line);
-  }
   [data-look="calm"] .main {
     margin: 12px 12px 12px 0;
     border-radius: var(--radius);
@@ -358,27 +315,28 @@
   }
 }
 
-/* Table F, the Focus rows: the rail and, on Home, the conversation column. */
+/* Table F: the rail and, on Home, the conversation column, in every look; the last four rules
+   are of Focus and Classic alone. */
 @media (min-width: 720px) {
-  :is([data-look="focus"], [data-look="classic"]) .sidebar {
+  :is([data-look="calm"], [data-look="focus"], [data-look="classic"]) .sidebar {
     width: 68px;
     grid-template-columns: 68px;
     grid-template-rows: minmax(0, 1fr) auto;
     grid-template-areas: "nav" "user";
   }
-  :is([data-look="focus"], [data-look="classic"])
+  :is([data-look="calm"], [data-look="focus"], [data-look="classic"])
     .app[data-section="home"]
     .sidebar[data-has-list] {
     width: 356px;
     grid-template-columns: 68px 288px;
     grid-template-areas: "nav convs" "user convs";
   }
-  :is([data-look="focus"], [data-look="classic"])
+  :is([data-look="calm"], [data-look="focus"], [data-look="classic"])
     .app:not([data-section="home"])
     .convs {
     display: none;
   }
-  :is([data-look="focus"], [data-look="classic"]) .nav {
+  :is([data-look="calm"], [data-look="focus"], [data-look="classic"]) .nav {
     grid-area: nav;
     display: flex;
     flex-direction: column;
@@ -390,19 +348,20 @@
     min-height: 0;
     overflow: hidden;
   }
-  :is([data-look="focus"], [data-look="classic"]) .nav-items {
+  :is([data-look="calm"], [data-look="focus"], [data-look="classic"])
+    .nav-items {
     flex: 1 1 auto;
     min-height: 0;
   }
-  :is([data-look="focus"], [data-look="classic"]) .ws {
+  :is([data-look="calm"], [data-look="focus"], [data-look="classic"]) .ws {
     padding: 0;
     justify-content: center;
     margin-bottom: 6px;
   }
-  :is([data-look="focus"], [data-look="classic"]) .wst {
+  :is([data-look="calm"], [data-look="focus"], [data-look="classic"]) .wst {
     display: none;
   }
-  :is([data-look="focus"], [data-look="classic"]) .srch {
+  :is([data-look="calm"], [data-look="focus"], [data-look="classic"]) .srch {
     height: 36px;
     justify-content: center;
     padding: 0;
@@ -410,14 +369,17 @@
     border-color: transparent;
     margin-bottom: 6px;
   }
-  :is([data-look="focus"], [data-look="classic"]) .srch:hover {
+  :is([data-look="calm"], [data-look="focus"], [data-look="classic"])
+    .srch:hover {
     background: var(--hover);
   }
-  :is([data-look="focus"], [data-look="classic"]) .srch .t,
-  :is([data-look="focus"], [data-look="classic"]) .srch .kbd {
+  :is([data-look="calm"], [data-look="focus"], [data-look="classic"]) .srch .t,
+  :is([data-look="calm"], [data-look="focus"], [data-look="classic"])
+    .srch
+    .kbd {
     display: none;
   }
-  :is([data-look="focus"], [data-look="classic"]) .ni {
+  :is([data-look="calm"], [data-look="focus"], [data-look="classic"]) .ni {
     flex-direction: column;
     justify-content: center;
     gap: 3px;
@@ -426,11 +388,11 @@
     font-size: 10.5px;
     font-weight: 500;
   }
-  :is([data-look="focus"], [data-look="classic"]) .ni .ic {
+  :is([data-look="calm"], [data-look="focus"], [data-look="classic"]) .ni .ic {
     width: 20px;
     height: 20px;
   }
-  :is([data-look="focus"], [data-look="classic"]) .ni .cnt {
+  :is([data-look="calm"], [data-look="focus"], [data-look="classic"]) .ni .cnt {
     position: absolute;
     top: 4px;
     right: auto;
@@ -441,26 +403,35 @@
     font-size: 10px;
     box-shadow: 0 0 0 2px var(--bg);
   }
-  :is([data-look="focus"], [data-look="classic"]) .ni .cnt.mute {
+  :is([data-look="calm"], [data-look="focus"], [data-look="classic"])
+    .ni
+    .cnt.mute {
     background: var(--accent);
     color: var(--on-accent);
   }
-  :is([data-look="focus"], [data-look="classic"]) .usercard {
+  :is([data-look="calm"], [data-look="focus"], [data-look="classic"])
+    .usercard {
     grid-area: user;
     padding: 6px 8px 10px;
     background: var(--bg);
     border-right: 1px solid var(--line);
   }
-  :is([data-look="focus"], [data-look="classic"]) .ucard {
+  :is([data-look="calm"], [data-look="focus"], [data-look="classic"]) .ucard {
     justify-content: center;
     padding: 6px;
   }
-  :is([data-look="focus"], [data-look="classic"]) .ucard .uct {
+  :is([data-look="calm"], [data-look="focus"], [data-look="classic"])
+    .ucard
+    .uct {
     display: none;
   }
-  :is([data-look="focus"], [data-look="classic"]) .convs {
+  :is([data-look="calm"], [data-look="focus"], [data-look="classic"]) .convs {
     border-right: 1px solid var(--line);
     background: var(--bg);
+  }
+  /* Calm's main card is set off by its shadow, so its column draws no line (TOKI-145 R4). */
+  [data-look="calm"] .convs {
+    border-right: 0;
   }
   :is([data-look="focus"], [data-look="classic"]) .side {
     border-left: 1px solid var(--line);
