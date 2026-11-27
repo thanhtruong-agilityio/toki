@@ -3,3 +3,9 @@
 export type { EventInput, StoredEvent } from "./append.js";
 export { recordEvent } from "./record.js";
 export { lockEventCounter } from "./lock.js";
+export {
+  getLastEventNumber,
+  getOldestEventNumber,
+  readEventsAfter,
+} from "./read.js";
+export { pruneEvents } from "./prune.js";
