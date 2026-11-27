@@ -3,7 +3,13 @@ import pixelmatch from "pixelmatch";
 import { PNG } from "pngjs";
 import { LIMITS } from "../parity/limits";
 import type { Row } from "./parity-reporter";
-import { openPrototype, type Look, type Scheme, type Width } from "./prototype";
+import {
+  defaultScheme,
+  openPrototype,
+  type Look,
+  type Scheme,
+  type Width,
+} from "./prototype";
 
 // The screen check of the UI parity check (TOKI-109 R5 to R13): declared screens, the capture of
 // both sides, the comparison and the row that goes into the report.
@@ -62,7 +68,7 @@ export const appRootOf = (decl: ScreenDecl): string => decl.appRoot ?? ".app";
 
 // TOKI-143 R13: the scheme in which a look is drawn by a declaration.
 export const schemeOf = (decl: ScreenDecl, look: Look): Scheme =>
-  decl.scheme ?? (look === "calm" ? "light" : "dark");
+  decl.scheme ?? defaultScheme(look);
 
 export function expandScreens(decls: ScreenDecl[]): ScreenEntry[] {
   return decls.flatMap((decl) =>
@@ -108,6 +114,14 @@ export function flattenDeclarations(
         if (!isDeclaration(item)) {
           throw new Error(
             `${file}: export ${key} is not a screen declaration (it needs id, section and appRoute)`,
+          );
+        }
+        if (
+          item.scheme !== undefined &&
+          !["light", "dark"].includes(item.scheme)
+        ) {
+          throw new Error(
+            `${file}: screen "${item.id}" has the scheme "${String(item.scheme)}"; it must be light or dark`,
           );
         }
         if (!ID_PATTERN.test(item.id)) {

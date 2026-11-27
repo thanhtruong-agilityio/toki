@@ -11,6 +11,7 @@ import {
   seededOnce,
   type ScreenDecl,
 } from "./parity";
+import { defaultScheme } from "./prototype";
 
 // A solid w x h image; `dots` paints single white pixels.
 function png(
@@ -267,6 +268,12 @@ describe("expandScreens (R5, R12)", () => {
     ]);
   });
 
+  it("the default scheme of each look is one rule, shared with the prototype and setLook", () => {
+    expect(defaultScheme("calm")).toBe("light");
+    expect(defaultScheme("focus")).toBe("dark");
+    expect(defaultScheme("classic")).toBe("dark");
+  });
+
   it("gives each look its default scheme, and a declaration may name one (TOKI-143 R13)", () => {
     const entries = expandScreens([
       decl({ looks: ["calm", "focus", "classic"], widths: ["wide"] }),
@@ -376,6 +383,21 @@ describe("flattenDeclarations (R5)", () => {
         exportsOf("two.ts", { other: decl({ id: "d" }) }),
       ]).map((d) => d.id),
     ).toEqual(["a", "b", "c", "d"]);
+  });
+
+  it("refuses a scheme that is not light or dark (TOKI-143 R13)", () => {
+    expect(() =>
+      flattenDeclarations([
+        exportsOf("one.ts", {
+          a: { ...decl({ id: "a" }), scheme: "ligth" },
+        }),
+      ]),
+    ).toThrow(/scheme "ligth".*light or dark/);
+    expect(
+      flattenDeclarations([
+        exportsOf("one.ts", { a: decl({ id: "a", scheme: "dark" }) }),
+      ]),
+    ).toHaveLength(1);
   });
 
   it("ignores a helper, a constant or a function exported next to a declaration", () => {

@@ -1,5 +1,6 @@
 import type { Locator, Page, Route } from "@playwright/test";
 import { stubBootstrap } from "./bootstrap";
+import { defaultScheme } from "./prototype";
 
 // Helpers of e2e/sign-in.spec.ts (TOKI-023 R29 to R34). The server of TOKI-022 cannot be seeded yet
 // (TOKI-008), so every answer of `/api/v1/auth/*` is a stub in the browser. Fake data only: the
@@ -169,7 +170,7 @@ export async function setLook(
   look: Look,
   scheme?: Scheme,
 ): Promise<void> {
-  const asked = scheme ?? (look === "calm" ? "light" : "dark");
+  const asked = scheme ?? defaultScheme(look);
   await page.emulateMedia({ colorScheme: asked });
   await page.addInitScript(
     ({ look: wantLook, scheme: wantScheme }) => {
